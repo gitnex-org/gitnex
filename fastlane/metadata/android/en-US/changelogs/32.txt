@@ -1,0 +1,7 @@
+- New: Edit issue
+- New: Tabs for open and closed issues
+- Enhancement: German translation
+- Fixed: Layout fixes across the app
+
+And many more, check the release notes.
+https://gitlab.com/mmarif4u/gitnex/releases

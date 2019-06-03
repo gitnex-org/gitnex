@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<item>
+    <shape
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <solid
+            android:color="@color/inputBackground">
+        </solid>
+
+        <corners
+            android:radius="3dp">
+        </corners>
+    </shape>
+</item>
+<item android:drawable="@drawable/ic_arrow_down"
+    android:width="24dp"
+    android:height="24dp"
+    android:top="10dp"
+    android:left="90dp" />
+</layer-list>

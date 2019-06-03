@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:background="@color/backgroundColor"
+    android:paddingTop="8dp">
+
+    <TextView
+        android:id="@+id/replyToIssue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/replyToIssue"
+        android:drawableStart="@drawable/ic_reply"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/editIssue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/editIssue"
+        android:drawableStart="@drawable/ic_edit"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/addRemoveAssignees"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/addRemoveAssignees"
+        android:drawableStart="@drawable/ic_person_filled"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/editLabels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/singleIssueEditLabels"
+        android:drawableStart="@drawable/ic_label"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/closeIssue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/closeIssue"
+        android:drawableStart="@drawable/ic_done"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/reOpenIssue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/reOpenIssue"
+        android:drawableStart="@drawable/ic_reopen"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+</LinearLayout>

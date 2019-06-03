@@ -1,0 +1,420 @@
+<resources>
+
+    <!-- menu items -->
+    <string name="navMyRepos">Meine Repositories</string>
+    <string name="navStarredRepos">Starred Repositories</string>
+    <string name="navRepos">Repositories</string>
+    <string name="navProfile">Profil</string>
+    <string name="navSettings">Einstellungen</string>
+    <string name="navOrgs">Organisationen</string>
+    <string name="navAbout">Über</string>
+    <string name="navRate">Rate GitNex</string>
+    <string name="navLogout">Ausloggen</string>
+    <!-- menu items -->
+
+    <!-- page titles -->
+    <string name="pageTitleAbout">Über</string>
+    <string name="pageTitleHome">Startseite</string>
+    <string name="pageTitleMyRepos">Meine Repositories</string>
+    <string name="pageTitleRepositories">Repositories</string>
+    <string name="pageTitleProfile">Profile</string>
+    <string name="pageTitleNewRepo">Repository erstellen</string>
+    <string name="pageTitleOrganizations">Organisationen</string>
+    <string name="pageTitleIssues">Probleme</string>
+    <string name="pageTitleSettings">Einstellungen</string>
+    <string name="pageTitleCreateOrganization">Organisation erstellen</string>
+    <string name="pageTitleCreateMilestone">Meilenstein Erstellen</string>
+    <string name="pageTitleCreateNewIssue">Issue Erstellen</string>
+    <string name="pageTitleCreateLabel">Label Erstellen</string>
+    <string name="pageTitleCredits">Credits</string>
+    <string name="pageTitleLabelUpdate">Label Aktualisieren</string>
+    <string name="pageTitleSponsors">Sponsoren</string>
+    <string name="pageTitleStarredRepos">Starred Repositories</string>
+    <string name="pageTitleCreateTeam">Team Erstellen</string>
+    <string name="pageTitleAddEmail">E-Mail Adresse Hinzufügen</string>
+    <!-- page titles -->
+
+    <string name="appVersion">Version\u0020:\u0020</string>
+    <string name="appBuild">Build No.\u0020:\u0020</string>
+
+    <string name="repoName">Demo Repo</string>
+    <string name="repoFullname">Repo mit ORG</string>
+    <string name="repoDescription">Demo Beschreibung</string>
+    <string name="noData">Keine Repositories gefunden</string>
+
+    <string name="orgName">Demo Organisation</string>
+    <string name="orgDescription">Demo Beschreibung</string>
+    <string name="noDataOrg">Keine Organisation gefunden</string>
+
+    <string name="newCreateButtonCopy">Erstellen</string>
+    <string name="newUpdateButtonCopy">Aktualisieren</string>
+
+    <string name="newRepoTintCopy">Name der Repo</string>
+    <string name="newRepoDescTintCopy">Beschreibung der Repo</string>
+    <string name="newRepoPrivateCopy">Privat</string>
+    <string name="newRepoDescInfo">255 Zeichen Maximal</string>
+    <string name="newRepoOwner">Eigentümer</string>
+
+    <string name="newOrgTintCopy">Name der Organisation</string>
+    <string name="newOrgDescTintCopy">Beschreibung der Organisation</string>
+    <string name="newOrgDescInfo">255 Zeichen Maximal</string>
+
+    <string name="userName">Benutzername</string>
+    <string name="passWord">Passwort</string>
+    <string name="btnLogin">ANMELDEN</string>
+    <string name="instanceUrl">Gitea URL</string>
+    <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
+    <string name="navigation_drawer_close">Navigationsleiste schließen</string>
+    <string name="logo">In Gitea anmelden</string>
+    <string name="urlInfoTooltip">1- Wählen Sie das richtige Protokoll (https oder http) \ N2- Geben Sie die Gitea-URL ein, z.B. try.gitea.io \n3- For 2FA enter USERNAME:CODE in the Username field \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field</string>
+    <string name="loginFailed">Falscher Benutzername / Passwort </string>
+    <string name="protocolDelimiter">://</string>
+    <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, Sie testen in einem lokalen Netzwerk.</string>
+    <string name="malformedJson">Fehlgestaltete JSON erhalten, Serveranfrage war nicht erfolgreich.</string>
+    <string name="emptyFieldURL">Instance URL is required</string>
+    <string name="emptyFieldUsername">Username is required</string>
+    <string name="emptyFieldPassword">Password is required</string>
+
+    <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen, überprüfen Sie Ihre Internetverbindung</string>
+    <string name="emptyFields">Es sind alle Felder erforderlich</string>
+
+    <string name="repoNameErrorEmpty">Der Repository Name ist leer.</string>
+    <string name="repoNameErrorInvalid">Der Repository Name ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="repoDescError">Die Repositorybeschreibung überschreitet die maximale Anzahl von 255 Zeichen</string>
+    <string name="repoCreated">Repository erfolgreich erstellt!</string>
+    <string name="repoCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
+
+    <string name="orgNameErrorEmpty">Organisationsname ist leer</string>
+    <string name="orgNameErrorInvalid">Organisationsname ist nicht gültig, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="orgDescError"> Die Organisationsbeschreibung überschreitet die maximale Anzahl von 255 Zeichen</string>
+    <string name="orgCreated">Organisation erfolgreich erstellt!</string>
+    <string name="orgCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="orgExistsError">Organization already exists</string>
+
+    <string name="processingText">wird bearbeitet</string>
+    <string name="search">Suche</string>
+    <string name="wip">In Arbeit</string>
+
+    <string name="close">Schließen</string>
+    <string name="addNewContent">Hinzufügen</string>
+    <string name="orgContentAvatar">Org</string>
+    <string name="repoContentAvatar">Repo</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="repoStars">12345</string>
+    <string name="repoWatchers">98324</string>
+    <string name="repoIssues">54321</string>
+    <string name="removeContent">Entfernen</string>
+
+    <string name="genericApiStatusError">Die Gitea Instanz hat einen Fehler zurückgegeben. Code\u0020</string>
+    <string name="title_activity_repo_detail">Repo-Details Aktivität</string>
+    <string name="tab_text_info">Information</string>
+    <string name="tab_text_issues">Offene Issues</string>
+    <string name="tabItemCloseIssues">Geschlossene Issues</string>
+    <string name="tab_text_ml">Meilensteine</string>
+    <string name="tab_text_releases">Veröffentlichungen</string>
+    <string name="tab_text_branches">Branches</string>
+    <string name="tab_text_labels">Labels</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="tab_text_collaborators">Mitarbeiter</string>
+
+    <string name="noDataIssueTab">Keine Probleme gefunden!</string>
+
+    <string name="infoTabRepoName1">Repository</string>
+    <string name="infoTabRepoOwner1">Eigentümer</string>
+    <string name="infoTabRepoDesc">Beschreibung</string>
+    <string name="infoTabRepoWebsite">Webseite</string>
+    <string name="infoTabRepoSize">Größe</string>
+    <string name="infoTabRepoDefaultBranch">Standard Branch</string>
+    <string name="infoTabRepoSshUrl">SSH URL</string>
+    <string name="infoTabRepoCloneUrl">Clone URL</string>
+    <string name="infoTabRepoRepoUrl">Repo URL</string>
+    <string name="infoTabRepoForksCount">Azahl an Forks</string>
+    <string name="infoTabRepoCreatedAt">Erstellt</string>
+    <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
+    <string name="infoTabRepoDummyTime">2018&#8211;10&#8211;30 08:25:25</string>
+    <string name="infoTabRepoBlank">&#8230;</string>
+    <string name="infoTabRepoZero">0</string>
+    <string name="infoTabRepoDefaultBranchText">master</string>
+
+    <string name="timeAtText">um</string>
+    <string name="hash">#</string>
+    <string name="createdText">Erstellt\u0020</string>
+    <string name="dueDateText">Fälligkeitsdatum </string>
+    <string name="issueStatusTextOpen">Status: offen</string>
+    <string name="issueStatusOpen">öffnen</string>
+    <string name="issueStatusTextClosed">Status: geschlossen</string>
+    <string name="issueStatusClosed">schließen</string>
+    <string name="issueCreator">Ersteller:\u0020</string>
+    <string name="issueAssigneesText">Zugewiesene</string>
+    <string name="issueTypeIssue">Typ: Issue</string>
+    <string name="issueTypePullRequest">Typ: Pull Anfrage</string>
+    <string name="issueCommenter">Kommentator:\u0020</string>
+    <string name="issueTitleWithId">#%1$d %2$s</string>
+    <string name="issueMilestone">Meilenstein %1$s</string>
+    <string name="dueDate">Fällig %1$s</string>
+    <string name="createdTime">Erstellt %1$s</string>
+    <string name="assignedTo">Zugewiesen an: %1$s</string>
+    <string name="commentButtonText">Kommentar</string>
+    <string name="commentEmptyError">Bitte schreibe deinen Kommentar!</string>
+    <string name="commentSuccess">Kommentar gepostet</string>
+    <string name="commentError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+
+    <string name="generalImgContentText">Benutzerbild</string>
+    <string name="generalPageTitle">GitNex</string>
+
+    <string name="noDataMilestonesTab">Kein Meilenstein gefunden!</string>
+
+    <string name="commitAuthor">Commit Autor: %1$s</string>
+    <string name="commitHash">Commit Hash \n%1$s%2$s</string>
+
+    <string name="releaseTitle">Release Titel</string>
+    <string name="releaseDescription">Release Beschreibung</string>
+    <string name="releaseDownloadText">Downloads</string>
+    <string name="releaseType">Release Typ</string>
+    <string name="releaseZip">Release Zip</string>
+    <string name="releaseTar">Release Tar</string>
+    <string name="noDataReleasesTab">Kein Release gefunden!</string>
+    <string name="releaseTag">Tag: %1$s</string>
+
+    <string name="collaboratorsNameToast">Zuständiger: %1$s</string>
+    <string name="noDataCollaboratorTab">Kein Zuständiger gefunden!</string>
+
+    <string name="editText">Bearbeiten</string>
+
+    <string name="newMilestoneTitle">Titel</string>
+    <string name="newMilestoneDescription">Beschreibung</string>
+    <string name="newMilestoneDueDate">Fälligkeitsdatum</string>
+    <string name="setDueDate">%1$d-%2$d-%3$d</string>
+    <string name="milestoneNameErrorEmpty">Titel des Meilensteins ist leer</string>
+    <string name="milestoneNameErrorInvalid">Titel des Meilensteins ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="milestoneDescError">Die Beschreibung des Meilensteins überschreitet die maximale Anzahl von 255 Zeichen</string>
+    <string name="milestoneCreated">Meilenstein erfolgreich erstellt!</string>
+    <string name="milestoneCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="milestoneDateEmpty">Bitte wählen Sie das Fälligkeitsdatum!</string>
+    <string name="milestoneOpenIssues">Offene Issues: %1$d</string>
+    <string name="milestoneClosedIssues">Geschlossene Issues: %1$d</string>
+
+    <string name="newIssueSelectAssigneesListTitle">Wählen Sie Zuständige aus</string>
+    <string name="newIssueSelectLabelsListTitle">Label auswählen</string>
+    <string name="newIssueDialogDone">Erledigt</string>
+    <string name="newIssueDialogCancel">Abbrechen</string>
+    <string name="newIssueTitle">Titel</string>
+    <string name="newIssueAssigneesListTitle">Zuständiger</string>
+    <string name="newIssueDescriptionTitle">Beschreibung</string>
+    <string name="newIssueDueDateTitle">Fälligkeitsdatum</string>
+    <string name="newIssueMilestoneTitle">Meilenstein</string>
+    <string name="newIssueLabelsTitle">Labels</string>
+    <string name="spinnerMilestoneText">%1$s [%2$s]</string>
+    <string name="dialogAssignessText">%1$s - @%2$s</string>
+    <string name="issueTitleEmpty">Der Titel des Issues ist leer!</string>
+    <string name="issueDescriptionEmpty">Die Beschreibung des Issues ist leer!</string>
+    <string name="issueCreated">Neues Issues wurde erfolgreich erstellt!</string>
+    <string name="issueCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="noAssigneesFound">Keine Zuständigen gefunden!</string>
+    <string name="noLabelsFound">Keine Labels gefunden!</string>
+
+    <!-- settings -->
+    <string name="settingsLanguageHeaderText">Sprachen</string>
+    <string name="settingsDateTimeHeaderText">Datum &amp; Uhrzeit</string>
+    <string name="settingsSave">Einstellungen wurden gespeichert!</string>
+    <string name="settingsLanguageSelectorHeader">Sprache</string>
+    <string name="settingsLanguageSelectedHeaderDefault">Englisch</string>
+    <string name="settingsAppearanceHeader">Aussehen</string>
+    <string name="settingsDateTimeHeaderDefault">Schön</string>
+    <string name="settingsLanguageSelectorDialogTitle">Sprache auswählen</string>
+    <string name="settingsTimeSelectorDialogTitle">Zeitformat auswählen</string>
+    <string name="settingsIssueBadgeHeaderText">Issues Badge</string>
+    <string name="settingsHelpTranslateText">Hilf uns dabei, GitNex in deine Sprache zu übersetzen.</string>
+    <string name="codeBlockHeaderText">Code Block Color</string>
+    <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
+    <string name="settingsHomeScreenHeaderText">Home Screen</string>
+    <string name="settingsHomeScreenSelectedText">My Repositories</string>
+    <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
+    <!-- settings -->
+
+    <string name="noMoreData">Keine weiteren Daten verfügbar!</string>
+
+    <string name="createLabel">Label erstellen</string>
+    <string name="menuTitleText">Repo Menü</string>
+    <string name="labelName">Label Name</string>
+    <string name="labelColor">Label Farbe</string>
+    <string name="labelEmptyError">Der Labelname ist leer!</string>
+    <string name="labelNameError">Der Labelname ist nicht gültig!</string>
+    <string name="labelCreated">Label wurde erfolgreich erstellt!</string>
+    <string name="labelGeneralError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="labelUpdated">Label aktualisiert!</string>
+
+    <string name="noDataLabelsTab">Keine Labels gefunden!</string>
+    <string name="labelMenuContentDesc">Beschreibung</string>
+    <string name="labelMenuEdit">Bearbeiten</string>
+    <string name="labelMenuDelete">Löschen</string>
+    <string name="labelDeleteText">Label gelöscht!</string>
+    <string name="labelDeleteErrorText">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+
+    <string name="noDataBranchesTab">Keine Branch gefunden!</string>
+
+    <string name="creditsLogoDesign">Design</string>
+
+    <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
+    <string name="alertDialogTokenRevokedMessage">Es scheint, dass das Access Token widerrufen wurde ODER Sie diese Inhalte nicht sehen dürfen. Falls das Token wiederrufen wurde, melden Sie sich bitte ab und wieder an.</string>
+    <string name="alertDialogTokenRevokedCopyNegativeButton">Abbrechen</string>
+    <string name="alertDialogTokenRevokedCopyPositiveButton">Abmelden</string>
+
+    <string name="labelDeleteTitle">Löschen\u0020</string>
+    <string name="labelDeleteMessage">Möchtest du dieses Label wirklich entfernen?</string>
+    <string name="labelDeletePositiveButton">Ok</string>
+    <string name="labelDeleteNegativeButton">Abbrechen</string>
+
+    <!-- org tabbed layout str -->
+    <string name="title_activity_org_detail">OrgDetailActivity</string>
+    <string name="orgTabRepos">Repositories</string>
+    <string name="orgTabTeams">Teams</string>
+    <string name="orgTabMembers">Mitglieder</string>
+    <string name="orgCreateTeam">Team erstellen</string>
+    <string name="noDataTeams">Keine Teams gefunden!</string>
+    <string name="teamTitle">Name des Teams</string>
+    <string name="teamDescription">Beschrebung des Teams</string>
+    <string name="teamPermission">Berechtigung: %1$s</string>
+    <string name="noDataMembers">Keine Mitglieder gefunden!</string>
+    <string name="orgMember">Org members</string>
+    <string name="orgTeamMembers">Mitglieder der Organization</string>
+    <!-- org tabbed layout str -->
+
+    <!-- create team -->
+    <string name="newTeamTitle">Name des Teams</string>
+    <string name="newTeamDesc">Beschreibung des Teams</string>
+    <string name="newTeamPermission">Berechtigung</string>
+    <string name="newTeamAccessControls">Zugriffsrechte</string>
+    <string name="newTeamPermissionRead">Mitglieder können Team-Repositories anschauen und klonen</string>
+    <string name="newTeamPermissionWrite">Mitglieder können Team-Repositories anschauen und zu Team-Repositories pushen</string>
+    <string name="newTeamPermissionAdmin">Mitglieder können zu Team-Repositories pushen und pullen und Mitarbeiter zu ihnen hinzufügen</string>
+    <string name="teamNameEmpty">Bitte gib den Namen des Teams ein.</string>
+    <string name="teamNameError">Der Name des Teams sollte nur Alphanumerische Zeichen, Bindestriche (-), Unterstriche (_) und Punkte (.) enthalten.</string>
+    <string name="teamPermissionEmpty">Bitte wählen sie die Rechte aus.</string>
+    <string name="teamDescError">Die Beschreibung des Teams hat verbotene Zeichen.</string>
+    <string name="teamDescLimit">Die Team Beschreibung überschreitet das Maximum von 100 Zeichen.</string>
+    <string name="teamCreated">Team erfolgreich erstellt.</string>
+    <string name="teamCreatedError">Etwas ist schief gelaufen. Bitte versuche es später erneut</string>
+    <!-- create team -->
+
+    <!-- edit comment -->
+    <string name="editCommentTitle">Kommentar bearbeiten</string>
+    <string name="editCommentButtonText">Bearbeiten</string>
+    <string name="editCommentUpdatedText">Kommentar erfolgreich bearbeitet</string>
+    <!-- edit comment -->
+
+    <!-- add collaborator -->
+    <string name="addCollaboratorTitle">Mitarbeiter hinzufügen</string>
+    <string name="addCollaboratorSearchHint">Benutzer durchsuchen</string>
+    <string name="addCollaboratorViewUserDesc">Benutzername</string>
+    <string name="removeCollaboratorTitle">entfernen\u0020</string>
+    <string name="removeCollaboratorMessage">Möchtest du den Nutzer wirklich von dieser Repository entfernen?</string>
+    <string name="removeCollaboratorToastText">Benuter von der Repository entfernt.</string>
+    <string name="addCollaboratorToastText">Benutzer zu der Repository hinzugefügt.</string>
+    <!-- add collaborator -->
+
+    <!-- profile section -->
+    <string name="profileTabFollowers">Follower</string>
+    <string name="profileTabFollowing">Folge ich</string>
+    <string name="profileCreateNewEmailAddress">E-Mail Adresse hinzufügen</string>
+    <string name="profileEmailButton">Speichern</string>
+    <string name="profileEmailTitle">E-Mail Adresse</string>
+    <string name="emailAddedText">Neue E-Mail Adresse erfolgreich hinzugefügt.</string>
+    <string name="emailErrorEmpty">E-Mail Adresse is leer.</string>
+    <string name="emailErrorInvalid">E-Mail Adresse ist nicht gültig.</string>
+    <string name="emailErrorInUse">Die E-Mail Adresse wird bereits verwendet.</string>
+    <string name="emailTypeText">Primär</string>
+    <string name="profileTabEmails">E-Mails</string>
+    <!-- profile section -->
+
+    <!-- single issue section -->
+    <string name="singleIssueEditLabels">Labels Hinzufügen / Entfernen</string>
+    <string name="labelsUpdated">Labels aktualisiert</string>
+    <string name="closeIssue">Issue schließen</string>
+    <string name="replyToIssue">Kommentar hinzufügen</string>
+    <string name="editIssue">Issue bearbeiten</string>
+    <string name="reOpenIssue">Issue neu öffnen</string>
+    <string name="issueStateClosed">Issue geschlossen</string>
+    <string name="issueStateReopened">Issue neu geöffnet</string>
+    <string name="addRemoveAssignees2">Add Assignees</string>
+    <string name="addRemoveAssignees">Add / Remove Assignees</string>
+    <string name="assigneesUpdated">Assignees updated</string>
+    <!-- single issue section -->
+
+    <!-- multi select dialog -->
+    <string name="select_entry">Einträge auswählen</string>
+    <string name="validation_text">Bitte mindestens eine Option auswählen</string>
+    <string name="please_select_atleast">Du musst mindestens so viele auswälen: </string>
+    <string name="you_can_only_select_upto">Du kannst höchstens so viele auswählen: </string>
+    <string name="option"> Option</string>
+    <string name="options"> Optionen</string>
+    <string name="select_all">Alle  Auswählen</string>
+    <string name="de_select_all">Die Auswahl aufheben</string>
+    <!-- multi select dialog -->
+
+    <string name="repoMetaData">Repository Meta</string>
+
+    <!-- admin -->
+    <string name="adminCreateNewUser">Neuen Benutzer erstellen</string>
+    <string name="adminUsers">Users</string>
+    <string name="userRoleAdmin">Admin</string>
+    <!-- admin -->
+
+    <!-- create user -->
+    <string name="userFullNameText">Ganzer Name</string>
+    <string name="userEmail">E-Mail</string>
+    <string name="userUserName">Benutzername</string>
+    <string name="userPassword">Passwort</string>
+    <string name="userInvalidFullName">Ungültiger Name</string>
+    <string name="userInvalidUserName">Ungültiger Benutzername</string>
+    <string name="userInvalidEmail">Ungültige E-Mail</string>
+    <string name="userCreatedText">Neuer Benutzer erfolgreich erstellt</string>
+    <string name="userExistsError">User already exists</string>
+    <!-- create user -->
+
+    <!-- edit issue -->
+    <string name="editIssueNavHeader">Edit Issue #%1$s</string>
+    <string name="editIssueSuccessMessage">Issue updated.</string>
+    <!-- edit issue -->
+
+    <!-- release -->
+    <string name="createRelease">Create Release</string>
+    <string name="releaseTagNameText">Tag Name</string>
+    <string name="releaseTitleText">Title</string>
+    <string name="releaseContentText">Content</string>
+    <string name="releaseTypeText">Mark as Pre-Release</string>
+    <string name="releaseBranchText">Select Branch</string>
+    <string name="releaseDraftText">Draft</string>
+    <string name="tagNameErrorEmpty">Tag name is empty</string>
+    <string name="titleErrorEmpty">Title is empty</string>
+    <string name="releaseCreatedText">New release created</string>
+    <!-- release -->
+
+    <string name="loginOTPError">Enter OTP code</string>
+    <string name="loginOTPTypeError">OTP code should be numbers.</string>
+    <string name="loginOTP">OTP Code (Optional)</string>
+    <string name="otpMessage">Enter the otp code if 2FA is enabled</string>
+
+    <!-- generic copy -->
+    <string name="okButton">OK</string>
+    <string name="doneButton">Done</string>
+    <string name="cancelButton">Abbrechen</string>
+    <string name="genericError">Etwas ist schief gelaufen. Bitte versuche es noch ein mal</string>
+    <string name="apiNotFound">Diese Anfrage erfordert Gitea 1.7 oder höher!</string>
+    <string name="noDataFound">Keine Daten gefunden</string>
+    <string name="addButton">Hinzufügen</string>
+    <string name="removeButton">Entfernen</string>
+    <string name="authorizeError">Sie sind nicht berechtigt, diese Aktion durchzuführen.</string>
+    <string name="menuContentDesc">Menü</string>
+    <string name="menuEditText">Bearbeiten</string>
+    <string name="menuDeleteText">Entfernen</string>
+    <string name="modifiedText">Bearbeitet</string>
+    <string name="saveButton">Speichern</string>
+    <string name="nameText">Name</string>
+    <string name="descriptionText">Description</string>
+    <string name="websiteText">Website</string>
+    <string name="locationText">Location</string>
+    <!-- generic copy -->
+
+</resources>

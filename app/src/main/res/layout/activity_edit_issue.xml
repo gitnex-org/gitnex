@@ -1,0 +1,167 @@
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/editIssueNavHeader"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:paddingBottom="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newIssueTitle"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                />
+
+            <EditText
+                android:id="@+id/editIssueTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:inputType="textCapSentences|text"
+                android:labelFor="@+id/editIssueTitle"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newIssueDescriptionTitle"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
+
+            <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
+                android:id="@+id/editIssueDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:completionThreshold="1"
+                android:background="@drawable/shape_inputs"
+                android:maxLines="12"
+                android:minLines="10"
+                tools:ignore="Autofill"
+                android:labelFor="@+id/newReplyToIssue"
+                android:scrollbars="vertical"
+                android:gravity="top|start"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColorHighlight="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newIssueDueDateTitle"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/editIssueDueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:visibility="gone"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newIssueMilestoneTitle"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:id="@+id/editIssueMilestoneSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingStart="5dp" />
+
+            <Button
+                android:id="@+id/editIssueButton"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/saveButton"
+                android:background="@drawable/shape_buttons"
+                android:textColor="@color/btnTextColor" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
