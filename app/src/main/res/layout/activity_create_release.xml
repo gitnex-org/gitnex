@@ -1,0 +1,194 @@
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/createRelease"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/backgroundColor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/releaseTagNameText"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                />
+
+            <EditText
+                android:id="@+id/releaseTagName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:inputType="text"
+                android:labelFor="@+id/releaseTagName"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/releaseBranchText"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/releaseBranch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingStart="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/releaseTitleText"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                />
+
+            <EditText
+                android:id="@+id/releaseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:inputType="text"
+                android:labelFor="@+id/releaseTitle"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/releaseContentText"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                />
+
+            <EditText
+                android:id="@+id/releaseContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:background="@drawable/shape_inputs"
+                android:maxLines="8"
+                android:minLines="6"
+                tools:ignore="Autofill"
+                android:labelFor="@+id/releaseContent"
+                android:scrollbars="vertical"
+                android:gravity="top|start"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColorHighlight="@color/white"/>
+
+            <CheckBox
+                android:id="@+id/releaseType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/releaseTypeText"
+                android:checked="false"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:theme="@style/checkBoxTheme"
+                android:textColor="@color/white"/>
+
+            <CheckBox
+                android:id="@+id/releaseDraft"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/releaseDraftText"
+                android:checked="false"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:theme="@style/checkBoxTheme"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/createNewRelease"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/newCreateButtonCopy"
+                android:background="@drawable/shape_buttons"
+                android:textColor="@color/btnTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="35dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/relativeLayoutMainFrame"
+    android:background="@color/backgroundColor">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/relativeLayoutFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        android:theme="@style/AppTheme"
+        tools:context=".activities.RepoDetailActivity">
+
+        <TextView
+            android:id="@+id/issueNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/assigneeAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="@string/generalImgContentText"
+            android:src="@drawable/ic_android" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/issueCommentsCount"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:width="16dp"
+            android:height="16dp"
+            android:layout_marginEnd="15dp"
+            android:layout_below="@+id/assigneeAvatar"
+            android:drawableTop="@drawable/ic_issue_comments"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/infoSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/assigneeAvatar"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/frameIssueNameStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/issueTitle"
+                    android:layout_width="0dp"
+                    android:layout_weight=".82"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight=".08"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/issueType"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:src="@drawable/ic_issues" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/issueDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/frameCreatedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/issueCreatedAtText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/createdText"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/issueCreatedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#212f3c</color>
+    <color name="colorPrimaryDark">#212f3c</color>
+    <color name="colorAccent">#7f7e7b</color>
+    <color name="backgroundColor">#212f3c</color>
+    <color name="hintColor">#7f7e7b</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="navHeader">#212f3c</color>
+    <color name="black">#000009</color>
+    <color name="white">#ffffff</color>
+    <color name="tooltipBackground">#1e88ce</color>
+    <color name="btnBackground">#009486</color>
+    <color name="btnTextColor">#ffffff</color>
+    <color name="inputBackground">#161d23</color>
+    <color name="toastBackground">#161d23</color>
+    <color name="divider">#1d2935</color>
+    <color name="releasePre">#eb7121</color>
+    <color name="releaseStable">#219214</color>
+    <color name="colorRed">#eb3718</color>
+    <color name="colorLightGreen">#49da39</color>
+    <color name="colorDarkGreen">#009486</color>
+    <color name="darkRed">#e74c3c</color>
+    <color name="lightBlue">#3faef7</color>
+
+</resources>

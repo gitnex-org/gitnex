@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/replyToIssueNavHeader"
+                android:foregroundGravity="right"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="0dp"
+                android:scrollbarThumbHorizontal="@android:color/transparent"
+                android:fillViewport="true">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+
+            </HorizontalScrollView>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:paddingBottom="30dp"
+            android:orientation="vertical">
+
+            <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
+                android:id="@+id/addComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:completionThreshold="1"
+                android:background="@drawable/shape_inputs"
+                android:maxLines="12"
+                android:minLines="10"
+                tools:ignore="Autofill"
+                android:labelFor="@+id/newReplyToIssue"
+                android:scrollbars="vertical"
+                android:gravity="top|start"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColorHighlight="@color/white" />
+
+            <Button
+                android:id="@+id/replyButton"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/commentButtonText"
+                android:background="@drawable/shape_buttons"
+                android:textColor="@color/btnTextColor" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
