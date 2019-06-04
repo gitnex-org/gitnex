@@ -2,13 +2,13 @@
 
 Please take a few minutes to read this document to make the process of contribution more easy and healthy for all involved.
 
-## Merge Requests
+## Pull Requests
 Patches, enhancements, features are always welcome. The MR should focus on the scope of work and avoid many unnecessary commits. Please provide as much detail and context as possible to explain the work submitted.
 
 Please ask if you are not sure about the scope of work to be submitted to avoid waste of time spent on the work.
 
-**How to submit MR**  
-Fork this repository. Pull the forked repository from your namespace to your local machine. Create new branch and work on the bug/feature/enhancement you would like to submit. Push it to your forked version. From there create Merge Request(MR) against **master** branch.
+**How to submit MR/PR**  
+Fork this repository. Pull the forked repository from your namespace to your local machine. Create new branch and work on the bug/feature/enhancement you would like to submit. Push it to your forked version. From there create Pull Request(PR) against **master** branch.
 
 **IMPORTANT:** By submitting MR, you agree to allow GitNex to license your work under the same license as that used by GitNex.
 
@@ -24,8 +24,6 @@ In case you want to submit a bug report, please provide as much details as possi
 ## Translation
 Help us translate GitNex to your native language.
 
-Take a look [here](https://gitlab.com/mmarif4u/gitnex/blob/master/app/src/main/res/values/strings.xml) for strings, please ignore the lines with `translatable="false"`. It is recommended to create a Merge Request with your changes.
+Take a look [here](https://gitea.com/mmarif/GitNex/src/branch/master/app/src/main/res/values/strings.xml) for strings, please ignore the lines with `translatable="false"`. It is recommended to create a Pull Request with your changes.
 
-Check the structure of other languages for example [French](https://gitlab.com/mmarif4u/gitnex/blob/master/app/src/main/res/values-fr/strings.xml). 
-
-**Note:** Crowdin support will be added soon.
+Check the structure of other languages for example [French](https://gitea.com/mmarif/GitNex/src/branch/master/app/src/main/res/values-fr/strings.xml). 

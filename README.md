@@ -10,12 +10,12 @@ GitNex is licensed under GPLv3 License. See the LICENSE file for the full licens
 No trackers are used and source code is available here for anyone to audit.
 
 ## Downloads
-[<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/) [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex) [Download APK](https://gitlab.com/mmarif4u/gitnex/releases)
+[<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/) [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex) [Download APK](hhttps://gitea.com/mmarif/GitNex/releases)
 
 ## Note about Gitea version
 Please make sure that you are on Gitea **1.7.x** stable release or later. Below this may not work as one would expect because of the newly added objects to the API at later versions. Please consider updating your Gitea server.
 
-Check the versions [compatibility page](https://gitlab.com/mmarif4u/gitnex/wikis/Compatibility) which lists all the supported versions with compatibility ratio.
+Check the versions [compatibility page](https://gitea.com/mmarif/GitNex/wiki/Compatibility) which lists all the supported versions with compatibility ratio.
 
 ## Build from source
 Option 1 - Download the source code, open it in Android Studio and build it there.
@@ -29,27 +29,25 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`
 - Create repository
 - Create organization
 - Issues list
-- [MANY MORE](https://gitlab.com/mmarif4u/gitnex/wikis/Features)
+- [MANY MORE](https://gitea.com/mmarif/GitNex/wiki/Features)
 
 ## Contributing
-[CONTRIBUTING](https://gitlab.com/mmarif4u/gitnex/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://gitea.com/mmarif/GitNex/src/branch/master/CONTRIBUTING.md)
 
 ## Screenshots:
-[Screenshots](https://gitlab.com/mmarif4u/gitnex/wikis/Screenshots)
+[Screenshots](https://gitea.com/mmarif/GitNex/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots)
 
 ## FAQ
-[Faq](https://gitlab.com/mmarif4u/gitnex/wikis/FAQ)
+[Faq](https://gitea.com/mmarif/GitNex/wiki/FAQ)
 
 ## Links
 [Website](https://gitnex.com)
 
-[Wiki](https://gitlab.com/mmarif4u/gitnex/wikis/home)
+[Wiki](https://gitea.com/mmarif/GitNex/wiki/Home)
 
 [Website Repository](https://gitlab.com/mmarif4u/gitnex-website)
 
-[Troubleshoot Guide](https://gitlab.com/mmarif4u/gitnex/wikis/Troubleshoot-Guide)
-
-[How to](https://gitlab.com/mmarif4u/gitnex/wikis/home#how-to)
+[Troubleshoot Guide](https://gitea.com/mmarif/GitNex/wiki/Troubleshoot-Guide)
 
 ## Thanks
 Thanks to all the open source libraries, contributors and donators.
