@@ -4,9 +4,9 @@
     <string name="appAuthor" translatable="false">Developer : M M Arif</string>
     <string name="appEmail" translatable="false">gitnex@gitnex.com</string>
     <string name="appRepo" translatable="false">Source code</string>
-    <string name="appRepoLink" translatable="false">https://gitlab.com/mmarif4u/gitnex</string>
-    <string name="appRepoIssuesLink" translatable="false">https://gitlab.com/mmarif4u/gitnex/issues</string>
-    <string name="appRepoContributingLink" translatable="false">https://gitlab.com/mmarif4u/gitnex/blob/master/CONTRIBUTING.md</string>
+    <string name="appRepoLink" translatable="false">https://gitea.com/mmarif/GitNex</string>
+    <string name="appRepoIssuesLink" translatable="false">https://gitea.com/mmarif/GitNex/issues</string>
+    <string name="appRepoContributingLink" translatable="false">https://gitea.com/mmarif/GitNex/src/branch/master/CONTRIBUTING.md</string>
     <string name="appWebsite" translatable="false">Website</string>
     <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
     <string name="commitPage" translatable="false">Your Gitea version\n</string>
@@ -17,7 +17,7 @@
     <!-- These strings does not need translations -->
 
     <!-- links text -->
-    <string name="appRepoIssuesText" translatable="false">Report issues at GitLab</string>
+    <string name="appRepoIssuesText" translatable="false">Report issues at Gitea</string>
     <string name="supportText" translatable="false">Support the App on Liberapay</string>
     <string name="supportTextPatreon" translatable="false">Become a Patreon</string>
     <!-- links text -->
