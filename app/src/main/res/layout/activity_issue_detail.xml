@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,54 +9,21 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay" >
 
         <androidx.appcompat.widget.Toolbar
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            tools:ignore="UnusedAttribute">
-
-            <ImageView
-                android:id="@+id/close"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"
-                android:contentDescription="@string/close"
-                android:src="@drawable/ic_close" />
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/generalPageTitle"
-                android:textColor="@color/white"
-                android:maxLines="1"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/editIssue1"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:gravity="end"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                android:contentDescription="@string/editText"
-                android:src="@drawable/ic_edit" />
-
-        </androidx.appcompat.widget.Toolbar>
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/app_name" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/relativeMainLayoutFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,7 +41,6 @@
                 android:fillViewport="true">
 
                 <RelativeLayout
-                    xmlns:tools="http://schemas.android.com/tools"
                     android:id="@+id/relativeLayoutFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,6 +161,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="start"
                             android:text="@string/createdText"
+                            android:visibility="gone"
                             android:textColor="@color/colorWhite"
                             android:textSize="12sp" />
 
@@ -204,6 +172,7 @@
                             android:textColor="@color/white"
                             android:layout_toEndOf="@+id/issueCreatedTime"
                             android:textSize="12sp"
+                            android:visibility="gone"
                             android:text="@string/modifiedText" />
 
                     </RelativeLayout>
