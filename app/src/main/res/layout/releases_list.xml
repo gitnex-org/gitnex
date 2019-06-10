@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundColor" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayoutFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:theme="@style/AppTheme">
+
+        <TextView
+            android:id="@+id/releaseTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/releaseTitle"
+            android:textIsSelectable="true"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/releaseType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/releaseType"
+            android:src="@drawable/ic_android" />
+
+        <TextView
+            android:id="@+id/releaseDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/releaseDescription"
+            android:textIsSelectable="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/releaseDownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/releaseDownloadText"
+            android:textIsSelectable="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/divider"
+            />
+
+        <TextView
+            android:id="@+id/releaseZipDownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/releaseZip"
+            android:textIsSelectable="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:autoLink="web"
+            android:textColorLink="@color/lightBlue"/>
+
+        <TextView
+            android:id="@+id/releaseTarDownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/releaseTar"
+            android:textIsSelectable="true"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:autoLink="web"
+            android:textColorLink="@color/lightBlue"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

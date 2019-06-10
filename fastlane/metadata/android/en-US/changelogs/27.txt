@@ -1,0 +1,2 @@
+- Fix: crash when tap on search icon when no connection
+- Fix: crash when freshly load the app and tap on profile

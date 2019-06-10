@@ -1,0 +1,408 @@
+package org.mian.gitnex.activities;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import ru.noties.markwon.Markwon;
+import ru.noties.markwon.SpannableConfiguration;
+import ru.noties.markwon.il.AsyncDrawableLoader;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.squareup.picasso.Picasso;
+import com.vdurmont.emoji.EmojiParser;
+import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.IssueCommentsAdapter;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.UserMentions;
+import org.mian.gitnex.models.IssueComments;
+import org.mian.gitnex.models.Issues;
+import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.util.TinyDB;
+import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
+import org.ocpsoft.prettytime.PrettyTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * Author M M Arif
+ */
+
+public class IssueDetailActivity extends AppCompatActivity {
+
+    public ImageView closeActivity;
+    private View.OnClickListener onClickListener;
+    private IssueCommentsAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private ImageView assigneeAvatar;
+    private TextView issueTitle;
+    private TextView issueDescription;
+    private TextView issueMilestone;
+    private TextView issueDueDate;
+    private TextView issueCreatedTime;
+    private HorizontalScrollView labelsScrollView;
+    private HorizontalScrollView assigneesScrollView;
+    private ImageView replyToIssue;
+    private ScrollView scrollViewComments;
+    private TextView issueModified;
+    final Context ctx = this;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_issue_detail);
+
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        final String instanceUrl = tinyDb.getString("instanceUrl");
+        final String loginUid = tinyDb.getString("loginUid");
+        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        String repoFullName = tinyDb.getString("repoFullName");
+        String[] parts = repoFullName.split("/");
+        final String repoOwner = parts[0];
+        final String repoName = parts[1];
+        final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
+
+        final SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
+
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        closeActivity = findViewById(R.id.close);
+        assigneeAvatar = findViewById(R.id.assigneeAvatar);
+        issueTitle = findViewById(R.id.issueTitle);
+        issueDescription = findViewById(R.id.issueDescription);
+        issueMilestone = findViewById(R.id.issueMilestone);
+        issueDueDate = findViewById(R.id.issueDueDate);
+        issueCreatedTime = findViewById(R.id.issueCreatedTime);
+        labelsScrollView = findViewById(R.id.labelsScrollView);
+        assigneesScrollView = findViewById(R.id.assigneesScrollView);
+        replyToIssue = findViewById(R.id.replyToIssue);
+        scrollViewComments = findViewById(R.id.scrollViewComments);
+        issueModified = findViewById(R.id.issueModified);
+
+        toolbarTitle.setText(repoName);
+        initCloseListener();
+        closeActivity.setOnClickListener(onClickListener);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+                        IssueCommentsViewModel.loadIssueComments(instanceUrl, instanceToken, repoOwner, repoName, issueIndex);
+                    }
+                }, 500);
+            }
+        });
+
+        replyToIssue.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                tinyDb.putString("issueTitle", issueTitle.getText().toString());
+                Intent intent = new Intent(view.getContext(), ReplyToIssueActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
+        getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex);
+        fetchDataAsync(instanceUrl, instanceToken, repoOwner, repoName, issueIndex);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final String instanceUrl = tinyDb.getString("instanceUrl");
+        final String loginUid = tinyDb.getString("loginUid");
+        String repoFullName = tinyDb.getString("repoFullName");
+        String[] parts = repoFullName.split("/");
+        final String repoOwner = parts[0];
+        final String repoName = parts[1];
+        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
+        if(tinyDb.getBoolean("commentPosted")) {
+            scrollViewComments.post(new Runnable() {
+                @Override
+                public void run() {
+                    IssueCommentsViewModel.loadIssueComments(instanceUrl, instanceToken, repoOwner, repoName, issueIndex);
+                    scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN);
+                    tinyDb.putBoolean("commentPosted", false);
+                }
+            });
+        }
+        if(tinyDb.getBoolean("commentEdited")) {
+            scrollViewComments.post(new Runnable() {
+                @Override
+                public void run() {
+                    IssueCommentsViewModel.loadIssueComments(instanceUrl, instanceToken, repoOwner, repoName, issueIndex);
+                    tinyDb.putBoolean("commentEdited", false);
+                }
+            });
+        }
+    }
+
+    private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo, int index) {
+
+        IssueCommentsViewModel issueCommentsModel = ViewModelProviders.of(this).get(IssueCommentsViewModel.class);
+
+        issueCommentsModel.getIssueCommentList(instanceUrl, instanceToken, owner, repo, index).observe(this, new Observer<List<IssueComments>>() {
+            @Override
+            public void onChanged(@Nullable List<IssueComments> issueCommentsMain) {
+                adapter = new IssueCommentsAdapter(getApplicationContext(), issueCommentsMain);
+                mRecyclerView.setAdapter(adapter);
+            }
+        });
+
+    }
+
+    private void getSingleIssue(String instanceUrl, String token, String repoOwner, String repoName, int issueIndex) {
+
+        Call<Issues> call = RetrofitClient
+                .getInstance(instanceUrl)
+                .getApiInterface()
+                .getIssueByIndex(token, repoOwner, repoName, issueIndex);
+
+        call.enqueue(new Callback<Issues>() {
+
+            @Override
+            public void onResponse(@NonNull Call<Issues> call, @NonNull Response<Issues> response) {
+
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+
+                        TinyDB tinyDb = new TinyDB(getApplicationContext());
+                        final String locale = tinyDb.getString("locale");
+                        final String timeFormat = tinyDb.getString("dateFormat");
+
+                        final SpannableConfiguration mdConfiguration = SpannableConfiguration.builder(getApplicationContext())
+                                .asyncDrawableLoader(AsyncDrawableLoader.create())
+                                .build();
+
+                        Issues singleIssue = response.body();
+                        assert singleIssue != null;
+                        Picasso.get().load(singleIssue.getUser().getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(assigneeAvatar);
+                        issueTitle.setText(getString(R.string.issueTitleWithId, singleIssue.getNumber(), singleIssue.getTitle()));
+                        String cleanIssueDescription = singleIssue.getBody().trim();
+                        final CharSequence bodyWithMD = Markwon.markdown(mdConfiguration, EmojiParser.parseToUnicode(cleanIssueDescription));
+                        issueDescription.setText(UserMentions.UserMentionsFunc(getApplicationContext(), bodyWithMD, cleanIssueDescription));
+
+                        RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams)issueDescription.getLayoutParams();
+
+                        LinearLayout assigneesLayout = findViewById(R.id.frameAssignees);
+                        LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(80, 80);
+                        params1.setMargins(15, 0, 0, 0);
+
+                        if(singleIssue.getAssignees() != null) {
+                            for (int i = 0; i < singleIssue.getAssignees().size(); i++) {
+
+                                ImageView assigneesView = new ImageView(getApplicationContext());
+
+                                Picasso.get().load(singleIssue.getAssignees().get(i).getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(80, 80).centerCrop().into(assigneesView);
+
+                                assigneesLayout.addView(assigneesView);
+                                assigneesView.setLayoutParams(params1);
+                                if (!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
+                                    assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), getApplicationContext()));
+                                } else {
+                                    assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), getApplicationContext()));
+                                }
+
+                            }
+                        }
+                        else {
+                            assigneesScrollView.setVisibility(View.GONE);
+                        }
+
+                        LinearLayout labelsLayout = findViewById(R.id.frameLabels);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(0, 0, 15, 0);
+
+                        if(singleIssue.getLabels() != null) {
+                            int width = 33;
+                            for (int i = 0; i < singleIssue.getLabels().size(); i++) {
+
+                                String labelColor = singleIssue.getLabels().get(i).getColor();
+                                String labelName = singleIssue.getLabels().get(i).getName();
+                                int color = Color.parseColor("#" + labelColor);
+
+                                ImageView labelsView = new ImageView(getApplicationContext());
+                                labelsLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                labelsLayout.setGravity(Gravity.START | Gravity.TOP);
+                                labelsView.setLayoutParams(params);
+
+                                TextDrawable drawable = TextDrawable.builder()
+                                        .beginConfig()
+                                        .useFont(Typeface.DEFAULT)
+                                        .textColor(new ColorInverter().getContrastColor(color))
+                                        .fontSize(36)
+                                        .width((width * labelName.length()) - ((width / 4) * labelName.length()))
+                                        .height(60)
+                                        .endConfig()
+                                        .buildRoundRect(labelName, color, 8);
+                                labelsView.setImageDrawable(drawable);
+
+                                labelsLayout.addView(labelsView);
+
+                            }
+                        }
+                        else {
+                            labelsScrollView.setVisibility(View.GONE);
+                        }
+
+                        if(singleIssue.getDue_date() != null) {
+
+                            if (timeFormat.equals("normal") || timeFormat.equals("pretty")) {
+                                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
+                                String dueDate = formatter.format(singleIssue.getDue_date());
+                                issueDueDate.setText(getString(R.string.dueDate, dueDate));
+                                issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), getApplicationContext()));
+                            } else if (timeFormat.equals("normal1")) {
+                                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
+                                String dueDate = formatter.format(singleIssue.getDue_date());
+                                issueDueDate.setText(getString(R.string.dueDate, dueDate));
+                            }
+
+                        }
+                        else {
+
+                            issueDueDate.setVisibility(View.GONE);
+                        }
+
+                        String edited;
+
+                        if(!singleIssue.getUpdated_at().equals(singleIssue.getCreated_at())) {
+                            edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
+                            issueModified.setVisibility(View.VISIBLE);
+                            issueModified.setText(edited);
+                            issueModified.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getUpdated_at()), ctx));
+                        }
+                        else {
+                            issueModified.setVisibility(View.INVISIBLE);
+                        }
+
+                        if((singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) && singleIssue.getAssignees() != null) {
+                            paramsDesc.setMargins(0, 35, 0, 0);
+                            issueDescription.setLayoutParams(paramsDesc);
+                        }
+                        else if(singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) {
+                            paramsDesc.setMargins(0, 55, 0, 0);
+                            issueDescription.setLayoutParams(paramsDesc);
+                        }
+                        else if(singleIssue.getAssignees() == null) {
+                            paramsDesc.setMargins(0, 35, 0, 0);
+                            issueDescription.setLayoutParams(paramsDesc);
+                        }
+                        else {
+                            paramsDesc.setMargins(0, 15, 0, 0);
+                            issueDescription.setLayoutParams(paramsDesc);
+                        }
+
+                        switch (timeFormat) {
+                            case "pretty": {
+                                PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+                                String createdTime = prettyTime.format(singleIssue.getCreated_at());
+                                issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), getApplicationContext()));
+                                break;
+                            }
+                            case "normal": {
+                                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+                                String createdTime = formatter.format(singleIssue.getCreated_at());
+                                issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                break;
+                            }
+                            case "normal1": {
+                                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+                                String createdTime = formatter.format(singleIssue.getCreated_at());
+                                issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                break;
+                            }
+                        }
+
+                        if(singleIssue.getMilestone() != null) {
+                            issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
+                        }
+                        else {
+                            issueMilestone.setVisibility(View.GONE);
+                        }
+
+                        if (!singleIssue.getUser().getFull_name().equals("")) {
+                            assigneeAvatar.setOnClickListener(new ClickListener(getApplicationContext().getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), getApplicationContext()));
+                        } else {
+                            assigneeAvatar.setOnClickListener(new ClickListener(getApplicationContext().getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), getApplicationContext()));
+                        }
+
+                    }
+
+                }
+                else if(response.code() == 401) {
+
+                    AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
+                            getResources().getString(R.string.alertDialogTokenRevokedMessage),
+                            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+                            getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Issues> call, @NonNull Throwable t) {
+                Log.e("onFailure", t.toString());
+            }
+        });
+
+    }
+
+    private void initCloseListener() {
+        onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        };
+    }
+
+}

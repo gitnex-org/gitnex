@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- menu items -->
+    <string name="navMyRepos">Мои репозитории</string>
+    <string name="navStarredRepos">Избранные репозитории</string>
+    <string name="navRepos">Репозитории</string>
+    <string name="navProfile">Профиль</string>
+    <string name="navSettings">Настройки</string>
+    <string name="navOrgs">Организации</string>
+    <string name="navAbout">О программе</string>
+    <string name="navLogout">Выход</string>
+    <!-- menu items -->
+
+    <!-- page titles -->
+    <string name="pageTitleAbout">О программе</string>
+    <string name="pageTitleHome">Главная</string>
+    <string name="pageTitleMyRepos">Мои репозитории</string>
+    <string name="pageTitleRepositories">Репозитории</string>
+    <string name="pageTitleProfile">Профиль</string>
+    <string name="pageTitleNewRepo">Создать репозиторий</string>
+    <string name="pageTitleOrganizations">Организации</string>
+    <string name="pageTitleIssues">Задачи</string>
+    <string name="pageTitleSettings">Настройки</string>
+    <string name="pageTitleCreateOrganization">Создать организацию</string>
+    <string name="pageTitleCreateMilestone">Создать веху</string>
+    <string name="pageTitleCreateNewIssue">Создать задачу</string>
+    <string name="pageTitleCreateLabel">Создать метку</string>
+    <string name="pageTitleCredits">Кредиты</string>
+    <string name="pageTitleLabelUpdate">Обновить метку</string>
+    <string name="pageTitleSponsors">Спонсоры</string>
+    <string name="pageTitleStarredRepos">Избранные репозитории</string>
+    <string name="pageTitleCreateTeam">Создать команду</string>
+    <string name="pageTitleAddEmail">Add Email Address</string>
+    <!-- page titles -->
+
+    <string name="appVersion">Version\u0020:\u0020</string>
+    <string name="appBuild">Build No.\u0020:\u0020</string>
+
+    <string name="repoName">Демо репозиторий</string>
+    <string name="repoFullname">Репозиторий с организацией</string>
+    <string name="repoDescription">Демо описание</string>
+    <string name="noData">Нет найденных репозиториев!</string>
+
+    <string name="orgName">Демо организации</string>
+    <string name="orgDescription">Демо описание</string>
+    <string name="noDataOrg">Нет найденных организаций!</string>
+
+    <string name="newCreateButtonCopy">Создать</string>
+    <string name="newUpdateButtonCopy">Обновить</string>
+
+    <string name="newRepoTintCopy">Имя репозитория</string>
+    <string name="newRepoDescTintCopy">Описание репозитория</string>
+    <string name="newRepoPrivateCopy">Приватный</string>
+    <string name="newRepoDescInfo">Макс. 255 символов</string>
+    <string name="newRepoOwner">Владелец</string>
+
+    <string name="newOrgTintCopy">Имя организации</string>
+    <string name="newOrgDescTintCopy">Описание организации</string>
+    <string name="newOrgDescInfo">Макс. 255 символов</string>
+
+    <string name="userName">Логин</string>
+    <string name="passWord">Пароль</string>
+    <string name="btnLogin">Войти</string>
+    <string name="instanceUrl">Адрес сервера</string>
+    <string name="navigation_drawer_open">Открыть навигацию</string>
+    <string name="navigation_drawer_close">Закрыть навигацию</string>
+    <string name="logo">Войти в Gitea</string>
+    <string name="urlInfoTooltip">1- Выберите протокол(https or http)\n2- Введите адрес Gitea например: try.gitea.io</string>
+    <string name="loginFailed">Неверный логин/пароль</string>
+    <string name="protocolDelimiter">://</string>
+    <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете в локальной сети.</string>
+    <string name="malformedJson">Был получен неверный ответ от JSON. Нет успешного ответа сервера.</string>
+
+    <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
+    <string name="emptyFields">Все поля обязательны для заполнения</string>
+
+    <string name="repoNameErrorEmpty">Название репозитория пустое</string>
+    <string name="repoNameErrorInvalid">Неверное название репозитория, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="repoDescError">Описание репозитория превышает максимум 255 символов</string>
+    <string name="repoCreated">Репозиторий успешно создан!</string>
+    <string name="repoCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
+
+    <string name="orgNameErrorEmpty">Название организации пустое</string>
+    <string name="orgNameErrorInvalid">Неверное название организации, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="orgDescError">Описание организации превышает максимум 255 символов</string>
+    <string name="orgCreated">Организация успешно создана!</string>
+    <string name="orgCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
+
+    <string name="processingText">Обработка</string>
+    <string name="search">Поиск</string>
+    <string name="wip">Работа в процессе</string>
+
+    <string name="close">Закрыть</string>
+    <string name="addNewContent">Добавить</string>
+    <string name="orgContentAvatar">Org</string>
+    <string name="repoContentAvatar">Repo</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="repoStars">12345</string>
+    <string name="repoWatchers">98324</string>
+    <string name="repoIssues">54321</string>
+    <string name="removeContent">Remove</string>
+
+    <string name="genericApiStatusError">Сервер вернул ошибку. Code\u0020</string>
+    <string name="title_activity_repo_detail">Активность</string>
+    <string name="tab_text_info">Информация</string>
+    <string name="tab_text_issues">Задачи</string>
+    <string name="tab_text_ml">Вехи</string>
+    <string name="tab_text_releases">Релизы</string>
+    <string name="tab_text_branches">Ветки</string>
+    <string name="tab_text_labels">Метки</string>
+    <string name="action_settings">Настройки</string>
+    <string name="tab_text_collaborators">Сотрудники</string>
+
+    <string name="noDataIssueTab">Нет найденны задач!</string>
+
+    <string name="infoTabRepoName1">Репозиторий</string>
+    <string name="infoTabRepoOwner1">Владелец</string>
+    <string name="infoTabRepoDesc">Описание</string>
+    <string name="infoTabRepoWebsite">Сайт</string>
+    <string name="infoTabRepoSize">Размер</string>
+    <string name="infoTabRepoDefaultBranch">Ветка по умолчанию</string>
+    <string name="infoTabRepoSshUrl">SSH/URL</string>
+    <string name="infoTabRepoCloneUrl">Адрес клонирования</string>
+    <string name="infoTabRepoRepoUrl">Адрес репозитория</string>
+    <string name="infoTabRepoForksCount">Кол-во форков</string>
+    <string name="infoTabRepoCreatedAt">Создан</string>
+    <string name="infoTabRepoUpdatedAt">Последнее обновление</string>
+    <string name="infoTabRepoDummyTime">2018&#8211;10&#8211;30 08:25:25</string>
+    <string name="infoTabRepoBlank">&#8230;</string>
+    <string name="infoTabRepoZero">0</string>
+    <string name="infoTabRepoDefaultBranchText">master</string>
+
+    <string name="timeAtText">at</string>
+    <string name="hash">#</string>
+    <string name="createdText">Создано\u0020</string>
+    <string name="dueDateText">Дата исполнения</string>
+    <string name="issueStatusTextOpen">Статус : открыто</string>
+    <string name="issueStatusOpen">открыто</string>
+    <string name="issueStatusTextClosed">Статус : закрыто</string>
+    <string name="issueStatusClosed">закрыто</string>
+    <string name="issueCreator">Создатель :\u0020</string>
+    <string name="issueAssigneesText">Назначенные</string>
+    <string name="issueTypeIssue">Тип : задача</string>
+    <string name="issueTypePullRequest">Тип : запрос извлечения</string>
+    <string name="issueCommenter">Комментатор :\u0020</string>
+    <string name="issueTitleWithId">#%1$d %2$s</string>
+    <string name="issueMilestone">Вехи %1$s</string>
+    <string name="dueDate">Исполнение %1$s</string>
+    <string name="createdTime">Создано %1$s</string>
+    <string name="assignedTo">Назначено : %1$s</string>
+    <string name="commentButtonText">Комментарий</string>
+    <string name="commentEmptyError">Введите свой комментарий!</string>
+    <string name="commentSuccess">Комментарий отправлен</string>
+    <string name="commentError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
+
+    <string name="generalImgContentText">Аватар</string>
+    <string name="generalPageTitle">GitNex</string>
+
+    <string name="noDataMilestonesTab">Вехи не найдены!</string>
+
+    <string name="commitAuthor">Автор коммита : %1$s</string>
+    <string name="commitHash">Хеш коммита \n%1$s%2$s</string>
+
+    <string name="releaseTitle">Заголовок релиза</string>
+    <string name="releaseDescription">Описание релиза</string>
+    <string name="releaseDownloadText">Скачать</string>
+    <string name="releaseType">Тип релиза</string>
+    <string name="releaseZip">Релиз в zip</string>
+    <string name="releaseTar">Релиз в tar</string>
+    <string name="releaseTypePre">Предварительный</string>
+    <string name="releaseTypeStable">Стабильный</string>
+    <string name="noDataReleasesTab">Релизы не найдены!</string>
+
+    <string name="collaboratorsNameToast">Сотрудники : %1$s</string>
+    <string name="noDataCollaboratorTab">Сотрудники не найдены!</string>
+
+    <string name="editText">Изменить</string>
+
+    <string name="newMilestoneTitle">Заголовок</string>
+    <string name="newMilestoneDescription">Описание</string>
+    <string name="newMilestoneDueDate">Дата исполнения</string>
+    <string name="setDueDate">%1$d-%2$d-%3$d</string>
+    <string name="milestoneNameErrorEmpty">Заголовок вехи пустой</string>
+    <string name="milestoneNameErrorInvalid">Заголовок вехи неверный. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="milestoneDescError">Описание вехи превышает 255 символов</string>
+    <string name="milestoneCreated">Веха создана успешно!</string>
+    <string name="milestoneCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
+    <string name="milestoneDateEmpty">Проверьте дату вехи!</string>
+    <string name="milestoneOpenIssues">Открыть задачу : %1$d</string>
+    <string name="milestoneClosedIssues">Закрыть задачу : %1$d</string>
+
+    <string name="newIssueSelectAssigneesListTitle">Выбрать сотрудников</string>
+    <string name="newIssueSelectLabelsListTitle">Выбрать метки</string>
+    <string name="newIssueDialogDone">Готово</string>
+    <string name="newIssueDialogCancel">Закрыть</string>
+    <string name="newIssueTitle">Заголовок</string>
+    <string name="newIssueAssigneesListTitle">Сотрудники</string>
+    <string name="newIssueDescriptionTitle">Описание</string>
+    <string name="newIssueDueDateTitle">Дата исполнения</string>
+    <string name="newIssueMilestoneTitle">Вехи</string>
+    <string name="newIssueLabelsTitle">Метки</string>
+    <string name="spinnerMilestoneText">%1$s [%2$s]</string>
+    <string name="dialogAssignessText">%1$s - @%2$s</string>
+    <string name="issueTitleEmpty">Заголовок задачи пустой!</string>
+    <string name="issueDescriptionEmpty">Описание задачи пусток!</string>
+    <string name="issueCreated">Создание задачи успешно!</string>
+    <string name="issueCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
+    <string name="noAssigneesFound">Сотрудники не найдены!</string>
+    <string name="noLabelsFound">Меитки не найдены!</string>
+
+    <!-- settings -->
+    <string name="settingsLanguageHeaderText">Перевод</string>
+    <string name="settingsDateTimeHeaderText">Дата и время</string>
+    <string name="settingsSave">Сохранено.</string>
+    <string name="settingsLanguageSelectorHeader">Язык</string>
+    <string name="settingsLanguageSelectedHeaderDefault">Английский</string>
+    <string name="settingsAppearanceHeader">Интерфейс</string>
+    <string name="settingsDateTimeHeaderDefault">Приятный</string>
+    <string name="settingsLanguageSelectorDialogTitle">Выбор языка</string>
+    <string name="settingsTimeSelectorDialogTitle">Выбор формата времени</string>
+    <string name="settingsIssueBadgeHeaderText">Значки задач</string>
+    <string name="settingsHelpTranslateText">Help us translate it to your language</string>
+    <!-- settings -->
+
+    <string name="noMoreData">Больше данных нет.</string>
+
+    <string name="createLabel">Создание метки</string>
+    <string name="menuTitleText">Меню репозитория</string>
+    <string name="labelName">Название метки</string>
+    <string name="labelColor">Цвет метки</string>
+    <string name="labelEmptyError">Название метки пустое</string>
+    <string name="labelNameError">Название метки неверное.</string>
+    <string name="labelCreated">Метка создана.</string>
+    <string name="labelGeneralError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
+    <string name="labelUpdated">Метка обновлена.</string>
+
+    <string name="noDataLabelsTab">Нет найденных меток!</string>
+    <string name="labelMenuContentDesc">Описание</string>
+    <string name="labelMenuEdit">Редактировать</string>
+    <string name="labelMenuDelete">Удалить</string>
+    <string name="labelDeleteText">Метка удалена!</string>
+    <string name="labelDeleteErrorText">Что-то пошло не так. Пожалуйста, попытайтесь еще раз!</string>
+
+    <string name="noDataBranchesTab">Нет найденных веток!</string>
+
+    <string name="creditsLogoDesign">Дизайн</string>
+
+    <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
+    <string name="alertDialogTokenRevokedMessage">Похоже, что токен доступа отозван, или вам не разрешено просматривать это содержимое. В случае отзыва токена, пожалуйста, выйдите из системы и войдите снова.</string>
+    <string name="alertDialogTokenRevokedCopyNegativeButton">Закрыть</string>
+    <string name="alertDialogTokenRevokedCopyPositiveButton">Выход</string>
+
+    <string name="labelDeleteTitle">Удалить\u0020</string>
+    <string name="labelDeleteMessage">Вы действительно хотите удалить эту метку?</string>
+    <string name="labelDeletePositiveButton">Да</string>
+    <string name="labelDeleteNegativeButton">Отмена</string>
+
+    <!-- org tabbed layout str -->
+    <string name="title_activity_org_detail">Активность организации</string>
+    <string name="orgTabRepos">Репозитории</string>
+    <string name="orgTabTeams">Команды</string>
+    <string name="orgTabMembers">Члены</string>
+    <string name="orgCreateTeam">Создать команду</string>
+    <string name="noDataTeams">Команды не найдены!</string>
+    <string name="teamTitle">Имя команды</string>
+    <string name="teamDescription">Описание команды</string>
+    <string name="teamPermission">Права : %1$s</string>
+    <string name="noDataMembers">Члены не найдены!</string>
+    <string name="orgMember">Члены организации</string>
+    <string name="orgTeamMembers">Члены команд организации</string>
+    <!-- org tabbed layout str -->
+
+    <!-- create team -->
+    <string name="newTeamTitle">Имя команды</string>
+    <string name="newTeamDesc">Описание</string>
+    <string name="newTeamPermission">Права</string>
+    <string name="newTeamAccessControls">Контроль доступа</string>
+    <string name="newTeamPermissionRead">Члены могут просматривать и клонировать репозитории команд.</string>
+    <string name="newTeamPermissionWrite">Члены могут читать и изменять в репозиториях команды.</string>
+    <string name="newTeamPermissionAdmin">Члены могут читать и изменять в репозиториях команды и добавлять к ним других членов.</string>
+    <string name="teamNameEmpty">Укажите имя команды.</string>
+    <string name="teamNameError">Название команды должно содержать только буквы, цифры, тире (-), подчеркивание (_) и точку (.)</string>
+    <string name="teamPermissionEmpty">Укажите права.</string>
+    <string name="teamDescError">В описании команды есть недопустимые символы.</string>
+    <string name="teamDescLimit">В описании команды более 100 символов.</string>
+    <string name="teamCreated">Команда создана успешно.</string>
+    <string name="teamCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
+    <!-- create team -->
+
+    <!-- edit comment -->
+    <string name="editCommentTitle">Edit Comment</string>
+    <string name="editCommentButtonText">Edit</string>
+    <string name="editCommentUpdatedText">Comment updated</string>
+    <!-- edit comment -->
+
+    <!-- add collaborator -->
+    <string name="addCollaboratorTitle">Add Collaborator</string>
+    <string name="addCollaboratorSearchHint">Search users</string>
+    <string name="addCollaboratorViewUserDesc">Username</string>
+    <string name="removeCollaboratorTitle">Remove\u0020</string>
+    <string name="removeCollaboratorMessage">Do you want to remove this user from the repository?</string>
+    <string name="removeCollaboratorToastText">User removed from the repository.</string>
+    <string name="addCollaboratorToastText">User added to the repository.</string>
+    <!-- add collaborator -->
+
+    <!-- profile section -->
+    <string name="profileTabFollowers">Followers</string>
+    <string name="profileTabFollowing">Following</string>
+    <string name="profileCreateNewEmailAddress">Add Email Address</string>
+    <string name="profileEmailButton">Save</string>
+    <string name="profileEmailTitle">Email Address</string>
+    <string name="emailAddedText">New email added successfully.</string>
+    <string name="emailErrorEmpty">Email address is empty.</string>
+    <string name="emailErrorInvalid">Email address is not valid.</string>
+    <string name="emailErrorInUse">Email address is already in use.</string>
+    <string name="emailTypeText">Primary</string>
+    <string name="profileTabEmails">Emails</string>
+    <!-- profile section -->
+
+    <!-- generic copy -->
+    <string name="okButton">OK</string>
+    <string name="doneButton">Готово</string>
+    <string name="cancelButton">Закрыть</string>
+    <string name="genericError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
+    <string name="apiNotFound">Для этого запроса требуется более высокая версия Gitea, чем установленная. Пожалуйста, обновите свой экземпляр до последней версии Gitea.</string>
+    <string name="noDataFound">No data found</string>
+    <string name="addButton">Add</string>
+    <string name="removeButton">Remove</string>
+    <string name="authorizeError">You are not authorized to perform this action.</string>
+    <string name="menuContentDesc">Menu</string>
+    <string name="menuEditText">Edit</string>
+    <string name="menuDeleteText">Delete</string>
+    <string name="modifiedText">edited</string>
+    <!-- generic copy -->
+
+</resources>

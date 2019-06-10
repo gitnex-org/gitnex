@@ -1,0 +1,114 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/pageTitleCreateLabel"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:paddingBottom="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/labelName"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            />
+
+        <EditText
+            android:id="@+id/labelName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:textSize="16sp"
+            tools:ignore="Autofill"
+            android:inputType="textCapSentences|text"
+            android:labelFor="@+id/labelName"
+            android:background="@drawable/shape_inputs"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textColorHighlight="@color/colorWhite"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/labelText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="@string/labelColor"
+                android:textColor="@color/colorWhite"
+                android:layout_weight=".95"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/colorPicker"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@color/releasePre"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/createLabelButton"
+            android:gravity="center"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/newCreateButtonCopy"
+            android:background="@drawable/shape_buttons"
+            android:textColor="@color/btnTextColor" />
+
+    </LinearLayout>
+
+</LinearLayout>
