@@ -1,0 +1,61 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@+id/translationDivider"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/tvLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:drawableStart="@drawable/ic_language"
+        android:drawablePadding="20dp"
+        android:text="@string/settingsLanguageHeaderText"
+        android:textColor="@color/colorDarkGreen"/>
+
+    <LinearLayout
+        android:id="@+id/langFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvLanguageHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/settingsLanguageSelectorHeader"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/tvLanguageSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/settingsLanguageSelectedHeaderDefault"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/helpTranslate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="4dp"
+            android:autoLink="web"
+            android:layout_marginTop="20dp"
+            android:text="@string/settingsHelpTranslateText"
+            android:textColor="@color/lightBlue"/>
+
+    </LinearLayout>
+
+</LinearLayout>

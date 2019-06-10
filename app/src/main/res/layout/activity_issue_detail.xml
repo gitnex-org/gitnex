@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/generalPageTitle"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/editIssue"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="end"
+                android:layout_gravity="end"
+                android:visibility="visible"
+                android:contentDescription="@string/editText"
+                android:src="@drawable/ic_edit" />
+
+            <ImageView
+                android:src="@drawable/ic_reply"
+                android:id="@+id/replyToIssue"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="end"
+                android:layout_gravity="end"
+                android:visibility="visible"
+                android:contentDescription="@string/addNewContent"
+                />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/relativeMainLayoutFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/AppTheme">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scrollViewComments"
+                android:fillViewport="true">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/relativeLayoutFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:theme="@style/AppTheme">
+
+                    <ImageView
+                        android:id="@+id/assigneeAvatar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@string/generalImgContentText" />
+
+                    <TextView
+                        android:id="@+id/issueTitle"
+                        android:layout_toEndOf="@+id/assigneeAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/msdueFrame"
+                        android:layout_toEndOf="@+id/assigneeAvatar"
+                        android:layout_below="@+id/issueTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp" >
+
+                        <TextView
+                            android:id="@+id/issueDueDate"
+                            android:gravity="start"
+                            android:layout_alignParentStart="true"
+                            android:layout_gravity="start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_toEndOf="@+id/issueDueDate"
+                            android:id="@+id/issueMilestone"
+                            android:gravity="end"
+                            android:layout_gravity="end"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="14sp" />
+
+                    </RelativeLayout>
+
+                    <HorizontalScrollView
+                        android:layout_below="@+id/msdueFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/assigneesScrollView"
+                        android:layout_alignParentEnd="false"
+                        android:foregroundGravity="right"
+                        android:scrollbarThumbHorizontal="@android:color/transparent"
+                        android:fillViewport="true">
+
+                        <LinearLayout
+                            android:id="@+id/frameAssignees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="end"
+                            android:gravity="end"
+                            android:layout_marginTop="10dp">
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <TextView
+                        android:id="@+id/issueDescription"
+                        android:layout_below="@+id/assigneesScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp" />
+
+                    <HorizontalScrollView
+                        android:layout_below="@+id/issueDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/labelsScrollView"
+                        android:layout_alignParentEnd="false"
+                        android:foregroundGravity="right"
+                        android:scrollbarThumbHorizontal="@android:color/transparent"
+                        android:fillViewport="true">
+
+                        <LinearLayout
+                            android:id="@+id/frameLabels"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/issueTimeFrame"
+                        android:layout_below="@+id/labelsScrollView"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/issueCreatedTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text="@string/createdText"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/issueModified"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:layout_toEndOf="@+id/issueCreatedTime"
+                            android:textSize="12sp"
+                            android:text="@string/modifiedText" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_below="@id/issueTimeFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:id="@+id/divider"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/divider" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_below="@+id/divider"
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorPrimary"
+                        android:padding="4dp"
+                        android:scrollbars="vertical"
+                        />
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
