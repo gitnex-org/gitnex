@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/nav_main">
+        <item android:id="@+id/nav_home"
+            android:icon="@drawable/ic_my_repositories"
+            android:title="@string/navMyRepos" />
+        <item android:id="@+id/nav_starred_repos"
+            android:icon="@drawable/ic_star"
+            android:title="@string/navStarredRepos" />
+        <item android:id="@+id/nav_organizations"
+            android:icon="@drawable/ic_organizations"
+            android:title="@string/navOrgs" />
+        <item android:id="@+id/nav_repositories"
+            android:icon="@drawable/ic_repos"
+            android:title="@string/navRepos" />
+        <item android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_person_24dp"
+            android:title="@string/navProfile" />
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/nav_menu_settings">
+        <item android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_24dp"
+            android:title="@string/navSettings" />
+        <item android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info_outline_24dp"
+            android:title="@string/navAbout" />
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/nav_extra">
+        <item android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_exit_24dp"
+            android:title="@string/navLogout" />
+    </group>
+
+</menu>

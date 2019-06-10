@@ -1,0 +1,13 @@
+- New: Organization overview
+- New: Code block colors - change in settings
+- New: Home screen of your choice - change in settings
+- New: Close and reopen an issue
+- New: Create new release
+- New: Mention collaborators in issues, comments
+- New: 2FA OTP feature. Check the Troubleshoot wiki page for usage
+- Enhancement: Updated release tab layout
+- Enhancement: Added release tag in releases
+- Enhancement: German and Russian translation updates
+
+For more, check the release notes.
+https://gitlab.com/mmarif4u/gitnex/releases

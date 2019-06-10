@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:columnWidth="80dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/noDataMembers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:text="@string/noDataMembers"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+</LinearLayout>
