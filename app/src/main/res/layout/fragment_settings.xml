@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/backgroundColor" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <include
+                android:id="@+id/timeLayout"
+                layout="@layout/layout_settings_appearance"/>
+
+            <View
+                android:id="@+id/translationDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@id/timeLayout"
+                android:background="@color/divider"
+                />
+
+            <include
+                android:id="@+id/langLayout"
+                layout="@layout/layout_settings_languages"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

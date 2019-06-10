@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:orientation="vertical"
+        android:background="@color/backgroundColor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:padding="15dp"
+            android:orientation="vertical"
+            android:id="@+id/repoInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/repoMetaFrameHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="48dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/repoMetaData"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/repoMetaData"
+                    android:textSize="16sp"
+                    android:paddingTop="10dp"
+                    android:layout_weight="0.9"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:textColor="@color/white"/>
+
+                <ImageView
+                    android:id="@+id/repoMetaDataExpandCollapse"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center_vertical|end"
+                    android:contentDescription="@string/issueDescriptionEmpty"
+                    app:srcCompat="@drawable/ic_arrow_down"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/repoMetaFrame"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoName1"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/repoNameInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoBlank"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoOwner1"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoOwnerInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoBlank"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoDesc"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoDescriptionInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoBlank"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoWebsite"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoWebsiteInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoBlank"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:autoLink="web"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoSize"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoSizeInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoZero"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoDefaultBranch"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoDefaultBranchInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoDefaultBranchText"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoSshUrl"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoSshUrlInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoBlank"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:autoLink="web"
+                    android:textColorLink="@color/lightBlue"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoCloneUrl"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoCloneUrlInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoBlank"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:autoLink="web"
+                    android:textColorLink="@color/lightBlue"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoRepoUrl"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoRepoUrlInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoBlank"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:autoLink="web"
+                    android:textColorLink="@color/lightBlue"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoForksCount"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoForksCountInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoZero"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorWhite"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoCreatedAt"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/repoCreatedAtInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/infoTabRepoDummyTime"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorWhite"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fileContentsFrameHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="48dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/repoFilename"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/defaultFilenameText"
+                    android:textSize="16sp"
+                    android:paddingTop="10dp"
+                    android:layout_weight="0.9"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:autoLink="web"
+                    android:textColorLink="@color/lightBlue"
+                    android:textColor="@color/white"/>
+
+                <ImageView
+                    android:id="@+id/repoFilenameExpandCollapse"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center_vertical|end"
+                    android:contentDescription="@string/issueDescriptionEmpty"
+                    app:srcCompat="@drawable/ic_arrow_up"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fileContentsFrame"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/repoFileContents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorWhite"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/progressBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar android:id="@+id/progress_bar"
+            style="@style/Base.Widget.AppCompat.ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            xmlns:android="http://schemas.android.com/apk/res/android" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
