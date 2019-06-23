@@ -29,10 +29,11 @@ public class CreateIssue {
         this.labels = labels;
     }
 
-    public CreateIssue(String title, String body, String due_date) {
+    public CreateIssue(String title, String body, String due_date, int milestone) {
         this.title = title;
         this.body = body;
         this.due_date = due_date;
+        this.milestone = milestone;
     }
 
     private class Assignees {

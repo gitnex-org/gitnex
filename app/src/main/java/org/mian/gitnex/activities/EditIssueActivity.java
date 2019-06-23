@@ -179,6 +179,9 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
 
+        Milestones mModel = (Milestones) editIssueMilestoneSpinner.getSelectedItem();
+
+        int editIssueMilestoneId = mModel.getId();
 
         String editIssueTitleForm = editIssueTitle.getText().toString();
         String editIssueDescriptionForm = editIssueDescription.getText().toString();
@@ -213,15 +216,15 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
 
         //Log.i("editIssueDueDateForm", String.valueOf(editIssueDueDateForm));
         disableProcessButton();
-        editIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm);
+        editIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm, editIssueMilestoneId);
 
     }
 
-    private void editIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate) {
+    private void editIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate, int editIssueMilestoneId) {
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
-        CreateIssue issueData = new CreateIssue(title, description, dueDate);
+        CreateIssue issueData = new CreateIssue(title, description, dueDate, editIssueMilestoneId);
 
         Call<JsonElement> call = RetrofitClient
                 .getInstance(instanceUrl)
