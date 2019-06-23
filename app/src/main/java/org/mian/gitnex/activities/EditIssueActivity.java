@@ -8,6 +8,7 @@ import retrofit2.Response;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,10 +32,12 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.Issues;
+import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -53,6 +56,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
     private Button editIssueButton;
     private Spinner editIssueMilestoneSpinner;
 
+    List<Milestones> milestonesList = new ArrayList<>();
     private ArrayAdapter<Mention> defaultMentionAdapter;
 
     @Override
@@ -81,6 +85,9 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
 
         defaultMentionAdapter = new MentionArrayAdapter<>(this);
         loadCollaboratorsList();
+
+        editIssueMilestoneSpinner = findViewById(R.id.editIssueMilestoneSpinner);
+        editIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
         editIssueDescription.setMentionAdapter(defaultMentionAdapter);
 
@@ -172,6 +179,9 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
 
+        Milestones mModel = (Milestones) editIssueMilestoneSpinner.getSelectedItem();
+
+        int editIssueMilestoneId = mModel.getId();
 
         String editIssueTitleForm = editIssueTitle.getText().toString();
         String editIssueDescriptionForm = editIssueDescription.getText().toString();
@@ -206,15 +216,15 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
 
         //Log.i("editIssueDueDateForm", String.valueOf(editIssueDueDateForm));
         disableProcessButton();
-        editIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm);
+        editIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm, editIssueMilestoneId);
 
     }
 
-    private void editIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate) {
+    private void editIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate, int editIssueMilestoneId) {
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
-        CreateIssue issueData = new CreateIssue(title, description, dueDate);
+        CreateIssue issueData = new CreateIssue(title, description, dueDate, editIssueMilestoneId);
 
         Call<JsonElement> call = RetrofitClient
                 .getInstance(instanceUrl)
@@ -292,7 +302,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    private void getIssue(String instanceUrl, String instanceToken, String loginUid, String repoOwner, String repoName, int issueIndex) {
+    private void getIssue(final String instanceUrl, final String instanceToken, final String loginUid, final String repoOwner, final String repoName, int issueIndex) {
 
         Call<Issues> call = RetrofitClient
                 .getInstance(instanceUrl)
@@ -310,6 +320,74 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
                     editIssueTitle.setText(response.body().getTitle());
                     editIssueDescription.setText(response.body().getBody());
 
+                    int msId = 0;
+                    if(response.body().getMilestone() != null) {
+                        msId = response.body().getMilestone().getId();
+                    }
+
+                    // get milestones list
+                    if(response.body().getId() > 0) {
+
+                        Call<List<Milestones>> call_ = RetrofitClient
+                                .getInstance(instanceUrl)
+                                .getApiInterface()
+                                .getMilestones(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+
+                        final int finalMsId = msId;
+
+                        call_.enqueue(new Callback<List<Milestones>>() {
+
+                            @Override
+                            public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull retrofit2.Response<List<Milestones>> response_) {
+
+                                int finalMsId1 = 0;
+
+                                if (response_.code() == 200) {
+
+                                    List<Milestones> milestonesList_ = response_.body();
+
+                                    milestonesList.add(new Milestones(0, "No milestone"));
+                                    assert milestonesList_ != null;
+                                    if (milestonesList_.size() > 0) {
+                                        for (int i = 0; i < milestonesList_.size(); i++) {
+
+                                            Milestones data = new Milestones(
+                                                    milestonesList_.get(i).getId(),
+                                                    milestonesList_.get(i).getTitle()
+                                            );
+                                            milestonesList.add(data);
+
+                                            if(finalMsId == milestonesList_.get(i).getId()) {
+                                                finalMsId1 = i + 1;
+                                            }
+
+                                        }
+                                    }
+
+                                    ArrayAdapter<Milestones> adapter_ = new ArrayAdapter<>(getApplicationContext(),
+                                            R.layout.spinner_item, milestonesList);
+
+                                    adapter_.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                                    editIssueMilestoneSpinner.setAdapter(adapter_);
+
+                                    if(milestonesList_.size() > 0) {
+                                        editIssueMilestoneSpinner.setSelection(finalMsId1);
+                                    }
+                                    enableProcessButton();
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<List<Milestones>> call, @NonNull Throwable t) {
+                                Log.e("onFailure", t.toString());
+                            }
+                        });
+
+                    }
+                    // get milestones list
+
                     if(response.body().getDue_date() != null) {
 
                         @SuppressLint("SimpleDateFormat") DateFormat formatter = new SimpleDateFormat("yyyy-M-dd");
@@ -317,7 +395,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
                         editIssueDueDate.setText(dueDate);
 
                     }
-                    enableProcessButton();
+                    //enableProcessButton();
 
                 }
                 else if(response.code() == 401) {

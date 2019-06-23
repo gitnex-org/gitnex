@@ -74,7 +74,6 @@ import java.util.Objects;
 public class IssueDetailActivity extends AppCompatActivity {
 
     public ImageView closeActivity;
-    private View.OnClickListener onClickListener;
     private IssueCommentsAdapter adapter;
     private RecyclerView mRecyclerView;
     private ImageView assigneeAvatar;
@@ -110,7 +109,6 @@ public class IssueDetailActivity extends AppCompatActivity {
 
         final SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
 
-        closeActivity = findViewById(R.id.close);
         assigneeAvatar = findViewById(R.id.assigneeAvatar);
         issueTitle = findViewById(R.id.issueTitle);
         issueDescription = findViewById(R.id.issueDescription);
@@ -127,10 +125,7 @@ public class IssueDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -437,6 +432,7 @@ public class IssueDetailActivity extends AppCompatActivity {
                                 PrettyTime prettyTime = new PrettyTime(new Locale(locale));
                                 String createdTime = prettyTime.format(singleIssue.getCreated_at());
                                 issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                issueCreatedTime.setVisibility(View.VISIBLE);
                                 issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), getApplicationContext()));
                                 break;
                             }
@@ -444,12 +440,14 @@ public class IssueDetailActivity extends AppCompatActivity {
                                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
                                 String createdTime = formatter.format(singleIssue.getCreated_at());
                                 issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                issueCreatedTime.setVisibility(View.VISIBLE);
                                 break;
                             }
                             case "normal1": {
                                 DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
                                 String createdTime = formatter.format(singleIssue.getCreated_at());
                                 issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                issueCreatedTime.setVisibility(View.VISIBLE);
                                 break;
                             }
                         }
@@ -490,7 +488,7 @@ public class IssueDetailActivity extends AppCompatActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
