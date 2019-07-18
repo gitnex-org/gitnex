@@ -8,7 +8,7 @@
     <string name="navSettings">Einstellungen</string>
     <string name="navOrgs">Organisationen</string>
     <string name="navAbout">Über</string>
-    <string name="navRate">Rate GitNex</string>
+    <string name="navRate">Bewerte GitNex</string>
     <string name="navLogout">Ausloggen</string>
     <!-- menu items -->
 
@@ -146,7 +146,7 @@
     <string name="issueStatusTextClosed">Status: geschlossen</string>
     <string name="issueStatusClosed">schließen</string>
     <string name="issueCreator">Ersteller:\u0020</string>
-    <string name="issueAssigneesText">Zugewiesene</string>
+    <string name="issueAssigneesText">Zuständige</string>
     <string name="issueTypeIssue">Typ: Issue</string>
     <string name="issueTypePullRequest">Typ: Pull Anfrage</string>
     <string name="issueCommenter">Kommentator:\u0020</string>
@@ -226,11 +226,11 @@
     <string name="settingsTimeSelectorDialogTitle">Zeitformat auswählen</string>
     <string name="settingsIssueBadgeHeaderText">Issues Badge</string>
     <string name="settingsHelpTranslateText">Hilf uns dabei, GitNex in deine Sprache zu übersetzen.</string>
-    <string name="codeBlockHeaderText">Code Block Color</string>
-    <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
+    <string name="codeBlockHeaderText">Code Block Farbe</string>
+    <string name="settingsCodeBlockSelectorDialogTitle">Code Block Farb Auswahl</string>
     <string name="settingsHomeScreenHeaderText">Home Screen</string>
-    <string name="settingsHomeScreenSelectedText">My Repositories</string>
-    <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
+    <string name="settingsHomeScreenSelectedText">Meine Repositories</string>
+    <string name="settingshomeScreenSelectorDialogTitle">Home Screen Auswählen</string>
     <!-- settings -->
 
     <string name="noMoreData">Keine weiteren Daten verfügbar!</string>
@@ -337,9 +337,9 @@
     <string name="reOpenIssue">Issue neu öffnen</string>
     <string name="issueStateClosed">Issue geschlossen</string>
     <string name="issueStateReopened">Issue neu geöffnet</string>
-    <string name="addRemoveAssignees2">Add Assignees</string>
-    <string name="addRemoveAssignees">Add / Remove Assignees</string>
-    <string name="assigneesUpdated">Assignees updated</string>
+    <string name="addRemoveAssignees2">Füge Zuständige hinzu</string>
+    <string name="addRemoveAssignees">Zuständige Hinzufügen / Entfernen</string>
+    <string name="assigneesUpdated">Zuständoge aktualisiert</string>
     <!-- single issue section -->
 
     <!-- multi select dialog -->
@@ -357,7 +357,7 @@
 
     <!-- admin -->
     <string name="adminCreateNewUser">Neuen Benutzer erstellen</string>
-    <string name="adminUsers">Users</string>
+    <string name="adminUsers">Benutzer</string>
     <string name="userRoleAdmin">Admin</string>
     <!-- admin -->
 
@@ -370,38 +370,38 @@
     <string name="userInvalidUserName">Ungültiger Benutzername</string>
     <string name="userInvalidEmail">Ungültige E-Mail</string>
     <string name="userCreatedText">Neuer Benutzer erfolgreich erstellt</string>
-    <string name="userExistsError">User already exists</string>
+    <string name="userExistsError">Benutzer existiert bereits</string>
     <!-- create user -->
 
     <!-- edit issue -->
-    <string name="editIssueNavHeader">Edit Issue #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated.</string>
+    <string name="editIssueNavHeader">Bearbeite Issue #%1$s</string>
+    <string name="editIssueSuccessMessage">Issue aktualisiert.</string>
     <!-- edit issue -->
 
     <!-- release -->
-    <string name="createRelease">Create Release</string>
-    <string name="releaseTagNameText">Tag Name</string>
-    <string name="releaseTitleText">Title</string>
-    <string name="releaseContentText">Content</string>
-    <string name="releaseTypeText">Mark as Pre-Release</string>
-    <string name="releaseBranchText">Select Branch</string>
-    <string name="releaseDraftText">Draft</string>
-    <string name="tagNameErrorEmpty">Tag name is empty</string>
-    <string name="titleErrorEmpty">Title is empty</string>
-    <string name="releaseCreatedText">New release created</string>
+    <string name="createRelease">Release Erstellen</string>
+    <string name="releaseTagNameText">Tag</string>
+    <string name="releaseTitleText">Titel</string>
+    <string name="releaseContentText">Inhalt</string>
+    <string name="releaseTypeText">Als Pre-Release markieren</string>
+    <string name="releaseBranchText">Branch auswählen</string>
+    <string name="releaseDraftText">Entwurf</string>
+    <string name="tagNameErrorEmpty">Der Tag ist leer</string>
+    <string name="titleErrorEmpty">Der Titel ist leer</string>
+    <string name="releaseCreatedText">Neuer release erstellt</string>
     <!-- release -->
 
-    <string name="loginOTPError">Enter OTP code</string>
-    <string name="loginOTPTypeError">OTP code should be numbers.</string>
+    <string name="loginOTPError">Bitte gib den OTP code ein</string>
+    <string name="loginOTPTypeError">Der OTP code muss aus Zahlen bestehen.</string>
     <string name="loginOTP">OTP Code (Optional)</string>
-    <string name="otpMessage">Enter the otp code if 2FA is enabled</string>
+    <string name="otpMessage">Gebe den otp code ein wenn 2FA eingeschaltet ist</string>
 
     <!-- generic copy -->
     <string name="okButton">OK</string>
-    <string name="doneButton">Done</string>
+    <string name="doneButton">Fertig</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="genericError">Etwas ist schief gelaufen. Bitte versuche es noch ein mal</string>
-    <string name="apiNotFound">Diese Anfrage erfordert Gitea 1.7 oder höher!</string>
+    <string name="apiNotFound">Diese Anfrage erfordert Gitea 1.7 oder höher</string>
     <string name="noDataFound">Keine Daten gefunden</string>
     <string name="addButton">Hinzufügen</string>
     <string name="removeButton">Entfernen</string>
@@ -412,9 +412,9 @@
     <string name="modifiedText">Bearbeitet</string>
     <string name="saveButton">Speichern</string>
     <string name="nameText">Name</string>
-    <string name="descriptionText">Description</string>
+    <string name="descriptionText">Beschreibung</string>
     <string name="websiteText">Website</string>
-    <string name="locationText">Location</string>
+    <string name="locationText">Standort</string>
     <!-- generic copy -->
 
 </resources>
