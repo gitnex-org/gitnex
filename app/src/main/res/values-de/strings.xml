@@ -312,6 +312,7 @@
     <string name="removeCollaboratorMessage">Möchtest du den Nutzer wirklich von dieser Repository entfernen?</string>
     <string name="removeCollaboratorToastText">Benuter von der Repository entfernt.</string>
     <string name="addCollaboratorToastText">Benutzer zu der Repository hinzugefügt.</string>
+    <string name="openWebRepo">Öfne Repository mit einem Browser.</string>
     <!-- add collaborator -->
 
     <!-- profile section -->
