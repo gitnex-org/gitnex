@@ -87,10 +87,10 @@
 
     <string name="orgNameErrorEmpty">Organisationsname ist leer</string>
     <string name="orgNameErrorInvalid">Organisationsname ist nicht gültig, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
-    <string name="orgDescError"> Die Organisationsbeschreibung überschreitet die maximale Anzahl von 255 Zeichen</string>
+    <string name="orgDescError">Organisationsbeschreibung überschreitet maximale Anzahl von 255 Zeichen</string>
     <string name="orgCreated">Organisation erfolgreich erstellt!</string>
     <string name="orgCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
-    <string name="orgExistsError">Organization already exists</string>
+    <string name="orgExistsError">Organisation existiert bereits</string>
 
     <string name="processingText">wird bearbeitet</string>
     <string name="search">Suche</string>
