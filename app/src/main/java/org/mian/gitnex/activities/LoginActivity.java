@@ -194,16 +194,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             instanceHost = instanceUrl;
         }
 
+        String instanceUrlWithProtocol;
         if(protocol.toLowerCase().equals("https")) {
             instanceUrl = "https://" + instanceHost + "/api/v1/";
+            instanceUrlWithProtocol = "https://" + instanceHost;
         }
         else {
             instanceUrl = "http://" + instanceHost + "/api/v1/";
+            instanceUrlWithProtocol = "https://" + instanceHost;
         }
 
         tinyDb.putString("instanceUrlRaw", instanceHost);
         tinyDb.putString("loginUid", loginUid);
         tinyDb.putString("instanceUrl", instanceUrl);
+        tinyDb.putString("instanceUrlWithProtocol", instanceUrlWithProtocol);
 
         if(connToInternet) {
 
