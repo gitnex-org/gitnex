@@ -35,6 +35,7 @@ import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.util.Objects;
+import android.net.Uri;
 
 /**
  * Author M M Arif
@@ -152,6 +153,17 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
                 break;
             case "createRelease":
                 startActivity(new Intent(RepoDetailActivity.this, CreateReleaseActivity.class));
+                break;
+            case "openWebRepo":
+                TinyDB tinyDb = new TinyDB(getApplicationContext());
+                String repoFullName = tinyDb.getString("repoFullName");
+                String instanceUrlWithProtocol = "https://" + tinyDb.getString("instanceUrlRaw");
+                if(!tinyDb.getString("instanceUrlWithProtocol").isEmpty()) {
+                    instanceUrlWithProtocol = tinyDb.getString("instanceUrlWithProtocol");
+                }
+                Uri url = Uri.parse(instanceUrlWithProtocol + "/" + repoFullName);
+                Intent i = new Intent(Intent.ACTION_VIEW, url);
+                startActivity(i);
                 break;
         }
 

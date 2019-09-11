@@ -416,6 +416,7 @@
     <string name="descriptionText">Description</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Location</string>
+    <string name="openWebRepo">Ouvrir avec le Browser</string>
     <!-- generic copy -->
 
 </resources>

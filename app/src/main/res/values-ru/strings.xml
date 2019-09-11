@@ -416,6 +416,7 @@
     <string name="descriptionText">Описание</string>
     <string name="websiteText">Веб-сайт</string>
     <string name="locationText">Место расположения</string>
+    <string name="openWebRepo">Открыть с помощью браузера</string>
     <!-- generic copy -->
 
 </resources>

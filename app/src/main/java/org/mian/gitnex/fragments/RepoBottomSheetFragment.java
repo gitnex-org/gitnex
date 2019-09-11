@@ -29,6 +29,7 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
         TextView createMilestone = v.findViewById(R.id.createNewMilestone);
         TextView addCollaborator = v.findViewById(R.id.addCollaborator);
         TextView createRelease = v.findViewById(R.id.createRelease);
+        TextView openWebRepo = v.findViewById(R.id.openWebRepo);
 
         createLabel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,14 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 bmListener.onButtonClicked("createRelease");
+                dismiss();
+            }
+        });
+
+        openWebRepo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bmListener.onButtonClicked("openWebRepo");
                 dismiss();
             }
         });
