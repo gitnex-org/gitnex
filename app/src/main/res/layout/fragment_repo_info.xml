@@ -328,7 +328,7 @@
             android:indeterminate="true"
             android:visibility="visible"
             android:layout_centerInParent="true"
-            xmlns:android="http://schemas.android.com/apk/res/android" />
+            />
 
     </RelativeLayout>
 

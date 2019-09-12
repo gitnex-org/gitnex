@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:background="@color/backgroundColor"
         android:layout_width="match_parent"
@@ -113,7 +112,7 @@
             android:indeterminate="true"
             android:visibility="visible"
             android:layout_centerInParent="true"
-            xmlns:android="http://schemas.android.com/apk/res/android" />
+            />
 
     </RelativeLayout>
 
