@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -144,7 +144,7 @@ public class RepositoriesFragment extends Fragment {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken) {
 
-        RepositoriesListViewModel repoModel = ViewModelProviders.of(this).get(RepositoriesListViewModel.class);
+        RepositoriesListViewModel repoModel = new ViewModelProvider(this).get(RepositoriesListViewModel.class);
 
         repoModel.getUserRepositories(instanceUrl, instanceToken).observe(this, new Observer<List<UserRepositories>>() {
             @Override
@@ -189,7 +189,9 @@ public class RepositoriesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if(mRecyclerView.getAdapter() != null) {
+                    adapter.getFilter().filter(newText);
+                }
                 return false;
             }
         });

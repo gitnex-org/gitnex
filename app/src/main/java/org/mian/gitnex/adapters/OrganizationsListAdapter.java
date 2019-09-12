@@ -76,7 +76,6 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
     @Override
     public void onBindViewHolder(@NonNull OrganizationsViewHolder holder, int position) {
 
-
         UserOrganizations currentItem = orgList.get(position);
         holder.mTextView2.setVisibility(View.GONE);
 

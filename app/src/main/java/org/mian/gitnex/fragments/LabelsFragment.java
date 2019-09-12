@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -142,7 +142,7 @@ public class LabelsFragment extends Fragment {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo) {
 
-        LabelsViewModel labelsModel = ViewModelProviders.of(this).get(LabelsViewModel.class);
+        LabelsViewModel labelsModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
         labelsModel.getLabelsList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Labels>>() {
             @Override

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/backgroundColor" >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/linearLayoutFrame"
         android:layout_width="match_parent"

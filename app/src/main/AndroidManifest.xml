@@ -34,7 +34,6 @@
         <activity android:name=".activities.SponsorsActivity" />
         <activity android:name=".activities.CreditsActivity" />
         <activity android:name=".activities.CreateLabelActivity" />
-        <activity android:name=".activities.OpenWebRepoActivity" />
         <activity android:name=".activities.CreateIssueActivity" />
         <activity android:name=".activities.NewMilestoneActivity" />
         <activity android:name=".activities.ReplyToIssueActivity" />

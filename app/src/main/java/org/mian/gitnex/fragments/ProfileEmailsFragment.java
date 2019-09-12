@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -109,7 +109,7 @@ public class ProfileEmailsFragment extends Fragment {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken) {
 
-        ProfileEmailsViewModel profileEmailModel = ViewModelProviders.of(this).get(ProfileEmailsViewModel.class);
+        ProfileEmailsViewModel profileEmailModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
 
         profileEmailModel.getEmailsList(instanceUrl, instanceToken).observe(this, new Observer<List<Emails>>() {
             @Override

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -72,7 +71,7 @@
         android:textSize="20sp"
         android:visibility="gone" />
 
-    <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+    <ProgressBar
         android:id="@+id/progress_bar"
         style="@style/Base.Widget.AppCompat.ProgressBar"
         android:layout_width="match_parent"

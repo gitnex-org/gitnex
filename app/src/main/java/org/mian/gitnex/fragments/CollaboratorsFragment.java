@@ -6,11 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class CollaboratorsFragment extends Fragment {
 
+    private ProgressBar mProgressBar;
     private CollaboratorsAdapter adapter;
     private GridView mGridView;
     private TextView noDataCollaborators;
@@ -69,6 +71,8 @@ public class CollaboratorsFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         noDataCollaborators = v.findViewById(R.id.noDataCollaborators);
 
+        mProgressBar = v.findViewById(R.id.progress_bar);
+
         mGridView = v.findViewById(R.id.gridView);
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
@@ -94,7 +98,7 @@ public class CollaboratorsFragment extends Fragment {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo) {
 
-        CollaboratorsViewModel collaboratorsModel = ViewModelProviders.of(this).get(CollaboratorsViewModel.class);
+        CollaboratorsViewModel collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 
         collaboratorsModel.getCollaboratorsList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Collaborators>>() {
             @Override
@@ -109,6 +113,7 @@ public class CollaboratorsFragment extends Fragment {
                     mGridView.setAdapter(adapter);
                     noDataCollaborators.setVisibility(View.VISIBLE);
                 }
+                mProgressBar.setVisibility(View.GONE);
             }
         });
 
