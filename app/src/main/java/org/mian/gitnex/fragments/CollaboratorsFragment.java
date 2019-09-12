@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +98,7 @@ public class CollaboratorsFragment extends Fragment {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo) {
 
-        CollaboratorsViewModel collaboratorsModel = ViewModelProviders.of(this).get(CollaboratorsViewModel.class);
+        CollaboratorsViewModel collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 
         collaboratorsModel.getCollaboratorsList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Collaborators>>() {
             @Override

@@ -185,10 +185,6 @@ public class SettingsFragment extends Fragment {
                         tinyDb.putInt("codeBlockId", i);
 
                         switch (codeBlockList[i]) {
-                            case "Green - Black":
-                                tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorLightGreen));
-                                tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
-                                break;
                             case "White - Black":
                                 tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.white));
                                 tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
@@ -248,9 +244,6 @@ public class SettingsFragment extends Fragment {
                         tinyDb.putInt("langId", i);
 
                         switch (langList[i]) {
-                            case "English":
-                                tinyDb.putString("locale", "en");
-                                break;
                             case "French":
                                 tinyDb.putString("locale", "fr");
                                 break;
@@ -309,16 +302,10 @@ public class SettingsFragment extends Fragment {
                         tinyDb.putString("timeStr", timeList[i]);
                         tinyDb.putInt("timeId", i);
 
-                        switch (timeList[i]) {
-                            case "Pretty":
-                                tinyDb.putString("dateFormat", "pretty");
-                                break;
-                            case "Normal":
-                                tinyDb.putString("dateFormat", "normal");
-                                break;
-                            default:
-                                tinyDb.putString("dateFormat", "pretty");
-                                break;
+                        if ("Normal".equals(timeList[i])) {
+                            tinyDb.putString("dateFormat", "normal");
+                        } else {
+                            tinyDb.putString("dateFormat", "pretty");
                         }
 
                         dialogInterfaceTime.dismiss();

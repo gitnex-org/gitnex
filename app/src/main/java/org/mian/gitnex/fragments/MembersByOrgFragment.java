@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,7 +81,7 @@ public class MembersByOrgFragment extends Fragment {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String owner) {
 
-        MembersByOrgViewModel membersModel = ViewModelProviders.of(this).get(MembersByOrgViewModel.class);
+        MembersByOrgViewModel membersModel= new ViewModelProvider(this).get(MembersByOrgViewModel.class);
 
         membersModel.getMembersList(instanceUrl, instanceToken, owner).observe(this, new Observer<List<UserInfo>>() {
             @Override
@@ -125,7 +125,9 @@ public class MembersByOrgFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if(mGridView.getAdapter() != null) {
+                    adapter.getFilter().filter(newText);
+                }
                 return false;
             }
         });
