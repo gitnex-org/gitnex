@@ -3,9 +3,8 @@ package org.mian.gitnex.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -63,7 +62,7 @@ public class OrgTeamMembersActivity extends AppCompatActivity {
         }
 
         getIntent().getStringExtra("teamId");
-        Log.i("teamId", getIntent().getStringExtra("teamId"));
+        //Log.i("teamId", getIntent().getStringExtra("teamId"));
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), Integer.valueOf(teamId));
 
@@ -71,7 +70,7 @@ public class OrgTeamMembersActivity extends AppCompatActivity {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, int teamId) {
 
-        TeamMembersByOrgViewModel teamMembersModel = ViewModelProviders.of(this).get(TeamMembersByOrgViewModel.class);
+        TeamMembersByOrgViewModel teamMembersModel = new ViewModelProvider(this).get(TeamMembersByOrgViewModel.class);
 
         teamMembersModel.getMembersByOrgList(instanceUrl, instanceToken, teamId).observe(this, new Observer<List<UserInfo>>() {
             @Override

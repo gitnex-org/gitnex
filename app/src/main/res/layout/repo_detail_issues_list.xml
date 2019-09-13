@@ -38,7 +38,7 @@
             android:height="16dp"
             android:layout_marginEnd="15dp"
             android:layout_below="@+id/assigneeAvatar"
-            android:drawableTop="@drawable/ic_issue_comments"
+            android:drawableTop="@drawable/ic_comment"
             android:gravity="center"
             android:textColor="@color/colorWhite"
             android:textSize="14sp" />
