@@ -88,7 +88,7 @@
                 <TextView
                     android:id="@+id/repoStars"
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="20dp"
                     android:layout_weight=".25"
                     android:drawableStart="@drawable/ic_star"
                     android:drawablePadding="6dp"
@@ -99,7 +99,7 @@
                 <TextView
                     android:id="@+id/repoWatchers"
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="20dp"
                     android:layout_weight=".25"
                     android:drawableStart="@drawable/ic_watchers"
                     android:drawablePadding="6dp"
@@ -110,7 +110,7 @@
                 <TextView
                     android:id="@+id/repoOpenIssuesCount"
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="20dp"
                     android:layout_weight=".25"
                     android:drawableStart="@drawable/ic_comment"
                     android:drawablePadding="06dp"
@@ -118,11 +118,15 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/repoSpace"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/reposDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_weight=".10"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".25" />
+                    android:layout_gravity="end"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_dotted_menu_horizontal"
+                    android:contentDescription="@string/menuContentDesc" />
 
             </LinearLayout>
 
