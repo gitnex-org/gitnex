@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -14,11 +15,15 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.TinyDB;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -52,6 +57,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
             repoStars = itemView.findViewById(R.id.repoStars);
             repoWatchers = itemView.findViewById(R.id.repoWatchers);
             repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
+            ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,6 +72,59 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                     tinyDb.putString("repoFullName", fullName.getText().toString());
                     tinyDb.putBoolean("resumeIssues", true);
                     context.startActivity(intent);
+
+                }
+            });
+
+            reposDropdownMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    final Context context = v.getContext();
+                    Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+
+                    PopupMenu popupMenu = new PopupMenu(context_, v);
+                    popupMenu.inflate(R.menu.repo_dotted_list_menu);
+
+                    Object menuHelper;
+                    Class[] argTypes;
+                    try {
+
+                        Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+                        fMenuHelper.setAccessible(true);
+                        menuHelper = fMenuHelper.get(popupMenu);
+                        argTypes = new Class[] { boolean.class };
+                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon",
+                                argTypes).invoke(menuHelper, true);
+
+                    } catch (Exception e) {
+
+                        popupMenu.show();
+                        return;
+
+                    }
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.repoStargazers:
+
+                                    Intent intent = new Intent(context, RepoStargazersActivity.class);
+                                    intent.putExtra("repoFullNameForStars", fullName.getText());
+                                    context.startActivity(intent);
+                                    break;
+
+                                case R.id.repoWatchers:
+
+                                    break;
+
+                            }
+                            return false;
+                        }
+                    });
+
+                    popupMenu.show();
 
                 }
             });

@@ -330,6 +330,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (response.code() == 200) {
 
                         assert userDetails != null;
+                        if(userDetails.getIs_admin() != null) {
+                            tinyDb.putBoolean("userIsAdmin", userDetails.getIs_admin());
+                        }
                         tinyDb.putString("userLogin", userDetails.getLogin());
                         tinyDb.putInt("userId", userDetails.getId());
                         if(!userDetails.getFullname().equals("")) {

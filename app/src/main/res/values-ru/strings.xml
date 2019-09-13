@@ -397,6 +397,12 @@
     <string name="loginOTP">OTP Code (Optional)</string>
     <string name="otpMessage">Enter the otp code if 2FA is enabled</string>
 
+    <string name="repoStargazersInMenu">Stargazers</string>
+    <string name="repoWatchersInMenu">Watchers</string>
+    <string name="noDataStargazers">No stars found</string>
+    <string name="noDataWatchers">No watchers found</string>
+    <string name="starMember">Star</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Готово</string>

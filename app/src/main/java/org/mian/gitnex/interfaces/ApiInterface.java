@@ -204,4 +204,7 @@ public interface ApiInterface {
 
     @GET("admin/users") // get all users
     Call<List<UserInfo>> adminGetUsers(@Header("Authorization") String token);
+
+    @GET("repos/{owner}/{repo}/stargazers") // get all repo stars
+    Call<List<UserInfo>> getRepoStargazers(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 }
