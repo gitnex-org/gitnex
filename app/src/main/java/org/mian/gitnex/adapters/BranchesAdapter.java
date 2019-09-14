@@ -66,7 +66,7 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.Branch
             holder.branchCommitAuthor.setText(mCtx.getResources().getString(R.string.commitAuthor, currentItem.getCommit().getAuthor().getUsername()));
         }
 
-        holder.branchCommitHash.setText(mCtx.getResources().getString(R.string.commitHash, UrlHelper.cleanUrl(instanceUrl), currentItem.getCommit().getUrl()));
+        holder.branchCommitHash.setText(mCtx.getResources().getString(R.string.commitHash, "", currentItem.getCommit().getUrl()));
 
     }
 
