@@ -16,6 +16,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
+import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.TinyDB;
 import java.lang.reflect.Field;
@@ -117,6 +118,9 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
 
                                 case R.id.repoWatchers:
 
+                                    Intent intentW = new Intent(context, RepoWatchersActivity.class);
+                                    intentW.putExtra("repoFullNameForWatchers", fullName.getText());
+                                    context.startActivity(intentW);
                                     break;
 
                             }
