@@ -11,29 +11,29 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.RepoStargazersAdapter;
+import org.mian.gitnex.adapters.RepoWatchersAdapter;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.TinyDB;
-import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
+import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 import java.util.List;
 
 /**
  * Author M M Arif
  */
 
-public class RepoStargazersActivity extends AppCompatActivity {
+public class RepoWatchersActivity extends AppCompatActivity {
 
-    private TextView noDataStargazers;
+    private TextView noDataWatchers;
     private View.OnClickListener onClickListener;
-    private RepoStargazersAdapter adapter;
+    private RepoWatchersAdapter adapter;
     private GridView mGridView;
     private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repo_stargazers);
+        setContentView(R.layout.activity_repo_watchers);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -42,19 +42,19 @@ public class RepoStargazersActivity extends AppCompatActivity {
 
         ImageView closeActivity = findViewById(R.id.close);
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        noDataStargazers = findViewById(R.id.noDataStargazers);
+        noDataWatchers = findViewById(R.id.noDataWatchers);
         mGridView = findViewById(R.id.gridView);
         mProgressBar = findViewById(R.id.progress_bar);
 
-        String repoFullNameForStars = getIntent().getStringExtra("repoFullNameForStars");
-        String[] parts = repoFullNameForStars.split("/");
+        String repoFullNameForWatchers = getIntent().getStringExtra("repoFullNameForWatchers");
+        String[] parts = repoFullNameForWatchers.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        toolbarTitle.setText(R.string.repoStargazersInMenu);
+        toolbarTitle.setText(R.string.repoWatchersInMenu);
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 
@@ -62,20 +62,20 @@ public class RepoStargazersActivity extends AppCompatActivity {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String repoOwner, String repoName) {
 
-        RepoStargazersViewModel repoStargazersModel = new ViewModelProvider(this).get(RepoStargazersViewModel.class);
+        RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
-        repoStargazersModel.getRepoStargazers(instanceUrl, instanceToken, repoOwner, repoName).observe(this, new Observer<List<UserInfo>>() {
+        repoWatchersModel.getRepoWatchers(instanceUrl, instanceToken, repoOwner, repoName).observe(this, new Observer<List<UserInfo>>() {
             @Override
-            public void onChanged(@Nullable List<UserInfo> stargazersListMain) {
-                adapter = new RepoStargazersAdapter(getApplicationContext(), stargazersListMain);
+            public void onChanged(@Nullable List<UserInfo> watchersListMain) {
+                adapter = new RepoWatchersAdapter(getApplicationContext(), watchersListMain);
                 if(adapter.getCount() > 0) {
                     mGridView.setAdapter(adapter);
-                    noDataStargazers.setVisibility(View.GONE);
+                    noDataWatchers.setVisibility(View.GONE);
                 }
                 else {
                     adapter.notifyDataSetChanged();
                     mGridView.setAdapter(adapter);
-                    noDataStargazers.setVisibility(View.VISIBLE);
+                    noDataWatchers.setVisibility(View.VISIBLE);
                 }
                 mProgressBar.setVisibility(View.GONE);
             }
