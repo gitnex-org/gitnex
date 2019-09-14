@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/repoOpenInBrowser"
+        android:icon="@drawable/ic_open_in_browser"
+        android:title="@string/openWebRepo" />
+
+    <item
         android:id="@+id/repoStargazers"
         android:icon="@drawable/ic_star"
         android:title="@string/repoStargazersInMenu" />

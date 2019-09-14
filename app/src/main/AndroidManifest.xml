@@ -59,6 +59,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".activities.NewRepoActivity" />
         <activity android:name=".activities.NewOrganizationActivity" />
+        <activity android:name=".activities.OpenRepoInBrowserActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 
