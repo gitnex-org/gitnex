@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_watchers"
         android:title="@string/repoWatchersInMenu" />
 
+    <item
+        android:id="@+id/repoOpenWithBrowser"
+        android:icon="@drawable/ic_open_in_browser"
+        android:title="@string/openWebRepo" />
+
 </menu>

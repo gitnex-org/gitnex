@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:drawableStart="@drawable/ic_language"
+        android:drawableStart="@drawable/ic_open_in_browser"
         android:drawablePadding="24dp"
         android:padding="16dp"
         android:text="@string/openWebRepo"
