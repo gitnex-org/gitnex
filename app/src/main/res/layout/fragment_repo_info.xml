@@ -107,6 +107,7 @@
                     android:textIsSelectable="true"
                     android:textSize="16sp"
                     android:paddingTop="5dp"
+                    android:autoLink="web"
                     android:textColor="@color/colorWhite"/>
 
                 <TextView

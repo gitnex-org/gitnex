@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
-        android:padding="15dp"
+        android:layout_margin="15dp"
         android:theme="@style/AppTheme">
 
         <LinearLayout
