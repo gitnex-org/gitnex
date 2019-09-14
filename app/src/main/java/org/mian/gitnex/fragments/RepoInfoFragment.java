@@ -1,7 +1,6 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import ru.noties.markwon.core.CorePlugin;
 import ru.noties.markwon.core.MarkwonTheme;
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import ru.noties.markwon.ext.tables.TablePlugin;
-import ru.noties.markwon.ext.tables.TableTheme;
 import ru.noties.markwon.ext.tasklist.TaskListPlugin;
 import ru.noties.markwon.html.HtmlPlugin;
 import ru.noties.markwon.image.ImagesPlugin;
@@ -220,52 +218,56 @@ public class RepoInfoFragment extends Fragment {
 
                 UserRepositories repoInfo = response.body();
 
-                if (response.isSuccessful()) {
+                if (isAdded()) {
 
-                    if (response.code() == 200) {
+                    if (response.isSuccessful()) {
 
-                        assert repoInfo != null;
-                        repoNameInfo.setText(repoInfo.getName());
-                        repoOwnerInfo.setText(owner);
-                        repoDescriptionInfo.setText(repoInfo.getDescription());
-                        repoWebsiteInfo.setText(repoInfo.getWebsite());
-                        repoSizeInfo.setText(AppUtil.formatFileSize(repoInfo.getSize()));
-                        repoDefaultBranchInfo.setText(repoInfo.getDefault_branch());
-                        repoSshUrlInfo.setText(repoInfo.getSsh_url());
-                        repoCloneUrlInfo.setText(repoInfo.getClone_url());
-                        repoRepoUrlInfo.setText(repoInfo.getHtml_url());
-                        repoForksCountInfo.setText(repoInfo.getForks_count());
+                        if (response.code() == 200) {
 
-                        switch (timeFormat) {
-                            case "pretty": {
-                                PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-                                String createdTime = prettyTime.format(repoInfo.getCreated_at());
-                                repoCreatedAtInfo.setText(createdTime);
-                                repoCreatedAtInfo.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), getContext()));
-                                break;
+                            assert repoInfo != null;
+                            repoNameInfo.setText(repoInfo.getName());
+                            repoOwnerInfo.setText(owner);
+                            repoDescriptionInfo.setText(repoInfo.getDescription());
+                            repoWebsiteInfo.setText(repoInfo.getWebsite());
+                            repoSizeInfo.setText(AppUtil.formatFileSize(repoInfo.getSize()));
+                            repoDefaultBranchInfo.setText(repoInfo.getDefault_branch());
+                            repoSshUrlInfo.setText(repoInfo.getSsh_url());
+                            repoCloneUrlInfo.setText(repoInfo.getClone_url());
+                            repoRepoUrlInfo.setText(repoInfo.getHtml_url());
+                            repoForksCountInfo.setText(repoInfo.getForks_count());
+
+                            switch (timeFormat) {
+                                case "pretty": {
+                                    PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+                                    String createdTime = prettyTime.format(repoInfo.getCreated_at());
+                                    repoCreatedAtInfo.setText(createdTime);
+                                    repoCreatedAtInfo.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), getContext()));
+                                    break;
+                                }
+                                case "normal": {
+                                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+                                    String createdTime = formatter.format(repoInfo.getCreated_at());
+                                    repoCreatedAtInfo.setText(createdTime);
+                                    break;
+                                }
+                                case "normal1": {
+                                    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+                                    String createdTime = formatter.format(repoInfo.getCreated_at());
+                                    repoCreatedAtInfo.setText(createdTime);
+                                    break;
+                                }
                             }
-                            case "normal": {
-                                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                                String createdTime = formatter.format(repoInfo.getCreated_at());
-                                repoCreatedAtInfo.setText(createdTime);
-                                break;
-                            }
-                            case "normal1": {
-                                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                                String createdTime = formatter.format(repoInfo.getCreated_at());
-                                repoCreatedAtInfo.setText(createdTime);
-                                break;
-                            }
+
+                            mProgressBar.setVisibility(View.GONE);
+                            pageContent.setVisibility(View.VISIBLE);
+
                         }
 
-                        mProgressBar.setVisibility(View.GONE);
-                        pageContent.setVisibility(View.VISIBLE);
-
+                    }
+                    else {
+                        Log.e("onFailure", String.valueOf(response.code()));
                     }
 
-                }
-                else {
-                    Log.e("onFailure", String.valueOf(response.code()));
                 }
 
             }
@@ -292,58 +294,58 @@ public class RepoInfoFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull retrofit2.Response<String> response) {
 
-                if (response.code() == 200) {
+                if (isAdded()) {
 
-                    final Markwon markwon = Markwon.builder(Objects.requireNonNull(getContext()))
-                            .usePlugin(CorePlugin.create())
-                            .usePlugin(OkHttpImagesPlugin.create(new OkHttpClient()))
-                            .usePlugin(ImagesPlugin.createWithAssets(getContext()))
-                            .usePlugin(new AbstractMarkwonPlugin() {
-                                @Override
-                                public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-                                    builder
-                                            .codeTextColor(tinyDb.getInt("codeBlockColor"))
-                                            .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-                                            .linkColor(getResources().getColor(R.color.lightBlue));
-                                }
-                            })
-                            .usePlugin(TablePlugin.create(getContext()))
-                            .usePlugin(TaskListPlugin.create(getContext()))
-                            .usePlugin(HtmlPlugin.create())
-                            .usePlugin(GifPlugin.create())
-                            .usePlugin(StrikethroughPlugin.create())
-                            .build();
+                    if (response.code() == 200) {
 
-                    CharSequence bodyWithMD = null;
-                    if (response.body() != null) {
-                        bodyWithMD = markwon.toMarkdown(response.body());
+                        final Markwon markwon = Markwon.builder(Objects.requireNonNull(getContext()))
+                                .usePlugin(CorePlugin.create())
+                                .usePlugin(OkHttpImagesPlugin.create(new OkHttpClient()))
+                                .usePlugin(ImagesPlugin.createWithAssets(getContext()))
+                                .usePlugin(new AbstractMarkwonPlugin() {
+                                    @Override
+                                    public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+                                        builder
+                                                .codeTextColor(tinyDb.getInt("codeBlockColor"))
+                                                .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
+                                                .linkColor(getResources().getColor(R.color.lightBlue));
+                                    }
+                                })
+                                .usePlugin(TablePlugin.create(getContext()))
+                                .usePlugin(TaskListPlugin.create(getContext()))
+                                .usePlugin(HtmlPlugin.create())
+                                .usePlugin(GifPlugin.create())
+                                .usePlugin(StrikethroughPlugin.create())
+                                .build();
+
+                        CharSequence bodyWithMD = null;
+                        if (response.body() != null) {
+                            bodyWithMD = markwon.toMarkdown(response.body());
+                        }
+                        repoFileContents.setText(bodyWithMD);
+
+
+                    } else if (response.code() == 401) {
+
+                        AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
+                                getResources().getString(R.string.alertDialogTokenRevokedMessage),
+                                getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+                                getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+
+                    } else if (response.code() == 403) {
+
+                        Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+
+                    } else if (response.code() == 404) {
+
+                        fileContentsFrameHeader.setVisibility(View.GONE);
+                        fileContentsFrame.setVisibility(View.GONE);
+
+                    } else {
+
+                        Toasty.info(getContext(), getString(R.string.genericError));
+
                     }
-                    repoFileContents.setText(bodyWithMD);
-
-                }
-                else if(response.code() == 401) {
-
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
-                }
-                else if(response.code() == 403) {
-
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
-
-                }
-                else if(response.code() == 404) {
-
-                    fileContentsFrameHeader.setVisibility(View.GONE);
-                    fileContentsFrame.setVisibility(View.GONE);
-
-                }
-                else {
-
-                    Toasty.info(getContext(), getString(R.string.genericError));
-
                 }
 
             }

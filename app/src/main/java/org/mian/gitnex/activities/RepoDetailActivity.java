@@ -172,7 +172,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @NonNull
