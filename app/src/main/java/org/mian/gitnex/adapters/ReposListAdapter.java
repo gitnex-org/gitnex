@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
@@ -123,6 +124,13 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
                                     Intent intentW = new Intent(context, RepoWatchersActivity.class);
                                     intentW.putExtra("repoFullNameForWatchers", fullName.getText());
                                     context.startActivity(intentW);
+                                    break;
+
+                                case R.id.repoOpenInBrowser:
+
+                                    Intent intentOpenInBrowser = new Intent(context, OpenRepoInBrowserActivity.class);
+                                    intentOpenInBrowser.putExtra("repoFullNameBrowser", fullName.getText());
+                                    context.startActivity(intentOpenInBrowser);
                                     break;
 
                             }
