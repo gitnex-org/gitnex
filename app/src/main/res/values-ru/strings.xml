@@ -404,6 +404,10 @@
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
 
+    <string name="commitLinkBranchesTab">Commit</string>
+    <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
+    <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Готово</string>
