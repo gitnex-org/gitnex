@@ -407,6 +407,7 @@
     <!-- sponsors -->
     <string name="liberaPayText" translatable="false">Liberapay</string>
     <string name="liberaPaySponsorsFabian" translatable="false">Fabian Stamm</string>
+    <string name="liberaPaySponsorsThomas" translatable="false">Thomas Schneider <a href="https://framapiaf.org/@fedilab">@Fedilab</a></string>
     <!-- sponsors -->
 
     <!-- edit issue -->
