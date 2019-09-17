@@ -40,20 +40,21 @@
     <string name="pageTitleMyRepos">My Repositories</string>
     <string name="pageTitleRepositories">Repositories</string>
     <string name="pageTitleProfile">Profile</string>
-    <string name="pageTitleNewRepo">Create Repository</string>
+    <string name="pageTitleNewRepo">New Repository</string>
     <string name="pageTitleOrganizations">Organizations</string>
     <string name="pageTitleIssues">Issues</string>
     <string name="pageTitleSettings">Settings</string>
-    <string name="pageTitleCreateOrganization">Create Organization</string>
-    <string name="pageTitleCreateMilestone">Create Milestone</string>
-    <string name="pageTitleCreateNewIssue">Create Issue</string>
-    <string name="pageTitleCreateLabel">Create Label</string>
+    <string name="pageTitleCreateOrganization">New Organization</string>
+    <string name="pageTitleCreateMilestone">New Milestone</string>
+    <string name="pageTitleCreateNewIssue">New Issue</string>
+    <string name="pageTitleCreateLabel">New Label</string>
     <string name="pageTitleCredits">Credits</string>
     <string name="pageTitleLabelUpdate">Update Label</string>
     <string name="pageTitleSponsors">Sponsors</string>
     <string name="pageTitleStarredRepos">Starred Repositories</string>
-    <string name="pageTitleCreateTeam">Create Team</string>
+    <string name="pageTitleCreateTeam">New Team</string>
     <string name="pageTitleAddEmail">Add Email Address</string>
+    <string name="pageTitleNewFile">New File</string>
     <!-- page titles -->
 
     <string name="appVersion">Version\u0020:\u0020</string>
@@ -260,7 +261,7 @@
 
     <string name="noMoreData">No more data available.</string>
 
-    <string name="createLabel">Create Label</string>
+    <string name="createLabel">New Label</string>
     <string name="menuTitleText">Repo Menu</string>
     <string name="labelName">Label Name</string>
     <string name="labelColor">Label Color</string>
@@ -299,7 +300,7 @@
     <string name="orgTabRepos">Repositories</string>
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Members</string>
-    <string name="orgCreateTeam">Create Team</string>
+    <string name="orgCreateTeam">New Team</string>
     <string name="noDataTeams">No teams found</string>
     <string name="teamTitle">Team name</string>
     <string name="teamDescription">Team desc</string>
@@ -387,7 +388,7 @@
     <string name="repoMetaData">Repository Meta</string>
 
     <!-- admin -->
-    <string name="adminCreateNewUser">Create New User</string>
+    <string name="adminCreateNewUser">Add New User</string>
     <string name="adminUsers">Users</string>
     <string name="userRoleAdmin">Admin</string>
     <!-- admin -->
@@ -400,7 +401,7 @@
     <string name="userInvalidFullName">Invalid Full Name</string>
     <string name="userInvalidUserName">Invalid Username</string>
     <string name="userInvalidEmail">Invalid Email</string>
-    <string name="userCreatedText">New user created successfully</string>
+    <string name="userCreatedText">New user added successfully</string>
     <string name="userExistsError">User already exists</string>
     <!-- create user -->
 
@@ -416,7 +417,7 @@
     <!-- edit issue -->
 
     <!-- release -->
-    <string name="createRelease">Create Release</string>
+    <string name="createRelease">New Release</string>
     <string name="releaseTagNameText">Tag Name</string>
     <string name="releaseTitleText">Title</string>
     <string name="releaseContentText">Content</string>
@@ -446,6 +447,14 @@
     <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
     <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
 
+    <!-- new file -->
+    <string name="newFileNameTintCopy">File Name</string>
+    <string name="newFileBranchTintCopy">Branch Name</string>
+    <string name="newFileContentTintCopy">File Content</string>
+    <string name="newFileButtonCopy">Create New File</string>
+    <string name="newFileNameHintMessage">with folder: app/test.md</string>
+    <string name="newFileMessageTintCopy">Commit Message</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>
@@ -468,6 +477,7 @@
     <string name="descriptionText">Description</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Location</string>
+    <string name="characters255Limit">Max 255 characters</string>
     <!-- generic copy -->
 
 </resources>

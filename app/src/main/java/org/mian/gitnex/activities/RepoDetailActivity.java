@@ -108,7 +108,6 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -164,6 +163,9 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
                 Uri url = Uri.parse(instanceUrlWithProtocol + "/" + repoFullName);
                 Intent i = new Intent(Intent.ACTION_VIEW, url);
                 startActivity(i);
+                break;
+            case "newFile":
+                startActivity(new Intent(RepoDetailActivity.this, NewFileActivity.class));
                 break;
         }
 
