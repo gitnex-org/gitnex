@@ -3,6 +3,7 @@ package org.mian.gitnex.interfaces;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.models.AddEmail;
 import org.mian.gitnex.models.Branches;
+import org.mian.gitnex.models.NewFile;
 import org.mian.gitnex.models.UpdateIssueAssignee;
 import org.mian.gitnex.models.UpdateIssueState;
 import org.mian.gitnex.models.Collaborators;
@@ -210,4 +211,7 @@ public interface ApiInterface {
 
     @GET("repos/{owner}/{repo}/subscribers") // get all repo watchers
     Call<List<UserInfo>> getRepoWatchers(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+    @POST("repos/{owner}/{repo}/contents/{file}") // create new file
+    Call<JsonElement> createNewFile(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String fileName, @Body NewFile jsonStr);
 }
