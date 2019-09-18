@@ -90,7 +90,8 @@ public class NewFile {
         }
     }
 
-    public NewFile(String content, String message, String new_branch) {
+    public NewFile(String branch, String content, String message, String new_branch) {
+        this.branch = branch;
         this.content = content;
         this.message = message;
         this.new_branch = new_branch;

@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,6 +83,27 @@ public class NewFileActivity extends AppCompatActivity {
         newFileBranchesSpinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getBranches(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
 
+        newFileBranchesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> arg0,
+                                       View arg1, int arg2, long arg3)
+            {
+                Branches bModelValue = (Branches) newFileBranchesSpinner.getSelectedItem();
+                Log.i("bModelSelected", bModelValue.toString());
+
+                if(bModelValue.toString().equals("No branch")) {
+                    newFileBranchName.setEnabled(true);
+                }
+                else {
+                    newFileBranchName.setEnabled(false);
+                    newFileBranchName.setText("");
+                }
+
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {}
+        });
+
         disableProcessButton();
 
         if(!connToInternet) {
@@ -124,9 +146,7 @@ public class NewFileActivity extends AppCompatActivity {
         String newFileBranchName_ = newFileBranchName.getText().toString();
         String newFileCommitMessage_ = newFileCommitMessage.getText().toString();
 
-        Branches bModel = (Branches) newFileBranchesSpinner.getSelectedItem();
-
-        Log.i("bModel", bModel.toString());
+        Branches currentBranch = (Branches) newFileBranchesSpinner.getSelectedItem();
 
         if(!connToInternet) {
 
@@ -142,10 +162,20 @@ public class NewFileActivity extends AppCompatActivity {
 
         }
 
-        if(!appUtil.checkStringsWithDash(newFileBranchName_)) {
+        if(currentBranch.toString().equals("No branch")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.newFileInvalidBranchName));
-            return;
+            if(newFileBranchName_.equals("")) {
+                Toasty.info(getApplicationContext(), getString(R.string.newFileRequiredFieldNewBranchName));
+                return;
+            }
+            else {
+                if(!appUtil.checkStringsWithDash(newFileBranchName_)) {
+
+                    Toasty.info(getApplicationContext(), getString(R.string.newFileInvalidBranchName));
+                    return;
+
+                }
+            }
 
         }
 
@@ -157,16 +187,21 @@ public class NewFileActivity extends AppCompatActivity {
         else {
 
             disableProcessButton();
-            //Log.i("base64", appUtil.encodeBase64(newFileContent_));
-            createNewFile(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, newFileName_, appUtil.encodeBase64(newFileContent_), newFileBranchName_, newFileCommitMessage_);
+            createNewFile(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, newFileName_, appUtil.encodeBase64(newFileContent_), newFileBranchName_, newFileCommitMessage_, currentBranch.toString());
 
         }
 
     }
 
-    private void createNewFile(final String instanceUrl, final String token, String repoOwner, String repoName, String fileName, String fileContent, String fileBranchName, String fileCommitMessage) {
+    private void createNewFile(final String instanceUrl, final String token, String repoOwner, String repoName, String fileName, String fileContent, String fileBranchName, String fileCommitMessage, String currentBranch) {
 
-        NewFile createNewFileJsonStr = new NewFile(fileContent, fileCommitMessage, fileBranchName);
+        NewFile createNewFileJsonStr;
+        if(currentBranch.equals("No branch")) {
+            createNewFileJsonStr = new NewFile("", fileContent, fileCommitMessage, fileBranchName);
+        }
+        else {
+            createNewFileJsonStr = new NewFile(currentBranch, fileContent, fileCommitMessage, "");
+        }
 
         Call<JsonElement> call = RetrofitClient
                 .getInstance(instanceUrl)
