@@ -7,9 +7,11 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -75,6 +77,10 @@ public class AppUtil {
 
     public Boolean checkStringsWithAlphaNumericDashDotUnderscore(String str) { // [a-zA-Z0-9-_]
         return str.matches("^[\\w.-]+$");
+    }
+
+    public Boolean checkStringsWithDash(String str) { // [a-zA-Z0-9-_. ]
+        return str.matches("^[\\w-]+$");
     }
 
     public Boolean checkIntegers(String str) {
@@ -177,6 +183,30 @@ public class AppUtil {
         }
 
         return (customDate + "T" + mHour + ":" + sMin + ":" + sSec + "Z");
+
+    }
+
+    public String encodeBase64(String str) {
+
+        String base64Str = str;
+        if(!str.equals("")) {
+            byte[] data = str.getBytes(StandardCharsets.UTF_8);
+            base64Str = Base64.encodeToString(data, Base64.DEFAULT);
+        }
+
+        return base64Str;
+
+    }
+
+    public String decodeBase64(String str) {
+
+        String base64Str = str;
+        if(!str.equals("")) {
+            byte[] data = Base64.decode(base64Str, Base64.DEFAULT);
+            base64Str = new String(data, StandardCharsets.UTF_8);
+        }
+
+        return base64Str;
 
     }
 

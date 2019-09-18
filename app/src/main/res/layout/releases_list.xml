@@ -83,10 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/releaseZip"
-            android:textIsSelectable="true"
             android:textColor="@color/colorWhite"
             android:textSize="16sp"
-            android:autoLink="web"
             android:textColorLink="@color/lightBlue"/>
 
         <TextView
@@ -94,11 +92,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/releaseTar"
-            android:textIsSelectable="true"
             android:layout_marginTop="5dp"
             android:textColor="@color/colorWhite"
             android:textSize="16sp"
-            android:autoLink="web"
             android:textColorLink="@color/lightBlue"/>
 
     </LinearLayout>

@@ -73,6 +73,18 @@
                 android:text="@string/liberaPaySponsorsFabian"
                 android:textColor="@color/white"
                 android:textSize="16sp"
+                android:layout_marginBottom="10dp"
+                android:textColorLink="@color/lightBlue"
+                />
+
+            <TextView
+                android:id="@+id/liberaPaySponsorsThomas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/liberaPaySponsorsThomas"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginBottom="10dp"
                 android:textColorLink="@color/lightBlue"
                 />
 

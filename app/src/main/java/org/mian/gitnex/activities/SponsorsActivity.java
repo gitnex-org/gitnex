@@ -2,8 +2,10 @@ package org.mian.gitnex.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import org.mian.gitnex.R;
 
 /**
@@ -20,6 +22,9 @@ public class SponsorsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sponsors);
 
         ImageView closeActivity = findViewById(R.id.close);
+        TextView liberaPaySponsorsThomas = findViewById(R.id.liberaPaySponsorsThomas);
+
+        liberaPaySponsorsThomas.setMovementMethod(LinkMovementMethod.getInstance());
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

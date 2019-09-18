@@ -404,6 +404,26 @@
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
 
+    <string name="commitLinkBranchesTab">Commit</string>
+    <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
+    <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
+
+    <!-- new file -->
+    <string name="newFileNameTintCopy">File Name</string>
+    <string name="newFileBranchTintCopy">Branch Name</string>
+    <string name="newFileContentTintCopy">File Content</string>
+    <string name="newFileButtonCopy">Create New File</string>
+    <string name="newFileNameHintMessage">with folder: app/test.md</string>
+    <string name="newFileMessageTintCopy">Commit Message</string>
+    <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
+    <string name="newFileCommitMessageError">Commit message is too long</string>
+    <string name="newFileSuccessMessage">New file created</string>
+    <string name="newFileOldBranches">Current Branches</string>
+    <string name="newFileRequiredFields">Fields like filename, contents and commit message are required.</string>
+    <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
+    <string name="newFileNewBranchMessage">e.g: new-branch</string>
+    <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Fertig</string>
@@ -423,6 +443,7 @@
     <string name="descriptionText">Beschreibung</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Standort</string>
+    <string name="characters255Limit">Max 255 characters</string>
     <!-- generic copy -->
 
 </resources>

@@ -1,12 +1,13 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.models.Branches;
 import org.mian.gitnex.util.TinyDB;
 import java.util.List;
@@ -66,7 +67,9 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.Branch
             holder.branchCommitAuthor.setText(mCtx.getResources().getString(R.string.commitAuthor, currentItem.getCommit().getAuthor().getUsername()));
         }
 
-        holder.branchCommitHash.setText(mCtx.getResources().getString(R.string.commitHash, "", currentItem.getCommit().getUrl()));
+        holder.branchCommitHash.setText(
+                Html.fromHtml("<a href='" + currentItem.getCommit().getUrl() + "'>" + mCtx.getResources().getString(R.string.commitLinkBranchesTab) + "</a> "));
+        holder.branchCommitHash.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 

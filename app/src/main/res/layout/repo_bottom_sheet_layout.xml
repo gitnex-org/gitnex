@@ -8,6 +8,18 @@
     android:paddingTop="8dp">
 
     <TextView
+        android:id="@+id/newFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/pageTitleNewFile"
+        android:drawableStart="@drawable/ic_file"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
         android:id="@+id/createNewIssue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

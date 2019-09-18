@@ -2,6 +2,8 @@ package org.mian.gitnex.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,8 +141,14 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
         else {
             holder.releaseDescription.setVisibility(View.GONE);
         }
-        holder.releaseZipDownload.setText(currentItem.getZipball_url());
-        holder.releaseTarDownload.setText(currentItem.getTarball_url());
+
+        holder.releaseZipDownload.setText(
+                Html.fromHtml("<a href='" + currentItem.getZipball_url() + "'>" + mCtx.getResources().getString(R.string.zipArchiveDownloadReleasesTab) + "</a> "));
+        holder.releaseZipDownload.setMovementMethod(LinkMovementMethod.getInstance());
+
+        holder.releaseTarDownload.setText(
+                Html.fromHtml("<a href='" + currentItem.getTarball_url() + "'>" + mCtx.getResources().getString(R.string.tarArchiveDownloadReleasesTab) + "</a> "));
+        holder.releaseTarDownload.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
