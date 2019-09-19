@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import retrofit2.Call;
 import retrofit2.Callback;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,12 +82,18 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
 
         if(tinyDb.getBoolean("enableCounterIssueBadge")) {
 
-            View tabHeader = LayoutInflater.from(this).inflate(R.layout.badge, null);
+            @SuppressLint("InflateParams") View tabHeader = LayoutInflater.from(this).inflate(R.layout.badge, null);
             textViewBadge = tabHeader.findViewById(R.id.counterBadge);
             if(!tinyDb.getString("issuesCounter").isEmpty()) {
                 getRepoInfo(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
             }
             Objects.requireNonNull(tabLayout.getTabAt(1)).setCustomView(tabHeader);
+
+            TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(1);
+            ColorStateList textColor = tabLayout.getTabTextColors();
+            assert tabOpenIssues != null;
+            TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeText);
+            openIssueTabView.setTextColor(textColor);
 
         }
     }

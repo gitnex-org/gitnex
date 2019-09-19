@@ -23,5 +23,6 @@
     <color name="colorDarkGreen">#009486</color>
     <color name="darkRed">#e74c3c</color>
     <color name="lightBlue">#3faef7</color>
+    <color name="lightGray">#b6bbbf</color>
 
 </resources>
