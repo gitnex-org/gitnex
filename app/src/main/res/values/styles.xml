@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/opensanssemibold</item>
+        <item name="android:fontFamily">@font/sourcecodeproregular</item>
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
         <item name="colorControlHighlight">#123456</item>
     </style>
