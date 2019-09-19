@@ -3,7 +3,6 @@ package org.mian.gitnex.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,13 +41,12 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         private TextView labelId;
         private TextView labelColor;
         private ImageView labelsView;
-        private ImageView labelsOptionsMenu;
 
         private LabelsViewHolder(View itemView) {
             super(itemView);
 
             labelsView = itemView.findViewById(R.id.labelsView);
-            labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
+            ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
             labelTitle = itemView.findViewById(R.id.labelTitle);
             labelId = itemView.findViewById(R.id.labelId);
             labelColor = itemView.findViewById(R.id.labelColor);
@@ -146,6 +144,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
                 //.useFont(Typeface.DEFAULT)
+                .bold()
                 .textColor(new ColorInverter().getContrastColor(color))
                 .fontSize(36)
                 .width(LabelWidthCalculator.customWidth(getMaxLabelLength()))

@@ -151,7 +151,7 @@
     <string name="infoTabRepoSshUrl">SSH URL</string>
     <string name="infoTabRepoCloneUrl">Clone URL</string>
     <string name="infoTabRepoRepoUrl">Repo URL</string>
-    <string name="infoTabRepoForksCount">Forks Count</string>
+    <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Created</string>
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
     <string name="infoTabRepoDummyTime">2018&#8211;10&#8211;30 08:25:25</string>
