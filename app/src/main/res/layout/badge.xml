@@ -13,7 +13,7 @@
         android:textSize="16sp"
         app:textAllCaps="true"
         android:text="@string/tab_text_issues"
-        android:textColor="@color/white" />
+        android:textColor="@color/lightGray" />
 
     <TextView
         android:id="@+id/counterBadge"
