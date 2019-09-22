@@ -17,7 +17,7 @@ No trackers are used and source code is available here for anyone to audit.
 [<img alt='Download APK' src='https://gitnex.com/img/download-apk.png' height="80"/>](https://gitea.com/mmarif/GitNex/releases)
 
 ## Note about Gitea version
-Please make sure that you are on Gitea **1.7.x** stable release or later. Below this may not work as one would expect because of the newly added objects to the API at later versions. Please consider updating your Gitea server.
+Please make sure that you are on Gitea **1.9.x** stable release or later. Below this may not work as one would expect because of the newly added objects to the API at later versions. Please consider updating your Gitea server.
 
 Check the versions [compatibility page](https://gitea.com/mmarif/GitNex/wiki/Compatibility) which lists all the supported versions with compatibility ratio.
 
