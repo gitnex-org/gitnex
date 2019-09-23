@@ -1,6 +1,8 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://gitea.com/api/v1/repos/mmarif/GitNex/releases&query=$[0].tag_name)](https://gitea.com/mmarif/GitNex/releases)
 
-[<img alt="Become a Patroen" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif) [<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"/>](https://liberapay.com/mmarif/donate)
+[<img alt="Become a Patroen" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif)
+[<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"/>](https://liberapay.com/mmarif/donate)
 
 # GitNex - Android client for Gitea
 
@@ -10,10 +12,12 @@ GitNex is licensed under GPLv3 License. See the LICENSE file for the full licens
 No trackers are used and source code is available here for anyone to audit.
 
 ## Downloads
-[<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/) [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex) [Download APK](https://gitea.com/mmarif/GitNex/releases)
+[<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
+[<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex)
+[<img alt='Download APK' src='https://gitnex.com/img/download-apk.png' height="80"/>](https://gitea.com/mmarif/GitNex/releases)
 
 ## Note about Gitea version
-Please make sure that you are on Gitea **1.7.x** stable release or later. Below this may not work as one would expect because of the newly added objects to the API at later versions. Please consider updating your Gitea server.
+Please make sure that you are on Gitea **1.9.x** stable release or later. Below this may not work as one would expect because of the newly added objects to the API at later versions. Please consider updating your Gitea server.
 
 Check the versions [compatibility page](https://gitea.com/mmarif/GitNex/wiki/Compatibility) which lists all the supported versions with compatibility ratio.
 
