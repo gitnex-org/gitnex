@@ -2,7 +2,7 @@
 
     <!-- menu items -->
     <string name="navMyRepos">Meine Repositories</string>
-    <string name="navStarredRepos">Starred Repositories</string>
+    <string name="navStarredRepos">Favoriten</string>
     <string name="navRepos">Repositories</string>
     <string name="navProfile">Profil</string>
     <string name="navSettings">Einstellungen</string>
@@ -17,25 +17,25 @@
     <string name="pageTitleHome">Startseite</string>
     <string name="pageTitleMyRepos">Meine Repositories</string>
     <string name="pageTitleRepositories">Repositories</string>
-    <string name="pageTitleProfile">Profile</string>
+    <string name="pageTitleProfile">Profil</string>
     <string name="pageTitleNewRepo">Repository erstellen</string>
     <string name="pageTitleOrganizations">Organisationen</string>
-    <string name="pageTitleIssues">Probleme</string>
+    <string name="pageTitleIssues">Issues</string>
     <string name="pageTitleSettings">Einstellungen</string>
     <string name="pageTitleCreateOrganization">Organisation erstellen</string>
-    <string name="pageTitleCreateMilestone">Meilenstein Erstellen</string>
-    <string name="pageTitleCreateNewIssue">Issue Erstellen</string>
-    <string name="pageTitleCreateLabel">Label Erstellen</string>
+    <string name="pageTitleCreateMilestone">Meilenstein erstellen</string>
+    <string name="pageTitleCreateNewIssue">Issue erstellen</string>
+    <string name="pageTitleCreateLabel">Label erstellen</string>
     <string name="pageTitleCredits">Credits</string>
-    <string name="pageTitleLabelUpdate">Label Aktualisieren</string>
+    <string name="pageTitleLabelUpdate">Label aktualisieren</string>
     <string name="pageTitleSponsors">Sponsoren</string>
-    <string name="pageTitleStarredRepos">Starred Repositories</string>
-    <string name="pageTitleCreateTeam">Team Erstellen</string>
-    <string name="pageTitleAddEmail">E-Mail Adresse Hinzufügen</string>
+    <string name="pageTitleStarredRepos">Favoriten</string>
+    <string name="pageTitleCreateTeam">Team erstellen</string>
+    <string name="pageTitleAddEmail">E-Mail Adresse hinzufügen</string>
     <!-- page titles -->
 
     <string name="appVersion">Version\u0020:\u0020</string>
-    <string name="appBuild">Build No.\u0020:\u0020</string>
+    <string name="appBuild">Build Nr.\u0020:\u0020</string>
 
     <string name="repoName">Demo Repo</string>
     <string name="repoFullname">Repo mit ORG</string>
@@ -49,15 +49,15 @@
     <string name="newCreateButtonCopy">Erstellen</string>
     <string name="newUpdateButtonCopy">Aktualisieren</string>
 
-    <string name="newRepoTintCopy">Name der Repo</string>
-    <string name="newRepoDescTintCopy">Beschreibung der Repo</string>
+    <string name="newRepoTintCopy">Name des Repositories</string>
+    <string name="newRepoDescTintCopy">Beschreibung des Repositories</string>
     <string name="newRepoPrivateCopy">Privat</string>
-    <string name="newRepoDescInfo">255 Zeichen Maximal</string>
+    <string name="newRepoDescInfo">maximal 255 Zeichen</string>
     <string name="newRepoOwner">Eigentümer</string>
 
     <string name="newOrgTintCopy">Name der Organisation</string>
     <string name="newOrgDescTintCopy">Beschreibung der Organisation</string>
-    <string name="newOrgDescInfo">255 Zeichen Maximal</string>
+    <string name="newOrgDescInfo">maximal 255 Zeichen</string>
 
     <string name="userName">Benutzername</string>
     <string name="passWord">Passwort</string>
@@ -66,16 +66,16 @@
     <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
     <string name="navigation_drawer_close">Navigationsleiste schließen</string>
     <string name="logo">In Gitea anmelden</string>
-    <string name="urlInfoTooltip">1- Wählen Sie das richtige Protokoll (https oder http) \ N2- Geben Sie die Gitea-URL ein, z.B. try.gitea.io \n3- For 2FA enter USERNAME:CODE in the Username field \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field</string>
-    <string name="loginFailed">Falscher Benutzername / Passwort </string>
+    <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld</string>
+    <string name="loginFailed">Falscher Benutzername/Passwort </string>
     <string name="protocolDelimiter">://</string>
-    <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, Sie testen in einem lokalen Netzwerk.</string>
-    <string name="malformedJson">Fehlgestaltete JSON erhalten, Serveranfrage war nicht erfolgreich.</string>
-    <string name="emptyFieldURL">Instance URL is required</string>
-    <string name="emptyFieldUsername">Username is required</string>
-    <string name="emptyFieldPassword">Password is required</string>
+    <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, du testest in einem lokalen Netzwerk.</string>
+    <string name="malformedJson">Fehlerhaftes JSON erhalten. Serveranfrage war nicht erfolgreich.</string>
+    <string name="emptyFieldURL">Instanzen-URL ist erforderlich</string>
+    <string name="emptyFieldUsername">Benutzername ist erforderlich</string>
+    <string name="emptyFieldPassword">Passwort ist erforderlich</string>
 
-    <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen, überprüfen Sie Ihre Internetverbindung</string>
+    <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen. Bitte überprüfe die Internetverbindung</string>
     <string name="emptyFields">Es sind alle Felder erforderlich</string>
 
     <string name="repoNameErrorEmpty">Der Repository Name ist leer.</string>
@@ -83,7 +83,7 @@
     <string name="repoDescError">Die Repositorybeschreibung überschreitet die maximale Anzahl von 255 Zeichen</string>
     <string name="repoCreated">Repository erfolgreich erstellt!</string>
     <string name="repoCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
-    <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
+    <string name="repoExistsError">Ein Repository mit diesem Namen existiert bereits unter dem ausgewählten Besitzer</string>
 
     <string name="orgNameErrorEmpty">Organisationsname ist leer</string>
     <string name="orgNameErrorInvalid">Organisationsname ist nicht gültig, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -92,7 +92,7 @@
     <string name="orgCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="orgExistsError">Organisation existiert bereits</string>
 
-    <string name="processingText">wird bearbeitet</string>
+    <string name="processingText">verarbeite</string>
     <string name="search">Suche</string>
     <string name="wip">In Arbeit</string>
 
@@ -118,7 +118,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="tab_text_collaborators">Mitarbeiter</string>
 
-    <string name="noDataIssueTab">Keine Probleme gefunden!</string>
+    <string name="noDataIssueTab">Keine Issues gefunden!</string>
 
     <string name="infoTabRepoName1">Repository</string>
     <string name="infoTabRepoOwner1">Eigentümer</string>
@@ -127,9 +127,9 @@
     <string name="infoTabRepoSize">Größe</string>
     <string name="infoTabRepoDefaultBranch">Standard Branch</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
-    <string name="infoTabRepoCloneUrl">Clone URL</string>
+    <string name="infoTabRepoCloneUrl">Klon URL</string>
     <string name="infoTabRepoRepoUrl">Repo URL</string>
-    <string name="infoTabRepoForksCount">Azahl an Forks</string>
+    <string name="infoTabRepoForksCount">Anzahl an Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
     <string name="infoTabRepoDummyTime">2018&#8211;10&#8211;30 08:25:25</string>
@@ -257,7 +257,7 @@
     <string name="creditsLogoDesign">Design</string>
 
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
-    <string name="alertDialogTokenRevokedMessage">Es scheint, dass das Access Token widerrufen wurde ODER Sie diese Inhalte nicht sehen dürfen. Falls das Token wiederrufen wurde, melden Sie sich bitte ab und wieder an.</string>
+    <string name="alertDialogTokenRevokedMessage">Es scheint, dass der Access Token widerrufen wurde ODER du diese Inhalte nicht sehen darfst. Falls der Token wiederrufen wurde, melde dich bitte ab und wieder an.</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Abbrechen</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Abmelden</string>
 
@@ -277,7 +277,7 @@
     <string name="teamDescription">Beschrebung des Teams</string>
     <string name="teamPermission">Berechtigung: %1$s</string>
     <string name="noDataMembers">Keine Mitglieder gefunden!</string>
-    <string name="orgMember">Org members</string>
+    <string name="orgMember">Org Mitglied</string>
     <string name="orgTeamMembers">Mitglieder der Organization</string>
     <!-- org tabbed layout str -->
 
@@ -291,7 +291,7 @@
     <string name="newTeamPermissionAdmin">Mitglieder können zu Team-Repositories pushen und pullen und Mitarbeiter zu ihnen hinzufügen</string>
     <string name="teamNameEmpty">Bitte gib den Namen des Teams ein.</string>
     <string name="teamNameError">Der Name des Teams sollte nur Alphanumerische Zeichen, Bindestriche (-), Unterstriche (_) und Punkte (.) enthalten.</string>
-    <string name="teamPermissionEmpty">Bitte wählen sie die Rechte aus.</string>
+    <string name="teamPermissionEmpty">Bitte wähle die Rechte aus.</string>
     <string name="teamDescError">Die Beschreibung des Teams hat verbotene Zeichen.</string>
     <string name="teamDescLimit">Die Team Beschreibung überschreitet das Maximum von 100 Zeichen.</string>
     <string name="teamCreated">Team erfolgreich erstellt.</string>
@@ -312,7 +312,7 @@
     <string name="removeCollaboratorMessage">Möchtest du den Nutzer wirklich von dieser Repository entfernen?</string>
     <string name="removeCollaboratorToastText">Benuter von der Repository entfernt.</string>
     <string name="addCollaboratorToastText">Benutzer zu der Repository hinzugefügt.</string>
-    <string name="openWebRepo">Öfne mit Browser</string>
+    <string name="openWebRepo">Öffne mit Browser</string>
     <!-- add collaborator -->
 
     <!-- profile section -->
@@ -322,7 +322,7 @@
     <string name="profileEmailButton">Speichern</string>
     <string name="profileEmailTitle">E-Mail Adresse</string>
     <string name="emailAddedText">Neue E-Mail Adresse erfolgreich hinzugefügt.</string>
-    <string name="emailErrorEmpty">E-Mail Adresse is leer.</string>
+    <string name="emailErrorEmpty">E-Mail Adresse ist leer.</string>
     <string name="emailErrorInvalid">E-Mail Adresse ist nicht gültig.</string>
     <string name="emailErrorInUse">Die E-Mail Adresse wird bereits verwendet.</string>
     <string name="emailTypeText">Primär</string>
@@ -330,7 +330,7 @@
     <!-- profile section -->
 
     <!-- single issue section -->
-    <string name="singleIssueEditLabels">Labels Hinzufügen / Entfernen</string>
+    <string name="singleIssueEditLabels">Labels hinzufügen/entfernen</string>
     <string name="labelsUpdated">Labels aktualisiert</string>
     <string name="closeIssue">Issue schließen</string>
     <string name="replyToIssue">Kommentar hinzufügen</string>
@@ -339,8 +339,8 @@
     <string name="issueStateClosed">Issue geschlossen</string>
     <string name="issueStateReopened">Issue neu geöffnet</string>
     <string name="addRemoveAssignees2">Füge Zuständige hinzu</string>
-    <string name="addRemoveAssignees">Zuständige Hinzufügen / Entfernen</string>
-    <string name="assigneesUpdated">Zuständoge aktualisiert</string>
+    <string name="addRemoveAssignees">Zuständige hinzufügen/entfernen</string>
+    <string name="assigneesUpdated">Zuständige aktualisiert</string>
     <!-- single issue section -->
 
     <!-- multi select dialog -->
@@ -350,7 +350,7 @@
     <string name="you_can_only_select_upto">Du kannst höchstens so viele auswählen: </string>
     <string name="option"> Option</string>
     <string name="options"> Optionen</string>
-    <string name="select_all">Alle  Auswählen</string>
+    <string name="select_all">Alle auswählen</string>
     <string name="de_select_all">Die Auswahl aufheben</string>
     <!-- multi select dialog -->
 
@@ -380,7 +380,7 @@
     <!-- edit issue -->
 
     <!-- release -->
-    <string name="createRelease">Release Erstellen</string>
+    <string name="createRelease">Release erstellen</string>
     <string name="releaseTagNameText">Tag</string>
     <string name="releaseTitleText">Titel</string>
     <string name="releaseContentText">Inhalt</string>
@@ -389,40 +389,40 @@
     <string name="releaseDraftText">Entwurf</string>
     <string name="tagNameErrorEmpty">Der Tag ist leer</string>
     <string name="titleErrorEmpty">Der Titel ist leer</string>
-    <string name="releaseCreatedText">Neuer release erstellt</string>
+    <string name="releaseCreatedText">Neuer Release erstellt</string>
     <!-- release -->
 
     <string name="loginOTPError">Bitte gib den OTP code ein</string>
     <string name="loginOTPTypeError">Der OTP code muss aus Zahlen bestehen.</string>
     <string name="loginOTP">OTP Code (Optional)</string>
-    <string name="otpMessage">Gebe den otp code ein wenn 2FA eingeschaltet ist</string>
+    <string name="otpMessage">Gib den otp code ein, wenn 2FA eingeschaltet ist</string>
 
-    <string name="repoStargazersInMenu">Stargazers</string>
-    <string name="repoWatchersInMenu">Watchers</string>
-    <string name="noDataStargazers">No stars found</string>
-    <string name="noDataWatchers">No watchers found</string>
-    <string name="starMember">Star</string>
-    <string name="watcherMember">Watcher</string>
+    <string name="repoStargazersInMenu">Favorisierer</string>
+    <string name="repoWatchersInMenu">Beobachter</string>
+    <string name="noDataStargazers">Keine Favorisierer gefunden</string>
+    <string name="noDataWatchers">Keine Beobachter gefunden</string>
+    <string name="starMember">Favorisierer</string>
+    <string name="watcherMember">Beobachter</string>
 
     <string name="commitLinkBranchesTab">Commit</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
+    <string name="zipArchiveDownloadReleasesTab">Zip Archiv</string>
+    <string name="tarArchiveDownloadReleasesTab">Tar Archiv</string>
 
     <!-- new file -->
-    <string name="newFileNameTintCopy">File Name</string>
-    <string name="newFileBranchTintCopy">Branch Name</string>
-    <string name="newFileContentTintCopy">File Content</string>
-    <string name="newFileButtonCopy">Create New File</string>
-    <string name="newFileNameHintMessage">with folder: app/test.md</string>
-    <string name="newFileMessageTintCopy">Commit Message</string>
-    <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
-    <string name="newFileCommitMessageError">Commit message is too long</string>
-    <string name="newFileSuccessMessage">New file created</string>
-    <string name="newFileOldBranches">Current Branches</string>
-    <string name="newFileRequiredFields">Fields like filename, contents and commit message are required.</string>
-    <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
-    <string name="newFileNewBranchMessage">e.g: new-branch</string>
-    <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
+    <string name="newFileNameTintCopy">Dateiname</string>
+    <string name="newFileBranchTintCopy">neuer Branch-Name</string>
+    <string name="newFileContentTintCopy">Dateiinhalt</string>
+    <string name="newFileButtonCopy">Erstelle neue Datei</string>
+    <string name="newFileNameHintMessage">mit Ordner: app/test.md</string>
+    <string name="newFileMessageTintCopy">Commit-Nachricht</string>
+    <string name="newFileInvalidBranchName">Der Branch-Name ist ungültig und sollte nur folgendes beinhalten &#8211;, a&#8211;z, 0&#8211;9</string>
+    <string name="newFileCommitMessageError">Commit-Nachricht ist zu lang</string>
+    <string name="newFileSuccessMessage">Neue Datei erstellt</string>
+    <string name="newFileOldBranches">Derzeitige Branches</string>
+    <string name="newFileRequiredFields">Felder wie Dateiname, Inhalt und Commit-Nachricht sind erforderlich.</string>
+    <string name="newFileCurrentBranchMessage">Das Auswählen des derzeitigen Branches wird "neuer Branch-Name" deaktivieren</string>
+    <string name="newFileNewBranchMessage">z.B.: neuer-branch</string>
+    <string name="newFileRequiredFieldNewBranchName">Neuer Branch-Name kann nicht leer sein, wenn der derzeitige Branch nicht ausgewählt ist</string>
 
     <!-- generic copy -->
     <string name="okButton">OK</string>
@@ -433,7 +433,7 @@
     <string name="noDataFound">Keine Daten gefunden</string>
     <string name="addButton">Hinzufügen</string>
     <string name="removeButton">Entfernen</string>
-    <string name="authorizeError">Sie sind nicht berechtigt, diese Aktion durchzuführen.</string>
+    <string name="authorizeError">Du bist nicht berechtigt, diese Aktion durchzuführen.</string>
     <string name="menuContentDesc">Menü</string>
     <string name="menuEditText">Bearbeiten</string>
     <string name="menuDeleteText">Entfernen</string>
@@ -443,7 +443,7 @@
     <string name="descriptionText">Beschreibung</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Standort</string>
-    <string name="characters255Limit">Max 255 characters</string>
+    <string name="characters255Limit">maximal 255 Zeichen</string>
     <!-- generic copy -->
 
 </resources>
