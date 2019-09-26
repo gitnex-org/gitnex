@@ -424,6 +424,8 @@
     <string name="newFileNewBranchMessage">e.g: new-branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
 
+    <string name="strFilter">Filter</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>
