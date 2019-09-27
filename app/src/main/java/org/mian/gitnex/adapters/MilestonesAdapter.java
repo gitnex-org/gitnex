@@ -193,7 +193,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
                 holder.msProgress.setProgress(100*currentItem.getClosed_issues()/(currentItem.getOpen_issues() + currentItem.getClosed_issues()));
             }
         } else {
-            holder.msProgress.setVisibility(View.GONE);
+            holder.msProgress.setProgress(0);
         }
 
         if(currentItem.getDue_on() != null) {
