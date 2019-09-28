@@ -92,15 +92,12 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
                     instanceUrlWithProtocol = tinyDB.getString("instanceUrlWithProtocol");
                 }
 
-                //get issue number
-                String issue = tinyDB.getString("issueNumber");
-
-                //combine
-                issue = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + issue;
+                //get issue Url
+                String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
 
                 // copy to clipboard
                 ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("issue", issue);
+                ClipData clip = ClipData.newPlainText("issueUrl", issueUrl);
                 clipboard.setPrimaryClip(clip);
 
                 dismiss();
