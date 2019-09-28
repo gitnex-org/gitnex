@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.vdurmont.emoji.EmojiParser;
@@ -59,6 +60,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
         private TextView msClosedIssues;
         private TextView msDueDate;
         private ImageView msStatus;
+        private ProgressBar msProgress;
 
         private MilestonesViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +71,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
             msOpenIssues = itemView.findViewById(R.id.milestoneIssuesOpen);
             msClosedIssues = itemView.findViewById(R.id.milestoneIssuesClosed);
             msDueDate = itemView.findViewById(R.id.milestoneDueDate);
+            msProgress = itemView.findViewById(R.id.milestoneProgress);
 
             /*issueTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -182,6 +185,16 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
 
         holder.msClosedIssues.setText(String.valueOf(currentItem.getClosed_issues()));
         holder.msClosedIssues.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneClosedIssues, currentItem.getClosed_issues()), mCtx));
+
+        if ((currentItem.getOpen_issues() + currentItem.getClosed_issues()) > 0) {
+            if (currentItem.getOpen_issues() == 0) {
+                holder.msProgress.setProgress(100);
+            } else {
+                holder.msProgress.setProgress(100*currentItem.getClosed_issues()/(currentItem.getOpen_issues() + currentItem.getClosed_issues()));
+            }
+        } else {
+            holder.msProgress.setProgress(0);
+        }
 
         if(currentItem.getDue_on() != null) {
 
