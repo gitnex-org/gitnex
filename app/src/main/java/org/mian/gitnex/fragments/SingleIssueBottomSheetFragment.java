@@ -39,7 +39,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
         TextView closeIssue = v.findViewById(R.id.closeIssue);
         TextView reOpenIssue = v.findViewById(R.id.reOpenIssue);
         TextView addRemoveAssignees = v.findViewById(R.id.addRemoveAssignees);
-        TextView copyIssue = v.findViewById(R.id.copyIssue);
+        TextView copyIssueUrl = v.findViewById(R.id.copyIssueUrl);
 
         replyToIssue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +81,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
-        copyIssue.setOnClickListener(new View.OnClickListener() {
+        copyIssueUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
