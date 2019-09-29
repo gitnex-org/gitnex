@@ -10,26 +10,33 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import okhttp3.OkHttpClient;
+import io.noties.markwon.AbstractMarkwonPlugin;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.core.CorePlugin;
+import io.noties.markwon.core.MarkwonTheme;
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
+import io.noties.markwon.ext.tables.TablePlugin;
+import io.noties.markwon.ext.tasklist.TaskListPlugin;
+import io.noties.markwon.html.HtmlPlugin;
+import io.noties.markwon.image.AsyncDrawable;
+import io.noties.markwon.image.DefaultMediaDecoder;
+import io.noties.markwon.image.ImageItem;
+import io.noties.markwon.image.ImagesPlugin;
+import io.noties.markwon.image.SchemeHandler;
+import io.noties.markwon.image.gif.GifMediaDecoder;
+import io.noties.markwon.image.svg.SvgMediaDecoder;
+import io.noties.markwon.linkify.LinkifyPlugin;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.noties.markwon.AbstractMarkwonPlugin;
-import ru.noties.markwon.Markwon;
-import ru.noties.markwon.core.CorePlugin;
-import ru.noties.markwon.core.MarkwonTheme;
-import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import ru.noties.markwon.ext.tables.TablePlugin;
-import ru.noties.markwon.ext.tasklist.TaskListPlugin;
-import ru.noties.markwon.html.HtmlPlugin;
-import ru.noties.markwon.image.ImagesPlugin;
-import ru.noties.markwon.image.gif.GifPlugin;
-import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -63,6 +70,8 @@ import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -286,22 +295,64 @@ public class IssueDetailActivity extends AppCompatActivity {
 
                         final Markwon markwon = Markwon.builder(Objects.requireNonNull(getApplicationContext()))
                                 .usePlugin(CorePlugin.create())
-                                .usePlugin(OkHttpImagesPlugin.create(new OkHttpClient()))
-                                .usePlugin(ImagesPlugin.createWithAssets(getApplicationContext()))
+                                .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
+                                    @Override
+                                    public void configureImages(@NonNull ImagesPlugin plugin) {
+                                        plugin.addSchemeHandler(new SchemeHandler() {
+                                            @NonNull
+                                            @Override
+                                            public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
+
+                                                final int resourceId = getApplicationContext().getResources().getIdentifier(
+                                                        raw.substring("drawable://".length()),
+                                                        "drawable",
+                                                        getApplicationContext().getPackageName());
+
+                                                final Drawable drawable = getApplicationContext().getDrawable(resourceId);
+
+                                                assert drawable != null;
+                                                return ImageItem.withResult(drawable);
+                                            }
+
+                                            @NonNull
+                                            @Override
+                                            public Collection<String> supportedSchemes() {
+                                                return Collections.singleton("drawable");
+                                            }
+                                        });
+                                        plugin.addMediaDecoder(GifMediaDecoder.create(false));
+                                        plugin.addMediaDecoder(SvgMediaDecoder.create(getApplicationContext().getResources()));
+                                        plugin.addMediaDecoder(SvgMediaDecoder.create());
+                                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getApplicationContext().getResources()));
+                                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
+                                    }
+                                }))
                                 .usePlugin(new AbstractMarkwonPlugin() {
                                     @Override
                                     public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
                                         builder
                                                 .codeTextColor(tinyDb.getInt("codeBlockColor"))
                                                 .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-                                                .linkColor(getApplicationContext().getResources().getColor(R.color.lightBlue));
+                                                .linkColor(getResources().getColor(R.color.lightBlue));
                                     }
                                 })
+                                .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
+                                    @Override
+                                    public void configureImages(@NonNull ImagesPlugin plugin) {
+                                        plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
+                                            @Nullable
+                                            @Override
+                                            public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
+                                                return null;
+                                            }
+                                        });
+                                    }
+                                }))
                                 .usePlugin(TablePlugin.create(getApplicationContext()))
                                 .usePlugin(TaskListPlugin.create(getApplicationContext()))
                                 .usePlugin(HtmlPlugin.create())
-                                .usePlugin(GifPlugin.create())
                                 .usePlugin(StrikethroughPlugin.create())
+                                .usePlugin(LinkifyPlugin.create())
                                 .build();
 
                         TinyDB tinyDb = new TinyDB(getApplicationContext());
@@ -313,8 +364,8 @@ public class IssueDetailActivity extends AppCompatActivity {
                         Picasso.get().load(singleIssue.getUser().getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(assigneeAvatar);
                         issueTitle.setText(getString(R.string.issueTitleWithId, singleIssue.getNumber(), singleIssue.getTitle()));
                         String cleanIssueDescription = singleIssue.getBody().trim();
-                        final CharSequence bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
-                        issueDescription.setText(UserMentions.UserMentionsFunc(getApplicationContext(), bodyWithMD, cleanIssueDescription));
+                        Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
+                        markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(getApplicationContext(), bodyWithMD, cleanIssueDescription));
 
                         RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams)issueDescription.getLayoutParams();
 

@@ -1,24 +1,31 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import okhttp3.OkHttpClient;
+import io.noties.markwon.AbstractMarkwonPlugin;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.core.CorePlugin;
+import io.noties.markwon.core.MarkwonTheme;
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
+import io.noties.markwon.ext.tables.TablePlugin;
+import io.noties.markwon.ext.tasklist.TaskListPlugin;
+import io.noties.markwon.html.HtmlPlugin;
+import io.noties.markwon.image.AsyncDrawable;
+import io.noties.markwon.image.DefaultMediaDecoder;
+import io.noties.markwon.image.ImageItem;
+import io.noties.markwon.image.ImagesPlugin;
+import io.noties.markwon.image.SchemeHandler;
+import io.noties.markwon.image.gif.GifMediaDecoder;
+import io.noties.markwon.image.svg.SvgMediaDecoder;
+import io.noties.markwon.linkify.LinkifyPlugin;
 import retrofit2.Call;
 import retrofit2.Callback;
-import ru.noties.markwon.AbstractMarkwonPlugin;
-import ru.noties.markwon.Markwon;
-import ru.noties.markwon.core.CorePlugin;
-import ru.noties.markwon.core.MarkwonTheme;
-import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import ru.noties.markwon.ext.tables.TablePlugin;
-import ru.noties.markwon.ext.tasklist.TaskListPlugin;
-import ru.noties.markwon.html.HtmlPlugin;
-import ru.noties.markwon.image.ImagesPlugin;
-import ru.noties.markwon.image.gif.GifPlugin;
-import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +47,8 @@ import org.mian.gitnex.util.TinyDB;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -299,30 +308,73 @@ public class RepoInfoFragment extends Fragment {
                     if (response.code() == 200) {
 
                         final Markwon markwon = Markwon.builder(Objects.requireNonNull(getContext()))
-                                .usePlugin(CorePlugin.create())
-                                .usePlugin(OkHttpImagesPlugin.create(new OkHttpClient()))
-                                .usePlugin(ImagesPlugin.createWithAssets(getContext()))
-                                .usePlugin(new AbstractMarkwonPlugin() {
-                                    @Override
-                                    public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-                                        builder
-                                                .codeTextColor(tinyDb.getInt("codeBlockColor"))
-                                                .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-                                                .linkColor(getResources().getColor(R.color.lightBlue));
-                                    }
-                                })
-                                .usePlugin(TablePlugin.create(getContext()))
-                                .usePlugin(TaskListPlugin.create(getContext()))
-                                .usePlugin(HtmlPlugin.create())
-                                .usePlugin(GifPlugin.create())
-                                .usePlugin(StrikethroughPlugin.create())
-                                .build();
+                            .usePlugin(CorePlugin.create())
+                            .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
+                                @Override
+                                public void configureImages(@NonNull ImagesPlugin plugin) {
+                                    plugin.addSchemeHandler(new SchemeHandler() {
+                                        @NonNull
+                                        @Override
+                                        public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-                        CharSequence bodyWithMD = null;
+                                            final int resourceId = getContext().getResources().getIdentifier(
+                                                    raw.substring("drawable://".length()),
+                                                    "drawable",
+                                                    getContext().getPackageName());
+
+                                            final Drawable drawable = getContext().getDrawable(resourceId);
+
+                                            assert drawable != null;
+                                            return ImageItem.withResult(drawable);
+                                        }
+
+                                        @NonNull
+                                        @Override
+                                        public Collection<String> supportedSchemes() {
+                                            return Collections.singleton("drawable");
+                                        }
+                                    });
+                                    plugin.addMediaDecoder(GifMediaDecoder.create(false));
+                                    plugin.addMediaDecoder(SvgMediaDecoder.create(getContext().getResources()));
+                                    plugin.addMediaDecoder(SvgMediaDecoder.create());
+                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getContext().getResources()));
+                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
+                                }
+                            }))
+                            .usePlugin(new AbstractMarkwonPlugin() {
+                                @Override
+                                public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+                                    builder
+                                            .codeTextColor(tinyDb.getInt("codeBlockColor"))
+                                            .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
+                                            .linkColor(getResources().getColor(R.color.lightBlue));
+                                }
+                            })
+                            .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
+                                @Override
+                                public void configureImages(@NonNull ImagesPlugin plugin) {
+                                    plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
+                                        @Nullable
+                                        @Override
+                                        public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
+                                            return null;
+                                        }
+                                    });
+                                }
+                            }))
+                            .usePlugin(TablePlugin.create(getContext()))
+                            .usePlugin(TaskListPlugin.create(getContext()))
+                            .usePlugin(HtmlPlugin.create())
+                            .usePlugin(StrikethroughPlugin.create())
+                            .usePlugin(LinkifyPlugin.create())
+                            .build();
+
+                        Spanned bodyWithMD = null;
                         if (response.body() != null) {
                             bodyWithMD = markwon.toMarkdown(response.body());
                         }
-                        repoFileContents.setText(bodyWithMD);
+                        assert bodyWithMD != null;
+                        markwon.setParsedMarkdown(repoFileContents, bodyWithMD);
 
 
                     } else if (response.code() == 401) {

@@ -3,7 +3,9 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,24 +27,30 @@ import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.OkHttpClient;
-import ru.noties.markwon.AbstractMarkwonPlugin;
-import ru.noties.markwon.Markwon;
-import ru.noties.markwon.core.CorePlugin;
-import ru.noties.markwon.core.MarkwonTheme;
-import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import ru.noties.markwon.ext.tables.TablePlugin;
-import ru.noties.markwon.ext.tables.TableTheme;
-import ru.noties.markwon.ext.tasklist.TaskListPlugin;
-import ru.noties.markwon.html.HtmlPlugin;
-import ru.noties.markwon.image.ImagesPlugin;
-import ru.noties.markwon.image.gif.GifPlugin;
-import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin;
+import io.noties.markwon.AbstractMarkwonPlugin;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.core.CorePlugin;
+import io.noties.markwon.core.MarkwonTheme;
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
+import io.noties.markwon.ext.tables.TablePlugin;
+import io.noties.markwon.ext.tasklist.TaskListPlugin;
+import io.noties.markwon.html.HtmlPlugin;
+import io.noties.markwon.image.AsyncDrawable;
+import io.noties.markwon.image.DefaultMediaDecoder;
+import io.noties.markwon.image.ImageItem;
+import io.noties.markwon.image.ImagesPlugin;
+import io.noties.markwon.image.SchemeHandler;
+import io.noties.markwon.image.gif.GifMediaDecoder;
+import io.noties.markwon.image.svg.SvgMediaDecoder;
+import io.noties.markwon.linkify.LinkifyPlugin;
 
 /**
  * Author M M Arif
@@ -185,8 +193,38 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             final Markwon markwon = Markwon.builder(Objects.requireNonNull(context))
                     .usePlugin(CorePlugin.create())
-                    .usePlugin(OkHttpImagesPlugin.create(new OkHttpClient()))
-                    .usePlugin(ImagesPlugin.createWithAssets(context))
+                    .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
+                        @Override
+                        public void configureImages(@NonNull ImagesPlugin plugin) {
+                            plugin.addSchemeHandler(new SchemeHandler() {
+                                @NonNull
+                                @Override
+                                public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
+
+                                    final int resourceId = context.getResources().getIdentifier(
+                                            raw.substring("drawable://".length()),
+                                            "drawable",
+                                            context.getPackageName());
+
+                                    final Drawable drawable = context.getDrawable(resourceId);
+
+                                    assert drawable != null;
+                                    return ImageItem.withResult(drawable);
+                                }
+
+                                @NonNull
+                                @Override
+                                public Collection<String> supportedSchemes() {
+                                    return Collections.singleton("drawable");
+                                }
+                            });
+                            plugin.addMediaDecoder(GifMediaDecoder.create(false));
+                            plugin.addMediaDecoder(SvgMediaDecoder.create(context.getResources()));
+                            plugin.addMediaDecoder(SvgMediaDecoder.create());
+                            plugin.defaultMediaDecoder(DefaultMediaDecoder.create(context.getResources()));
+                            plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
+                        }
+                    }))
                     .usePlugin(new AbstractMarkwonPlugin() {
                         @Override
                         public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
@@ -196,11 +234,23 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     .linkColor(context.getResources().getColor(R.color.lightBlue));
                         }
                     })
+                    .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
+                        @Override
+                        public void configureImages(@NonNull ImagesPlugin plugin) {
+                            plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
+                                @Nullable
+                                @Override
+                                public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
+                                    return null;
+                                }
+                            });
+                        }
+                    }))
                     .usePlugin(TablePlugin.create(context))
                     .usePlugin(TaskListPlugin.create(context))
                     .usePlugin(HtmlPlugin.create())
-                    .usePlugin(GifPlugin.create())
                     .usePlugin(StrikethroughPlugin.create())
+                    .usePlugin(LinkifyPlugin.create())
                     .build();
 
             if (!issuesModel.getUser().getFull_name().equals("")) {
@@ -230,8 +280,8 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (!issuesModel.getBody().equals("")) {
                 String cleanIssueDescription = issuesModel.getBody().trim();
                 issueDescription.setVisibility(View.VISIBLE);
-                final CharSequence bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
-                issueDescription.setText(UserMentions.UserMentionsFunc(context, bodyWithMD, cleanIssueDescription));
+                Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
+                markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(context, bodyWithMD, cleanIssueDescription));
             }
             else {
                 issueDescription.setText("");

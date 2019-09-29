@@ -23,8 +23,8 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = "2.2.0-alpha04"
-    final def markwon_version = "3.0.0"
+    def lifecycle_version = "2.2.0-alpha05"
+    final def  markwon_version =  "4.1.1"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -47,17 +47,21 @@ dependencies {
     implementation "com.vdurmont:emoji-java:4.0.0"
     implementation "com.pes.materialcolorpicker:library:1.2.5"
 
-    implementation "ru.noties.markwon:core:$markwon_version"
-    implementation "ru.noties.markwon:ext-strikethrough:$markwon_version"
-    implementation "ru.noties.markwon:ext-tables:$markwon_version"
-    implementation "ru.noties.markwon:ext-tasklist:$markwon_version"
-    implementation "ru.noties.markwon:syntax-highlight:$markwon_version"
-    implementation "ru.noties.markwon:image-okhttp:$markwon_version"
-    implementation "ru.noties.markwon:html:$markwon_version"
-    implementation "ru.noties.markwon:recycler:$markwon_version"
-    implementation "ru.noties.markwon:recycler-table:$markwon_version"
-    implementation "ru.noties.markwon:image-gif:$markwon_version"
-    implementation "ru.noties.markwon:image-svg:$markwon_version"
+    implementation "io.noties.markwon:core:$markwon_version"
+    implementation "io.noties.markwon:ext-latex:$markwon_version"
+    implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
+    implementation "io.noties.markwon:ext-tables:$markwon_version"
+    implementation "io.noties.markwon:ext-tasklist:$markwon_version"
+    implementation "io.noties.markwon:html:$markwon_version"
+    implementation "io.noties.markwon:image:$markwon_version"
+    implementation "io.noties.markwon:image-picasso:$markwon_version"
+    implementation "io.noties.markwon:linkify:$markwon_version"
+    implementation "io.noties.markwon:recycler:$markwon_version"
+    implementation "io.noties.markwon:recycler-table:$markwon_version"
+    implementation "io.noties.markwon:simple-ext:$markwon_version"
+    implementation "io.noties.markwon:syntax-highlight:$markwon_version"
+    implementation "com.caverock:androidsvg:1.4"
+    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.14"
 
     implementation "com.hendraanggrian.appcompat:socialview:0.2"
     implementation "com.hendraanggrian.appcompat:socialview-commons:0.2"
