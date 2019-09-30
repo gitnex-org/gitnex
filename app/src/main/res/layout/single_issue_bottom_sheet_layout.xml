@@ -79,4 +79,16 @@
         android:textSize="16sp"
         android:padding="16dp" />
 
+    <TextView
+        android:id="@+id/copyIssueUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawableStart="@drawable/ic_content_copy"
+        android:drawablePadding="24dp"
+        android:padding="16dp"
+        android:text="@string/copyIssueUrl"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
 </LinearLayout>

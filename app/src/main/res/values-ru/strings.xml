@@ -447,6 +447,7 @@
     <string name="locationText">Место расположения</string>
     <string name="openWebRepo">Открыть с помощью браузера</string>
     <string name="characters255Limit">Max 255 characters</string>
+    <string name="copyIssueUrl">Copy Issue Url</string>
     <!-- generic copy -->
 
 </resources>

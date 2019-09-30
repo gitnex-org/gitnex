@@ -16,6 +16,8 @@ import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.util.TinyDB;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 
 /**
  * Author M M Arif
@@ -37,6 +39,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
         TextView closeIssue = v.findViewById(R.id.closeIssue);
         TextView reOpenIssue = v.findViewById(R.id.reOpenIssue);
         TextView addRemoveAssignees = v.findViewById(R.id.addRemoveAssignees);
+        TextView copyIssueUrl = v.findViewById(R.id.copyIssueUrl);
 
         replyToIssue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +76,30 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
 
                 startActivity(new Intent(getContext(), AddRemoveAssigneesActivity.class));
+                dismiss();
+
+            }
+        });
+
+        copyIssueUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //get url of repo
+                String repoFullName = tinyDB.getString("repoFullName");
+                String instanceUrlWithProtocol = "https://" + tinyDB.getString("instanceUrlRaw");
+                if(!tinyDB.getString("instanceUrlWithProtocol").isEmpty()) {
+                    instanceUrlWithProtocol = tinyDB.getString("instanceUrlWithProtocol");
+                }
+
+                //get issue Url
+                String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
+
+                // copy to clipboard
+                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("issueUrl", issueUrl);
+                clipboard.setPrimaryClip(clip);
+
                 dismiss();
 
             }

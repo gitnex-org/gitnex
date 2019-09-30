@@ -446,6 +446,7 @@
     <string name="websiteText">Website</string>
     <string name="locationText">Standort</string>
     <string name="characters255Limit">maximal 255 Zeichen</string>
+    <string name="copyIssueUrl">Issue Url kopieren</string>
     <!-- generic copy -->
 
 </resources>
