@@ -32,6 +32,7 @@
     <string name="pageTitleStarredRepos">Favoriten</string>
     <string name="pageTitleCreateTeam">Team erstellen</string>
     <string name="pageTitleAddEmail">E-Mail Adresse hinzufügen</string>
+    <string name="pageTitleNewFile">New File</string>
     <!-- page titles -->
 
     <string name="appVersion">Version\u0020:\u0020</string>

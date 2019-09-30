@@ -3,22 +3,21 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
-import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.util.TinyDB;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -27,22 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.OkHttpClient;
-import ru.noties.markwon.AbstractMarkwonPlugin;
-import ru.noties.markwon.Markwon;
-import ru.noties.markwon.core.CorePlugin;
-import ru.noties.markwon.core.MarkwonTheme;
-import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import ru.noties.markwon.ext.tables.TablePlugin;
-import ru.noties.markwon.ext.tables.TableTheme;
-import ru.noties.markwon.ext.tasklist.TaskListPlugin;
-import ru.noties.markwon.html.HtmlPlugin;
-import ru.noties.markwon.image.ImagesPlugin;
-import ru.noties.markwon.image.gif.GifPlugin;
-import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin;
 
 /**
  * Author M M Arif
@@ -122,8 +107,6 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private TextView issueNumber;
         private ImageView issueAssigneeAvatar;
         private TextView issueTitle;
-        private TextView issueDescription;
-        //private ImageView issueState;
         private TextView issueCreatedTime;
         private TextView issueCommentsCount;
         private ImageView issueType;
@@ -135,9 +118,8 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             issueNumber = itemView.findViewById(R.id.issueNumber);
             issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
             issueTitle = itemView.findViewById(R.id.issueTitle);
-            issueDescription = itemView.findViewById(R.id.issueDescription);
             issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
-            //issueState = itemView.findViewById(R.id.issueStatus);
+            LinearLayout frameCommentsCount = itemView.findViewById(R.id.frameCommentsCount);
             issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
             issueType = itemView.findViewById(R.id.issueType);
 
@@ -157,7 +139,7 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
             });
-            issueDescription.setOnClickListener(new View.OnClickListener() {
+            frameCommentsCount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -183,26 +165,6 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final String locale = tinyDb.getString("locale");
             final String timeFormat = tinyDb.getString("dateFormat");
 
-            final Markwon markwon = Markwon.builder(Objects.requireNonNull(context))
-                    .usePlugin(CorePlugin.create())
-                    .usePlugin(OkHttpImagesPlugin.create(new OkHttpClient()))
-                    .usePlugin(ImagesPlugin.createWithAssets(context))
-                    .usePlugin(new AbstractMarkwonPlugin() {
-                        @Override
-                        public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-                            builder
-                                    .codeTextColor(tinyDb.getInt("codeBlockColor"))
-                                    .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-                                    .linkColor(context.getResources().getColor(R.color.lightBlue));
-                        }
-                    })
-                    .usePlugin(TablePlugin.create(context))
-                    .usePlugin(TaskListPlugin.create(context))
-                    .usePlugin(HtmlPlugin.create())
-                    .usePlugin(GifPlugin.create())
-                    .usePlugin(StrikethroughPlugin.create())
-                    .build();
-
             if (!issuesModel.getUser().getFull_name().equals("")) {
                 issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getFull_name(), context));
             } else {
@@ -210,9 +172,9 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             if (issuesModel.getUser().getAvatar_url() != null) {
-                Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(issueAssigneeAvatar);
+                Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
             } else {
-                Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(issueAssigneeAvatar);
+                Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
             }
 
             if (issuesModel.getPull_request() == null) {
@@ -223,27 +185,11 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 issueType.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueTypePullRequest), context));
             }
 
-            issueTitle.setText(context.getResources().getString(R.string.hash) + issuesModel.getNumber() + " " + issuesModel.getTitle());
+            String issueNumber_ = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources().getString(R.string.hash) + issuesModel.getNumber() + "</font>";
+            issueTitle.setText(Html.fromHtml(issueNumber_ + " " + issuesModel.getTitle()));
+
             issueNumber.setText(String.valueOf(issuesModel.getNumber()));
             issueCommentsCount.setText(String.valueOf(issuesModel.getComments()));
-
-            if (!issuesModel.getBody().equals("")) {
-                String cleanIssueDescription = issuesModel.getBody().trim();
-                issueDescription.setVisibility(View.VISIBLE);
-                final CharSequence bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
-                issueDescription.setText(UserMentions.UserMentionsFunc(context, bodyWithMD, cleanIssueDescription));
-            }
-            else {
-                issueDescription.setText("");
-                issueDescription.setVisibility(View.GONE);
-            }
-            /*if (issuesModel.getState().equals("open")) {
-                issueState.setImageResource(R.drawable.ic_issue_open);
-                issueState.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueStatusTextOpen), context));
-            } else {
-                issueState.setImageResource(R.drawable.ic_issue_closed);
-                issueState.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueStatusTextClosed), context));
-            }*/
 
             switch (timeFormat) {
                 case "pretty": {
