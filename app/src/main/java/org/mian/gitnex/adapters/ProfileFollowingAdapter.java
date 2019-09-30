@@ -65,7 +65,7 @@ public class ProfileFollowingAdapter extends RecyclerView.Adapter<ProfileFollowi
             holder.userName.setVisibility(View.GONE);
         }
 
-        Picasso.get().load(currentItem.getAvatar()).transform(new RoundedTransformation(100, 0)).resize(140, 140).centerCrop().into(holder.userAvatar);
+        Picasso.get().load(currentItem.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
     }
 
     @Override

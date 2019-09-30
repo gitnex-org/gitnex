@@ -104,7 +104,7 @@ public class OrganizationInfoFragment extends Fragment {
                     if (response.code() == 200) {
 
                         assert orgInfo != null;
-                        Picasso.get().load(orgInfo.getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(orgAvatar);
+                        Picasso.get().load(orgInfo.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(orgAvatar);
                         orgDescInfo.setText(orgInfo.getDescription());
                         orgWebsiteInfo.setText(orgInfo.getWebsite());
                         orgLocationInfo.setText(orgInfo.getLocation());

@@ -79,7 +79,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
         UserOrganizations currentItem = orgList.get(position);
         holder.mTextView2.setVisibility(View.GONE);
 
-        Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(holder.image);
+        Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
         holder.mTextView1.setText(currentItem.getUsername());
         if (!currentItem.getDescription().equals("")) {
             holder.mTextView2.setVisibility(View.VISIBLE);
