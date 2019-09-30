@@ -334,6 +334,13 @@ public class RepoInfoFragment extends Fragment {
                                             return Collections.singleton("drawable");
                                         }
                                     });
+                                    plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
+                                        @Nullable
+                                        @Override
+                                        public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
+                                            return null;
+                                        }
+                                    });
                                     plugin.addMediaDecoder(GifMediaDecoder.create(false));
                                     plugin.addMediaDecoder(SvgMediaDecoder.create(getContext().getResources()));
                                     plugin.addMediaDecoder(SvgMediaDecoder.create());
@@ -350,18 +357,6 @@ public class RepoInfoFragment extends Fragment {
                                             .linkColor(getResources().getColor(R.color.lightBlue));
                                 }
                             })
-                            .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-                                @Override
-                                public void configureImages(@NonNull ImagesPlugin plugin) {
-                                    plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-                                        @Nullable
-                                        @Override
-                                        public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-                                            return null;
-                                        }
-                                    });
-                                }
-                            }))
                             .usePlugin(TablePlugin.create(getContext()))
                             .usePlugin(TaskListPlugin.create(getContext()))
                             .usePlugin(HtmlPlugin.create())

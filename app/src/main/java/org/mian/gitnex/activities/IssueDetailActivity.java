@@ -320,12 +320,20 @@ public class IssueDetailActivity extends AppCompatActivity {
                                                 return Collections.singleton("drawable");
                                             }
                                         });
+                                        plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
+                                            @Nullable
+                                            @Override
+                                            public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
+                                                return null;
+                                            }
+                                        });
                                         plugin.addMediaDecoder(GifMediaDecoder.create(false));
                                         plugin.addMediaDecoder(SvgMediaDecoder.create(getApplicationContext().getResources()));
                                         plugin.addMediaDecoder(SvgMediaDecoder.create());
                                         plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getApplicationContext().getResources()));
                                         plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
                                     }
+
                                 }))
                                 .usePlugin(new AbstractMarkwonPlugin() {
                                     @Override
@@ -336,18 +344,6 @@ public class IssueDetailActivity extends AppCompatActivity {
                                                 .linkColor(getResources().getColor(R.color.lightBlue));
                                     }
                                 })
-                                .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-                                    @Override
-                                    public void configureImages(@NonNull ImagesPlugin plugin) {
-                                        plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-                                            @Nullable
-                                            @Override
-                                            public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-                                                return null;
-                                            }
-                                        });
-                                    }
-                                }))
                                 .usePlugin(TablePlugin.create(getApplicationContext()))
                                 .usePlugin(TaskListPlugin.create(getApplicationContext()))
                                 .usePlugin(HtmlPlugin.create())

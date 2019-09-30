@@ -150,6 +150,13 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
                                 return Collections.singleton("drawable");
                             }
                         });
+                        plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
+                            @Nullable
+                            @Override
+                            public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
+                                return null;
+                            }
+                        });
                         plugin.addMediaDecoder(GifMediaDecoder.create(false));
                         plugin.addMediaDecoder(SvgMediaDecoder.create(mCtx.getResources()));
                         plugin.addMediaDecoder(SvgMediaDecoder.create());
@@ -166,18 +173,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
                                 .linkColor(mCtx.getResources().getColor(R.color.lightBlue));
                     }
                 })
-                .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-                    @Override
-                    public void configureImages(@NonNull ImagesPlugin plugin) {
-                        plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-                            @Nullable
-                            @Override
-                            public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-                                return null;
-                            }
-                        });
-                    }
-                }))
                 .usePlugin(TablePlugin.create(mCtx))
                 .usePlugin(TaskListPlugin.create(mCtx))
                 .usePlugin(HtmlPlugin.create())
