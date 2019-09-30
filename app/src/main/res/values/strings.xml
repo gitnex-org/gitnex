@@ -161,7 +161,7 @@
 
     <string name="timeAtText">at</string>
     <string name="hash">#</string>
-    <string name="createdText">Created\u0020</string>
+    <string name="createdText">Opened\u0020</string>
     <string name="dueDateText">Due Date</string>
     <string name="issueStatusTextOpen">Status: open</string>
     <string name="issueStatusOpen">open</string>
@@ -175,7 +175,7 @@
     <string name="issueTitleWithId">#%1$d %2$s</string>
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due %1$s</string>
-    <string name="createdTime">Created %1$s</string>
+    <string name="createdTime">Opened %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
     <string name="commentButtonText">Comment</string>
     <string name="commentEmptyError">Please write your comment</string>

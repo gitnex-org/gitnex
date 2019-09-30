@@ -33,6 +33,7 @@
     <string name="pageTitleStarredRepos">Избранные репозитории</string>
     <string name="pageTitleCreateTeam">Создать команду</string>
     <string name="pageTitleAddEmail">Добавить адрес эл. почты</string>
+    <string name="pageTitleNewFile">New File</string>
     <!-- page titles -->
 
     <string name="appVersion">Версия\u0020:\u0020</string>

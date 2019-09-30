@@ -33,6 +33,7 @@
     <string name="pageTitleStarredRepos">Starred Repositories</string>
     <string name="pageTitleCreateTeam">Create Team</string>
     <string name="pageTitleAddEmail">Add Email Address</string>
+    <string name="pageTitleNewFile">New File</string>
     <!-- page titles -->
 
     <string name="appVersion">Version\u0020:\u0020</string>
