@@ -448,6 +448,7 @@
     <string name="locationText">Location</string>
     <string name="openWebRepo">Ouvrir avec le Browser</string>
     <string name="characters255Limit">Max 255 characters</string>
+    <string name="copyIssueUrl">Copier l Issue Url</string>
     <!-- generic copy -->
 
 </resources>
