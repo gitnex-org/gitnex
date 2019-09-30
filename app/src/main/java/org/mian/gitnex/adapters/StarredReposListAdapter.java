@@ -166,17 +166,17 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getColor(currentItem.getName());
-        String charac = String.valueOf(currentItem.getName().charAt(0));
+        String firstCharacter = String.valueOf(currentItem.getName().charAt(0));
 
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
                 .useFont(Typeface.DEFAULT)
-                .fontSize(16)
+                .fontSize(18)
                 .toUpperCase()
                 .width(28)
                 .height(28)
                 .endConfig()
-                .buildRound(charac, color);
+                .buildRoundRect(firstCharacter, color, 4);
 
         holder.image.setImageDrawable(drawable);
         holder.mTextView1.setText(currentItem.getName());

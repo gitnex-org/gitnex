@@ -14,7 +14,6 @@
         android:src="@drawable/ic_android"
         android:maxHeight="24dp"
         android:maxWidth="24dp"
-        android:layout_marginTop="5dp"
         android:paddingStart="20dp"
         android:paddingEnd="5dp"
         android:contentDescription="@string/app_name"/>

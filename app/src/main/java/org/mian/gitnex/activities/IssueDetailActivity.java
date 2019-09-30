@@ -357,7 +357,7 @@ public class IssueDetailActivity extends AppCompatActivity {
                         tinyDb.putString("issueState", singleIssue.getState());
                         tinyDb.putString("issueTitle", singleIssue.getTitle());
 
-                        Picasso.get().load(singleIssue.getUser().getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(assigneeAvatar);
+                        Picasso.get().load(singleIssue.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
                         issueTitle.setText(getString(R.string.issueTitleWithId, singleIssue.getNumber(), singleIssue.getTitle()));
                         String cleanIssueDescription = singleIssue.getBody().trim();
                         Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
@@ -374,7 +374,7 @@ public class IssueDetailActivity extends AppCompatActivity {
 
                                 ImageView assigneesView = new ImageView(getApplicationContext());
 
-                                Picasso.get().load(singleIssue.getAssignees().get(i).getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(80, 80).centerCrop().into(assigneesView);
+                                Picasso.get().load(singleIssue.getAssignees().get(i).getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop().into(assigneesView);
 
                                 assigneesLayout.addView(assigneesView);
                                 assigneesView.setLayoutParams(params1);

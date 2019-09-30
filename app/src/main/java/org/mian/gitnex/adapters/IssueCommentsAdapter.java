@@ -17,6 +17,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.models.IssueComments;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.util.TinyDB;
@@ -178,9 +179,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
         }
 
         if (currentItem.getUser().getAvatar_url() != null) {
-            Picasso.get().load(currentItem.getUser().getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(holder.issueCommenterAvatar);
+            Picasso.get().load(currentItem.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
         } else {
-            Picasso.get().load(currentItem.getUser().getAvatar_url()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(holder.issueCommenterAvatar);
+            Picasso.get().load(currentItem.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
         }
 
         String cleanIssueComments = currentItem.getBody().trim();
@@ -243,7 +244,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
                 .build();
 
         Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueComments));
-        markwon.setParsedMarkdown(holder.issueComment, bodyWithMD);
+        markwon.setParsedMarkdown(holder.issueComment, UserMentions.UserMentionsFunc(mCtx, bodyWithMD, cleanIssueComments));
 
         String edited;
 

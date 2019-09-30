@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     userAvatar = hView.findViewById(R.id.userAvatar);
                     if (!userAvatarNav.equals("")) {
-                        Picasso.get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).transform(new RoundedTransformation(100, 0)).resize(180, 180).centerCrop().into(userAvatar);
+                        Picasso.get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
                     }
 
                 } else {
@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         userAvatar = hView.findViewById(R.id.userAvatar);
                         if (!Objects.requireNonNull(userDetails).getAvatar().equals("")) {
-                            Picasso.get().load(userDetails.getAvatar()).transform(new RoundedTransformation(100, 0)).resize(180, 180).centerCrop().into(userAvatar);
+                            Picasso.get().load(userDetails.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
                         } else {
                             userAvatar.setImageResource(R.mipmap.ic_launcher_round);
                         }
