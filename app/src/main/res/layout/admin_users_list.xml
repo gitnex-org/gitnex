@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
             android:contentDescription="@string/generalImgContentText"
             android:src="@drawable/ic_android" />
 
@@ -31,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:scaleType="fitCenter"
-            android:layout_marginTop="5dp"
             android:contentDescription="@string/userRoleAdmin"
             android:src="@drawable/ic_android" />
 

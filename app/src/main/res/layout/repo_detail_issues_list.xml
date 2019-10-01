@@ -20,8 +20,6 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:contentDescription="@string/generalImgContentText"
         android:src="@drawable/ic_android" />
 
@@ -57,9 +55,8 @@
 
             <ImageView
                 android:id="@+id/issueType"
-                android:layout_width="16dp"
-                android:layout_height="21dp"
-                android:layout_marginTop="5dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/generalImgContentText"
                 android:src="@drawable/ic_issues" />
@@ -86,10 +83,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/ic_comment_16"
+                    android:drawableStart="@drawable/ic_comment_20"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/colorWhite"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -100,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

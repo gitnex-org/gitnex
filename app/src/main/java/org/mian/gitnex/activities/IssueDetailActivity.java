@@ -478,7 +478,7 @@ public class IssueDetailActivity extends AppCompatActivity {
                             case "pretty": {
                                 PrettyTime prettyTime = new PrettyTime(new Locale(locale));
                                 String createdTime = prettyTime.format(singleIssue.getCreated_at());
-                                issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                issueCreatedTime.setText(createdTime);
                                 issueCreatedTime.setVisibility(View.VISIBLE);
                                 issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), getApplicationContext()));
                                 break;
@@ -486,14 +486,14 @@ public class IssueDetailActivity extends AppCompatActivity {
                             case "normal": {
                                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
                                 String createdTime = formatter.format(singleIssue.getCreated_at());
-                                issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                issueCreatedTime.setText(createdTime);
                                 issueCreatedTime.setVisibility(View.VISIBLE);
                                 break;
                             }
                             case "normal1": {
                                 DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
                                 String createdTime = formatter.format(singleIssue.getCreated_at());
-                                issueCreatedTime.setText(getString(R.string.createdTime, createdTime));
+                                issueCreatedTime.setText(createdTime);
                                 issueCreatedTime.setVisibility(View.VISIBLE);
                                 break;
                             }
