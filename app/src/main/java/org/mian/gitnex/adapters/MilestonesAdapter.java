@@ -82,7 +82,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
             msDueDate = itemView.findViewById(R.id.milestoneDueDate);
             msProgress = itemView.findViewById(R.id.milestoneProgress);
 
-            /*issueTitle.setOnClickListener(new View.OnClickListener() {
+            /*msTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -234,13 +234,20 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
         holder.msClosedIssues.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneClosedIssues, currentItem.getClosed_issues()), mCtx));
 
         if ((currentItem.getOpen_issues() + currentItem.getClosed_issues()) > 0) {
+
             if (currentItem.getOpen_issues() == 0) {
                 holder.msProgress.setProgress(100);
-            } else {
-                holder.msProgress.setProgress(100*currentItem.getClosed_issues()/(currentItem.getOpen_issues() + currentItem.getClosed_issues()));
             }
-        } else {
+            else {
+                int msCompletion = 100 * currentItem.getClosed_issues() / (currentItem.getOpen_issues() + currentItem.getClosed_issues());
+                holder.msProgress.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneCompletion, msCompletion), mCtx));
+                holder.msProgress.setProgress(msCompletion);
+            }
+
+        }
+        else {
             holder.msProgress.setProgress(0);
+            holder.msProgress.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneCompletion, 0), mCtx));
         }
 
         if(currentItem.getDue_on() != null) {
@@ -276,7 +283,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
 
         }
         else {
-            holder.msDueDate.setVisibility(View.INVISIBLE);
+            holder.msDueDate.setVisibility(View.GONE);
         }
 
     }

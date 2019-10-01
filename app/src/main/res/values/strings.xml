@@ -130,7 +130,7 @@
 
     <string name="genericApiStatusError">Instance has returned an error. Code\u0020</string>
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
-    <string name="tab_text_info">Information</string>
+    <string name="tab_text_info">Details</string>
     <string name="tab_text_issues">Open Issues</string>
     <string name="tabItemCloseIssues">Closed Issues</string>
     <string name="tab_text_ml">Milestones</string>
@@ -466,6 +466,8 @@
 
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
+
+    <string name="milestoneCompletion">%1$d\uFF05 completed</string>
 
     <!-- generic copy -->
     <string name="okButton">OK</string>

@@ -20,20 +20,20 @@ public class MilestonesViewModel extends ViewModel {
 
     private static MutableLiveData<List<Milestones>> milestonesList;
 
-    public LiveData<List<Milestones>> getMilestonesList(String instanceUrl, String token, String owner, String repo) {
+    public LiveData<List<Milestones>> getMilestonesList(String instanceUrl, String token, String owner, String repo, String msState) {
 
         milestonesList = new MutableLiveData<>();
-        loadMilestonesList(instanceUrl, token, owner, repo);
+        loadMilestonesList(instanceUrl, token, owner, repo, msState);
 
         return milestonesList;
     }
 
-    public static void loadMilestonesList(String instanceUrl, String token, String owner, String repo) {
+    public static void loadMilestonesList(String instanceUrl, String token, String owner, String repo, String msState) {
 
         Call<List<Milestones>> call = RetrofitClient
                 .getInstance(instanceUrl)
                 .getApiInterface()
-                .getMilestones(token, owner, repo);
+                .getMilestones(token, owner, repo, msState);
 
         call.enqueue(new Callback<List<Milestones>>() {
 
