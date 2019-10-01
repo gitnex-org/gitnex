@@ -56,6 +56,8 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
     private Button editIssueButton;
     private Spinner editIssueMilestoneSpinner;
 
+    private String msState = "open";
+
     List<Milestones> milestonesList = new ArrayList<>();
     private ArrayAdapter<Mention> defaultMentionAdapter;
 
@@ -331,7 +333,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
                         Call<List<Milestones>> call_ = RetrofitClient
                                 .getInstance(instanceUrl)
                                 .getApiInterface()
-                                .getMilestones(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+                                .getMilestones(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, msState);
 
                         final int finalMsId = msId;
 

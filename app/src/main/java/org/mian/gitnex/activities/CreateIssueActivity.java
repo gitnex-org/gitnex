@@ -323,10 +323,11 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
 
     private void getMilestones(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {
 
+        String msState = "open";
         Call<List<Milestones>> call = RetrofitClient
                 .getInstance(instanceUrl)
                 .getApiInterface()
-                .getMilestones(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+                .getMilestones(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, msState);
 
         call.enqueue(new Callback<List<Milestones>>() {
 

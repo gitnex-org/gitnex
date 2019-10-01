@@ -99,7 +99,7 @@ public interface ApiInterface {
     Call<Issues> replyCommentToIssue(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex, @Body Issues jsonStr);
 
     @GET("repos/{owner}/{repo}/milestones") // get milestones by repo
-    Call<List<Milestones>> getMilestones(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+    Call<List<Milestones>> getMilestones(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Query("state") String state);
 
     @GET("repos/{owner}/{repo}/branches") // get branches
     Call<List<Branches>> getBranches(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);

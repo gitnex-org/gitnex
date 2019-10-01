@@ -46,6 +46,7 @@ public class MilestonesFragment extends Fragment {
 
     private String repoName;
     private String repoOwner;
+    private String msState = "all";
 
     private OnFragmentInteractionListener mListener;
 
@@ -103,7 +104,7 @@ public class MilestonesFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        MilestonesViewModel.loadMilestonesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+                        MilestonesViewModel.loadMilestonesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, msState);
                     }
                 }, 50);
             }
@@ -127,7 +128,7 @@ public class MilestonesFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("milestoneCreated")) {
-            MilestonesViewModel.loadMilestonesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+            MilestonesViewModel.loadMilestonesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, msState);
             tinyDb.putBoolean("milestoneCreated", false);
         }
     }
@@ -152,7 +153,7 @@ public class MilestonesFragment extends Fragment {
 
         MilestonesViewModel msModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
 
-        msModel.getMilestonesList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Milestones>>() {
+        msModel.getMilestonesList(instanceUrl, instanceToken, owner, repo, msState).observe(this, new Observer<List<Milestones>>() {
             @Override
             public void onChanged(@Nullable List<Milestones> msListMain) {
                 adapter = new MilestonesAdapter(getContext(), msListMain);
