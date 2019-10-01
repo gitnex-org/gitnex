@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         userAvatar = hView.findViewById(R.id.userAvatar);
                         if (!Objects.requireNonNull(userDetails).getAvatar().equals("")) {
-                            Picasso.get().load(userDetails.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
+                            Picasso.get().load(userDetails.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
                         } else {
                             userAvatar.setImageResource(R.mipmap.app_logo_round);
                         }
