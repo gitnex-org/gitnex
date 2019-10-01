@@ -110,11 +110,11 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/repoWatchers"
+                android:id="@+id/repoForks"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_weight=".25"
-                android:drawableStart="@drawable/ic_watchers"
+                android:drawableStart="@drawable/ic_forks_24"
                 android:drawablePadding="6dp"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"

@@ -28,6 +28,7 @@ public class UserRepositories {
     private String website;
     private String forks_count;
     private Boolean has_issues;
+    private String avatar_url;
 
     public int getId() {
         return id;
@@ -99,5 +100,9 @@ public class UserRepositories {
 
     public Boolean getHas_issues() {
         return has_issues;
+    }
+
+    public String getAvatar_url() {
+        return avatar_url;
     }
 }
