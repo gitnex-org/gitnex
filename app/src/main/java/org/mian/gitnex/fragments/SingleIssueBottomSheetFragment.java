@@ -13,6 +13,7 @@ import org.mian.gitnex.activities.AddRemoveAssigneesActivity;
 import org.mian.gitnex.activities.AddRemoveLabelsActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.util.TinyDB;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,14 +86,14 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
 
-                //get url of repo
+                // get url of repo
                 String repoFullName = tinyDB.getString("repoFullName");
                 String instanceUrlWithProtocol = "https://" + tinyDB.getString("instanceUrlRaw");
                 if(!tinyDB.getString("instanceUrlWithProtocol").isEmpty()) {
                     instanceUrlWithProtocol = tinyDB.getString("instanceUrlWithProtocol");
                 }
 
-                //get issue Url
+                // get issue Url
                 String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
 
                 // copy to clipboard
@@ -101,6 +102,8 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
                 clipboard.setPrimaryClip(clip);
 
                 dismiss();
+
+                Toasty.info(getContext(), getContext().getString(R.string.copyIssueUrlToastMsg));
 
             }
         });

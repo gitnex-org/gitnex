@@ -427,6 +427,9 @@
 
     <string name="strFilter">Filter</string>
 
+    <string name="copyIssueUrl">Copy Issue URL</string>
+    <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Готово</string>
@@ -448,7 +451,6 @@
     <string name="locationText">Место расположения</string>
     <string name="openWebRepo">Открыть с помощью браузера</string>
     <string name="characters255Limit">Max 255 characters</string>
-    <string name="copyIssueUrl">Copy Issue Url</string>
     <!-- generic copy -->
 
 </resources>

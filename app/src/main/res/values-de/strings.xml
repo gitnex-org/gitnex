@@ -427,6 +427,9 @@
 
     <string name="strFilter">Filter</string>
 
+    <string name="copyIssueUrl">Issue URL kopieren</string>
+    <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Fertig</string>
@@ -447,7 +450,6 @@
     <string name="websiteText">Website</string>
     <string name="locationText">Standort</string>
     <string name="characters255Limit">maximal 255 Zeichen</string>
-    <string name="copyIssueUrl">Issue Url kopieren</string>
     <!-- generic copy -->
 
 </resources>

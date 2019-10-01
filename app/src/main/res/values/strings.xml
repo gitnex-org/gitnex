@@ -464,6 +464,9 @@
 
     <string name="strFilter">Filter</string>
 
+    <string name="copyIssueUrl">Copy Issue URL</string>
+    <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>
@@ -488,7 +491,6 @@
     <string name="locationText">Location</string>
     <string name="characters255Limit">Max 255 characters</string>
     <string name="emptyFields">All fields are required</string>
-    <string name="copyIssueUrl">Copy Issue Url</string>
     <!-- generic copy -->
 
 </resources>
