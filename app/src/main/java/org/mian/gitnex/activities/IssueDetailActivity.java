@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
@@ -546,4 +544,3 @@ public class IssueDetailActivity extends AppCompatActivity {
     }
 
 }
->>>>>>> 85140fbee0ff8626da3430c14233d3ecd7f34871

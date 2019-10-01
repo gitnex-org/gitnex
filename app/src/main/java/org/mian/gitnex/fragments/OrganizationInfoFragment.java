@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
@@ -146,4 +144,3 @@ public class OrganizationInfoFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
->>>>>>> 85140fbee0ff8626da3430c14233d3ecd7f34871

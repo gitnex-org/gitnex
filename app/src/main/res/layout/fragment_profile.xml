@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -115,4 +113,3 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>
->>>>>>> 85140fbee0ff8626da3430c14233d3ecd7f34871

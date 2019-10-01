@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
@@ -290,4 +288,3 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
     }
 
 }
->>>>>>> 85140fbee0ff8626da3430c14233d3ecd7f34871

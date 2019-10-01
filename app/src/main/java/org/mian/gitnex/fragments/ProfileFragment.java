@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
@@ -125,4 +123,3 @@ public class ProfileFragment extends Fragment {
     }
 
 }
->>>>>>> 85140fbee0ff8626da3430c14233d3ecd7f34871

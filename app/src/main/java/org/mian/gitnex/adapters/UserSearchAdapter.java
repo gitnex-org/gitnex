@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
@@ -207,4 +205,3 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         return usersSearchList.size();
     }
 }
->>>>>>> 85140fbee0ff8626da3430c14233d3ecd7f34871

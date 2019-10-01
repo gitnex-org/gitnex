@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
@@ -133,4 +131,3 @@ public class MembersByOrgAdapter extends BaseAdapter implements Filterable {
     };
 
 }
->>>>>>> 85140fbee0ff8626da3430c14233d3ecd7f34871
