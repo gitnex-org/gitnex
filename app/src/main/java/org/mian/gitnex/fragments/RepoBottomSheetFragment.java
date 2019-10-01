@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.util.TinyDB;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -23,6 +24,8 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.repo_bottom_sheet_layout, container, false);
+
+        final TinyDB tinyDb = new TinyDB(getContext());
 
         TextView createLabel = v.findViewById(R.id.createLabel);
         TextView createIssue = v.findViewById(R.id.createNewIssue);
@@ -40,13 +43,19 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
-        createIssue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bmListener.onButtonClicked("newIssue");
-                dismiss();
-            }
-        });
+        if(tinyDb.getBoolean("hasIssues")) {
+            createIssue.setVisibility(View.VISIBLE);
+            createIssue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bmListener.onButtonClicked("newIssue");
+                    dismiss();
+                }
+            });
+        }
+        else {
+            createIssue.setVisibility(View.GONE);
+        }
 
         createMilestone.setOnClickListener(new View.OnClickListener() {
             @Override

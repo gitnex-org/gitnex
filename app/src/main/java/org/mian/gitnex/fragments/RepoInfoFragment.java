@@ -215,6 +215,8 @@ public class RepoInfoFragment extends Fragment {
 
     private void getRepoInfo(String instanceUrl, String token, final String owner, String repo, final String locale, final String timeFormat) {
 
+        final TinyDB tinyDb = new TinyDB(getContext());
+
         Call<UserRepositories> call = RetrofitClient
                 .getInstance(instanceUrl)
                 .getApiInterface()
@@ -244,6 +246,13 @@ public class RepoInfoFragment extends Fragment {
                             repoCloneUrlInfo.setText(repoInfo.getClone_url());
                             repoRepoUrlInfo.setText(repoInfo.getHtml_url());
                             repoForksCountInfo.setText(repoInfo.getForks_count());
+
+                            if(repoInfo.getHas_issues()) {
+                                tinyDb.putBoolean("hasIssues", repoInfo.getHas_issues());
+                            }
+                            else {
+                                tinyDb.putBoolean("hasIssues", true);
+                            }
 
                             switch (timeFormat) {
                                 case "pretty": {
