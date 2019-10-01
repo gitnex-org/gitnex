@@ -131,6 +131,7 @@
     <string name="genericApiStatusError">Instance has returned an error. Code\u0020</string>
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
     <string name="tab_text_info">Details</string>
+    <string name="tab_text_files">Files</string>
     <string name="tab_text_issues">Open Issues</string>
     <string name="tabItemCloseIssues">Closed Issues</string>
     <string name="tab_text_ml">Milestones</string>
