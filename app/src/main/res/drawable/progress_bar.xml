@@ -3,18 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@android:id/background"
         android:top="4dp"
         android:bottom="4dp"
         android:right="1dp"
         android:left="1dp">
         <shape>
-            <size android:height="1dp"/>
             <corners android:radius="15dp"/>
             <solid android:color="@color/divider"/>
         </shape>
     </item>
 
     <item
+        android:id="@android:id/progress"
         android:top="1dp"
         android:bottom="1dp"
         android:left="1dp"
