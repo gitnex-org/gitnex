@@ -17,11 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
+import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.TinyDB;
 import java.lang.reflect.Field;
@@ -46,7 +48,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
         private TextView fullName;
         private ImageView repoPrivatePublic;
         private TextView repoStars;
-        private TextView repoWatchers;
+        private TextView repoForks;
         private TextView repoOpenIssuesCount;
 
         private ReposViewHolder(View itemView) {
@@ -58,7 +60,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
             fullName = itemView.findViewById(R.id.repoFullName);
             repoPrivatePublic = itemView.findViewById(R.id.imageRepoType);
             repoStars = itemView.findViewById(R.id.repoStars);
-            repoWatchers = itemView.findViewById(R.id.repoWatchers);
+            repoForks = itemView.findViewById(R.id.repoForks);
             repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
             ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
 
@@ -177,9 +179,14 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
                 .width(28)
                 .height(28)
                 .endConfig()
-                .buildRoundRect(firstCharacter, color, 4);
+                .buildRoundRect(firstCharacter, color, 3);
 
-        holder.image.setImageDrawable(drawable);
+        if (!currentItem.getAvatar_url().equals("")) {
+            Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
+        } else {
+            holder.image.setImageDrawable(drawable);
+        }
+
         holder.mTextView1.setText(currentItem.getName());
         if (!currentItem.getDescription().equals("")) {
             holder.mTextView2.setVisibility(View.VISIBLE);
@@ -193,7 +200,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
             holder.repoPrivatePublic.setImageResource(R.drawable.ic_public);
         }
         holder.repoStars.setText(currentItem.getStars_count());
-        holder.repoWatchers.setText(currentItem.getWatchers_count());
+        holder.repoForks.setText(currentItem.getForks_count());
         holder.repoOpenIssuesCount.setText(currentItem.getOpen_issues_count());
 
     }
