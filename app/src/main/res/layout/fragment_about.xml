@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:theme="@style/AppTheme"
+            android:fitsSystemWindows="true"
+            android:gravity="start"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/aboutFrame">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:baselineAligned="false"
+                android:contentDescription="@string/logo"
+                android:src="@mipmap/app_logo_round" />
+
+            <TextView
+                android:id="@+id/appName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textIsSelectable="true"
+                android:layout_marginTop="5dp"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/appVerBuild"
+                android:text="@string/appVerBuild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/appDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/appDesc"
+                android:textIsSelectable="true"
+                android:layout_marginTop="25dp"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:background="@drawable/round_corners_with_background"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/giteaVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/commitPage"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:background="@drawable/round_corners_with_background"
+                android:autoLink="web" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:background="@drawable/round_corners_with_background">
+
+                <TextView
+                    android:id="@+id/donationLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/supportText"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:autoLink="web"
+                    android:visibility="visible"
+                    android:layout_marginBottom="10dp"
+                    android:textColorLink="@color/lightBlue" />
+
+                <TextView
+                    android:id="@+id/donationLinkPatreon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/supportTextPatreon"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:autoLink="web"
+                    android:visibility="visible"
+                    android:textColorLink="@color/lightBlue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:background="@drawable/round_corners_with_background">
+
+                <TextView
+                    android:id="@+id/sponsorsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pageTitleSponsors"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:autoLink="web"
+                    android:visibility="visible"
+                    android:layout_marginBottom="10dp"
+                    android:textColorLink="@color/lightBlue" />
+
+                <TextView
+                    android:id="@+id/creditsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pageTitleCredits"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:autoLink="web"
+                    android:visibility="visible"
+                    android:layout_marginBottom="10dp"
+                    android:textColorLink="@color/lightBlue" />
+
+                <TextView
+                    android:id="@+id/appWebsite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appWebsite"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:autoLink="web"
+                    android:visibility="visible"
+                    android:layout_marginBottom="10dp"
+                    android:textColorLink="@color/lightBlue" />
+
+                <TextView
+                    android:id="@+id/appRepo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appRepo"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:autoLink="web"
+                    android:visibility="visible"
+                    android:textColorLink="@color/lightBlue" />
+
+            </LinearLayout>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/progressBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Base.Widget.AppCompat.ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

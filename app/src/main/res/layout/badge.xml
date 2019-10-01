@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayoutTabHeader"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/counterBadgeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        app:textAllCaps="true"
+        android:text="@string/tab_text_issues"
+        android:textColor="@color/lightGray" />
+
+    <TextView
+        android:id="@+id/counterBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/counterBadgeText"
+        android:background="@drawable/badge_background"
+        android:text="@string/infoTabRepoZero"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

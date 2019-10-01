@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutFrame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:theme="@style/AppTheme"
+    tools:context=".activities.RepoDetailActivity">
+
+    <TextView
+        android:id="@+id/issueNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/assigneeAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:contentDescription="@string/generalImgContentText"
+        android:src="@drawable/ic_android" />
+
+    <LinearLayout
+        android:id="@+id/infoSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/assigneeAvatar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/frameIssueNameStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/issueTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".65"
+                android:gravity="top|center_vertical"
+                android:textAlignment="gravity"
+                android:text="@string/strFilter"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".08"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/issueType"
+                android:layout_width="16dp"
+                android:layout_height="21dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/generalImgContentText"
+                android:src="@drawable/ic_issues" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/frameCreatedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/frameCommentsCount"
+                android:layout_width="0dp"
+                android:layout_weight=".25"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/issueCommentsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:drawablePadding="5dp"
+                    android:drawableStart="@drawable/ic_comment_16"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/issueCreatedTime"
+                android:layout_width="0dp"
+                android:layout_weight=".15"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

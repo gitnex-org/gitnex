@@ -1,0 +1,179 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/pageTitleCreateTeam"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newTeamTitle"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                />
+
+            <EditText
+                android:id="@+id/teamName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:inputType="textCapSentences|text"
+                android:labelFor="@+id/teamName"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newTeamDesc"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                />
+
+            <EditText
+                android:id="@+id/teamDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:inputType="textCapSentences|text"
+                android:labelFor="@+id/teamDesc"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newTeamPermission"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/teamPermission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="none"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:id="@+id/teamPermissionDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:gravity="start"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newTeamAccessControls"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/teamAccessControls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="14sp"
+                tools:ignore="Autofill"
+                android:background="@drawable/shape_inputs"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="none"
+                android:textColorHighlight="@color/white"/>
+
+            <TextView
+                android:id="@+id/teamAccessControlsArray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/createTeamButton"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/newCreateButtonCopy"
+                android:background="@drawable/shape_buttons"
+                android:textColor="@color/btnTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="35dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

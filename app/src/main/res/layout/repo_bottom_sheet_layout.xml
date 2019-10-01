@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:background="@color/backgroundColor"
+    android:paddingTop="8dp">
+
+    <TextView
+        android:id="@+id/newFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/pageTitleNewFile"
+        android:drawableStart="@drawable/ic_file"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/createNewIssue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/pageTitleCreateNewIssue"
+        android:drawableStart="@drawable/ic_issue_open_white"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/createNewMilestone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/pageTitleCreateMilestone"
+        android:drawableStart="@drawable/ic_milestone"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/createLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/createLabel"
+        android:drawableStart="@drawable/ic_label"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/createRelease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/createRelease"
+        android:drawableStart="@drawable/ic_new_releases"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/addCollaborator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/addCollaboratorTitle"
+        android:drawableStart="@drawable/ic_person_filled"
+        android:drawablePadding="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/openWebRepo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawableStart="@drawable/ic_open_in_browser"
+        android:drawablePadding="24dp"
+        android:padding="16dp"
+        android:text="@string/openWebRepo"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</LinearLayout>
