@@ -27,7 +27,7 @@ public class UserRepositories {
     private String ssh_url;
     private String website;
     private String forks_count;
-
+    private Boolean has_issues;
 
     public int getId() {
         return id;
@@ -95,5 +95,9 @@ public class UserRepositories {
 
     public String getForks_count() {
         return forks_count;
+    }
+
+    public Boolean getHas_issues() {
+        return has_issues;
     }
 }
