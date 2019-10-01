@@ -1,0 +1,16 @@
+- New: Font - roboto
+- New: Milestone progress bar @6543
+- New: Redesign issues list
+- New: Copy issue URL to clipboard @6543
+- New: Redesign milestones list
+- New: Added repository avatars
+- Improvement: Repo info tab enhancements
+- Improvement: Bold font for labels
+- Improvement: Change search icon and text to filter
+- Improvement: Refactor markdown code to load images
+- Improvement: UI improvements for avatars and alignments
+- Improvement: Enable/disable create issue based on repo settings
+- Bugfix: Open issues tab color scheme
+
+For more, check the release notes.
+https://gitea.com/mmarif/GitNex/releases
