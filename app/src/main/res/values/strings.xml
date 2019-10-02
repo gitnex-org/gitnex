@@ -470,6 +470,8 @@
 
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
 
+    <string name="noDataFilesTab">No files found</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>

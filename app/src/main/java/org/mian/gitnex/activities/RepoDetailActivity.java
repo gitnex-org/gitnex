@@ -26,6 +26,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BranchesFragment;
 import org.mian.gitnex.fragments.ClosedIssuesFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
+import org.mian.gitnex.fragments.FilesFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.LabelsFragment;
 import org.mian.gitnex.fragments.MilestonesFragment;
@@ -200,7 +201,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
                 case 0: // information
                     return RepoInfoFragment.newInstance(repoOwner, repoName);
                 case 1: // files
-                    //return RepoInfoFragment.newInstance(repoOwner, repoName);
+                    return FilesFragment.newInstance(repoOwner, repoName);
                 case 2: // issues
                     fragment = new IssuesFragment();
                     break;
