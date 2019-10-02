@@ -22,7 +22,6 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.FilesViewModel;
-import org.mian.gitnex.viewmodels.ReleasesViewModel;
 import java.util.List;
 
 /**
@@ -96,9 +95,9 @@ public class FilesFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        ReleasesViewModel.loadReleasesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+                        FilesViewModel.loadFilesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
                     }
-                }, 50);
+                }, 200);
             }
         });
 

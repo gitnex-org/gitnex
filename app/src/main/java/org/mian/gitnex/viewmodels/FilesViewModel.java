@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.Files;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +41,13 @@ public class FilesViewModel extends ViewModel {
 
             @Override
             public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
+
+                Collections.sort(response.body(), new Comparator<Files>() {
+                    @Override
+                    public int compare(Files byType1, Files byType2) {
+                        return byType1.getType().compareTo(byType2.getType());
+                    }
+                });
 
                 if (response.isSuccessful()) {
                     filesList.postValue(response.body());
