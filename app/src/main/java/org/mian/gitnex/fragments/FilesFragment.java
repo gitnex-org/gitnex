@@ -2,6 +2,7 @@ package org.mian.gitnex.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -12,17 +13,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.FilesAdapter;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.Files;
+import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -68,6 +75,7 @@ public class FilesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_files, container, false);
+        setHasOptionsMenu(true);
 
         TinyDB tinyDb = new TinyDB(getContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -124,6 +132,40 @@ public class FilesFragment extends Fragment {
                     noDataFiles.setVisibility(View.VISIBLE);
                 }
                 mProgressBar.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+
+        inflater.inflate(R.menu.search_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setQueryHint(getContext().getString(R.string.strFilter));
+
+        if(!connToInternet) {
+            return;
+        }
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(mRecyclerView.getAdapter() != null) {
+                    adapter.getFilter().filter(newText);
+                }
+                return false;
             }
         });
 
