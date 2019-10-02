@@ -135,13 +135,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         holder.fileName.setText(currentItem.getName());
 
         if(currentItem.getType().equals("file")) {
-            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_file));
+            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_file_new));
         }
         else if(currentItem.getType().equals("dir")) {
             holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_folder_24));
-        }
-        else {
-
         }
 
     }
