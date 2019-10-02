@@ -216,6 +216,9 @@ public interface ApiInterface {
     @POST("repos/{owner}/{repo}/contents/{file}") // create new file
     Call<JsonElement> createNewFile(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String fileName, @Body NewFile jsonStr);
 
-    @GET("repos/{owner}/{repo}/contents") // get all files and dirs
+    @GET("repos/{owner}/{repo}/contents") // get all the files and dirs of a repository
     Call<List<Files>> getFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+    @GET("repos/{owner}/{repo}/contents/{file}") // get single file contents
+    Call<Files> getSingleFileContents(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String file);
 }

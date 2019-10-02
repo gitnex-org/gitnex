@@ -1,6 +1,8 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.models.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,26 +32,32 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
         private ImageView fileTypeImage;
         private TextView fileName;
+        private TextView fileType;
 
         private FilesViewHolder(View itemView) {
 
             super(itemView);
             fileName = itemView.findViewById(R.id.fileName);
             fileTypeImage = itemView.findViewById(R.id.fileImage);
+            fileType = itemView.findViewById(R.id.fileType);
 
-            /*ImageView filesDropdownMenu = itemView.findViewById(R.id.filesDropdownMenu);
+            //ImageView filesDropdownMenu = itemView.findViewById(R.id.filesDropdownMenu);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Context context = v.getContext();
+                    Intent intent = new Intent(context, FileViewActivity.class);
+                    intent.putExtra("singleFileName", fileName.getText().toString());
+
                     context.startActivity(intent);
 
                 }
             });
 
-            filesDropdownMenu.setOnClickListener(new View.OnClickListener() {
+
+            /*filesDropdownMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -132,6 +141,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
         Files currentItem = filesList.get(position);
 
+        holder.fileType.setText(currentItem.getType());
         holder.fileName.setText(currentItem.getName());
 
         if(currentItem.getType().equals("file")) {
@@ -139,6 +149,9 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         }
         else if(currentItem.getType().equals("dir")) {
             holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_folder_24));
+        }
+        else {
+            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_question_mark_24));
         }
 
     }
