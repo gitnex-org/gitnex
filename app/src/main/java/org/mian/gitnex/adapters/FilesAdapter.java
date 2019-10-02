@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.FileViewActivity;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,15 +43,23 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
             //ImageView filesDropdownMenu = itemView.findViewById(R.id.filesDropdownMenu);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            fileName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Context context = v.getContext();
-                    Intent intent = new Intent(context, FileViewActivity.class);
-                    intent.putExtra("singleFileName", fileName.getText().toString());
 
-                    context.startActivity(intent);
+                    if(fileType.getText().toString().equals("file")) {
+                        Intent intent = new Intent(context, FileViewActivity.class);
+                        intent.putExtra("singleFileName", fileName.getText().toString());
+                        context.startActivity(intent);
+                    }
+                    else if(fileType.getText().toString().equals("dir")) {
+                        Toasty.info(context, context.getString(R.string.filesDirNotSupportedYet));
+                    }
+                    else {
+                        Toasty.info(context, context.getString(R.string.filesGenericError));
+                    }
 
                 }
             });

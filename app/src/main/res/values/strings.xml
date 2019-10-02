@@ -472,6 +472,8 @@
 
     <!-- files -->
     <string name="noDataFilesTab">No files found</string>
+    <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
+    <string name="filesGenericError">Sorry this file cannot be viewed as API return an error</string>
 
     <!-- generic copy -->
     <string name="okButton">OK</string>
