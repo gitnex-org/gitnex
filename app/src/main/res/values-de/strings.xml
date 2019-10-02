@@ -110,6 +110,7 @@
     <string name="genericApiStatusError">Die Gitea Instanz hat einen Fehler zurückgegeben. Code\u0020</string>
     <string name="title_activity_repo_detail">Repo-Details Aktivität</string>
     <string name="tab_text_info">Details</string>
+    <string name="tab_text_files">Dateien</string>
     <string name="tab_text_issues">Offene Issues</string>
     <string name="tabItemCloseIssues">Geschlossene Issues</string>
     <string name="tab_text_ml">Meilensteine</string>
@@ -431,6 +432,9 @@
     <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
 
     <string name="milestoneCompletion">%1$d\uFF05 abgeschlossen</string>
+
+    <!-- files -->
+    <string name="noDataFilesTab">Keine Dateien gefunden</string>
 
     <!-- generic copy -->
     <string name="okButton">OK</string>

@@ -111,6 +111,7 @@
     <string name="genericApiStatusError">Инстанция вернула ошибку. Код\u0020</string>
     <string name="title_activity_repo_detail">Активность</string>
     <string name="tab_text_info">Детали</string>
+    <string name="tab_text_files">Файлы</string>
     <string name="tab_text_issues">Открытые задачи</string>
     <string name="tabItemCloseIssues">Закрытые задачи</string>
     <string name="tab_text_ml">Вехи</string>
@@ -431,6 +432,9 @@
     <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
 
     <string name="milestoneCompletion">%1$d\uFF05 выполненный</string>
+
+    <!-- files -->
+    <string name="noDataFilesTab">Файлов не найдено</string>
 
     <!-- generic copy -->
     <string name="okButton">OK</string>
