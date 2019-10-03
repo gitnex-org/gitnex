@@ -180,9 +180,14 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                 .endConfig()
                 .buildRoundRect(firstCharacter, color, 3);
 
-        if (!currentItem.getAvatar_url().equals("")) {
-            Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
-        } else {
+        if (currentItem.getAvatar_url() != null) {
+            if (!currentItem.getAvatar_url().equals("")) {
+                Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
+            } else {
+                holder.image.setImageDrawable(drawable);
+            }
+        }
+        else {
             holder.image.setImageDrawable(drawable);
         }
 
