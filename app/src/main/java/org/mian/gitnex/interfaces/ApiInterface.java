@@ -223,5 +223,5 @@ public interface ApiInterface {
     Call<Files> getSingleFileContents(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String file);
 
     @GET("repos/{owner}/{repo}/contents/{fileDir}") // get all the sub files and dirs of a repository
-    Call<List<Files>> getDirFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String fileDir);
+    Call<List<Files>> getDirFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("fileDir") String fileDir);
 }

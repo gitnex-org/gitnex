@@ -21,6 +21,7 @@ import retrofit2.Response;
 public class FilesViewModel extends ViewModel {
 
     private static MutableLiveData<List<Files>> filesList;
+    private static MutableLiveData<List<Files>> filesList2;
 
     public LiveData<List<Files>> getFilesList(String instanceUrl, String token, String owner, String repo) {
 
@@ -36,6 +37,49 @@ public class FilesViewModel extends ViewModel {
                 .getInstance(instanceUrl)
                 .getApiInterface()
                 .getFiles(token, owner, repo);
+
+        call.enqueue(new Callback<List<Files>>() {
+
+            @Override
+            public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
+
+                Collections.sort(response.body(), new Comparator<Files>() {
+                    @Override
+                    public int compare(Files byType1, Files byType2) {
+                        return byType1.getType().compareTo(byType2.getType());
+                    }
+                });
+
+                if (response.isSuccessful()) {
+                    filesList.postValue(response.body());
+                } else {
+                    Log.i("onResponse", String.valueOf(response.code()));
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Files>> call, Throwable t) {
+                Log.i("onFailure", t.toString());
+            }
+
+        });
+    }
+
+    public LiveData<List<Files>> getFilesList2(String instanceUrl, String token, String owner, String repo, String filesDir) {
+
+        filesList = new MutableLiveData<>();
+        loadFilesList2(instanceUrl, token, owner, repo, filesDir);
+
+        return filesList;
+    }
+
+    public static void loadFilesList2(String instanceUrl, String token, String owner, String repo, String filesDir) {
+
+        Call<List<Files>> call = RetrofitClient
+                .getInstance(instanceUrl)
+                .getApiInterface()
+                .getDirFiles(token, owner, repo, filesDir);
 
         call.enqueue(new Callback<List<Files>>() {
 
