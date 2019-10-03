@@ -10,7 +10,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.FileViewActivity;
@@ -29,11 +28,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     private List<Files> filesList;
     private Context mCtx;
     private List<Files> filesListFull;
-    public FilesDirsResponse filesDirResponse;
-
-    public interface FilesDirsResponse{
-        void onClickResponse(String str);
-    }
 
     class FilesViewHolder extends RecyclerView.ViewHolder {
 
@@ -64,9 +58,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
                     }
                     else if(fileType.getText().toString().equals("dir")) {
                         //tinyDb.putString("filesDir", fileName.getText().toString());
-                        if(filesDirResponse!=null)
-                            filesDirResponse.onClickResponse(fileName.getText().toString());
-                        //Toasty.info(context, context.getString(R.string.filesDirNotSupportedYet));
+                        Toasty.info(context, context.getString(R.string.filesDirNotSupportedYet));
                     }
                     else {
                         Toasty.info(context, context.getString(R.string.filesGenericError));

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -30,8 +29,6 @@ import org.mian.gitnex.models.Files;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.FilesViewModel;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +36,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class FilesFragment extends Fragment implements FilesAdapter.FilesDirsResponse {
+public class FilesFragment extends Fragment {
 
     private ProgressBar mProgressBar;
     private FilesAdapter adapter;
@@ -52,7 +49,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesDirsRes
 
     private String repoName;
     private String repoOwner;
-    private List<Files> filesList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,9 +79,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesDirsRes
 
         View v = inflater.inflate(R.layout.fragment_files, container, false);
         setHasOptionsMenu(true);
-
-        FilesAdapter myAdapter = new FilesAdapter(getActivity(), filesList);
-        myAdapter.filesDirResponse = this;
 
         TinyDB tinyDb = new TinyDB(getContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -122,27 +115,10 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesDirsRes
             }
         });
 
-        if(filesDirDB.isEmpty()) {
-            fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
-            tinyDb.putString("filesDir", "");
-        }
-        else {
 
-            tinyDb.putString("filesDir", "");
-        }
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
 
         return  v;
-    }
-
-    @Override
-    public void onClickResponse(String str) {
-
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-
-        fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, str);
     }
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo) {
