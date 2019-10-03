@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
@@ -41,6 +42,7 @@ public class FilesFragment extends Fragment {
     private FilesAdapter adapter;
     private RecyclerView mRecyclerView;
     private TextView noDataFiles;
+    private LinearLayout filesFrame;
     private static String repoNameF = "param2";
     private static String repoOwnerF = "param1";
 
@@ -83,6 +85,7 @@ public class FilesFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         noDataFiles = v.findViewById(R.id.noDataFiles);
+        filesFrame = v.findViewById(R.id.filesFrame);
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
 
@@ -124,13 +127,16 @@ public class FilesFragment extends Fragment {
                 adapter = new FilesAdapter(getContext(), filesListMain);
                 if(adapter.getItemCount() > 0) {
                     mRecyclerView.setAdapter(adapter);
+                    filesFrame.setVisibility(View.VISIBLE);
                     noDataFiles.setVisibility(View.GONE);
                 }
                 else {
                     adapter.notifyDataSetChanged();
                     mRecyclerView.setAdapter(adapter);
+                    filesFrame.setVisibility(View.VISIBLE);
                     noDataFiles.setVisibility(View.VISIBLE);
                 }
+                filesFrame.setVisibility(View.VISIBLE);
                 mProgressBar.setVisibility(View.GONE);
             }
         });
