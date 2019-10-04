@@ -49,6 +49,7 @@ public class AboutFragment extends Fragment {
         final TextView appVerBuild;
         final TextView donationLink;
         final TextView donationLinkPatreon;
+        final TextView translateLink;
         final TextView creditsButton;
         final TextView sponsorsButton;
         final TextView appWebsite;
@@ -64,6 +65,7 @@ public class AboutFragment extends Fragment {
         creditsButton = v.findViewById(R.id.creditsButton);
         donationLink = v.findViewById(R.id.donationLink);
         donationLinkPatreon = v.findViewById(R.id.donationLinkPatreon);
+        translateLink = v.findViewById(R.id.translateLink);
         sponsorsButton = v.findViewById(R.id.sponsorsButton);
         appWebsite = v.findViewById(R.id.appWebsite);
         appRepo = v.findViewById(R.id.appRepo);
@@ -86,6 +88,16 @@ public class AboutFragment extends Fragment {
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
                 intent.setData(Uri.parse(getResources().getString(R.string.supportLinkPatreon)));
+                startActivity(intent);
+            }
+        });
+
+        translateLink.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://crowdin.com/project/gitnex"));
                 startActivity(intent);
             }
         });
