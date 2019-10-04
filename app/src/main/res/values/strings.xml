@@ -493,6 +493,7 @@
     <string name="locationText">Location</string>
     <string name="characters255Limit">Max 255 characters</string>
     <string name="emptyFields">All fields are required</string>
+    <string name="translateText">Translate GitNex with Crowdin</string>
     <!-- generic copy -->
 
 </resources>

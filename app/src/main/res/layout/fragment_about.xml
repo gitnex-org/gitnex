@@ -105,7 +105,20 @@
                     android:gravity="start"
                     android:autoLink="web"
                     android:visibility="visible"
+                    android:layout_marginBottom="10dp"
                     android:textColorLink="@color/lightBlue" />
+
+                <TextView
+                    android:id="@+id/translateLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:gravity="start"
+                    android:text="@string/translateText"
+                    android:textColor="@color/lightBlue"
+                    android:textColorLink="@color/lightBlue"
+                    android:textSize="16sp"
+                    android:visibility="visible" />
 
             </LinearLayout>
 
