@@ -30,6 +30,7 @@
     <string name="navAbout">About</string>
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">Logout</string>
+    <string name="navExplore">Explore</string>
     <!-- menu items -->
 
     <!-- page titles -->
@@ -53,6 +54,7 @@
     <string name="pageTitleCreateTeam">New Team</string>
     <string name="pageTitleAddEmail">Add Email Address</string>
     <string name="pageTitleNewFile">New File</string>
+    <string name="pageTitleExplore">Explore</string>
     <!-- page titles -->
 
     <string name="appVersion">Version\u0020:\u0020</string>
