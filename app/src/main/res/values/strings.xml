@@ -1,5 +1,5 @@
 <resources>
-    <!-- These strings does not need translations -->
+
     <string name="app_name" translatable="false">GitNex</string>
     <string name="appAuthor" translatable="false">Developer : M M Arif</string>
     <string name="appEmail" translatable="false">gitnex@gitnex.com</string>
@@ -14,13 +14,10 @@
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
     <string name="appVerBuild" translatable="false">%1$s / build %2$d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tool Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and sponsors for your generous work and donations.</string>
-    <!-- These strings does not need translations -->
 
-    <!-- links text -->
     <string name="appRepoIssuesText" translatable="false">Report issues at Gitea</string>
     <string name="supportText" translatable="false">Support the App on Liberapay</string>
     <string name="supportTextPatreon" translatable="false">Become a Patreon</string>
-    <!-- links text -->
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
