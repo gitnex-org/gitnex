@@ -24,7 +24,7 @@ In case you want to submit a bug report, please provide as much details as possi
 ## Translation
 Help us translate GitNex to your native language.
 
-We use [Crowdin](https://crowdin.com/project/gitnex).
-So just have a look at it, you can easely contribute to it.
+We use [Crowdin](https://crowdin.com/project/gitnex) for translation.
+If your language is not listed, please request [here](https://gitea.com/mmarif/GitNex/issues) to add it to the project.
 
 **Link: https://crowdin.com/project/GitNex**
