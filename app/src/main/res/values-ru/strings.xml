@@ -70,7 +70,6 @@
     <string name="logo">Войти в Gitea</string>
     <string name="urlInfoTooltip">1- Выберите протокол (https или http) \n2- Введите инстанцию Gitea, например: try.gitea.io \n3- For 2FA enter USERNAME:CODE in the Username field \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field</string>
     <string name="loginFailed">Неверные логин и/или пароль</string>
-    <string name="protocolDelimiter">://</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете инстанцию в локальной сети.</string>
     <string name="malformedJson">Неожиданный ответ от сервера. Попробуйте сменить протокол или обратитесь к администратору инстанции.</string>
     <string name="emptyFieldURL">Instance URL is required</string>
@@ -103,9 +102,6 @@
     <string name="orgContentAvatar">Орг.</string>
     <string name="repoContentAvatar">Реп.</string>
     <string name="privateAvatar">Лич.</string>
-    <string name="repoStars">12345</string>
-    <string name="repoWatchers">98324</string>
-    <string name="repoIssues">54321</string>
     <string name="removeContent">Удалить</string>
 
     <string name="genericApiStatusError">Инстанция вернула ошибку. Код\u0020</string>
@@ -135,13 +131,9 @@
     <string name="infoTabRepoForksCount">Кол-во форков</string>
     <string name="infoTabRepoCreatedAt">Создан</string>
     <string name="infoTabRepoUpdatedAt">Последнее обновление</string>
-    <string name="infoTabRepoDummyTime">2018&#8211;10&#8211;30 08:25:25</string>
-    <string name="infoTabRepoBlank">&#8230;</string>
-    <string name="infoTabRepoZero">0</string>
     <string name="infoTabRepoDefaultBranchText">master</string>
 
     <string name="timeAtText">в</string>
-    <string name="hash">#</string>
     <string name="createdText">Создано\u0020</string>
     <string name="dueDateText">Дата исполнения</string>
     <string name="issueStatusTextOpen">Статус: открыта</string>
@@ -153,7 +145,6 @@
     <string name="issueTypeIssue">Тип: задача</string>
     <string name="issueTypePullRequest">Тип: pull request</string>
     <string name="issueCommenter">Комментатор:\u0020</string>
-    <string name="issueTitleWithId">#%1$d %2$s</string>
     <string name="issueMilestone">Вехи %1$s</string>
     <string name="dueDate">Исполнение %1$s</string>
     <string name="createdTime">Создано %1$s</string>
@@ -164,7 +155,6 @@
     <string name="commentError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
 
     <string name="generalImgContentText">Аватар</string>
-    <string name="generalPageTitle">GitNex</string>
 
     <string name="noDataMilestonesTab">Вех не обнаружено</string>
 
@@ -188,7 +178,6 @@
     <string name="newMilestoneTitle">Заголовок</string>
     <string name="newMilestoneDescription">Описание</string>
     <string name="newMilestoneDueDate">Дата исполнения</string>
-    <string name="setDueDate">%1$d-%2$d-%3$d</string>
     <string name="milestoneNameErrorEmpty">Заголовок вехи пустой.</string>
     <string name="milestoneNameErrorInvalid">Недоступный заголовок вехи. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">Описание вехи превышает 255 символов.</string>
@@ -208,8 +197,6 @@
     <string name="newIssueDueDateTitle">Дата исполнения</string>
     <string name="newIssueMilestoneTitle">Вехи</string>
     <string name="newIssueLabelsTitle">Метки</string>
-    <string name="spinnerMilestoneText">%1$s [%2$s]</string>
-    <string name="dialogAssignessText">%1$s - @%2$s</string>
     <string name="issueTitleEmpty">Заголовок задачи пустой.</string>
     <string name="issueDescriptionEmpty">Описание задачи пустое.</string>
     <string name="issueCreated">Задача успешно добавлена!</string>

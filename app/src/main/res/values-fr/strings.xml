@@ -70,7 +70,6 @@
     <string name="logo">Se connecter à Gitea</string>
     <string name="urlInfoTooltip">1- Choose the correct protocol(https or http) \n2- Enter Gitea url e.g: try.gitea.io \n3- For 2FA enter USERNAME:CODE in the Username field \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field</string>
     <string name="loginFailed">Wrong username/password</string>
-    <string name="protocolDelimiter">://</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network.</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful.</string>
     <string name="emptyFieldURL">Instance URL is required</string>
@@ -103,9 +102,6 @@
     <string name="orgContentAvatar">Org</string>
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
-    <string name="repoStars">0</string>
-    <string name="repoWatchers">0</string>
-    <string name="repoIssues">54321</string>
     <string name="removeContent">Remove</string>
 
     <string name="genericApiStatusError">L\'instance a renvoyé une erreur. Code\u0020</string>
@@ -135,13 +131,9 @@
     <string name="infoTabRepoForksCount">Forks Count</string>
     <string name="infoTabRepoCreatedAt">Created</string>
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
-    <string name="infoTabRepoDummyTime">2018&#8211;10&#8211;30 08:25:25</string>
-    <string name="infoTabRepoBlank">&#8230;</string>
-    <string name="infoTabRepoZero">0</string>
     <string name="infoTabRepoDefaultBranchText">master</string>
 
     <string name="timeAtText">à</string>
-    <string name="hash">#</string>
     <string name="createdText">Created\u0020</string>
     <string name="dueDateText">Due Date</string>
     <string name="issueStatusTextOpen">Status : open</string>
@@ -153,7 +145,6 @@
     <string name="issueTypeIssue">Type : Issue</string>
     <string name="issueTypePullRequest">Type : Pull Request</string>
     <string name="issueCommenter">Commenter :\u0020</string>
-    <string name="issueTitleWithId">#%1$d %2$s</string>
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due %1$s</string>
     <string name="createdTime">Created %1$s</string>
@@ -164,7 +155,6 @@
     <string name="commentError">Something went wrong, please try again</string>
 
     <string name="generalImgContentText">IMG</string>
-    <string name="generalPageTitle">GitNex</string>
 
     <string name="noDataMilestonesTab">No Milestone found!</string>
 
@@ -188,7 +178,6 @@
     <string name="newMilestoneTitle">Title</string>
     <string name="newMilestoneDescription">Description</string>
     <string name="newMilestoneDueDate">Due Date</string>
-    <string name="setDueDate">%1$d-%2$d-%3$d</string>
     <string name="milestoneNameErrorEmpty">Milestone title is empty</string>
     <string name="milestoneNameErrorInvalid">Milestone title is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">Milestone description exceeds the max 255 characters limit</string>
@@ -208,8 +197,6 @@
     <string name="newIssueDueDateTitle">Due Date</string>
     <string name="newIssueMilestoneTitle">Milestone</string>
     <string name="newIssueLabelsTitle">Labels</string>
-    <string name="spinnerMilestoneText">%1$s [%2$s]</string>
-    <string name="dialogAssignessText">%1$s - @%2$s</string>
     <string name="issueTitleEmpty">Issue title is empty!</string>
     <string name="issueDescriptionEmpty">Issue description is empty!</string>
     <string name="issueCreated">New issue created successfully!</string>

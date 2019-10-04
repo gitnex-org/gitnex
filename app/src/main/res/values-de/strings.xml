@@ -69,7 +69,6 @@
     <string name="logo">In Gitea anmelden</string>
     <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld</string>
     <string name="loginFailed">Falscher Benutzername/Passwort </string>
-    <string name="protocolDelimiter">://</string>
     <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, du testest in einem lokalen Netzwerk.</string>
     <string name="malformedJson">Fehlerhaftes JSON erhalten. Serveranfrage war nicht erfolgreich.</string>
     <string name="emptyFieldURL">Instanzen-URL ist erforderlich</string>
@@ -102,9 +101,6 @@
     <string name="orgContentAvatar">Org</string>
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
-    <string name="repoStars">12345</string>
-    <string name="repoWatchers">98324</string>
-    <string name="repoIssues">54321</string>
     <string name="removeContent">Entfernen</string>
 
     <string name="genericApiStatusError">Die Gitea Instanz hat einen Fehler zurückgegeben. Code\u0020</string>
@@ -134,13 +130,8 @@
     <string name="infoTabRepoForksCount">Anzahl an Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
-    <string name="infoTabRepoDummyTime">2018&#8211;10&#8211;30 08:25:25</string>
-    <string name="infoTabRepoBlank">&#8230;</string>
-    <string name="infoTabRepoZero">0</string>
-    <string name="infoTabRepoDefaultBranchText">master</string>
 
     <string name="timeAtText">um</string>
-    <string name="hash">#</string>
     <string name="createdText">Erstellt\u0020</string>
     <string name="dueDateText">Fälligkeitsdatum </string>
     <string name="issueStatusTextOpen">Status: offen</string>
@@ -152,7 +143,6 @@
     <string name="issueTypeIssue">Typ: Issue</string>
     <string name="issueTypePullRequest">Typ: Pull Anfrage</string>
     <string name="issueCommenter">Kommentator:\u0020</string>
-    <string name="issueTitleWithId">#%1$d %2$s</string>
     <string name="issueMilestone">Meilenstein %1$s</string>
     <string name="dueDate">Fällig %1$s</string>
     <string name="createdTime">Erstellt %1$s</string>
@@ -163,7 +153,6 @@
     <string name="commentError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
 
     <string name="generalImgContentText">Benutzerbild</string>
-    <string name="generalPageTitle">GitNex</string>
 
     <string name="noDataMilestonesTab">Kein Meilenstein gefunden!</string>
 
@@ -187,7 +176,6 @@
     <string name="newMilestoneTitle">Titel</string>
     <string name="newMilestoneDescription">Beschreibung</string>
     <string name="newMilestoneDueDate">Fälligkeitsdatum</string>
-    <string name="setDueDate">%1$d-%2$d-%3$d</string>
     <string name="milestoneNameErrorEmpty">Titel des Meilensteins ist leer</string>
     <string name="milestoneNameErrorInvalid">Titel des Meilensteins ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">Die Beschreibung des Meilensteins überschreitet die maximale Anzahl von 255 Zeichen</string>
@@ -207,8 +195,6 @@
     <string name="newIssueDueDateTitle">Fälligkeitsdatum</string>
     <string name="newIssueMilestoneTitle">Meilenstein</string>
     <string name="newIssueLabelsTitle">Labels</string>
-    <string name="spinnerMilestoneText">%1$s [%2$s]</string>
-    <string name="dialogAssignessText">%1$s - @%2$s</string>
     <string name="issueTitleEmpty">Der Titel des Issues ist leer!</string>
     <string name="issueDescriptionEmpty">Die Beschreibung des Issues ist leer!</string>
     <string name="issueCreated">Neues Issues wurde erfolgreich erstellt!</string>
