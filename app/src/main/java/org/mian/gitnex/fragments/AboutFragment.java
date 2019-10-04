@@ -97,7 +97,7 @@ public class AboutFragment extends Fragment {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("https://crowdin.com/project/gitnex"));
+                intent.setData(Uri.parse(getResources().getString(R.string.corwdinLink)));
                 startActivity(intent);
             }
         });
