@@ -247,7 +247,7 @@ public class RepoInfoFragment extends Fragment {
                             repoRepoUrlInfo.setText(repoInfo.getHtml_url());
                             repoForksCountInfo.setText(repoInfo.getForks_count());
 
-                            if(repoInfo.getHas_issues()) {
+                            if(repoInfo.getHas_issues() != null) {
                                 tinyDb.putBoolean("hasIssues", repoInfo.getHas_issues());
                             }
                             else {

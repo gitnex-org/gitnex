@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutFilesFrame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:theme="@style/AppTheme"
+    android:background="@color/backgroundColor"
+    tools:context=".activities.MainActivity">
+
+    <TextView
+        android:id="@+id/fileType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/fileImage"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="15dp"
+        android:contentDescription="@string/repoContentAvatar"
+        android:src="@drawable/ic_android" />
+
+    <LinearLayout
+        android:id="@+id/infoSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/fileImage"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/fileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".80"
+            android:layout_marginBottom="0dp"
+            android:text="@string/defaultFilename"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/filesDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_weight=".10"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:scaleType="fitEnd"
+            android:visibility="gone"
+            android:src="@drawable/ic_dotted_menu_horizontal"
+            android:contentDescription="@string/menuContentDesc" />
+
+    </LinearLayout>
+
+</RelativeLayout>

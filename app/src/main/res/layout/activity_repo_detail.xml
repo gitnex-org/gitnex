@@ -40,6 +40,12 @@
                 android:text="@string/tab_text_info" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItemFiles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_files" />
+
+            <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem2_issues"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

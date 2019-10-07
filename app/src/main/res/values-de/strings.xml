@@ -114,6 +114,7 @@
     <string name="infoTabRepoForksCount">Anzahl an Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
+
     <string name="timeAtText">um</string>
     <string name="createdText">Erstellt\u0020</string>
     <string name="dueDateText">Fälligkeitsdatum </string>
@@ -135,6 +136,7 @@
     <string name="commentSuccess">Kommentar gepostet</string>
     <string name="commentError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="generalImgContentText">Benutzerbild</string>
+
     <string name="noDataMilestonesTab">Kein Meilenstein gefunden!</string>
     <string name="commitAuthor">Commit Autor: %1$s</string>
     <string name="commitHash">Commit Hash \n%1$s%2$s</string>
@@ -370,11 +372,16 @@
     <string name="copyIssueUrl">Issue Link kopieren</string>
     <string name="copyIssueUrlToastMsg">Issue Link in Zwischenablage kopiert</string>
     <string name="milestoneCompletion">%1$d\uFF05 abgeschlossen</string>
+
+    <!-- files -->
+    <string name="noDataFilesTab">Keine Dateien gefunden</string>
+
     <!-- files -->
     <string name="noDataFilesTab">Keine Dateien gefunden</string>
     <string name="filesDirNotSupportedYet">Ordner sind noch nicht unterstützt</string>
     <string name="filesGenericError">Datei kann nicht angezeigt werden, da die API einen Fehler meldet</string>
     <string name="filesBreadcrumb">Wurzel</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Fertig</string>

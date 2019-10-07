@@ -26,6 +26,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BranchesFragment;
 import org.mian.gitnex.fragments.ClosedIssuesFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
+import org.mian.gitnex.fragments.FilesFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.LabelsFragment;
 import org.mian.gitnex.fragments.MilestonesFragment;
@@ -87,9 +88,9 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
             if(!tinyDb.getString("issuesCounter").isEmpty()) {
                 getRepoInfo(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
             }
-            Objects.requireNonNull(tabLayout.getTabAt(1)).setCustomView(tabHeader);
+            Objects.requireNonNull(tabLayout.getTabAt(2)).setCustomView(tabHeader);
 
-            TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(1);
+            TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(2);
             ColorStateList textColor = tabLayout.getTabTextColors();
             assert tabOpenIssues != null;
             TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeText);
@@ -199,21 +200,23 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
             switch (position) {
                 case 0: // information
                     return RepoInfoFragment.newInstance(repoOwner, repoName);
-                case 1: // issues
+                case 1: // files
+                    return FilesFragment.newInstance(repoOwner, repoName);
+                case 2: // issues
                     fragment = new IssuesFragment();
                     break;
-                case 2: // closed issues
+                case 3: // closed issues
                     fragment = new ClosedIssuesFragment();
                     break;
-                case 3: // milestones
+                case 4: // milestones
                     return MilestonesFragment.newInstance(repoOwner, repoName);
-                case 4: // labels
+                case 5: // labels
                     return LabelsFragment.newInstance(repoOwner, repoName);
-                case 5: // branches
+                case 6: // branches
                     return BranchesFragment.newInstance(repoOwner, repoName);
-                case 6: // releases
+                case 7: // releases
                     return ReleasesFragment.newInstance(repoOwner, repoName);
-                case 7: // collaborators
+                case 8: // collaborators
                     return CollaboratorsFragment.newInstance(repoOwner, repoName);
             }
             return fragment;
@@ -221,7 +224,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
 
         @Override
         public int getCount() {
-            return 8;
+            return 9;
         }
 
     }

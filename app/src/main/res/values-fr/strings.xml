@@ -114,6 +114,8 @@
     <string name="infoTabRepoForksCount">Forks Count</string>
     <string name="infoTabRepoCreatedAt">Created</string>
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
+    <string name="infoTabRepoDefaultBranchText">master</string>
+
     <string name="timeAtText">à</string>
     <string name="createdText">Created\u0020</string>
     <string name="dueDateText">Due Date</string>
@@ -135,6 +137,7 @@
     <string name="commentSuccess">Comment posted</string>
     <string name="commentError">Something went wrong, please try again</string>
     <string name="generalImgContentText">IMG</string>
+
     <string name="noDataMilestonesTab">No Milestone found!</string>
     <string name="commitAuthor">Commit author : %1$s</string>
     <string name="commitHash">Commit hash \n%1$s%2$s</string>
@@ -370,11 +373,16 @@
     <string name="copyIssueUrl">Copier l Issue URL</string>
     <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 terminé</string>
+
+    <!-- files -->
+    <string name="noDataFilesTab">Aucun fichier trouvé</string>
+
     <!-- files -->
     <string name="noDataFilesTab">Aucun fichier trouvé</string>
     <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="filesBreadcrumb">Root</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>

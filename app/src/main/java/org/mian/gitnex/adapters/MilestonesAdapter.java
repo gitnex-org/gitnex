@@ -237,6 +237,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
 
             if (currentItem.getOpen_issues() == 0) {
                 holder.msProgress.setProgress(100);
+                holder.msProgress.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneCompletion, 100), mCtx));
             }
             else {
                 int msCompletion = 100 * currentItem.getClosed_issues() / (currentItem.getOpen_issues() + currentItem.getClosed_issues());

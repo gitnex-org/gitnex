@@ -179,9 +179,14 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
                 .endConfig()
                 .buildRoundRect(firstCharacter, color, 3);
 
-        if (!currentItem.getAvatar_url().equals("")) {
-            Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.imageMy);
-        } else {
+        if (currentItem.getAvatar_url() != null) {
+            if (!currentItem.getAvatar_url().equals("")) {
+                Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.imageMy);
+            } else {
+                holder.imageMy.setImageDrawable(drawable);
+            }
+        }
+        else {
             holder.imageMy.setImageDrawable(drawable);
         }
 

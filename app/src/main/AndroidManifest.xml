@@ -11,8 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.NewFileActivity"
+            android:name=".activities.FileViewActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.NewFileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RepoWatchersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -64,8 +67,8 @@
         <activity android:name=".activities.NewOrganizationActivity" />
         <activity android:name=".activities.OpenRepoInBrowserActivity" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>
