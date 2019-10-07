@@ -92,7 +92,7 @@
     <string name="genericApiStatusError">Инстанция вернула ошибку. Код\u0020</string>
     <string name="title_activity_repo_detail">Активность</string>
     <string name="tab_text_info">Детали</string>
-    <string name="tab_text_files">Файлы</string>
+    <string name="tab_text_files">Files</string>
     <string name="tab_text_issues">Открытые задачи</string>
     <string name="tabItemCloseIssues">Закрытые задачи</string>
     <string name="tab_text_ml">Вехи</string>
@@ -114,8 +114,6 @@
     <string name="infoTabRepoForksCount">Кол-во форков</string>
     <string name="infoTabRepoCreatedAt">Создан</string>
     <string name="infoTabRepoUpdatedAt">Последнее обновление</string>
-    <string name="infoTabRepoDefaultBranchText">master</string>
-
     <string name="timeAtText">в</string>
     <string name="createdText">Создано\u0020</string>
     <string name="dueDateText">Дата исполнения</string>
@@ -137,7 +135,6 @@
     <string name="commentSuccess">Комментарий отправлен!</string>
     <string name="commentError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="generalImgContentText">Аватар</string>
-
     <string name="noDataMilestonesTab">Вех не обнаружено</string>
     <string name="commitAuthor">Автор коммита: %1$s</string>
     <string name="commitHash">Хеш коммита \n%1$s%2$s</string>
@@ -197,15 +194,15 @@
     <string name="settingsHomeScreenSelectedText">My Repositories</string>
     <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
     <!-- settings -->
-    <string name="noMoreData">Нет новых данных.</string>
+    <string name="noMoreData">No more data available</string>
     <string name="createLabel">Создание метки</string>
     <string name="menuTitleText">Меню репозитория</string>
     <string name="labelName">Название метки</string>
     <string name="labelColor">Цвет метки</string>
-    <string name="labelEmptyError">Название метки пустое.</string>
-    <string name="labelNameError">Название метки неверное.</string>
+    <string name="labelEmptyError">Label name is empty</string>
+    <string name="labelNameError">Label name is not valid</string>
     <string name="labelCreated">Метка создана.</string>
-    <string name="labelGeneralError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
+    <string name="labelGeneralError">Something went wrong, please try again</string>
     <string name="labelUpdated">Метка обновлена.</string>
     <string name="noDataLabelsTab">Меток не обнаружено</string>
     <string name="labelMenuContentDesc">Описание</string>
@@ -218,7 +215,7 @@
     <!-- credits - this part does not need translation -->
     <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
-    <string name="alertDialogTokenRevokedMessage">Похоже, что токен доступа отозван, или вам не разрешено просматривать это содержимое. В случае отзыва токена, пожалуйста, выйдите из системы и войдите снова.</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents. In case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Закрыть</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Выход</string>
     <string name="labelDeleteTitle">Удалить\u0020</string>
@@ -244,16 +241,16 @@
     <string name="newTeamDesc">Описание</string>
     <string name="newTeamPermission">Права</string>
     <string name="newTeamAccessControls">Контроль доступа</string>
-    <string name="newTeamPermissionRead">Участники могут просматривать и клонировать репозитории команд.</string>
-    <string name="newTeamPermissionWrite">Участники могут читать и изменять в репозиториях команды.</string>
-    <string name="newTeamPermissionAdmin">Участники могут читать и изменять в репозиториях команды и добавлять к ним других участников.</string>
-    <string name="teamNameEmpty">Укажите имя команды.</string>
-    <string name="teamNameError">Название команды должно содержать только буквы, цифры, тире (-), подчеркивание (_) и точку (.)</string>
-    <string name="teamPermissionEmpty">Укажите права.</string>
-    <string name="teamDescError">В описании команды есть недопустимые символы.</string>
-    <string name="teamDescLimit">В описании команды более 100 символов.</string>
-    <string name="teamCreated">Команда создана успешно.</string>
-    <string name="teamCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
+    <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
+    <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
+    <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
+    <string name="teamNameEmpty">Please enter team name</string>
+    <string name="teamNameError">Team name should contain only alphanumeric, dash (-), underscore (_) and dot (.) characters</string>
+    <string name="teamPermissionEmpty">Please select permission</string>
+    <string name="teamDescError">Team description have illegal characters</string>
+    <string name="teamDescLimit">Team description have more than 100 characters</string>
+    <string name="teamCreated">Team created successfully</string>
+    <string name="teamCreatedError">Something went wrong, please try again</string>
     <!-- create team -->
     <!-- edit comment -->
     <string name="editCommentTitle">Редактировать комментарий</string>
@@ -277,8 +274,8 @@
     <string name="profileEmailTitle">Адрес эл. почты</string>
     <string name="emailAddedText">Новый адрес электронной почты успешно добавлен.</string>
     <string name="emailErrorEmpty">Адрес электронной почты пустой.</string>
-    <string name="emailErrorInvalid">Недоступный адрес электронной почты.</string>
-    <string name="emailErrorInUse">Адрес электронной почты уже используется.</string>
+    <string name="emailErrorInvalid">Email address is not valid</string>
+    <string name="emailErrorInUse">Email address is already in use</string>
     <string name="emailTypeText">Основной</string>
     <string name="profileTabEmails">Адреса эл. почты</string>
     <!-- profile section -->
@@ -365,7 +362,7 @@
     <string name="newFileCommitMessageError">Commit message is too long</string>
     <string name="newFileSuccessMessage">New file created</string>
     <string name="newFileOldBranches">Current Branches</string>
-    <string name="newFileRequiredFields">Fields like filename, contents and commit message are required.</string>
+    <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
     <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
     <string name="newFileNewBranchMessage">e.g: new-branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
@@ -373,13 +370,11 @@
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 выполненный</string>
-
     <!-- files -->
-    <string name="noDataFilesTab">Файлов не найдено</string>
+    <string name="noDataFilesTab">No files found</string>
     <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="filesBreadcrumb">Root</string>
-
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Готово</string>
@@ -402,4 +397,5 @@
     <string name="characters255Limit">Max 255 characters</string>
     <string name="emptyFields">Все поля обязательны для заполнения</string>
     <!-- generic copy -->
+    <string name="translateText">Translate GitNex with Crowdin</string>
 </resources>

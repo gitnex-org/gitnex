@@ -397,4 +397,5 @@
     <string name="characters255Limit">Max 255 characters</string>
     <string name="emptyFields">All fields are required</string>
     <!-- generic copy -->
+    <string name="translateText">Translate GitNex with Crowdin</string>
 </resources>
