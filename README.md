@@ -39,6 +39,14 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`
 ## Contributing
 [CONTRIBUTING](https://gitea.com/mmarif/GitNex/src/branch/master/CONTRIBUTING.md)
 
+## Translation
+Help us translate GitNex to your native language.
+
+We use [Crowdin](https://crowdin.com/project/gitnex) for translation.
+If your language is not listed, please request [here](https://gitea.com/mmarif/GitNex/issues) to add it to the project.
+
+**Link: https://crowdin.com/project/GitNex**
+
 ## Screenshots:
 [Screenshots](https://gitea.com/mmarif/GitNex/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots)
 
