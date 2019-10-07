@@ -24,6 +24,7 @@ In case you want to submit a bug report, please provide as much details as possi
 ## Translation
 Help us translate GitNex to your native language.
 
-Take a look [here](https://gitea.com/mmarif/GitNex/src/branch/master/app/src/main/res/values/strings.xml) for strings, please ignore the lines with `translatable="false"`. It is recommended to create a Pull Request with your changes.
+We use [Crowdin](https://crowdin.com/project/gitnex) for translation.
+If your language is not listed, please request [here](https://gitea.com/mmarif/GitNex/issues) to add it to the project.
 
-Check the structure of other languages for example [French](https://gitea.com/mmarif/GitNex/src/branch/master/app/src/main/res/values-fr/strings.xml). 
+**Link: https://crowdin.com/project/GitNex**

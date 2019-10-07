@@ -30,7 +30,7 @@ public class SettingsFragment extends Fragment {
 
     private Context ctx = null;
 
-    private static String[] langList = {"English", "French", "German", "Russian"};
+    private static String[] langList = {"Arabic", "Chinese", "English", "French", "German", "Russian"};
     private static int langSelectedChoice = 0;
 
     private static String[] timeList = {"Pretty", "Normal"};
@@ -68,7 +68,7 @@ public class SettingsFragment extends Fragment {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse(getResources().getString(R.string.appRepoContributingLink)));
+                intent.setData(Uri.parse(getResources().getString(R.string.corwdinLink)));
                 startActivity(intent);
             }
         });
@@ -244,6 +244,12 @@ public class SettingsFragment extends Fragment {
                         tinyDb.putInt("langId", i);
 
                         switch (langList[i]) {
+                            case "Arabic":
+                                tinyDb.putString("locale", "ar");
+                                break;
+                            case "Chinese":
+                                tinyDb.putString("locale", "zh");
+                                break;
                             case "French":
                                 tinyDb.putString("locale", "fr");
                                 break;
