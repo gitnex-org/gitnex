@@ -376,9 +376,6 @@
 
     <!-- files -->
     <string name="noDataFilesTab">Aucun fichier trouvé</string>
-
-    <!-- files -->
-    <string name="noDataFilesTab">Aucun fichier trouvé</string>
     <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="filesBreadcrumb">Root</string>
