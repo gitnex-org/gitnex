@@ -376,9 +376,6 @@
 
     <!-- files -->
     <string name="noDataFilesTab">Файлов не найдено</string>
-
-    <!-- files -->
-    <string name="noDataFilesTab">Файлов не найдено</string>
     <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="filesBreadcrumb">Root</string>

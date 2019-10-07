@@ -14,6 +14,7 @@
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
     <string name="appVerBuild" translatable="false">%1$s / build %2$d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tool Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and sponsors for your generous work and donations.</string>
+    <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
 
     <string name="appRepoIssuesText" translatable="false">Report issues at Gitea</string>
     <string name="supportText" translatable="false">Support the App on Liberapay</string>
@@ -498,5 +499,7 @@
     <string name="characters255Limit">Max 255 characters</string>
     <string name="emptyFields">All fields are required</string>
     <!-- generic copy -->
+
+    <string name="translateText">Translate GitNex with Crowdin</string>
 
 </resources>

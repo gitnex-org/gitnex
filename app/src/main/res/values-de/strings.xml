@@ -375,9 +375,6 @@
 
     <!-- files -->
     <string name="noDataFilesTab">Keine Dateien gefunden</string>
-
-    <!-- files -->
-    <string name="noDataFilesTab">Keine Dateien gefunden</string>
     <string name="filesDirNotSupportedYet">Ordner sind noch nicht unterstützt</string>
     <string name="filesGenericError">Datei kann nicht angezeigt werden, da die API einen Fehler meldet</string>
     <string name="filesBreadcrumb">Wurzel</string>
