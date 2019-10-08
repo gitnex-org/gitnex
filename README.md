@@ -39,8 +39,20 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`
 ## Contributing
 [CONTRIBUTING](https://gitea.com/mmarif/GitNex/src/branch/master/CONTRIBUTING.md)
 
+## Translation
+Help us translate GitNex to your native language.
+
+We use [Crowdin](https://crowdin.com/project/gitnex) for translation.
+If your language is not listed, please request [here](https://gitea.com/mmarif/GitNex/issues) to add it to the project.
+
+**Link: https://crowdin.com/project/GitNex**
+
 ## Screenshots:
-[Screenshots](https://gitea.com/mmarif/GitNex/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots)
+
+<img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="001.png" width="200"/>  | <img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="002.png" width="200"/> | <img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="003.png" width="200"/> | <img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="004.png" width="200"/>
+---|---|---|---
+<img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="005.png" width="200"/> | <img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="006.png" width="200"/> | <img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="007.png" width="200"/>  | <img src="https://gitea.com/mmarif/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="008.png" width="200"/>
+
 
 ## FAQ
 [Faq](https://gitea.com/mmarif/GitNex/wiki/FAQ)

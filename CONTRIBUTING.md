@@ -20,11 +20,3 @@ Before creating an issue please take a moment and search the repository issues(o
 In case you want to submit a bug report, please provide as much details as possible to better debug the problem. The important part is how to reproduce the bug and steps to reproduce are appreciated.
 
 **Note:** Please contact the project directly via email(gitnex@swatian.com) if have to share sensitive and security related details.
-
-## Translation
-Help us translate GitNex to your native language.
-
-We use [Crowdin](https://crowdin.com/project/gitnex) for translation.
-If your language is not listed, please request [here](https://gitea.com/mmarif/GitNex/issues) to add it to the project.
-
-**Link: https://crowdin.com/project/GitNex**
