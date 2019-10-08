@@ -56,7 +56,7 @@
     <string name="userName">Benutzername</string>
     <string name="passWord">Passwort</string>
     <string name="btnLogin">ANMELDEN</string>
-    <string name="instanceUrl">Gitea URL</string>
+    <string name="instanceUrl">Instanz Link</string>
     <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
     <string name="navigation_drawer_close">Navigationsleiste schließen</string>
     <string name="logo">In Gitea anmelden</string>
@@ -70,11 +70,11 @@
     <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen. Bitte überprüfe die Internetverbindung</string>
     <string name="repoNameErrorEmpty">Der Repository Name ist leer.</string>
     <string name="repoNameErrorInvalid">Der Repository Name ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
-    <string name="repoDescError">Die Repositorybeschreibung überschreitet die maximale Anzahl von 255 Zeichen</string>
+    <string name="repoDescError">Die Repository Beschreibung überschreitet die maximale Anzahl von 255 Zeichen</string>
     <string name="repoCreated">Repository erfolgreich erstellt!</string>
     <string name="repoCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="repoExistsError">Ein Repository mit diesem Namen existiert bereits unter dem ausgewählten Besitzer</string>
-    <string name="orgNameErrorEmpty">Organisationsname ist leer</string>
+    <string name="orgNameErrorEmpty">Name der Organisation ist leer</string>
     <string name="orgNameErrorInvalid">Organisationsname ist nicht gültig, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organisationsbeschreibung überschreitet maximale Anzahl von 255 Zeichen</string>
     <string name="orgCreated">Organisation erfolgreich erstellt!</string>
@@ -89,7 +89,7 @@
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Entfernen</string>
-    <string name="genericApiStatusError">Die Gitea Instanz hat einen Fehler zurückgegeben. Code\u0020</string>
+    <string name="genericApiStatusError">Die Instanz hat einen Fehler zurückgegeben. Code\u0020</string>
     <string name="title_activity_repo_detail">Repo-Details Aktivität</string>
     <string name="tab_text_info">Details</string>
     <string name="tab_text_files">Dateien</string>
@@ -114,10 +114,9 @@
     <string name="infoTabRepoForksCount">Anzahl an Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
-
     <string name="timeAtText">um</string>
     <string name="createdText">Erstellt\u0020</string>
-    <string name="dueDateText">Fälligkeitsdatum </string>
+    <string name="dueDateText">Fälligkeitsdatum</string>
     <string name="issueStatusTextOpen">Status: offen</string>
     <string name="issueStatusOpen">öffnen</string>
     <string name="issueStatusTextClosed">Status: geschlossen</string>
@@ -136,7 +135,6 @@
     <string name="commentSuccess">Kommentar gepostet</string>
     <string name="commentError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="generalImgContentText">Benutzerbild</string>
-
     <string name="noDataMilestonesTab">Kein Meilenstein gefunden!</string>
     <string name="commitAuthor">Commit Autor: %1$s</string>
     <string name="commitHash">Commit Hash \n%1$s%2$s</string>
@@ -196,15 +194,15 @@
     <string name="settingsHomeScreenSelectedText">Meine Repositories</string>
     <string name="settingshomeScreenSelectorDialogTitle">Home Screen Auswählen</string>
     <!-- settings -->
-    <string name="noMoreData">Keine weiteren Daten verfügbar!</string>
+    <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
     <string name="menuTitleText">Repo Menü</string>
     <string name="labelName">Beschriftung</string>
     <string name="labelColor">Label Farbe</string>
-    <string name="labelEmptyError">Der Labelname ist leer!</string>
-    <string name="labelNameError">Der Labelname ist nicht gültig!</string>
+    <string name="labelEmptyError">Name des Namens ist leer.</string>
+    <string name="labelNameError">Label Name ist ungültig.</string>
     <string name="labelCreated">Label wurde erfolgreich erstellt!</string>
-    <string name="labelGeneralError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="labelGeneralError">Etwas ist schief gelaufen, bitte versuche es erneut.</string>
     <string name="labelUpdated">Label aktualisiert!</string>
     <string name="noDataLabelsTab">Keine Labels gefunden!</string>
     <string name="labelMenuContentDesc">Beschreibung</string>
@@ -217,7 +215,7 @@
     <!-- credits - this part does not need translation -->
     <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
-    <string name="alertDialogTokenRevokedMessage">Es scheint, dass der Access Token widerrufen wurde ODER du diese Inhalte nicht sehen darfst. Falls der Token wiederrufen wurde, melde dich bitte ab und wieder an.</string>
+    <string name="alertDialogTokenRevokedMessage">Es scheint, dass das Access Token widerrufen wurde ODER du die Inhalte nicht sehen darfst. Im Falle von widerrufenen Token, bitte logge dich aus und wieder ein.</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Abbrechen</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Abmelden</string>
     <string name="labelDeleteTitle">Löschen\u0020</string>
@@ -232,27 +230,27 @@
     <string name="orgCreateTeam">Team erstellen</string>
     <string name="noDataTeams">Keine Teams gefunden!</string>
     <string name="teamTitle">Name des Teams</string>
-    <string name="teamDescription">Beschrebung des Teams</string>
+    <string name="teamDescription">Beschreibung des Teams</string>
     <string name="teamPermission">Berechtigung: %1$s</string>
     <string name="noDataMembers">Keine Mitglieder gefunden!</string>
-    <string name="orgMember">Org Mitglied</string>
-    <string name="orgTeamMembers">Mitglieder der Organization</string>
+    <string name="orgMember">Org Mitglieder</string>
+    <string name="orgTeamMembers">Mitglieder der Organisation</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Name des Teams</string>
     <string name="newTeamDesc">Beschreibung des Teams</string>
     <string name="newTeamPermission">Berechtigung</string>
     <string name="newTeamAccessControls">Zugriffsrechte</string>
-    <string name="newTeamPermissionRead">Mitglieder können Team-Repositories anschauen und klonen</string>
-    <string name="newTeamPermissionWrite">Mitglieder können Team-Repositories anschauen und zu Team-Repositories pushen</string>
-    <string name="newTeamPermissionAdmin">Mitglieder können zu Team-Repositories pushen und pullen und Mitarbeiter zu ihnen hinzufügen</string>
-    <string name="teamNameEmpty">Bitte gib den Namen des Teams ein.</string>
-    <string name="teamNameError">Der Name des Teams sollte nur Alphanumerische Zeichen, Bindestriche (-), Unterstriche (_) und Punkte (.) enthalten.</string>
-    <string name="teamPermissionEmpty">Bitte wähle die Rechte aus.</string>
-    <string name="teamDescError">Die Beschreibung des Teams hat verbotene Zeichen.</string>
-    <string name="teamDescLimit">Die Team Beschreibung überschreitet das Maximum von 100 Zeichen.</string>
+    <string name="newTeamPermissionRead">Mitglieder können Team Repositorys einsehen und klonen.</string>
+    <string name="newTeamPermissionWrite">Mitglieder können auf Team-Repositories lesen und schreiben.</string>
+    <string name="newTeamPermissionAdmin">Mitglieder können auf Team-Repositories lesen, schreiben und Teilnehmer hinzufügen.</string>
+    <string name="teamNameEmpty">Bitte geben Sie den Teamnamen ein.</string>
+    <string name="teamNameError">Team Name sollte nur Buchstaben, Zahlen, Punkte, Bindestrich (-) und Unterstriche (_) enthalten.</string>
+    <string name="teamPermissionEmpty">Bitte wählen Sie die Berechtigung.</string>
+    <string name="teamDescError">Die Team Beschreibung hat illegale Zeichen.</string>
+    <string name="teamDescLimit">Team Beschreibung hat mehr als 100 Zeichen.</string>
     <string name="teamCreated">Team erfolgreich erstellt.</string>
-    <string name="teamCreatedError">Etwas ist schief gelaufen. Bitte versuche es später erneut</string>
+    <string name="teamCreatedError">Etwas ist schief gelaufen, bitte versuche es erneut.</string>
     <!-- create team -->
     <!-- edit comment -->
     <string name="editCommentTitle">Kommentar bearbeiten</string>
@@ -265,7 +263,7 @@
     <string name="addCollaboratorViewUserDesc">Benutzername</string>
     <string name="removeCollaboratorTitle">entfernen\u0020</string>
     <string name="removeCollaboratorMessage">Möchtest du den Nutzer wirklich von dieser Repository entfernen?</string>
-    <string name="removeCollaboratorToastText">Benuter von der Repository entfernt.</string>
+    <string name="removeCollaboratorToastText">Benutzer von der Repository entfernt.</string>
     <string name="addCollaboratorToastText">Benutzer zu der Repository hinzugefügt.</string>
     <!-- add collaborator -->
     <!-- profile section -->
@@ -276,8 +274,8 @@
     <string name="profileEmailTitle">E-Mail Adresse</string>
     <string name="emailAddedText">Neue E-Mail Adresse erfolgreich hinzugefügt.</string>
     <string name="emailErrorEmpty">E-Mail Adresse ist leer.</string>
-    <string name="emailErrorInvalid">E-Mail Adresse ist nicht gültig.</string>
-    <string name="emailErrorInUse">Die E-Mail Adresse wird bereits verwendet.</string>
+    <string name="emailErrorInvalid">E-Mail Adresse ist ungültig.</string>
+    <string name="emailErrorInUse">E-Mail Adresse ist bereits in Benutzung.</string>
     <string name="emailTypeText">Primär</string>
     <string name="profileTabEmails">E-Mails</string>
     <!-- profile section -->
@@ -297,7 +295,7 @@
     <!-- multi select dialog -->
     <string name="select_entry">Einträge auswählen</string>
     <string name="validation_text">Bitte mindestens eine Option auswählen</string>
-    <string name="please_select_atleast">Du musst mindestens so viele auswälen: </string>
+    <string name="please_select_atleast">Du musst mindestens so viele auswählen: </string>
     <string name="you_can_only_select_upto">Du kannst höchstens so viele auswählen: </string>
     <string name="option"> Option</string>
     <string name="options"> Optionen</string>
@@ -342,7 +340,7 @@
     <string name="loginOTPError">Bitte OTP-Code Eingeben</string>
     <string name="loginOTPTypeError">Der OTP-Code muss aus Zahlen bestehen.</string>
     <string name="loginOTP">OTP-Code (optional)</string>
-    <string name="otpMessage">Gib den otp code ein, wenn 2FA eingeschaltet ist</string>
+    <string name="otpMessage">Gib den OTP-Code ein, wenn 2FA eingeschaltet ist</string>
     <string name="openWebRepo">Öffne mit Browser</string>
     <string name="repoStargazersInMenu">Favorisierer</string>
     <string name="repoWatchersInMenu">Beobachter</string>
@@ -372,13 +370,11 @@
     <string name="copyIssueUrl">Issue Link kopieren</string>
     <string name="copyIssueUrlToastMsg">Issue Link in Zwischenablage kopiert</string>
     <string name="milestoneCompletion">%1$d\uFF05 abgeschlossen</string>
-
     <!-- files -->
     <string name="noDataFilesTab">Keine Dateien gefunden</string>
-    <string name="filesDirNotSupportedYet">Ordner sind noch nicht unterstützt</string>
-    <string name="filesGenericError">Datei kann nicht angezeigt werden, da die API einen Fehler meldet</string>
+    <string name="filesDirNotSupportedYet">Ordner werden noch nicht unterstützt</string>
+    <string name="filesGenericError">Leider kann diese Datei nicht angezeigt werden, da die API einen Fehler zurückgab</string>
     <string name="filesBreadcrumb">Wurzel</string>
-
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Fertig</string>
@@ -401,4 +397,5 @@
     <string name="characters255Limit">maximal 255 Zeichen</string>
     <string name="emptyFields">Es sind alle Felder erforderlich</string>
     <!-- generic copy -->
+    <string name="translateText">GitNex mit Crowdin übersetzen</string>
 </resources>
