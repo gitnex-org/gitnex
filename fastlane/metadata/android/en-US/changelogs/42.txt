@@ -7,4 +7,4 @@
 - Fixed: Crash when issue badge is disabled
 
 For more, check the release notes.
-https://gitlab.com/mmarif4u/gitnex/releases
+https://gitea.com/gitnex/GitNex/releases

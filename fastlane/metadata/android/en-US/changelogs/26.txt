@@ -7,4 +7,4 @@
 - Enhancement: Added edited status for single issue and comments
 
 And many more, check the release notes.
-https://gitlab.com/mmarif4u/gitnex/releases
+https://gitea.com/gitnex/GitNex/releases
