@@ -186,7 +186,7 @@
     <string name="settingsDateTimeHeaderDefault">Relatif</string>
     <string name="settingsLanguageSelectorDialogTitle">Langue</string>
     <string name="settingsTimeSelectorDialogTitle">Format de date</string>
-    <string name="settingsIssueBadgeHeaderText">Badge des tickets</string>
+    <string name="settingsIssueBadgeHeaderText">Compteur de tickets ouverts</string>
     <string name="settingsHelpTranslateText">Aidez-nous à traduire GitNex dans votre langue</string>
     <string name="codeBlockHeaderText">Couleur du code</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Couleur du code</string>
