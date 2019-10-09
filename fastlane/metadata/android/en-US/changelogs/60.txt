@@ -13,4 +13,4 @@
 - Bugfix: Open issues tab color scheme
 
 For more, check the release notes.
-https://gitea.com/mmarif/GitNex/releases
+https://gitea.com/gitnex/GitNex/releases

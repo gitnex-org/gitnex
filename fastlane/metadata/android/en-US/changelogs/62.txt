@@ -1,4 +1,4 @@
 Bugfix: crash when my repo, starred repos are accessed without repo avatar. old Gitea instances
 
 For more, check the release notes.
-https://gitea.com/mmarif/GitNex/releases
+https://gitea.com/gitnex/GitNex/releases
