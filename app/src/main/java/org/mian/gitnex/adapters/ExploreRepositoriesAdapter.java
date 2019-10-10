@@ -18,10 +18,12 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.UserRepositories;
+import org.mian.gitnex.util.TinyDB;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
             repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
             ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
 
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -80,7 +82,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
                     context.startActivity(intent);
 
                 }
-            });*/
+            });
 
             reposDropdownMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
