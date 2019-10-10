@@ -503,5 +503,6 @@
     <!-- generic copy -->
 
     <string name="translateText">Translate GitNex with Crowdin</string>
+    <string name="exploreTextBoxHint">Explore repositories</string>
 
 </resources>

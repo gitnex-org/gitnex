@@ -1,36 +1,35 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.MyReposListAdapter;
+import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.models.ExploreRepositories;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
-import org.mian.gitnex.viewmodels.ExploreRepoListViewModel;
 import java.util.List;
 import java.util.Objects;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
 + * Template Author M M Arif
@@ -39,16 +38,15 @@ import java.util.Objects;
 
 public class ExploreRepositoriesFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static String repoNameF = "param2";
+    private static String repoOwnerF = "param1";
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
-    private MyReposListAdapter adapter;
     private TextView noData;
-    private String searchKeyword = "test";  //test value
-
-    private String mParam1;
-    private String mParam2;
+    private TextView searchKeyword;
+    private Boolean repoTypeInclude = true;
+    private String sort = "updated";
+    private String order = "asc";
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,8 +56,8 @@ public class ExploreRepositoriesFragment extends Fragment {
     public static ExploreRepositoriesFragment newInstance(String param1, String param2) {
         ExploreRepositoriesFragment fragment = new ExploreRepositoriesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(repoOwnerF, param1);
+        args.putString(repoNameF, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,8 +66,8 @@ public class ExploreRepositoriesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String repoName = getArguments().getString(repoNameF);
+            String repoOwner = getArguments().getString(repoOwnerF);
         }
     }
 
@@ -80,7 +78,7 @@ public class ExploreRepositoriesFragment extends Fragment {
         boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
 
         final View v = inflater.inflate(R.layout.fragment_explore_repo, container, false);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleExplore));
 
         TinyDB tinyDb = new TinyDB(getContext());
@@ -88,41 +86,25 @@ public class ExploreRepositoriesFragment extends Fragment {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
-
+        searchKeyword = v.findViewById(R.id.searchKeyword);
         noData = v.findViewById(R.id.noData);
         mProgressBar = v.findViewById(R.id.progress_bar);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+        mRecyclerView = v.findViewById(R.id.recyclerViewReposSearch);
 
         if(connToInternet) {
 
-            swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            searchKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void onRefresh() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            swipeRefresh.setRefreshing(false);
-                            ExploreRepoListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword);
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEND) {
+                        if(!searchKeyword.getText().toString().equals("")) {
+                            mProgressBar.setVisibility(View.VISIBLE);
+                            loadSearchReposList(instanceUrl, instanceToken, loginUid, searchKeyword.getText().toString(), repoTypeInclude, sort, order, getContext());
                         }
-                    }, 50);
+                    }
+                    return false;
                 }
             });
-
-            fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword);
 
         }
         else {
@@ -133,74 +115,59 @@ public class ExploreRepositoriesFragment extends Fragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+    private void loadSearchReposList(String instanceUrl, String instanceToken, String loginUid, String searchKeyword, Boolean repoTypeInclude, String sort, String order, final Context context) {
 
-        ExploreRepoListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword);
+        Call<ExploreRepositories> call = RetrofitClient
+                .getInstance(instanceUrl)
+                .getApiInterface()
+                .queryRepos(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, repoTypeInclude, sort, order);
 
-    }
+        call.enqueue(new Callback<ExploreRepositories>() {
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String searchKeyword) {
-
-        searchKeyword = this.searchKeyword; //test
-
-        ExploreRepoListViewModel RepoModel = new ViewModelProvider(this).get(ExploreRepoListViewModel.class);
-
-        RepoModel.getUserRepositories(instanceUrl, instanceToken, searchKeyword).observe(this, new Observer<List<UserRepositories>>() {
             @Override
-            public void onChanged(@Nullable List<UserRepositories> myReposListMain) {
-                adapter = new MyReposListAdapter(getContext(), myReposListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setAdapter(adapter);
-                    noData.setVisibility(View.GONE);
+            public void onResponse(@NonNull Call<ExploreRepositories> call, @NonNull Response<ExploreRepositories> response) {
+
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    getReposList(response.body().getSearchedData(), context);
+                } else {
+                    Log.i("onResponse", String.valueOf(response.code()));
                 }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mRecyclerView.setAdapter(adapter);
-                    noData.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
+
             }
+
+            @Override
+            public void onFailure(@NonNull Call<ExploreRepositories> call, @NonNull Throwable t) {
+                Log.i("onFailure", t.getMessage());
+            }
+
         });
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    private void getReposList(List<UserRepositories> dataList, Context context) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        ExploreRepositoriesAdapter adapter = new ExploreRepositoriesAdapter(dataList, context);
 
-        inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setQueryHint(getContext().getString(R.string.strFilter));
+        if(adapter.getItemCount() > 0) {
 
-        if(!connToInternet) {
-            return;
+            mRecyclerView.setAdapter(adapter);
+            noData.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.GONE);
+
         }
+        else {
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+            noData.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(mRecyclerView.getAdapter() != null) {
-                    adapter.getFilter().filter(newText);
-                }
-                return false;
-            }
-        });
+        }
 
     }
 

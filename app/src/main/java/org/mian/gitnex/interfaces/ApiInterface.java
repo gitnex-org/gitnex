@@ -3,6 +3,7 @@ package org.mian.gitnex.interfaces;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.models.AddEmail;
 import org.mian.gitnex.models.Branches;
+import org.mian.gitnex.models.ExploreRepositories;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.models.NewFile;
 import org.mian.gitnex.models.UpdateIssueAssignee;
@@ -213,8 +214,8 @@ public interface ApiInterface {
     @GET("repos/{owner}/{repo}/subscribers") // get all repo watchers
     Call<List<UserInfo>> getRepoWatchers(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
-    @GET("repos/search") // get all repos who match query string
-    Call<List<UserRepositories>> queryRepos(@Header("Authorization") String token, @Query("q") String searchKeyword, @Query("limit") int limit, @Query("mode") String mode, @Query("sort") String sort, @Query("order") String order);
+    @GET("repos/search") // get all the repos which match the query string
+    Call<ExploreRepositories> queryRepos(@Header("Authorization") String token, @Query("q") String searchKeyword, @Query("private") Boolean repoTypeInclude, @Query("sort") String sort, @Query("order") String order);
 
     @POST("repos/{owner}/{repo}/contents/{file}") // create new file
     Call<JsonElement> createNewFile(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String fileName, @Body NewFile jsonStr);
