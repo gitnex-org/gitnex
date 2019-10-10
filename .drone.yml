@@ -1,0 +1,22 @@
+kind: pipeline
+name: testing
+
+steps:
+
+  - name: test
+    image: nextcloudci/android:android-49
+    commands:
+      - ./gradlew test
+
+  - name: build
+    image: nextcloudci/android:android-49
+    commands:
+      - ./gradlew build
+    when:
+      branch:
+        - master
+
+trigger:
+  event:
+    - push
+    - pull_request
