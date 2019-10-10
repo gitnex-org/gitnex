@@ -48,6 +48,8 @@ public class ExploreRepositoriesFragment extends Fragment {
     private String sort = "updated";
     private String order = "asc";
 
+    private ExploreRepositoriesAdapter adapter;
+
     private OnFragmentInteractionListener mListener;
 
     public ExploreRepositoriesFragment() {
@@ -99,6 +101,7 @@ public class ExploreRepositoriesFragment extends Fragment {
                     if (actionId == EditorInfo.IME_ACTION_SEND) {
                         if(!searchKeyword.getText().toString().equals("")) {
                             mProgressBar.setVisibility(View.VISIBLE);
+                            mRecyclerView.setVisibility(View.GONE);
                             loadSearchReposList(instanceUrl, instanceToken, loginUid, searchKeyword.getText().toString(), repoTypeInclude, sort, order, getContext());
                         }
                     }
@@ -147,7 +150,9 @@ public class ExploreRepositoriesFragment extends Fragment {
 
     private void getReposList(List<UserRepositories> dataList, Context context) {
 
-        ExploreRepositoriesAdapter adapter = new ExploreRepositoriesAdapter(dataList, context);
+        adapter = new ExploreRepositoriesAdapter(dataList, context);
+
+        mRecyclerView.setVisibility(View.VISIBLE);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
