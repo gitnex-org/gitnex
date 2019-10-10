@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.AboutFragment;
+import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
 import org.mian.gitnex.fragments.NavSubMenuBottomSheetFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
@@ -278,6 +279,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new StarredRepositoriesFragment()).commit();
                 break;
+            case R.id.nav_explore:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ExploreRepositoriesFragment()).commit();
+                break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);
