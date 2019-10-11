@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.content.ClipboardManager;
 import android.content.ClipData;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -97,7 +98,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
                 String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
 
                 // copy to clipboard
-                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(getContext()).getSystemService(android.content.Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("issueUrl", issueUrl);
                 clipboard.setPrimaryClip(clip);
 

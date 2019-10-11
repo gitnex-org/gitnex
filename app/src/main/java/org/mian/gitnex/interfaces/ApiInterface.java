@@ -228,4 +228,13 @@ public interface ApiInterface {
 
     @GET("repos/{owner}/{repo}/contents/{fileDir}") // get all the sub files and dirs of a repository
     Call<List<Files>> getDirFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("fileDir") String fileDir);
+
+    @GET("user/starred/{owner}/{repo}") // check star status of a repository
+    Call<JsonElement> checkRepoStarStatus(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+    @PUT("user/starred/{owner}/{repo}") // star a repository
+    Call<JsonElement> starRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+    @DELETE("user/starred/{owner}/{repo}") // un star a repository
+    Call<JsonElement> unStarRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 }

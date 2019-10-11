@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.RepositoryActions;
 import org.mian.gitnex.util.TinyDB;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,8 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
         TextView createRelease = v.findViewById(R.id.createRelease);
         TextView openWebRepo = v.findViewById(R.id.openWebRepo);
         TextView newFile = v.findViewById(R.id.newFile);
+        TextView starRepository = v.findViewById(R.id.starRepository);
+        TextView unStarRepository = v.findViewById(R.id.unStarRepository);
 
         createLabel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +99,37 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
+
+        if(tinyDb.getInt("repositoryStarStatus") == 204) { // star a repo
+
+            starRepository.setVisibility(View.GONE);
+
+            unStarRepository.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    RepositoryActions.unStarRepository(getContext());
+                    dismiss();
+
+                }
+            });
+
+        }
+        else if(tinyDb.getInt("repositoryStarStatus") == 404) {
+
+            unStarRepository.setVisibility(View.GONE);
+
+            starRepository.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    RepositoryActions.starRepository(getContext());
+                    dismiss();
+
+                }
+            });
+
+        }
 
         return v;
     }
