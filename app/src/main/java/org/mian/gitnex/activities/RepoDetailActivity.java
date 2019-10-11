@@ -1,6 +1,7 @@
 package org.mian.gitnex.activities;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.JsonElement;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -97,6 +98,8 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
             openIssueTabView.setTextColor(textColor);
 
         }
+
+        checkRepositoryStarStatus(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
     }
 
     @Override
@@ -261,6 +264,33 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
 
             @Override
             public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
+                Log.e("onFailure", t.toString());
+            }
+        });
+
+    }
+
+    private void checkRepositoryStarStatus(String instanceUrl, String instanceToken, final String owner, String repo) {
+
+        Call<JsonElement> call;
+
+        call = RetrofitClient
+                .getInstance(instanceUrl)
+                .getApiInterface()
+                .checkRepoStarStatus(instanceToken, owner, repo);
+
+        call.enqueue(new Callback<JsonElement>() {
+
+            @Override
+            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+
+                TinyDB tinyDb = new TinyDB(getApplicationContext());
+                tinyDb.putInt("repositoryStarStatus", response.code());
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
                 Log.e("onFailure", t.toString());
             }
         });

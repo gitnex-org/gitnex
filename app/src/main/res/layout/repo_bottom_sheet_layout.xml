@@ -91,6 +91,30 @@
                 android:textSize="16sp"
                 android:padding="16dp" />
 
+            <TextView
+                android:id="@+id/starRepository"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/starRepository"
+                android:drawableStart="@drawable/ic_star_border_24dp"
+                android:drawablePadding="24dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/unStarRepository"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/unStarRepository"
+                android:drawableStart="@drawable/ic_star"
+                android:drawablePadding="24dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
             <View style="@style/lineDividerHorizontal" />
 
             <TextView

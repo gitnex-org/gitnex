@@ -504,5 +504,9 @@
 
     <string name="translateText">Translate GitNex with Crowdin</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
+    <string name="starRepository">Star Repository</string>
+    <string name="unStarRepository">Unstar Repository</string>
+    <string name="starRepositorySuccess">Repository starred</string>
+    <string name="unStarRepositorySuccess">Repository unstarred</string>
 
 </resources>
