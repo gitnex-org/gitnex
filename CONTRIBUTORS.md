@@ -5,8 +5,8 @@ This part lists all PUBLIC individuals having contributed content to the code.
  * 6543
 
 # Translators
-This part lists all PUBLIC individuals having contributed content to the translation.
-Entries are in alphabetical order
+This part lists all PUBLIC individuals having contributed content to the translation.  
+*Entries are in alphabetical order*
 
  * 6543
  * ButterflyOfFire (BoFFire)
