@@ -1,14 +1,12 @@
 # Contributors
-This file lists all PUBLIC individuals having contributed content to the code.
+This part lists all PUBLIC individuals having contributed content to the code.
 
  * M M Arif (mmarif)
  * 6543
 
-
-
 # Translators
-This file lists all PUBLIC individuals having contributed content to the translation.
-Entries are in alphabetical order.
+This part lists all PUBLIC individuals having contributed content to the translation.
+Entries are in alphabetical order
 
  * 6543
  * ButterflyOfFire (BoFFire)
@@ -18,7 +16,7 @@ Entries are in alphabetical order.
  * Nadezhda Moiseeva (digitalkiller)
  * PsychotherapistSam
  * Rodion Borisov (vintproykt)
+ * valeriezhao1013
  * Voyvode
 
-
-## Thank you to all our work :+1:
+**Thank you for all your work** :+1:
