@@ -1,5 +1,5 @@
 kind: pipeline
-name: testing
+name: gitnex-ci
 
 steps:
 
