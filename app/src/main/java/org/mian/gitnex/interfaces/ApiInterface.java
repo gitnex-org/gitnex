@@ -28,6 +28,7 @@ import org.mian.gitnex.models.UserOrganizations;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.models.UserSearch;
 import org.mian.gitnex.models.UserTokens;
+import org.mian.gitnex.models.WatchRepository;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -237,4 +238,13 @@ public interface ApiInterface {
 
     @DELETE("user/starred/{owner}/{repo}") // un star a repository
     Call<JsonElement> unStarRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+    @GET("repos/{owner}/{repo}/subscription") // check watch status of a repository
+    Call<WatchRepository> checkRepoWatchStatus(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+    @PUT("repos/{owner}/{repo}/subscription") // watch a repository
+    Call<JsonElement> watchRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+    @DELETE("repos/{owner}/{repo}/subscription") // un watch a repository
+    Call<JsonElement> unWatchRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 }

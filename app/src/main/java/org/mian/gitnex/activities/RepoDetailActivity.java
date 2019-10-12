@@ -36,6 +36,7 @@ import org.mian.gitnex.fragments.RepoBottomSheetFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserRepositories;
+import org.mian.gitnex.models.WatchRepository;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.util.Objects;
@@ -100,6 +101,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
         }
 
         checkRepositoryStarStatus(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
+        checkRepositoryWatchStatus(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
     }
 
     @Override
@@ -291,6 +293,42 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
 
             @Override
             public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+                Log.e("onFailure", t.toString());
+            }
+        });
+
+    }
+
+    private void checkRepositoryWatchStatus(String instanceUrl, String instanceToken, final String owner, String repo) {
+
+        Call<WatchRepository> call;
+
+        call = RetrofitClient
+                .getInstance(instanceUrl)
+                .getApiInterface()
+                .checkRepoWatchStatus(instanceToken, owner, repo);
+
+        call.enqueue(new Callback<WatchRepository>() {
+
+            @Override
+            public void onResponse(@NonNull Call<WatchRepository> call, @NonNull retrofit2.Response<WatchRepository> response) {
+
+                TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+                if(response.code() == 200) {
+                    assert response.body() != null;
+                    if(response.body().getSubscribed()) {
+                        tinyDb.putBoolean("repositoryWatchStatus", true);
+                    }
+                }
+                else {
+                    tinyDb.putBoolean("repositoryWatchStatus", false);
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<WatchRepository> call, @NonNull Throwable t) {
                 Log.e("onFailure", t.toString());
             }
         });

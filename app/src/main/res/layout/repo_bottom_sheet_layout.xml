@@ -115,6 +115,30 @@
                 android:textSize="16sp"
                 android:padding="16dp" />
 
+            <TextView
+                android:id="@+id/watchRepository"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/watchRepository"
+                android:drawableStart="@drawable/ic_unwatch"
+                android:drawablePadding="24dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/unWatchRepository"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/unWatchRepository"
+                android:drawableStart="@drawable/ic_watchers"
+                android:drawablePadding="24dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
             <View style="@style/lineDividerHorizontal" />
 
             <TextView
