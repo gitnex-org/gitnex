@@ -37,6 +37,8 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
         TextView newFile = v.findViewById(R.id.newFile);
         TextView starRepository = v.findViewById(R.id.starRepository);
         TextView unStarRepository = v.findViewById(R.id.unStarRepository);
+        TextView watchRepository = v.findViewById(R.id.watchRepository);
+        TextView unWatchRepository = v.findViewById(R.id.unWatchRepository);
 
         createLabel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +111,7 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
                 public void onClick(View v) {
 
                     RepositoryActions.unStarRepository(getContext());
+                    tinyDb.putInt("repositoryStarStatus", 404);
                     dismiss();
 
                 }
@@ -124,6 +127,40 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
                 public void onClick(View v) {
 
                     RepositoryActions.starRepository(getContext());
+                    tinyDb.putInt("repositoryStarStatus", 204);
+                    dismiss();
+
+                }
+            });
+
+        }
+
+        if(tinyDb.getBoolean("repositoryWatchStatus")) { // watch a repo
+
+            watchRepository.setVisibility(View.GONE);
+
+            unWatchRepository.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    RepositoryActions.unWatchRepository(getContext());
+                    tinyDb.putBoolean("repositoryWatchStatus", false);
+                    dismiss();
+
+                }
+            });
+
+        }
+        else {
+
+            unWatchRepository.setVisibility(View.GONE);
+
+            watchRepository.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    RepositoryActions.watchRepository(getContext());
+                    tinyDb.putBoolean("repositoryWatchStatus", true);
                     dismiss();
 
                 }

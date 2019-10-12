@@ -506,7 +506,11 @@
     <string name="exploreTextBoxHint">Explore repositories</string>
     <string name="starRepository">Star Repository</string>
     <string name="unStarRepository">Unstar Repository</string>
-    <string name="starRepositorySuccess">Repository starred</string>
-    <string name="unStarRepositorySuccess">Repository unstarred</string>
+    <string name="starRepositorySuccess">Repository added to starred list</string>
+    <string name="unStarRepositorySuccess">Repository removed from starred list</string>
+    <string name="watchRepository">Watch Repository</string>
+    <string name="unWatchRepository">Unwatch Repository</string>
+    <string name="watchRepositorySuccess">Repository added to watch list</string>
+    <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
 
 </resources>
