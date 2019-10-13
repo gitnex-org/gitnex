@@ -260,8 +260,8 @@ public class SettingsFragment extends Fragment {
                                 tinyDb.putString("locale", "de");
                                 break;
                             case "Italian":
-                              tinyDb.putString("locale", "it");
-                              break;
+                                tinyDb.putString("locale", "it");
+                                break;
                             case "Persian":
                                 tinyDb.putString("locale", "fa");
                                 break;
