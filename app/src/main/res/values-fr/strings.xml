@@ -11,6 +11,7 @@
     <string name="navAbout">À propos</string>
     <string name="navRate">Noter GitNex</string>
     <string name="navLogout">Déconnexion</string>
+    <string name="navExplore">Explorer</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">À propos</string>
@@ -33,6 +34,7 @@
     <string name="pageTitleCreateTeam">Nouvelle équipe</string>
     <string name="pageTitleAddEmail">Ajouter une adresse e-mail</string>
     <string name="pageTitleNewFile">Nouveau fichier</string>
+    <string name="pageTitleExplore">Explorer</string>
     <!-- page titles -->
     <string name="appVersion">Version\u0020:\u0020</string>
     <string name="appBuild">Build No.\u0020:\u0020</string>
@@ -398,4 +400,13 @@
     <string name="emptyFields">Tous les champs sont requis</string>
     <!-- generic copy -->
     <string name="translateText">Traduire GitNex avec Crowdin</string>
+    <string name="exploreTextBoxHint">Explorer les dépôts</string>
+    <string name="starRepository">Ajouter aux favoris</string>
+    <string name="unStarRepository">Retirer des favoris</string>
+    <string name="starRepositorySuccess">Dépôt ajouté aux favoris</string>
+    <string name="unStarRepositorySuccess">Dépôt retiré des favoris</string>
+    <string name="watchRepository">Suivre le dépôt</string>
+    <string name="unWatchRepository">Ne plus suivre le dépôt</string>
+    <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
+    <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
 </resources>

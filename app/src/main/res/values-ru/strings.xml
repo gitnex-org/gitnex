@@ -11,6 +11,7 @@
     <string name="navAbout">О программе</string>
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">Выход</string>
+    <string name="navExplore">Explore</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">О программе</string>
@@ -33,6 +34,7 @@
     <string name="pageTitleCreateTeam">Создать команду</string>
     <string name="pageTitleAddEmail">Добавить адрес эл. почты</string>
     <string name="pageTitleNewFile">New File</string>
+    <string name="pageTitleExplore">Explore</string>
     <!-- page titles -->
     <string name="appVersion">Версия\u0020:\u0020</string>
     <string name="appBuild">№ сборки\u0020:\u0020</string>
@@ -398,4 +400,13 @@
     <string name="emptyFields">Все поля обязательны для заполнения</string>
     <!-- generic copy -->
     <string name="translateText">Translate GitNex with Crowdin</string>
+    <string name="exploreTextBoxHint">Explore repositories</string>
+    <string name="starRepository">Star Repository</string>
+    <string name="unStarRepository">Unstar Repository</string>
+    <string name="starRepositorySuccess">Repository added to starred list</string>
+    <string name="unStarRepositorySuccess">Repository removed from starred list</string>
+    <string name="watchRepository">Watch Repository</string>
+    <string name="unWatchRepository">Unwatch Repository</string>
+    <string name="watchRepositorySuccess">Repository added to watch list</string>
+    <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
 </resources>

@@ -11,6 +11,7 @@
     <string name="navAbout">Tietoja</string>
     <string name="navRate">Anna palautetta</string>
     <string name="navLogout">Kirjaudu ulos</string>
+    <string name="navExplore">Explore</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Tietoja</string>
@@ -33,6 +34,7 @@
     <string name="pageTitleCreateTeam">Uusi tiimi</string>
     <string name="pageTitleAddEmail">Lisää sähköpostiosoite</string>
     <string name="pageTitleNewFile">Uusi tiedosto</string>
+    <string name="pageTitleExplore">Explore</string>
     <!-- page titles -->
     <string name="appVersion">Versio\u0020:\u0020</string>
     <string name="appBuild">Alaversio \u0020:\u0020</string>
@@ -398,4 +400,13 @@
     <string name="emptyFields">All fields are required</string>
     <!-- generic copy -->
     <string name="translateText">Translate GitNex with Crowdin</string>
+    <string name="exploreTextBoxHint">Explore repositories</string>
+    <string name="starRepository">Star Repository</string>
+    <string name="unStarRepository">Unstar Repository</string>
+    <string name="starRepositorySuccess">Repository added to starred list</string>
+    <string name="unStarRepositorySuccess">Repository removed from starred list</string>
+    <string name="watchRepository">Watch Repository</string>
+    <string name="unWatchRepository">Unwatch Repository</string>
+    <string name="watchRepositorySuccess">Repository added to watch list</string>
+    <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
 </resources>
