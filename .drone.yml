@@ -1,5 +1,6 @@
+---
 kind: pipeline
-name: gitnex-ci
+name: gitnex-ci-confirm
 
 steps:
 
@@ -7,6 +8,16 @@ steps:
     image: nextcloudci/android:android-49
     commands:
       - ./gradlew test
+
+trigger:
+  event:
+    - pull_request
+
+---
+kind: pipeline
+name: gitnex-ci-build
+
+steps:
 
   - name: build
     image: nextcloudci/android:android-49
@@ -19,4 +30,3 @@ steps:
 trigger:
   event:
     - push
-    - pull_request
