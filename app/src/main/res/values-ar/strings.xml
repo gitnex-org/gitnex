@@ -11,6 +11,7 @@
     <string name="navAbout">عن التطبيق</string>
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">الخروج</string>
+    <string name="navExplore">استكشف</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">عن التطبيق</string>
@@ -22,7 +23,7 @@
     <string name="pageTitleOrganizations">المنظمات</string>
     <string name="pageTitleIssues">Issues</string>
     <string name="pageTitleSettings">الإعدادات</string>
-    <string name="pageTitleCreateOrganization">New Organization</string>
+    <string name="pageTitleCreateOrganization">منظمة جديدة</string>
     <string name="pageTitleCreateMilestone">New Milestone</string>
     <string name="pageTitleCreateNewIssue">New Issue</string>
     <string name="pageTitleCreateLabel">New Label</string>
@@ -33,17 +34,18 @@
     <string name="pageTitleCreateTeam">فريق جديد</string>
     <string name="pageTitleAddEmail">إضافة عنوان بريد الكتروني</string>
     <string name="pageTitleNewFile">ملف جديد</string>
+    <string name="pageTitleExplore">استكشف</string>
     <!-- page titles -->
     <string name="appVersion">Version\u0020:\u0020</string>
     <string name="appBuild">Build No.\u0020:\u0020</string>
     <string name="repoName">Demo repo</string>
     <string name="repoFullname">Repo with ORG</string>
-    <string name="repoDescription">Demo description</string>
+    <string name="repoDescription">مثال عن الوصف</string>
     <string name="noData">No repositories found</string>
     <string name="orgName">Demo organization</string>
-    <string name="orgDescription">Demo description</string>
+    <string name="orgDescription">مثال عن الوصف</string>
     <string name="noDataOrg">No organizations found</string>
-    <string name="newCreateButtonCopy">Create</string>
+    <string name="newCreateButtonCopy">انشئ</string>
     <string name="newUpdateButtonCopy">Update</string>
     <string name="newRepoTintCopy">اسم المستودع</string>
     <string name="newRepoDescTintCopy">Repository Description</string>
@@ -114,7 +116,7 @@
     <string name="infoTabRepoForksCount">المُشتقّات</string>
     <string name="infoTabRepoCreatedAt">Created</string>
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
-    <string name="timeAtText">at</string>
+    <string name="timeAtText">على</string>
     <string name="createdText">Opened\u0020</string>
     <string name="dueDateText">Due Date</string>
     <string name="issueStatusTextOpen">Status: open</string>
@@ -179,7 +181,7 @@
     <!-- settings -->
     <string name="settingsLanguageHeaderText">الترجمة</string>
     <string name="settingsDateTimeHeaderText">Date &amp; Time</string>
-    <string name="settingsSave">Settings saved.</string>
+    <string name="settingsSave">تم حفظ الإعدادات.</string>
     <string name="settingsLanguageSelectorHeader">اللغة</string>
     <string name="settingsLanguageSelectedHeaderDefault">العربية</string>
     <string name="settingsAppearanceHeader">المظهر</string>
@@ -364,7 +366,7 @@
     <string name="newFileOldBranches">Current Branches</string>
     <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
     <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
-    <string name="newFileNewBranchMessage">e.g: new-branch</string>
+    <string name="newFileNewBranchMessage">مثال: new-branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filter</string>
     <string name="copyIssueUrl">Copy Issue URL</string>
@@ -398,4 +400,13 @@
     <string name="emptyFields">كافة الحقول لازمة</string>
     <!-- generic copy -->
     <string name="translateText">ترجم GitNex على كراودين</string>
+    <string name="exploreTextBoxHint">Explore repositories</string>
+    <string name="starRepository">Star Repository</string>
+    <string name="unStarRepository">Unstar Repository</string>
+    <string name="starRepositorySuccess">تمت إضافة المستودع إلى قائمة المفضلة</string>
+    <string name="unStarRepositorySuccess">تمت إزالة المستودع مِن قائمة المفضلة</string>
+    <string name="watchRepository">راقب المستودع</string>
+    <string name="unWatchRepository">إلغاء مراقبة المستودع</string>
+    <string name="watchRepositorySuccess">تمت إضافة المستودع إلى قائمة المراقبة</string>
+    <string name="unWatchRepositorySuccess">تمت إزالة المستودع مِن قائمة المراقبة</string>
 </resources>

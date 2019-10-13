@@ -11,6 +11,7 @@
     <string name="navAbout">Über</string>
     <string name="navRate">Bewerte GitNex</string>
     <string name="navLogout">Ausloggen</string>
+    <string name="navExplore">Erkunden</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Über</string>
@@ -33,6 +34,7 @@
     <string name="pageTitleCreateTeam">Team erstellen</string>
     <string name="pageTitleAddEmail">E-Mail Adresse hinzufügen</string>
     <string name="pageTitleNewFile">Neue Datei</string>
+    <string name="pageTitleExplore">Erkunden</string>
     <!-- page titles -->
     <string name="appVersion">Version\u0020:\u0020</string>
     <string name="appBuild">Build Nr.\u0020:\u0020</string>
@@ -189,7 +191,7 @@
     <string name="settingsIssueBadgeHeaderText">Issues Badge</string>
     <string name="settingsHelpTranslateText">Hilf uns dabei, GitNex in deine Sprache zu übersetzen.</string>
     <string name="codeBlockHeaderText">Code Block Farbe</string>
-    <string name="settingsCodeBlockSelectorDialogTitle">Code Block Farb Auswahl</string>
+    <string name="settingsCodeBlockSelectorDialogTitle">Code-Block-Farbauswahl</string>
     <string name="settingsHomeScreenHeaderText">Startseite</string>
     <string name="settingsHomeScreenSelectedText">Meine Repositories</string>
     <string name="settingshomeScreenSelectorDialogTitle">Home Screen Auswählen</string>
@@ -398,4 +400,13 @@
     <string name="emptyFields">Es sind alle Felder erforderlich</string>
     <!-- generic copy -->
     <string name="translateText">GitNex mit Crowdin übersetzen</string>
+    <string name="exploreTextBoxHint">Repositories entdecken</string>
+    <string name="starRepository">Repository favorisieren</string>
+    <string name="unStarRepository">Repository nicht mehr favorisieren</string>
+    <string name="starRepositorySuccess">Repository zur Favoriten hinzugefügt</string>
+    <string name="unStarRepositorySuccess">Repository von Favoriten entfernt</string>
+    <string name="watchRepository">Repository beobachten</string>
+    <string name="unWatchRepository">Repository nicht mehr beobachten</string>
+    <string name="watchRepositorySuccess">Repository zur Merkliste hinzugefügt</string>
+    <string name="unWatchRepositorySuccess">Repository von der Merkliste entfernt</string>
 </resources>

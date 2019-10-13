@@ -11,6 +11,7 @@
     <string name="navAbout">در مورد ما</string>
     <string name="navRate">به GitNex امتیاز دهید</string>
     <string name="navLogout">خروج از حساب کاربری</string>
+    <string name="navExplore">Explore</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">در مورد ما</string>
@@ -33,6 +34,7 @@
     <string name="pageTitleCreateTeam">تیم جدید</string>
     <string name="pageTitleAddEmail">افزدون پست الکترونیکی</string>
     <string name="pageTitleNewFile">فایل جدید</string>
+    <string name="pageTitleExplore">Explore</string>
     <!-- page titles -->
     <string name="appVersion">نسخه\u0020:\u0020</string>
     <string name="appBuild">Build No.\u0020:\u0020</string>
@@ -398,4 +400,13 @@
     <string name="emptyFields">All fields are required</string>
     <!-- generic copy -->
     <string name="translateText">Translate GitNex with Crowdin</string>
+    <string name="exploreTextBoxHint">Explore repositories</string>
+    <string name="starRepository">Star Repository</string>
+    <string name="unStarRepository">Unstar Repository</string>
+    <string name="starRepositorySuccess">Repository added to starred list</string>
+    <string name="unStarRepositorySuccess">Repository removed from starred list</string>
+    <string name="watchRepository">Watch Repository</string>
+    <string name="unWatchRepository">Unwatch Repository</string>
+    <string name="watchRepositorySuccess">Repository added to watch list</string>
+    <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
 </resources>
