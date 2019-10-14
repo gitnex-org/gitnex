@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: gitnex-ci-confirm
+name: gitnex-ci-test
 
 steps:
 
