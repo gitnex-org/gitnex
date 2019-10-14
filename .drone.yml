@@ -23,10 +23,9 @@ steps:
     image: nextcloudci/android:android-49
     commands:
       - ./gradlew build
-    when:
-      branch:
-        - master
 
 trigger:
   event:
     - push
+  branch:
+    - master
