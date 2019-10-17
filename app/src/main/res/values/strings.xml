@@ -512,5 +512,6 @@
     <string name="unWatchRepository">Unwatch Repository</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
+    <string name="filesBreadcrumbRoot" translatable="false">Root</string>
 
 </resources>

@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,6 +59,7 @@ public class FileViewActivity extends AppCompatActivity {
         String singleFileName = getIntent().getStringExtra("singleFileName");
 
         TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setMovementMethod(new ScrollingMovementMethod());
         toolbar_title.setText(singleFileName);
 
         initCloseListener();

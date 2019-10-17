@@ -68,4 +68,6 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+
+    implementation "com.github.HamidrezaAmz:BreadcrumbsView:0.2.9"
 }

@@ -1,7 +1,6 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Files;
-import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +25,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     private List<Files> filesList;
     private Context mCtx;
     private List<Files> filesListFull;
+
+    private FilesAdapterListener filesListener;
+
+    public interface FilesAdapterListener {
+        void onClickDir(String str);
+        void onClickFile(String str);
+    }
 
     class FilesViewHolder extends RecyclerView.ViewHolder {
 
@@ -49,16 +53,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
                 public void onClick(View v) {
 
                     Context context = v.getContext();
-                    TinyDB tinyDb = new TinyDB(context);
 
                     if(fileType.getText().toString().equals("file")) {
-                        Intent intent = new Intent(context, FileViewActivity.class);
-                        intent.putExtra("singleFileName", fileName.getText().toString());
-                        context.startActivity(intent);
+                        filesListener.onClickFile(fileName.getText().toString());
                     }
                     else if(fileType.getText().toString().equals("dir")) {
-                        //tinyDb.putString("filesDir", fileName.getText().toString());
-                        Toasty.info(context, context.getString(R.string.filesDirNotSupportedYet));
+                        filesListener.onClickDir(fileName.getText().toString());
                     }
                     else {
                         Toasty.info(context, context.getString(R.string.filesGenericError));
@@ -134,10 +134,11 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         }
     }
 
-    public FilesAdapter(Context mCtx, List<Files> filesListMain) {
+    public FilesAdapter(Context mCtx, List<Files> filesListMain, FilesAdapterListener filesListener) {
         this.mCtx = mCtx;
         this.filesList = filesListMain;
         filesListFull = new ArrayList<>(filesList);
+        this.filesListener = filesListener;
     }
 
     @NonNull

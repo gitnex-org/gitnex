@@ -86,12 +86,15 @@ public class FilesViewModel extends ViewModel {
             @Override
             public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
 
-                Collections.sort(response.body(), new Comparator<Files>() {
-                    @Override
-                    public int compare(Files byType1, Files byType2) {
-                        return byType1.getType().compareTo(byType2.getType());
-                    }
-                });
+                assert response.body() != null;
+                if(response.body().size() > 0) {
+                    Collections.sort(response.body(), new Comparator<Files>() {
+                        @Override
+                        public int compare(Files byType1, Files byType2) {
+                            return byType1.getType().compareTo(byType2.getType());
+                        }
+                    });
+                }
 
                 if (response.isSuccessful()) {
                     filesList.postValue(response.body());
