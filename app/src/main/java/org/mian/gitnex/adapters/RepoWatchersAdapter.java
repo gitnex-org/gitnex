@@ -77,7 +77,7 @@ public class RepoWatchersAdapter extends BaseAdapter {
     private void initData(RepoWatchersAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = watchersList.get(position);
-        Picasso.get().load(currentItem.getAvatar()).transform(new RoundedTransformation(100, 0)).resize(200, 200).centerCrop().into(viewHolder.memberAvatar);
+        Picasso.get().load(currentItem.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
 
         if(!currentItem.getFullname().equals("")) {
             viewHolder.memberName.setText(currentItem.getFullname());
