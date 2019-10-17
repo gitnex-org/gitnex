@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activities.RepoDetailActivity">
 
@@ -16,32 +16,27 @@
         >
 
         <TextView
-            android:id="@+id/fileBrowserBreadcrumb"
+            android:id="@+id/fileStructure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <moe.feng.common.view.breadcrumbs.BreadcrumbsView
+            android:id="@+id/breadcrumbs_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:textColor="@color/lightGray"
-            android:text="@string/filesBreadcrumb" />
+            app:CustomTextSize="16sp"
+            app:SelectedTextColor="@color/colorAccent"
+            app:UnSelectedTextColor="@color/lightGray"
+            android:text="@string/filesBreadcrumbRoot"/>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/pullToRefresh"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:padding="4dp"
-                android:scrollbars="vertical"
-                />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:padding="4dp"
+            android:scrollbars="vertical" />
 
         <TextView
             android:id="@+id/noDataFiles"

@@ -83,5 +83,6 @@ Open source libraries
 - Abumoallim/android-multi-select-dialog
 - Pes/materialcolorpicker
 - Hendraanggrian/socialview
+- Fython/BreadcrumbsView
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)

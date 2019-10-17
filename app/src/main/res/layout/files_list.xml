@@ -25,7 +25,7 @@
         android:layout_height="28dp"
         android:layout_marginEnd="15dp"
         android:contentDescription="@string/repoContentAvatar"
-        android:src="@drawable/ic_android" />
+        android:src="@drawable/ic_file" />
 
     <LinearLayout
         android:id="@+id/infoSection"
