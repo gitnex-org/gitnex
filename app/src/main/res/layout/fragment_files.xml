@@ -58,6 +58,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </LinearLayout>
