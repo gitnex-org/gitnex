@@ -192,7 +192,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
         FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-        filesModel.getFilesList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Files>>() {
+        filesModel.getFilesList(instanceUrl, instanceToken, owner, repo, getContext()).observe(this, new Observer<List<Files>>() {
             @Override
             public void onChanged(@Nullable List<Files> filesListMain) {
                 adapter = new FilesAdapter(getContext(), filesListMain, FilesFragment.this);
@@ -225,7 +225,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
         FilesViewModel filesModel2 = new ViewModelProvider(this).get(FilesViewModel.class);
 
-        filesModel2.getFilesList2(instanceUrl, instanceToken, owner, repo, filesDir).observe(this, new Observer<List<Files>>() {
+        filesModel2.getFilesList2(instanceUrl, instanceToken, owner, repo, filesDir, getContext()).observe(this, new Observer<List<Files>>() {
             @Override
             public void onChanged(@Nullable List<Files> filesListMain2) {
                 adapter = new FilesAdapter(getContext(), filesListMain2, FilesFragment.this);
