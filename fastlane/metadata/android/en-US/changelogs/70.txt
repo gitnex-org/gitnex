@@ -1,6 +1,7 @@
 2.2.0
 - New: Explore repositories
 - New: Files and directory browser (Require Gitea 1.9)
+- New: Basic file viewer
 - New: Filter files/directories
 - New: Star/unstar a repository
 - New: Watch/unwatch a repository
