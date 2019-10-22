@@ -1,9 +1,9 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -17,19 +17,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import com.tooltip.Tooltip;
+import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.VersionCheck;
+import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.UserTokens;
 import org.mian.gitnex.util.AppUtil;
-import org.mian.gitnex.R;
 import org.mian.gitnex.util.TinyDB;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import okhttp3.Credentials;
-import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -42,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button login_button;
     private EditText instance_url, login_uid, login_passwd, otpCode;
     private Spinner protocolSpinner;
+    final Context ctx = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +63,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_passwd = findViewById(R.id.login_passwd);
         otpCode = findViewById(R.id.otpCode);
         ImageView info_button = findViewById(R.id.info);
-        final TextView viewTextGiteaVersion = findViewById(R.id.appVersion);
+        final TextView viewTextAppVersion = findViewById(R.id.appVersion);
         protocolSpinner = findViewById(R.id.httpsSpinner);
 
-        viewTextGiteaVersion.setText(AppUtil.getAppVersion(getApplicationContext()));
+        viewTextAppVersion.setText(AppUtil.getAppVersion(getApplicationContext()));
 
         Resources res = getResources();
         String[] allProtocols = res.getStringArray(R.array.protocolValues);
@@ -254,7 +259,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
 
-            letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+            versionCheck(instanceUrl, loginUid, loginPass, loginOTP);
 
         }
         else {
@@ -262,6 +267,87 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toasty.info(getApplicationContext(), getString(R.string.checkNetConnection));
 
         }
+
+    }
+
+    private void versionCheck(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP) {
+
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        Call<GiteaVersion> callVersion = RetrofitClient
+                .getInstance(instanceUrl)
+                .getApiInterface()
+                .getGiteaVersion();
+
+        callVersion.enqueue(new Callback<GiteaVersion>() {
+
+            @Override
+            public void onResponse(@NonNull final Call<GiteaVersion> callVersion, @NonNull retrofit2.Response<GiteaVersion> responseVersion) {
+
+                if (responseVersion.code() == 200) {
+
+                    GiteaVersion version = responseVersion.body();
+                    assert version != null;
+
+                    VersionCheck vt = VersionCheck.check(getString(R.string.versionLow), getString(R.string.versionHigh), version.getVersion());
+                    tinyDb.putString("giteaVersion", version.getVersion());
+
+                    switch (vt) {
+                        case UNSUPPORTED_NEW:
+                            //Toasty.info(getApplicationContext(), getString(R.string.versionUnsupportedNew));
+                        case SUPPORTED_LATEST:
+                        case SUPPORTED_OLD:
+                        case DEVELOPMENT:
+                            letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+                            return;
+                        case UNSUPPORTED_OLD:
+
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+
+                            alertDialogBuilder
+                                    .setTitle(getString(R.string.versionAlertDialogHeader))
+                                    .setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
+                                    .setCancelable(true)
+                                    .setIcon(R.drawable.ic_warning)
+                                    .setNegativeButton(getString(R.string.versionAlertDialogCopyNegative), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            enableProcessButton();
+                                        }
+                                    })
+                                    .setPositiveButton(getString(R.string.versionAlertDialogCopyPositive), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            dialog.dismiss();
+                                            letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+
+                            alertDialog.show();
+                            return;
+                        default: // UNKNOWN
+                            Toasty.info(getApplicationContext(), getString(R.string.versionUnknow));
+                            enableProcessButton();
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GiteaVersion> callVersion, Throwable t) {
+
+                Log.e("onFailure-version", t.toString());
+
+            }
+
+        });
 
     }
 
@@ -290,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 List<UserTokens> userTokens = response.body();
                 final TinyDB tinyDb = new TinyDB(getApplicationContext());
-                Headers responseHeaders = response.headers();
+                //Headers responseHeaders = response.headers();
 
                 if (response.isSuccessful()) {
 
@@ -332,7 +418,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 @Override
                                 public void onResponse(@NonNull Call<UserTokens> callCreateToken, @NonNull retrofit2.Response<UserTokens> responseCreate) {
 
-                                    if (responseCreate.isSuccessful()) {
+                                    if(responseCreate.isSuccessful()) {
 
                                         if(responseCreate.code() == 201) {
 

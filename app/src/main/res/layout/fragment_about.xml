@@ -191,21 +191,4 @@
 
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/progressBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@style/Base.Widget.AppCompat.ProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="visible"
-            android:layout_centerInParent="true"
-            />
-
-    </RelativeLayout>
-
 </RelativeLayout>
