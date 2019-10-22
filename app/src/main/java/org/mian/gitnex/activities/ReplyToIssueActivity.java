@@ -83,6 +83,7 @@ public class ReplyToIssueActivity extends AppCompatActivity {
 
             replyButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    disableProcessButton();
                     IssueActions.editIssueComment(ctx, Integer.valueOf(commentId), addComment.getText().toString());
                 }
 
