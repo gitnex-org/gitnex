@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -44,8 +45,9 @@ import retrofit2.Callback;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button login_button;
-    private EditText instance_url, login_uid, login_passwd, otpCode;
+    private EditText instance_url, login_uid, login_passwd, otpCode, loginTokenCode;
     private Spinner protocolSpinner;
+    private TextView otpInfo;
     final Context ctx = this;
 
     @Override
@@ -62,9 +64,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_uid = findViewById(R.id.login_uid);
         login_passwd = findViewById(R.id.login_passwd);
         otpCode = findViewById(R.id.otpCode);
+        otpInfo = findViewById(R.id.otpInfo);
         ImageView info_button = findViewById(R.id.info);
         final TextView viewTextAppVersion = findViewById(R.id.appVersion);
         protocolSpinner = findViewById(R.id.httpsSpinner);
+        RadioGroup loginMethod = findViewById(R.id.loginMethod);
+        loginTokenCode = findViewById(R.id.loginTokenCode);
 
         viewTextAppVersion.setText(AppUtil.getAppVersion(getApplicationContext()));
 
@@ -98,6 +103,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
 
         }
+
+        loginMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.loginUsernamePassword){
+                    login_uid.setVisibility(View.VISIBLE);
+                    login_passwd.setVisibility(View.VISIBLE);
+                    otpCode.setVisibility(View.VISIBLE);
+                    otpInfo.setVisibility(View.VISIBLE);
+                    loginTokenCode.setVisibility(View.GONE);
+                } else {
+                    login_uid.setVisibility(View.GONE);
+                    login_passwd.setVisibility(View.GONE);
+                    otpCode.setVisibility(View.GONE);
+                    otpInfo.setVisibility(View.GONE);
+                    loginTokenCode.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         //login_button.setOnClickListener(this);
         if(!tinyDb.getString("instanceUrlRaw").isEmpty()) {

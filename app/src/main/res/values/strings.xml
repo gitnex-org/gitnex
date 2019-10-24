@@ -527,4 +527,9 @@
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
     <string name="versionAlertDialogCopyNegative">Cancel</string>
     <string name="versionAlertDialogCopyPositive">Continue</string>
+
+    <string name="loginViaPassword">Username / Password</string>
+    <string name="loginViaToken">Token</string>
+    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
+
 </resources>

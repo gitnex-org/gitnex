@@ -24,6 +24,38 @@
             android:contentDescription="@string/app_name"
             android:src="@mipmap/app_logo" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loginMethodText"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="start" />
+
+        <RadioGroup
+            android:id="@+id/loginMethod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/loginUsernamePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loginViaPassword"
+                android:checked="true"
+                android:layout_marginEnd="30dp"
+                android:textColor="@color/white"/>
+            <RadioButton
+                android:id="@+id/loginToken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loginViaToken"
+                android:textColor="@color/white"/>
+        </RadioGroup>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -121,7 +153,26 @@
             android:inputType="number"
             android:textColorHighlight="@color/white"/>
 
+        <EditText
+            android:id="@+id/loginTokenCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:textSize="14sp"
+            tools:ignore="Autofill"
+            android:background="@drawable/shape_inputs"
+            android:drawableStart="@drawable/ic_lock_24dp"
+            android:drawablePadding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/colorAccent"
+            android:hint="@string/loginViaToken"
+            android:inputType="text"
+            android:visibility="gone"
+            android:textColorHighlight="@color/white"/>
+
         <TextView
+            android:id="@+id/otpInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/otpMessage"
