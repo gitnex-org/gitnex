@@ -531,5 +531,7 @@
     <string name="loginViaPassword">Username / Password</string>
     <string name="loginViaToken">Token</string>
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
+    <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
+    <string name="loginTokenError">Please enter the correct token</string>
 
 </resources>
