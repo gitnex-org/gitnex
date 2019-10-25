@@ -2,8 +2,9 @@ GitNex is a free, open-source Android client for Git repository management tool 
 
 # Features
 
+- File/Directory browser
+- File viewer
 - Create files
-- File browser
 - Explore repositories
 - My repositories
 - Repositories list
@@ -28,13 +29,14 @@ GitNex is a free, open-source Android client for Git repository management tool 
 - Collaborators view for repository
 - Markdown support
 - Emoji support
-- Settings : Pretty and Normal time format, language change, issue badge
+- Settings : Pretty and Normal time format, language change
+, issue badge
 - Option to access local non-https installs
 - Basic HTTP authentication support. Use USERNAME@YOUR-DOMAIN.COM in URL field
 - 2FA OTP support. Check the Troubleshoot wiki page for usage
 - Create a new user - Admin privilege required
 - Closed issues list
-- Edit issues
+- Edit issues
 
 More features - https://gitea.com/gitnex/GitNex/wiki/Features
 
