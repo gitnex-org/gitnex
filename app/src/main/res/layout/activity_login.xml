@@ -47,12 +47,14 @@
                 android:text="@string/loginViaPassword"
                 android:checked="true"
                 android:layout_marginEnd="30dp"
+                android:theme="@style/radioButtonsInDarkTheme"
                 android:textColor="@color/white"/>
             <RadioButton
                 android:id="@+id/loginToken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/copyToken"
+                android:theme="@style/radioButtonsInDarkTheme"
                 android:textColor="@color/white"/>
         </RadioGroup>
 

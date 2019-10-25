@@ -507,6 +507,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
                 Log.e("onFailure", t.toString());
+                Toasty.info(getApplicationContext(), getResources().getString(R.string.genericError));
+                enableProcessButton();
+                loginButton.setText(R.string.btnLogin);
             }
         });
 
