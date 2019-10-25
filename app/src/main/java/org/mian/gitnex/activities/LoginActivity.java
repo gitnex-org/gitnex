@@ -403,14 +403,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     .setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
                                     .setCancelable(true)
                                     .setIcon(R.drawable.ic_warning)
-                                    .setNegativeButton(getString(R.string.versionAlertDialogCopyNegative), new DialogInterface.OnClickListener() {
+                                    .setNegativeButton(getString(R.string.cancelButton), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
                                             enableProcessButton();
                                         }
                                     })
-                                    .setPositiveButton(getString(R.string.versionAlertDialogCopyPositive), new DialogInterface.OnClickListener() {
+                                    .setPositiveButton(getString(R.string.textContinue), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
 

@@ -52,7 +52,7 @@
                 android:id="@+id/loginToken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/loginViaToken"
+                android:text="@string/copyToken"
                 android:textColor="@color/white"/>
         </RadioGroup>
 
@@ -166,7 +166,7 @@
             android:drawablePadding="10dp"
             android:textColor="@color/white"
             android:textColorHint="@color/colorAccent"
-            android:hint="@string/loginViaToken"
+            android:hint="@string/copyToken"
             android:inputType="text"
             android:visibility="gone"
             android:textColorHighlight="@color/white"/>
