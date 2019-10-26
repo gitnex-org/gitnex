@@ -469,11 +469,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (response.isSuccessful()) {
 
                     if (response.code() == 200) {
-
-                        tinyDb.remove("loginPass");
+                        
                         tinyDb.putBoolean("loggedInMode", true);
                         assert userDetails != null;
                         tinyDb.putString(userDetails.getLogin() + "-token", loginToken_);
+                        tinyDb.putString("loginUid", userDetails.getLogin());
 
                         enableProcessButton();
                         loginButton.setText(R.string.btnLogin);
