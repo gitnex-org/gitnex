@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.VersionCheck;
 import org.mian.gitnex.models.GiteaVersion;
+import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserTokens;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
@@ -43,9 +45,11 @@ import retrofit2.Callback;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button login_button;
-    private EditText instance_url, login_uid, login_passwd, otpCode;
+    private Button loginButton;
+    private EditText instanceUrlET, loginUidET, loginPassword, otpCode, loginTokenCode;
     private Spinner protocolSpinner;
+    private TextView otpInfo;
+    private RadioGroup loginMethod;
     final Context ctx = this;
 
     @Override
@@ -57,14 +61,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
-        login_button = findViewById(R.id.login_button);
-        instance_url = findViewById(R.id.instance_url);
-        login_uid = findViewById(R.id.login_uid);
-        login_passwd = findViewById(R.id.login_passwd);
+        loginButton = findViewById(R.id.login_button);
+        instanceUrlET = findViewById(R.id.instance_url);
+        loginUidET = findViewById(R.id.login_uid);
+        loginPassword = findViewById(R.id.login_passwd);
         otpCode = findViewById(R.id.otpCode);
+        otpInfo = findViewById(R.id.otpInfo);
         ImageView info_button = findViewById(R.id.info);
         final TextView viewTextAppVersion = findViewById(R.id.appVersion);
         protocolSpinner = findViewById(R.id.httpsSpinner);
+        loginMethod = findViewById(R.id.loginMethod);
+        loginTokenCode = findViewById(R.id.loginTokenCode);
 
         viewTextAppVersion.setText(AppUtil.getAppVersion(getApplicationContext()));
 
@@ -99,12 +106,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 
+        loginMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.loginUsernamePassword){
+                    loginUidET.setVisibility(View.VISIBLE);
+                    loginPassword.setVisibility(View.VISIBLE);
+                    otpCode.setVisibility(View.VISIBLE);
+                    otpInfo.setVisibility(View.VISIBLE);
+                    loginTokenCode.setVisibility(View.GONE);
+                } else {
+                    loginUidET.setVisibility(View.GONE);
+                    loginPassword.setVisibility(View.GONE);
+                    otpCode.setVisibility(View.GONE);
+                    otpInfo.setVisibility(View.GONE);
+                    loginTokenCode.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         //login_button.setOnClickListener(this);
         if(!tinyDb.getString("instanceUrlRaw").isEmpty()) {
-            instance_url.setText(tinyDb.getString("instanceUrlRaw"));
+            instanceUrlET.setText(tinyDb.getString("instanceUrlRaw"));
         }
         if(!tinyDb.getString("loginUid").isEmpty()) {
-            login_uid.setText(tinyDb.getString("loginUid"));
+            loginUidET.setText(tinyDb.getString("loginUid"));
         }
 
         if(tinyDb.getBoolean("loggedInMode")) {
@@ -114,20 +140,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 
-        login_button.setOnClickListener(loginListener);
+        loginButton.setOnClickListener(loginListener);
 
     }
 
     @Override
     public void onClick(View v) {
 
-        switch(v.getId()) {
-
-            case R.id.login_button:
-                login();
-                break;
-            default:
-
+        if (v.getId() == R.id.login_button) {
+            login();
         }
 
     }
@@ -136,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         public void onClick(View v) {
 
             disableProcessButton();
-            login_button.setText(R.string.processingText);
+            loginButton.setText(R.string.processingText);
             login();
 
         }
@@ -164,113 +185,181 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         AppUtil appUtil = new AppUtil();
         boolean connToInternet = AppUtil.haveNetworkConnection(LoginActivity.this);
 
-        String instanceUrl = instance_url.getText().toString().trim();
-        String loginUid = login_uid.getText().toString();
-        String loginPass = login_passwd.getText().toString();
+        String instanceUrl = instanceUrlET.getText().toString().trim();
+        String loginUid = loginUidET.getText().toString();
+        String loginPass = loginPassword.getText().toString();
         String protocol = protocolSpinner.getSelectedItem().toString();
         String loginOTP_ = otpCode.getText().toString().trim();
+        int loginMethodType = loginMethod.getCheckedRadioButtonId();
+        String loginToken_ = loginTokenCode.getText().toString().trim();
 
-        if(instanceUrl.contains("@")) {
+        if(loginMethodType == R.id.loginUsernamePassword) {
 
-            String[] urlForHttpAuth = instanceUrl.split("@");
+            if(instanceUrl.contains("@")) {
 
-            tinyDb.putString("basicAuthPassword", loginPass);
-            tinyDb.putBoolean("basicAuthFlag", true);
+                String[] urlForHttpAuth = instanceUrl.split("@");
 
-            instanceUrl = urlForHttpAuth[1];
-            loginUid = urlForHttpAuth[0];
+                tinyDb.putString("basicAuthPassword", loginPass);
+                tinyDb.putBoolean("basicAuthFlag", true);
 
-        }
-
-        String instanceHost;
-        if(AppUtil.httpCheck(instanceUrl)) {
-
-            URI uri = null;
-            try {
-                uri = new URI(instanceUrl);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            assert uri != null;
-            instanceHost = uri.getHost();
-
-        }
-        else {
-            instanceHost = instanceUrl;
-        }
-
-        String instanceUrlWithProtocol;
-        if(protocol.toLowerCase().equals("https")) {
-            instanceUrl = "https://" + instanceHost + "/api/v1/";
-            instanceUrlWithProtocol = "https://" + instanceHost;
-        }
-        else {
-            instanceUrl = "http://" + instanceHost + "/api/v1/";
-            instanceUrlWithProtocol = "https://" + instanceHost;
-        }
-
-        tinyDb.putString("instanceUrlRaw", instanceHost);
-        tinyDb.putString("loginUid", loginUid);
-        tinyDb.putString("instanceUrl", instanceUrl);
-        tinyDb.putString("instanceUrlWithProtocol", instanceUrlWithProtocol);
-
-        if(connToInternet) {
-
-            if(instance_url.getText().toString().equals("")) {
-
-                Toasty.info(getApplicationContext(), getString(R.string.emptyFieldURL));
-                enableProcessButton();
-                login_button.setText(R.string.btnLogin);
-                return;
-
-            }
-            if(loginUid.equals("")) {
-
-                Toasty.info(getApplicationContext(), getString(R.string.emptyFieldUsername));
-                enableProcessButton();
-                login_button.setText(R.string.btnLogin);
-                return;
-
-            }
-            if(login_passwd.getText().toString().equals("")) {
-
-                Toasty.info(getApplicationContext(), getString(R.string.emptyFieldPassword));
-                enableProcessButton();
-                login_button.setText(R.string.btnLogin);
-                return;
+                instanceUrl = urlForHttpAuth[1];
+                loginUid = urlForHttpAuth[0];
 
             }
 
-            int loginOTP = 0;
-            if(loginOTP_.length() == 6) {
+            String instanceHost;
+            if(AppUtil.httpCheck(instanceUrl)) {
 
-                if(appUtil.checkIntegers(loginOTP_)) {
-
-                    loginOTP = Integer.valueOf(loginOTP_);
+                URI uri = null;
+                try {
+                    uri = new URI(instanceUrl);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
-                else {
+                assert uri != null;
+                instanceHost = uri.getHost();
 
-                    Toasty.info(getApplicationContext(), getString(R.string.loginOTPTypeError));
+            }
+            else {
+                instanceHost = instanceUrl;
+            }
+
+            String instanceUrlWithProtocol;
+            if(protocol.toLowerCase().equals("https")) {
+                instanceUrl = "https://" + instanceHost + "/api/v1/";
+                instanceUrlWithProtocol = "https://" + instanceHost;
+            }
+            else {
+                instanceUrl = "http://" + instanceHost + "/api/v1/";
+                instanceUrlWithProtocol = "https://" + instanceHost;
+            }
+
+            tinyDb.putString("instanceUrlRaw", instanceHost);
+            tinyDb.putString("loginUid", loginUid);
+            tinyDb.putString("instanceUrl", instanceUrl);
+            tinyDb.putString("instanceUrlWithProtocol", instanceUrlWithProtocol);
+
+            if(connToInternet) {
+
+                if(instanceUrlET.getText().toString().equals("")) {
+
+                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldURL));
                     enableProcessButton();
-                    login_button.setText(R.string.btnLogin);
+                    loginButton.setText(R.string.btnLogin);
+                    return;
+
+                }
+                if(loginUid.equals("")) {
+
+                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldUsername));
+                    enableProcessButton();
+                    loginButton.setText(R.string.btnLogin);
+                    return;
+
+                }
+                if(loginPassword.getText().toString().equals("")) {
+
+                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldPassword));
+                    enableProcessButton();
+                    loginButton.setText(R.string.btnLogin);
                     return;
 
                 }
 
-            }
+                int loginOTP = 0;
+                if(loginOTP_.length() == 6) {
 
-            versionCheck(instanceUrl, loginUid, loginPass, loginOTP);
+                    if(appUtil.checkIntegers(loginOTP_)) {
+
+                        loginOTP = Integer.valueOf(loginOTP_);
+                    }
+                    else {
+
+                        Toasty.info(getApplicationContext(), getString(R.string.loginOTPTypeError));
+                        enableProcessButton();
+                        loginButton.setText(R.string.btnLogin);
+                        return;
+
+                    }
+
+                }
+
+                versionCheck(instanceUrl, loginUid, loginPass, loginOTP, loginToken_, 1);
+
+            }
+            else {
+
+                Toasty.info(getApplicationContext(), getString(R.string.checkNetConnection));
+
+            }
 
         }
         else {
 
-            Toasty.info(getApplicationContext(), getString(R.string.checkNetConnection));
+            String instanceHost;
+            if(AppUtil.httpCheck(instanceUrl)) {
+
+                URI uri = null;
+                try {
+                    uri = new URI(instanceUrl);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                assert uri != null;
+                instanceHost = uri.getHost();
+
+            }
+            else {
+                instanceHost = instanceUrl;
+            }
+
+            String instanceUrlWithProtocol;
+            if(protocol.toLowerCase().equals("https")) {
+                instanceUrl = "https://" + instanceHost + "/api/v1/";
+                instanceUrlWithProtocol = "https://" + instanceHost;
+            }
+            else {
+                instanceUrl = "http://" + instanceHost + "/api/v1/";
+                instanceUrlWithProtocol = "https://" + instanceHost;
+            }
+
+            tinyDb.putString("instanceUrlRaw", instanceHost);
+            //tinyDb.putString("loginUid", loginUid);
+            tinyDb.putString("instanceUrl", instanceUrl);
+            tinyDb.putString("instanceUrlWithProtocol", instanceUrlWithProtocol);
+
+            if(connToInternet) {
+
+                if (instanceUrlET.getText().toString().equals("")) {
+
+                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldURL));
+                    enableProcessButton();
+                    loginButton.setText(R.string.btnLogin);
+                    return;
+
+                }
+                if (loginToken_.equals("")) {
+
+                    Toasty.info(getApplicationContext(), getString(R.string.loginTokenError));
+                    enableProcessButton();
+                    loginButton.setText(R.string.btnLogin);
+                    return;
+
+                }
+
+                versionCheck(instanceUrl, loginUid, loginPass, 123, loginToken_, 2);
+            }
+            else {
+
+                Toasty.info(getApplicationContext(), getString(R.string.checkNetConnection));
+
+            }
 
         }
 
     }
 
-    private void versionCheck(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP) {
+    private void versionCheck(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP, final String loginToken_, final int loginType) {
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
@@ -298,7 +387,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         case SUPPORTED_LATEST:
                         case SUPPORTED_OLD:
                         case DEVELOPMENT:
-                            letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+                            if(loginType == 1) {
+                                letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+                            }
+                            else if(loginType == 2) { // token
+                                letTheUserInViaToken(instanceUrl, loginToken_);
+                            }
                             return;
                         case UNSUPPORTED_OLD:
 
@@ -309,19 +403,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     .setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
                                     .setCancelable(true)
                                     .setIcon(R.drawable.ic_warning)
-                                    .setNegativeButton(getString(R.string.versionAlertDialogCopyNegative), new DialogInterface.OnClickListener() {
+                                    .setNegativeButton(getString(R.string.cancelButton), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
                                             enableProcessButton();
                                         }
                                     })
-                                    .setPositiveButton(getString(R.string.versionAlertDialogCopyPositive), new DialogInterface.OnClickListener() {
+                                    .setPositiveButton(getString(R.string.textContinue), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
 
                                             dialog.dismiss();
-                                            letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+                                            if(loginType == 1) {
+                                                letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+                                            }
+                                            else if(loginType == 2) { // token
+                                                letTheUserInViaToken(instanceUrl, loginToken_);
+                                            }
 
                                         }
                                     });
@@ -347,6 +446,71 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
 
+        });
+
+    }
+
+    private void letTheUserInViaToken(String instanceUrl, final String loginToken_) {
+
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        Call<UserInfo> call = RetrofitClient
+                .getInstance(instanceUrl)
+                .getApiInterface()
+                .getUserInfo("token " + loginToken_);
+
+        call.enqueue(new Callback<UserInfo>() {
+
+            @Override
+            public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+
+                UserInfo userDetails = response.body();
+
+                if (response.isSuccessful()) {
+
+                    if (response.code() == 200) {
+                        
+                        tinyDb.putBoolean("loggedInMode", true);
+                        assert userDetails != null;
+                        tinyDb.putString(userDetails.getLogin() + "-token", loginToken_);
+                        tinyDb.putString("loginUid", userDetails.getLogin());
+
+                        enableProcessButton();
+                        loginButton.setText(R.string.btnLogin);
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+
+                    }
+
+                }
+                else if(response.code() == 401) {
+
+                    String toastError = getResources().getString(R.string.unauthorizedApiError);
+                    Toasty.info(getApplicationContext(), toastError);
+
+                    enableProcessButton();
+                    loginButton.setText(R.string.btnLogin);
+
+                }
+                else {
+
+                    String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
+                    Toasty.info(getApplicationContext(), toastError);
+
+                    enableProcessButton();
+                    loginButton.setText(R.string.btnLogin);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+                Log.e("onFailure", t.toString());
+                Toasty.info(getApplicationContext(), getResources().getString(R.string.genericError));
+                enableProcessButton();
+                loginButton.setText(R.string.btnLogin);
+            }
         });
 
     }
@@ -443,10 +607,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     }
                                     else if(responseCreate.code() == 500) {
 
-                                        String toastError = getResources().getString(R.string.genericApiStatusError) + String.valueOf(responseCreate.code());
+                                        String toastError = getResources().getString(R.string.genericApiStatusError) + responseCreate.code();
                                         Toasty.info(getApplicationContext(), toastError);
                                         enableProcessButton();
-                                        login_button.setText(R.string.btnLogin);
+                                        loginButton.setText(R.string.btnLogin);
 
                                     }
 
@@ -473,20 +637,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 else if(response.code() == 500) {
 
-                    String toastError = getResources().getString(R.string.genericApiStatusError) + String.valueOf(response.code());
+                    String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
                     Toasty.info(getApplicationContext(), toastError);
                     enableProcessButton();
-                    login_button.setText(R.string.btnLogin);
+                    loginButton.setText(R.string.btnLogin);
 
                 }
                 else {
 
-                    String toastError = getResources().getString(R.string.genericApiStatusError) + String.valueOf(response.code());
+                    String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
                     //Log.i("error message else4", String.valueOf(response.code()));
 
                     Toasty.info(getApplicationContext(), toastError);
                     enableProcessButton();
-                    login_button.setText(R.string.btnLogin);
+                    loginButton.setText(R.string.btnLogin);
 
                 }
 
@@ -497,7 +661,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.e("onFailure-login", t.toString());
                 Toasty.info(getApplicationContext(), getResources().getString(R.string.malformedJson));
                 enableProcessButton();
-                login_button.setText(R.string.btnLogin);
+                loginButton.setText(R.string.btnLogin);
             }
         });
 
@@ -505,21 +669,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void disableProcessButton() {
 
-        login_button.setEnabled(false);
+        loginButton.setEnabled(false);
         GradientDrawable shape =  new GradientDrawable();
         shape.setCornerRadius( 8 );
         shape.setColor(getResources().getColor(R.color.hintColor));
-        login_button.setBackground(shape);
+        loginButton.setBackground(shape);
 
     }
 
     private void enableProcessButton() {
 
-        login_button.setEnabled(true);
+        loginButton.setEnabled(true);
         GradientDrawable shape =  new GradientDrawable();
         shape.setCornerRadius( 8 );
         shape.setColor(getResources().getColor(R.color.btnBackground));
-        login_button.setBackground(shape);
+        loginButton.setBackground(shape);
 
     }
 

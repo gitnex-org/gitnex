@@ -56,4 +56,9 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
+    <style name="radioButtonsInDarkTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+    </style>
+
 </resources>
