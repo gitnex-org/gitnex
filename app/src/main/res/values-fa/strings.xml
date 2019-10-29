@@ -11,7 +11,7 @@
     <string name="navAbout">در مورد ما</string>
     <string name="navRate">به GitNex امتیاز دهید</string>
     <string name="navLogout">خروج از حساب کاربری</string>
-    <string name="navExplore">Explore</string>
+    <string name="navExplore">جست و جو</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">در مورد ما</string>
@@ -409,4 +409,14 @@
     <string name="unWatchRepository">Unwatch Repository</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly.</string>
+    <string name="versionSupportedOld">Old Gitea version detected, please update to latest stable version</string>
+    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
+    <string name="versionSupportedLatest">Gitea version is up to date</string>
+    <string name="versionDevelopment">Gitea development version</string>
+    <string name="versionUnknow">No Gitea detected!</string>
+    <string name="versionAlertTitle">Version Alert</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
+    <string name="versionAlertDialogCopyNegative">Cancel</string>
+    <string name="versionAlertDialogCopyPositive">Continue</string>
 </resources>

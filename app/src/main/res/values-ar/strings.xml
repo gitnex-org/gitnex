@@ -279,7 +279,7 @@
     <string name="emailErrorInvalid">Email address is not valid</string>
     <string name="emailErrorInUse">Email address is already in use</string>
     <string name="emailTypeText">أساسي</string>
-    <string name="profileTabEmails">Emails</string>
+    <string name="profileTabEmails">العناوين البريدية</string>
     <!-- profile section -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Add / Remove Labels</string>
@@ -369,7 +369,7 @@
     <string name="newFileNewBranchMessage">مثال: new-branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filter</string>
-    <string name="copyIssueUrl">Copy Issue URL</string>
+    <string name="copyIssueUrl">انسخ عنوان المشكلة</string>
     <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
     <!-- files -->
@@ -409,4 +409,14 @@
     <string name="unWatchRepository">إلغاء مراقبة المستودع</string>
     <string name="watchRepositorySuccess">تمت إضافة المستودع إلى قائمة المراقبة</string>
     <string name="unWatchRepositorySuccess">تمت إزالة المستودع مِن قائمة المراقبة</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly.</string>
+    <string name="versionSupportedOld">Old Gitea version detected, please update to latest stable version</string>
+    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
+    <string name="versionSupportedLatest">Gitea version is up to date</string>
+    <string name="versionDevelopment">Gitea development version</string>
+    <string name="versionUnknow">No Gitea detected!</string>
+    <string name="versionAlertTitle">Version Alert</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
+    <string name="versionAlertDialogCopyNegative">إلغاء</string>
+    <string name="versionAlertDialogCopyPositive">مواصلة</string>
 </resources>

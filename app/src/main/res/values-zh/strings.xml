@@ -11,7 +11,7 @@
     <string name="navAbout">关于</string>
     <string name="navRate">评价 GitNex</string>
     <string name="navLogout">退出</string>
-    <string name="navExplore">Explore</string>
+    <string name="navExplore">探索</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">关于</string>
@@ -34,7 +34,7 @@
     <string name="pageTitleCreateTeam">创建团队</string>
     <string name="pageTitleAddEmail">添加电子邮件地址</string>
     <string name="pageTitleNewFile">新建文件</string>
-    <string name="pageTitleExplore">Explore</string>
+    <string name="pageTitleExplore">探索</string>
     <!-- page titles -->
     <string name="appVersion">版本\u0020:\u0020</string>
     <string name="appBuild">构建编号 \u0020:\u0020</string>
@@ -63,7 +63,7 @@
     <string name="navigation_drawer_close">关闭导航栏</string>
     <string name="logo">登录到 Gitea</string>
     <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
-    <string name="loginFailed">Wrong username/password</string>
+    <string name="loginFailed">用户名/密码错误。</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network.</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful.</string>
     <string name="emptyFieldURL">实例URL是必需的</string>
@@ -86,9 +86,9 @@
     <string name="search">搜索</string>
     <string name="wip">Work in progress</string>
     <string name="close">关闭</string>
-    <string name="addNewContent">Add</string>
-    <string name="orgContentAvatar">Org</string>
-    <string name="repoContentAvatar">Repo</string>
+    <string name="addNewContent">新增</string>
+    <string name="orgContentAvatar">组织</string>
+    <string name="repoContentAvatar">仓库</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Remove</string>
     <string name="genericApiStatusError">Instance has returned an error. Code\u0020</string>
@@ -409,4 +409,14 @@
     <string name="unWatchRepository">Unwatch Repository</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly.</string>
+    <string name="versionSupportedOld">Old Gitea version detected, please update to latest stable version</string>
+    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
+    <string name="versionSupportedLatest">Gitea version is up to date</string>
+    <string name="versionDevelopment">Gitea development version</string>
+    <string name="versionUnknow">No Gitea detected!</string>
+    <string name="versionAlertTitle">Version Alert</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
+    <string name="versionAlertDialogCopyNegative">Cancel</string>
+    <string name="versionAlertDialogCopyPositive">Continue</string>
 </resources>

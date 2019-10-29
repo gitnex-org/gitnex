@@ -409,4 +409,14 @@
     <string name="unWatchRepository">Repository nicht mehr beobachten</string>
     <string name="watchRepositorySuccess">Repository zur Merkliste hinzugefügt</string>
     <string name="unWatchRepositorySuccess">Repository von der Merkliste entfernt</string>
+    <string name="versionUnsupportedOld">Nicht unterstützte alte Version(%1$s) von Gitea erkannt. Bitte aktualisieren Sie auf die neueste stabile Version. Wenn Sie fortfahren, funktioniert die App möglicherweise nicht ordnungsgemäß.</string>
+    <string name="versionSupportedOld">Alte Gitea-Version erkannt, bitte aktualisiere auf die neueste stabile Version</string>
+    <string name="versionUnsupportedNew">Neue Gitea-Version erkannt! Bitte UPDATE GitNex!</string>
+    <string name="versionSupportedLatest">Gitea ist aktuell</string>
+    <string name="versionDevelopment">Gitea Entwicklungsversion</string>
+    <string name="versionUnknow">Keine Gitea erkannt!</string>
+    <string name="versionAlertTitle">Versionswarnung</string>
+    <string name="versionAlertDialogHeader">Nicht unterstützte Version von Gitea</string>
+    <string name="versionAlertDialogCopyNegative">Abbrechen</string>
+    <string name="versionAlertDialogCopyPositive">Fortfahren</string>
 </resources>

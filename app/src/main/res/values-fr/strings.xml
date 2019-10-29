@@ -409,4 +409,14 @@
     <string name="unWatchRepository">Ne plus suivre le dépôt</string>
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
     <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
+    <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous continuez, l’application peut ne pas fonctionner correctement.</string>
+    <string name="versionSupportedOld">Ancienne version de Gitea détectée, veuillez mettre à jour vers la dernière version stable</string>
+    <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
+    <string name="versionSupportedLatest">Gitea est à jour</string>
+    <string name="versionDevelopment">Version de développement</string>
+    <string name="versionUnknow">Aucun serveur Gitea détecté !</string>
+    <string name="versionAlertTitle">Alerte de version</string>
+    <string name="versionAlertDialogHeader">Version de Gitea non prise en charge</string>
+    <string name="versionAlertDialogCopyNegative">Annuler</string>
+    <string name="versionAlertDialogCopyPositive">Continuer</string>
 </resources>
