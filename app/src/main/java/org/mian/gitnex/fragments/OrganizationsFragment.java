@@ -173,7 +173,7 @@ public class OrganizationsFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setQueryHint(getContext().getString(R.string.strFilter));
+        //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
         if(!connToInternet) {
             return;
