@@ -1,8 +1,12 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import com.github.chrisbanes.photoview.PhotoView;
+import org.apache.commons.io.FilenameUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -29,8 +35,10 @@ public class FileViewActivity extends AppCompatActivity {
 
     private View.OnClickListener onClickListener;
     private TextView singleFileContents;
+    private PhotoView imageView;
     final Context ctx = this;
     private ProgressBar mProgressBar;
+    private byte[] imageData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,7 @@ public class FileViewActivity extends AppCompatActivity {
 
         ImageView closeActivity = findViewById(R.id.close);
         singleFileContents = findViewById(R.id.singleFileContents);
+        imageView = findViewById(R.id.imageView);
         singleFileContents.setVisibility(View.GONE);
         mProgressBar = findViewById(R.id.progress_bar);
 
@@ -92,9 +101,27 @@ public class FileViewActivity extends AppCompatActivity {
                     assert response.body() != null;
 
                     if(!response.body().getContent().equals("")) {
-                        singleFileContents.setVisibility(View.VISIBLE);
+
+                        String fileExtension = FilenameUtils.getExtension(filename);
                         mProgressBar.setVisibility(View.GONE);
-                        singleFileContents.setText(appUtil.decodeBase64(response.body().getContent()));
+
+                        if(fileExtension.equals("png") || fileExtension.equals("jpg") || fileExtension.equals("jpeg") || fileExtension.equals("gif")) {
+
+                            singleFileContents.setVisibility(View.GONE);
+                            imageView.setVisibility(View.VISIBLE);
+                            imageData = Base64.decode(response.body().getContent(), Base64.DEFAULT);
+                            Drawable imageDrawable = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
+                            imageView.setImageDrawable(imageDrawable);
+
+                        }
+                        else {
+
+                            imageView.setVisibility(View.GONE);
+                            singleFileContents.setVisibility(View.VISIBLE);
+                            singleFileContents.setText(appUtil.decodeBase64(response.body().getContent()));
+
+                        }
+
                     }
                     else {
                         singleFileContents.setText("");

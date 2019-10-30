@@ -49,7 +49,8 @@
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/toastBackground">
+        android:background="@color/black"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -68,6 +69,13 @@
         </ScrollView>
 
     </LinearLayout>
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/imageView"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
