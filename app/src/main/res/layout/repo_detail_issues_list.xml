@@ -93,7 +93,7 @@
             <TextView
                 android:id="@+id/issueCreatedTime"
                 android:layout_width="0dp"
-                android:layout_weight=".15"
+                android:layout_weight=".25"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:textColor="@color/colorWhite"
