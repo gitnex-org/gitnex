@@ -46,9 +46,8 @@ public class ExploreRepositoriesFragment extends Fragment {
     private TextView searchKeyword;
     private Boolean repoTypeInclude = true;
     private String sort = "updated";
-    private String order = "asc";
-
-    private ExploreRepositoriesAdapter adapter;
+    private String order = "desc";
+    private int limit = 50;
 
     private OnFragmentInteractionListener mListener;
 
@@ -102,7 +101,7 @@ public class ExploreRepositoriesFragment extends Fragment {
                         if(!searchKeyword.getText().toString().equals("")) {
                             mProgressBar.setVisibility(View.VISIBLE);
                             mRecyclerView.setVisibility(View.GONE);
-                            loadSearchReposList(instanceUrl, instanceToken, loginUid, searchKeyword.getText().toString(), repoTypeInclude, sort, order, getContext());
+                            loadSearchReposList(instanceUrl, instanceToken, loginUid, searchKeyword.getText().toString(), repoTypeInclude, sort, order, getContext(), limit);
                         }
                     }
                     return false;
@@ -118,12 +117,12 @@ public class ExploreRepositoriesFragment extends Fragment {
 
     }
 
-    private void loadSearchReposList(String instanceUrl, String instanceToken, String loginUid, String searchKeyword, Boolean repoTypeInclude, String sort, String order, final Context context) {
+    private void loadSearchReposList(String instanceUrl, String instanceToken, String loginUid, String searchKeyword, Boolean repoTypeInclude, String sort, String order, final Context context, int limit) {
 
         Call<ExploreRepositories> call = RetrofitClient
                 .getInstance(instanceUrl)
                 .getApiInterface()
-                .queryRepos(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, repoTypeInclude, sort, order);
+                .queryRepos(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, repoTypeInclude, sort, order, limit);
 
         call.enqueue(new Callback<ExploreRepositories>() {
 
@@ -141,7 +140,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<ExploreRepositories> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.getMessage());
+                Log.i("onFailure", Objects.requireNonNull(t.getMessage()));
             }
 
         });
@@ -150,7 +149,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
     private void getReposList(List<UserRepositories> dataList, Context context) {
 
-        adapter = new ExploreRepositoriesAdapter(dataList, context);
+        ExploreRepositoriesAdapter adapter = new ExploreRepositoriesAdapter(dataList, context);
 
         mRecyclerView.setVisibility(View.VISIBLE);
 
