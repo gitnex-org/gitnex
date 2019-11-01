@@ -38,6 +38,7 @@ import java.util.Objects;
 import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Callback;
+import android.provider.Settings.Secure;
 
 /**
  * Author M M Arif
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView otpInfo;
     private RadioGroup loginMethod;
     final Context ctx = this;
+    private String device_id = "token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +143,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         loginButton.setOnClickListener(loginListener);
+
+        device_id = Integer.toHexString(Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID).hashCode());
 
     }
 
@@ -561,7 +565,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         if(tinyDb.getString(loginUid + "-token").isEmpty() || !setTokenFlag) {
 
-                            UserTokens createUserToken = new UserTokens("gitnex-app-token");
+                            UserTokens createUserToken = new UserTokens("gitnex-app-" + device_id);
 
                             Call<UserTokens> callCreateToken;
                             if(loginOTP != 0) {
