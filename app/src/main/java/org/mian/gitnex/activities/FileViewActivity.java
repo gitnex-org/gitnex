@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.pddstudio.highlightjs.HighlightJsView;
+import com.pddstudio.highlightjs.models.Theme;
 import org.apache.commons.io.FilenameUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -35,6 +37,7 @@ public class FileViewActivity extends AppCompatActivity {
 
     private View.OnClickListener onClickListener;
     private TextView singleFileContents;
+    private HighlightJsView singleCodeContents;
     private PhotoView imageView;
     final Context ctx = this;
     private ProgressBar mProgressBar;
@@ -61,6 +64,7 @@ public class FileViewActivity extends AppCompatActivity {
 
         ImageView closeActivity = findViewById(R.id.close);
         singleFileContents = findViewById(R.id.singleFileContents);
+        singleCodeContents = findViewById(R.id.singleCodeContents);
         imageView = findViewById(R.id.imageView);
         singleFileContents.setVisibility(View.GONE);
         mProgressBar = findViewById(R.id.progress_bar);
@@ -105,19 +109,34 @@ public class FileViewActivity extends AppCompatActivity {
                         String fileExtension = FilenameUtils.getExtension(filename);
                         mProgressBar.setVisibility(View.GONE);
 
-                        if(fileExtension.equals("png") || fileExtension.equals("jpg") || fileExtension.equals("jpeg") || fileExtension.equals("gif")) {
+                        if(appUtil.imageExtension(fileExtension)) { // file is image
 
                             singleFileContents.setVisibility(View.GONE);
+                            singleCodeContents.setVisibility(View.GONE);
                             imageView.setVisibility(View.VISIBLE);
+
                             imageData = Base64.decode(response.body().getContent(), Base64.DEFAULT);
                             Drawable imageDrawable = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
                             imageView.setImageDrawable(imageDrawable);
 
                         }
-                        else {
+                        else if (appUtil.sourceCodeExtension(fileExtension)) { // file is sourcecode
 
                             imageView.setVisibility(View.GONE);
+                            singleFileContents.setVisibility(View.GONE);
+                            singleCodeContents.setVisibility(View.VISIBLE);
+
+                            singleCodeContents.setTheme(Theme.GRUVBOX_DARK);
+                            singleCodeContents.setShowLineNumbers(true);
+                            singleCodeContents.setSource(appUtil.decodeBase64(response.body().getContent()));
+
+                        }
+                        else { // file type not known - plain text view
+
+                            imageView.setVisibility(View.GONE);
+                            singleCodeContents.setVisibility(View.GONE);
                             singleFileContents.setVisibility(View.VISIBLE);
+
                             singleFileContents.setText(appUtil.decodeBase64(response.body().getContent()));
 
                         }

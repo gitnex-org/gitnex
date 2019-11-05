@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -145,16 +146,16 @@ public class AppUtil {
 
         String sMonth;
         if (Integer.parseInt(month) < 10) {
-            sMonth = "0"+String.valueOf(month);
+            sMonth = "0"+ month;
         } else {
-            sMonth = String.valueOf(month);
+            sMonth = month;
         }
 
         String sDay;
         if (Integer.parseInt(day) < 10) {
-            sDay = "0"+String.valueOf(day);
+            sDay = "0"+ day;
         } else {
-            sDay = String.valueOf(day);
+            sDay = day;
         }
 
         return year + "-" + sMonth + "-" + sDay;
@@ -170,14 +171,14 @@ public class AppUtil {
 
         String sMin;
         if ((mMinute) < 10) {
-            sMin = "0"+String.valueOf(mMinute);
+            sMin = "0"+ mMinute;
         } else {
             sMin = String.valueOf(mMinute);
         }
 
         String sSec;
         if ((mSeconds) < 10) {
-            sSec = "0"+String.valueOf(mSeconds);
+            sSec = "0"+ mSeconds;
         } else {
             sSec = String.valueOf(mSeconds);
         }
@@ -210,4 +211,23 @@ public class AppUtil {
 
     }
 
+    public Boolean sourceCodeExtension(String ext) {
+
+        String[] extValues = new String[] {"md", "json", "java", "go", "php", "c", "cc", "cpp", "cxx", "cyc", "m",
+                "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript",
+                "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt",
+                "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs",
+                "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js"};
+
+        return Arrays.asList(extValues).contains(ext);
+
+    }
+
+    public Boolean imageExtension(String ext) {
+
+        String[] extValues = new String[] {"jpg", "jpeg", "gif", "png", "ico"};
+
+        return Arrays.asList(extValues).contains(ext);
+
+    }
 }
