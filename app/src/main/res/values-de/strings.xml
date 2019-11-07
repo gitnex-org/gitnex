@@ -398,6 +398,8 @@
     <string name="locationText">Standort</string>
     <string name="characters255Limit">maximal 255 Zeichen</string>
     <string name="emptyFields">Es sind alle Felder erforderlich</string>
+    <string name="textContinue">Continue</string>
+    <string name="copyToken">Token</string>
     <!-- generic copy -->
     <string name="translateText">GitNex mit Crowdin übersetzen</string>
     <string name="exploreTextBoxHint">Repositories entdecken</string>
@@ -417,6 +419,8 @@
     <string name="versionUnknow">Keine Gitea erkannt!</string>
     <string name="versionAlertTitle">Versionswarnung</string>
     <string name="versionAlertDialogHeader">Nicht unterstützte Version von Gitea</string>
-    <string name="versionAlertDialogCopyNegative">Abbrechen</string>
-    <string name="versionAlertDialogCopyPositive">Fortfahren</string>
+    <string name="loginViaPassword">Username / Password</string>
+    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
+    <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
+    <string name="loginTokenError">Please enter the correct token</string>
 </resources>

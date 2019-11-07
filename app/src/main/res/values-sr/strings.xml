@@ -398,6 +398,8 @@
     <string name="locationText">Локација</string>
     <string name="characters255Limit">Максимално 255 карактера</string>
     <string name="emptyFields">Сва поља су обавезна</string>
+    <string name="textContinue">Continue</string>
+    <string name="copyToken">Token</string>
     <!-- generic copy -->
     <string name="translateText">Преведи GitNex на платформи Crowdin</string>
     <string name="exploreTextBoxHint">Претражи репозиторијуме</string>
@@ -417,6 +419,8 @@
     <string name="versionUnknow">No Gitea detected!</string>
     <string name="versionAlertTitle">Version Alert</string>
     <string name="versionAlertDialogHeader">Верзија програма Gitea коју тренутно користиш није подржана</string>
-    <string name="versionAlertDialogCopyNegative">Откажи</string>
-    <string name="versionAlertDialogCopyPositive">Настави</string>
+    <string name="loginViaPassword">Username / Password</string>
+    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
+    <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
+    <string name="loginTokenError">Please enter the correct token</string>
 </resources>
