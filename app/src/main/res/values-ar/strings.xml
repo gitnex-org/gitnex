@@ -398,7 +398,7 @@
     <string name="locationText">المكان</string>
     <string name="characters255Limit">Max 255 characters</string>
     <string name="emptyFields">كافة الحقول لازمة</string>
-    <string name="textContinue">Continue</string>
+    <string name="textContinue">مواصلة</string>
     <string name="copyToken">Token</string>
     <!-- generic copy -->
     <string name="translateText">ترجم GitNex على كراودين</string>

@@ -398,7 +398,7 @@
     <string name="locationText">Локација</string>
     <string name="characters255Limit">Максимално 255 карактера</string>
     <string name="emptyFields">Сва поља су обавезна</string>
-    <string name="textContinue">Continue</string>
+    <string name="textContinue">Настави</string>
     <string name="copyToken">Token</string>
     <!-- generic copy -->
     <string name="translateText">Преведи GitNex на платформи Crowdin</string>
