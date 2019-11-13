@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.Milestones;
@@ -20,18 +21,18 @@ public class MilestonesViewModel extends ViewModel {
 
     private static MutableLiveData<List<Milestones>> milestonesList;
 
-    public LiveData<List<Milestones>> getMilestonesList(String instanceUrl, String token, String owner, String repo, String msState) {
+    public LiveData<List<Milestones>> getMilestonesList(String instanceUrl, String token, String owner, String repo, String msState, Context ctx) {
 
         milestonesList = new MutableLiveData<>();
-        loadMilestonesList(instanceUrl, token, owner, repo, msState);
+        loadMilestonesList(instanceUrl, token, owner, repo, msState, ctx);
 
         return milestonesList;
     }
 
-    public static void loadMilestonesList(String instanceUrl, String token, String owner, String repo, String msState) {
+    public static void loadMilestonesList(String instanceUrl, String token, String owner, String repo, String msState, Context ctx) {
 
         Call<List<Milestones>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getMilestones(token, owner, repo, msState);
 

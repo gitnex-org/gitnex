@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -217,7 +218,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
         final String repoName = parts[1];
 
         Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getCollaborators(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 
@@ -248,7 +249,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(@NonNull Call<List<Collaborators>> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.getMessage());
+                Log.i("onFailure", t.toString());
             }
 
         });
@@ -261,7 +262,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
         Call<JsonElement> call3;
 
         call3 = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .createNewIssue(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, createNewIssueJson);
 
@@ -325,7 +326,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
 
         String msState = "open";
         Call<List<Milestones>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getMilestones(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, msState);
 
@@ -379,7 +380,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
     private void getCollaborators(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {
 
         Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getCollaborators(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 
@@ -449,7 +450,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
     private void getLabels(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {
 
         Call<List<Labels>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getlabels(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 

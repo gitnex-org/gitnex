@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.IssueComments;
@@ -20,18 +21,18 @@ public class IssueCommentsViewModel extends ViewModel {
 
     private static MutableLiveData<List<IssueComments>> issueComments;
 
-    public LiveData<List<IssueComments>> getIssueCommentList(String instanceUrl, String token, String owner, String repo, int index) {
+    public LiveData<List<IssueComments>> getIssueCommentList(String instanceUrl, String token, String owner, String repo, int index, Context ctx) {
 
         issueComments = new MutableLiveData<>();
-        loadIssueComments(instanceUrl, token, owner, repo, index);
+        loadIssueComments(instanceUrl, token, owner, repo, index, ctx);
 
         return issueComments;
     }
 
-    public static void loadIssueComments(String instanceUrl, String token, String owner, String repo, int index) {
+    public static void loadIssueComments(String instanceUrl, String token, String owner, String repo, int index, Context ctx) {
 
         Call<List<IssueComments>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getIssueComments(token, owner, repo, index);
 

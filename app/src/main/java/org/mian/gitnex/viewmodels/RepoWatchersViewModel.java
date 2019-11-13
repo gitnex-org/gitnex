@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -20,18 +21,18 @@ public class RepoWatchersViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserInfo>> watchersList;
 
-    public LiveData<List<UserInfo>> getRepoWatchers(String instanceUrl, String token, String repoOwner, String repoName) {
+    public LiveData<List<UserInfo>> getRepoWatchers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
 
         watchersList = new MutableLiveData<>();
-        loadRepoWatchers(instanceUrl, token, repoOwner, repoName);
+        loadRepoWatchers(instanceUrl, token, repoOwner, repoName, ctx);
 
         return watchersList;
     }
 
-    public static void loadRepoWatchers(String instanceUrl, String token, String repoOwner, String repoName) {
+    private static void loadRepoWatchers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getRepoWatchers(token, repoOwner, repoName);
 

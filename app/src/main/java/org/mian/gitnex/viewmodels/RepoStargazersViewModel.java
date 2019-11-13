@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -20,18 +21,18 @@ public class RepoStargazersViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserInfo>> stargazersList;
 
-    public LiveData<List<UserInfo>> getRepoStargazers(String instanceUrl, String token, String repoOwner, String repoName) {
+    public LiveData<List<UserInfo>> getRepoStargazers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
 
         stargazersList = new MutableLiveData<>();
-        loadRepoStargazers(instanceUrl, token, repoOwner, repoName);
+        loadRepoStargazers(instanceUrl, token, repoOwner, repoName, ctx);
 
         return stargazersList;
     }
 
-    public static void loadRepoStargazers(String instanceUrl, String token, String repoOwner, String repoName) {
+    private static void loadRepoStargazers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getRepoStargazers(token, repoOwner, repoName);
 

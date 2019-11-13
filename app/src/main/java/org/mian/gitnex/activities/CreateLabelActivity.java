@@ -28,6 +28,7 @@ import org.mian.gitnex.models.Labels;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -55,9 +56,9 @@ public class CreateLabelActivity extends AppCompatActivity {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        if(getIntent().getStringExtra("labelAction") != null && getIntent().getStringExtra("labelAction").equals("delete")) {
+        if(getIntent().getStringExtra("labelAction") != null && Objects.requireNonNull(getIntent().getStringExtra("labelAction")).equals("delete")) {
 
-            deleteLabel(instanceUrl, instanceToken, repoOwner, repoName, Integer.valueOf(getIntent().getStringExtra("labelId")), loginUid);
+            deleteLabel(instanceUrl, instanceToken, repoOwner, repoName, Integer.valueOf(Objects.requireNonNull(getIntent().getStringExtra("labelId"))), loginUid);
             finish();
             return;
 
@@ -92,7 +93,7 @@ public class CreateLabelActivity extends AppCompatActivity {
             }
         });
 
-        if(getIntent().getStringExtra("labelAction") != null && getIntent().getStringExtra("labelAction").equals("edit")) {
+        if(getIntent().getStringExtra("labelAction") != null && Objects.requireNonNull(getIntent().getStringExtra("labelAction")).equals("edit")) {
 
             labelName.setText(getIntent().getStringExtra("labelTitle"));
             int labelColor_ = Color.parseColor("#" + getIntent().getStringExtra("labelColor"));
@@ -242,7 +243,7 @@ public class CreateLabelActivity extends AppCompatActivity {
         Call<CreateLabel> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .createLabel(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, createLabelFunc);
 
@@ -296,7 +297,7 @@ public class CreateLabelActivity extends AppCompatActivity {
         Call<CreateLabel> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .patchLabel(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, labelId, createLabelFunc);
 
@@ -369,7 +370,7 @@ public class CreateLabelActivity extends AppCompatActivity {
         Call<Labels> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .deleteLabel(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, labelId);
 
@@ -382,7 +383,7 @@ public class CreateLabelActivity extends AppCompatActivity {
                     if(response.code() == 204) {
 
                         Toasty.info(getApplicationContext(), getString(R.string.labelDeleteText));
-                        LabelsViewModel.loadLabelsList(instanceUrl, instanceToken, repoOwner, repoName);
+                        LabelsViewModel.loadLabelsList(instanceUrl, instanceToken, repoOwner, repoName, getApplicationContext());
                         getIntent().removeExtra("labelAction");
                         getIntent().removeExtra("labelId");
 

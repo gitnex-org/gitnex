@@ -127,7 +127,7 @@ public class CreateNewUserActivity extends AppCompatActivity {
         Call<UserInfo> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .createNewUser(instanceToken, createUser);
 

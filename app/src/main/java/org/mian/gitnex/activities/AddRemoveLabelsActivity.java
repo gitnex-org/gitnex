@@ -62,7 +62,7 @@ public class AddRemoveLabelsActivity extends AppCompatActivity {
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         Call<List<Labels>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getlabels(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 
@@ -87,7 +87,7 @@ public class AddRemoveLabelsActivity extends AppCompatActivity {
 
                         // get current issue labels
                         Call<List<Labels>> callSingleIssueLabels = RetrofitClient
-                                .getInstance(instanceUrl)
+                                .getInstance(instanceUrl, getApplicationContext())
                                 .getApiInterface()
                                 .getIssueLabels(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
 
@@ -249,7 +249,7 @@ public class AddRemoveLabelsActivity extends AppCompatActivity {
         Labels patchIssueLabels = new Labels(issueLabels);
 
         Call<JsonElement> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .updateIssueLabels(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, patchIssueLabels);
 

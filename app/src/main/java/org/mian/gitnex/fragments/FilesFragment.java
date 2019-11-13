@@ -192,7 +192,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
         FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-        filesModel.getFilesList(instanceUrl, instanceToken, owner, repo, getContext()).observe(this, new Observer<List<Files>>() {
+        filesModel.getFilesList(instanceUrl, instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Files>>() {
             @Override
             public void onChanged(@Nullable List<Files> filesListMain) {
                 adapter = new FilesAdapter(getContext(), filesListMain, FilesFragment.this);
@@ -262,9 +262,9 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

@@ -218,7 +218,7 @@ public class RepoInfoFragment extends Fragment {
         final TinyDB tinyDb = new TinyDB(getContext());
 
         Call<UserRepositories> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getContext())
                 .getApiInterface()
                 .getUserRepository(token, owner, repo);
 
@@ -303,7 +303,7 @@ public class RepoInfoFragment extends Fragment {
         final TinyDB tinyDb = new TinyDB(getContext());
 
         Call<String> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getContext())
                 .getApiInterface()
                 .getFileContents(token, owner, repo, filename);
 

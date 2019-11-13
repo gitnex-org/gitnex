@@ -72,7 +72,7 @@ public class OrgTeamMembersActivity extends AppCompatActivity {
 
         TeamMembersByOrgViewModel teamMembersModel = new ViewModelProvider(this).get(TeamMembersByOrgViewModel.class);
 
-        teamMembersModel.getMembersByOrgList(instanceUrl, instanceToken, teamId).observe(this, new Observer<List<UserInfo>>() {
+        teamMembersModel.getMembersByOrgList(instanceUrl, instanceToken, teamId, getApplicationContext()).observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> teamMembersListMain) {
                 adapter = new TeamMembersByOrgAdapter(getApplicationContext(), teamMembersListMain);

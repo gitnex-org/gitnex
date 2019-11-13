@@ -97,7 +97,7 @@ public class RepositoriesByOrgFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
+                        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
                     }
                 }, 200);
             }
@@ -117,7 +117,7 @@ public class RepositoriesByOrgFragment extends Fragment {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
+        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
 
     }
 
@@ -125,7 +125,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 
         RepositoriesByOrgViewModel orgRepoModel = new ViewModelProvider(this).get(RepositoriesByOrgViewModel.class);
 
-        orgRepoModel.getRepositoriesByOrg(instanceUrl, instanceToken, owner).observe(this, new Observer<List<UserRepositories>>() {
+        orgRepoModel.getRepositoriesByOrg(instanceUrl, instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
             @Override
             public void onChanged(@Nullable List<UserRepositories> orgReposListMain) {
                 adapter = new RepositoriesByOrgAdapter(getContext(), orgReposListMain);

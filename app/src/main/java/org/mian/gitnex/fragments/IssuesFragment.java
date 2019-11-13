@@ -126,7 +126,7 @@ public class IssuesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
 
-        api = IssuesService.createService(ApiInterface.class, instanceUrl);
+        api = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
         loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
 
         return v;
@@ -189,7 +189,7 @@ public class IssuesFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, t.toString());
             }
 
         });
@@ -244,7 +244,7 @@ public class IssuesFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, t.toString());
 
             }
 
@@ -264,9 +264,9 @@ public class IssuesFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 

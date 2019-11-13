@@ -100,7 +100,7 @@ public class CollaboratorsFragment extends Fragment {
 
         CollaboratorsViewModel collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 
-        collaboratorsModel.getCollaboratorsList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Collaborators>>() {
+        collaboratorsModel.getCollaboratorsList(instanceUrl, instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Collaborators>>() {
             @Override
             public void onChanged(@Nullable List<Collaborators> collaboratorsListMain) {
                 adapter = new CollaboratorsAdapter(getContext(), collaboratorsListMain);

@@ -37,7 +37,7 @@ public class IssueActions {
         Call<IssueComments> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .patchIssueComment(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, commentId, commentBodyJson);
 
@@ -104,7 +104,7 @@ public class IssueActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .closeReopenIssue(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, issueIndex, issueStatJson);
 

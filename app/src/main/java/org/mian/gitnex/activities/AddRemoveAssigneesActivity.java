@@ -65,7 +65,7 @@ public class AddRemoveAssigneesActivity extends AppCompatActivity {
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getCollaborators(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 
@@ -90,7 +90,7 @@ public class AddRemoveAssigneesActivity extends AppCompatActivity {
 
                         // get current issue assignees
                         Call<Issues> callSingleIssueAssignees = RetrofitClient
-                                .getInstance(instanceUrl)
+                                .getInstance(instanceUrl, getApplicationContext())
                                 .getApiInterface()
                                 .getIssueByIndex(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
 
@@ -239,7 +239,7 @@ public class AddRemoveAssigneesActivity extends AppCompatActivity {
         Call<JsonElement> call3;
 
         call3 = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .patchIssueAssignee(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, updateAssigneeJson);
 

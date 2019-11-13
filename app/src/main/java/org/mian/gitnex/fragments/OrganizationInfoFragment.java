@@ -88,7 +88,7 @@ public class OrganizationInfoFragment extends Fragment {
     private void getOrgInfo(String instanceUrl, String token, final String owner) {
 
         Call<Organization> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getContext())
                 .getApiInterface()
                 .getOrganization(token, owner);
 

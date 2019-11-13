@@ -164,7 +164,7 @@ public class CreateReleaseActivity extends AppCompatActivity {
         Call<Releases> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .createNewRelease(token, repoOwner, repoName, createReleaseJson);
 
@@ -224,7 +224,7 @@ public class CreateReleaseActivity extends AppCompatActivity {
     private void getBranches(String instanceUrl, String instanceToken, final String repoOwner, final String repoName) {
 
         Call<List<Branches>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getBranches(instanceToken, repoOwner, repoName);
 

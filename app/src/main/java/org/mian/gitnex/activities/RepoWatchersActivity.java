@@ -64,7 +64,7 @@ public class RepoWatchersActivity extends AppCompatActivity {
 
         RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
-        repoWatchersModel.getRepoWatchers(instanceUrl, instanceToken, repoOwner, repoName).observe(this, new Observer<List<UserInfo>>() {
+        repoWatchersModel.getRepoWatchers(instanceUrl, instanceToken, repoOwner, repoName, getApplicationContext()).observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> watchersListMain) {
                 adapter = new RepoWatchersAdapter(getApplicationContext(), watchersListMain);

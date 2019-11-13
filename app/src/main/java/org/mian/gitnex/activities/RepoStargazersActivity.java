@@ -64,7 +64,7 @@ public class RepoStargazersActivity extends AppCompatActivity {
 
         RepoStargazersViewModel repoStargazersModel = new ViewModelProvider(this).get(RepoStargazersViewModel.class);
 
-        repoStargazersModel.getRepoStargazers(instanceUrl, instanceToken, repoOwner, repoName).observe(this, new Observer<List<UserInfo>>() {
+        repoStargazersModel.getRepoStargazers(instanceUrl, instanceToken, repoOwner, repoName, getApplicationContext()).observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> stargazersListMain) {
                 adapter = new RepoStargazersAdapter(getApplicationContext(), stargazersListMain);

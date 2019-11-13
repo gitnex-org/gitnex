@@ -134,7 +134,7 @@ public class NewOrganizationActivity extends AppCompatActivity {
         UserOrganizations createOrganization = new UserOrganizations(orgName, null, orgDesc, null, null);
 
         Call<UserOrganizations> call = RetrofitClient
-            .getInstance(instanceUrl)
+            .getInstance(instanceUrl, getApplicationContext())
             .getApiInterface()
             .createNewOrganization(token, createOrganization);
 

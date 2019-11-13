@@ -23,9 +23,9 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserSearch;
 import org.mian.gitnex.models.UserInfo;
-import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -45,8 +45,6 @@ public class AddCollaboratorToRepositoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_collaborator_to_repository);
-
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -81,7 +79,7 @@ public class AddCollaboratorToRepositoryActivity extends AppCompatActivity {
     public void loadUserSearchList(String instanceUrl, String token, String searchKeyword, final Context context, String loginUid) {
 
         Call<UserSearch> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getUserBySearch(Authorization.returnAuthentication(getApplicationContext(), loginUid, token), searchKeyword, 10);
 
@@ -101,7 +99,7 @@ public class AddCollaboratorToRepositoryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<UserSearch> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.getMessage());
+                Log.i("onFailure", t.toString());
             }
 
         });

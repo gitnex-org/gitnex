@@ -94,7 +94,7 @@ public class LabelsFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        LabelsViewModel.loadLabelsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+                        LabelsViewModel.loadLabelsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getContext());
                     }
                 }, 200);
             }
@@ -119,7 +119,7 @@ public class LabelsFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("labelsRefresh")) {
-            LabelsViewModel.loadLabelsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+            LabelsViewModel.loadLabelsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getContext());
             tinyDb.putBoolean("labelsRefresh", false);
         }
     }
@@ -144,7 +144,7 @@ public class LabelsFragment extends Fragment {
 
         LabelsViewModel labelsModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
-        labelsModel.getLabelsList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Labels>>() {
+        labelsModel.getLabelsList(instanceUrl, instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Labels>>() {
             @Override
             public void onChanged(@Nullable List<Labels> labelsListMain) {
                 adapter = new LabelsAdapter(getContext(), labelsListMain);

@@ -162,7 +162,7 @@ public class NewRepoActivity extends AppCompatActivity {
         if(repoOwner.equals(loginUid)) {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl)
+                    .getInstance(instanceUrl, getApplicationContext())
                     .getApiInterface()
                     .createNewUserRepository(token, createRepository);
 
@@ -170,7 +170,7 @@ public class NewRepoActivity extends AppCompatActivity {
         else {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl)
+                    .getInstance(instanceUrl, getApplicationContext())
                     .getApiInterface()
                     .createNewUserOrgRepository(token, repoOwner, createRepository);
 
@@ -225,7 +225,7 @@ public class NewRepoActivity extends AppCompatActivity {
     private void getOrgs(String instanceUrl, String instanceToken, final String userLogin) {
 
         Call<List<OrgOwner>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getOrgOwners(instanceToken);
 

@@ -33,7 +33,7 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .starRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
 
@@ -98,7 +98,7 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .unStarRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
 
@@ -163,7 +163,7 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .watchRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
 
@@ -228,7 +228,7 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .unWatchRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
 

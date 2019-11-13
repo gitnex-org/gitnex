@@ -204,7 +204,7 @@ public class NewFileActivity extends AppCompatActivity {
         }
 
         Call<JsonElement> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .createNewFile(token, repoOwner, repoName, fileName, createNewFileJsonStr);
 
@@ -256,7 +256,7 @@ public class NewFileActivity extends AppCompatActivity {
     private void getBranches(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {
 
         Call<List<Branches>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getBranches(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 

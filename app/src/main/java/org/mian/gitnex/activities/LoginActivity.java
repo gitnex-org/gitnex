@@ -35,10 +35,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Callback;
-import android.provider.Settings.Secure;
 
 /**
  * Author M M Arif
@@ -144,7 +144,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         loginButton.setOnClickListener(loginListener);
 
-        device_id = Integer.toHexString(Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID).hashCode());
+        if(!tinyDb.getString("uniqueAppId").isEmpty()) {
+            device_id = tinyDb.getString("uniqueAppId");
+        }
+        else {
+            device_id = UUID.randomUUID().toString();
+            tinyDb.putString("uniqueAppId", device_id);
+        }
 
     }
 
@@ -368,7 +374,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         Call<GiteaVersion> callVersion = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getGiteaVersion();
 
@@ -459,7 +465,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         Call<UserInfo> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getUserInfo("token " + loginToken_);
 
@@ -526,13 +532,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Call<List<UserTokens>> call;
         if(loginOTP != 0) {
             call = RetrofitClient
-                    .getInstance(instanceUrl)
+                    .getInstance(instanceUrl, getApplicationContext())
                     .getApiInterface()
                     .getUserTokensWithOTP(credential, loginOTP, loginUid);
         }
         else {
             call = RetrofitClient
-                    .getInstance(instanceUrl)
+                    .getInstance(instanceUrl, getApplicationContext())
                     .getApiInterface()
                     .getUserTokens(credential, loginUid);
         }
@@ -570,13 +576,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Call<UserTokens> callCreateToken;
                             if(loginOTP != 0) {
                                 callCreateToken = RetrofitClient
-                                        .getInstance(instanceUrl)
+                                        .getInstance(instanceUrl, getApplicationContext())
                                         .getApiInterface()
                                         .createNewTokenWithOTP(credential, loginOTP, loginUid, createUserToken);
                             }
                             else {
                                 callCreateToken = RetrofitClient
-                                        .getInstance(instanceUrl)
+                                        .getInstance(instanceUrl, getApplicationContext())
                                         .getApiInterface()
                                         .createNewToken(credential, loginUid, createUserToken);
                             }

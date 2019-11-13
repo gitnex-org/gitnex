@@ -122,7 +122,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
         final String repoName = parts[1];
 
         Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getCollaborators(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 
@@ -153,7 +153,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onFailure(@NonNull Call<List<Collaborators>> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.getMessage());
+                Log.i("onFailure", t.toString());
             }
 
         });
@@ -229,7 +229,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
         CreateIssue issueData = new CreateIssue(title, description, dueDate, editIssueMilestoneId);
 
         Call<JsonElement> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .patchIssue(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, issueData);
 
@@ -307,7 +307,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
     private void getIssue(final String instanceUrl, final String instanceToken, final String loginUid, final String repoOwner, final String repoName, int issueIndex) {
 
         Call<Issues> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getIssueByIndex(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
 
@@ -331,7 +331,7 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
                     if(response.body().getId() > 0) {
 
                         Call<List<Milestones>> call_ = RetrofitClient
-                                .getInstance(instanceUrl)
+                                .getInstance(instanceUrl, getApplicationContext())
                                 .getApiInterface()
                                 .getMilestones(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, msState);
 

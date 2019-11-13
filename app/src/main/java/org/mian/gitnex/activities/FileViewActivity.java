@@ -60,8 +60,6 @@ public class FileViewActivity extends AppCompatActivity {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
-
         ImageView closeActivity = findViewById(R.id.close);
         singleFileContents = findViewById(R.id.singleFileContents);
         singleCodeContents = findViewById(R.id.singleCodeContents);
@@ -78,19 +76,14 @@ public class FileViewActivity extends AppCompatActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        if(connToInternet) {
-            getSingleFileContents(instanceUrl, instanceToken, repoOwner, repoName, singleFileName);
-        }
-        else {
-            Toasty.info(getApplicationContext(), getString(R.string.checkNetConnection));
-        }
+        getSingleFileContents(instanceUrl, instanceToken, repoOwner, repoName, singleFileName);
 
     }
 
     private void getSingleFileContents(String instanceUrl, String token, final String owner, String repo, final String filename) {
 
         Call<Files> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getSingleFileContents(token, owner, repo, filename);
 

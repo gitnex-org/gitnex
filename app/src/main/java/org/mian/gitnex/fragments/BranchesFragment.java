@@ -96,7 +96,7 @@ public class BranchesFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        BranchesViewModel.loadBranchesList(instanceUrl, instanceToken, repoOwner, repoName);
+                        BranchesViewModel.loadBranchesList(instanceUrl, instanceToken, repoOwner, repoName, getContext());
                     }
                 }, 50);
             }
@@ -127,7 +127,7 @@ public class BranchesFragment extends Fragment {
 
         BranchesViewModel branchesModel = new ViewModelProvider(this).get(BranchesViewModel.class);
 
-        branchesModel.getBranchesList(instanceUrl, instanceToken, owner, repo).observe(this, new Observer<List<Branches>>() {
+        branchesModel.getBranchesList(instanceUrl, instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Branches>>() {
             @Override
             public void onChanged(@Nullable List<Branches> branchesListMain) {
                 adapter = new BranchesAdapter(getContext(), branchesListMain);

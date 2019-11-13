@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.Releases;
@@ -20,18 +21,18 @@ public class ReleasesViewModel extends ViewModel {
 
     private static MutableLiveData<List<Releases>> releasesList;
 
-    public LiveData<List<Releases>> getReleasesList(String instanceUrl, String token, String owner, String repo) {
+    public LiveData<List<Releases>> getReleasesList(String instanceUrl, String token, String owner, String repo, Context ctx) {
 
         releasesList = new MutableLiveData<>();
-        loadReleasesList(instanceUrl, token, owner, repo);
+        loadReleasesList(instanceUrl, token, owner, repo, ctx);
 
         return releasesList;
     }
 
-    public static void loadReleasesList(String instanceUrl, String token, String owner, String repo) {
+    public static void loadReleasesList(String instanceUrl, String token, String owner, String repo, Context ctx) {
 
         Call<List<Releases>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getReleases(token, owner, repo);
 

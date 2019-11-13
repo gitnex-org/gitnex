@@ -237,7 +237,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
     private void getRepoInfo(String instanceUrl, String token, final String owner, String repo) {
 
         Call<UserRepositories> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getUserRepository(token, owner, repo);
 
@@ -277,7 +277,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .checkRepoStarStatus(instanceToken, owner, repo);
 
@@ -304,7 +304,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
         Call<WatchRepository> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .checkRepoWatchStatus(instanceToken, owner, repo);
 

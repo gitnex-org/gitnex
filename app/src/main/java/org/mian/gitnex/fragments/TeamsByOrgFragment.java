@@ -97,7 +97,7 @@ public class TeamsByOrgFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        TeamsByOrgViewModel.loadTeamsByOrgList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
+                        TeamsByOrgViewModel.loadTeamsByOrgList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
                     }
                 }, 200);
             }
@@ -117,7 +117,7 @@ public class TeamsByOrgFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("resumeTeams")) {
-            TeamsByOrgViewModel.loadTeamsByOrgList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
+            TeamsByOrgViewModel.loadTeamsByOrgList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
             tinyDb.putBoolean("resumeTeams", false);
         }
     }
@@ -126,7 +126,7 @@ public class TeamsByOrgFragment extends Fragment {
 
         TeamsByOrgViewModel teamModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
 
-        teamModel.getTeamsByOrg(instanceUrl, instanceToken, owner).observe(this, new Observer<List<Teams>>() {
+        teamModel.getTeamsByOrg(instanceUrl, instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Teams>>() {
             @Override
             public void onChanged(@Nullable List<Teams> orgTeamsListMain) {
                 adapter = new TeamsByOrgAdapter(getContext(), orgTeamsListMain);
@@ -158,9 +158,9 @@ public class TeamsByOrgFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.UserRepositories;
@@ -20,18 +21,18 @@ public class RepositoriesByOrgViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> orgReposList;
 
-    public LiveData<List<UserRepositories>> getRepositoriesByOrg(String instanceUrl, String token, String orgName) {
+    public LiveData<List<UserRepositories>> getRepositoriesByOrg(String instanceUrl, String token, String orgName, Context ctx) {
 
         orgReposList = new MutableLiveData<>();
-        loadOrgRepos(instanceUrl, token, orgName);
+        loadOrgRepos(instanceUrl, token, orgName, ctx);
 
         return orgReposList;
     }
 
-    public static void loadOrgRepos(String instanceUrl, String token, String orgName) {
+    public static void loadOrgRepos(String instanceUrl, String token, String orgName, Context ctx) {
 
         Call<List<UserRepositories>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getReposByOrg(token, orgName);
 

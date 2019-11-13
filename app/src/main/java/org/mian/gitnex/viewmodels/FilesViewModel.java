@@ -37,7 +37,7 @@ public class FilesViewModel extends ViewModel {
     private static void loadFilesList(String instanceUrl, String token, String owner, String repo, final Context ctx) {
 
         Call<List<Files>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getFiles(token, owner, repo);
 
@@ -81,7 +81,7 @@ public class FilesViewModel extends ViewModel {
     private static void loadFilesList2(String instanceUrl, String token, String owner, String repo, String filesDir, final Context ctx) {
 
         Call<List<Files>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getDirFiles(token, owner, repo, filesDir);
 

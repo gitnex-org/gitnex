@@ -308,7 +308,7 @@ public class CreateTeamByOrgActivity extends AppCompatActivity implements View.O
         Call<Teams> call3;
 
         call3 = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .createTeamsByOrg(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), orgName, createNewTeamJson);
 

@@ -127,7 +127,7 @@ public class ClosedIssuesFragment extends Fragment {
         recyclerViewClosed.setLayoutManager(new LinearLayoutManager(context));
         recyclerViewClosed.setAdapter(adapterClosed);
 
-        apiClosed = IssuesService.createService(ApiInterface.class, instanceUrl);
+        apiClosed = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
         loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, issueState);
 
         return v;
@@ -190,7 +190,7 @@ public class ClosedIssuesFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, t.toString());
             }
 
         });
@@ -245,7 +245,7 @@ public class ClosedIssuesFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, t.toString());
 
             }
 
@@ -265,9 +265,9 @@ public class ClosedIssuesFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 

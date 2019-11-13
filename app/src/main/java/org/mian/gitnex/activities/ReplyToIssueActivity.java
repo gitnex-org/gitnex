@@ -118,7 +118,7 @@ public class ReplyToIssueActivity extends AppCompatActivity {
         final String repoName = parts[1];
 
         Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getCollaborators(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
 
@@ -212,7 +212,7 @@ public class ReplyToIssueActivity extends AppCompatActivity {
         Issues issueComment = new Issues(newReplyDT);
 
         Call<Issues> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .replyCommentToIssue(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, issueComment);
 

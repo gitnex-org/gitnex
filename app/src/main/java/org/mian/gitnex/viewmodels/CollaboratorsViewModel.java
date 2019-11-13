@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.Collaborators;
@@ -20,18 +21,18 @@ public class CollaboratorsViewModel extends ViewModel {
 
     private static MutableLiveData<List<Collaborators>> collaboratorsList;
 
-    public LiveData<List<Collaborators>> getCollaboratorsList(String instanceUrl, String token, String owner, String repo) {
+    public LiveData<List<Collaborators>> getCollaboratorsList(String instanceUrl, String token, String owner, String repo, Context ctx) {
 
         collaboratorsList = new MutableLiveData<>();
-        loadCollaboratorsListList(instanceUrl, token, owner, repo);
+        loadCollaboratorsListList(instanceUrl, token, owner, repo, ctx);
 
         return collaboratorsList;
     }
 
-    private static void loadCollaboratorsListList(String instanceUrl, String token, String owner, String repo) {
+    private static void loadCollaboratorsListList(String instanceUrl, String token, String owner, String repo, Context ctx) {
 
         Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getCollaborators(token, owner, repo);
 

@@ -114,7 +114,7 @@ public class ProfileEmailActivity extends AppCompatActivity {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .addNewEmail(token, addEmailFunc);
 

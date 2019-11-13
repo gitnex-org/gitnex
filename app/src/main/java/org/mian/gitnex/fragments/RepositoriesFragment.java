@@ -102,27 +102,20 @@ public class RepositoriesFragment extends Fragment {
             }
         });
 
-        if(connToInternet) {
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+                        RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+                    }
+                }, 50);
+            }
+        });
 
-            swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            swipeRefresh.setRefreshing(false);
-                            RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
-                        }
-                    }, 50);
-                }
-            });
-
-            fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
-
-        }
-        else {
-            mProgressBar.setVisibility(View.GONE);
-        }
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
 
         return v;
 
@@ -137,7 +130,7 @@ public class RepositoriesFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("repoCreated")) {
-            RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+            RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
             tinyDb.putBoolean("repoCreated", false);
         }
     }
@@ -146,7 +139,7 @@ public class RepositoriesFragment extends Fragment {
 
         RepositoriesListViewModel repoModel = new ViewModelProvider(this).get(RepositoriesListViewModel.class);
 
-        repoModel.getUserRepositories(instanceUrl, instanceToken).observe(this, new Observer<List<UserRepositories>>() {
+        repoModel.getUserRepositories(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
             @Override
             public void onChanged(@Nullable List<UserRepositories> reposListMain) {
                 adapter = new ReposListAdapter(getContext(), reposListMain);
@@ -178,9 +171,9 @@ public class RepositoriesFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

@@ -132,27 +132,20 @@ public class MyRepositoriesFragment extends Fragment {
             }
         });
 
-        if(connToInternet) {
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+                        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext());
+                    }
+                }, 50);
+            }
+        });
 
-            swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            swipeRefresh.setRefreshing(false);
-                            MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin);
-                        }
-                    }, 50);
-                }
-            });
-
-            fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin);
-
-        }
-        else {
-            mProgressBar.setVisibility(View.GONE);
-        }
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin);
 
         return v;
 
@@ -167,7 +160,7 @@ public class MyRepositoriesFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         final String userLogin =  tinyDb.getString("userLogin");
 
-        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin);
+        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext());
 
     }
 
@@ -175,7 +168,7 @@ public class MyRepositoriesFragment extends Fragment {
 
         MyRepositoriesViewModel myRepoModel = new ViewModelProvider(this).get(MyRepositoriesViewModel.class);
 
-        myRepoModel.getCurrentUserRepositories(instanceUrl, instanceToken, userLogin).observe(this, new Observer<List<UserRepositories>>() {
+        myRepoModel.getCurrentUserRepositories(instanceUrl, instanceToken, userLogin, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
             @Override
             public void onChanged(@Nullable List<UserRepositories> myReposListMain) {
                 adapter = new MyReposListAdapter(getContext(), myReposListMain);
@@ -207,9 +200,9 @@ public class MyRepositoriesFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

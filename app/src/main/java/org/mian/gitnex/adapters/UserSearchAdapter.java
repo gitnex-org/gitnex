@@ -156,7 +156,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
             final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
             Call<Collaborators> call = RetrofitClient
-                    .getInstance(instanceUrl)
+                    .getInstance(instanceUrl, mCtx)
                     .getApiInterface()
                     .checkRepoCollaborator(Authorization.returnAuthentication(mCtx, loginUid, instanceToken), repoOwner, repoName, currentItem.getUsername());
 
@@ -191,7 +191,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
 
                 @Override
                 public void onFailure(@NonNull Call<Collaborators> call, @NonNull Throwable t) {
-                    Log.i("onFailure", t.getMessage());
+                    Log.i("onFailure", t.toString());
                 }
 
             });

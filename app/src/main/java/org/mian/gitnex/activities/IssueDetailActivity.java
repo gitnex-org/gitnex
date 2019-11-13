@@ -152,7 +152,7 @@ public class IssueDetailActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
+                        IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
                     }
                 }, 500);
             }
@@ -206,7 +206,7 @@ public class IssueDetailActivity extends AppCompatActivity {
             scrollViewComments.post(new Runnable() {
                 @Override
                 public void run() {
-                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
+                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -224,7 +224,7 @@ public class IssueDetailActivity extends AppCompatActivity {
             scrollViewComments.post(new Runnable() {
                 @Override
                 public void run() {
-                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
+                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
                     tinyDb.putBoolean("commentEdited", false);
                 }
             });
@@ -264,7 +264,7 @@ public class IssueDetailActivity extends AppCompatActivity {
 
         IssueCommentsViewModel issueCommentsModel = ViewModelProviders.of(this).get(IssueCommentsViewModel.class);
 
-        issueCommentsModel.getIssueCommentList(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), owner, repo, index).observe(this, new Observer<List<IssueComments>>() {
+        issueCommentsModel.getIssueCommentList(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), owner, repo, index, getApplicationContext()).observe(this, new Observer<List<IssueComments>>() {
             @Override
             public void onChanged(@Nullable List<IssueComments> issueCommentsMain) {
                 adapter = new IssueCommentsAdapter(getApplicationContext(), issueCommentsMain);
@@ -278,7 +278,7 @@ public class IssueDetailActivity extends AppCompatActivity {
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
         Call<Issues> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getIssueByIndex(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
 

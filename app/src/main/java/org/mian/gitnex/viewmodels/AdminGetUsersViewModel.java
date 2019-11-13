@@ -35,7 +35,7 @@ public class AdminGetUsersViewModel extends ViewModel {
     public static void loadUsersList(final Context ctx, String instanceUrl, String token) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .adminGetUsers(token);
 

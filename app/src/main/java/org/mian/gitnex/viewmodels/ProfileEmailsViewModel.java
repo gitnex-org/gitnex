@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.Emails;
@@ -20,18 +21,18 @@ public class ProfileEmailsViewModel extends ViewModel {
 
     private static MutableLiveData<List<Emails>> emailsList;
 
-    public LiveData<List<Emails>> getEmailsList(String instanceUrl, String token) {
+    public LiveData<List<Emails>> getEmailsList(String instanceUrl, String token, Context ctx) {
 
         emailsList = new MutableLiveData<>();
-        loadEmailsList(instanceUrl, token);
+        loadEmailsList(instanceUrl, token, ctx);
 
         return emailsList;
     }
 
-    public static void loadEmailsList(String instanceUrl, String token) {
+    public static void loadEmailsList(String instanceUrl, String token, Context ctx) {
 
         Call<List<Emails>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getUserEmails(token);
 

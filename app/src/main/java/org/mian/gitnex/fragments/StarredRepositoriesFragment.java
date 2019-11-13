@@ -127,27 +127,20 @@ public class StarredRepositoriesFragment extends Fragment {
             }
         });
 
-        if(connToInternet) {
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+                        StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+                    }
+                }, 50);
+            }
+        });
 
-            swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            swipeRefresh.setRefreshing(false);
-                            StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
-                        }
-                    }, 50);
-                }
-            });
-
-            fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
-
-        }
-        else {
-            mProgressBar.setVisibility(View.GONE);
-        }
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
 
         return v;
     }
@@ -160,7 +153,7 @@ public class StarredRepositoriesFragment extends Fragment {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+        StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
 
     }
 
@@ -168,7 +161,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
         StarredRepositoriesViewModel starredRepoModel = new ViewModelProvider(this).get(StarredRepositoriesViewModel.class);
 
-        starredRepoModel.getUserStarredRepositories(instanceUrl, instanceToken).observe(this, new Observer<List<UserRepositories>>() {
+        starredRepoModel.getUserStarredRepositories(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
             @Override
             public void onChanged(@Nullable List<UserRepositories> starredReposListMain) {
                 adapter = new StarredReposListAdapter(getContext(), starredReposListMain);
@@ -200,9 +193,9 @@ public class StarredRepositoriesFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

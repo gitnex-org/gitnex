@@ -92,26 +92,19 @@ public class ExploreRepositoriesFragment extends Fragment {
         mProgressBar = v.findViewById(R.id.progress_bar);
         mRecyclerView = v.findViewById(R.id.recyclerViewReposSearch);
 
-        if(connToInternet) {
-
-            searchKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEND) {
-                        if(!searchKeyword.getText().toString().equals("")) {
-                            mProgressBar.setVisibility(View.VISIBLE);
-                            mRecyclerView.setVisibility(View.GONE);
-                            loadSearchReposList(instanceUrl, instanceToken, loginUid, searchKeyword.getText().toString(), repoTypeInclude, sort, order, getContext(), limit);
-                        }
+        searchKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    if(!searchKeyword.getText().toString().equals("")) {
+                        mProgressBar.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                        loadSearchReposList(instanceUrl, instanceToken, loginUid, searchKeyword.getText().toString(), repoTypeInclude, sort, order, getContext(), limit);
                     }
-                    return false;
                 }
-            });
-
-        }
-        else {
-            mProgressBar.setVisibility(View.GONE);
-        }
+                return false;
+            }
+        });
 
         return v;
 
@@ -120,7 +113,7 @@ public class ExploreRepositoriesFragment extends Fragment {
     private void loadSearchReposList(String instanceUrl, String instanceToken, String loginUid, String searchKeyword, Boolean repoTypeInclude, String sort, String order, final Context context, int limit) {
 
         Call<ExploreRepositories> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getContext())
                 .getApiInterface()
                 .queryRepos(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, repoTypeInclude, sort, order, limit);
 

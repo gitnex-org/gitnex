@@ -95,7 +95,7 @@ public class ProfileEmailsFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        ProfileEmailsViewModel.loadEmailsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+                        ProfileEmailsViewModel.loadEmailsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
                     }
                 }, 200);
             }
@@ -111,7 +111,7 @@ public class ProfileEmailsFragment extends Fragment {
 
         ProfileEmailsViewModel profileEmailModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
 
-        profileEmailModel.getEmailsList(instanceUrl, instanceToken).observe(this, new Observer<List<Emails>>() {
+        profileEmailModel.getEmailsList(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Emails>>() {
             @Override
             public void onChanged(@Nullable List<Emails> emailsListMain) {
                 adapter = new ProfileEmailsAdapter(getContext(), emailsListMain);

@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.UserOrganizations;
@@ -20,20 +21,20 @@ public class OrganizationListViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserOrganizations>> orgsList;
 
-    public LiveData<List<UserOrganizations>> getUserOrgs(String instanceUrl, String token) {
+    public LiveData<List<UserOrganizations>> getUserOrgs(String instanceUrl, String token, Context ctx) {
 
         //if (orgsList == null) {
             orgsList = new MutableLiveData<>();
-            loadOrgsList(instanceUrl, token);
+            loadOrgsList(instanceUrl, token, ctx);
         //}
 
         return orgsList;
     }
 
-    public static void loadOrgsList(String instanceUrl, String token) {
+    public static void loadOrgsList(String instanceUrl, String token, Context ctx) {
 
         Call<List<UserOrganizations>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getUserOrgs(token);
 

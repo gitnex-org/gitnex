@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.UserInfo;
@@ -20,18 +21,18 @@ public class ProfileFollowersViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserInfo>> followersList;
 
-    public LiveData<List<UserInfo>> getFollowersList(String instanceUrl, String token) {
+    public LiveData<List<UserInfo>> getFollowersList(String instanceUrl, String token, Context ctx) {
 
         followersList = new MutableLiveData<>();
-        loadFollowersList(instanceUrl, token);
+        loadFollowersList(instanceUrl, token, ctx);
 
         return followersList;
     }
 
-    public static void loadFollowersList(String instanceUrl, String token) {
+    public static void loadFollowersList(String instanceUrl, String token, Context ctx) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getFollowers(token);
 

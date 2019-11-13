@@ -95,7 +95,7 @@ public class ProfileFollowersFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        ProfileFollowersViewModel.loadFollowersList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+                        ProfileFollowersViewModel.loadFollowersList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
                     }
                 }, 200);
             }
@@ -110,7 +110,7 @@ public class ProfileFollowersFragment extends Fragment {
 
         ProfileFollowersViewModel pfModel = new ViewModelProvider(this).get(ProfileFollowersViewModel.class);
 
-        pfModel.getFollowersList(instanceUrl, instanceToken).observe(this, new Observer<List<UserInfo>>() {
+        pfModel.getFollowersList(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> pfListMain) {
                 adapter = new ProfileFollowersAdapter(getContext(), pfListMain);

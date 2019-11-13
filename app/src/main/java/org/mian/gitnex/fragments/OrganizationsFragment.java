@@ -101,25 +101,20 @@ public class OrganizationsFragment extends Fragment {
             }
         });
 
-        if(connToInternet) {
-            swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            swipeRefresh.setRefreshing(false);
-                            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
-                        }
-                    }, 50);
-                }
-            });
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+                        OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+                    }
+                }, 50);
+            }
+        });
 
-            fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
-        }
-        else {
-            mProgressBar.setVisibility(View.GONE);
-        }
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
 
         return v;
 
@@ -134,7 +129,7 @@ public class OrganizationsFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("orgCreated")) {
-            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
             tinyDb.putBoolean("orgCreated", false);
         }
     }
@@ -143,7 +138,7 @@ public class OrganizationsFragment extends Fragment {
 
         OrganizationListViewModel orgModel = new ViewModelProvider(this).get(OrganizationListViewModel.class);
 
-        orgModel.getUserOrgs(instanceUrl, instanceToken).observe(this, new Observer<List<UserOrganizations>>() {
+        orgModel.getUserOrgs(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserOrganizations>>() {
             @Override
             public void onChanged(@Nullable List<UserOrganizations> orgsListMain) {
                 adapter = new OrganizationsListAdapter(getContext(), orgsListMain);
@@ -175,9 +170,9 @@ public class OrganizationsFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
+        /*if(!connToInternet) {
             return;
-        }
+        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

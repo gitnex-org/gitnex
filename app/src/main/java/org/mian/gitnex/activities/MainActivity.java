@@ -124,40 +124,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
 
-                boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
-                if(!connToInternet) {
-
-                    if(!tinyDb.getBoolean("noConnection")) {
-                        Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
-                    }
-
-                    tinyDb.putBoolean("noConnection", true);
-
-                    String userEmailNav = tinyDb.getString("userEmail");
-                    String userFullNameNav = tinyDb.getString("userFullname");
-                    String userAvatarNav = tinyDb.getString("userAvatar");
-
-                    userEmail = hView.findViewById(R.id.userEmail);
-                    if (!userEmailNav.equals("")) {
-                        userEmail.setText(userEmailNav);
-                    }
-
-                    userFullName = hView.findViewById(R.id.userFullname);
-                    if (!userFullNameNav.equals("")) {
-                        userFullName.setText(userFullNameNav);
-                    }
-
-                    userAvatar = hView.findViewById(R.id.userAvatar);
-                    if (!userAvatarNav.equals("")) {
-                        Picasso.get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
-                    }
-
-                } else {
-
-                    displayUserInfo(instanceUrl, instanceToken, loginUid);
+                if(tinyDb.getBoolean("noConnection")) {
+                    Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
                     tinyDb.putBoolean("noConnection", false);
-
                 }
+
+                //tinyDb.putBoolean("noConnection", true);
+
+                String userEmailNav = tinyDb.getString("userEmail");
+                String userFullNameNav = tinyDb.getString("userFullname");
+                String userAvatarNav = tinyDb.getString("userAvatar");
+
+                userEmail = hView.findViewById(R.id.userEmail);
+                if (!userEmailNav.equals("")) {
+                    userEmail.setText(userEmailNav);
+                }
+
+                userFullName = hView.findViewById(R.id.userFullname);
+                if (!userFullNameNav.equals("")) {
+                    userFullName.setText(userFullNameNav);
+                }
+
+                userAvatar = hView.findViewById(R.id.userAvatar);
+                if (!userAvatarNav.equals("")) {
+                    Picasso.get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
+                }
+
+                userAvatar.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new ProfileFragment()).commit();
+                        drawer.closeDrawers();
+                    }
+                });
 
             }
 
@@ -317,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         Call<UserInfo> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getUserInfo(Authorization.returnAuthentication(getApplicationContext(), loginUid, token));
 
@@ -345,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             tinyDb.putString("userFullname", userDetails.getFullname());
                         }
                         else {
-                            tinyDb.putString("userFullname", "...");
+                            tinyDb.putString("userFullname", userDetails.getLogin());
                         }
 
                         tinyDb.putString("userEmail", userDetails.getEmail());

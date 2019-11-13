@@ -1,5 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.models.Branches;
@@ -20,18 +21,18 @@ public class BranchesViewModel extends ViewModel {
 
     private static MutableLiveData<List<Branches>> branchesList;
 
-    public LiveData<List<Branches>> getBranchesList(String instanceUrl, String token, String owner, String repo) {
+    public LiveData<List<Branches>> getBranchesList(String instanceUrl, String token, String owner, String repo, Context ctx) {
 
         branchesList = new MutableLiveData<>();
-        loadBranchesList(instanceUrl, token, owner, repo);
+        loadBranchesList(instanceUrl, token, owner, repo, ctx);
 
         return branchesList;
     }
 
-    public static void loadBranchesList(String instanceUrl, String token, String owner, String repo) {
+    public static void loadBranchesList(String instanceUrl, String token, String owner, String repo, Context ctx) {
 
         Call<List<Branches>> call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getBranches(token, owner, repo);
 

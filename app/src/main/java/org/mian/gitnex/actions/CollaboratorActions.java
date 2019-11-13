@@ -35,7 +35,7 @@ public class CollaboratorActions {
         Call<Collaborators> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .deleteCollaborator(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, userName);
 
@@ -105,7 +105,7 @@ public class CollaboratorActions {
         Call<Permission> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, context)
                 .getApiInterface()
                 .addCollaborator(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, userName, permissionString);
 

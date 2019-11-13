@@ -137,7 +137,7 @@ public class NewMilestoneActivity extends AppCompatActivity implements View.OnCl
         Call<Milestones> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl)
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .createMilestone(token, repoOwner, repoName, createMilestone);
 
