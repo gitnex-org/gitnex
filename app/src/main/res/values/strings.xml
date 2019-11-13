@@ -408,12 +408,6 @@
     <string name="userExistsError">User already exists</string>
     <!-- create user -->
 
-    <!-- sponsors -->
-    <string name="liberaPayText" translatable="false">Liberapay</string>
-    <string name="liberaPaySponsorsFabian" translatable="false">Fabian Stamm</string>
-    <string name="liberaPaySponsorsThomas" translatable="false">Thomas Schneider <a href="https://framapiaf.org/@fedilab">@Fedilab</a></string>
-    <!-- sponsors -->
-
     <!-- edit issue -->
     <string name="editIssueNavHeader">Edit Issue #%1$s</string>
     <string name="editIssueSuccessMessage">Issue updated.</string>
