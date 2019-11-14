@@ -31,8 +31,8 @@ public class SponsorsAdapter extends RecyclerView.Adapter<SponsorsAdapter.Sponso
         }
     }
 
-    public SponsorsAdapter(List<CharSequence> myListMain) {
-        this.sponsorsList = myListMain;
+    public SponsorsAdapter(List<CharSequence> sponsorsListMain) {
+        this.sponsorsList = sponsorsListMain;
     }
 
     @NonNull

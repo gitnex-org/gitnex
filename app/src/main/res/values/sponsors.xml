@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="creditsInfo">
-        <item>Logo by <a href="https://mastodon.social/@kasun">Kasun @Mastodon</a></item>
-        <item>Credit 2</item>
-    </string-array>
-
     <string-array name="sponsorsInfo">
         <item>Fabian Stamm</item>
         <item>Thomas Schneider <a href="https://framapiaf.org/@fedilab">@Fedilab</a></item>

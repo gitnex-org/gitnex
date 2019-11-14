@@ -285,10 +285,6 @@
 
     <string name="creditsLogoDesign">Design</string>
 
-    <!-- credits - this part does not need translation -->
-    <string name="creditAuthorKasun" translatable="false">Logo by <a href="https://mastodon.social/@kasun">Kasun @Mastodon</a></string>
-    <!-- credits - this part does not need translation -->
-
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents. In case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Cancel</string>
