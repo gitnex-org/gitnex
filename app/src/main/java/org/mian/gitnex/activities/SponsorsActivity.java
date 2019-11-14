@@ -1,12 +1,18 @@
 package org.mian.gitnex.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.SponsorsAdapter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Author M M Arif
@@ -22,12 +28,27 @@ public class SponsorsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sponsors);
 
         ImageView closeActivity = findViewById(R.id.close);
-        TextView liberaPaySponsorsThomas = findViewById(R.id.liberaPaySponsorsThomas);
-
-        liberaPaySponsorsThomas.setMovementMethod(LinkMovementMethod.getInstance());
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
+
+        Resources res = getResources();
+        CharSequence[] sponsorsInfo = res.getTextArray(R.array.sponsorsInfo);
+
+        List<CharSequence> sponsorsList = new ArrayList<>(Arrays.asList(sponsorsInfo));
+
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        SponsorsAdapter adapter = new SponsorsAdapter(sponsorsList);
+        mRecyclerView.setAdapter(adapter);
+
     }
 
     private void initCloseListener() {

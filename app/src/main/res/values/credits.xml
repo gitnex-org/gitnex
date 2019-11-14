@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="creditsInfo">
+        <item>Logo by Kasun <a href="https://mastodon.social/@kasun">@kasun</a></item>
+    </string-array>
+
+</resources>

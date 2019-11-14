@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="sponsorsInfo">
+        <item>Fabian Stamm</item>
+        <item>Thomas Schneider <a href="https://framapiaf.org/@fedilab">@Fedilab</a></item>
+        <item>Ljoonal <a href="https://mastodon.ljoonal.xyz/@ljoonal">@ljoonal</a></item>
+    </string-array>
+
+</resources>
