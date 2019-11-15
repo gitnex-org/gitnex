@@ -230,4 +230,10 @@ public class AppUtil {
         return Arrays.asList(extValues).contains(ext);
 
     }
+
+    public String getLastCharactersOfWord( String str, int count ) {
+
+        return str.substring(str.length() - count);
+
+    }
 }

@@ -9,6 +9,7 @@ public class UserTokens {
     private int id;
     private String name;
     private String sha1;
+    private String token_last_eight;
 
     public UserTokens(String name) {
         this.name = name;
@@ -28,5 +29,9 @@ public class UserTokens {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getToken_last_eight() {
+        return token_last_eight;
     }
 }
