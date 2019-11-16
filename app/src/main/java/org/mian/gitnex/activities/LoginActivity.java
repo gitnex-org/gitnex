@@ -550,6 +550,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 List<UserTokens> userTokens = response.body();
                 final TinyDB tinyDb = new TinyDB(getApplicationContext());
+                final AppUtil appUtil = new AppUtil();
                 //Headers responseHeaders = response.headers();
 
                 if (response.isSuccessful()) {
@@ -560,13 +561,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         assert userTokens != null;
                         if (userTokens.size() > 0) {
-                            for (int i = 0; i < userTokens.size(); i++) {
-                                if (userTokens.get(i).getSha1().equals(tinyDb.getString(loginUid + "-token"))) {
-                                    setTokenFlag = true;
-                                    break;
+
+                            if(userTokens.get(0).getToken_last_eight() != null) {
+
+                                for (int i = 0; i < userTokens.size(); i++) {
+                                    if (userTokens.get(i).getToken_last_eight().equals(tinyDb.getString(loginUid + "-token-last-eight"))) {
+                                        setTokenFlag = true;
+                                        break;
+                                    }
+                                    //Log.i("Tokens: ", userTokens.get(i).getToken_last_eight());
                                 }
-                                //Log.i("Tokens: ", userTokens.get(i).getSha1());
+
                             }
+                            else {
+
+                                for (int i = 0; i < userTokens.size(); i++) {
+                                    if (userTokens.get(i).getSha1().equals(tinyDb.getString(loginUid + "-token"))) {
+                                        setTokenFlag = true;
+                                        break;
+                                    }
+                                    //Log.i("Tokens: ", userTokens.get(i).getSha1());
+                                }
+
+                            }
+
                         }
 
                         if(tinyDb.getString(loginUid + "-token").isEmpty() || !setTokenFlag) {
@@ -605,6 +623,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 tinyDb.remove("loginPass");
                                                 tinyDb.putBoolean("loggedInMode", true);
                                                 tinyDb.putString(loginUid + "-token", newToken.getSha1());
+                                                tinyDb.putString(loginUid + "-token-last-eight", appUtil.getLastCharactersOfWord(newToken.getSha1(), 8));
                                                 //Log.i("Tokens", "new:" + newToken.getSha1() + " old:" + tinyDb.getString(loginUid + "-token"));
 
                                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
