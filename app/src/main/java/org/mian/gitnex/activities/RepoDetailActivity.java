@@ -31,6 +31,7 @@ import org.mian.gitnex.fragments.FilesFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.LabelsFragment;
 import org.mian.gitnex.fragments.MilestonesFragment;
+import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoBottomSheetFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
@@ -213,15 +214,18 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
                 case 3: // closed issues
                     fragment = new ClosedIssuesFragment();
                     break;
-                case 4: // milestones
+                case 4: // pull requests
+                    fragment = new PullRequestsFragment();
+                    break;
+                case 5: // milestones
                     return MilestonesFragment.newInstance(repoOwner, repoName);
-                case 5: // labels
+                case 6: // labels
                     return LabelsFragment.newInstance(repoOwner, repoName);
-                case 6: // branches
+                case 7: // branches
                     return BranchesFragment.newInstance(repoOwner, repoName);
-                case 7: // releases
+                case 8: // releases
                     return ReleasesFragment.newInstance(repoOwner, repoName);
-                case 8: // collaborators
+                case 9: // collaborators
                     return CollaboratorsFragment.newInstance(repoOwner, repoName);
             }
             return fragment;
@@ -229,7 +233,7 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
 
         @Override
         public int getCount() {
-            return 9;
+            return 10;
         }
 
     }

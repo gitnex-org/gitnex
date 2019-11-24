@@ -2,7 +2,6 @@ package org.mian.gitnex.clients;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.util.AppUtil;
 import java.io.File;
 import java.io.IOException;
@@ -14,21 +13,18 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Author M M Arif
  */
 
-public class RetrofitClient {
+public class PullRequestsService {
 
-    private Retrofit retrofit;
-
-    private RetrofitClient(String instanceUrl, Context ctx) {
+    public static <S> S createService(Class<S> serviceClass, String instanceURL, Context ctx) {
 
         final boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
-        int cacheSize = 50 * 1024 * 1024; // 50MB
         File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
+        int cacheSize = 50 * 1024 * 1024; // 50MB
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -52,21 +48,14 @@ public class RetrofitClient {
                 .build();
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(instanceUrl)
+                .baseUrl(instanceURL)
                 .client(okHttpClient)
-                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create());
 
-        retrofit = builder.build();
+        Retrofit retrofit = builder.build();
 
-    }
+        return retrofit.create(serviceClass);
 
-    public static synchronized RetrofitClient getInstance(String instanceUrl, Context ctx) {
-        return new RetrofitClient(instanceUrl, ctx);
-    }
-
-    public ApiInterface getApiInterface() {
-        return retrofit.create(ApiInterface.class);
     }
 
 }

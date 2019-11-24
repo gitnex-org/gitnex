@@ -50,6 +50,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
         private TextView repoStarsMy;
         private TextView repoForksMy;
         private TextView repoOpenIssuesCountMy;
+        private TextView repoType;
 
         private MyReposViewHolder(View itemView) {
             super(itemView);
@@ -62,6 +63,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
             repoForksMy = itemView.findViewById(R.id.repoForksMy);
             repoOpenIssuesCountMy = itemView.findViewById(R.id.repoOpenIssuesCountMy);
             ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
+            repoType = itemView.findViewById(R.id.repoType);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,6 +76,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 
                     TinyDB tinyDb = new TinyDB(context);
                     tinyDb.putString("repoFullName", fullNameMy.getText().toString());
+                    tinyDb.putString("repoType", repoType.getText().toString());
                     tinyDb.putBoolean("resumeIssues", true);
                     context.startActivity(intent);
 
@@ -198,9 +201,11 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
         holder.fullNameMy.setText(currentItem.getFullname());
         if(currentItem.getPrivateFlag()) {
             holder.repoPrivatePublicMy.setImageResource(R.drawable.ic_lock_bold);
+            holder.repoType.setText(R.string.strPrivate);
         }
         else {
             holder.repoPrivatePublicMy.setImageResource(R.drawable.ic_public);
+            holder.repoType.setText(R.string.strPublic);
         }
         holder.repoStarsMy.setText(currentItem.getStars_count());
         holder.repoForksMy.setText(currentItem.getForks_count());

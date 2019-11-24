@@ -24,7 +24,7 @@ public class IssuesService {
 
         final boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
         File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
-        int cacheSize = 20 * 1024 * 1024;
+        int cacheSize = 50 * 1024 * 1024; // 50MB
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

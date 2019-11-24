@@ -226,6 +226,7 @@ public class ReplyToIssueActivity extends AppCompatActivity {
                     Toasty.info(getApplicationContext(), getString(R.string.commentSuccess));
                     tinyDb.putBoolean("commentPosted", true);
                     tinyDb.putBoolean("resumeIssues", true);
+                    tinyDb.putBoolean("resumePullRequests", true);
                     finish();
 
                 }

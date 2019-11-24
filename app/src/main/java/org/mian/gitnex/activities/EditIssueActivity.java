@@ -100,7 +100,13 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
         editIssueButton.setOnClickListener(this);
 
         if(!tinyDb.getString("issueNumber").isEmpty()) {
-            toolbar_title.setText(getString(R.string.editIssueNavHeader, String.valueOf(issueIndex)));
+
+            if(tinyDb.getString("issueType").equals("pr")) {
+                toolbar_title.setText(getString(R.string.editPrNavHeader, String.valueOf(issueIndex)));
+            }
+            else {
+                toolbar_title.setText(getString(R.string.editIssueNavHeader, String.valueOf(issueIndex)));
+            }
         }
 
         disableProcessButton();
@@ -240,7 +246,13 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
 
                 if(response.code() == 201) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.editIssueSuccessMessage));
+                    if(tinyDb.getString("issueType").equals("pr")) {
+                        Toasty.info(getApplicationContext(), getString(R.string.editPrSuccessMessage));
+                    }
+                    else {
+                        Toasty.info(getApplicationContext(), getString(R.string.editIssueSuccessMessage));
+                    }
+
                     tinyDb.putBoolean("issueEdited", true);
                     tinyDb.putBoolean("resumeIssues", true);
                     finish();

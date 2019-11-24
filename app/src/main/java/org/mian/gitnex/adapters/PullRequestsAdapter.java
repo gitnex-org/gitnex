@@ -11,15 +11,16 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.models.Issues;
+import org.mian.gitnex.models.PullRequests;
 import org.mian.gitnex.util.TinyDB;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
@@ -27,27 +28,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author M M Arif
  */
 
-public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
     private Context context;
     private final int TYPE_LOAD = 0;
-    private List<Issues> issuesList;
-    private List<Issues> issuesListFull;
-    private OnLoadMoreListener loadMoreListener;
+    private List<PullRequests> prList;
+    private List<PullRequests> prListFull;
+    private PullRequestsAdapter.OnLoadMoreListener loadMoreListener;
     private boolean isLoading = false, isMoreDataAvailable = true;
 
-    public IssuesAdapter(Context context, List<Issues> issuesListMain) {
+    public PullRequestsAdapter(Context context, List<PullRequests> prListMain) {
 
         this.context = context;
-        this.issuesList = issuesListMain;
-        issuesListFull = new ArrayList<>(issuesList);
+        this.prList = prListMain;
+        prListFull = new ArrayList<>(prList);
 
     }
 
@@ -58,10 +57,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         LayoutInflater inflater = LayoutInflater.from(context);
 
         if(viewType == TYPE_LOAD){
-            return new IssuesHolder(inflater.inflate(R.layout.repo_detail_issues_list, parent,false));
+            return new PullRequestsAdapter.PullRequestsHolder(inflater.inflate(R.layout.repo_pr_list, parent,false));
         }
         else {
-            return new LoadHolder(inflater.inflate(R.layout.row_load,parent,false));
+            return new PullRequestsAdapter.LoadHolder(inflater.inflate(R.layout.row_load,parent,false));
         }
 
     }
@@ -78,7 +77,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         if(getItemViewType(position) == TYPE_LOAD) {
 
-            ((IssuesHolder)holder).bindData(issuesList.get(position));
+            ((PullRequestsAdapter.PullRequestsHolder)holder).bindData(prList.get(position));
 
         }
 
@@ -87,7 +86,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public int getItemViewType(int position) {
 
-        if(issuesList.get(position).getTitle() != null) {
+        if(prList.get(position).getTitle() != null) {
             return TYPE_LOAD;
         }
         else {
@@ -99,44 +98,41 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public int getItemCount() {
 
-        return issuesList.size();
+        return prList.size();
 
     }
 
-    class IssuesHolder extends RecyclerView.ViewHolder {
+    class PullRequestsHolder extends RecyclerView.ViewHolder {
 
-        private TextView issueNumber;
-        private ImageView issueAssigneeAvatar;
-        private TextView issueTitle;
-        private TextView issueCreatedTime;
-        private TextView issueCommentsCount;
-        private RelativeLayout relativeLayoutFrame;
+        private TextView prNumber;
+        private ImageView assigneeAvatar;
+        private TextView prTitle;
+        private TextView prCreatedTime;
+        private TextView prCommentsCount;
 
-        IssuesHolder(View itemView) {
+        PullRequestsHolder(View itemView) {
 
             super(itemView);
 
-            issueNumber = itemView.findViewById(R.id.issueNumber);
-            issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
-            issueTitle = itemView.findViewById(R.id.issueTitle);
-            issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
+            prNumber = itemView.findViewById(R.id.prNumber);
+            assigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
+            prTitle = itemView.findViewById(R.id.prTitle);
+            prCommentsCount = itemView.findViewById(R.id.prCommentsCount);
             LinearLayout frameCommentsCount = itemView.findViewById(R.id.frameCommentsCount);
-            issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
-            relativeLayoutFrame = itemView.findViewById(R.id.relativeLayoutFrame);
+            prCreatedTime = itemView.findViewById(R.id.prCreatedTime);
 
-            issueTitle.setOnClickListener(new View.OnClickListener() {
+            prTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Context context = v.getContext();
-                    //Log.i("issueNumber", issueNumber.getText().toString());
 
                     Intent intent = new Intent(context, IssueDetailActivity.class);
-                    intent.putExtra("issueNumber", issueNumber.getText());
+                    intent.putExtra("issueNumber", prNumber.getText());
 
                     TinyDB tinyDb = new TinyDB(context);
-                    tinyDb.putString("issueNumber", issueNumber.getText().toString());
-                    tinyDb.putString("issueType", "issue");
+                    tinyDb.putString("issueNumber", prNumber.getText().toString());
+                    tinyDb.putString("issueType", "pr");
                     context.startActivity(intent);
 
                 }
@@ -146,14 +142,13 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 public void onClick(View v) {
 
                     Context context = v.getContext();
-                    //Log.i("issueNumber", issueNumber.getText().toString());
 
                     Intent intent = new Intent(context, IssueDetailActivity.class);
-                    intent.putExtra("issueNumber", issueNumber.getText());
+                    intent.putExtra("issueNumber", prNumber.getText());
 
                     TinyDB tinyDb = new TinyDB(context);
-                    tinyDb.putString("issueNumber", issueNumber.getText().toString());
-                    tinyDb.putString("issueType", "issue");
+                    tinyDb.putString("issueNumber", prNumber.getText().toString());
+                    tinyDb.putString("issueType", "pr");
                     context.startActivity(intent);
 
                 }
@@ -162,55 +157,48 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         @SuppressLint("SetTextI18n")
-        void bindData(Issues issuesModel){
+        void bindData(PullRequests prModel){
 
             final TinyDB tinyDb = new TinyDB(context);
             final String locale = tinyDb.getString("locale");
             final String timeFormat = tinyDb.getString("dateFormat");
 
-            if(issuesModel.getPull_request() != null) {
-                if (!issuesModel.getPull_request().isMerged()) {
-                    relativeLayoutFrame.setVisibility(View.GONE);
-                    relativeLayoutFrame.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-                }
-            }
-
-            if (!issuesModel.getUser().getFull_name().equals("")) {
-                issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getFull_name(), context));
+            if (!prModel.getUser().getFull_name().equals("")) {
+                assigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.prCreator) + prModel.getUser().getFull_name(), context));
             } else {
-                issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getLogin(), context));
+                assigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.prCreator) + prModel.getUser().getLogin(), context));
             }
 
-            if (issuesModel.getUser().getAvatar_url() != null) {
-                Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
+            if (prModel.getUser().getAvatar_url() != null) {
+                Picasso.get().load(prModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
             } else {
-                Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
+                Picasso.get().load(prModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
             }
 
-            String issueNumber_ = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources().getString(R.string.hash) + issuesModel.getNumber() + "</font>";
-            issueTitle.setText(Html.fromHtml(issueNumber_ + " " + issuesModel.getTitle()));
+            String prNumber_ = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources().getString(R.string.hash) + prModel.getNumber() + "</font>";
+            prTitle.setText(Html.fromHtml(prNumber_ + " " + prModel.getTitle()));
 
-            issueNumber.setText(String.valueOf(issuesModel.getNumber()));
-            issueCommentsCount.setText(String.valueOf(issuesModel.getComments()));
+            prNumber.setText(String.valueOf(prModel.getNumber()));
+            prCommentsCount.setText(String.valueOf(prModel.getComments()));
 
             switch (timeFormat) {
                 case "pretty": {
                     PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-                    String createdTime = prettyTime.format(issuesModel.getCreated_at());
-                    issueCreatedTime.setText(createdTime);
-                    issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issuesModel.getCreated_at()), context));
+                    String createdTime = prettyTime.format(prModel.getCreated_at());
+                    prCreatedTime.setText(createdTime);
+                    prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(prModel.getCreated_at()), context));
                     break;
                 }
                 case "normal": {
                     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(issuesModel.getCreated_at());
-                    issueCreatedTime.setText(createdTime);
+                    String createdTime = formatter.format(prModel.getCreated_at());
+                    prCreatedTime.setText(createdTime);
                     break;
                 }
                 case "normal1": {
                     DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(issuesModel.getCreated_at());
-                    issueCreatedTime.setText(createdTime);
+                    String createdTime = formatter.format(prModel.getCreated_at());
+                    prCreatedTime.setText(createdTime);
                     break;
                 }
             }
@@ -246,7 +234,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-    public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+    public void setLoadMoreListener(PullRequestsAdapter.OnLoadMoreListener loadMoreListener) {
 
         this.loadMoreListener = loadMoreListener;
 
@@ -254,20 +242,20 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public Filter getFilter() {
-        return issuesFilter;
+        return prFilter;
     }
 
-    private Filter issuesFilter = new Filter() {
+    private Filter prFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Issues> filteredList = new ArrayList<>();
+            List<PullRequests> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(issuesList);
+                filteredList.addAll(prList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Issues item : issuesList) {
+                for (PullRequests item : prList) {
                     if (item.getTitle().toLowerCase().contains(filterPattern) || item.getBody().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
@@ -282,8 +270,8 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            issuesList.clear();
-            issuesList.addAll((List) results.values);
+            prList.clear();
+            prList.addAll((List) results.values);
             notifyDataSetChanged();
         }
     };

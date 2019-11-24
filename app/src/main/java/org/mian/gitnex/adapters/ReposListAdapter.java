@@ -50,6 +50,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
         private TextView repoStars;
         private TextView repoForks;
         private TextView repoOpenIssuesCount;
+        private TextView repoType;
 
         private ReposViewHolder(View itemView) {
 
@@ -63,6 +64,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
             repoForks = itemView.findViewById(R.id.repoForks);
             repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
             ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
+            repoType = itemView.findViewById(R.id.repoType);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,12 +72,14 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 
                     Context context = v.getContext();
                     TextView repoFullName = v.findViewById(R.id.repoFullName);
+                    TextView repoType_ = v.findViewById(R.id.repoType);
 
                     Intent intent = new Intent(context, RepoDetailActivity.class);
                     intent.putExtra("repoFullName", repoFullName.getText().toString());
 
                     TinyDB tinyDb = new TinyDB(context);
                     tinyDb.putString("repoFullName", repoFullName.getText().toString());
+                    tinyDb.putString("repoType", repoType_.getText().toString());
                     tinyDb.putBoolean("resumeIssues", true);
                     context.startActivity(intent);
 
@@ -200,9 +204,11 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
         holder.fullName.setText(currentItem.getFullname());
         if(currentItem.getPrivateFlag()) {
             holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock_bold);
+            holder.repoType.setText(R.string.strPrivate);
         }
         else {
             holder.repoPrivatePublic.setImageResource(R.drawable.ic_public);
+            holder.repoType.setText(R.string.strPublic);
         }
         holder.repoStars.setText(currentItem.getStars_count());
         holder.repoForks.setText(currentItem.getForks_count());

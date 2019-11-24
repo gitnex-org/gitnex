@@ -5,14 +5,12 @@
     android:id="@+id/relativeLayoutFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="15dp"
-    android:layout_marginStart="15dp"
-    android:layout_marginEnd="15dp"
+    android:layout_margin="15dp"
     android:theme="@style/AppTheme"
     tools:context=".activities.RepoDetailActivity">
 
     <TextView
-        android:id="@+id/issueNumber"
+        android:id="@+id/prNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"/>
@@ -33,19 +31,18 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/frameIssueNameStatus"
+            android:id="@+id/framePrNameStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/issueTitle"
+                android:id="@+id/prTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="top|center_vertical"
                 android:textAlignment="gravity"
-                android:text="@string/strFilter"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -66,7 +63,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/issueCommentsCount"
+                    android:id="@+id/prCommentsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -79,7 +76,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/issueCreatedTime"
+                android:id="@+id/prCreatedTime"
                 android:layout_width="0dp"
                 android:layout_weight=".25"
                 android:layout_height="wrap_content"
@@ -90,13 +87,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <View
-        android:layout_below="@id/infoSection"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:id="@+id/divider"
-        android:layout_marginTop="15dp"
-        android:background="@color/divider" />
 
 </RelativeLayout>

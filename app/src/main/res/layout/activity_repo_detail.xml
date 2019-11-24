@@ -58,6 +58,12 @@
                 android:text="@string/tabItemCloseIssues" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItemPullRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tabPullRequests" />
+
+            <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem3_ml"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

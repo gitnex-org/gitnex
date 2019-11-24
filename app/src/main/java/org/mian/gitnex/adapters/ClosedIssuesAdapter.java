@@ -11,6 +11,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
@@ -109,7 +110,7 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private TextView issueTitle;
         private TextView issueCreatedTime;
         private TextView issueCommentsCount;
-        private ImageView issueType;
+        private RelativeLayout relativeLayoutFrame;
 
         IssuesHolder(View itemView) {
 
@@ -121,7 +122,7 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
             LinearLayout frameCommentsCount = itemView.findViewById(R.id.frameCommentsCount);
             issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
-            issueType = itemView.findViewById(R.id.issueType);
+            relativeLayoutFrame = itemView.findViewById(R.id.relativeLayoutFrame);
 
             issueTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -135,6 +136,7 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     TinyDB tinyDb = new TinyDB(context);
                     tinyDb.putString("issueNumber", issueNumber.getText().toString());
+                    tinyDb.putString("issueType", "issue");
                     context.startActivity(intent);
 
                 }
@@ -151,6 +153,7 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     TinyDB tinyDb = new TinyDB(context);
                     tinyDb.putString("issueNumber", issueNumber.getText().toString());
+                    tinyDb.putString("issueType", "issue");
                     context.startActivity(intent);
 
                 }
@@ -165,6 +168,13 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final String locale = tinyDb.getString("locale");
             final String timeFormat = tinyDb.getString("dateFormat");
 
+            if(issuesModel.getPull_request() != null) {
+                if (issuesModel.getPull_request().isMerged()) {
+                    relativeLayoutFrame.setVisibility(View.GONE);
+                    relativeLayoutFrame.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                }
+            }
+
             if (!issuesModel.getUser().getFull_name().equals("")) {
                 issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getFull_name(), context));
             } else {
@@ -175,14 +185,6 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
             } else {
                 Picasso.get().load(issuesModel.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
-            }
-
-            if (issuesModel.getPull_request() == null) {
-                issueType.setImageResource(R.drawable.ic_issues);
-                issueType.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueTypeIssue), context));
-            } else {
-                issueType.setImageResource(R.drawable.ic_merge);
-                issueType.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueTypePullRequest), context));
             }
 
             String issueNumber_ = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources().getString(R.string.hash) + issuesModel.getNumber() + "</font>";

@@ -98,10 +98,10 @@ public class Issues {
 
     public class pullRequestObject {
 
-        private String merged;
+        private boolean merged;
         private String merged_at;
 
-        public String getMerged() {
+        public boolean isMerged() {
             return merged;
         }
 

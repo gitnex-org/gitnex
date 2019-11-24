@@ -14,6 +14,12 @@
     android:background="@color/backgroundColor"
     tools:context=".activities.MainActivity">
 
+    <TextView
+        android:id="@+id/repoType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
     <ImageView
         android:id="@+id/imageAvatar"
         android:layout_width="40dp"

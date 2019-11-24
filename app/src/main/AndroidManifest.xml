@@ -66,6 +66,7 @@
         <activity android:name=".activities.NewRepoActivity" />
         <activity android:name=".activities.NewOrganizationActivity" />
         <activity android:name=".activities.OpenRepoInBrowserActivity" />
+        <activity android:name=".activities.FileDiffActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

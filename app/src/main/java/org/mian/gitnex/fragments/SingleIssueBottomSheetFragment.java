@@ -12,6 +12,7 @@ import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.activities.AddRemoveAssigneesActivity;
 import org.mian.gitnex.activities.AddRemoveLabelsActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
+import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.util.TinyDB;
@@ -42,12 +43,33 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
         TextView reOpenIssue = v.findViewById(R.id.reOpenIssue);
         TextView addRemoveAssignees = v.findViewById(R.id.addRemoveAssignees);
         TextView copyIssueUrl = v.findViewById(R.id.copyIssueUrl);
+        TextView openFilesDiff = v.findViewById(R.id.openFilesDiff);
 
         replyToIssue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 startActivity(new Intent(getContext(), ReplyToIssueActivity.class));
+                dismiss();
+
+            }
+        });
+
+        if(tinyDB.getString("issueType").equals("pr")) {
+            editIssue.setText(R.string.editPrText);
+            copyIssueUrl.setText(R.string.copyPrUrlText);
+
+            if(tinyDB.getString("repoType").equals("public")) {
+                openFilesDiff.setVisibility(View.VISIBLE);
+            }
+
+        }
+
+        openFilesDiff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), FileDiffActivity.class));
                 dismiss();
 
             }
@@ -90,7 +112,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
                 // get url of repo
                 String repoFullName = tinyDB.getString("repoFullName");
                 String instanceUrlWithProtocol = "https://" + tinyDB.getString("instanceUrlRaw");
-                if(!tinyDB.getString("instanceUrlWithProtocol").isEmpty()) {
+                if (!tinyDB.getString("instanceUrlWithProtocol").isEmpty()) {
                     instanceUrlWithProtocol = tinyDB.getString("instanceUrlWithProtocol");
                 }
 
@@ -100,6 +122,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
                 // copy to clipboard
                 ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(getContext()).getSystemService(android.content.Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("issueUrl", issueUrl);
+                assert clipboard != null;
                 clipboard.setPrimaryClip(clip);
 
                 dismiss();
@@ -109,34 +132,43 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
-        if(tinyDB.getString("issueState").equals("open")) { // close issue
+        if(tinyDB.getString("issueType").equals("issue")) {
 
-            reOpenIssue.setVisibility(View.GONE);
+            if (tinyDB.getString("issueState").equals("open")) { // close issue
 
-            closeIssue.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                reOpenIssue.setVisibility(View.GONE);
 
-                    IssueActions.closeReopenIssue(getContext(), Integer.valueOf(tinyDB.getString("issueNumber")), "closed");
-                    dismiss();
+                closeIssue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                }
-            });
+                        IssueActions.closeReopenIssue(getContext(), Integer.valueOf(tinyDB.getString("issueNumber")), "closed");
+                        dismiss();
+
+                    }
+                });
+
+            } else if (tinyDB.getString("issueState").equals("closed")) {
+
+                closeIssue.setVisibility(View.GONE);
+
+                reOpenIssue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        IssueActions.closeReopenIssue(getContext(), Integer.valueOf(tinyDB.getString("issueNumber")), "open");
+                        dismiss();
+
+                    }
+                });
+
+            }
 
         }
-        else if(tinyDB.getString("issueState").equals("closed")) {
+        else {
 
+            reOpenIssue.setVisibility(View.GONE);
             closeIssue.setVisibility(View.GONE);
-
-            reOpenIssue.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    IssueActions.closeReopenIssue(getContext(), Integer.valueOf(tinyDB.getString("issueNumber")), "open");
-                    dismiss();
-
-                }
-            });
 
         }
 
