@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="versionLow" translatable="false">1.9.0</string>
+    <string name="versionHigh" translatable="false">1.10.9</string>
+
+</resources>
