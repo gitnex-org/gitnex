@@ -389,7 +389,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     assert version != null;
 
                     VersionCheck vt = VersionCheck.check(getString(R.string.versionLow), getString(R.string.versionHigh), version.getVersion());
-                    tinyDb.putString("giteaVersion", version.getVersion());
 
                     switch (vt) {
                         case UNSUPPORTED_NEW:
