@@ -30,6 +30,7 @@ import org.mian.gitnex.fragments.StarredRepositoriesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -217,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
 
             displayUserInfo(instanceUrl, instanceToken, loginUid);
+            giteaVersion(instanceUrl);
             tinyDb.putBoolean("noConnection", false);
 
         }
@@ -308,6 +310,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //tinyDb.clear();
         finish();
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+    }
+
+    private void giteaVersion(final String instanceUrl) {
+
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        Call<GiteaVersion> callVersion = RetrofitClient
+                .getInstance(instanceUrl, getApplicationContext())
+                .getApiInterface()
+                .getGiteaVersion();
+
+        callVersion.enqueue(new Callback<GiteaVersion>() {
+
+            @Override
+            public void onResponse(@NonNull final Call<GiteaVersion> callVersion, @NonNull retrofit2.Response<GiteaVersion> responseVersion) {
+
+                if (responseVersion.code() == 200) {
+
+                    GiteaVersion version = responseVersion.body();
+                    assert version != null;
+
+                    tinyDb.putString("giteaVersion", version.getVersion());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GiteaVersion> callVersion, Throwable t) {
+
+                Log.e("onFailure-version", t.toString());
+
+            }
+
+        });
 
     }
 
