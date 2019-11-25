@@ -30,7 +30,7 @@ public class SettingsFragment extends Fragment {
 
     private Context ctx = null;
 
-    private static String[] langList = {"Arabic", "Chinese", "English", "Finnish", "French", "German", "Italian", "Persian", "Russian", "Serbian", "Turkish"};
+    private static String[] langList = {"Arabic", "Chinese", "English", "Finnish", "French", "German", "Italian", "Persian", "Russian", "Serbian", "Turkish", "Ukrainian"};
     private static int langSelectedChoice = 0;
 
     private static String[] timeList = {"Pretty", "Normal"};
@@ -273,6 +273,9 @@ public class SettingsFragment extends Fragment {
                                 break;
                             case "Turkish":
                                 tinyDb.putString("locale", "tr");
+                                break;
+                            case "Ukrainian":
+                                tinyDb.putString("locale", "uk");
                                 break;
                             default:
                                 tinyDb.putString("locale", "en");

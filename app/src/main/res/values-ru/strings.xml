@@ -9,9 +9,9 @@
     <string name="navSettings">Настройки</string>
     <string name="navOrgs">Организации</string>
     <string name="navAbout">О программе</string>
-    <string name="navRate">Rate GitNex</string>
+    <string name="navRate">Оценить GitNex</string>
     <string name="navLogout">Выход</string>
-    <string name="navExplore">Explore</string>
+    <string name="navExplore">Обзор</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">О программе</string>
@@ -29,12 +29,12 @@
     <string name="pageTitleCreateLabel">Создать метку</string>
     <string name="pageTitleCredits">Авторские права</string>
     <string name="pageTitleLabelUpdate">Обновить метку</string>
-    <string name="pageTitleSponsors">Спонсоры</string>
+    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Избранные репозитории</string>
     <string name="pageTitleCreateTeam">Создать команду</string>
     <string name="pageTitleAddEmail">Добавить адрес эл. почты</string>
-    <string name="pageTitleNewFile">New File</string>
-    <string name="pageTitleExplore">Explore</string>
+    <string name="pageTitleNewFile">Новый файл</string>
+    <string name="pageTitleExplore">Обзор</string>
     <!-- page titles -->
     <string name="appVersion">Версия\u0020:\u0020</string>
     <string name="appBuild">№ сборки\u0020:\u0020</string>
@@ -62,26 +62,26 @@
     <string name="navigation_drawer_open">Открыть навигацию</string>
     <string name="navigation_drawer_close">Закрыть навигацию</string>
     <string name="logo">Войти в Gitea</string>
-    <string name="urlInfoTooltip">1- Выберите протокол (https или http) \n2- Введите инстанцию Gitea, например: try.gitea.io \n3- For 2FA enter USERNAME:CODE in the Username field \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field</string>
+    <string name="urlInfoTooltip">1. Выберите протокол (https или http) \n2. Укажите URL Gitea, например: try.gitea.io \n3. Если для учетной записи включена 2FA, введите код OTP в соответствующее поле. \n4. Для базовой аутентификации HTTP укажите USERNAME@DOMAIN.COM в поле URL.</string>
     <string name="loginFailed">Неверные логин и/или пароль</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете инстанцию в локальной сети.</string>
     <string name="malformedJson">Неожиданный ответ от сервера. Попробуйте сменить протокол или обратитесь к администратору инстанции.</string>
-    <string name="emptyFieldURL">Instance URL is required</string>
-    <string name="emptyFieldUsername">Username is required</string>
-    <string name="emptyFieldPassword">Password is required</string>
+    <string name="emptyFieldURL">Требуется URL экземпляра</string>
+    <string name="emptyFieldUsername">Требуется имя пользователя</string>
+    <string name="emptyFieldPassword">Требуется пароль</string>
     <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
     <string name="repoNameErrorEmpty">Название репозитория пустое.</string>
     <string name="repoNameErrorInvalid">Недоступное название репозитория. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoDescError">Описание репозитория превышает 255 символов.</string>
     <string name="repoCreated">Репозиторий успешно создан!</string>
     <string name="repoCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
-    <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
+    <string name="repoExistsError">Репозиторий с таким именему уже существует у выбранного владельца</string>
     <string name="orgNameErrorEmpty">Название организации пустое.</string>
     <string name="orgNameErrorInvalid">Недоступное название организации. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Описание организации превышает 255 символов.</string>
     <string name="orgCreated">Организация успешно создана!</string>
     <string name="orgCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
-    <string name="orgExistsError">Organization already exists</string>
+    <string name="orgExistsError">Организация уже существует</string>
     <string name="processingText">Обработка</string>
     <string name="search">Поиск</string>
     <string name="wip">Работа в процессе</string>
@@ -94,7 +94,7 @@
     <string name="genericApiStatusError">Инстанция вернула ошибку. Код\u0020</string>
     <string name="title_activity_repo_detail">Активность</string>
     <string name="tab_text_info">Детали</string>
-    <string name="tab_text_files">Files</string>
+    <string name="tab_text_files">Файлы</string>
     <string name="tab_text_issues">Открытые задачи</string>
     <string name="tabItemCloseIssues">Закрытые задачи</string>
     <string name="tab_text_ml">Вехи</string>
@@ -103,6 +103,7 @@
     <string name="tab_text_labels">Метки</string>
     <string name="action_settings">Настройки</string>
     <string name="tab_text_collaborators">Сотрудники</string>
+    <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Задач не обнаружено</string>
     <string name="infoTabRepoName1">Репозиторий</string>
     <string name="infoTabRepoOwner1">Владелец</string>
@@ -147,7 +148,7 @@
     <string name="releaseZip">Релиз в zip</string>
     <string name="releaseTar">Релиз в tar</string>
     <string name="noDataReleasesTab">Релизов не обнаружено</string>
-    <string name="releaseTag">Tag: %1$s</string>
+    <string name="releaseTag">Тег: %1$s</string>
     <string name="collaboratorsNameToast">Сотрудники: %1$s</string>
     <string name="noDataCollaboratorTab">Сотрудников не обнаружено</string>
     <string name="editText">Изменить</string>
@@ -189,22 +190,22 @@
     <string name="settingsLanguageSelectorDialogTitle">Выбор языка</string>
     <string name="settingsTimeSelectorDialogTitle">Выбор формата времени</string>
     <string name="settingsIssueBadgeHeaderText">Значки задач</string>
-    <string name="settingsHelpTranslateText">Help us translate GitNex to your language</string>
-    <string name="codeBlockHeaderText">Code Block Color</string>
-    <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
-    <string name="settingsHomeScreenHeaderText">Home Screen</string>
-    <string name="settingsHomeScreenSelectedText">My Repositories</string>
-    <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
+    <string name="settingsHelpTranslateText">Помогите нам перевести GitNex на ваш язык</string>
+    <string name="codeBlockHeaderText">Цвет блока кода</string>
+    <string name="settingsCodeBlockSelectorDialogTitle">Выбор цвета блока кода</string>
+    <string name="settingsHomeScreenHeaderText">Главный экран</string>
+    <string name="settingsHomeScreenSelectedText">Мои репозитории</string>
+    <string name="settingshomeScreenSelectorDialogTitle">Выбрать главный экран</string>
     <!-- settings -->
-    <string name="noMoreData">No more data available</string>
+    <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
     <string name="menuTitleText">Меню репозитория</string>
     <string name="labelName">Название метки</string>
     <string name="labelColor">Цвет метки</string>
-    <string name="labelEmptyError">Label name is empty</string>
-    <string name="labelNameError">Label name is not valid</string>
+    <string name="labelEmptyError">Имя метки не указано</string>
+    <string name="labelNameError">Недопустимое имя метки</string>
     <string name="labelCreated">Метка создана.</string>
-    <string name="labelGeneralError">Something went wrong, please try again</string>
+    <string name="labelGeneralError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
     <string name="labelUpdated">Метка обновлена.</string>
     <string name="noDataLabelsTab">Меток не обнаружено</string>
     <string name="labelMenuContentDesc">Описание</string>
@@ -214,10 +215,8 @@
     <string name="labelDeleteErrorText">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="noDataBranchesTab">Веток не обнаружено</string>
     <string name="creditsLogoDesign">Дизайн</string>
-    <!-- credits - this part does not need translation -->
-    <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents. In case of revoked Token, please logout and login again</string>
+    <string name="alertDialogTokenRevokedMessage">Похоже, токен доступа отозван, либо вам не разрешено просматривать это содержимое. В случае отзыва токена, пожалуйста, выйдите из системы и войдите снова</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Закрыть</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Выход</string>
     <string name="labelDeleteTitle">Удалить\u0020</string>
@@ -243,16 +242,16 @@
     <string name="newTeamDesc">Описание</string>
     <string name="newTeamPermission">Права</string>
     <string name="newTeamAccessControls">Контроль доступа</string>
-    <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
-    <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
-    <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
-    <string name="teamNameEmpty">Please enter team name</string>
-    <string name="teamNameError">Team name should contain only alphanumeric, dash (-), underscore (_) and dot (.) characters</string>
-    <string name="teamPermissionEmpty">Please select permission</string>
-    <string name="teamDescError">Team description have illegal characters</string>
-    <string name="teamDescLimit">Team description have more than 100 characters</string>
-    <string name="teamCreated">Team created successfully</string>
-    <string name="teamCreatedError">Something went wrong, please try again</string>
+    <string name="newTeamPermissionRead">Участники могут просматривать и клонировать репозитории команды</string>
+    <string name="newTeamPermissionWrite">Участники могут читать и выполнять push в репозитории команды</string>
+    <string name="newTeamPermissionAdmin">Учасники могут выполнять pull, push и добавлять соавторов в репозитории команды</string>
+    <string name="teamNameEmpty">Пожалуйста, введите имя команды</string>
+    <string name="teamNameError">Название команды может содержать только буквы, цифры, дефис (-), подчеркивание (_) и точку (.)</string>
+    <string name="teamPermissionEmpty">Пожалуйста, выберите разрешения</string>
+    <string name="teamDescError">Описание команды содержит недопустимые символы</string>
+    <string name="teamDescLimit">Описание команды длиннее 100 символов</string>
+    <string name="teamCreated">Команда создана успешно</string>
+    <string name="teamCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз</string>
     <!-- create team -->
     <!-- edit comment -->
     <string name="editCommentTitle">Редактировать комментарий</string>
@@ -276,8 +275,8 @@
     <string name="profileEmailTitle">Адрес эл. почты</string>
     <string name="emailAddedText">Новый адрес электронной почты успешно добавлен.</string>
     <string name="emailErrorEmpty">Адрес электронной почты пустой.</string>
-    <string name="emailErrorInvalid">Email address is not valid</string>
-    <string name="emailErrorInUse">Email address is already in use</string>
+    <string name="emailErrorInvalid">Некорректный адрес электронной почты</string>
+    <string name="emailErrorInUse">Адрес электронной почты уже используется</string>
     <string name="emailTypeText">Основной</string>
     <string name="profileTabEmails">Адреса эл. почты</string>
     <!-- profile section -->
@@ -290,25 +289,25 @@
     <string name="reOpenIssue">Переоткрыть задачу</string>
     <string name="issueStateClosed">Задача решена</string>
     <string name="issueStateReopened">Задача переоткрыта</string>
-    <string name="addRemoveAssignees2">Add Assignees</string>
-    <string name="addRemoveAssignees">Add / Remove Assignees</string>
-    <string name="assigneesUpdated">Assignees updated</string>
+    <string name="addRemoveAssignees2">Добавить исполнителей</string>
+    <string name="addRemoveAssignees">Добавить / удалить исполнителей</string>
+    <string name="assigneesUpdated">Исполнители обновлены</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
-    <string name="select_entry">Select Entries</string>
-    <string name="validation_text">Please select at least one option</string>
-    <string name="please_select_atleast">Please select at least </string>
-    <string name="you_can_only_select_upto">You can only select up to </string>
-    <string name="option"> option</string>
-    <string name="options"> options</string>
-    <string name="select_all">Select all</string>
-    <string name="de_select_all">Deselect all</string>
+    <string name="select_entry">Выбрать записи</string>
+    <string name="validation_text">Пожалуйста, выберите хотя бы один вариант</string>
+    <string name="please_select_atleast">Пожалуйста, выберите по хотя бы </string>
+    <string name="you_can_only_select_upto">Вы можете выбрать только до </string>
+    <string name="option"> вариант</string>
+    <string name="options"> варианты</string>
+    <string name="select_all">Выбрать все</string>
+    <string name="de_select_all">Отменить весь выбор</string>
     <!-- multi select dialog -->
-    <string name="repoMetaData">Repository Meta</string>
+    <string name="repoMetaData">Метаинформация репозитория</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Создать нового пользователя</string>
-    <string name="adminUsers">Users</string>
-    <string name="userRoleAdmin">Admin</string>
+    <string name="adminUsers">Пользователи</string>
+    <string name="userRoleAdmin">Администратор</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Полное имя</string>
@@ -319,66 +318,64 @@
     <string name="userInvalidUserName">Недоступное имя пользователя</string>
     <string name="userInvalidEmail">Недоступный адрес эл. почты</string>
     <string name="userCreatedText">Новый пользователь успешно создан</string>
-    <string name="userExistsError">User already exists</string>
+    <string name="userExistsError">Пользователь уже существует</string>
     <!-- create user -->
-    <!-- sponsors -->
-    <!-- sponsors -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Редактировать задачу #%1$s</string>
-    <string name="editIssueSuccessMessage">Задача отредактирована.</string>
+    <string name="editIssueSuccessMessage">Issue updated</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Create Release</string>
-    <string name="releaseTagNameText">Tag Name</string>
-    <string name="releaseTitleText">Title</string>
-    <string name="releaseContentText">Content</string>
-    <string name="releaseTypeText">Mark as Pre-Release</string>
-    <string name="releaseBranchText">Select Branch</string>
-    <string name="releaseDraftText">Draft</string>
-    <string name="tagNameErrorEmpty">Tag name is empty</string>
-    <string name="titleErrorEmpty">Title is empty</string>
-    <string name="releaseCreatedText">New release created</string>
+    <string name="releaseTagNameText">Имя тега</string>
+    <string name="releaseTitleText">Название</string>
+    <string name="releaseContentText">Содержимое</string>
+    <string name="releaseTypeText">Пометить как предварительный релиз</string>
+    <string name="releaseBranchText">Выберите ветку</string>
+    <string name="releaseDraftText">Черновик</string>
+    <string name="tagNameErrorEmpty">Не указано имя тега</string>
+    <string name="titleErrorEmpty">Название пустое</string>
+    <string name="releaseCreatedText">Новый релиз создан</string>
     <!-- release -->
-    <string name="loginOTPError">Enter OTP code</string>
-    <string name="loginOTPTypeError">OTP code should be numbers.</string>
-    <string name="loginOTP">OTP Code (Optional)</string>
-    <string name="otpMessage">Enter the otp code if 2FA is enabled</string>
+    <string name="loginOTPError">Введите код OTP</string>
+    <string name="loginOTPTypeError">Код OTP должен состоять из цифр.</string>
+    <string name="loginOTP">Код OTP (необязательно)</string>
+    <string name="otpMessage">Введите код OTP, если включена 2FA</string>
     <string name="openWebRepo">Открыть с помощью браузера</string>
-    <string name="repoStargazersInMenu">Stargazers</string>
-    <string name="repoWatchersInMenu">Watchers</string>
-    <string name="noDataStargazers">No stars found</string>
-    <string name="noDataWatchers">No watchers found</string>
-    <string name="starMember">Star</string>
-    <string name="watcherMember">Watcher</string>
-    <string name="commitLinkBranchesTab">Commit</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
+    <string name="repoStargazersInMenu">Звездочеты</string>
+    <string name="repoWatchersInMenu">Наблюдатели</string>
+    <string name="noDataStargazers">Звезды не найдены</string>
+    <string name="noDataWatchers">Наблюдателей не найдено</string>
+    <string name="starMember">В избранное</string>
+    <string name="watcherMember">Наблюдатель</string>
+    <string name="commitLinkBranchesTab">Коммит</string>
+    <string name="zipArchiveDownloadReleasesTab">Архив Zip</string>
+    <string name="tarArchiveDownloadReleasesTab">Архив Tar</string>
     <!-- new file -->
-    <string name="newFileNameTintCopy">File Name</string>
+    <string name="newFileNameTintCopy">Имя файла</string>
     <string name="newFileBranchTintCopy">Branch Name</string>
-    <string name="newFileContentTintCopy">File Content</string>
-    <string name="newFileButtonCopy">Create New File</string>
-    <string name="newFileNameHintMessage">with folder: app/test.md</string>
-    <string name="newFileMessageTintCopy">Commit Message</string>
-    <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
-    <string name="newFileCommitMessageError">Commit message is too long</string>
-    <string name="newFileSuccessMessage">New file created</string>
-    <string name="newFileOldBranches">Current Branches</string>
-    <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
-    <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
-    <string name="newFileNewBranchMessage">e.g: new-branch</string>
-    <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
-    <string name="strFilter">Filter</string>
-    <string name="copyIssueUrl">Copy Issue URL</string>
-    <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
+    <string name="newFileContentTintCopy">Содержимое файла</string>
+    <string name="newFileButtonCopy">Создать новый файл</string>
+    <string name="newFileNameHintMessage">с директорией: app/test.md</string>
+    <string name="newFileMessageTintCopy">Сообщение коммита</string>
+    <string name="newFileInvalidBranchName">Некоректное имя ветки, разрешенные символя: &#8211;, a&#8211;z, 0&#8211;9</string>
+    <string name="newFileCommitMessageError">Слишком длинное сообщение коммита</string>
+    <string name="newFileSuccessMessage">Новый файл создан</string>
+    <string name="newFileOldBranches">Текущие ветки</string>
+    <string name="newFileRequiredFields">Необходимо указать имя файла, содержимое и сообщение коммита</string>
+    <string name="newFileCurrentBranchMessage">Выбор текущей ветки отключит новую ветку</string>
+    <string name="newFileNewBranchMessage">например: новая-ветка</string>
+    <string name="newFileRequiredFieldNewBranchName">Имя новой ветки не может быть пустым, если текущая ветка не выбрана</string>
+    <string name="strFilter">Фильтр</string>
+    <string name="copyIssueUrl">Копировать URL задачи</string>
+    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 выполненный</string>
     <!-- files -->
-    <string name="noDataFilesTab">No files found</string>
-    <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
-    <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
-    <string name="filesBreadcrumb">Root</string>
+    <string name="noDataFilesTab">Файлов не найдено</string>
+    <string name="filesDirNotSupportedYet">Просмотр директорий пока не поддерживается</string>
+    <string name="filesGenericError">Извините, невозможно просмотреть файл, поскольку API вернул ошибку</string>
+    <string name="filesBreadcrumb">Корень</string>
     <!-- generic copy -->
-    <string name="okButton">OK</string>
+    <string name="okButton">ОК</string>
     <string name="doneButton">Готово</string>
     <string name="cancelButton">Закрыть</string>
     <string name="genericError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
@@ -396,31 +393,40 @@
     <string name="descriptionText">Описание</string>
     <string name="websiteText">Веб-сайт</string>
     <string name="locationText">Место расположения</string>
-    <string name="characters255Limit">Max 255 characters</string>
+    <string name="characters255Limit">Макс. 255 символов</string>
     <string name="emptyFields">Все поля обязательны для заполнения</string>
-    <string name="textContinue">Continue</string>
-    <string name="copyToken">Token</string>
+    <string name="textContinue">Продолжить</string>
+    <string name="copyToken">Токен</string>
     <!-- generic copy -->
-    <string name="translateText">Translate GitNex with Crowdin</string>
-    <string name="exploreTextBoxHint">Explore repositories</string>
-    <string name="starRepository">Star Repository</string>
-    <string name="unStarRepository">Unstar Repository</string>
-    <string name="starRepositorySuccess">Repository added to starred list</string>
-    <string name="unStarRepositorySuccess">Repository removed from starred list</string>
-    <string name="watchRepository">Watch Repository</string>
-    <string name="unWatchRepository">Unwatch Repository</string>
-    <string name="watchRepositorySuccess">Repository added to watch list</string>
-    <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly.</string>
-    <string name="versionSupportedOld">Old Gitea version detected, please update to latest stable version</string>
-    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
-    <string name="versionSupportedLatest">Gitea version is up to date</string>
-    <string name="versionDevelopment">Gitea development version</string>
-    <string name="versionUnknow">No Gitea detected!</string>
-    <string name="versionAlertTitle">Version Alert</string>
-    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
-    <string name="loginViaPassword">Username / Password</string>
-    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
-    <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
-    <string name="loginTokenError">Please enter the correct token</string>
+    <string name="translateText">Перевести GitNex на Crowdin</string>
+    <string name="exploreTextBoxHint">Просмотреть репозитории</string>
+    <string name="starRepository">Репозиторий в избранное</string>
+    <string name="unStarRepository">Убрать из избранного</string>
+    <string name="starRepositorySuccess">Репозиторий добавлен в список избранного</string>
+    <string name="unStarRepositorySuccess">Репозиторий удален из списка избранного</string>
+    <string name="watchRepository">Следить за репозиторием</string>
+    <string name="unWatchRepository">Не следить за репозиторием</string>
+    <string name="watchRepositorySuccess">Репозиторий добавлен в список наблюдения</string>
+    <string name="unWatchRepositorySuccess">Репозиторий удален из списка наблюдения</string>
+    <string name="versionUnsupportedOld">Обнаружена неподдерживаемая старая версия (%1$s) Gitea. Пожалуйста, обновите до последней стабильной версии. Если вы продолжите, приложение может работать неправильно.</string>
+    <string name="versionSupportedOld">Обнаружена старая версия Gitea, пожалуйста, обновите до последней стабильной версии</string>
+    <string name="versionUnsupportedNew">Обнаружена новая версия Gitea! Пожалуйста, ОБНОВИТЕ GitNex!</string>
+    <string name="versionSupportedLatest">Используется актуальная версия Gitea</string>
+    <string name="versionDevelopment">Версия Gitea в разработке</string>
+    <string name="versionUnknow">Gitea не обнаружено!</string>
+    <string name="versionAlertTitle">Оповещение о версии</string>
+    <string name="versionAlertDialogHeader">Неподдерживаемая версия Gitea</string>
+    <string name="loginViaPassword">Имя пользователя / Пароль</string>
+    <string name="loginMethodText">Выберите предпочтительный метод входа для доступа к вашей учетной записи. Токен более безопасный!</string>
+    <string name="unauthorizedApiError">Экземпляр вернул ошибку - не авторизовано. Проверьте ваши учетные данные и повторите попытку</string>
+    <string name="loginTokenError">Пожалуйста, введите правильный токен</string>
+    <string name="noDataPullRequests">No pull requests found</string>
+    <string name="prCreator">Creator :\u0020</string>
+    <string name="editPrText">Edit Pull Request</string>
+    <string name="copyPrUrlText">Copy Pull Request URL</string>
+    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
+    <string name="editPrSuccessMessage">Pull Request updated</string>
+    <string name="fileDiffViewHeader">%1$s Files Changed</string>
+    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
+    <string name="openFileDiffText">Files Changed</string>
 </resources>

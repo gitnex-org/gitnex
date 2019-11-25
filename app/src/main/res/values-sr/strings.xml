@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Нова ознака</string>
     <string name="pageTitleCredits">Заслуге</string>
     <string name="pageTitleLabelUpdate">Ажурирај ознаку</string>
-    <string name="pageTitleSponsors">Спонзори</string>
+    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Омиљени репозиторијуми</string>
     <string name="pageTitleCreateTeam">Нови тим</string>
     <string name="pageTitleAddEmail">Додај имејл-адресу</string>
@@ -103,6 +103,7 @@
     <string name="tab_text_labels">Ознаке</string>
     <string name="action_settings">Подешавања</string>
     <string name="tab_text_collaborators">Сарадници</string>
+    <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Ниједан задатак није пронађен</string>
     <string name="infoTabRepoName1">Репозиторијум</string>
     <string name="infoTabRepoOwner1">Власник</string>
@@ -214,8 +215,6 @@
     <string name="labelDeleteErrorText">Нешто је пошло наопако, покушај поново</string>
     <string name="noDataBranchesTab">Ниједна грана није пронађена</string>
     <string name="creditsLogoDesign">Дизајн</string>
-    <!-- credits - this part does not need translation -->
-    <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Грешка приликом ауторизације</string>
     <string name="alertDialogTokenRevokedMessage">Токен је истекао (у том случају покушај да се одјавиш и пријавиш поново) или немаш приступ овом садржају</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Откажи</string>
@@ -321,11 +320,9 @@
     <string name="userCreatedText">Корисник је успешно додат</string>
     <string name="userExistsError">Корисник већ постоји</string>
     <!-- create user -->
-    <!-- sponsors -->
-    <!-- sponsors -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Ажурирај проблем #%1$s</string>
-    <string name="editIssueSuccessMessage">Проблем је ажуриран</string>
+    <string name="editIssueSuccessMessage">Issue updated</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Ново издање</string>
@@ -370,7 +367,7 @@
     <string name="newFileRequiredFieldNewBranchName">Назив нове гране је обавезан ако тренутна грана није одабрана</string>
     <string name="strFilter">Филтер</string>
     <string name="copyIssueUrl">Копирај URL проблема</string>
-    <string name="copyIssueUrlToastMsg">URL проблема је копиран</string>
+    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 завршен</string>
     <!-- files -->
     <string name="noDataFilesTab">Ниједан фајл није пронађен</string>
@@ -399,7 +396,7 @@
     <string name="characters255Limit">Максимално 255 карактера</string>
     <string name="emptyFields">Сва поља су обавезна</string>
     <string name="textContinue">Настави</string>
-    <string name="copyToken">Token</string>
+    <string name="copyToken">Токен</string>
     <!-- generic copy -->
     <string name="translateText">Преведи GitNex на платформи Crowdin</string>
     <string name="exploreTextBoxHint">Претражи репозиторијуме</string>
@@ -419,8 +416,17 @@
     <string name="versionUnknow">No Gitea detected!</string>
     <string name="versionAlertTitle">Version Alert</string>
     <string name="versionAlertDialogHeader">Верзија програма Gitea коју тренутно користиш није подржана</string>
-    <string name="loginViaPassword">Username / Password</string>
+    <string name="loginViaPassword">Корисничко име и лозинка</string>
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
-    <string name="loginTokenError">Please enter the correct token</string>
+    <string name="loginTokenError">Унеси исправан токен</string>
+    <string name="noDataPullRequests">No pull requests found</string>
+    <string name="prCreator">Creator :\u0020</string>
+    <string name="editPrText">Edit Pull Request</string>
+    <string name="copyPrUrlText">Copy Pull Request URL</string>
+    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
+    <string name="editPrSuccessMessage">Pull Request updated</string>
+    <string name="fileDiffViewHeader">%1$s Files Changed</string>
+    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
+    <string name="openFileDiffText">Files Changed</string>
 </resources>

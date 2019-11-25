@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Label erstellen</string>
     <string name="pageTitleCredits">Mitwirkende</string>
     <string name="pageTitleLabelUpdate">Label aktualisieren</string>
-    <string name="pageTitleSponsors">Sponsoren</string>
+    <string name="pageTitleSponsors">Spender</string>
     <string name="pageTitleStarredRepos">Favoriten</string>
     <string name="pageTitleCreateTeam">Team erstellen</string>
     <string name="pageTitleAddEmail">E-Mail Adresse hinzufügen</string>
@@ -103,6 +103,7 @@
     <string name="tab_text_labels">Labels</string>
     <string name="action_settings">Einstellungen</string>
     <string name="tab_text_collaborators">Mitarbeiter</string>
+    <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Keine Issues gefunden!</string>
     <string name="infoTabRepoName1">Repository</string>
     <string name="infoTabRepoOwner1">Eigentümer</string>
@@ -214,8 +215,6 @@
     <string name="labelDeleteErrorText">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="noDataBranchesTab">Keine Branch gefunden!</string>
     <string name="creditsLogoDesign">Design</string>
-    <!-- credits - this part does not need translation -->
-    <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
     <string name="alertDialogTokenRevokedMessage">Es scheint, dass das Access Token widerrufen wurde ODER du die Inhalte nicht sehen darfst. Im Falle von widerrufenen Token, bitte logge dich aus und wieder ein.</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Abbrechen</string>
@@ -321,11 +320,9 @@
     <string name="userCreatedText">Neuer Benutzer erfolgreich erstellt</string>
     <string name="userExistsError">Benutzer existiert bereits</string>
     <!-- create user -->
-    <!-- sponsors -->
-    <!-- sponsors -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Bearbeite Issue #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue aktualisiert.</string>
+    <string name="editIssueSuccessMessage">Issue aktualisiert</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Release erstellen</string>
@@ -370,7 +367,7 @@
     <string name="newFileRequiredFieldNewBranchName">Neuer Branch-Name kann nicht leer sein, wenn der derzeitige Branch nicht ausgewählt ist</string>
     <string name="strFilter">Filter</string>
     <string name="copyIssueUrl">Issue Link kopieren</string>
-    <string name="copyIssueUrlToastMsg">Issue Link in Zwischenablage kopiert</string>
+    <string name="copyIssueUrlToastMsg">URL in Zwischenablage kopiert</string>
     <string name="milestoneCompletion">%1$d\uFF05 abgeschlossen</string>
     <!-- files -->
     <string name="noDataFilesTab">Keine Dateien gefunden</string>
@@ -423,4 +420,13 @@
     <string name="loginMethodText">Wählen deine bevorzugte Login-Methode, um auf deinen Account zuzugreifen. Token ist sicherer!</string>
     <string name="unauthorizedApiError">Gitea hat einen Fehler zurückgegeben - Nicht autorisiert. Überprüfen Sie Ihre Anmeldeinformationen und versuchen Sie es erneut</string>
     <string name="loginTokenError">Bitte gib einen richtigen Token ein</string>
+    <string name="noDataPullRequests">Keine Pull-Requests gefunden</string>
+    <string name="prCreator">Ersteller:\u0020</string>
+    <string name="editPrText">Bearbeite Pull-Request</string>
+    <string name="copyPrUrlText">Pull-Request URL kopieren</string>
+    <string name="editPrNavHeader">Bearbeite Pull-Request #%1$s</string>
+    <string name="editPrSuccessMessage">Pull-Request aktualisiert</string>
+    <string name="fileDiffViewHeader">%1$s Dateien geändert</string>
+    <string name="fileDiffViewHeaderSingle">%1$s Dateien geändert</string>
+    <string name="openFileDiffText">Dateien geändert</string>
 </resources>

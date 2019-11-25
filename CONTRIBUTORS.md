@@ -24,7 +24,9 @@ This part lists all PUBLIC individuals having contributed content to the transla
  * Nadezhda Moiseeva (digitalkiller)
  * PsychotherapistSam
  * Rodion Borisov (vintproykt)
+ * s4ne
  * valeriezhao1013
+ * Vladislav Glinsky (cl0ne)
  * Voyvode
 
 **Thank you for all your work** :+1:

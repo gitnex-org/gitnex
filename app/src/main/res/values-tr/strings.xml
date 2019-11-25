@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Yeni Etiket</string>
     <string name="pageTitleCredits">Katkılar</string>
     <string name="pageTitleLabelUpdate">Etiketi Güncelle</string>
-    <string name="pageTitleSponsors">Sponsorlar</string>
+    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Yıldızlı Depolar</string>
     <string name="pageTitleCreateTeam">Yeni Takım</string>
     <string name="pageTitleAddEmail">E-posta Adresi Ekle</string>
@@ -103,6 +103,7 @@
     <string name="tab_text_labels">Etiketler</string>
     <string name="action_settings">Ayarlar</string>
     <string name="tab_text_collaborators">İşbirlikçiler</string>
+    <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Konu bulunamadı</string>
     <string name="infoTabRepoName1">Depo</string>
     <string name="infoTabRepoOwner1">Sahibi</string>
@@ -214,8 +215,6 @@
     <string name="labelDeleteErrorText">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="noDataBranchesTab">Dal bulunamadı</string>
     <string name="creditsLogoDesign">Tasarım</string>
-    <!-- credits - this part does not need translation -->
-    <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Yetkilendirme Hatası</string>
     <string name="alertDialogTokenRevokedMessage">Erişim Jetonu iptal edilmiş gibi görünüyor VEYA bu içerikleri görmenize izin verilmiyor. Jeton iptal edilmesi durumunda, lütfen çıkış yapın ve tekrar giriş yapın</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">İptal</string>
@@ -321,11 +320,9 @@
     <string name="userCreatedText">Yeni kullanıcı başarıyla eklendi</string>
     <string name="userExistsError">Bu kullanıcı zaten mevcut</string>
     <!-- create user -->
-    <!-- sponsors -->
-    <!-- sponsors -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Edit Issue #%1$s</string>
-    <string name="editIssueSuccessMessage">Konu güncellendi.</string>
+    <string name="editIssueSuccessMessage">Issue updated</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Yeni Sürüm</string>
@@ -370,7 +367,7 @@
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filtre</string>
     <string name="copyIssueUrl">Konu Adresini Kopyala</string>
-    <string name="copyIssueUrlToastMsg">Konu adresi panoya kopyalandı</string>
+    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
     <!-- files -->
     <string name="noDataFilesTab">Dosya bulunamadı</string>
@@ -423,4 +420,13 @@
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Please enter the correct token</string>
+    <string name="noDataPullRequests">No pull requests found</string>
+    <string name="prCreator">Creator :\u0020</string>
+    <string name="editPrText">Edit Pull Request</string>
+    <string name="copyPrUrlText">Copy Pull Request URL</string>
+    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
+    <string name="editPrSuccessMessage">Pull Request updated</string>
+    <string name="fileDiffViewHeader">%1$s Files Changed</string>
+    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
+    <string name="openFileDiffText">Files Changed</string>
 </resources>

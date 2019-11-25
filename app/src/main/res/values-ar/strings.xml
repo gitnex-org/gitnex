@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">New Label</string>
     <string name="pageTitleCredits">Credits</string>
     <string name="pageTitleLabelUpdate">Update Label</string>
-    <string name="pageTitleSponsors">الرعاة</string>
+    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">المستودعات المفضلة</string>
     <string name="pageTitleCreateTeam">فريق جديد</string>
     <string name="pageTitleAddEmail">إضافة عنوان بريد الكتروني</string>
@@ -46,15 +46,15 @@
     <string name="orgDescription">مثال عن الوصف</string>
     <string name="noDataOrg">No organizations found</string>
     <string name="newCreateButtonCopy">انشئ</string>
-    <string name="newUpdateButtonCopy">Update</string>
+    <string name="newUpdateButtonCopy">تحديث</string>
     <string name="newRepoTintCopy">اسم المستودع</string>
     <string name="newRepoDescTintCopy">Repository Description</string>
     <string name="newRepoPrivateCopy">خاص</string>
-    <string name="newRepoDescInfo">Max 255 characters</string>
+    <string name="newRepoDescInfo">الحد الأقصى 255 حرفًا</string>
     <string name="newRepoOwner">مالك</string>
     <string name="newOrgTintCopy">اسم المنظمة</string>
     <string name="newOrgDescTintCopy">وصف المنظمة</string>
-    <string name="newOrgDescInfo">Max 255 characters</string>
+    <string name="newOrgDescInfo">الحد الأقصى 255 حرفًا</string>
     <string name="userName">اسم المستخدم</string>
     <string name="passWord">الكلمة السرية</string>
     <string name="btnLogin">لِج</string>
@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">اسم المستخدم لازم</string>
     <string name="emptyFieldPassword">الكلمة السرية لازمة</string>
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
-    <string name="repoNameErrorEmpty">Repository name is empty</string>
+    <string name="repoNameErrorEmpty">اسم المستودع فارغ</string>
     <string name="repoNameErrorInvalid">Repository name is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoDescError">Repository description exceeds the max 255 characters limit</string>
     <string name="repoCreated">Repository created successfully</string>
@@ -103,6 +103,7 @@
     <string name="tab_text_labels">Labels</string>
     <string name="action_settings">الإعدادات</string>
     <string name="tab_text_collaborators">المتعاونون</string>
+    <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">No issues found</string>
     <string name="infoTabRepoName1">المستودع</string>
     <string name="infoTabRepoOwner1">مالك</string>
@@ -207,15 +208,13 @@
     <string name="labelGeneralError">Something went wrong, please try again</string>
     <string name="labelUpdated">Label updated.</string>
     <string name="noDataLabelsTab">No labels found</string>
-    <string name="labelMenuContentDesc">Desc</string>
+    <string name="labelMenuContentDesc">الوصف</string>
     <string name="labelMenuEdit">تعديل</string>
     <string name="labelMenuDelete">احذف</string>
     <string name="labelDeleteText">Label deleted</string>
     <string name="labelDeleteErrorText">Something went wrong, please try again</string>
     <string name="noDataBranchesTab">No branches found</string>
     <string name="creditsLogoDesign">Design</string>
-    <!-- credits - this part does not need translation -->
-    <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents. In case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">إلغاء</string>
@@ -246,7 +245,7 @@
     <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
     <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
     <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
-    <string name="teamNameEmpty">Please enter team name</string>
+    <string name="teamNameEmpty">يرجى إدخال إسم للفريق</string>
     <string name="teamNameError">Team name should contain only alphanumeric, dash (-), underscore (_) and dot (.) characters</string>
     <string name="teamPermissionEmpty">Please select permission</string>
     <string name="teamDescError">Team description have illegal characters</string>
@@ -321,11 +320,9 @@
     <string name="userCreatedText">New user added successfully</string>
     <string name="userExistsError">User already exists</string>
     <!-- create user -->
-    <!-- sponsors -->
-    <!-- sponsors -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Edit Issue #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated.</string>
+    <string name="editIssueSuccessMessage">Issue updated</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">New Release</string>
@@ -351,11 +348,11 @@
     <string name="starMember">Star</string>
     <string name="watcherMember">مشاهد</string>
     <string name="commitLinkBranchesTab">Commit</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
+    <string name="zipArchiveDownloadReleasesTab">أرشيف مضغوط Zip</string>
+    <string name="tarArchiveDownloadReleasesTab">أرشيف مضغوط Tar</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">اسم الملف</string>
-    <string name="newFileBranchTintCopy">New Branch Name</string>
+    <string name="newFileBranchTintCopy">اسم فرع جديد</string>
     <string name="newFileContentTintCopy">محتوى الملف</string>
     <string name="newFileButtonCopy">أنشئ ملفا جديدا</string>
     <string name="newFileNameHintMessage">with folder: app/test.md</string>
@@ -363,14 +360,14 @@
     <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Commit message is too long</string>
     <string name="newFileSuccessMessage">أنشئ ملف جديد</string>
-    <string name="newFileOldBranches">Current Branches</string>
+    <string name="newFileOldBranches">الفروع الحالية</string>
     <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
     <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
     <string name="newFileNewBranchMessage">مثال: new-branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filter</string>
     <string name="copyIssueUrl">انسخ عنوان المشكلة</string>
-    <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
+    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
     <!-- files -->
     <string name="noDataFilesTab">لم يٌعثر على ملفات</string>
@@ -396,7 +393,7 @@
     <string name="descriptionText">الوصف</string>
     <string name="websiteText">موقع الويب</string>
     <string name="locationText">المكان</string>
-    <string name="characters255Limit">Max 255 characters</string>
+    <string name="characters255Limit">الحد الأقصى 255 حرفًا</string>
     <string name="emptyFields">كافة الحقول لازمة</string>
     <string name="textContinue">مواصلة</string>
     <string name="copyToken">Token</string>
@@ -419,8 +416,17 @@
     <string name="versionUnknow">No Gitea detected!</string>
     <string name="versionAlertTitle">Version Alert</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
-    <string name="loginViaPassword">Username / Password</string>
+    <string name="loginViaPassword">اسم المستخدم / الكلمة السرية</string>
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Please enter the correct token</string>
+    <string name="noDataPullRequests">No pull requests found</string>
+    <string name="prCreator">Creator :\u0020</string>
+    <string name="editPrText">Edit Pull Request</string>
+    <string name="copyPrUrlText">Copy Pull Request URL</string>
+    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
+    <string name="editPrSuccessMessage">Pull Request updated</string>
+    <string name="fileDiffViewHeader">%1$s Files Changed</string>
+    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
+    <string name="openFileDiffText">Files Changed</string>
 </resources>

@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Uusi tunniste</string>
     <string name="pageTitleCredits">Tekijät</string>
     <string name="pageTitleLabelUpdate">Päivitä tunnisteita</string>
-    <string name="pageTitleSponsors">Sponsorit</string>
+    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Suosikki Repot</string>
     <string name="pageTitleCreateTeam">Uusi tiimi</string>
     <string name="pageTitleAddEmail">Lisää sähköpostiosoite</string>
@@ -103,6 +103,7 @@
     <string name="tab_text_labels">Labels</string>
     <string name="action_settings">Settings</string>
     <string name="tab_text_collaborators">Collaborators</string>
+    <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">No issues found</string>
     <string name="infoTabRepoName1">Repository</string>
     <string name="infoTabRepoOwner1">Owner</string>
@@ -214,8 +215,6 @@
     <string name="labelDeleteErrorText">Something went wrong, please try again</string>
     <string name="noDataBranchesTab">No branches found</string>
     <string name="creditsLogoDesign">Design</string>
-    <!-- credits - this part does not need translation -->
-    <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents. In case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Cancel</string>
@@ -321,11 +320,9 @@
     <string name="userCreatedText">New user added successfully</string>
     <string name="userExistsError">User already exists</string>
     <!-- create user -->
-    <!-- sponsors -->
-    <!-- sponsors -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Edit Issue #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated.</string>
+    <string name="editIssueSuccessMessage">Issue updated</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">New Release</string>
@@ -370,7 +367,7 @@
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filter</string>
     <string name="copyIssueUrl">Copy Issue URL</string>
-    <string name="copyIssueUrlToastMsg">Issue URL copied to clipboard</string>
+    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
     <!-- files -->
     <string name="noDataFilesTab">No files found</string>
@@ -423,4 +420,13 @@
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Please enter the correct token</string>
+    <string name="noDataPullRequests">No pull requests found</string>
+    <string name="prCreator">Creator :\u0020</string>
+    <string name="editPrText">Edit Pull Request</string>
+    <string name="copyPrUrlText">Copy Pull Request URL</string>
+    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
+    <string name="editPrSuccessMessage">Pull Request updated</string>
+    <string name="fileDiffViewHeader">%1$s Files Changed</string>
+    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
+    <string name="openFileDiffText">Files Changed</string>
 </resources>

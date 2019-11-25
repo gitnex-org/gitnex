@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Nuova etichetta</string>
     <string name="pageTitleCredits">Crediti</string>
     <string name="pageTitleLabelUpdate">Aggiorna Etichetta</string>
-    <string name="pageTitleSponsors">Sponsor</string>
+    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Repository preferiti</string>
     <string name="pageTitleCreateTeam">Nuovo Team</string>
     <string name="pageTitleAddEmail">Aggiungi indirizzo e-mail</string>
@@ -104,6 +104,7 @@ URL è richiesto</string>
     <string name="tab_text_labels">Labels</string>
     <string name="action_settings">Impostazioni</string>
     <string name="tab_text_collaborators">Collaboratori</string>
+    <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Nessun problema trovato</string>
     <string name="infoTabRepoName1">Repository</string>
     <string name="infoTabRepoOwner1">Proprietario</string>
@@ -215,8 +216,6 @@ URL è richiesto</string>
     <string name="labelDeleteErrorText">Qualcosa è andato storto, riprova</string>
     <string name="noDataBranchesTab">Nessun branch trovato</string>
     <string name="creditsLogoDesign">Design</string>
-    <!-- credits - this part does not need translation -->
-    <!-- credits - this part does not need translation -->
     <string name="alertDialogTokenRevokedTitle">Errore di autorizzazione</string>
     <string name="alertDialogTokenRevokedMessage">Sembra che il Token di Accesso sia revocato o che lei non sia autorizzato a vedere questi contenuti. In caso di token revocato, si prega di uscire e accedere di nuovo</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Annullare</string>
@@ -323,11 +322,9 @@ autorizzazione</string>
     <string name="userCreatedText">Nuovo utente creato con successo</string>
     <string name="userExistsError">L\'utente esiste già</string>
     <!-- create user -->
-    <!-- sponsors -->
-    <!-- sponsors -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Modifica Problema #%1$s</string>
-    <string name="editIssueSuccessMessage">Problema aggiornato.</string>
+    <string name="editIssueSuccessMessage">Issue updated</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Nuovo Rilascio</string>
@@ -372,7 +369,7 @@ autorizzazione</string>
     <string name="newFileRequiredFieldNewBranchName">Il nuovo nome del branch non può essere vuoto se il branch attuale non è selezionato</string>
     <string name="strFilter">Filtro</string>
     <string name="copyIssueUrl">Copia URL Problema</string>
-    <string name="copyIssueUrlToastMsg">URL problema copiata nello clipboard</string>
+    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 completato</string>
     <!-- files -->
     <string name="noDataFilesTab">Nessun file trovato</string>
@@ -425,4 +422,13 @@ autorizzazione</string>
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Please enter the correct token</string>
+    <string name="noDataPullRequests">No pull requests found</string>
+    <string name="prCreator">Creator :\u0020</string>
+    <string name="editPrText">Edit Pull Request</string>
+    <string name="copyPrUrlText">Copy Pull Request URL</string>
+    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
+    <string name="editPrSuccessMessage">Pull Request updated</string>
+    <string name="fileDiffViewHeader">%1$s Files Changed</string>
+    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
+    <string name="openFileDiffText">Files Changed</string>
 </resources>
