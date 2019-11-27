@@ -19,7 +19,7 @@ No trackers are used and source code is available here for anyone to audit.
 [<img alt='Download APK' src='https://gitnex.com/img/download-apk.png' height="80"/>](https://gitea.com/gitnex/GitNex/releases)
 
 ## Note about Gitea version
-Please make sure that you are on Gitea **1.9.x** stable release or later. Below this may not work as one would expect because of the newly added objects to the API at later versions. Please consider updating your Gitea server.
+Please make sure that you are on Gitea **1.10.x** stable release or later. Below this may not work as one would expect because of the newly added objects to the API at later versions. Please consider updating your Gitea server.
 
 Check the versions [compatibility page](https://gitea.com/gitnex/GitNex/wiki/Compatibility) which lists all the supported versions with compatibility ratio.
 
@@ -29,12 +29,12 @@ Option 1 - Download the source code, open it in Android Studio and build it ther
 Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`.
 
 ## Features
-- My Repositories
-- Repositories list
-- Organizations list
-- Create repository
-- Create organization
+- File and directory browser
+- Create files
+- Explore repositories
 - Issues list
+- Pull requests
+- Merge pull request
 - [MANY MORE](https://gitea.com/gitnex/GitNex/wiki/Features)
 
 ## Contributing
@@ -83,6 +83,11 @@ Open source libraries
 - Abumoallim/android-multi-select-dialog
 - Pes/materialcolorpicker
 - Hendraanggrian/socialview
-- Fython/BreadcrumbsView
+- HamidrezaAmz/BreadcrumbsView
+- Chrisbanes/PhotoView
+- Pddstudio/highlightjs-android
+- Apache/commons-io
+- Caverock/androidsvg
+- Droidsonroids.gif/android-gif-drawable
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
