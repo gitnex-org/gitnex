@@ -258,5 +258,5 @@ public interface ApiInterface {
     Call<ResponseBody> getFileDiffContents(@Path("owner") String owner, @Path("repo") String repo, @Path("filename") String fileName);
 
     @POST("repos/{owner}/{repo}/pulls/{index}/merge") // merge a pull request
-    Call<MergePullRequest> mergePullRequest(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") String index, @Body MergePullRequest jsonStr);
+    Call<ResponseBody> mergePullRequest(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int index, @Body MergePullRequest jsonStr);
 }

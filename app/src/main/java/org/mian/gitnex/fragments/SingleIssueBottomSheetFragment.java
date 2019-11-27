@@ -13,6 +13,7 @@ import org.mian.gitnex.activities.AddRemoveAssigneesActivity;
 import org.mian.gitnex.activities.AddRemoveLabelsActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
+import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.util.TinyDB;
@@ -44,6 +45,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
         TextView addRemoveAssignees = v.findViewById(R.id.addRemoveAssignees);
         TextView copyIssueUrl = v.findViewById(R.id.copyIssueUrl);
         TextView openFilesDiff = v.findViewById(R.id.openFilesDiff);
+        TextView mergePullRequest = v.findViewById(R.id.mergePullRequest);
 
         replyToIssue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,14 +58,40 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
         });
 
         if(tinyDB.getString("issueType").equals("pr")) {
+
             editIssue.setText(R.string.editPrText);
             copyIssueUrl.setText(R.string.copyPrUrlText);
+
+            if(tinyDB.getBoolean("prMerged")) {
+                mergePullRequest.setVisibility(View.GONE);
+            }
+            else {
+                mergePullRequest.setVisibility(View.VISIBLE);
+            }
 
             if(tinyDB.getString("repoType").equals("public")) {
                 openFilesDiff.setVisibility(View.VISIBLE);
             }
+            else {
+                openFilesDiff.setVisibility(View.GONE);
+            }
 
         }
+        else {
+
+            mergePullRequest.setVisibility(View.GONE);
+
+        }
+
+        mergePullRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), MergePullRequestActivity.class));
+                dismiss();
+
+            }
+        });
 
         openFilesDiff.setOnClickListener(new View.OnClickListener() {
             @Override

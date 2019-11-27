@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.mian.gitnex">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
@@ -10,9 +13,10 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.MergePullRequestActivity"></activity>
         <activity
             android:name=".activities.FileViewActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.NewFileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -68,7 +72,5 @@
         <activity android:name=".activities.OpenRepoInBrowserActivity" />
         <activity android:name=".activities.FileDiffActivity" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>
