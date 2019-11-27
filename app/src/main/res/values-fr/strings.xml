@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Nouvelle étiquette</string>
     <string name="pageTitleCredits">Crédits</string>
     <string name="pageTitleLabelUpdate">Modifier l’étiquette</string>
-    <string name="pageTitleSponsors">Donators</string>
+    <string name="pageTitleSponsors">Partenaires</string>
     <string name="pageTitleStarredRepos">Dépôts favoris</string>
     <string name="pageTitleCreateTeam">Nouvelle équipe</string>
     <string name="pageTitleAddEmail">Ajouter une adresse e-mail</string>
@@ -103,7 +103,7 @@
     <string name="tab_text_labels">Étiquettes</string>
     <string name="action_settings">Configuration</string>
     <string name="tab_text_collaborators">Collaborateurs</string>
-    <string name="tabPullRequests">Pull Requests</string>
+    <string name="tabPullRequests">Demandes de tirage</string>
     <string name="noDataIssueTab">Aucun ticket</string>
     <string name="infoTabRepoName1">Dépôt</string>
     <string name="infoTabRepoOwner1">Propriétaire</string>
@@ -322,7 +322,7 @@
     <!-- create user -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Modifier le ticket %1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated</string>
+    <string name="editIssueSuccessMessage">Ticket mis à jour</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Nouvelle version</string>
@@ -367,7 +367,7 @@
     <string name="newFileRequiredFieldNewBranchName">Nom de la nouvelle branche requis si aucune branche n’est sélectionnée</string>
     <string name="strFilter">Filtrer</string>
     <string name="copyIssueUrl">Copier l’URL du ticket</string>
-    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
+    <string name="copyIssueUrlToastMsg">URL copiée dans le presse-papier</string>
     <string name="milestoneCompletion">%1$d\uFF05 terminé</string>
     <!-- files -->
     <string name="noDataFilesTab">Aucun fichier</string>
@@ -420,13 +420,13 @@
     <string name="loginMethodText">Choisissez une méthode de connexion pour accéder à votre compte. Le jeton est la plus sécurisée !</string>
     <string name="unauthorizedApiError">L\'instance a renvoyé une erreur « Autorisation refusée ». Vérifiez vos identifiants et réessayez.</string>
     <string name="loginTokenError">Veuillez saisir le bon jeton</string>
-    <string name="noDataPullRequests">No pull requests found</string>
-    <string name="prCreator">Creator :\u0020</string>
-    <string name="editPrText">Edit Pull Request</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
-    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
-    <string name="editPrSuccessMessage">Pull Request updated</string>
-    <string name="fileDiffViewHeader">%1$s Files Changed</string>
-    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
-    <string name="openFileDiffText">Files Changed</string>
+    <string name="noDataPullRequests">Aucune demande de tirage</string>
+    <string name="prCreator">Auteur :\u0020</string>
+    <string name="editPrText">Modifier la demande de tirage</string>
+    <string name="copyPrUrlText">Copier l\'URL de la demande de tirage</string>
+    <string name="editPrNavHeader">Modifier la demande de tirage n° %1$s</string>
+    <string name="editPrSuccessMessage">Demande de tirage mise à jour</string>
+    <string name="fileDiffViewHeader">%1$s fichiers modifiés</string>
+    <string name="fileDiffViewHeaderSingle">%1$s fichier modifié</string>
+    <string name="openFileDiffText">Fichiers modifiés</string>
 </resources>

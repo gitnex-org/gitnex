@@ -20,8 +20,10 @@ This part lists all PUBLIC individuals having contributed content to the transla
  * ljoonal
  * Lunny Xiao (xiaolunwen)
  * lxs
+ * Marcos de Oliveira (markkrj)
  * mmarif
  * Nadezhda Moiseeva (digitalkiller)
+ * Oleg Popenkov (FanHamMer)
  * PsychotherapistSam
  * Rodion Borisov (vintproykt)
  * s4ne

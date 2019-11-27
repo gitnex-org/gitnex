@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Нова мітка</string>
     <string name="pageTitleCredits">Автори</string>
     <string name="pageTitleLabelUpdate">Оновити мітку</string>
-    <string name="pageTitleSponsors">Donators</string>
+    <string name="pageTitleSponsors">Спонсори</string>
     <string name="pageTitleStarredRepos">Обрані Репозиторії</string>
     <string name="pageTitleCreateTeam">Нова команда</string>
     <string name="pageTitleAddEmail">Додати адресу Email</string>
@@ -103,7 +103,7 @@
     <string name="tab_text_labels">Мітки</string>
     <string name="action_settings">Налаштування</string>
     <string name="tab_text_collaborators">Співавтори</string>
-    <string name="tabPullRequests">Pull Requests</string>
+    <string name="tabPullRequests">Запити на злиття</string>
     <string name="noDataIssueTab">Проблем не знайдено</string>
     <string name="infoTabRepoName1">Репозиторій</string>
     <string name="infoTabRepoOwner1">Власник</string>
@@ -322,7 +322,7 @@
     <!-- create user -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Редагувати проблему #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated</string>
+    <string name="editIssueSuccessMessage">Проблему оновлено</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Новий реліз</string>
@@ -367,7 +367,7 @@
     <string name="newFileRequiredFieldNewBranchName">Назва нової гілки не може бути пустою, якщо не обрано поточну гілку</string>
     <string name="strFilter">Фільтр</string>
     <string name="copyIssueUrl">Скопіювати URL проблеми</string>
-    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
+    <string name="copyIssueUrlToastMsg">URL скопійовано до буфера обміну</string>
     <string name="milestoneCompletion">%1$d\uFF05 завершено</string>
     <!-- files -->
     <string name="noDataFilesTab">Файлів не знайдено</string>
@@ -420,13 +420,13 @@
     <string name="loginMethodText">Оберіть бажаний метод входу для доступу до облікового запису. Токен є більш безпечним!</string>
     <string name="unauthorizedApiError">Екземпляр повернув помилку - не авторизовано. Перевірте облікові дані та спробуйте знову</string>
     <string name="loginTokenError">Будь ласка, введіть правильний токен</string>
-    <string name="noDataPullRequests">No pull requests found</string>
-    <string name="prCreator">Creator :\u0020</string>
-    <string name="editPrText">Edit Pull Request</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
-    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
-    <string name="editPrSuccessMessage">Pull Request updated</string>
-    <string name="fileDiffViewHeader">%1$s Files Changed</string>
-    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
-    <string name="openFileDiffText">Files Changed</string>
+    <string name="noDataPullRequests">Запитів на злиття не знайдено</string>
+    <string name="prCreator">Автор :\u0020</string>
+    <string name="editPrText">Редагувати запит на злиття</string>
+    <string name="copyPrUrlText">Копіювати URL запиту на злиття</string>
+    <string name="editPrNavHeader">Редагувати запит на злиття #%1$s</string>
+    <string name="editPrSuccessMessage">Запит на злиття оновлено</string>
+    <string name="fileDiffViewHeader">%1$s файлів змінено</string>
+    <string name="fileDiffViewHeaderSingle">%1$s файл змінено</string>
+    <string name="openFileDiffText">Змінені файли</string>
 </resources>

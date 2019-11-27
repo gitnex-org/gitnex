@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Нова ознака</string>
     <string name="pageTitleCredits">Заслуге</string>
     <string name="pageTitleLabelUpdate">Ажурирај ознаку</string>
-    <string name="pageTitleSponsors">Donators</string>
+    <string name="pageTitleSponsors">Спонзори</string>
     <string name="pageTitleStarredRepos">Омиљени репозиторијуми</string>
     <string name="pageTitleCreateTeam">Нови тим</string>
     <string name="pageTitleAddEmail">Додај имејл-адресу</string>

@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Создать метку</string>
     <string name="pageTitleCredits">Авторские права</string>
     <string name="pageTitleLabelUpdate">Обновить метку</string>
-    <string name="pageTitleSponsors">Donators</string>
+    <string name="pageTitleSponsors">Спонсоры</string>
     <string name="pageTitleStarredRepos">Избранные репозитории</string>
     <string name="pageTitleCreateTeam">Создать команду</string>
     <string name="pageTitleAddEmail">Добавить адрес эл. почты</string>
@@ -103,7 +103,7 @@
     <string name="tab_text_labels">Метки</string>
     <string name="action_settings">Настройки</string>
     <string name="tab_text_collaborators">Сотрудники</string>
-    <string name="tabPullRequests">Pull Requests</string>
+    <string name="tabPullRequests">Запросы на слияние</string>
     <string name="noDataIssueTab">Задач не обнаружено</string>
     <string name="infoTabRepoName1">Репозиторий</string>
     <string name="infoTabRepoOwner1">Владелец</string>
@@ -322,7 +322,7 @@
     <!-- create user -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Редактировать задачу #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated</string>
+    <string name="editIssueSuccessMessage">Задача обновлена</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Create Release</string>
@@ -352,7 +352,7 @@
     <string name="tarArchiveDownloadReleasesTab">Архив Tar</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">Имя файла</string>
-    <string name="newFileBranchTintCopy">Branch Name</string>
+    <string name="newFileBranchTintCopy">Имя новой ветки</string>
     <string name="newFileContentTintCopy">Содержимое файла</string>
     <string name="newFileButtonCopy">Создать новый файл</string>
     <string name="newFileNameHintMessage">с директорией: app/test.md</string>
@@ -367,7 +367,7 @@
     <string name="newFileRequiredFieldNewBranchName">Имя новой ветки не может быть пустым, если текущая ветка не выбрана</string>
     <string name="strFilter">Фильтр</string>
     <string name="copyIssueUrl">Копировать URL задачи</string>
-    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
+    <string name="copyIssueUrlToastMsg">URL скопирован в буфер обмена</string>
     <string name="milestoneCompletion">%1$d\uFF05 выполненный</string>
     <!-- files -->
     <string name="noDataFilesTab">Файлов не найдено</string>
@@ -420,13 +420,13 @@
     <string name="loginMethodText">Выберите предпочтительный метод входа для доступа к вашей учетной записи. Токен более безопасный!</string>
     <string name="unauthorizedApiError">Экземпляр вернул ошибку - не авторизовано. Проверьте ваши учетные данные и повторите попытку</string>
     <string name="loginTokenError">Пожалуйста, введите правильный токен</string>
-    <string name="noDataPullRequests">No pull requests found</string>
-    <string name="prCreator">Creator :\u0020</string>
-    <string name="editPrText">Edit Pull Request</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
-    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
-    <string name="editPrSuccessMessage">Pull Request updated</string>
-    <string name="fileDiffViewHeader">%1$s Files Changed</string>
-    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
-    <string name="openFileDiffText">Files Changed</string>
+    <string name="noDataPullRequests">Запросов на слияние не найдено</string>
+    <string name="prCreator">Автор:\u0020</string>
+    <string name="editPrText">Редактировать запрос на слияние</string>
+    <string name="copyPrUrlText">Копировать URL запроса на слияние</string>
+    <string name="editPrNavHeader">Редактировать запрос на слияние #%1$s</string>
+    <string name="editPrSuccessMessage">Запрос на слияние обновлен</string>
+    <string name="fileDiffViewHeader">%1$s файлов изменено</string>
+    <string name="fileDiffViewHeaderSingle">%1$s файл изменен</string>
+    <string name="openFileDiffText">Измененные файлы</string>
 </resources>

@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">创建标签</string>
     <string name="pageTitleCredits">鸣谢</string>
     <string name="pageTitleLabelUpdate">更新标签</string>
-    <string name="pageTitleSponsors">Donators</string>
+    <string name="pageTitleSponsors">赞助商</string>
     <string name="pageTitleStarredRepos">已点赞</string>
     <string name="pageTitleCreateTeam">创建团队</string>
     <string name="pageTitleAddEmail">添加电子邮件地址</string>
