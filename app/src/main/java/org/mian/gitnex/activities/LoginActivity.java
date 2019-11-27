@@ -396,12 +396,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         case SUPPORTED_LATEST:
                         case SUPPORTED_OLD:
                         case DEVELOPMENT:
-                            if(loginType == 1) {
-                                letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
-                            }
-                            else if(loginType == 2) { // token
-                                letTheUserInViaToken(instanceUrl, loginToken_);
-                            }
+                            login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
                             return;
                         case UNSUPPORTED_OLD:
 
@@ -424,12 +419,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         public void onClick(DialogInterface dialog, int which) {
 
                                             dialog.dismiss();
-                                            if(loginType == 1) {
-                                                letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
-                                            }
-                                            else if(loginType == 2) { // token
-                                                letTheUserInViaToken(instanceUrl, loginToken_);
-                                            }
+                                            login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
 
                                         }
                                     });
@@ -445,7 +435,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                 }
+                else if (responseVersion.code() == 403) {
+                    login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
+                }
+            }
 
+            private void login(int loginType, String instanceUrl, String loginUid, String loginPass, int loginOTP, String loginToken_) {
+                if (loginType == 1) {
+                    letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+                }
+                else if (loginType == 2) { // token
+                    letTheUserInViaToken(instanceUrl, loginToken_);
+                }
             }
 
             @Override
