@@ -127,7 +127,7 @@
     <string name="issueCreator">Ersteller:\u0020</string>
     <string name="issueAssigneesText">Zuständige</string>
     <string name="issueTypeIssue">Typ: Issue</string>
-    <string name="issueTypePullRequest">Typ: Pull Anfrage</string>
+    <string name="issueTypePullRequest">Typ: Pull Request</string>
     <string name="issueCommenter">Kommentator:\u0020</string>
     <string name="issueMilestone">Meilenstein %1$s</string>
     <string name="dueDate">Fällig %1$s</string>
@@ -429,4 +429,10 @@
     <string name="fileDiffViewHeader">%1$s Dateien geändert</string>
     <string name="fileDiffViewHeaderSingle">%1$s Dateien geändert</string>
     <string name="openFileDiffText">Dateien geändert</string>
+    <string name="mergePullRequestText">Pull-Request zusammenführen</string>
+    <string name="mergePullRequestButtonText">Zusammenführen</string>
+    <string name="mergeNoteText">Zusammenführen kann fehlschlagen, wenn du dafür nicht die Berechtigungen besitzt.</string>
+    <string name="mergeCommentText">Zusammenführ-Kommentar</string>
+    <string name="mergePRSuccessMsg">Dieser Pull-Request wurde erfolgreich zusammengeführt</string>
+    <string name="mergePR404ErrorMsg">Pull-Request kann nicht zusammengeführt werden</string>
 </resources>

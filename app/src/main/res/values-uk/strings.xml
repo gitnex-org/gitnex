@@ -429,4 +429,10 @@
     <string name="fileDiffViewHeader">%1$s файлів змінено</string>
     <string name="fileDiffViewHeaderSingle">%1$s файл змінено</string>
     <string name="openFileDiffText">Змінені файли</string>
+    <string name="mergePullRequestText">Об\'єднати запит на злиття</string>
+    <string name="mergePullRequestButtonText">Об\'єднати</string>
+    <string name="mergeNoteText">Об\'єднання не відбудеться, якщо ви не маєте дозволу приймати цей запит на злиття.</string>
+    <string name="mergeCommentText">Коментар до об\'єднання</string>
+    <string name="mergePRSuccessMsg">Запит на злиття було успішно об\'єднано</string>
+    <string name="mergePR404ErrorMsg">Запит на злиття недоступний для об\'єднання</string>
 </resources>

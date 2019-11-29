@@ -429,4 +429,10 @@
     <string name="fileDiffViewHeader">%1$s fichiers modifiés</string>
     <string name="fileDiffViewHeaderSingle">%1$s fichier modifié</string>
     <string name="openFileDiffText">Fichiers modifiés</string>
+    <string name="mergePullRequestText">Fusionner la demande de tirage</string>
+    <string name="mergePullRequestButtonText">Fusionner</string>
+    <string name="mergeNoteText">La fusion peut échouer si vous n’êtes pas autorisé à fusionner cette demande de tirage.</string>
+    <string name="mergeCommentText">Commentaire de la fusion</string>
+    <string name="mergePRSuccessMsg">La demande de tirage a été fusionnée</string>
+    <string name="mergePR404ErrorMsg">La demande de tirage ne peut pas être fusionnée</string>
 </resources>
