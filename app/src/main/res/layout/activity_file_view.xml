@@ -64,6 +64,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="14sp"
                 android:padding="15dp"
+                android:textIsSelectable="true"
                 />
 
         </ScrollView>
