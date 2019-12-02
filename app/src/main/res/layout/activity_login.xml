@@ -39,14 +39,18 @@
             android:id="@+id/loginMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_inputs"
+            android:orientation="vertical">
+
             <RadioButton
                 android:id="@+id/loginUsernamePassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loginViaPassword"
                 android:checked="true"
-                android:layout_marginEnd="30dp"
                 android:theme="@style/radioButtonsInDarkTheme"
                 android:textColor="@color/white"/>
             <RadioButton
@@ -56,6 +60,7 @@
                 android:text="@string/copyToken"
                 android:theme="@style/radioButtonsInDarkTheme"
                 android:textColor="@color/white"/>
+
         </RadioGroup>
 
         <LinearLayout
