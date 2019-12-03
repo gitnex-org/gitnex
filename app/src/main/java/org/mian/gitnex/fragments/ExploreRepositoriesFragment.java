@@ -23,7 +23,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.ExploreRepositories;
 import org.mian.gitnex.models.UserRepositories;
-import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.util.List;
 import java.util.Objects;
@@ -76,8 +75,6 @@ public class ExploreRepositoriesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
-
         final View v = inflater.inflate(R.layout.fragment_explore_repo, container, false);
         //setHasOptionsMenu(true);
         ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleExplore));
@@ -91,6 +88,8 @@ public class ExploreRepositoriesFragment extends Fragment {
         noData = v.findViewById(R.id.noData);
         mProgressBar = v.findViewById(R.id.progress_bar);
         mRecyclerView = v.findViewById(R.id.recyclerViewReposSearch);
+
+        mProgressBar.setVisibility(View.VISIBLE);
 
         searchKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -106,7 +105,40 @@ public class ExploreRepositoriesFragment extends Fragment {
             }
         });
 
+        int limitDefault = 10;
+        loadDefaultList(instanceUrl, instanceToken, loginUid, repoTypeInclude, sort, order, getContext(), limitDefault);
+
         return v;
+
+    }
+
+    private void loadDefaultList(String instanceUrl, String instanceToken, String loginUid, Boolean repoTypeInclude, String sort, String order, final Context context, int limit) {
+
+        Call<ExploreRepositories> call = RetrofitClient
+                .getInstance(instanceUrl, getContext())
+                .getApiInterface()
+                .queryRepos(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), null, repoTypeInclude, sort, order, limit);
+
+        call.enqueue(new Callback<ExploreRepositories>() {
+
+            @Override
+            public void onResponse(@NonNull Call<ExploreRepositories> call, @NonNull Response<ExploreRepositories> response) {
+
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    getReposList(response.body().getSearchedData(), context);
+                } else {
+                    Log.i("onResponse", String.valueOf(response.code()));
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ExploreRepositories> call, @NonNull Throwable t) {
+                Log.i("onFailure", Objects.requireNonNull(t.getMessage()));
+            }
+
+        });
 
     }
 

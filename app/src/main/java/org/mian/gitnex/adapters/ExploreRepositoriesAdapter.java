@@ -26,6 +26,7 @@ import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.TinyDB;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -102,7 +103,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
                         fMenuHelper.setAccessible(true);
                         menuHelper = fMenuHelper.get(popupMenu);
                         argTypes = new Class[] { boolean.class };
-                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon",
+                        Objects.requireNonNull(menuHelper).getClass().getDeclaredMethod("setForceShowIcon",
                                 argTypes).invoke(menuHelper, true);
 
                     } catch (Exception e) {
