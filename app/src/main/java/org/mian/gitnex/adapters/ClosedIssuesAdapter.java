@@ -168,12 +168,12 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final String locale = tinyDb.getString("locale");
             final String timeFormat = tinyDb.getString("dateFormat");
 
-            if(issuesModel.getPull_request() != null) {
+            /*if(issuesModel.getPull_request() != null) {
                 if (issuesModel.getPull_request().isMerged()) {
                     relativeLayoutFrame.setVisibility(View.GONE);
                     relativeLayoutFrame.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
                 }
-            }
+            }*/
 
             if (!issuesModel.getUser().getFull_name().equals("")) {
                 issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getFull_name(), context));
