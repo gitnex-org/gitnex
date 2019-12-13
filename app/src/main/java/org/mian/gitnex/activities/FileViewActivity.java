@@ -26,6 +26,8 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -75,6 +77,19 @@ public class FileViewActivity extends AppCompatActivity {
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
+
+        try {
+
+            singleFileName = URLDecoder.decode(singleFileName, "UTF-8");
+            singleFileName = singleFileName.replaceAll("//", "/");
+
+        }
+        catch (UnsupportedEncodingException e) {
+
+            assert singleFileName != null;
+            Log.i("singleFileName", singleFileName);
+
+        }
 
         getSingleFileContents(instanceUrl, instanceToken, repoOwner, repoName, singleFileName);
 
