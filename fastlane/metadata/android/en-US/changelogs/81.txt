@@ -1,0 +1,8 @@
+2.3.1
+Improvement: Copy text, support more files in file viewer
+Bugfix: Fix RTL alignments
+Bugfix: Revert to show all issues/prs
+Bugfix: Fix url decode in file viewer
+
+For more, check the release notes.
+https://gitea.com/gitnex/GitNex/releases
