@@ -340,13 +340,13 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
 
                         List<Milestones> milestonesList_ = response.body();
 
-                        milestonesList.add(new Milestones(0,"No milestone"));
+                        milestonesList.add(new Milestones(0,getString(R.string.issueCreatedNoMilestone)));
                         assert milestonesList_ != null;
                         if(milestonesList_.size() > 0) {
                             for (int i = 0; i < milestonesList_.size(); i++) {
 
-                                //String mStone = getString(R.string.spinnerMilestoneText, milestonesList_.get(i).getTitle(), milestonesList_.get(i).getState());
-                                if(milestonesList_.get(i).getState().equals(getString(R.string.issueStatusOpen))) {
+                                //Don't translate "open" is a enum
+                                if(milestonesList_.get(i).getState().equals("open")) {
                                     Milestones data = new Milestones(
                                             milestonesList_.get(i).getId(),
                                             milestonesList_.get(i).getTitle()
