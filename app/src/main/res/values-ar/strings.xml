@@ -41,14 +41,14 @@
     <string name="repoName">Demo repo</string>
     <string name="repoFullname">Repo with ORG</string>
     <string name="repoDescription">مثال عن الوصف</string>
-    <string name="noData">No repositories found</string>
+    <string name="noData">لم يٌعثر على أية مستودَعات</string>
     <string name="orgName">Demo organization</string>
     <string name="orgDescription">مثال عن الوصف</string>
     <string name="noDataOrg">No organizations found</string>
     <string name="newCreateButtonCopy">انشئ</string>
     <string name="newUpdateButtonCopy">تحديث</string>
     <string name="newRepoTintCopy">اسم المستودع</string>
-    <string name="newRepoDescTintCopy">Repository Description</string>
+    <string name="newRepoDescTintCopy">وصف المستودَع</string>
     <string name="newRepoPrivateCopy">خاص</string>
     <string name="newRepoDescInfo">الحد الأقصى 255 حرفًا</string>
     <string name="newRepoOwner">مالك</string>
@@ -177,20 +177,21 @@
     <string name="issueDescriptionEmpty">Issue description is empty</string>
     <string name="issueCreated">New issue created successfully</string>
     <string name="issueCreatedError">Something went wrong, please try again</string>
+    <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">No collaborators found</string>
     <string name="noLabelsFound">No labels found</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">الترجمة</string>
-    <string name="settingsDateTimeHeaderText">Date &amp; Time</string>
+    <string name="settingsDateTimeHeaderText">التاريخ والوقت</string>
     <string name="settingsSave">تم حفظ الإعدادات.</string>
     <string name="settingsLanguageSelectorHeader">اللغة</string>
     <string name="settingsLanguageSelectedHeaderDefault">العربية</string>
     <string name="settingsAppearanceHeader">المظهر</string>
-    <string name="settingsDateTimeHeaderDefault">Pretty</string>
+    <string name="settingsDateTimeHeaderDefault">جميل</string>
     <string name="settingsLanguageSelectorDialogTitle">اختر اللغة</string>
-    <string name="settingsTimeSelectorDialogTitle">Choose Time Format</string>
+    <string name="settingsTimeSelectorDialogTitle">اختر تنسيقًا للوقت</string>
     <string name="settingsIssueBadgeHeaderText">Issues Badge</string>
-    <string name="settingsHelpTranslateText">Help us translate GitNex to your language</string>
+    <string name="settingsHelpTranslateText">ساعدنا في ترجمة GitNex إلى لغتك</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
     <string name="settingsHomeScreenHeaderText">الشاشة الرئيسية</string>
@@ -336,7 +337,7 @@
     <string name="titleErrorEmpty">العنوان فارغ</string>
     <string name="releaseCreatedText">New release created</string>
     <!-- release -->
-    <string name="loginOTPError">Enter OTP code</string>
+    <string name="loginOTPError">ادخل رمز OTP</string>
     <string name="loginOTPTypeError">OTP code should be numbers.</string>
     <string name="loginOTP">OTP Code (Optional)</string>
     <string name="otpMessage">Enter the otp code if 2FA is enabled</string>

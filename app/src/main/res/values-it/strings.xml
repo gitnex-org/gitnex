@@ -178,6 +178,7 @@ URL è richiesto</string>
     <string name="issueDescriptionEmpty">La descrizione del problema è vuota</string>
     <string name="issueCreated">Nuovo problema creato con successo</string>
     <string name="issueCreatedError">Qualcosa è andato storto, riprova</string>
+    <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">Nessun collaboratore trovato</string>
     <string name="noLabelsFound">Nessun label trovato</string>
     <!-- settings -->

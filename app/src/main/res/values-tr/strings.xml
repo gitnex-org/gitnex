@@ -29,7 +29,7 @@
     <string name="pageTitleCreateLabel">Yeni Etiket</string>
     <string name="pageTitleCredits">Katkılar</string>
     <string name="pageTitleLabelUpdate">Etiketi Güncelle</string>
-    <string name="pageTitleSponsors">Sponsorlar</string>
+    <string name="pageTitleSponsors">Bağışçılar</string>
     <string name="pageTitleStarredRepos">Yıldızlı Depolar</string>
     <string name="pageTitleCreateTeam">Yeni Takım</string>
     <string name="pageTitleAddEmail">E-posta Adresi Ekle</string>
@@ -38,8 +38,8 @@
     <!-- page titles -->
     <string name="appVersion">Sürüm\u0020:\u0020</string>
     <string name="appBuild">Yapı No.\u0020:\u0020</string>
-    <string name="repoName">Demo repo</string>
-    <string name="repoFullname">ORG ile Repo</string>
+    <string name="repoName">Demo deposu</string>
+    <string name="repoFullname">ORG ile Depo</string>
     <string name="repoDescription">Demo açıklaması</string>
     <string name="noData">Depo bulunamadı</string>
     <string name="orgName">Demo organizasyonu</string>
@@ -62,7 +62,7 @@
     <string name="navigation_drawer_open">Gezinme Çekmecesini Aç</string>
     <string name="navigation_drawer_close">Gezinme Çekmecesini Kapat</string>
     <string name="logo">Gitea\'ya Giriş Yap</string>
-    <string name="urlInfoTooltip">1- Doğru protokolü seçin (https veya http). \n2- Gitea url girin, örneğin: try.gitea.io. \n3- Hesabınız için 2FA\'yı etkinleştirdiyseniz, kodu OTP Kodu alanına girin. \n4- For HTTP temel kimlik doğrulaması, URL alanında KULLANICIADI@DOMAIN.COM adresini kullanın.</string>
+    <string name="urlInfoTooltip">1- Doğru protokolü seçin (https veya http). \n2- Gitea url girin, örneğin: try.gitea.io. \n3- Hesabınız için 2FA\'yı etkinleştirdiyseniz, kodu OTP Kodu alanına girin. \n4- HTTP temel kimlik doğrulaması için, URL alanında KULLANICIADI@DOMAIN.COM adresini kullanın.</string>
     <string name="loginFailed">Yanlış kullanıcı adı/parola</string>
     <string name="protocolError">Yerel ağ üzerinde test yapmadığınız sürece HTTP protokolünü kullanmanız önerilmez.</string>
     <string name="malformedJson">Kötü biçimlendirilmiş JSON alındı. Sunucu yanıtı başarısız oldu.</string>
@@ -89,10 +89,10 @@
     <string name="addNewContent">Ekle</string>
     <string name="orgContentAvatar">Organizasyon</string>
     <string name="repoContentAvatar">Depo</string>
-    <string name="privateAvatar">Pri</string>
+    <string name="privateAvatar">Gizli</string>
     <string name="removeContent">Kaldır</string>
     <string name="genericApiStatusError">Örnek bir hata döndürdü. Kod\u0020</string>
-    <string name="title_activity_repo_detail">DepoDetaylarıEtkinliği</string>
+    <string name="title_activity_repo_detail">DepoDetayEtkinliği</string>
     <string name="tab_text_info">Ayrıntılar</string>
     <string name="tab_text_files">Dosyalar</string>
     <string name="tab_text_issues">Açık Konular</string>
@@ -103,7 +103,7 @@
     <string name="tab_text_labels">Etiketler</string>
     <string name="action_settings">Ayarlar</string>
     <string name="tab_text_collaborators">İşbirlikçiler</string>
-    <string name="tabPullRequests">Pull Requests</string>
+    <string name="tabPullRequests">İstekleri Çek</string>
     <string name="noDataIssueTab">Konu bulunamadı</string>
     <string name="infoTabRepoName1">Depo</string>
     <string name="infoTabRepoOwner1">Sahibi</string>
@@ -145,8 +145,8 @@
     <string name="releaseDescription">Sürüm Açıklaması</string>
     <string name="releaseDownloadText">İndirmeler</string>
     <string name="releaseType">Sürüm Türü</string>
-    <string name="releaseZip">Yayın Zip\'i</string>
-    <string name="releaseTar">Yayın Tarı</string>
+    <string name="releaseZip">Zip yayınla</string>
+    <string name="releaseTar">Tar yayınla</string>
     <string name="noDataReleasesTab">Sürüm bulunamadı</string>
     <string name="releaseTag">Etiket: %1$s</string>
     <string name="collaboratorsNameToast">İşbirlikçi : %1$s</string>
@@ -177,6 +177,7 @@
     <string name="issueDescriptionEmpty">Konu açıklaması boş</string>
     <string name="issueCreated">Yeni konu başarıyla oluşturuldu</string>
     <string name="issueCreatedError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
+    <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">İşbirlikçi bulunamadı</string>
     <string name="noLabelsFound">Etiket bulunamadı</string>
     <!-- settings -->
@@ -186,13 +187,13 @@
     <string name="settingsLanguageSelectorHeader">Dil</string>
     <string name="settingsLanguageSelectedHeaderDefault">İngilizce</string>
     <string name="settingsAppearanceHeader">Görünüm</string>
-    <string name="settingsDateTimeHeaderDefault">Pretty</string>
+    <string name="settingsDateTimeHeaderDefault">Güzel</string>
     <string name="settingsLanguageSelectorDialogTitle">Dil Seç</string>
     <string name="settingsTimeSelectorDialogTitle">Zaman Formatını Seç</string>
-    <string name="settingsIssueBadgeHeaderText">Issues Badge</string>
-    <string name="settingsHelpTranslateText">Help us translate GitNex to your language</string>
-    <string name="codeBlockHeaderText">Code Block Color</string>
-    <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
+    <string name="settingsIssueBadgeHeaderText">Rozet Sorunları</string>
+    <string name="settingsHelpTranslateText">GitNex\'i kendi dilinize çevirmemize yardımcı olun</string>
+    <string name="codeBlockHeaderText">Kod Bloğu Rengi</string>
+    <string name="settingsCodeBlockSelectorDialogTitle">Kod Bloğu Renk Seçici</string>
     <string name="settingsHomeScreenHeaderText">Ana Ekran</string>
     <string name="settingsHomeScreenSelectedText">Depolarım</string>
     <string name="settingshomeScreenSelectorDialogTitle">Ana Ekranı Seç</string>
@@ -296,14 +297,14 @@
     <!-- multi select dialog -->
     <string name="select_entry">Öğeleri Seç</string>
     <string name="validation_text">Lütfen en az bir seçenek seçin</string>
-    <string name="please_select_atleast">Please select at least </string>
-    <string name="you_can_only_select_upto">You can only select up to </string>
-    <string name="option"> option</string>
-    <string name="options"> options</string>
+    <string name="please_select_atleast">Lütfen en azını seçin </string>
+    <string name="you_can_only_select_upto">Sadece en fazla şunu yapabilirsiniz </string>
+    <string name="option"> seçenek</string>
+    <string name="options"> seçenekler</string>
     <string name="select_all">Tümünü seç</string>
     <string name="de_select_all">Tüm seçimleri kaldır</string>
     <!-- multi select dialog -->
-    <string name="repoMetaData">Repository Meta</string>
+    <string name="repoMetaData">Depo Meta</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Yeni Kullanıcı Ekle</string>
     <string name="adminUsers">Kullanıcılar</string>
@@ -321,8 +322,8 @@
     <string name="userExistsError">Bu kullanıcı zaten mevcut</string>
     <!-- create user -->
     <!-- edit issue -->
-    <string name="editIssueNavHeader">Edit Issue #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated</string>
+    <string name="editIssueNavHeader">Hatayı Düzenle #%1$s</string>
+    <string name="editIssueSuccessMessage">Hata güncellendi</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Yeni Sürüm</string>
@@ -362,24 +363,24 @@
     <string name="newFileSuccessMessage">Yeni dosya oluşturuldu</string>
     <string name="newFileOldBranches">Dallar</string>
     <string name="newFileRequiredFields">Dosya adı, içerik ve işleme mesajı gibi alanların doldurulması zorunludur</string>
-    <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
+    <string name="newFileCurrentBranchMessage">Mevcut şubeyi seçmek yeni şubeyi devre dışı bırakacaktır</string>
     <string name="newFileNewBranchMessage">ör: yeni-dal</string>
-    <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
+    <string name="newFileRequiredFieldNewBranchName">Geçerli dal seçilmemişse yeni dal adı boş bırakılamaz</string>
     <string name="strFilter">Filtre</string>
     <string name="copyIssueUrl">Konu Adresini Kopyala</string>
-    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
-    <string name="milestoneCompletion">%1$d\uFF05 completed</string>
+    <string name="copyIssueUrlToastMsg">URL panoya kopyalandı</string>
+    <string name="milestoneCompletion">%1$d\uFF05 tamamlandı</string>
     <!-- files -->
     <string name="noDataFilesTab">Dosya bulunamadı</string>
-    <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
-    <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
+    <string name="filesDirNotSupportedYet">Dizin tarama henüz desteklenmiyor</string>
+    <string name="filesGenericError">Üzgünüz, bu dosya API hata döndürdüğü için görüntülenemiyor</string>
     <string name="filesBreadcrumb">Kök</string>
     <!-- generic copy -->
     <string name="okButton">Tamam</string>
     <string name="doneButton">Tamam</string>
     <string name="cancelButton">İptal</string>
     <string name="genericError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
-    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
+    <string name="apiNotFound">Bu isteğin yüklü olandan daha yüksek Gitea sürümü gerekiyor. Lütfen örneğinizi Gitea\'nin en son sürümüne yükseltin.</string>
     <string name="noDataFound">Veri bulunamadı</string>
     <string name="addButton">Ekle</string>
     <string name="removeButton">Kaldır</string>
@@ -395,8 +396,8 @@
     <string name="locationText">Konum</string>
     <string name="characters255Limit">Maksimum 255 karakter</string>
     <string name="emptyFields">Tüm alanlar gereklidir</string>
-    <string name="textContinue">Continue</string>
-    <string name="copyToken">Token</string>
+    <string name="textContinue">Devam et</string>
+    <string name="copyToken">Jeton</string>
     <!-- generic copy -->
     <string name="translateText">Crowdin\'de GitNex için Çeviri Yap</string>
     <string name="exploreTextBoxHint">Depoları keşfet</string>
@@ -408,7 +409,7 @@
     <string name="unWatchRepository">Depoyu İzlemeyi Bırak</string>
     <string name="watchRepositorySuccess">Depo izleme listesine eklendi</string>
     <string name="unWatchRepositorySuccess">Depo izleme listesinden kaldırıldı</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly.</string>
+    <string name="versionUnsupportedOld">Gitea\'nin desteklenmeyen eski sürümü (%1$s) tespit edildi. Lütfen en son kararlı sürüme güncelleyin. Devam ederseniz, uygulama düzgün çalışmayabilir.</string>
     <string name="versionSupportedOld">Eski Gitea sürümü tespit edildi, lütfen son stabil sürüme güncelleyin</string>
     <string name="versionUnsupportedNew">Yeni Gitea versiyonu tespit edildi! Lütfen GitNex\'i GÜNCELLEYİN!</string>
     <string name="versionSupportedLatest">Gitea versiyonunuz güncel</string>
@@ -416,23 +417,23 @@
     <string name="versionUnknow">Gitea bulunamadı!</string>
     <string name="versionAlertTitle">Versiyon Uyarısı</string>
     <string name="versionAlertDialogHeader">Desteklenmeyen Gitea Versiyonu</string>
-    <string name="loginViaPassword">Username / Password</string>
-    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
-    <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
-    <string name="loginTokenError">Please enter the correct token</string>
-    <string name="noDataPullRequests">No pull requests found</string>
-    <string name="prCreator">Creator :\u0020</string>
-    <string name="editPrText">Edit Pull Request</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
-    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
-    <string name="editPrSuccessMessage">Pull Request updated</string>
-    <string name="fileDiffViewHeader">%1$s Files Changed</string>
-    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
-    <string name="openFileDiffText">Files Changed</string>
-    <string name="mergePullRequestText">Merge Pull Request</string>
-    <string name="mergePullRequestButtonText">Merge</string>
-    <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
-    <string name="mergeCommentText">Merge comment</string>
-    <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
-    <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
+    <string name="loginViaPassword">Kullanıcı Adı / Şifre</string>
+    <string name="loginMethodText">Hesabınıza erişmek için tercih ettiğiniz giriş yöntemini seçin. Jeton daha güvenli!</string>
+    <string name="unauthorizedApiError">Örnek bir hata döndürdü - Yetkisiz. Kimlik bilgilerinizi kontrol edin ve tekrar deneyin</string>
+    <string name="loginTokenError">Lütfen doğru jetonu girin</string>
+    <string name="noDataPullRequests">Çekme isteği bulunamadı</string>
+    <string name="prCreator">Yaratıcı :\u0020</string>
+    <string name="editPrText">Çekme İsteğini Düzenle</string>
+    <string name="copyPrUrlText">Çekme İsteği URL’sini Kopyala</string>
+    <string name="editPrNavHeader">Çekme İsteği Düzenle #%1$s</string>
+    <string name="editPrSuccessMessage">Çekme İsteği güncellendi</string>
+    <string name="fileDiffViewHeader">%1$s Dosya Değiştirildi</string>
+    <string name="fileDiffViewHeaderSingle">%1$s Dosya Değiştirildi</string>
+    <string name="openFileDiffText">Dosya Değiştirildi</string>
+    <string name="mergePullRequestText">Değişiklik İsteğini Birleştir</string>
+    <string name="mergePullRequestButtonText">Birleştir</string>
+    <string name="mergeNoteText">Bu Çekme İsteğini birleştirme yetkiniz yoksa, birleştirme başarısız olabilir.</string>
+    <string name="mergeCommentText">Yorumu birleştir</string>
+    <string name="mergePRSuccessMsg">Çekme İsteği başarıyla birleştirildi</string>
+    <string name="mergePR404ErrorMsg">Çekme İsteği birleştirme için uygun değil</string>
 </resources>

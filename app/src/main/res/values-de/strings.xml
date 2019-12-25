@@ -177,6 +177,7 @@
     <string name="issueDescriptionEmpty">Die Beschreibung des Issues ist leer!</string>
     <string name="issueCreated">Neues Issues wurde erfolgreich erstellt!</string>
     <string name="issueCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="issueCreatedNoMilestone">Kein Meilenstein</string>
     <string name="noAssigneesFound">Keine Zuständigen gefunden!</string>
     <string name="noLabelsFound">Keine Labels gefunden!</string>
     <!-- settings -->
