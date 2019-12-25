@@ -73,7 +73,6 @@ public class FileViewActivity extends AppCompatActivity {
 
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setMovementMethod(new ScrollingMovementMethod());
-        toolbar_title.setText(singleFileName);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
@@ -82,6 +81,7 @@ public class FileViewActivity extends AppCompatActivity {
 
             singleFileName = URLDecoder.decode(singleFileName, "UTF-8");
             singleFileName = singleFileName.replaceAll("//", "/");
+            singleFileName = singleFileName.startsWith("/") ? singleFileName.substring(1) : singleFileName;
 
         }
         catch (UnsupportedEncodingException e) {
@@ -90,6 +90,8 @@ public class FileViewActivity extends AppCompatActivity {
             Log.i("singleFileName", singleFileName);
 
         }
+
+        toolbar_title.setText(singleFileName);
 
         getSingleFileContents(instanceUrl, instanceToken, repoOwner, repoName, singleFileName);
 
