@@ -140,6 +140,10 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
         fileStructure.setText(breadcrumbBuilder);
 
+        String dirName_ = fileStructure.getText().toString();
+        dirName_ = dirName_.startsWith("/") ? dirName_.substring(1) : dirName_;
+        final String finalDirName_ = dirName_;
+
         mBreadcrumbsView.addItem(createItem(dirName));
         mBreadcrumbsView.setCallback(new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
             @Override
@@ -154,7 +158,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
                 String filterDir = fileStructure.getText().toString();
                 String result = filterDir.substring(0, filterDir.indexOf(item.getSelectedItem()));
                 fileStructure.setText(result + item.getSelectedItem());
-                fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, fileStructure.getText().toString());
+                fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, finalDirName_);
 
             }
 
@@ -164,7 +168,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
             }
         });
 
-        fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, fileStructure.getText().toString());
+        fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, finalDirName_);
 
     }
 
