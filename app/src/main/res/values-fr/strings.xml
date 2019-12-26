@@ -177,6 +177,7 @@
     <string name="issueDescriptionEmpty">Description du ticket requise</string>
     <string name="issueCreated">Nouveau ticket créé</string>
     <string name="issueCreatedError">Une erreur s’est produite, veuillez réessayer</string>
+    <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">Aucun collaborateur</string>
     <string name="noLabelsFound">Aucune étiquette</string>
     <!-- settings -->

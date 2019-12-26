@@ -177,6 +177,7 @@
     <string name="issueDescriptionEmpty">A descrição do incidente está vazia</string>
     <string name="issueCreated">Novo incidente criado com sucesso</string>
     <string name="issueCreatedError">Algo deu errado, por favor, tente de novo</string>
+    <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">Nenhum colaborador encontrado</string>
     <string name="noLabelsFound">Nenhuma marcador encontrado</string>
     <!-- settings -->
@@ -429,10 +430,10 @@
     <string name="fileDiffViewHeader">%1$s Arquivos Alterados</string>
     <string name="fileDiffViewHeaderSingle">%1$s Arquivo Alterado</string>
     <string name="openFileDiffText">Arquivos alterados</string>
-    <string name="mergePullRequestText">Merge Pull Request</string>
-    <string name="mergePullRequestButtonText">Merge</string>
-    <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
-    <string name="mergeCommentText">Merge comment</string>
-    <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
-    <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
+    <string name="mergePullRequestText">Aplicar merge do Pull Request</string>
+    <string name="mergePullRequestButtonText">Aplicar merge</string>
+    <string name="mergeNoteText">A aplicação do merge pode falhar se você não está autorizado a aplicar este Pull Request.</string>
+    <string name="mergeCommentText">Comentário do merge</string>
+    <string name="mergePRSuccessMsg">O merge da Pull Request foi aplicado com sucesso</string>
+    <string name="mergePR404ErrorMsg">Pull Request não está disponível para aplicação do merge</string>
 </resources>

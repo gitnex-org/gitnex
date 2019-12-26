@@ -177,6 +177,7 @@
     <string name="issueDescriptionEmpty">Опис проблеми порожній</string>
     <string name="issueCreated">Нову проблему створено успішно</string>
     <string name="issueCreatedError">Щось пішло не так. Будь ласка, спробуйте знову</string>
+    <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">Співавторів не знайдено</string>
     <string name="noLabelsFound">Міток не знайдено</string>
     <!-- settings -->
