@@ -20,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import com.tooltip.Tooltip;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -44,7 +43,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private Button loginButton;
     private EditText instanceUrlET, loginUidET, loginPassword, otpCode, loginTokenCode;
@@ -55,10 +54,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String device_id = "token";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_login;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());

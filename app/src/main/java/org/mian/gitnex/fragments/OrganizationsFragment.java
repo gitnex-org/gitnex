@@ -50,7 +50,6 @@ public class OrganizationsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleOrganizations));
         final View v = inflater.inflate(R.layout.fragment_organizations, container, false);
         setHasOptionsMenu(true);
 

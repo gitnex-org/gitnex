@@ -14,6 +14,7 @@ import retrofit2.Callback;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,14 +48,18 @@ import android.net.Uri;
  * Author M M Arif
  */
 
-public class RepoDetailActivity extends AppCompatActivity implements RepoBottomSheetFragment.BottomSheetListener {
+public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetFragment.BottomSheetListener {
 
     private TextView textViewBadge;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_repo_detail;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repo_detail);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         String repoFullName = tinyDb.getString("repoFullName");

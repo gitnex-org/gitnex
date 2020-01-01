@@ -42,11 +42,13 @@ public class SettingsFragment extends Fragment {
     private static String[] homeScreenList = {"My Repositories", "Starred Repositories", "Organizations", "Repositories", "Profile"};
     private static int homeScreenSelectedChoice = 0;
 
+    private static String[] customFontList = {"Roboto", "Manrope", "Source Code Pro"};
+    private static int customFontSelectedChoice = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleSettings));
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
         final TinyDB tinyDb = new TinyDB(getContext());
 
@@ -54,11 +56,13 @@ public class SettingsFragment extends Fragment {
         final TextView tvDateTimeSelected = v.findViewById(R.id.tvDateTimeSelected); // setter for time
         final TextView codeBlockSelected = v.findViewById(R.id.codeBlockSelected); // setter for code block
         final TextView homeScreenSelected = v.findViewById(R.id.homeScreenSelected); // setter for home screen
+        final TextView customFontSelected = v.findViewById(R.id.customFontSelected); // setter for custom font
 
         LinearLayout langFrame = v.findViewById(R.id.langFrame);
         LinearLayout timeFrame = v.findViewById(R.id.timeFrame);
         LinearLayout codeBlockFrame = v.findViewById(R.id.codeBlockFrame);
         LinearLayout homeScreenFrame = v.findViewById(R.id.homeScreenFrame);
+        LinearLayout customFontFrame = v.findViewById(R.id.customFontFrame);
 
         Switch issuesSwitch =  v.findViewById(R.id.switchIssuesBadge);
         TextView helpTranslate = v.findViewById(R.id.helpTranslate);
@@ -89,6 +93,10 @@ public class SettingsFragment extends Fragment {
             homeScreenSelected.setText(tinyDb.getString("homeScreenStr"));
         }
 
+        if(!tinyDb.getString("customFontStr").isEmpty()) {
+            customFontSelected.setText(tinyDb.getString("customFontStr"));
+        }
+
         if(langSelectedChoice == 0) {
             langSelectedChoice = tinyDb.getInt("langId");
         }
@@ -103,6 +111,10 @@ public class SettingsFragment extends Fragment {
 
         if(homeScreenSelectedChoice == 0) {
             homeScreenSelectedChoice = tinyDb.getInt("homeScreenId");
+        }
+
+        if(customFontSelectedChoice == 0) {
+            customFontSelectedChoice = tinyDb.getInt("customFontId");
         }
 
         if(tinyDb.getBoolean("enableCounterIssueBadge")) {
@@ -121,6 +133,44 @@ public class SettingsFragment extends Fragment {
                     tinyDb.putString("enableCounterIssueBadgeInit", "yes");
                     Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
                 }
+            }
+        });
+
+        // custom font dialog
+        customFontFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+
+                cfBuilder.setTitle(R.string.settingsCustomFontSelectorDialogTitle);
+                if(customFontSelectedChoice != -1) {
+                    cfBuilder.setCancelable(true);
+                }
+                else {
+                    cfBuilder.setCancelable(false);
+                }
+
+                cfBuilder.setSingleChoiceItems(customFontList, customFontSelectedChoice, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterfaceCustomFont, int i) {
+
+                        customFontSelectedChoice = i;
+                        customFontSelected.setText(customFontList[i]);
+                        tinyDb.putString("customFontStr", customFontList[i]);
+                        tinyDb.putInt("customFontId", i);
+
+                        Objects.requireNonNull(getActivity()).recreate();
+                        getActivity().overridePendingTransition(0, 0);
+                        dialogInterfaceCustomFont.dismiss();
+                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+
+                    }
+                });
+
+                AlertDialog cfDialog = cfBuilder.create();
+                cfDialog.show();
+
             }
         });
 

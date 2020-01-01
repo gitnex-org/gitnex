@@ -79,7 +79,6 @@ public class StarredRepositoriesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_starred_repositories, container, false);
         boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
         setHasOptionsMenu(true);
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleStarredRepos));
 
         TinyDB tinyDb = new TinyDB(getContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");

@@ -5,8 +5,8 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="android:fontFamily">@font/roboto</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:typeface">monospace</item>
     </style>
 
 </resources>

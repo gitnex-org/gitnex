@@ -83,7 +83,6 @@ public class MyRepositoriesFragment extends Fragment {
 
         final View v = inflater.inflate(R.layout.fragment_my_repositories, container, false);
         setHasOptionsMenu(true);
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleMyRepos));
 
         TinyDB tinyDb = new TinyDB(getContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");

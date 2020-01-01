@@ -8,7 +8,9 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,18 +47,27 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private TextView userFullName;
     private TextView userEmail;
     private ImageView userAvatar;
+    private TextView toolbarTitle;
     final Context ctx = this;
+    private Typeface myTypeface;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_main;
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
         tinyDb.putBoolean("noConnection", false);
         //userAvatar = findViewById(R.id.userAvatar);
 
@@ -86,16 +97,61 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         if(!tinyDb.getBoolean("loggedInMode")) {
             logout();
             return;
         }
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+
+        if(tinyDb.getInt("customFontId") == 0) {
+
+            myTypeface = Typeface.createFromAsset(getAssets(), "fonts/roboto.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 1) {
+
+            myTypeface = Typeface.createFromAsset(getAssets(), "fonts/manroperegular.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 2) {
+
+            myTypeface = Typeface.createFromAsset(getAssets(), "fonts/sourcecodeproregular.ttf");
+
+        }
+        else {
+
+            myTypeface = Typeface.createFromAsset(getAssets(), "fonts/roboto.ttf");
+
+        }
+
+        toolbarTitle.setTypeface(myTypeface);
         setSupportActionBar(toolbar);
+
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragmentById = fm.findFragmentById(R.id.fragment_container);
+        if (fragmentById instanceof SettingsFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleSettings));
+        }
+        else if (fragmentById instanceof MyRepositoriesFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleMyRepos));
+        }
+        else if (fragmentById instanceof StarredRepositoriesFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));
+        }
+        else if (fragmentById instanceof OrganizationsFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleOrganizations));
+        }
+        else if (fragmentById instanceof ExploreRepositoriesFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
+        }
+        else if (fragmentById instanceof ProfileFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
+        }
+        else if (fragmentById instanceof AboutFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleAbout));
+        }
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -139,11 +195,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 userEmail = hView.findViewById(R.id.userEmail);
                 if (!userEmailNav.equals("")) {
                     userEmail.setText(userEmailNav);
+                    userEmail.setTypeface(myTypeface);
                 }
 
                 userFullName = hView.findViewById(R.id.userFullname);
                 if (!userFullNameNav.equals("")) {
                     userFullName.setText(userFullNameNav);
+                    userFullName.setTypeface(myTypeface);
                 }
 
                 userAvatar = hView.findViewById(R.id.userAvatar);
@@ -176,31 +234,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(savedInstanceState == null) {
             if(tinyDb.getInt("homeScreenId") == 0) {
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleMyRepos));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyRepositoriesFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_home);
             }
             else if(tinyDb.getInt("homeScreenId") == 1) {
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new StarredRepositoriesFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_starred_repos);
             }
             else if(tinyDb.getInt("homeScreenId") == 2) {
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleOrganizations));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new OrganizationsFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_organizations);
             }
             else if(tinyDb.getInt("homeScreenId") == 3) {
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleRepositories));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new RepositoriesFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_repositories);
             }
             else if(tinyDb.getInt("homeScreenId") == 4) {
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_profile);
             }
             else {
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleMyRepos));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyRepositoriesFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_home);
@@ -246,22 +310,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleMyRepos));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyRepositoriesFragment()).commit();
                 break;
             case R.id.nav_organizations:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleOrganizations));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new OrganizationsFragment()).commit();
                 break;
             case R.id.nav_profile:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
                 break;
             case R.id.nav_repositories:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleRepositories));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new RepositoriesFragment()).commit();
+
                 break;
             case R.id.nav_settings:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleSettings));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SettingsFragment()).commit();
                 break;
@@ -270,6 +340,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.nav_about:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleAbout));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AboutFragment()).commit();
                 break;
@@ -277,10 +348,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 rateThisApp();
                 break;
             case R.id.nav_starred_repos:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new StarredRepositoriesFragment()).commit();
                 break;
             case R.id.nav_explore:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ExploreRepositoriesFragment()).commit();
                 break;
