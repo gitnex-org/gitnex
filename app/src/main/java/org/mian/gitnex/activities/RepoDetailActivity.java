@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.JsonElement;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -75,6 +75,8 @@ public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetF
         AppUtil.setAppLocale(getResources(), appLocale);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(repoName1);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -85,6 +87,44 @@ public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetF
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
+
+        Typeface myTypeface;
+        if(tinyDb.getInt("customFontId") == 0) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 1) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 2) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+
+        }
+        else {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+
+        toolbarTitle.setTypeface(myTypeface);
+        toolbarTitle.setText(repoName1);
+
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(myTypeface);
+                }
+            }
+        }
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));

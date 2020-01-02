@@ -67,7 +67,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         super.onCreate(savedInstanceState);
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
-
         tinyDb.putBoolean("noConnection", false);
         //userAvatar = findViewById(R.id.userAvatar);
 
@@ -185,8 +184,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
                     tinyDb.putBoolean("noConnection", false);
                 }
-
-                //tinyDb.putBoolean("noConnection", true);
 
                 String userEmailNav = tinyDb.getString("userEmail");
                 String userFullNameNav = tinyDb.getString("userFullname");

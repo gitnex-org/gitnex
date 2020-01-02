@@ -78,6 +78,7 @@ public class ProfileFragment extends Fragment {
             myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/roboto.ttf");
 
         }
+
         TabLayout tabLayout = v.findViewById(R.id.tabs);
 
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);

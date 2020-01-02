@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.UserInfo;
+import org.mian.gitnex.util.TinyDB;
 import java.util.List;
 
 /**
@@ -79,11 +81,36 @@ public class RepoStargazersAdapter extends BaseAdapter {
         UserInfo currentItem = stargazersList.get(position);
         Picasso.get().load(currentItem.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
 
+        final TinyDB tinyDb = new TinyDB(mCtx);
+        Typeface myTypeface;
+        if(tinyDb.getInt("customFontId") == 0) {
+
+            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 1) {
+
+            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/manroperegular.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 2) {
+
+            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/sourcecodeproregular.ttf");
+
+        }
+        else {
+
+            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
+
+        }
+
         if(!currentItem.getFullname().equals("")) {
             viewHolder.memberName.setText(currentItem.getFullname());
+            viewHolder.memberName.setTypeface(myTypeface);
         }
         else {
             viewHolder.memberName.setText(currentItem.getLogin());
+            viewHolder.memberName.setTypeface(myTypeface);
         }
 
     }

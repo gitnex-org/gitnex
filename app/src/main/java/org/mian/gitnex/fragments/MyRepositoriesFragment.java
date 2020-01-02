@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.NewRepoActivity;
 import org.mian.gitnex.adapters.MyReposListAdapter;
 import org.mian.gitnex.helpers.Authorization;

@@ -132,6 +132,8 @@ public class IssueDetailActivity extends AppCompatActivity {
         assigneesLayout = findViewById(R.id.frameAssignees);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -157,6 +159,31 @@ public class IssueDetailActivity extends AppCompatActivity {
                 }, 500);
             }
         });
+
+        Typeface myTypeface;
+        if(tinyDb.getInt("customFontId") == 0) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 1) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 2) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+
+        }
+        else {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+
+        toolbarTitle.setTypeface(myTypeface);
+        toolbarTitle.setText(repoName);
 
         getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
         fetchDataAsync(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
