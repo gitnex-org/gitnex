@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.NewRepoActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.helpers.Authorization;
@@ -54,7 +53,6 @@ public class RepositoriesFragment extends Fragment {
 
         final View v = inflater.inflate(R.layout.fragment_repositories, container, false);
         setHasOptionsMenu(true);
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleRepositories));
 
         TinyDB tinyDb = new TinyDB(getContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");

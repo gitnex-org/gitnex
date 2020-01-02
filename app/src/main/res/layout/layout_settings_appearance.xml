@@ -135,4 +135,34 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/customFontFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/customFontHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/settingsCustomFontHeaderText"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/customFontSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/defaultCopy"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
 </LinearLayout>

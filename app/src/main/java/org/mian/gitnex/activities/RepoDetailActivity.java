@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.JsonElement;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,6 +13,7 @@ import retrofit2.Callback;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -47,14 +48,18 @@ import android.net.Uri;
  * Author M M Arif
  */
 
-public class RepoDetailActivity extends AppCompatActivity implements RepoBottomSheetFragment.BottomSheetListener {
+public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetFragment.BottomSheetListener {
 
     private TextView textViewBadge;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_repo_detail;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repo_detail);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         String repoFullName = tinyDb.getString("repoFullName");
@@ -70,6 +75,8 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
         AppUtil.setAppLocale(getResources(), appLocale);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(repoName1);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -80,6 +87,44 @@ public class RepoDetailActivity extends AppCompatActivity implements RepoBottomS
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
+
+        Typeface myTypeface;
+        if(tinyDb.getInt("customFontId") == 0) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 1) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 2) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+
+        }
+        else {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+
+        toolbarTitle.setTypeface(myTypeface);
+        toolbarTitle.setText(repoName1);
+
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(myTypeface);
+                }
+            }
+        }
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));

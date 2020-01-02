@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
@@ -77,7 +76,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 
         final View v = inflater.inflate(R.layout.fragment_explore_repo, container, false);
         //setHasOptionsMenu(true);
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleExplore));
 
         TinyDB tinyDb = new TinyDB(getContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");

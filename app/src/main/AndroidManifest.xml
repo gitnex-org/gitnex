@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MergePullRequestActivity"></activity>
+        <activity android:name=".activities.MergePullRequestActivity" />
         <activity
             android:name=".activities.FileViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />

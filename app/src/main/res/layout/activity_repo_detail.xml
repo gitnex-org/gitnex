@@ -24,6 +24,14 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:id="@+id/toolbar_title" />
+
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout

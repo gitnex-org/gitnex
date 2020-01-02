@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
@@ -16,12 +15,13 @@ import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.TeamMembersByOrgViewModel;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Author M M Arif
  */
 
-public class OrgTeamMembersActivity extends AppCompatActivity {
+public class OrgTeamMembersActivity extends BaseActivity {
 
     private TextView noDataMembers;
     private View.OnClickListener onClickListener;
@@ -29,9 +29,13 @@ public class OrgTeamMembersActivity extends AppCompatActivity {
     private GridView mGridView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_org_team_members;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_org_team_members);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -46,7 +50,7 @@ public class OrgTeamMembersActivity extends AppCompatActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        if(getIntent().getStringExtra("teamTitle") != null && !getIntent().getStringExtra("teamTitle").equals("")) {
+        if(getIntent().getStringExtra("teamTitle") != null && !Objects.requireNonNull(getIntent().getStringExtra("teamTitle")).equals("")) {
             toolbarTitle.setText(getIntent().getStringExtra("teamTitle"));
         }
         else {
@@ -54,7 +58,7 @@ public class OrgTeamMembersActivity extends AppCompatActivity {
         }
 
         String teamId;
-        if(getIntent().getStringExtra("teamId") != null && !getIntent().getStringExtra("teamId").equals("")){
+        if(getIntent().getStringExtra("teamId") != null && !Objects.requireNonNull(getIntent().getStringExtra("teamId")).equals("")){
             teamId = getIntent().getStringExtra("teamId");
         }
         else {
@@ -64,6 +68,7 @@ public class OrgTeamMembersActivity extends AppCompatActivity {
         getIntent().getStringExtra("teamId");
         //Log.i("teamId", getIntent().getStringExtra("teamId"));
 
+        assert teamId != null;
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), Integer.valueOf(teamId));
 
     }

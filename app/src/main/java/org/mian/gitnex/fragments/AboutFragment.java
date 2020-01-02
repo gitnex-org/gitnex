@@ -27,7 +27,6 @@ public class AboutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_about, container, false);
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleAbout));
 
         TinyDB tinyDb = new TinyDB(getContext());
 

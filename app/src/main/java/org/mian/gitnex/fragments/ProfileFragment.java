@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.pageTitleProfile));
         setHasOptionsMenu(true);
 
         TinyDB tinyDb = new TinyDB(getContext());
@@ -57,7 +57,42 @@ public class ProfileFragment extends Fragment {
         ViewPager mViewPager = v.findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        Typeface myTypeface;
+        if(tinyDb.getInt("customFontId") == 0) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 1) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/manroperegular.ttf");
+
+        }
+        else if (tinyDb.getInt("customFontId") == 2) {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+
+        }
+        else {
+
+            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/roboto.ttf");
+
+        }
+
         TabLayout tabLayout = v.findViewById(R.id.tabs);
+
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(myTypeface);
+                }
+            }
+        }
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
