@@ -183,7 +183,7 @@
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Перевод</string>
     <string name="settingsDateTimeHeaderText">Дата и время</string>
-    <string name="settingsSave">Сохранено.</string>
+    <string name="settingsSave">Сохранено</string>
     <string name="settingsLanguageSelectorHeader">Язык</string>
     <string name="settingsLanguageSelectedHeaderDefault">Английский</string>
     <string name="settingsAppearanceHeader">Интерфейс</string>
@@ -436,4 +436,7 @@
     <string name="mergeCommentText">Комментарий для слияния</string>
     <string name="mergePRSuccessMsg">Запрос на слияние был успешно выполнен</string>
     <string name="mergePR404ErrorMsg">Запрос на слияние не доступен для слияния</string>
+    <string name="settingsCustomFontHeaderText">Font</string>
+    <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
+    <string name="settingsCustomFontDefault">Roboto</string>
 </resources>

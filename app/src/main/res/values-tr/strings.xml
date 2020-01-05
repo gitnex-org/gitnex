@@ -183,7 +183,7 @@
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Çeviri</string>
     <string name="settingsDateTimeHeaderText">Tarih ve Saat</string>
-    <string name="settingsSave">Ayarlar kaydedildi.</string>
+    <string name="settingsSave">Ayarlar kaydedildi</string>
     <string name="settingsLanguageSelectorHeader">Dil</string>
     <string name="settingsLanguageSelectedHeaderDefault">İngilizce</string>
     <string name="settingsAppearanceHeader">Görünüm</string>
@@ -436,4 +436,7 @@
     <string name="mergeCommentText">Yorumu birleştir</string>
     <string name="mergePRSuccessMsg">Çekme İsteği başarıyla birleştirildi</string>
     <string name="mergePR404ErrorMsg">Çekme İsteği birleştirme için uygun değil</string>
+    <string name="settingsCustomFontHeaderText">Font</string>
+    <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
+    <string name="settingsCustomFontDefault">Roboto</string>
 </resources>

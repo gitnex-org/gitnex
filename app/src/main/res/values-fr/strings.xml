@@ -177,13 +177,13 @@
     <string name="issueDescriptionEmpty">Description du ticket requise</string>
     <string name="issueCreated">Nouveau ticket créé</string>
     <string name="issueCreatedError">Une erreur s’est produite, veuillez réessayer</string>
-    <string name="issueCreatedNoMilestone">No milestone</string>
+    <string name="issueCreatedNoMilestone">Aucun jalon</string>
     <string name="noAssigneesFound">Aucun collaborateur</string>
     <string name="noLabelsFound">Aucune étiquette</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduction</string>
     <string name="settingsDateTimeHeaderText">Date et heure</string>
-    <string name="settingsSave">Configuration enregistrée</string>
+    <string name="settingsSave">Réglages enregistrés</string>
     <string name="settingsLanguageSelectorHeader">Langue</string>
     <string name="settingsLanguageSelectedHeaderDefault">Français</string>
     <string name="settingsAppearanceHeader">Apparence</string>
@@ -436,4 +436,7 @@
     <string name="mergeCommentText">Commentaire de la fusion</string>
     <string name="mergePRSuccessMsg">La demande de tirage a été fusionnée</string>
     <string name="mergePR404ErrorMsg">La demande de tirage ne peut pas être fusionnée</string>
+    <string name="settingsCustomFontHeaderText">Police</string>
+    <string name="settingsCustomFontSelectorDialogTitle">Choisir la police</string>
+    <string name="settingsCustomFontDefault">Roboto</string>
 </resources>

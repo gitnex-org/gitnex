@@ -184,7 +184,7 @@ URL è richiesto</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduzione</string>
     <string name="settingsDateTimeHeaderText">Data &amp; Ora</string>
-    <string name="settingsSave">Impostazioni salvate.</string>
+    <string name="settingsSave">Impostazioni salvate</string>
     <string name="settingsLanguageSelectorHeader">Lingua</string>
     <string name="settingsLanguageSelectedHeaderDefault">Inglese</string>
     <string name="settingsAppearanceHeader">Aspetto</string>
@@ -203,7 +203,7 @@ URL è richiesto</string>
     <string name="createLabel">Nuovo label</string>
     <string name="menuTitleText">Menu Repo</string>
     <string name="labelName">Nome label</string>
-    <string name="labelColor">Colorore label</string>
+    <string name="labelColor">Colore dell\'etichetta</string>
     <string name="labelEmptyError">Nome label è vuoto</string>
     <string name="labelNameError">Nome label non valido</string>
     <string name="labelCreated">Label creato.</string>
@@ -438,4 +438,7 @@ autorizzazione</string>
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
+    <string name="settingsCustomFontHeaderText">Font</string>
+    <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
+    <string name="settingsCustomFontDefault">Roboto</string>
 </resources>

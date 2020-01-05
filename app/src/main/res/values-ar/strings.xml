@@ -183,7 +183,7 @@
     <!-- settings -->
     <string name="settingsLanguageHeaderText">الترجمة</string>
     <string name="settingsDateTimeHeaderText">التاريخ والوقت</string>
-    <string name="settingsSave">تم حفظ الإعدادات.</string>
+    <string name="settingsSave">تم حفظ الإعدادات</string>
     <string name="settingsLanguageSelectorHeader">اللغة</string>
     <string name="settingsLanguageSelectedHeaderDefault">العربية</string>
     <string name="settingsAppearanceHeader">المظهر</string>
@@ -436,4 +436,7 @@
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
+    <string name="settingsCustomFontHeaderText">Font</string>
+    <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
+    <string name="settingsCustomFontDefault">Roboto</string>
 </resources>
