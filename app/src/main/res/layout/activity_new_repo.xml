@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             tools:ignore="UnusedAttribute">
 
             <ImageView
@@ -35,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/pageTitleNewRepo"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
@@ -46,7 +45,7 @@
     <ScrollView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundColor" >
+        android:background="?attr/primaryBackgroundColor" >
 
         <LinearLayout
             android:orientation="vertical"
@@ -61,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newRepoOwner"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
             <Spinner
@@ -79,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newRepoTintCopy"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
             <EditText
@@ -92,16 +91,16 @@
                 tools:ignore="Autofill"
                 android:labelFor="@+id/newRepoName"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
                 android:inputType="textCapSentences|text"
-                android:textColorHighlight="@color/colorWhite"/>
+                android:textColorHighlight="?attr/primaryTextColor"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newRepoDescTintCopy"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp" />
 
@@ -119,16 +118,16 @@
                 android:scrollbars="vertical"
                 android:gravity="top|start"
                 android:textSize="14sp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHighlight="@color/colorWhite"/>
+                android:textColorHighlight="?attr/primaryTextColor"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newRepoDescInfo"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="12sp"
                 android:gravity="end" />
 
@@ -141,7 +140,7 @@
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
                 android:theme="@style/checkBoxTheme"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="?attr/primaryTextColor"/>
 
             <Button
                 android:id="@+id/createNewRepoButton"

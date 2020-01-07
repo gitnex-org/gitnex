@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:typeface">monospace</item>
+
+        <item name="primaryTextColor">@color/white</item>
+        <item name="primaryBackgroundColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/lightThemeBackground</item>
+        <item name="android:typeface">monospace</item>
+
+        <item name="primaryTextColor">@color/lightThemeTextColor</item>
+        <item name="primaryBackgroundColor">@color/lightThemeBackground</item>
+    </style>
+
+</resources>

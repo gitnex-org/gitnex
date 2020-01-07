@@ -33,7 +33,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class NewRepoActivity extends AppCompatActivity {
+public class NewRepoActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
@@ -47,9 +47,13 @@ public class NewRepoActivity extends AppCompatActivity {
     List<OrgOwner> orgsList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_new_repo;
+    }
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_repo);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.util.TinyDB;
 
@@ -13,6 +14,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        setTheme(R.style.AppThemeLight);
 
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
