@@ -2,4 +2,6 @@
 <resources>
     <attr name="primaryTextColor" format="reference"/>
     <attr name="primaryBackgroundColor" format="reference" />
+    <attr name="inputBackgroundColor" format="reference" />
+    <attr name="inputTextColor" format="reference" />
 </resources>

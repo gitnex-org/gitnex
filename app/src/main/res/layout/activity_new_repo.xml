@@ -91,7 +91,7 @@
                 tools:ignore="Autofill"
                 android:labelFor="@+id/newRepoName"
                 android:background="@drawable/shape_inputs"
-                android:textColor="?attr/primaryTextColor"
+                android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/primaryBackgroundColor"
                 android:inputType="textCapSentences|text"
                 android:textColorHighlight="?attr/primaryTextColor"/>
@@ -118,7 +118,7 @@
                 android:scrollbars="vertical"
                 android:gravity="top|start"
                 android:textSize="14sp"
-                android:textColor="?attr/primaryTextColor"
+                android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/primaryBackgroundColor"
                 android:inputType="textCapSentences|textMultiLine"
                 android:textColorHighlight="?attr/primaryTextColor"/>
@@ -139,7 +139,7 @@
                 android:checked="true"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
-                android:theme="@style/checkBoxTheme"
+
                 android:textColor="?attr/primaryTextColor"/>
 
             <Button
