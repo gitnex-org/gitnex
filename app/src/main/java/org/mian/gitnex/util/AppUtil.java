@@ -224,6 +224,14 @@ public class AppUtil {
 
     }
 
+    public Boolean pdfExtension(String ext) {
+
+        String[] extValues = new String[] {"pdf"};
+
+        return Arrays.asList(extValues).contains(ext);
+
+    }
+
     public Boolean imageExtension(String ext) {
 
         String[] extValues = new String[] {"jpg", "jpeg", "gif", "png", "ico"};

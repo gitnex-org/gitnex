@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Theme;
@@ -44,6 +46,8 @@ public class FileViewActivity extends AppCompatActivity {
     final Context ctx = this;
     private ProgressBar mProgressBar;
     private byte[] imageData;
+    private PDFView pdfView;
+    private byte[] decodedPdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class FileViewActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         singleFileContents.setVisibility(View.GONE);
         mProgressBar = findViewById(R.id.progress_bar);
+        pdfView = findViewById(R.id.pdfView);
 
         String singleFileName = getIntent().getStringExtra("singleFileName");
 
@@ -139,6 +144,33 @@ public class FileViewActivity extends AppCompatActivity {
                             singleCodeContents.setTheme(Theme.GRUVBOX_DARK);
                             singleCodeContents.setShowLineNumbers(true);
                             singleCodeContents.setSource(appUtil.decodeBase64(response.body().getContent()));
+
+                        }
+                        else if (appUtil.pdfExtension(fileExtension)) { // file is pdf
+
+                            imageView.setVisibility(View.GONE);
+                            singleFileContents.setVisibility(View.GONE);
+                            singleCodeContents.setVisibility(View.GONE);
+                            pdfView.setVisibility(View.VISIBLE);
+
+                            decodedPdf = Base64.decode(response.body().getContent(), Base64.DEFAULT);
+                            pdfView.fromBytes(decodedPdf)
+                                    .enableSwipe(true)
+                                    .swipeHorizontal(false)
+                                    .enableDoubletap(true)
+                                    .defaultPage(0)
+                                    .enableAnnotationRendering(false)
+                                    .password(null)
+                                    .scrollHandle(null)
+                                    .enableAntialiasing(true)
+                                    .spacing(0)
+                                    .autoSpacing(true)
+                                    .pageFitPolicy(FitPolicy.WIDTH)
+                                    .fitEachPage(true)
+                                    .pageSnap(false)
+                                    .pageFling(true)
+                                    .nightMode(true)
+                                    .load();
 
                         }
                         else { // file type not known - plain text view

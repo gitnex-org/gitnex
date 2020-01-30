@@ -89,5 +89,6 @@ Open source libraries
 - Apache/commons-io
 - Caverock/androidsvg
 - Droidsonroids.gif/android-gif-drawable
+- Barteksc/AndroidPdfViewer
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
