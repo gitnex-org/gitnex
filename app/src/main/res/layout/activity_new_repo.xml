@@ -63,16 +63,25 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
-            <Spinner
-                android:id="@+id/ownerSpinner"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:background="@drawable/shape_dropdown"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingStart="5dp" />
+                android:layout_marginBottom="10dp" >
+
+                <Spinner
+                    android:id="@+id/ownerSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -139,7 +148,6 @@
                 android:checked="true"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
-
                 android:textColor="?attr/primaryTextColor"/>
 
             <Button

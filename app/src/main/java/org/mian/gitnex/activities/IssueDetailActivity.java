@@ -80,7 +80,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class IssueDetailActivity extends AppCompatActivity {
+public class IssueDetailActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private IssueCommentsAdapter adapter;
@@ -100,10 +100,14 @@ public class IssueDetailActivity extends AppCompatActivity {
     private LinearLayout assigneesLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_issue_detail;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_issue_detail);
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 

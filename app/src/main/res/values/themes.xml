@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Dark theme - default -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
@@ -13,6 +14,7 @@
         <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
     </style>
 
+    <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/lightThemeBackground</item>
@@ -24,7 +26,6 @@
         <item name="inputTextColor">@color/lightThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
     </style>
-
 
     <style name="AppThemeLightCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
         <item name="buttonTint">@color/colorDarkGreen</item>
