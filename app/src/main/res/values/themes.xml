@@ -12,6 +12,7 @@
         <item name="inputBackgroundColor">@color/inputBackground</item>
         <item name="inputTextColor">@color/colorWhite</item>
         <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/darkGreen</item>
     </style>
 
     <!-- Light theme -->
@@ -25,6 +26,7 @@
         <item name="inputBackgroundColor">@color/lightThemeInputBackground</item>
         <item name="inputTextColor">@color/lightThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/darkGreen</item>
     </style>
 
     <style name="AppThemeLightCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">

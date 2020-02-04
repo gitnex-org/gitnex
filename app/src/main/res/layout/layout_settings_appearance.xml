@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/layoutTime"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <TextView
         android:id="@+id/tvAppearance"
@@ -14,6 +14,7 @@
         android:drawableStart="@drawable/ic_color"
         android:drawablePadding="20dp"
         android:text="@string/settingsAppearanceHeader"
+        android:textStyle="bold"
         android:textColor="@color/colorDarkGreen"/>
 
     <LinearLayout
@@ -32,7 +33,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/settingsDateTimeHeaderText"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/primaryTextColor"/>
 
         <TextView
             android:id="@+id/tvDateTimeSelected"
@@ -42,7 +43,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/settingsDateTimeHeaderDefault"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/selectedTextColor"/>
 
     </LinearLayout>
 
@@ -61,7 +62,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/settingsIssueBadgeHeaderText"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/primaryTextColor"/>
 
         <Switch
             android:id="@+id/switchIssuesBadge"
@@ -91,7 +92,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/codeBlockHeaderText"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/primaryTextColor"/>
 
         <TextView
             android:id="@+id/codeBlockSelected"
@@ -101,7 +102,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/codeBlockSelectedText"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/selectedTextColor"/>
 
     </LinearLayout>
 
@@ -121,7 +122,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/settingsHomeScreenHeaderText"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/primaryTextColor"/>
 
         <TextView
             android:id="@+id/homeScreenSelected"
@@ -131,7 +132,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/settingsHomeScreenSelectedText"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/selectedTextColor"/>
 
     </LinearLayout>
 
@@ -151,7 +152,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/settingsCustomFontHeaderText"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/primaryTextColor"/>
 
         <TextView
             android:id="@+id/customFontSelected"
@@ -161,7 +162,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/defaultCopy"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/selectedTextColor"/>
 
     </LinearLayout>
 

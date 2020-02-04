@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundColor" >
+        android:background="?attr/primaryBackgroundColor" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,7 +27,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_below="@id/timeLayout"
-                android:background="@color/divider"
                 />
 
             <include
