@@ -140,7 +140,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx, R.style.AppThemeLightConfirmDialog);
 
                 cfBuilder.setTitle(R.string.settingsCustomFontSelectorDialogTitle);
                 if(customFontSelectedChoice != -1) {
@@ -178,7 +178,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder hsBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder hsBuilder = new AlertDialog.Builder(ctx);
 
                 hsBuilder.setTitle(R.string.settingshomeScreenSelectorDialogTitle);
                 if(homeScreenSelectedChoice != -1) {
@@ -214,7 +214,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder cBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder cBuilder = new AlertDialog.Builder(ctx);
 
                 cBuilder.setTitle(R.string.settingsCodeBlockSelectorDialogTitle);
                 if(codeBlockSelectedChoice != -1) {
@@ -273,7 +273,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder lBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder lBuilder = new AlertDialog.Builder(ctx);
 
                 lBuilder.setTitle(R.string.settingsLanguageSelectorDialogTitle);
                 if(langSelectedChoice != -1) {
@@ -359,7 +359,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder tBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder tBuilder = new AlertDialog.Builder(ctx);
 
                 tBuilder.setTitle(R.string.settingsTimeSelectorDialogTitle);
                 if(timeSelectedChoice != -1) {

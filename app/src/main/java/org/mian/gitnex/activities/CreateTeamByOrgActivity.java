@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import android.content.Context;
@@ -30,7 +29,7 @@ import android.util.Log;
  * Author M M Arif
  */
 
-public class CreateTeamByOrgActivity extends AppCompatActivity implements View.OnClickListener {
+public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClickListener {
 
     final Context ctx = CreateTeamByOrgActivity.this;
     private View.OnClickListener onClickListener;
@@ -43,6 +42,11 @@ public class CreateTeamByOrgActivity extends AppCompatActivity implements View.O
     private Button createTeamButton;
     private String[] permissionList = {"Read", "Write", "Admin"};
     public int permissionSelectedChoice = -1;
+
+    @Override
+    protected int getLayoutResourceId(){
+        return R.layout.activity_create_team_by_org;
+    }
 
     private String[] accessControlsList = new String[] {
             "Code",
@@ -67,9 +71,8 @@ public class CreateTeamByOrgActivity extends AppCompatActivity implements View.O
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_team_by_org);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
@@ -89,7 +92,7 @@ public class CreateTeamByOrgActivity extends AppCompatActivity implements View.O
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
 
                 pBuilder.setTitle(R.string.newTeamPermission);
                 if(permissionSelectedChoice != -1) {
@@ -141,7 +144,7 @@ public class CreateTeamByOrgActivity extends AppCompatActivity implements View.O
                 teamAccessControlsArray.setText("");
                 pushAccessList = Arrays.asList(accessControlsList);
 
-                AlertDialog.Builder aDialogBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder aDialogBuilder = new AlertDialog.Builder(ctx);
 
                 aDialogBuilder.setMultiChoiceItems(accessControlsList, selectedAccessControlsTrueFalse, new DialogInterface.OnMultiChoiceClickListener() {
 

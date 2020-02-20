@@ -88,9 +88,9 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
                 public void onClick(View v) {
 
                     final Context context = v.getContext();
-                    Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+                    //Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
 
-                    PopupMenu popupMenu = new PopupMenu(context_, v);
+                    PopupMenu popupMenu = new PopupMenu(context, v);
                     popupMenu.inflate(R.menu.repo_dotted_list_menu);
 
                     Object menuHelper;

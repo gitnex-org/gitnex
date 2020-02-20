@@ -19,22 +19,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="popupMenuStyle">
-        <item name="android:itemBackground">@color/colorPrimary</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:colorBackground">@color/colorPrimary</item>
-        <item name="android:layout_marginStart">3dp</item>
-        <item name="android:layout_marginEnd">3dp</item>
-    </style>
 
-    <style name="confirmDialog" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlActivated">@color/white</item>
-    </style>
 
     <style name="customTabLayout" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">16sp</item>

@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,15 +17,19 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class CreditsActivity extends AppCompatActivity {
+public class CreditsActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_credits;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_credits);
 
         ImageView closeActivity = findViewById(R.id.close);
 

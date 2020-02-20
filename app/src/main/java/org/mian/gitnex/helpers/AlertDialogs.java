@@ -18,7 +18,7 @@ public class AlertDialogs {
 
     public static void authorizationTokenRevokedDialog(final Context context, String title, String message, String copyNegativeButton, String copyPositiveButton) {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.confirmDialog);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
         alertDialogBuilder
                 .setTitle(title)
@@ -52,7 +52,7 @@ public class AlertDialogs {
 
     public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton) {
 
-        new AlertDialog.Builder(context, R.style.confirmDialog)
+        new AlertDialog.Builder(context)
             .setTitle(title + labelTitle)
             .setMessage(message)
             .setIcon(R.drawable.ic_delete)
@@ -71,7 +71,7 @@ public class AlertDialogs {
 
     public static void collaboratorRemoveDialog(final Context context, final String userNameMain, String title, String message, String positiveButton, String negativeButton, final String searchKeyword) {
 
-        new AlertDialog.Builder(context, R.style.confirmDialog)
+        new AlertDialog.Builder(context)
                 .setTitle(title + userNameMain)
                 .setMessage(message)
                 .setIcon(R.drawable.ic_warning)
