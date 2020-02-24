@@ -78,6 +78,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
+        final String loginFullName = tinyDb.getString("userFullname");
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -110,7 +111,7 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
         getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
 
         getLabels(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
-        getCollaborators(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
+        getCollaborators(instanceUrl, instanceToken, repoOwner, repoName, loginUid, loginFullName);
 
         disableProcessButton();
 
@@ -377,12 +378,14 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void getCollaborators(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {
+    private void getCollaborators(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid, String loginFullName) {
 
         Call<List<Collaborators>> call = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
                 .getCollaborators(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+
+        listOfAssignees.add(new MultiSelectModel(-1, loginFullName));
 
         call.enqueue(new Callback<List<Collaborators>>() {
 
