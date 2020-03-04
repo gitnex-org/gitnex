@@ -25,7 +25,7 @@ public class RepoWatchersAdapter extends BaseAdapter {
     private List<UserInfo> watchersList;
     private Context mCtx;
 
-    private class ViewHolder {
+    private static class ViewHolder {
 
         private ImageView memberAvatar;
         private TextView memberName;
@@ -64,7 +64,7 @@ public class RepoWatchersAdapter extends BaseAdapter {
 
         if (finalView == null) {
             finalView = LayoutInflater.from(mCtx).inflate(R.layout.repo_watchers_list, null);
-            viewHolder = new RepoWatchersAdapter.ViewHolder(finalView);
+            viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
         else {

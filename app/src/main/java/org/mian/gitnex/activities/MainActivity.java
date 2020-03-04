@@ -410,7 +410,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
 
             @Override
-            public void onFailure(@NonNull Call<GiteaVersion> callVersion, Throwable t) {
+            public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NonNull Throwable t) {
 
                 Log.e("onFailure-version", t.toString());
 

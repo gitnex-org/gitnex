@@ -15,7 +15,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        setTheme(R.style.AppTheme);
+        setTheme(R.style.AppThemeLight);
 
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());

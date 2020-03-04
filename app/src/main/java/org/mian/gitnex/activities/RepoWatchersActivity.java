@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.view.View;
@@ -22,7 +21,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class RepoWatchersActivity extends AppCompatActivity {
+public class RepoWatchersActivity extends BaseActivity {
 
     private TextView noDataWatchers;
     private View.OnClickListener onClickListener;
@@ -31,9 +30,13 @@ public class RepoWatchersActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_repo_watchers;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repo_watchers);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");

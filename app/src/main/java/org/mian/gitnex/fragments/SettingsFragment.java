@@ -140,7 +140,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx, R.style.AppThemeLightConfirmDialog);
+                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx);
 
                 cfBuilder.setTitle(R.string.settingsCustomFontSelectorDialogTitle);
                 if(customFontSelectedChoice != -1) {
