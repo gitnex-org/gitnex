@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             tools:ignore="UnusedAttribute">
 
             <ImageView
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/pageTitleCreateLabel"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/labelName"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
             />
 
@@ -66,9 +66,9 @@
             android:inputType="textCapSentences|text"
             android:labelFor="@+id/labelName"
             android:background="@drawable/shape_inputs"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            android:textColorHighlight="@color/colorWhite"/>
+            android:textColor="?attr/inputTextColor"
+            android:textColorHint="?attr/primaryBackgroundColor"
+            android:textColorHighlight="?attr/primaryTextColor"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:text="@string/labelColor"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:layout_weight=".95"
                 android:textSize="16sp" />
 

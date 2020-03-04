@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/relativeLayoutMainFrame"
-    android:background="@color/backgroundColor">
+    android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:id="@+id/branchName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textIsSelectable="true"
             android:textSize="18sp" />
 
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
             android:textColorLink="@color/lightBlue"/>
 

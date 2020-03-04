@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +44,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class EditIssueActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditIssueActivity extends BaseActivity implements View.OnClickListener {
 
     final Context ctx = this;
     private View.OnClickListener onClickListener;
@@ -62,10 +61,14 @@ public class EditIssueActivity extends AppCompatActivity implements View.OnClick
     private ArrayAdapter<Mention> defaultMentionAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_edit_issue;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_issue);
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 

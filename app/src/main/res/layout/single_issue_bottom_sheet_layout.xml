@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="8dp"
-    android:background="@color/backgroundColor"
+    android:background="?attr/primaryBackgroundColor"
     android:paddingTop="8dp">
 
     <androidx.core.widget.NestedScrollView
@@ -25,7 +25,7 @@
                 android:text="@string/openFileDiffText"
                 android:drawableStart="@drawable/ic_file"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:visibility="gone"
                 android:padding="16dp" />
@@ -38,7 +38,7 @@
                 android:text="@string/replyToIssue"
                 android:drawableStart="@drawable/ic_reply"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -50,7 +50,7 @@
                 android:text="@string/mergePullRequestText"
                 android:drawableStart="@drawable/ic_merge"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -62,7 +62,7 @@
                 android:text="@string/editIssue"
                 android:drawableStart="@drawable/ic_edit"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -74,7 +74,7 @@
                 android:text="@string/addRemoveAssignees"
                 android:drawableStart="@drawable/ic_person_filled"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -86,7 +86,7 @@
                 android:text="@string/singleIssueEditLabels"
                 android:drawableStart="@drawable/ic_label"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -101,7 +101,7 @@
                 android:drawablePadding="24dp"
                 android:padding="16dp"
                 android:text="@string/copyIssueUrl"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
             <View style="@style/lineDividerHorizontal" />
@@ -114,7 +114,7 @@
                 android:text="@string/closeIssue"
                 android:drawableStart="@drawable/ic_done"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -126,7 +126,7 @@
                 android:text="@string/reOpenIssue"
                 android:drawableStart="@drawable/ic_reopen"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/pageTitleNewFile"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
@@ -60,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileNameTintCopy"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
             <EditText
@@ -73,10 +72,10 @@
                 tools:ignore="Autofill"
                 android:labelFor="@+id/newFileName"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
-                android:inputType="textCapSentences|text"
-                android:textColorHighlight="@color/colorWhite"/>
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="textCapSentences|text" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -92,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileContentTintCopy"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp" />
 
@@ -102,7 +101,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:background="@drawable/shape_inputs"
                 android:maxLines="16"
                 android:minLines="14"
                 tools:ignore="Autofill"
@@ -110,16 +108,17 @@
                 android:scrollbars="vertical"
                 android:gravity="top|start"
                 android:textSize="14sp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textColorHighlight="@color/colorWhite"/>
+                android:background="@drawable/shape_inputs"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="textCapSentences|textMultiLine" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileOldBranches"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"/>
 
@@ -148,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileBranchTintCopy"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp" />
 
@@ -162,10 +161,10 @@
                 tools:ignore="Autofill"
                 android:labelFor="@+id/newFileBranchName"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
-                android:inputType="textCapSentences|text"
-                android:textColorHighlight="@color/colorWhite"/>
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="textCapSentences|text" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -181,7 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileMessageTintCopy"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp" />
 
@@ -195,16 +194,16 @@
                 tools:ignore="Autofill"
                 android:labelFor="@+id/newFileCommitMessage"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
-                android:inputType="textCapSentences|text"
-                android:textColorHighlight="@color/colorWhite"/>
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="textCapSentences|text" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/characters255Limit"
-                android:textColor="@color/hintColor"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="12sp"
                 android:paddingStart="10dp"
                 android:paddingEnd="5dp"

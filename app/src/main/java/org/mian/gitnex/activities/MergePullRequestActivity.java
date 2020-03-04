@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -33,7 +32,7 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class MergePullRequestActivity extends AppCompatActivity {
+public class MergePullRequestActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
@@ -45,9 +44,13 @@ public class MergePullRequestActivity extends AppCompatActivity {
     private Button mergeButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_merge_pull_request;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_merge_pull_request);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
         TinyDB tinyDb = new TinyDB(getApplicationContext());

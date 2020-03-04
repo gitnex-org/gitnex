@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import android.content.Context;
@@ -33,7 +32,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class CreateReleaseActivity extends AppCompatActivity {
+public class CreateReleaseActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     public ImageView closeActivity;
@@ -49,10 +48,14 @@ public class CreateReleaseActivity extends AppCompatActivity {
     List<Branches> branchesList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_create_release;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_release);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

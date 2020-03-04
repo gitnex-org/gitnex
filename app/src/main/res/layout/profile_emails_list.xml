@@ -7,14 +7,14 @@
     android:paddingTop="15dp"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    android:background="@color/backgroundColor" >
+    android:background="?attr/primaryBackgroundColor" >
 
     <TextView
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profileEmailTitle"
-        android:textColor="@color/white"
+        android:textColor="?attr/primaryTextColor"
         android:textSize="16sp" />
 
     <ImageView

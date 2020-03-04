@@ -102,8 +102,8 @@
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/primaryBackgroundColor"
-                android:inputType="textCapSentences|text"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="textCapSentences|text" />
 
             <TextView
                 android:layout_width="match_parent"

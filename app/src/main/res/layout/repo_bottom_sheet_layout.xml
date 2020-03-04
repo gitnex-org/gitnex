@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="8dp"
-    android:background="@color/backgroundColor"
+    android:background="?attr/primaryBackgroundColor"
     android:paddingTop="8dp">
 
     <androidx.core.widget.NestedScrollView
@@ -25,7 +25,7 @@
                 android:text="@string/pageTitleNewFile"
                 android:drawableStart="@drawable/ic_file"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -37,7 +37,7 @@
                 android:text="@string/pageTitleCreateNewIssue"
                 android:drawableStart="@drawable/ic_issue_open_white"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -49,7 +49,7 @@
                 android:text="@string/pageTitleCreateMilestone"
                 android:drawableStart="@drawable/ic_milestone"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -61,7 +61,7 @@
                 android:text="@string/createLabel"
                 android:drawableStart="@drawable/ic_label"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -73,7 +73,7 @@
                 android:text="@string/createRelease"
                 android:drawableStart="@drawable/ic_new_releases"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -87,7 +87,7 @@
                 android:text="@string/addCollaboratorTitle"
                 android:drawableStart="@drawable/ic_person_filled"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -99,7 +99,7 @@
                 android:text="@string/starRepository"
                 android:drawableStart="@drawable/ic_star_border_24dp"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -111,7 +111,7 @@
                 android:text="@string/unStarRepository"
                 android:drawableStart="@drawable/ic_star"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -123,7 +123,7 @@
                 android:text="@string/watchRepository"
                 android:drawableStart="@drawable/ic_unwatch"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -135,7 +135,7 @@
                 android:text="@string/unWatchRepository"
                 android:drawableStart="@drawable/ic_watchers"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
@@ -150,7 +150,7 @@
                 android:drawablePadding="24dp"
                 android:padding="16dp"
                 android:text="@string/openWebRepo"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
         </LinearLayout>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/pageTitleAddEmail"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profileEmailTitle"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
             />
 
@@ -66,9 +66,9 @@
             android:inputType="textEmailAddress"
             android:labelFor="@+id/userEmail"
             android:background="@drawable/shape_inputs"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textColorHighlight="@color/white"/>
+            android:textColor="?attr/inputTextColor"
+            android:textColorHint="?attr/primaryBackgroundColor"
+            android:textColorHighlight="?attr/primaryTextColor"/>
 
         <Button
             android:id="@+id/addEmailButton"

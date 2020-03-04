@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import android.content.Context;
@@ -30,7 +29,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class ProfileEmailActivity extends AppCompatActivity {
+public class ProfileEmailActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     private EditText userEmail;
@@ -38,9 +37,13 @@ public class ProfileEmailActivity extends AppCompatActivity {
     private Button addEmailButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_profile_email;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_email);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

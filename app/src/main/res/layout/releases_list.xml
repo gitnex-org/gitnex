@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundColor" >
+    android:background="?attr/primaryBackgroundColor" >
 
     <LinearLayout
         android:id="@+id/linearLayoutFrame"
@@ -11,8 +11,7 @@
         android:layout_alignParentTop="true"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
-        android:layout_margin="15dp"
-        android:theme="@style/AppTheme">
+        android:layout_margin="15dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/releaseTitle"
                 android:textIsSelectable="true"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="18sp" />
 
             <ImageView
@@ -47,7 +46,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/releaseTag"
             android:textIsSelectable="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="12sp" />
 
         <TextView
@@ -57,7 +56,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/releaseDescription"
             android:textIsSelectable="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
         <TextView
@@ -67,14 +66,14 @@
             android:text="@string/releaseDownloadText"
             android:textIsSelectable="true"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="18sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:background="@color/divider"
+            android:background="?attr/inputBackgroundColor"
             />
 
         <TextView
@@ -83,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/releaseZip"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
             android:textColorLink="@color/lightBlue"/>
 
@@ -93,7 +92,7 @@
             android:layout_height="wrap_content"
             android:text="@string/releaseTar"
             android:layout_marginTop="5dp"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
             android:textColorLink="@color/lightBlue"/>
 

@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -30,12 +29,16 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class OrgDetailActivity extends AppCompatActivity implements OrgBottomSheetFragment.BottomSheetListener {
+public class OrgDetailActivity extends BaseActivity implements OrgBottomSheetFragment.BottomSheetListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_org_detail;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_org_detail);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         String orgName = tinyDb.getString("orgName");

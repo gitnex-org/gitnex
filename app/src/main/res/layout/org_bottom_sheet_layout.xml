@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="8dp"
-    android:background="@color/backgroundColor"
+    android:background="?attr/primaryBackgroundColor"
     android:paddingTop="8dp">
 
     <androidx.core.widget.NestedScrollView
@@ -25,7 +25,7 @@
                 android:text="@string/orgCreateTeam"
                 android:drawableStart="@drawable/ic_organizations"
                 android:drawablePadding="24dp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 

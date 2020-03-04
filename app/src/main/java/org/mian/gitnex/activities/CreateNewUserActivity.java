@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import android.content.Context;
@@ -26,7 +25,7 @@ import org.mian.gitnex.util.TinyDB;
  * Author M M Arif
  */
 
-public class CreateNewUserActivity extends AppCompatActivity {
+public class CreateNewUserActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     private EditText fullName;
@@ -37,10 +36,14 @@ public class CreateNewUserActivity extends AppCompatActivity {
     final Context ctx = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_create_new_user;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_new_user);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

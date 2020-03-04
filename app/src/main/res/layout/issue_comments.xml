@@ -8,8 +8,7 @@
     android:paddingBottom="10dp"
     android:id="@+id/relativeLayoutMainFrame"
     tools:context=".activities.RepoDetailActivity"
-    android:theme="@style/AppTheme"
-    android:background="@color/backgroundColor">
+    android:background="?attr/primaryBackgroundColor">
 
     <TextView
         android:id="@+id/issueNumber"
@@ -49,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="?attr/primaryTextColor"
             android:autoLink="web"
             android:textColorLink="@color/lightBlue"
             android:textSize="16sp" />
@@ -74,14 +73,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/createdText"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/primaryTextColor"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/commentModified"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_toEndOf="@+id/issueCommentDate"
                     android:textSize="12sp"
                     android:text="@string/modifiedText" />

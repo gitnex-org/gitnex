@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name" >
 
@@ -27,6 +27,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:textSize="18sp"
+                android:textColor="?attr/primaryTextColor"
                 android:id="@+id/toolbar_title" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -54,8 +55,7 @@
                     android:id="@+id/relativeLayoutFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:theme="@style/AppTheme">
+                    android:padding="15dp">
 
                     <ImageView
                         android:id="@+id/assigneeAvatar"
@@ -70,7 +70,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/primaryTextColor"
                         android:textSize="18sp" />
 
                     <RelativeLayout
@@ -88,7 +88,7 @@
                             android:layout_gravity="start"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="?attr/primaryTextColor"
                             android:textSize="14sp" />
 
                         <TextView
@@ -99,7 +99,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="?attr/primaryTextColor"
                             android:textSize="14sp" />
 
                     </RelativeLayout>
@@ -132,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/primaryTextColor"
                         android:autoLink="web"
                         android:textColorLink="@color/lightBlue"
                         android:textSize="16sp" />
@@ -172,14 +172,14 @@
                             android:gravity="start"
                             android:text="@string/createdText"
                             android:visibility="gone"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="?attr/primaryTextColor"
                             android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/issueModified"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/primaryTextColor"
                             android:layout_toEndOf="@+id/issueCreatedTime"
                             android:textSize="12sp"
                             android:visibility="gone"
@@ -200,7 +200,7 @@
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/colorPrimary"
+                        android:background="?attr/primaryBackgroundColor"
                         android:padding="4dp"
                         android:scrollbars="vertical"
                         />

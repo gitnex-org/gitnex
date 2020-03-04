@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -33,7 +32,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class NewFileActivity extends AppCompatActivity {
+public class NewFileActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
@@ -49,10 +48,14 @@ public class NewFileActivity extends AppCompatActivity {
     List<Branches> branchesList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_new_file;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_file);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

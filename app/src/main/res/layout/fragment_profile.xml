@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundColor"
-    android:theme="@style/AppTheme"
+    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -42,7 +41,7 @@
                 android:textIsSelectable="true"
                 android:layout_marginBottom="5dp"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:layout_gravity="start"/>
 
             <TextView
@@ -53,7 +52,7 @@
                 android:layout_marginBottom="5dp"
                 android:textSize="16sp"
                 android:layout_gravity="start"
-                android:textColor="@color/white" />
+                android:textColor="?attr/primaryTextColor" />
 
             <TextView
                 android:id="@+id/userEmail"
@@ -63,7 +62,7 @@
                 android:layout_marginBottom="0dp"
                 android:textSize="16sp"
                 android:layout_gravity="start"
-                android:textColor="@color/white" />
+                android:textColor="?attr/primaryTextColor" />
 
         </LinearLayout>
 

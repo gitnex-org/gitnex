@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +33,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class CreateLabelActivity extends AppCompatActivity {
+public class CreateLabelActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     private TextView colorPicker;
@@ -43,9 +42,13 @@ public class CreateLabelActivity extends AppCompatActivity {
     final Context ctx = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_create_label;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_label);
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
         String repoFullName = tinyDb.getString("repoFullName");

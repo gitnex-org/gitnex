@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,7 +28,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class AddRemoveAssigneesActivity extends AppCompatActivity {
+public class AddRemoveAssigneesActivity extends BaseActivity {
 
     private ArrayList<MultiSelectModel> listOfCollaborators = new ArrayList<>();
     private ArrayList<Integer> issueAssigneesIds = new ArrayList<>();
@@ -38,11 +37,15 @@ public class AddRemoveAssigneesActivity extends AppCompatActivity {
     final Context ctx = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_add_remove_assignees;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_add_remove_assignees);
 
         getWindow().getDecorView().setBackground(new ColorDrawable(Color.TRANSPARENT));
 

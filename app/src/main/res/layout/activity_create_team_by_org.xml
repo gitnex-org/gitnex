@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             tools:ignore="UnusedAttribute">
 
             <ImageView
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/pageTitleCreateTeam"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newTeamTitle"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 />
 
@@ -70,15 +70,15 @@
                 android:inputType="textCapSentences|text"
                 android:labelFor="@+id/teamName"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textColorHighlight="@color/white"/>
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHighlight="?attr/primaryTextColor"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newTeamDesc"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
                 />
@@ -94,15 +94,15 @@
                 android:inputType="textCapSentences|text"
                 android:labelFor="@+id/teamDesc"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textColorHighlight="@color/white"/>
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHighlight="?attr/primaryTextColor"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newTeamPermission"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"/>
 
@@ -124,7 +124,7 @@
                 android:id="@+id/teamPermissionDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="12sp"
                 android:gravity="start"
                 android:visibility="gone"/>
@@ -133,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newTeamAccessControls"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"/>
 
@@ -146,10 +146,10 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColor="?attr/primaryTextColor"
+                android:textColorHint="?attr/primaryTextColor"
                 android:inputType="none"
-                android:textColorHighlight="@color/white"/>
+                android:textColorHighlight="?attr/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/teamAccessControlsArray"
