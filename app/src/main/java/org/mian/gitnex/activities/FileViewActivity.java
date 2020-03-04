@@ -10,10 +10,10 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
@@ -37,23 +37,29 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class FileViewActivity extends AppCompatActivity {
+public class FileViewActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     private TextView singleFileContents;
+    private LinearLayout singleFileContentsFrame;
     private HighlightJsView singleCodeContents;
     private PhotoView imageView;
     final Context ctx = this;
     private ProgressBar mProgressBar;
     private byte[] imageData;
     private PDFView pdfView;
+    private LinearLayout pdfViewFrame;
     private byte[] decodedPdf;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_file_view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,9 +76,10 @@ public class FileViewActivity extends AppCompatActivity {
         singleFileContents = findViewById(R.id.singleFileContents);
         singleCodeContents = findViewById(R.id.singleCodeContents);
         imageView = findViewById(R.id.imageView);
-        singleFileContents.setVisibility(View.GONE);
         mProgressBar = findViewById(R.id.progress_bar);
         pdfView = findViewById(R.id.pdfView);
+        pdfViewFrame = findViewById(R.id.pdfViewFrame);
+        singleFileContentsFrame = findViewById(R.id.singleFileContentsFrame);
 
         String singleFileName = getIntent().getStringExtra("singleFileName");
 
@@ -126,8 +133,9 @@ public class FileViewActivity extends AppCompatActivity {
 
                         if(appUtil.imageExtension(fileExtension)) { // file is image
 
-                            singleFileContents.setVisibility(View.GONE);
+                            singleFileContentsFrame.setVisibility(View.GONE);
                             singleCodeContents.setVisibility(View.GONE);
+                            pdfViewFrame.setVisibility(View.GONE);
                             imageView.setVisibility(View.VISIBLE);
 
                             imageData = Base64.decode(response.body().getContent(), Base64.DEFAULT);
@@ -138,7 +146,8 @@ public class FileViewActivity extends AppCompatActivity {
                         else if (appUtil.sourceCodeExtension(fileExtension)) { // file is sourcecode
 
                             imageView.setVisibility(View.GONE);
-                            singleFileContents.setVisibility(View.GONE);
+                            singleFileContentsFrame.setVisibility(View.GONE);
+                            pdfViewFrame.setVisibility(View.GONE);
                             singleCodeContents.setVisibility(View.VISIBLE);
 
                             singleCodeContents.setTheme(Theme.GRUVBOX_DARK);
@@ -149,9 +158,9 @@ public class FileViewActivity extends AppCompatActivity {
                         else if (appUtil.pdfExtension(fileExtension)) { // file is pdf
 
                             imageView.setVisibility(View.GONE);
-                            singleFileContents.setVisibility(View.GONE);
+                            singleFileContentsFrame.setVisibility(View.GONE);
                             singleCodeContents.setVisibility(View.GONE);
-                            pdfView.setVisibility(View.VISIBLE);
+                            pdfViewFrame.setVisibility(View.VISIBLE);
 
                             decodedPdf = Base64.decode(response.body().getContent(), Base64.DEFAULT);
                             pdfView.fromBytes(decodedPdf)
@@ -169,7 +178,7 @@ public class FileViewActivity extends AppCompatActivity {
                                     .fitEachPage(true)
                                     .pageSnap(false)
                                     .pageFling(true)
-                                    .nightMode(true)
+                                    .nightMode(false)
                                     .load();
 
                         }
@@ -177,7 +186,8 @@ public class FileViewActivity extends AppCompatActivity {
 
                             imageView.setVisibility(View.GONE);
                             singleCodeContents.setVisibility(View.GONE);
-                            singleFileContents.setVisibility(View.VISIBLE);
+                            pdfViewFrame.setVisibility(View.GONE);
+                            singleFileContentsFrame.setVisibility(View.VISIBLE);
 
                             singleFileContents.setText(appUtil.decodeBase64(response.body().getContent()));
 

@@ -6,7 +6,7 @@
 
     <ScrollView
         android:orientation="vertical"
-        android:background="@color/backgroundColor"
+        android:background="?attr/primaryBackgroundColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -61,7 +61,7 @@
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoName1"
                     android:textSize="16sp"
-                    android:textColor="@color/white"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:id="@+id/repoNameInfo"
@@ -71,14 +71,14 @@
                     android:textIsSelectable="true"
                     android:textSize="14sp"
                     android:paddingTop="5dp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoOwner1"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -89,14 +89,14 @@
                     android:textIsSelectable="true"
                     android:textSize="14sp"
                     android:paddingTop="5dp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoDesc"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -108,14 +108,14 @@
                     android:textSize="14sp"
                     android:paddingTop="5dp"
                     android:autoLink="web"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoWebsite"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -128,14 +128,14 @@
                     android:paddingTop="5dp"
                     android:autoLink="web"
                     android:textColorLink="@color/lightBlue"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoSize"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -146,14 +146,14 @@
                     android:textIsSelectable="true"
                     android:textSize="14sp"
                     android:paddingTop="5dp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoDefaultBranch"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -164,14 +164,14 @@
                     android:textIsSelectable="true"
                     android:textSize="14sp"
                     android:paddingTop="5dp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoSshUrl"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -184,14 +184,14 @@
                     android:paddingTop="5dp"
                     android:autoLink="web"
                     android:textColorLink="@color/lightBlue"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoCloneUrl"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -204,14 +204,14 @@
                     android:paddingTop="5dp"
                     android:autoLink="web"
                     android:textColorLink="@color/lightBlue"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoRepoUrl"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -224,14 +224,14 @@
                     android:paddingTop="5dp"
                     android:autoLink="web"
                     android:textColorLink="@color/lightBlue"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoForksCount"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -242,14 +242,14 @@
                     android:textIsSelectable="true"
                     android:textSize="14sp"
                     android:paddingTop="5dp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/infoTabRepoCreatedAt"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_marginTop="15dp"/>
 
                 <TextView
@@ -259,7 +259,7 @@
                     android:text="@string/infoTabRepoDummyTime"
                     android:textSize="14sp"
                     android:paddingTop="5dp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
             </LinearLayout>
 
@@ -310,7 +310,7 @@
                     android:layout_height="wrap_content"
                     android:textIsSelectable="true"
                     android:textSize="16sp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
             </LinearLayout>
 

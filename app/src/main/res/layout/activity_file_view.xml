@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             tools:ignore="UnusedAttribute">
 
             <ImageView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/defaultFilename"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:ellipsize="none"
                 android:scrollbars="horizontal"
                 android:singleLine="true"
@@ -46,10 +46,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/singleFileContentsFrame"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="?attr/primaryBackgroundColor"
         android:orientation="vertical">
 
         <ScrollView
@@ -61,7 +62,7 @@
                 android:id="@+id/singleFileContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="14sp"
                 android:padding="15dp"
                 android:textIsSelectable="true"
@@ -72,18 +73,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/pdfViewFrame"
         android:layout_marginTop="55dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="?attr/primaryBackgroundColor"
         android:orientation="vertical">
 
         <com.github.barteksc.pdfviewer.PDFView
             android:id="@+id/pdfView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
-            android:visibility="visible" />
+            android:background="?attr/primaryBackgroundColor" />
 
     </LinearLayout>
 
