@@ -183,7 +183,7 @@
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Sprachen</string>
     <string name="settingsDateTimeHeaderText">Datum &amp; Uhrzeit</string>
-    <string name="settingsSave">Einstellungen wurden gespeichert!</string>
+    <string name="settingsSave">Einstellungen gespeichert</string>
     <string name="settingsLanguageSelectorHeader">Sprache</string>
     <string name="settingsLanguageSelectedHeaderDefault">Englisch</string>
     <string name="settingsAppearanceHeader">Aussehen</string>
@@ -436,4 +436,7 @@
     <string name="mergeCommentText">Zusammenführ-Kommentar</string>
     <string name="mergePRSuccessMsg">Dieser Pull-Request wurde erfolgreich zusammengeführt</string>
     <string name="mergePR404ErrorMsg">Pull-Request kann nicht zusammengeführt werden</string>
+    <string name="settingsCustomFontHeaderText">Schriftart</string>
+    <string name="settingsCustomFontSelectorDialogTitle">Wähle eine Schriftart</string>
+    <string name="settingsCustomFontDefault">Roboto</string>
 </resources>

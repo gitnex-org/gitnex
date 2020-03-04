@@ -8,7 +8,7 @@ import org.mian.gitnex.models.Files;
 import org.mian.gitnex.models.MergePullRequest;
 import org.mian.gitnex.models.NewFile;
 import org.mian.gitnex.models.PullRequests;
-import org.mian.gitnex.models.UpdateIssueAssignee;
+import org.mian.gitnex.models.UpdateIssueAssignees;
 import org.mian.gitnex.models.UpdateIssueState;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.CreateIssue;
@@ -207,7 +207,7 @@ public interface ApiInterface {
     Call<Releases> createNewRelease(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body Releases jsonStr);
 
     @PATCH("repos/{owner}/{repo}/issues/{issueIndex}") // patch issue assignees
-    Call<JsonElement> patchIssueAssignee(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("issueIndex") int issueIndex, @Body UpdateIssueAssignee jsonStr);
+    Call<JsonElement> patchIssueAssignees(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("issueIndex") int issueIndex, @Body UpdateIssueAssignees jsonStr);
 
     @GET("admin/users") // get all users
     Call<List<UserInfo>> adminGetUsers(@Header("Authorization") String token);

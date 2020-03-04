@@ -18,6 +18,7 @@ This part lists all PUBLIC individuals having contributed content to the transla
  * erardiflorian
  * IndeedNotJames
  * jaqra
+ * Lafriks
  * ljoonal
  * Lunny Xiao (xiaolunwen)
  * lxs

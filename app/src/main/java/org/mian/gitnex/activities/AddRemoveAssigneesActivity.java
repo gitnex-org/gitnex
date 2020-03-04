@@ -18,7 +18,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.models.MultiSelectModel;
-import org.mian.gitnex.models.UpdateIssueAssignee;
+import org.mian.gitnex.models.UpdateIssueAssignees;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
@@ -234,14 +234,14 @@ public class AddRemoveAssigneesActivity extends AppCompatActivity {
 
     private void updateIssueAssignees(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String loginUid, int issueIndex, List<String> issueAssigneesList) {
 
-        UpdateIssueAssignee updateAssigneeJson = new UpdateIssueAssignee(issueAssigneesList);
+        UpdateIssueAssignees updateAssigneeJson = new UpdateIssueAssignees(issueAssigneesList);
 
         Call<JsonElement> call3;
 
         call3 = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
-                .patchIssueAssignee(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, updateAssigneeJson);
+                .patchIssueAssignees(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, updateAssigneeJson);
 
         call3.enqueue(new Callback<JsonElement>() {
 

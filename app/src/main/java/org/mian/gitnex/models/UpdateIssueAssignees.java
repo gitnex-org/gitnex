@@ -6,11 +6,11 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class UpdateIssueAssignee {
+public class UpdateIssueAssignees {
 
     private List<String> assignees;
 
-    public UpdateIssueAssignee(List<String> assignees) {
+    public UpdateIssueAssignees(List<String> assignees) {
         this.assignees = assignees;
     }
 

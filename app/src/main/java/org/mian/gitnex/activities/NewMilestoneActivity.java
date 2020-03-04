@@ -18,6 +18,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.VersionCheck;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.util.AppUtil;
@@ -117,15 +118,16 @@ public class NewMilestoneActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        if(newMilestoneDueDate.equals("")) {
-
+        String finalMilestoneDueDate = null;
+        if(!newMilestoneDueDate.isEmpty()) {
+            finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
+        } else if (VersionCheck.compareVersion("1.10.0", tinyDb.getString("giteaVersion")) > 1) {
+            // if Gitea version is less than 1.10.0 DueDate is required
             Toasty.info(getApplicationContext(), getString(R.string.milestoneDateEmpty));
             return;
-
         }
 
         disableProcessButton();
-        String finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
         createNewMilestone(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, newMilestoneTitle, newMilestoneDescription, finalMilestoneDueDate);
 
     }

@@ -151,7 +151,7 @@
                     android:textSize="16sp"
                     android:gravity="start"
                     android:autoLink="web"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_marginBottom="10dp"
                     android:textColorLink="@color/lightBlue" />
 
