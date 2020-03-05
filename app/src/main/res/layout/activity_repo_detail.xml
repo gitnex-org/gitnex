@@ -42,6 +42,7 @@
             app:tabTextAppearance="@style/customTabLayout"
             android:layout_width="match_parent"
             android:background="?attr/primaryBackgroundColor"
+            app:tabTextColor="?attr/primaryTextColor"
             android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem

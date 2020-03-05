@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:theme="@style/checkBoxTheme"
+        android:textColor="?attr/primaryTextColor"
         android:clickable="false" />
 
     <TextView

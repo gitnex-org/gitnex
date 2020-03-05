@@ -37,8 +37,7 @@
     <RelativeLayout
         android:id="@+id/relativeMainLayoutFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="@style/AppTheme">
+        android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
@@ -193,7 +192,7 @@
                         android:layout_height="1dp"
                         android:id="@+id/divider"
                         android:layout_marginTop="15dp"
-                        android:background="@color/divider" />
+                        android:background="?attr/inputBackgroundColor" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_below="@+id/divider"

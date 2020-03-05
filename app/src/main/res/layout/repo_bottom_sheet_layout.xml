@@ -77,7 +77,13 @@
                 android:textSize="16sp"
                 android:padding="16dp" />
 
-            <View style="@style/lineDividerHorizontal" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="64dp"
+                android:background="?attr/inputBackgroundColor" />
 
             <TextView
                 android:id="@+id/addCollaborator"
@@ -139,7 +145,13 @@
                 android:textSize="16sp"
                 android:padding="16dp" />
 
-            <View style="@style/lineDividerHorizontal" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="64dp"
+                android:background="?attr/inputBackgroundColor" />
 
             <TextView
                 android:id="@+id/openWebRepo"

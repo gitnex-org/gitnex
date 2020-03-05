@@ -17,6 +17,7 @@
         <item name="dialogTheme">@style/AppThemeConfirmDialog</item>
         <item name="popupMenuStyle">@style/AppThemePopupMenuStyle</item>
     </style>
+    <!-- Dark theme - default -->
 
     <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
@@ -34,6 +35,7 @@
         <item name="dialogTheme">@style/AppThemeLightConfirmDialog</item>
         <item name="popupMenuStyle">@style/AppThemePopupMenuStyle</item>
     </style>
+    <!-- Light theme -->
 
     <style name="AppThemeConfirmDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>

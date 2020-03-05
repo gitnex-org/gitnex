@@ -57,7 +57,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundColor">
+        android:background="?attr/primaryBackgroundColor">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,10 +80,10 @@
                 android:scrollbars="vertical"
                 android:gravity="top|start"
                 android:textSize="14sp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textColorHighlight="@color/white" />
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="textCapSentences|textMultiLine" />
 
             <Button
                 android:id="@+id/replyButton"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/colorPrimary"
+    android:background="?attr/primaryBackgroundColor"
     tools:context=".activities.OrgDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             app:layout_scrollFlags="enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name">
@@ -32,6 +32,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:textSize="18sp"
+                android:textColor="?attr/primaryTextColor"
                 android:id="@+id/toolbar_title" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -40,6 +41,7 @@
             android:id="@+id/tabs"
             app:tabTextAppearance="@style/customTabLayout"
             app:tabMode="scrollable"
+            app:tabTextColor="?attr/primaryTextColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
