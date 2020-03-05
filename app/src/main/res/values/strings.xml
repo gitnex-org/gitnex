@@ -259,6 +259,12 @@
     <string name="settingsHomeScreenHeaderText">Home Screen</string>
     <string name="settingsHomeScreenSelectedText">My Repositories</string>
     <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
+    <string name="settingsCustomFontHeaderText">Font</string>
+    <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
+    <string name="settingsCustomFontDefault">Roboto</string>
+    <string name="themeSelectorDialogTitle">Select App Theme</string>
+    <string name="themeSelectionHeaderText">Theme</string>
+    <string name="themeSelectionSelectedText" translatable="false">Dark</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -542,9 +548,5 @@
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
-
-    <string name="settingsCustomFontHeaderText">Font</string>
-    <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
-    <string name="settingsCustomFontDefault">Roboto</string>
 
 </resources>

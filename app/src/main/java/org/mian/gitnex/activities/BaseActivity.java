@@ -15,12 +15,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        setTheme(R.style.AppThemeLight);
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        if(tinyDb.getInt("themeId") == 0) {
+            setTheme(R.style.AppTheme);
+        }
+        else if(tinyDb.getInt("themeId") == 1) {
+            setTheme(R.style.AppThemeLight);
+        }
+        else {
+            setTheme(R.style.AppTheme);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
-
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         if(tinyDb.getInt("customFontId") == 0) {
 

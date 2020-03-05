@@ -104,6 +104,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
                         fMenuHelper.setAccessible(true);
                         menuHelper = fMenuHelper.get(popupMenu);
                         argTypes = new Class[] { boolean.class };
+                        assert menuHelper != null;
                         menuHelper.getClass().getDeclaredMethod("setForceShowIcon",
                                 argTypes).invoke(menuHelper, true);
 

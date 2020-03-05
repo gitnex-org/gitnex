@@ -80,6 +80,7 @@
             app:tabTextAppearance="@style/customTabLayout"
             android:layout_width="match_parent"
             app:tabTextColor="?attr/primaryTextColor"
+            android:background="?attr/primaryBackgroundColor"
             android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem
