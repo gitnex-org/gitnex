@@ -19,7 +19,7 @@
                 layout="@layout/layout_settings_appearance"/>
 
             <View
-                android:id="@+id/translationDivider"
+                android:id="@+id/fileViewDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="44dp"
@@ -27,6 +27,21 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_below="@id/timeLayout"
+                />
+
+            <include
+                android:id="@+id/fileViewLayout"
+                layout="@layout/layout_settings_fileview"/>
+
+            <View
+                android:id="@+id/translationDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@id/fileViewLayout"
                 />
 
             <include

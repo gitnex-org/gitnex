@@ -25,7 +25,7 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
     private List<UserInfo> teamMembersList;
     private Context mCtx;
 
-    private class ViewHolder {
+    private static class ViewHolder {
 
         private ImageView memberAvatar;
         private TextView memberName;
@@ -65,7 +65,7 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
 
         if (finalView == null) {
             finalView = LayoutInflater.from(mCtx).inflate(R.layout.members_by_team_by_org_list, null);
-            viewHolder = new TeamMembersByOrgAdapter.ViewHolder(finalView);
+            viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
         else {
@@ -84,6 +84,7 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
 
         final TinyDB tinyDb = new TinyDB(mCtx);
         Typeface myTypeface;
+
         if(tinyDb.getInt("customFontId") == 0) {
 
             myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
@@ -112,6 +113,16 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         else {
             viewHolder.memberName.setText(currentItem.getLogin());
             viewHolder.memberName.setTypeface(myTypeface);
+        }
+
+        if(tinyDb.getInt("themeId") == 0) { // dark
+            viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.white));
+        }
+        else if(tinyDb.getInt("themeId") == 1) { //light
+            viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.lightThemeTextColor));
+        }
+        else {
+            viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.white));
         }
 
     }

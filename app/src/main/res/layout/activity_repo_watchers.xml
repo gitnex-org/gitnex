@@ -49,6 +49,7 @@
         android:numColumns="4"
         android:columnWidth="80dp"
         android:stretchMode="columnWidth"
+        android:background="?attr/primaryBackgroundColor"
         android:gravity="center"/>
 
     <TextView

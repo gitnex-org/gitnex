@@ -19,10 +19,11 @@
         android:inputType="text"
         android:background="@drawable/shape_inputs"
         android:textColor="?attr/inputTextColor"
-        android:textColorHint="?attr/primaryBackgroundColor"
+        android:textColorHint="?attr/hintColor"
         android:hint="@string/exploreTextBoxHint"
         android:textColorHighlight="?attr/primaryTextColor"
-        android:imeOptions="actionSend" />
+        android:imeOptions="actionSend"
+        android:autofillHints="@string/exploreTextBoxHint" />
 
     <TextView
         android:id="@+id/noData"

@@ -4,7 +4,6 @@
     <!-- Dark theme - default -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
 
@@ -19,13 +18,13 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_24dp</item>
         <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
         <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
     </style>
     <!-- Dark theme - default -->
 
     <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:windowBackground">@color/lightThemeBackground</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
 
@@ -40,6 +39,7 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_24dp</item>
         <item name="autoCompleteTextViewStyle">@style/AppThemeLightSearchAutoCompleteTextView</item>
         <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
     </style>
     <!-- Light theme -->
 

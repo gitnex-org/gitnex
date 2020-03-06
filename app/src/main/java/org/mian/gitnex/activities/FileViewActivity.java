@@ -50,6 +50,7 @@ public class FileViewActivity extends BaseActivity {
     private PDFView pdfView;
     private LinearLayout pdfViewFrame;
     private byte[] decodedPdf;
+    private Boolean $nightMode;
 
     @Override
     protected int getLayoutResourceId(){
@@ -111,6 +112,8 @@ public class FileViewActivity extends BaseActivity {
 
     private void getSingleFileContents(String instanceUrl, String token, final String owner, String repo, final String filename) {
 
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
         Call<Files> call = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
@@ -162,6 +165,8 @@ public class FileViewActivity extends BaseActivity {
                             singleCodeContents.setVisibility(View.GONE);
                             pdfViewFrame.setVisibility(View.VISIBLE);
 
+                            $nightMode = tinyDb.getBoolean("enablePdfMode");
+
                             decodedPdf = Base64.decode(response.body().getContent(), Base64.DEFAULT);
                             pdfView.fromBytes(decodedPdf)
                                     .enableSwipe(true)
@@ -178,7 +183,7 @@ public class FileViewActivity extends BaseActivity {
                                     .fitEachPage(true)
                                     .pageSnap(false)
                                     .pageFling(true)
-                                    .nightMode(false)
+                                    .nightMode($nightMode)
                                     .load();
 
                         }

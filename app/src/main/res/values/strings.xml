@@ -265,6 +265,8 @@
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="themeSelectionSelectedText" translatable="false">Dark</string>
+    <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
+    <string name="fileViewerHeader">File Viewer</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>

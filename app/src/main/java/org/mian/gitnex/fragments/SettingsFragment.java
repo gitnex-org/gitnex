@@ -69,6 +69,7 @@ public class SettingsFragment extends Fragment {
         LinearLayout themeFrame = v.findViewById(R.id.themeSelectionFrame);
 
         Switch issuesSwitch =  v.findViewById(R.id.switchIssuesBadge);
+        Switch pdfModeSwitch =  v.findViewById(R.id.switchPdfMode);
         TextView helpTranslate = v.findViewById(R.id.helpTranslate);
 
         helpTranslate.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +133,16 @@ public class SettingsFragment extends Fragment {
         if(tinyDb.getBoolean("enableCounterIssueBadge")) {
             issuesSwitch.setChecked(true);
         }
+        else {
+            issuesSwitch.setChecked(false);
+        }
+
+        if(tinyDb.getBoolean("enablePdfMode")) {
+            pdfModeSwitch.setChecked(true);
+        }
+        else {
+            pdfModeSwitch.setChecked(false);
+        }
 
         // issues badge switcher
         issuesSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -143,6 +154,21 @@ public class SettingsFragment extends Fragment {
                 } else {
                     tinyDb.putBoolean("enableCounterIssueBadge", false);
                     tinyDb.putString("enableCounterIssueBadgeInit", "yes");
+                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+                }
+            }
+        });
+
+        // pdf night mode switcher
+        pdfModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    tinyDb.putBoolean("enablePdfMode", true);
+                    tinyDb.putString("enablePdfModeInit", "yes");
+                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+                } else {
+                    tinyDb.putBoolean("enablePdfMode", false);
+                    tinyDb.putString("enablePdfModeInit", "yes");
                     Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
                 }
             }
