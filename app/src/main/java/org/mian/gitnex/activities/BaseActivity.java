@@ -17,10 +17,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
-        if(tinyDb.getInt("themeId") == 0) {
-            setTheme(R.style.AppTheme);
-        }
-        else if(tinyDb.getInt("themeId") == 1) {
+        if(tinyDb.getInt("themeId") == 1) {
             setTheme(R.style.AppThemeLight);
         }
         else {

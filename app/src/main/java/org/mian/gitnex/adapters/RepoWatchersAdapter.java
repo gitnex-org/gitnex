@@ -114,13 +114,10 @@ public class RepoWatchersAdapter extends BaseAdapter {
             viewHolder.memberName.setTypeface(myTypeface);
         }
 
-        if(tinyDb.getInt("themeId") == 0) { // dark
-            viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.white));
-        }
-        else if(tinyDb.getInt("themeId") == 1) { //light
+        if(tinyDb.getInt("themeId") == 1) { //light
             viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.lightThemeTextColor));
         }
-        else {
+        else { // dark
             viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.white));
         }
 
