@@ -55,7 +55,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             android:padding="4dp"
             android:scrollbars="vertical" />
 
