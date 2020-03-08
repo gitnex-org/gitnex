@@ -50,7 +50,7 @@ public class FileViewActivity extends BaseActivity {
     private PDFView pdfView;
     private LinearLayout pdfViewFrame;
     private byte[] decodedPdf;
-    private Boolean $nightMode;
+    private Boolean pdfNightMode;
 
     @Override
     protected int getLayoutResourceId(){
@@ -165,7 +165,7 @@ public class FileViewActivity extends BaseActivity {
                             singleCodeContents.setVisibility(View.GONE);
                             pdfViewFrame.setVisibility(View.VISIBLE);
 
-                            $nightMode = tinyDb.getBoolean("enablePdfMode");
+                            pdfNightMode = tinyDb.getBoolean("enablePdfMode");
 
                             decodedPdf = Base64.decode(response.body().getContent(), Base64.DEFAULT);
                             pdfView.fromBytes(decodedPdf)
@@ -183,7 +183,7 @@ public class FileViewActivity extends BaseActivity {
                                     .fitEachPage(true)
                                     .pageSnap(false)
                                     .pageFling(true)
-                                    .nightMode($nightMode)
+                                    .nightMode(pdfNightMode)
                                     .load();
 
                         }
