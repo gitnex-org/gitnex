@@ -35,6 +35,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
@@ -388,7 +389,8 @@ public class IssueDetailActivity extends BaseActivity {
                         tinyDb.putString("issueTitle", singleIssue.getTitle());
 
                         Picasso.get().load(singleIssue.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
-                        issueTitle.setText(getString(R.string.issueTitleWithId, singleIssue.getNumber(), singleIssue.getTitle()));
+                        String issueNumber_ = "<font color='" + getApplicationContext().getResources().getColor(R.color.lightGray) + "'>" + getApplicationContext().getResources().getString(R.string.hash) + singleIssue.getNumber() + "</font>";
+                        issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
                         String cleanIssueDescription = singleIssue.getBody().trim();
                         Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
                         markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(getApplicationContext(), bodyWithMD, cleanIssueDescription));
