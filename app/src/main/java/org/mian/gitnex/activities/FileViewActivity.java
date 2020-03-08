@@ -1,13 +1,18 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,13 +28,21 @@ import com.pddstudio.highlightjs.models.Theme;
 import org.apache.commons.io.FilenameUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -37,7 +50,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class FileViewActivity extends BaseActivity {
+public class FileViewActivity extends BaseActivity implements BottomSheetFileViewerFragment.BottomSheetListener {
 
     private View.OnClickListener onClickListener;
     private TextView singleFileContents;
@@ -133,6 +146,10 @@ public class FileViewActivity extends BaseActivity {
 
                         String fileExtension = FilenameUtils.getExtension(filename);
                         mProgressBar.setVisibility(View.GONE);
+
+                        // download contents
+                        tinyDb.putString("downloadFileName", filename);
+                        tinyDb.putString("downloadFileContents", response.body().getContent());
 
                         if(appUtil.imageExtension(fileExtension)) { // file is image
 
@@ -236,6 +253,74 @@ public class FileViewActivity extends BaseActivity {
                 Log.e("onFailure", t.toString());
             }
         });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.genericMenu:
+                BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
+                bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public void onButtonClicked(String text) {
+
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        switch (text) {
+            case "downloadFile":
+                //startActivity(new Intent(FileViewActivity.this, CreateNewUserActivity.class));
+                byte[] img = tinyDb.getString("downloadFileContents").getBytes();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, tinyDb.getString("downloadFileContents").length());
+
+                /*new ImageSaver(getApplicationContext()).
+                        setFileName("1.jpg").
+                        setDirectoryName("images").
+                        save(bitmap);*/
+
+                final File dwldsPath = new File(Environment.getExternalStorageDirectory().getPath() + "/Download/1.pdf");
+                try {
+                    dwldsPath.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                byte[] pdfAsBytes = Base64.decode(img, 0);
+                FileOutputStream os = null;
+                try {
+                    os = new FileOutputStream(dwldsPath, false);
+                    Objects.requireNonNull(os).write(pdfAsBytes);
+                    os.flush();
+                    os.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                Log.i("imgsaved", tinyDb.getString("downloadFileName"));
+                break;
+        }
 
     }
 
