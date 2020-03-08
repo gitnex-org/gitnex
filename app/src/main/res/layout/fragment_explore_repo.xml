@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
     <EditText
@@ -18,11 +18,12 @@
         android:layout_marginBottom="20dp"
         android:inputType="text"
         android:background="@drawable/shape_inputs"
-        android:textColor="@color/white"
-        android:textColorHint="@color/colorAccent"
+        android:textColor="?attr/inputTextColor"
+        android:textColorHint="?attr/hintColor"
         android:hint="@string/exploreTextBoxHint"
-        android:textColorHighlight="@color/white"
-        android:imeOptions="actionSend" />
+        android:textColorHighlight="?attr/primaryTextColor"
+        android:imeOptions="actionSend"
+        android:autofillHints="@string/exploreTextBoxHint" />
 
     <TextView
         android:id="@+id/noData"
@@ -31,7 +32,7 @@
         android:layout_margin="15dp"
         android:gravity="center"
         android:text="@string/noDataFound"
-        android:textColor="@color/white"
+        android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
         android:visibility="gone" />
 
@@ -47,7 +48,7 @@
         android:id="@+id/recyclerViewReposSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="?attr/primaryBackgroundColor"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"

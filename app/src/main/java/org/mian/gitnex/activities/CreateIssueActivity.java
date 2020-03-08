@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,13 +39,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Author M M Arif
  */
 
-public class CreateIssueActivity extends AppCompatActivity implements View.OnClickListener {
+public class CreateIssueActivity extends BaseActivity implements View.OnClickListener {
 
     private View.OnClickListener onClickListener;
     MultiSelectDialog multiSelectDialog;
@@ -69,9 +67,13 @@ public class CreateIssueActivity extends AppCompatActivity implements View.OnCli
     private ArrayAdapter<Mention> defaultMentionAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_create_issue;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_issue);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

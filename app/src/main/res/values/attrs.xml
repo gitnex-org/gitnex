@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="primaryTextColor" format="reference"/>
+    <attr name="primaryBackgroundColor" format="reference" />
+    <attr name="inputBackgroundColor" format="reference" />
+    <attr name="hintColor" format="reference" />
+    <attr name="inputTextColor" format="reference" />
+    <attr name="selectedTextColor" format="reference" />
+    <attr name="alertDialogTheme" format="reference" />
+</resources>

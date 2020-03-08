@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +32,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class ReplyToIssueActivity extends AppCompatActivity {
+public class ReplyToIssueActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
@@ -45,10 +44,14 @@ public class ReplyToIssueActivity extends AppCompatActivity {
     private Button replyButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_reply_to_issue;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reply_to_issue);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
         TinyDB tinyDb = new TinyDB(getApplicationContext());

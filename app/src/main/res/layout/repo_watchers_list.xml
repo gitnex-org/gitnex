@@ -4,7 +4,6 @@
     android:id="@+id/gridViewData"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <ImageView
@@ -21,7 +20,6 @@
         android:gravity="top|center_horizontal"
         android:layout_marginTop="1dp"
         android:text="@string/watcherMember"
-        android:textSize="14sp"
-        android:textColor="@color/white" />
+        android:textSize="14sp" />
 
 </LinearLayout>

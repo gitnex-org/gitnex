@@ -7,7 +7,7 @@
     android:paddingTop="10dp"
     android:paddingStart="15dp"
     android:paddingEnd="15dp"
-    android:background="@color/backgroundColor" >
+    android:background="?attr/primaryBackgroundColor" >
 
     <LinearLayout
         android:id="@+id/userInfoSection"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:text="@string/userName"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
         <TextView
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:text="@string/userName"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
         <TextView
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:text="@string/userEmail"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
     </LinearLayout>

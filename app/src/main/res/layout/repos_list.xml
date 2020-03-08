@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundColor" >
+    android:background="?attr/primaryBackgroundColor" >
 
     <TextView
         android:id="@+id/repoType"
@@ -20,7 +20,6 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:layout_margin="10dp"
-        android:theme="@style/AppTheme"
         tools:context=".activities.MainActivity">
 
         <ImageView
@@ -51,7 +50,7 @@
                     android:layout_weight=".95"
                     android:layout_marginBottom="5dp"
                     android:text="@string/repoName"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:textSize="18sp" />
 
                 <ImageView
@@ -71,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="@string/repoFullname"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
             <TextView
@@ -80,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="@string/repoDescription"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:visibility="gone" />
 
@@ -101,7 +100,7 @@
                     android:gravity="center_vertical"
                     android:layout_gravity="center_vertical"
                     android:text="@string/repoWatchers"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/primaryTextColor"
                     android:textSize="14sp" />
 
                 <TextView
@@ -114,7 +113,7 @@
                     android:gravity="center_vertical"
                     android:layout_gravity="center_vertical"
                     android:text="@string/repoStars"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/primaryTextColor"
                     android:textSize="14sp" />
 
                 <TextView
@@ -127,7 +126,7 @@
                     android:gravity="center_vertical"
                     android:layout_gravity="center_vertical"
                     android:text="@string/repoWatchers"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/primaryTextColor"
                     android:textSize="14sp" />
 
                 <ImageView

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:background="@color/colorPrimary"
+    android:background="?attr/primaryBackgroundColor"
     android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatCheckBox
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:theme="@style/checkBoxTheme"
+        android:textColor="?attr/primaryTextColor"
         android:clickable="false" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
-        android:textColor="@color/white"
+        android:textColor="?attr/primaryTextColor"
         android:textSize="18sp" />
 
 </LinearLayout>

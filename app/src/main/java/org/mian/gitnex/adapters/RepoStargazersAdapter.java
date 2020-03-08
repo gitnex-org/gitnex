@@ -25,7 +25,7 @@ public class RepoStargazersAdapter extends BaseAdapter {
     private List<UserInfo> stargazersList;
     private Context mCtx;
 
-    private class ViewHolder {
+    private static class ViewHolder {
 
         private ImageView memberAvatar;
         private TextView memberName;
@@ -64,7 +64,7 @@ public class RepoStargazersAdapter extends BaseAdapter {
 
         if (finalView == null) {
             finalView = LayoutInflater.from(mCtx).inflate(R.layout.repo_stargazers_list, null);
-            viewHolder = new RepoStargazersAdapter.ViewHolder(finalView);
+            viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
         else {
@@ -83,6 +83,7 @@ public class RepoStargazersAdapter extends BaseAdapter {
 
         final TinyDB tinyDb = new TinyDB(mCtx);
         Typeface myTypeface;
+
         if(tinyDb.getInt("customFontId") == 0) {
 
             myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
@@ -111,6 +112,13 @@ public class RepoStargazersAdapter extends BaseAdapter {
         else {
             viewHolder.memberName.setText(currentItem.getLogin());
             viewHolder.memberName.setTypeface(myTypeface);
+        }
+
+        if(tinyDb.getInt("themeId") == 1) { //light
+            viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.lightThemeTextColor));
+        }
+        else { // dark
+            viewHolder.memberName.setTextColor(mCtx.getResources().getColor(R.color.white));
         }
 
     }

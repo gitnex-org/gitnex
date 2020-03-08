@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import android.app.DatePickerDialog;
@@ -29,7 +28,7 @@ import java.util.Calendar;
  * Author M M Arif
  */
 
-public class NewMilestoneActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewMilestoneActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText milestoneDueDate;
     private View.OnClickListener onClickListener;
@@ -39,9 +38,13 @@ public class NewMilestoneActivity extends AppCompatActivity implements View.OnCl
     final Context ctx = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_new_milestone;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_milestone);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

@@ -90,9 +90,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
                 public void onClick(View v) {
 
                     final Context context = v.getContext();
-                    Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+                    //Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
 
-                    PopupMenu popupMenu = new PopupMenu(context_, v);
+                    PopupMenu popupMenu = new PopupMenu(context, v);
                     popupMenu.inflate(R.menu.issue_comment_menu);
 
                     Object menuHelper;

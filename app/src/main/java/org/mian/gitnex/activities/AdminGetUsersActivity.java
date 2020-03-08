@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -35,7 +34,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class AdminGetUsersActivity extends AppCompatActivity implements AdminUsersBottomSheetFragment.BottomSheetListener {
+public class AdminGetUsersActivity extends BaseActivity implements AdminUsersBottomSheetFragment.BottomSheetListener {
 
     private View.OnClickListener onClickListener;
     final Context ctx = this;
@@ -45,10 +44,14 @@ public class AdminGetUsersActivity extends AppCompatActivity implements AdminUse
     private Boolean searchFilter = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_admin_get_users;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_get_users);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");

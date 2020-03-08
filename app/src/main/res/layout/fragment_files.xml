@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:CustomTextSize="16sp"
-            app:SelectedTextColor="@color/colorAccent"
+            app:SelectedTextColor="?attr/primaryTextColor"
             app:UnSelectedTextColor="@color/lightGray"
             android:text="@string/filesBreadcrumbRoot"/>
 
@@ -34,7 +34,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             android:padding="4dp"
             android:scrollbars="vertical" />
 
@@ -45,7 +45,7 @@
             android:layout_margin="15dp"
             android:gravity="center"
             android:text="@string/noDataFilesTab"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="20sp"
             android:visibility="gone" />
 

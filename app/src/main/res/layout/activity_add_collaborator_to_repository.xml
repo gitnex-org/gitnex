@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorPrimary">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             tools:ignore="UnusedAttribute">
 
             <ImageView
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/addCollaboratorTitle"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
@@ -54,10 +54,10 @@
         android:inputType="text"
         android:labelFor="@+id/addCollaboratorSearch"
         android:background="@drawable/shape_inputs"
-        android:textColor="@color/white"
-        android:textColorHint="@color/colorAccent"
+        android:textColor="?attr/inputTextColor"
+        android:textColorHint="?attr/primaryBackgroundColor"
+        android:textColorHighlight="?attr/primaryTextColor"
         android:hint="@string/addCollaboratorSearchHint"
-        android:textColorHighlight="@color/white"
         android:imeOptions="actionSend"/>
 
     <TextView
@@ -67,7 +67,7 @@
         android:layout_margin="15dp"
         android:gravity="center"
         android:text="@string/noDataFound"
-        android:textColor="@color/white"
+        android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
         android:visibility="gone" />
 
@@ -83,7 +83,7 @@
         android:id="@+id/recyclerViewUserSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="?attr/primaryBackgroundColor"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginTop="5dp"

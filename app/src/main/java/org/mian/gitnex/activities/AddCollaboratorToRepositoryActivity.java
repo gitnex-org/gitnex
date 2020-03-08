@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,13 +24,12 @@ import org.mian.gitnex.models.UserSearch;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.TinyDB;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Author M M Arif
  */
 
-public class AddCollaboratorToRepositoryActivity extends AppCompatActivity {
+public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     final Context ctx = this;
@@ -42,9 +40,13 @@ public class AddCollaboratorToRepositoryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_add_collaborator_to_repository;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_collaborator_to_repository);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");

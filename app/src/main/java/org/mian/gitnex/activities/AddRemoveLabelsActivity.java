@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -27,7 +25,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class AddRemoveLabelsActivity extends AppCompatActivity {
+public class AddRemoveLabelsActivity extends BaseActivity {
 
     private ArrayList<MultiSelectModel> listOfLabels = new ArrayList<>();
     private ArrayList<Integer> issueLabelIds = new ArrayList<>();
@@ -36,10 +34,14 @@ public class AddRemoveLabelsActivity extends AppCompatActivity {
     final Context ctx = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_add_remove_labels;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_add_remove_labels);
+        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
         getWindow().getDecorView().setBackground(new ColorDrawable(Color.TRANSPARENT));
 

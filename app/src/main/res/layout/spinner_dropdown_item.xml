@@ -6,5 +6,5 @@
     android:padding="10dp"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
-    android:background="@color/colorPrimary"
-    android:textColor="@color/colorWhite"/>
+    android:background="?attr/primaryBackgroundColor"
+    android:textColor="?attr/primaryTextColor"/>

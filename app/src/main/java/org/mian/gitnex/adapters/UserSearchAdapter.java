@@ -68,7 +68,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
 
                     final Context context = v.getContext();
 
-                    AlertDialog.Builder pBuilder = new AlertDialog.Builder(context, R.style.confirmDialog);
+                    AlertDialog.Builder pBuilder = new AlertDialog.Builder(context);
 
                     pBuilder.setTitle(R.string.newTeamPermission);
                     pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, new DialogInterface.OnClickListener() {

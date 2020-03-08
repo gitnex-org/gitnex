@@ -18,9 +18,9 @@
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/backgroundColor"
+            android:background="?attr/primaryBackgroundColor"
             android:id="@+id/toolbar"
-            app:titleTextColor="@color/white"
+            app:titleTextColor="?attr/primaryTextColor"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:elevation="4dp">
@@ -31,6 +31,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:textSize="18sp"
+                android:textColor="?attr/primaryTextColor"
                 android:id="@+id/toolbar_title" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -49,9 +50,9 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"
-        android:background="@color/backgroundColor"
-        app:itemIconTint="@color/white"
+        android:background="?attr/primaryBackgroundColor"
+        app:itemIconTint="?attr/primaryTextColor"
         app:itemTextAppearance="@style/DrawerIcon"
-        app:itemTextColor="@color/white" />
+        app:itemTextColor="?attr/primaryTextColor" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

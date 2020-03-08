@@ -6,7 +6,7 @@
     android:paddingBottom="10dp"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    android:background="@color/backgroundColor" >
+    android:background="?attr/primaryBackgroundColor" >
 
     <ImageView
         android:id="@+id/userAvatar"
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="@string/userName"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="@string/addCollaboratorViewUserDesc"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="14sp" />
 
     </LinearLayout>

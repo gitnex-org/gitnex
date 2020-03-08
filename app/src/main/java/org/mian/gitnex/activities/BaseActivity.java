@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.util.TinyDB;
 
@@ -14,10 +15,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        if(tinyDb.getInt("themeId") == 1) {
+            setTheme(R.style.AppThemeLight);
+        }
+        else {
+            setTheme(R.style.AppTheme);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
-
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         if(tinyDb.getInt("customFontId") == 0) {
 

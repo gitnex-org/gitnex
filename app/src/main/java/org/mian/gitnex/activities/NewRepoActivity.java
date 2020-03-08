@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,7 +32,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class NewRepoActivity extends AppCompatActivity {
+public class NewRepoActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
@@ -47,9 +46,13 @@ public class NewRepoActivity extends AppCompatActivity {
     List<OrgOwner> orgsList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_new_repo;
+    }
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_repo);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             tools:ignore="UnusedAttribute">
 
             <ImageView
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
@@ -49,6 +49,7 @@
         android:numColumns="4"
         android:columnWidth="80dp"
         android:stretchMode="columnWidth"
+        android:background="?attr/primaryBackgroundColor"
         android:gravity="center"/>
 
     <TextView
@@ -58,7 +59,7 @@
         android:layout_margin="15dp"
         android:gravity="center"
         android:text="@string/noDataFound"
-        android:textColor="@color/white"
+        android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
         android:visibility="gone" />
 

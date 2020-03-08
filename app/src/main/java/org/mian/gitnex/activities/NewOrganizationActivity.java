@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +24,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class NewOrganizationActivity extends AppCompatActivity {
+public class NewOrganizationActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
@@ -36,9 +35,13 @@ public class NewOrganizationActivity extends AppCompatActivity {
     final Context ctx = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_new_organization;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_organization);
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 

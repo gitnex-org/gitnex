@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Dark theme - default -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="primaryTextColor">@color/colorWhite</item>
+        <item name="primaryBackgroundColor">@color/colorPrimary</item>
+        <item name="inputBackgroundColor">@color/inputBackground</item>
+        <item name="inputTextColor">@color/colorWhite</item>
+        <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/darkGreen</item>
+        <item name="alertDialogTheme">@style/AppThemeConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemePopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_24dp</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
+        <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
+    </style>
+    <!-- Dark theme - default -->
+
+    <!-- Light theme -->
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="primaryTextColor">@color/lightThemeTextColor</item>
+        <item name="primaryBackgroundColor">@color/lightThemeBackground</item>
+        <item name="inputBackgroundColor">@color/lightThemeInputBackground</item>
+        <item name="inputTextColor">@color/lightThemeInputTextColor</item>
+        <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/darkGreen</item>
+        <item name="alertDialogTheme">@style/AppThemeLightConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemeLightPopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_24dp</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeLightSearchAutoCompleteTextView</item>
+        <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
+    </style>
+    <!-- Light theme -->
+
+    <style name="AppThemeLightSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:textColor">@color/lightThemeTextColor</item>
+        <item name="android:textColorHint">@color/lightThemeTextColor</item>
+    </style>
+
+    <style name="AppThemeDarkSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorHint">@color/colorWhite</item>
+    </style>
+
+    <style name="AppThemeConfirmDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
+    </style>
+
+    <style name="AppThemeLightConfirmDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
+        <item name="android:textColor">@color/lightThemeTextColor</item>
+        <item name="colorControlNormal">@color/lightThemeTextColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
+    </style>
+
+    <style name="AppThemePopupMenuStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
+    </style>
+
+    <style name="AppThemeLightPopupMenuStyle" parent="Widget.AppCompat.Light.PopupMenu">
+        <item name="android:popupBackground">@color/white</item>
+        <item name="android:itemBackground">@color/lightThemeBackground</item>
+        <item name="android:textColor">@color/lightThemeTextColor</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
+    </style>
+
+    <style name="AppThemeLightCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/colorDarkGreen</item>
+    </style>
+
+    <style name="AppThemeCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/colorWhite</item>
+    </style>
+
+</resources>

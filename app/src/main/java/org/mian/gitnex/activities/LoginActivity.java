@@ -403,7 +403,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             return;
                         case UNSUPPORTED_OLD:
 
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx);
 
                             alertDialogBuilder
                                     .setTitle(getString(R.string.versionAlertDialogHeader))

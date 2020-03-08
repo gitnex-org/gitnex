@@ -9,8 +9,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:layout_margin="10dp"
-    android:theme="@style/AppTheme"
-    android:background="@color/backgroundColor"
+    android:background="?attr/primaryBackgroundColor"
     tools:context=".activities.MainActivity">
 
     <TextView
@@ -41,7 +40,7 @@
             android:layout_weight=".80"
             android:layout_marginBottom="0dp"
             android:text="@string/defaultFilename"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
         <ImageView

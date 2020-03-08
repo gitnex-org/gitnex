@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/relativeLayoutMainFrame"
-    android:background="@color/backgroundColor">
+    android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="18sp" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/teamDescription"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:layout_marginBottom="10dp"
             android:textSize="14sp" />
 
@@ -42,7 +42,7 @@
             android:text="@string/teamPermission"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:textColor="@color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="14sp" />
 
     </LinearLayout>

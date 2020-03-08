@@ -44,6 +44,9 @@ public class SettingsFragment extends Fragment {
     private static String[] customFontList = {"Roboto", "Manrope", "Source Code Pro"};
     private static int customFontSelectedChoice = 0;
 
+    private static String[] themeList = {"Dark", "Light"};
+    private static int themeSelectedChoice = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,14 +59,17 @@ public class SettingsFragment extends Fragment {
         final TextView codeBlockSelected = v.findViewById(R.id.codeBlockSelected); // setter for code block
         final TextView homeScreenSelected = v.findViewById(R.id.homeScreenSelected); // setter for home screen
         final TextView customFontSelected = v.findViewById(R.id.customFontSelected); // setter for custom font
+        final TextView themeSelected = v.findViewById(R.id.themeSelected); // setter for theme
 
         LinearLayout langFrame = v.findViewById(R.id.langFrame);
         LinearLayout timeFrame = v.findViewById(R.id.timeFrame);
         LinearLayout codeBlockFrame = v.findViewById(R.id.codeBlockFrame);
         LinearLayout homeScreenFrame = v.findViewById(R.id.homeScreenFrame);
         LinearLayout customFontFrame = v.findViewById(R.id.customFontFrame);
+        LinearLayout themeFrame = v.findViewById(R.id.themeSelectionFrame);
 
         Switch issuesSwitch =  v.findViewById(R.id.switchIssuesBadge);
+        Switch pdfModeSwitch =  v.findViewById(R.id.switchPdfMode);
         TextView helpTranslate = v.findViewById(R.id.helpTranslate);
 
         helpTranslate.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +102,10 @@ public class SettingsFragment extends Fragment {
             customFontSelected.setText(tinyDb.getString("customFontStr"));
         }
 
+        if(!tinyDb.getString("themeStr").isEmpty()) {
+            themeSelected.setText(tinyDb.getString("themeStr"));
+        }
+
         if(langSelectedChoice == 0) {
             langSelectedChoice = tinyDb.getInt("langId");
         }
@@ -116,8 +126,22 @@ public class SettingsFragment extends Fragment {
             customFontSelectedChoice = tinyDb.getInt("customFontId");
         }
 
+        if(themeSelectedChoice == 0) {
+            themeSelectedChoice = tinyDb.getInt("themeId");
+        }
+
         if(tinyDb.getBoolean("enableCounterIssueBadge")) {
             issuesSwitch.setChecked(true);
+        }
+        else {
+            issuesSwitch.setChecked(false);
+        }
+
+        if(tinyDb.getBoolean("enablePdfMode")) {
+            pdfModeSwitch.setChecked(true);
+        }
+        else {
+            pdfModeSwitch.setChecked(false);
         }
 
         // issues badge switcher
@@ -135,12 +159,65 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        // pdf night mode switcher
+        pdfModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    tinyDb.putBoolean("enablePdfMode", true);
+                    tinyDb.putString("enablePdfModeInit", "yes");
+                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+                } else {
+                    tinyDb.putBoolean("enablePdfMode", false);
+                    tinyDb.putString("enablePdfModeInit", "yes");
+                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+                }
+            }
+        });
+
+        // theme selection dialog
+        themeFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder tsBuilder = new AlertDialog.Builder(ctx);
+
+                tsBuilder.setTitle(R.string.themeSelectorDialogTitle);
+                if(themeSelectedChoice != -1) {
+                    tsBuilder.setCancelable(true);
+                }
+                else {
+                    tsBuilder.setCancelable(false);
+                }
+
+                tsBuilder.setSingleChoiceItems(themeList, themeSelectedChoice, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterfaceTheme, int i) {
+
+                        themeSelectedChoice = i;
+                        themeSelected.setText(themeList[i]);
+                        tinyDb.putString("themeStr", themeList[i]);
+                        tinyDb.putInt("themeId", i);
+
+                        Objects.requireNonNull(getActivity()).recreate();
+                        getActivity().overridePendingTransition(0, 0);
+                        dialogInterfaceTheme.dismiss();
+                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+
+                    }
+                });
+
+                AlertDialog cfDialog = tsBuilder.create();
+                cfDialog.show();
+
+            }
+        });
+
         // custom font dialog
         customFontFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx);
 
                 cfBuilder.setTitle(R.string.settingsCustomFontSelectorDialogTitle);
                 if(customFontSelectedChoice != -1) {
@@ -178,7 +255,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder hsBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder hsBuilder = new AlertDialog.Builder(ctx);
 
                 hsBuilder.setTitle(R.string.settingshomeScreenSelectorDialogTitle);
                 if(homeScreenSelectedChoice != -1) {
@@ -214,7 +291,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder cBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder cBuilder = new AlertDialog.Builder(ctx);
 
                 cBuilder.setTitle(R.string.settingsCodeBlockSelectorDialogTitle);
                 if(codeBlockSelectedChoice != -1) {
@@ -273,7 +350,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder lBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder lBuilder = new AlertDialog.Builder(ctx);
 
                 lBuilder.setTitle(R.string.settingsLanguageSelectorDialogTitle);
                 if(langSelectedChoice != -1) {
@@ -362,7 +439,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AlertDialog.Builder tBuilder = new AlertDialog.Builder(ctx, R.style.confirmDialog);
+                AlertDialog.Builder tBuilder = new AlertDialog.Builder(ctx);
 
                 tBuilder.setTitle(R.string.settingsTimeSelectorDialogTitle);
                 if(timeSelectedChoice != -1) {
