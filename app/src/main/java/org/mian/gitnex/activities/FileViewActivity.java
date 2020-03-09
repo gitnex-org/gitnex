@@ -3,6 +3,7 @@ package org.mian.gitnex.activities;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.os.Environment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -205,6 +207,18 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
                                     .pageFling(true)
                                     .nightMode(pdfNightMode)
                                     .load();
+
+                        }
+                        else if (appUtil.excludeFilesInFileViewerExtension(fileExtension)) { // files need to be excluded
+
+                            imageView.setVisibility(View.GONE);
+                            singleCodeContents.setVisibility(View.GONE);
+                            pdfViewFrame.setVisibility(View.GONE);
+                            singleFileContentsFrame.setVisibility(View.VISIBLE);
+
+                            singleFileContents.setText(getResources().getString(R.string.excludeFilesInFileviewer));
+                            singleFileContents.setGravity(Gravity.CENTER);
+                            singleFileContents.setTypeface(null, Typeface.BOLD);
 
                         }
                         else { // file type not known - plain text view

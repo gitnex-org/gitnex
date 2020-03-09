@@ -218,7 +218,8 @@ public class AppUtil {
                 "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt",
                 "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs",
                 "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js",
-                "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat"};
+                "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat",
+                "twig"};
 
         return Arrays.asList(extValues).contains(ext);
 
@@ -235,6 +236,16 @@ public class AppUtil {
     public Boolean imageExtension(String ext) {
 
         String[] extValues = new String[] {"jpg", "jpeg", "gif", "png", "ico"};
+
+        return Arrays.asList(extValues).contains(ext);
+
+    }
+
+    public Boolean excludeFilesInFileViewerExtension(String ext) {
+
+        String[] extValues = new String[] {"doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt",
+                "ott", "odf", "ods", "ots", "exe", "jar", "odg", "otg", "odp", "otp", "bin", "dmg", "psd",
+                "xcf"};
 
         return Arrays.asList(extValues).contains(ext);
 
