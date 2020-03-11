@@ -70,6 +70,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:textColor="?attr/primaryTextColor"
+                        android:textIsSelectable="true"
                         android:textSize="18sp" />
 
                     <RelativeLayout
@@ -134,6 +135,7 @@
                         android:textColor="?attr/primaryTextColor"
                         android:autoLink="web"
                         android:textColorLink="@color/lightBlue"
+                        android:textIsSelectable="true"
                         android:textSize="16sp" />
 
                     <HorizontalScrollView
