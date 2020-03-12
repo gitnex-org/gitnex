@@ -52,6 +52,7 @@ public class PullRequestsFragment extends Fragment {
     private int pageSize = 1;
     private TextView noData;
     private String prState = "open";
+    private int resultLimit = 50;
 
     @Nullable
     @Override
@@ -87,7 +88,7 @@ public class PullRequestsFragment extends Fragment {
                     public void run() {
 
                         swipeRefresh.setRefreshing(false);
-                        loadInitial(instanceToken, repoOwner, repoName, pageSize, prState);
+                        loadInitial(instanceToken, repoOwner, repoName, pageSize, prState, resultLimit);
                         adapter.notifyDataChanged();
 
                     }
@@ -106,7 +107,7 @@ public class PullRequestsFragment extends Fragment {
                         if(prList.size() == 10 || pageSize == 10) {
 
                             int page = (prList.size() + 10) / 10;
-                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, prState);
+                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, prState, resultLimit);
 
                         }
                         /*else {
@@ -128,7 +129,7 @@ public class PullRequestsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         apiPR = PullRequestsService.createService(ApiInterface.class, instanceUrl, getContext());
-        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, prState);
+        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, prState, resultLimit);
 
         return v;
 
@@ -148,16 +149,16 @@ public class PullRequestsFragment extends Fragment {
 
         if(tinyDb.getBoolean("resumePullRequests")) {
 
-            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, prState);
+            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, prState, resultLimit);
             tinyDb.putBoolean("resumePullRequests", false);
 
         }
 
     }
 
-    private void loadInitial(String token, String repoOwner, String repoName, int page, String prState) {
+    private void loadInitial(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
 
-        Call<List<PullRequests>> call = apiPR.getPullRequests(token, repoOwner, repoName, page, prState);
+        Call<List<PullRequests>> call = apiPR.getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
 
         call.enqueue(new Callback<List<PullRequests>>() {
 
@@ -199,13 +200,13 @@ public class PullRequestsFragment extends Fragment {
 
     }
 
-    private void loadMore(String token, String repoOwner, String repoName, int page, String prState){
+    private void loadMore(String token, String repoOwner, String repoName, int page, String prState, int resultLimit){
 
         //add loading progress view
         prList.add(new PullRequests("load"));
         adapter.notifyItemInserted((prList.size() - 1));
 
-        Call<List<PullRequests>> call = apiPR.getPullRequests(token, repoOwner, repoName, page, prState);
+        Call<List<PullRequests>> call = apiPR.getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
 
         call.enqueue(new Callback<List<PullRequests>>() {
 

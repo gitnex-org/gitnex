@@ -50,6 +50,7 @@ public class IssuesFragment extends Fragment {
     private Context context;
     private int pageSize = 1;
     private TextView noDataIssues;
+    private int resultLimit = 50;
 
     @Nullable
     @Override
@@ -85,7 +86,7 @@ public class IssuesFragment extends Fragment {
                     public void run() {
 
                         swipeRefresh.setRefreshing(false);
-                        loadInitial(instanceToken, repoOwner, repoName);
+                        loadInitial(instanceToken, repoOwner, repoName, resultLimit);
                         adapter.notifyDataChanged();
 
                     }
@@ -104,7 +105,7 @@ public class IssuesFragment extends Fragment {
                         if(issuesList.size() == 10 || pageSize == 10) {
 
                             int page = (issuesList.size() + 10) / 10;
-                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page);
+                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit);
 
                         }
                         /*else {
@@ -123,7 +124,7 @@ public class IssuesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         api = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
-        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit);
 
         return v;
 
@@ -143,16 +144,16 @@ public class IssuesFragment extends Fragment {
 
         if(tinyDb.getBoolean("resumeIssues")) {
 
-            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit);
             tinyDb.putBoolean("resumeIssues", false);
 
         }
 
     }
 
-    private void loadInitial(String token, String repoOwner, String repoName) {
+    private void loadInitial(String token, String repoOwner, String repoName, int resultLimit) {
 
-        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName,  1);
+        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName,  1, resultLimit);
 
         call.enqueue(new Callback<List<Issues>>() {
 
@@ -192,13 +193,13 @@ public class IssuesFragment extends Fragment {
 
     }
 
-    private void loadMore(String token, String repoOwner, String repoName, int page){
+    private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit){
 
         //add loading progress view
         issuesList.add(new Issues("load"));
         adapter.notifyItemInserted((issuesList.size() - 1));
 
-        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page);
+        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page, resultLimit);
 
         call.enqueue(new Callback<List<Issues>>() {
 

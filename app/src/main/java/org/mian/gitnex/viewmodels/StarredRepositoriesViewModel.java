@@ -21,20 +21,20 @@ public class StarredRepositoriesViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> reposList;
 
-    public LiveData<List<UserRepositories>> getUserStarredRepositories(String instanceUrl, String token, Context ctx) {
+    public LiveData<List<UserRepositories>> getUserStarredRepositories(String instanceUrl, String token, Context ctx, int page, int limit) {
 
         reposList = new MutableLiveData<>();
-        loadStarredReposList(instanceUrl, token, ctx);
+        loadStarredReposList(instanceUrl, token, ctx, page, limit);
 
         return reposList;
     }
 
-    public static void loadStarredReposList(String instanceUrl, String token, Context ctx) {
+    public static void loadStarredReposList(String instanceUrl, String token, Context ctx, int page, int limit) {
 
         Call<List<UserRepositories>> call = RetrofitClient
                 .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getUserStarredRepos(token);
+                .getUserStarredRepos(token, page, limit);
 
         call.enqueue(new Callback<List<UserRepositories>>() {
 

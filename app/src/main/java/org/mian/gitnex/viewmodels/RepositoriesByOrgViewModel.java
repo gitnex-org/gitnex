@@ -21,20 +21,20 @@ public class RepositoriesByOrgViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> orgReposList;
 
-    public LiveData<List<UserRepositories>> getRepositoriesByOrg(String instanceUrl, String token, String orgName, Context ctx) {
+    public LiveData<List<UserRepositories>> getRepositoriesByOrg(String instanceUrl, String token, String orgName, Context ctx, int page, int limit) {
 
         orgReposList = new MutableLiveData<>();
-        loadOrgRepos(instanceUrl, token, orgName, ctx);
+        loadOrgRepos(instanceUrl, token, orgName, ctx, page, limit);
 
         return orgReposList;
     }
 
-    public static void loadOrgRepos(String instanceUrl, String token, String orgName, Context ctx) {
+    public static void loadOrgRepos(String instanceUrl, String token, String orgName, Context ctx, int page, int limit) {
 
         Call<List<UserRepositories>> call = RetrofitClient
                 .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getReposByOrg(token, orgName);
+                .getReposByOrg(token, orgName, page, limit);
 
         call.enqueue(new Callback<List<UserRepositories>>() {
 
