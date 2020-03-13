@@ -48,6 +48,9 @@ public class MyRepositoriesFragment extends Fragment {
     private ImageView createNewRepo;
     private TextView noDataMyRepo;
 
+    private int pageSize = 1;
+    private int resultLimit = 50;
+
     private String mParam1;
     private String mParam2;
 
@@ -137,13 +140,13 @@ public class MyRepositoriesFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext());
+                        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
                     }
                 }, 50);
             }
         });
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin);
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, pageSize, resultLimit);
 
         return v;
 
@@ -158,15 +161,15 @@ public class MyRepositoriesFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         final String userLogin =  tinyDb.getString("userLogin");
 
-        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext());
+        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
 
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String userLogin) {
+    private void fetchDataAsync(String instanceUrl, String instanceToken, String userLogin, int  pageSize, int resultLimit) {
 
         MyRepositoriesViewModel myRepoModel = new ViewModelProvider(this).get(MyRepositoriesViewModel.class);
 
-        myRepoModel.getCurrentUserRepositories(instanceUrl, instanceToken, userLogin, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
+        myRepoModel.getCurrentUserRepositories(instanceUrl, instanceToken, userLogin, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
             @Override
             public void onChanged(@Nullable List<UserRepositories> myReposListMain) {
                 adapter = new MyReposListAdapter(getContext(), myReposListMain);

@@ -21,22 +21,22 @@ public class RepositoriesListViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> reposList;
 
-    public LiveData<List<UserRepositories>> getUserRepositories(String instanceUrl, String token, Context ctx) {
+    public LiveData<List<UserRepositories>> getUserRepositories(String instanceUrl, String token, Context ctx, int page, int limit) {
 
         //if (reposList == null) {
             reposList = new MutableLiveData<>();
-            loadReposList(instanceUrl, token, ctx);
+            loadReposList(instanceUrl, token, ctx, page, limit);
         //}
 
         return reposList;
     }
 
-    public static void loadReposList(String instanceUrl, String token, Context ctx) {
+    public static void loadReposList(String instanceUrl, String token, Context ctx, int page, int limit) {
 
         Call<List<UserRepositories>> call = RetrofitClient
                 .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getUserRepositories(token);
+                .getUserRepositories(token, page, limit);
 
         call.enqueue(new Callback<List<UserRepositories>>() {
 

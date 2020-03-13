@@ -45,6 +45,8 @@ public class RepositoriesByOrgFragment extends Fragment {
     private TextView noData;
     private static String orgNameF = "param2";
     private String orgName;
+    private int pageSize = 1;
+    private int resultLimit = 50;
 
     public RepositoriesByOrgFragment() {
     }
@@ -97,13 +99,13 @@ public class RepositoriesByOrgFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
+                        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext(), pageSize, resultLimit);
                     }
                 }, 200);
             }
         });
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, pageSize, resultLimit);
 
         return v;
     }
@@ -117,15 +119,15 @@ public class RepositoriesByOrgFragment extends Fragment {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
+        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext(), pageSize, resultLimit);
 
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String owner) {
+    private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, int pageSize, int resultLimit) {
 
         RepositoriesByOrgViewModel orgRepoModel = new ViewModelProvider(this).get(RepositoriesByOrgViewModel.class);
 
-        orgRepoModel.getRepositoriesByOrg(instanceUrl, instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
+        orgRepoModel.getRepositoriesByOrg(instanceUrl, instanceToken, owner, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
             @Override
             public void onChanged(@Nullable List<UserRepositories> orgReposListMain) {
                 adapter = new RepositoriesByOrgAdapter(getContext(), orgReposListMain);

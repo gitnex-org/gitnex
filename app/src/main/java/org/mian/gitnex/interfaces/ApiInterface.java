@@ -81,7 +81,7 @@ public interface ApiInterface {
     Call<List<OrgOwner>> getOrgOwners(@Header("Authorization") String token);
 
     @GET("user/repos") // get user repositories
-    Call<List<UserRepositories>> getUserRepositories(@Header("Authorization") String token);
+    Call<List<UserRepositories>> getUserRepositories(@Header("Authorization") String token, @Query("page") int page, @Query("limit") int limit);
 
     @POST("user/repos") // create new repository
     Call<OrganizationRepository> createNewUserRepository(@Header("Authorization") String token, @Body OrganizationRepository jsonStr);
@@ -90,10 +90,10 @@ public interface ApiInterface {
     Call<UserRepositories> getUserRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
     @GET("repos/{owner}/{repo}/issues") // get issues by repo
-    Call<List<Issues>> getIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+    Call<List<Issues>> getIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("limit") int limit);
 
     @GET("repos/{owner}/{repo}/issues") // get closed issues by repo
-    Call<List<Issues>> getClosedIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("state") String issueState);
+    Call<List<Issues>> getClosedIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("state") String issueState, @Query("limit") int limit);
 
     @GET("repos/{owner}/{repo}/issues/{index}") // get issue by id
     Call<Issues> getIssueByIndex(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex);
@@ -126,7 +126,7 @@ public interface ApiInterface {
     Call<List<Labels>> getlabels(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
     @GET("users/{username}/repos") // get current logged in user repositories
-    Call<List<UserRepositories>> getCurrentUserRepositories(@Header("Authorization") String token, @Path("username") String username);
+    Call<List<UserRepositories>> getCurrentUserRepositories(@Header("Authorization") String token, @Path("username") String username, @Query("page") int page, @Query("limit") int limit);
 
     @POST("repos/{owner}/{repo}/labels") // create label
     Call<CreateLabel> createLabel(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body CreateLabel jsonStr);
@@ -138,10 +138,10 @@ public interface ApiInterface {
     Call<CreateLabel> patchLabel(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int labelIndex, @Body CreateLabel jsonStr);
 
     @GET("user/starred") // get user starred repositories
-    Call<List<UserRepositories>> getUserStarredRepos(@Header("Authorization") String token);
+    Call<List<UserRepositories>> getUserStarredRepos(@Header("Authorization") String token, @Query("page") int page, @Query("limit") int limit);
 
     @GET("orgs/{orgName}/repos") // get repositories by org
-    Call<List<UserRepositories>> getReposByOrg(@Header("Authorization") String token, @Path("orgName") String orgName);
+    Call<List<UserRepositories>> getReposByOrg(@Header("Authorization") String token, @Path("orgName") String orgName, @Query("page") int page, @Query("limit") int limit);
 
     @GET("orgs/{orgName}/teams") // get teams by org
     Call<List<Teams>> getTeamsByOrg(@Header("Authorization") String token, @Path("orgName") String orgName);
@@ -252,7 +252,7 @@ public interface ApiInterface {
     Call<JsonElement> unWatchRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
     @GET("repos/{owner}/{repo}/pulls") // get repository pull requests
-    Call<List<PullRequests>> getPullRequests(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("state") String state);
+    Call<List<PullRequests>> getPullRequests(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("state") String state, @Query("limit") int limit);
 
     @GET("{owner}/{repo}/pulls/{filename}") // get pull diff file contents
     Call<ResponseBody> getFileDiffContents(@Path("owner") String owner, @Path("repo") String repo, @Path("filename") String fileName);
