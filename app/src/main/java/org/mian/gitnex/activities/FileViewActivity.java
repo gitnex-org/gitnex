@@ -1,13 +1,21 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -23,13 +33,18 @@ import com.pddstudio.highlightjs.models.Theme;
 import org.apache.commons.io.FilenameUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -37,7 +52,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class FileViewActivity extends BaseActivity {
+public class FileViewActivity extends BaseActivity implements BottomSheetFileViewerFragment.BottomSheetListener {
 
     private View.OnClickListener onClickListener;
     private TextView singleFileContents;
@@ -51,6 +66,7 @@ public class FileViewActivity extends BaseActivity {
     private LinearLayout pdfViewFrame;
     private byte[] decodedPdf;
     private Boolean pdfNightMode;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected int getLayoutResourceId(){
@@ -89,6 +105,8 @@ public class FileViewActivity extends BaseActivity {
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
+
+        tinyDb.putString("downloadFileContents", "");
 
         try {
 
@@ -133,6 +151,10 @@ public class FileViewActivity extends BaseActivity {
 
                         String fileExtension = FilenameUtils.getExtension(filename);
                         mProgressBar.setVisibility(View.GONE);
+
+                        // download file meta
+                        tinyDb.putString("downloadFileName", filename);
+                        tinyDb.putString("downloadFileContents", response.body().getContent());
 
                         if(appUtil.imageExtension(fileExtension)) { // file is image
 
@@ -187,6 +209,18 @@ public class FileViewActivity extends BaseActivity {
                                     .load();
 
                         }
+                        else if (appUtil.excludeFilesInFileViewerExtension(fileExtension)) { // files need to be excluded
+
+                            imageView.setVisibility(View.GONE);
+                            singleCodeContents.setVisibility(View.GONE);
+                            pdfViewFrame.setVisibility(View.GONE);
+                            singleFileContentsFrame.setVisibility(View.VISIBLE);
+
+                            singleFileContents.setText(getResources().getString(R.string.excludeFilesInFileviewer));
+                            singleFileContents.setGravity(Gravity.CENTER);
+                            singleFileContents.setTypeface(null, Typeface.BOLD);
+
+                        }
                         else { // file type not known - plain text view
 
                             imageView.setVisibility(View.GONE);
@@ -237,6 +271,113 @@ public class FileViewActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.genericMenu:
+                BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
+                bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public void onButtonClicked(String text) {
+
+        switch (text) {
+            case "downloadFile":
+
+                if (Build.VERSION.SDK_INT >= 23)
+                {
+                    if (checkPermission())
+                    {
+                        requestFileDownload();
+                    }
+                    else {
+                        requestPermission();
+                    }
+                }
+                else
+                {
+                    requestFileDownload();
+                }
+                break;
+
+        }
+
+    }
+
+    private void requestFileDownload() {
+
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        if(!tinyDb.getString("downloadFileContents").isEmpty()) {
+
+            File outputFileName = new File(tinyDb.getString("downloadFileName"));
+            final File downloadFilePath = new File(Environment.getExternalStorageDirectory().getPath() + "/Download/" + outputFileName.getName());
+
+            byte[] pdfAsBytes = Base64.decode(tinyDb.getString("downloadFileContents"), 0);
+            FileOutputStream fileOutputStream = null;
+
+            try {
+
+                fileOutputStream = new FileOutputStream(downloadFilePath, false);
+                Objects.requireNonNull(fileOutputStream).write(pdfAsBytes);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                Toasty.info(getApplicationContext(), getString(R.string.downloadFileSaved));
+
+            }
+            catch (IOException e) {
+                Log.e("errorFileDownloading", Objects.requireNonNull(e.getMessage()));
+            }
+
+        }
+        else {
+            Toasty.error(getApplicationContext(), getString(R.string.waitLoadingDownloadFile));
+        }
+
+    }
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("PermissionsCheck", "Permission Granted");
+                }
+                else {
+                    Log.e("PermissionsCheck", "Permission Denied");
+                }
+                break;
+        }
     }
 
     private void initCloseListener() {
