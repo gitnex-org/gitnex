@@ -142,7 +142,11 @@ public class FileDiffActivity extends BaseActivity {
 
                                     String fileExtension = FilenameUtils.getExtension(getFileNameFinal);
 
-                                    fileContentsArray.add(new FileDiffView(getFileNameFinal, appUtil.imageExtension(fileExtension),"", binaryFileFinal));
+                                    if(appUtil.imageExtension(FilenameUtils.getExtension(getFileNameFinal))) {
+
+                                        fileContentsArray.add(new FileDiffView(getFileNameFinal, appUtil.imageExtension(fileExtension), "", binaryFileFinal));
+                                    }
+
                                 }
 
                             }
