@@ -161,7 +161,10 @@ public class MyRepositoriesFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         final String userLogin =  tinyDb.getString("userLogin");
 
-        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
+        if(tinyDb.getBoolean("repoCreated")) {
+            MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
+            tinyDb.putBoolean("repoCreated", false);
+        }
 
     }
 

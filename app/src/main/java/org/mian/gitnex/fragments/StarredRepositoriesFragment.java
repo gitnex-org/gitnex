@@ -153,7 +153,10 @@ public class StarredRepositoriesFragment extends Fragment {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+        if(tinyDb.getBoolean("repoCreated")) {
+            StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+            tinyDb.putBoolean("repoCreated", false);
+        }
 
     }
 

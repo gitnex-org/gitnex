@@ -119,7 +119,10 @@ public class RepositoriesByOrgFragment extends Fragment {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext(), pageSize, resultLimit);
+        if(tinyDb.getBoolean("repoCreated")) {
+            RepositoriesByOrgViewModel.loadOrgRepos(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext(), pageSize, resultLimit);
+            tinyDb.putBoolean("repoCreated", false);
+        }
 
     }
 
