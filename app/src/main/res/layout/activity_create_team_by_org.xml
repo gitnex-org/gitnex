@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -56,8 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/newTeamTitle"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/teamName"
@@ -71,7 +71,7 @@
                 android:labelFor="@+id/teamName"
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"/>
 
             <TextView
@@ -80,8 +80,7 @@
                 android:text="@string/newTeamDesc"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:layout_marginTop="10dp"
-                />
+                android:layout_marginTop="10dp" />
 
             <EditText
                 android:id="@+id/teamDesc"
@@ -95,7 +94,7 @@
                 android:labelFor="@+id/teamDesc"
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"/>
 
             <TextView

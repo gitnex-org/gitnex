@@ -17,8 +17,7 @@
             android:layout_height="match_parent"
             android:background="?attr/primaryBackgroundColor"
             android:padding="4dp"
-            android:scrollbars="vertical"
-            />
+            android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -53,7 +52,6 @@
         android:background="@drawable/circle"
         android:padding="12dp"
         android:visibility="gone"
-        android:contentDescription="@string/addNewContent"
-        />
+        android:contentDescription="@string/addNewContent" />
 
 </RelativeLayout>

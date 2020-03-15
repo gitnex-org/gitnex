@@ -73,7 +73,7 @@
                 android:labelFor="@+id/newFileName"
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"
                 android:inputType="textCapSentences|text" />
 
@@ -110,7 +110,7 @@
                 android:textSize="14sp"
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"
                 android:inputType="textCapSentences|textMultiLine" />
 
@@ -171,7 +171,7 @@
                 android:labelFor="@+id/newFileBranchName"
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"
                 android:inputType="textCapSentences|text" />
 
@@ -204,7 +204,7 @@
                 android:labelFor="@+id/newFileCommitMessage"
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"
                 android:inputType="textCapSentences|text" />
 

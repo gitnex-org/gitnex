@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/primaryBackgroundColor"
             tools:ignore="UnusedAttribute">
 
             <ImageView
@@ -52,8 +53,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profileEmailTitle"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/userEmail"
@@ -67,7 +67,7 @@
             android:labelFor="@+id/userEmail"
             android:background="@drawable/shape_inputs"
             android:textColor="?attr/inputTextColor"
-            android:textColorHint="?attr/primaryBackgroundColor"
+            android:textColorHint="?attr/hintColor"
             android:textColorHighlight="?attr/primaryTextColor"/>
 
         <Button

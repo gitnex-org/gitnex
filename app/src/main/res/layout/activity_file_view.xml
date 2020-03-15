@@ -65,8 +65,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="14sp"
                 android:padding="15dp"
-                android:textIsSelectable="true"
-                />
+                android:textIsSelectable="true" />
 
         </ScrollView>
 

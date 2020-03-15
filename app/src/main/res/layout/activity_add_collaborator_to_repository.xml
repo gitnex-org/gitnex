@@ -55,7 +55,7 @@
         android:labelFor="@+id/addCollaboratorSearch"
         android:background="@drawable/shape_inputs"
         android:textColor="?attr/inputTextColor"
-        android:textColorHint="?attr/primaryBackgroundColor"
+        android:textColorHint="?attr/hintColor"
         android:textColorHighlight="?attr/primaryTextColor"
         android:hint="@string/addCollaboratorSearchHint"
         android:imeOptions="actionSend"/>

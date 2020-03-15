@@ -101,7 +101,7 @@
                 android:labelFor="@+id/newRepoName"
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"
                 android:inputType="textCapSentences|text" />
 
@@ -128,7 +128,7 @@
                 android:gravity="top|start"
                 android:textSize="14sp"
                 android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textColorHint="?attr/hintColor"
                 android:inputType="textCapSentences|textMultiLine"
                 android:textColorHighlight="?attr/primaryTextColor"/>
 

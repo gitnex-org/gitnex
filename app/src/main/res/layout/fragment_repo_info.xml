@@ -329,8 +329,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="visible"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
 
     </RelativeLayout>
 
