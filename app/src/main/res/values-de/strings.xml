@@ -442,4 +442,8 @@
     <string name="mergeCommentText">Zusammenführ-Kommentar</string>
     <string name="mergePRSuccessMsg">Dieser Pull-Request wurde erfolgreich zusammengeführt</string>
     <string name="mergePR404ErrorMsg">Pull-Request kann nicht zusammengeführt werden</string>
+    <string name="downloadFile">Datei herunterladen</string>
+    <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
+    <string name="downloadFileSaved">Datei wurde ins Download-Verzeichnis gespeichert</string>
+    <string name="excludeFilesInFileviewer">Dieser Dateityp wird nicht vom Datei-Viewer unterstützt. Du kannst sie stattdessen übers Menü herunterladen.</string>
 </resources>
