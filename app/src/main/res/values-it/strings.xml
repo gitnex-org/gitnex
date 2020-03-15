@@ -444,4 +444,8 @@ autorizzazione</string>
     <string name="mergeCommentText">Unisci commento</string>
     <string name="mergePRSuccessMsg">Pull Request è stata unita con successo</string>
     <string name="mergePR404ErrorMsg">La Pull Request non è disponibile per l\'merge</string>
+    <string name="downloadFile">Download This File</string>
+    <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
+    <string name="downloadFileSaved">File is saved to Download directory</string>
+    <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
 </resources>

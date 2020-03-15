@@ -442,4 +442,8 @@
     <string name="mergeCommentText">Yorumu birleştir</string>
     <string name="mergePRSuccessMsg">Çekme İsteği başarıyla birleştirildi</string>
     <string name="mergePR404ErrorMsg">Çekme İsteği birleştirme için uygun değil</string>
+    <string name="downloadFile">Download This File</string>
+    <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
+    <string name="downloadFileSaved">File is saved to Download directory</string>
+    <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
 </resources>
