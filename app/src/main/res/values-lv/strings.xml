@@ -442,4 +442,8 @@
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
+    <string name="downloadFile">Download This File</string>
+    <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
+    <string name="downloadFileSaved">File is saved to Download directory</string>
+    <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
 </resources>

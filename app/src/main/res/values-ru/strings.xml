@@ -199,10 +199,10 @@
     <string name="settingsCustomFontHeaderText">Шрифт</string>
     <string name="settingsCustomFontSelectorDialogTitle">Выберите шрифт</string>
     <string name="settingsCustomFontDefault">Roboto</string>
-    <string name="themeSelectorDialogTitle">Select App Theme</string>
-    <string name="themeSelectionHeaderText">Theme</string>
-    <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
-    <string name="fileViewerHeader">File Viewer</string>
+    <string name="themeSelectorDialogTitle">Выбрать тему приложения</string>
+    <string name="themeSelectionHeaderText">Тема</string>
+    <string name="settingsPdfModeHeaderText">Ночной режим PDF</string>
+    <string name="fileViewerHeader">Просмотрщик файла</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -442,4 +442,8 @@
     <string name="mergeCommentText">Комментарий для слияния</string>
     <string name="mergePRSuccessMsg">Запрос на слияние был успешно выполнен</string>
     <string name="mergePR404ErrorMsg">Запрос на слияние не доступен для слияния</string>
+    <string name="downloadFile">Скачать этот файл</string>
+    <string name="waitLoadingDownloadFile">Пожалуйста дождитесь загрузки файла</string>
+    <string name="downloadFileSaved">Файл сохранен в папку Загрузки</string>
+    <string name="excludeFilesInFileviewer">Этот тип файла не поддерживается в средстве просмотра файлов. Загрузить его?</string>
 </resources>
