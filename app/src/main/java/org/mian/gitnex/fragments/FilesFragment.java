@@ -158,7 +158,10 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
                 String filterDir = fileStructure.getText().toString();
                 String result = filterDir.substring(0, filterDir.indexOf(item.getSelectedItem()));
                 fileStructure.setText(result + item.getSelectedItem());
-                fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, finalDirName_);
+
+                String currentIndex = (result + item.getSelectedItem()).substring(1);
+
+                fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, currentIndex);
 
             }
 
