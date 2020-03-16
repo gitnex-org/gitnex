@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
         userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
         userEmail.setText(tinyDb.getString("userEmail"));
 
-        ProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new ProfileFragment.SectionsPagerAdapter(getFragmentManager());
+        ProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         ViewPager mViewPager = v.findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+    public static class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -147,9 +147,8 @@ public class ProfileFragment extends Fragment {
                 ((MainActivity)ctx).finish();
                 return true;
             case R.id.profileMenu:
-                ProfileBottomSheetFragment bottomSheet = new ProfileBottomSheetFragment();
-                assert getFragmentManager() != null;
-                bottomSheet.show(getFragmentManager(), "profileBottomSheet");
+                BottomSheetProfileFragment bottomSheet = new BottomSheetProfileFragment();
+                bottomSheet.show(getChildFragmentManager(), "profileBottomSheet");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

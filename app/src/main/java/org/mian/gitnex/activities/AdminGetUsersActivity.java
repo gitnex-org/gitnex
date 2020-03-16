@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminGetUsersAdapter;
-import org.mian.gitnex.fragments.AdminUsersBottomSheetFragment;
+import org.mian.gitnex.fragments.BottomSheetAdminUsersFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.AppUtil;
@@ -34,7 +34,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class AdminGetUsersActivity extends BaseActivity implements AdminUsersBottomSheetFragment.BottomSheetListener {
+public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAdminUsersFragment.BottomSheetListener {
 
     private View.OnClickListener onClickListener;
     final Context ctx = this;
@@ -171,7 +171,7 @@ public class AdminGetUsersActivity extends BaseActivity implements AdminUsersBot
                 finish();
                 return true;
             case R.id.genericMenu:
-                AdminUsersBottomSheetFragment bottomSheet = new AdminUsersBottomSheetFragment();
+                BottomSheetAdminUsersFragment bottomSheet = new BottomSheetAdminUsersFragment();
                 bottomSheet.show(getSupportFragmentManager(), "usersBottomSheet");
                 return true;
             default:

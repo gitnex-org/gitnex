@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +55,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.fragments.SingleIssueBottomSheetFragment;
+import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -211,7 +211,7 @@ public class IssueDetailActivity extends BaseActivity {
                 finish();
                 return true;
             case R.id.genericMenu:
-                SingleIssueBottomSheetFragment bottomSheet = new SingleIssueBottomSheetFragment();
+                BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment();
                 bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
                 return true;
             default:
@@ -293,7 +293,7 @@ public class IssueDetailActivity extends BaseActivity {
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo, int index, String loginUid) {
 
-        IssueCommentsViewModel issueCommentsModel = ViewModelProviders.of(this).get(IssueCommentsViewModel.class);
+        IssueCommentsViewModel issueCommentsModel = new ViewModelProvider(this).get(IssueCommentsViewModel.class);
 
         issueCommentsModel.getIssueCommentList(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), owner, repo, index, getApplicationContext()).observe(this, new Observer<List<IssueComments>>() {
             @Override

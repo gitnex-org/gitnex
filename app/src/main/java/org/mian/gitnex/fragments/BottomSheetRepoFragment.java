@@ -17,14 +17,14 @@ import androidx.annotation.Nullable;
  * Author M M Arif
  */
 
-public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
+public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
     private BottomSheetListener bmListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.repo_bottom_sheet_layout, container, false);
+        View v = inflater.inflate(R.layout.bottom_sheet_repo_layout, container, false);
 
         final TinyDB tinyDb = new TinyDB(getContext());
 
@@ -39,6 +39,7 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
         TextView unStarRepository = v.findViewById(R.id.unStarRepository);
         TextView watchRepository = v.findViewById(R.id.watchRepository);
         TextView unWatchRepository = v.findViewById(R.id.unWatchRepository);
+        TextView shareRepository = v.findViewById(R.id.shareRepository);
 
         createLabel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +83,14 @@ public class RepoBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 bmListener.onButtonClicked("createRelease");
+                dismiss();
+            }
+        });
+
+        shareRepository.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bmListener.onButtonClicked("shareRepo");
                 dismiss();
             }
         });

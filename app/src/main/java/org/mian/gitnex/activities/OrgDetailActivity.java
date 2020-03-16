@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.fragments.MembersByOrgFragment;
-import org.mian.gitnex.fragments.OrgBottomSheetFragment;
+import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
 import org.mian.gitnex.fragments.TeamsByOrgFragment;
@@ -29,7 +29,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class OrgDetailActivity extends BaseActivity implements OrgBottomSheetFragment.BottomSheetListener {
+public class OrgDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
 
     @Override
     protected int getLayoutResourceId(){
@@ -118,7 +118,7 @@ public class OrgDetailActivity extends BaseActivity implements OrgBottomSheetFra
                 finish();
                 return true;
             case R.id.repoMenu:
-                OrgBottomSheetFragment bottomSheet = new OrgBottomSheetFragment();
+                BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment();
                 bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
                 return true;
             default:

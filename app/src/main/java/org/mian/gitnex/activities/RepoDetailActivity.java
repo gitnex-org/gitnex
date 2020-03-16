@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.fragments.BottomSheetRepoFragment;
 import org.mian.gitnex.fragments.BranchesFragment;
 import org.mian.gitnex.fragments.ClosedIssuesFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
@@ -34,7 +35,6 @@ import org.mian.gitnex.fragments.LabelsFragment;
 import org.mian.gitnex.fragments.MilestonesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
-import org.mian.gitnex.fragments.RepoBottomSheetFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserRepositories;
@@ -48,7 +48,7 @@ import android.net.Uri;
  * Author M M Arif
  */
 
-public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetFragment.BottomSheetListener {
+public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoFragment.BottomSheetListener {
 
     private TextView textViewBadge;
 
@@ -185,7 +185,7 @@ public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetF
                 finish();
                 return true;
             case R.id.repoMenu:
-                RepoBottomSheetFragment bottomSheet = new RepoBottomSheetFragment();
+                BottomSheetRepoFragment bottomSheet = new BottomSheetRepoFragment();
                 bottomSheet.show(getSupportFragmentManager(), "repoBottomSheet");
                 return true;
             default:
@@ -196,6 +196,14 @@ public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetF
 
     @Override
     public void onButtonClicked(String text) {
+
+        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        String repoFullName = tinyDb.getString("repoFullName");
+        String instanceUrlWithProtocol = "https://" + tinyDb.getString("instanceUrlRaw");
+        if(!tinyDb.getString("instanceUrlWithProtocol").isEmpty()) {
+            instanceUrlWithProtocol = tinyDb.getString("instanceUrlWithProtocol");
+        }
+        Uri url = Uri.parse(instanceUrlWithProtocol + "/" + repoFullName);
 
         switch (text) {
             case "label":
@@ -214,15 +222,15 @@ public class RepoDetailActivity extends BaseActivity implements RepoBottomSheetF
                 startActivity(new Intent(RepoDetailActivity.this, CreateReleaseActivity.class));
                 break;
             case "openWebRepo":
-                TinyDB tinyDb = new TinyDB(getApplicationContext());
-                String repoFullName = tinyDb.getString("repoFullName");
-                String instanceUrlWithProtocol = "https://" + tinyDb.getString("instanceUrlRaw");
-                if(!tinyDb.getString("instanceUrlWithProtocol").isEmpty()) {
-                    instanceUrlWithProtocol = tinyDb.getString("instanceUrlWithProtocol");
-                }
-                Uri url = Uri.parse(instanceUrlWithProtocol + "/" + repoFullName);
                 Intent i = new Intent(Intent.ACTION_VIEW, url);
                 startActivity(i);
+                break;
+            case "shareRepo":
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, url);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url);
+                startActivity(Intent.createChooser(sharingIntent, url.toString()));
                 break;
             case "newFile":
                 startActivity(new Intent(RepoDetailActivity.this, NewFileActivity.class));

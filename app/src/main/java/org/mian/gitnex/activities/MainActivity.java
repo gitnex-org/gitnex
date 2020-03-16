@@ -26,7 +26,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.AboutFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
-import org.mian.gitnex.fragments.NavSubMenuBottomSheetFragment;
+import org.mian.gitnex.fragments.BottomSheetNavSubMenuFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         ImageView navSubMenu = hView.findViewById(R.id.navSubMenu);
         navSubMenu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                NavSubMenuBottomSheetFragment bottomSheet = new NavSubMenuBottomSheetFragment();
+                BottomSheetNavSubMenuFragment bottomSheet = new BottomSheetNavSubMenuFragment();
                 bottomSheet.show(getSupportFragmentManager(), "adminMenuBottomSheet");
             }
         });

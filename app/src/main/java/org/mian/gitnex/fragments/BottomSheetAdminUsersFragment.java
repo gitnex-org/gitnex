@@ -6,30 +6,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import org.mian.gitnex.R;
 
 /**
  * Author M M Arif
  */
 
-public class OrgBottomSheetFragment extends BottomSheetDialogFragment {
+public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
 
-    private OrgBottomSheetFragment.BottomSheetListener bmListener;
+    private BottomSheetAdminUsersFragment.BottomSheetListener bmListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.org_bottom_sheet_layout, container, false);
+        View v = inflater.inflate(R.layout.bottom_sheet_admin_users_layout, container, false);
 
-        TextView createTeam = v.findViewById(R.id.createTeam);
+        TextView createNewUser = v.findViewById(R.id.createNewUser);
 
-        createTeam.setOnClickListener(new View.OnClickListener() {
+        createNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bmListener.onButtonClicked("team");
+                bmListener.onButtonClicked("newUser");
                 dismiss();
             }
         });
@@ -46,7 +46,7 @@ public class OrgBottomSheetFragment extends BottomSheetDialogFragment {
         super.onAttach(context);
 
         try {
-            bmListener = (OrgBottomSheetFragment.BottomSheetListener) context;
+            bmListener = (BottomSheetAdminUsersFragment.BottomSheetListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement BottomSheetListener");
