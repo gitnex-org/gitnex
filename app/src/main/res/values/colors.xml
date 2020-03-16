@@ -28,12 +28,12 @@
     <color name="lightDimGreen">#63fdd9</color>
     <color name="diffRemovedColor">#ffe0e0</color>
     <color name="diffAddedColor">#d6fcd6</color>
+    <color name="dividerColorDark">#1d1d1d</color>
 
     <color name="lightThemeTextColor">#646565</color>
     <color name="lightThemeBackground">#f9f9f9</color>
     <color name="lightThemeInputBackground">#b6bbbf</color>
     <color name="lightThemeInputTextColor">#212121</color>
-
-    <color name="dividerColor">#dbdbdb</color>
+    <color name="lightThemeDividerColor">#dbdbdb</color>
 
 </resources>
