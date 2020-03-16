@@ -30,7 +30,7 @@ import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Theme;
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
@@ -149,7 +149,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
                     if(!response.body().getContent().equals("")) {
 
-                        String fileExtension = FilenameUtils.getExtension(filename);
+                        String fileExtension = FileUtils.getExtension(filename);
                         mProgressBar.setVisibility(View.GONE);
 
                         // download file meta

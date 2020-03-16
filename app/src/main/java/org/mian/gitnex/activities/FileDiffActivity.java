@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.FilesDiffAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -121,7 +121,7 @@ public class FileDiffActivity extends BaseActivity {
                                         }
                                     }
 
-                                    String fileExtension = FilenameUtils.getExtension(fileNameFinal);
+                                    String fileExtension = FileUtils.getExtension(fileNameFinal);
 
                                     String fileContentsFinalWithBlankLines = fileContentsFinal.replaceAll( ".*@@.*", "" );
                                     String fileContentsFinalWithoutBlankLines = fileContentsFinal.replaceAll( ".*@@.*(\r?\n|\r)?", "" );
@@ -140,9 +140,9 @@ public class FileDiffActivity extends BaseActivity {
                                     String binaryFileRaw = binaryFile[1].substring(binaryFile[1].indexOf('\n')+1);
                                     String binaryFileFinal = binaryFile[1].substring(binaryFileRaw.indexOf('\n')+1);
 
-                                    String fileExtension = FilenameUtils.getExtension(getFileNameFinal);
+                                    String fileExtension = FileUtils.getExtension(getFileNameFinal);
 
-                                    if(appUtil.imageExtension(FilenameUtils.getExtension(getFileNameFinal))) {
+                                    if(appUtil.imageExtension(FileUtils.getExtension(getFileNameFinal))) {
 
                                         fileContentsArray.add(new FileDiffView(getFileNameFinal, appUtil.imageExtension(fileExtension), "", binaryFileFinal));
                                     }
