@@ -32,6 +32,7 @@ public class AppUtil {
         boolean haveConnectedMobile = false;
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo[] netInfo = cm.getAllNetworkInfo();
         for (NetworkInfo ni : netInfo) {
             if (ni.getTypeName().equalsIgnoreCase("WIFI"))
@@ -65,7 +66,7 @@ public class AppUtil {
     }
 
     public int charactersLength(String str) {
-         return str.length();
+        return str.length();
     }
 
     public Boolean checkStringsWithAlphaNumeric(String str) { // [a-zA-Z0-9]
@@ -116,7 +117,6 @@ public class AppUtil {
 
         String repoSize = null;
 
-        double k = size;
         double m = size/1024.0;
         double g = ((size/1024.0)/1024.0);
         double t = (((size/1024.0)/1024.0)/1024.0);
@@ -125,15 +125,49 @@ public class AppUtil {
 
         if ( t > 1 ) {
             repoSize = dec.format(t).concat(" TB");
-        } else if ( g > 1 ) {
+        }
+        else if ( g > 1 ) {
             repoSize = dec.format(g).concat(" GB");
-        } else if ( m > 1 ) {
+        }
+        else if ( m > 1 ) {
             repoSize = dec.format(m).concat(" MB");
-        } else if ( k > 1 ) {
-            repoSize = dec.format(k).concat(" KB");
+        }
+        else if ( (double) size > 1 ) {
+            repoSize = dec.format((double) size).concat(" KB");
         }
 
         return repoSize;
+
+    }
+
+    public static String formatFileSizeInDetail(long size) {
+
+        String fileSize = null;
+
+        double k = size/1024.0;
+        double m = ((size/1024.0)/1024.0);
+        double g = (((size/1024.0)/1024.0)/1024.0);
+        double t = ((((size/1024.0)/1024.0)/1024.0)/1024.0);
+
+        DecimalFormat dec = new DecimalFormat("0.00");
+
+        if ( t > 1 ) {
+            fileSize = dec.format(t).concat(" TB");
+        }
+        else if ( g > 1 ) {
+            fileSize = dec.format(g).concat(" GB");
+        }
+        else if ( m > 1 ) {
+            fileSize = dec.format(m).concat(" MB");
+        }
+        else if ( k > 1 ) {
+            fileSize = dec.format(k).concat(" KB");
+        }
+        else if ( (double) size > 1 ) {
+            fileSize = dec.format((double) size).concat(" B");
+        }
+
+        return fileSize;
 
     }
 

@@ -43,10 +43,21 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/fileInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".20"
+            android:layout_marginBottom="0dp"
+            android:text="@string/sizeCopy"
+            android:visibility="gone"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/filesDropdownMenu"
             android:layout_width="0dp"
-            android:layout_weight=".10"
+            android:layout_weight=".0"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:scaleType="fitEnd"

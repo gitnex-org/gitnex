@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Files;
+import org.mian.gitnex.util.AppUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         private ImageView fileTypeImage;
         private TextView fileName;
         private TextView fileType;
+        private TextView fileInfo;
 
         private FilesViewHolder(View itemView) {
 
@@ -45,6 +47,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
             fileName = itemView.findViewById(R.id.fileName);
             fileTypeImage = itemView.findViewById(R.id.fileImage);
             fileType = itemView.findViewById(R.id.fileType);
+            fileInfo = itemView.findViewById(R.id.fileInfo);
 
             //ImageView filesDropdownMenu = itemView.findViewById(R.id.filesDropdownMenu);
 
@@ -158,6 +161,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
         if(currentItem.getType().equals("file")) {
             holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_file_new));
+            holder.fileInfo.setVisibility(View.VISIBLE);
+            holder.fileInfo.setText(AppUtil.formatFileSizeInDetail(currentItem.getSize()));
         }
         else if(currentItem.getType().equals("dir")) {
             holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_folder_24));
