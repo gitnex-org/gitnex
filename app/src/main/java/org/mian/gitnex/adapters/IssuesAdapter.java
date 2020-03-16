@@ -58,7 +58,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         LayoutInflater inflater = LayoutInflater.from(context);
 
         if(viewType == TYPE_LOAD){
-            return new IssuesHolder(inflater.inflate(R.layout.repo_detail_issues_list, parent,false));
+            return new IssuesHolder(inflater.inflate(R.layout.repo_issues_list, parent,false));
         }
         else {
             return new LoadHolder(inflater.inflate(R.layout.row_load,parent,false));

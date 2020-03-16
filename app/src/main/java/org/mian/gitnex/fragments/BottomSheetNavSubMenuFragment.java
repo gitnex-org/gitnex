@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.ProfileEmailActivity;
+import org.mian.gitnex.activities.AdminGetUsersActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -16,19 +16,19 @@ import androidx.annotation.Nullable;
  * Author M M Arif
  */
 
-public class ProfileBottomSheetFragment extends BottomSheetDialogFragment {
+public class BottomSheetNavSubMenuFragment extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.profile_bottom_sheet_layout, container, false);
+        View v = inflater.inflate(R.layout.bottom_sheet_nav_sub_menu_layout, container, false);
 
-        TextView addNewEmailAddress = v.findViewById(R.id.addNewEmailAddress);
+        TextView adminUsers = v.findViewById(R.id.adminUsers);
 
-        addNewEmailAddress.setOnClickListener(new View.OnClickListener() {
+        adminUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), ProfileEmailActivity.class));
+                startActivity(new Intent(getContext(), AdminGetUsersActivity.class));
                 dismiss();
             }
         });

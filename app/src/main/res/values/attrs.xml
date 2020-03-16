@@ -7,4 +7,5 @@
     <attr name="inputTextColor" format="reference" />
     <attr name="selectedTextColor" format="reference" />
     <attr name="alertDialogTheme" format="reference" />
+    <attr name="dividerColor" format="reference" />
 </resources>

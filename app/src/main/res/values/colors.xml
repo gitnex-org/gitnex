@@ -34,4 +34,6 @@
     <color name="lightThemeInputBackground">#b6bbbf</color>
     <color name="lightThemeInputTextColor">#212121</color>
 
+    <color name="dividerColor">#dbdbdb</color>
+
 </resources>

@@ -555,4 +555,7 @@
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File is saved to Download directory</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+
+    <string name="shareIssue">Share Issue</string>
+    <string name="shareRepository">Share Repository</string>
 </resources>

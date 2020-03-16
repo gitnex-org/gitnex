@@ -59,7 +59,7 @@
             android:name=".activities.RepoDetailActivity"
             android:label="@string/title_activity_repo_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.MainActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity android:name=".activities.MainActivity" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,7 +68,7 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".activities.NewRepoActivity" />
         <activity android:name=".activities.NewOrganizationActivity" />
         <activity android:name=".activities.OpenRepoInBrowserActivity" />

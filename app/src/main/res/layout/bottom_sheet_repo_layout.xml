@@ -10,7 +10,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,60 +18,79 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/openFilesDiff"
+                android:id="@+id/newFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/openFileDiffText"
+                android:text="@string/pageTitleNewFile"
                 android:drawableStart="@drawable/ic_file"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:visibility="gone"
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/replyToIssue"
+                android:id="@+id/createNewIssue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/replyToIssue"
-                android:drawableStart="@drawable/ic_reply"
+                android:text="@string/pageTitleCreateNewIssue"
+                android:drawableStart="@drawable/ic_issue_open_white"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/mergePullRequest"
+                android:id="@+id/createNewMilestone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/mergePullRequestText"
-                android:drawableStart="@drawable/ic_merge"
+                android:text="@string/pageTitleCreateMilestone"
+                android:drawableStart="@drawable/ic_milestone"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/editIssue"
+                android:id="@+id/createLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/editIssue"
-                android:drawableStart="@drawable/ic_edit"
+                android:text="@string/createLabel"
+                android:drawableStart="@drawable/ic_label"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/addRemoveAssignees"
+                android:id="@+id/createRelease"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/addRemoveAssignees"
+                android:text="@string/createRelease"
+                android:drawableStart="@drawable/ic_new_releases"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="64dp"
+                android:background="?attr/dividerColor" />
+
+            <TextView
+                android:id="@+id/addCollaborator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/addCollaboratorTitle"
                 android:drawableStart="@drawable/ic_person_filled"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
@@ -79,12 +98,48 @@
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/editLabels"
+                android:id="@+id/starRepository"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/singleIssueEditLabels"
-                android:drawableStart="@drawable/ic_label"
+                android:text="@string/starRepository"
+                android:drawableStart="@drawable/ic_star_border_24dp"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/unStarRepository"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/unStarRepository"
+                android:drawableStart="@drawable/ic_star"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/watchRepository"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/watchRepository"
+                android:drawableStart="@drawable/ic_unwatch"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/unWatchRepository"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/unWatchRepository"
+                android:drawableStart="@drawable/ic_watchers"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
@@ -96,51 +151,31 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="64dp"
-                android:background="?attr/inputBackgroundColor" />
+                android:background="?attr/dividerColor" />
 
             <TextView
-                android:id="@+id/copyIssueUrl"
+                android:id="@+id/shareRepository"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_content_copy"
+                android:drawableStart="@drawable/ic_share_24dp"
                 android:drawablePadding="24dp"
                 android:padding="16dp"
-                android:text="@string/copyIssueUrl"
+                android:text="@string/shareRepository"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="64dp"
-                android:background="?attr/inputBackgroundColor" />
-
             <TextView
-                android:id="@+id/closeIssue"
+                android:id="@+id/openWebRepo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/closeIssue"
-                android:drawableStart="@drawable/ic_done"
+                android:drawableStart="@drawable/ic_open_in_browser"
                 android:drawablePadding="24dp"
+                android:padding="16dp"
+                android:text="@string/openWebRepo"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="16dp" />
-
-            <TextView
-                android:id="@+id/reOpenIssue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/reOpenIssue"
-                android:drawableStart="@drawable/ic_reopen"
-                android:drawablePadding="24dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="16dp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

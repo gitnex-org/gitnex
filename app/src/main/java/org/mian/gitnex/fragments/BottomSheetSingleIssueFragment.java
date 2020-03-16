@@ -27,13 +27,13 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
+public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.single_issue_bottom_sheet_layout, container, false);
+        View v = inflater.inflate(R.layout.bottom_sheet_single_issue_layout, container, false);
 
         final TinyDB tinyDB = new TinyDB(getContext());
 
@@ -46,6 +46,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
         TextView copyIssueUrl = v.findViewById(R.id.copyIssueUrl);
         TextView openFilesDiff = v.findViewById(R.id.openFilesDiff);
         TextView mergePullRequest = v.findViewById(R.id.mergePullRequest);
+        TextView shareIssue = v.findViewById(R.id.shareIssue);
 
         replyToIssue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +134,29 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
+        shareIssue.setOnClickListener(v1 -> {
+
+            // get url of repo
+            String repoFullName = tinyDB.getString("repoFullName");
+            String instanceUrlWithProtocol = "https://" + tinyDB.getString("instanceUrlRaw");
+            if (!tinyDB.getString("instanceUrlWithProtocol").isEmpty()) {
+                instanceUrlWithProtocol = tinyDB.getString("instanceUrlWithProtocol");
+            }
+
+            // get issue Url
+            String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
+
+            // share issue
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle"));
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, issueUrl);
+            startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle")));
+
+            dismiss();
+
+        });
+
         copyIssueUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +194,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onClick(View v) {
 
-                        IssueActions.closeReopenIssue(getContext(), Integer.valueOf(tinyDB.getString("issueNumber")), "closed");
+                        IssueActions.closeReopenIssue(getContext(), Integer.parseInt(tinyDB.getString("issueNumber")), "closed");
                         dismiss();
 
                     }
@@ -184,7 +208,7 @@ public class SingleIssueBottomSheetFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onClick(View v) {
 
-                        IssueActions.closeReopenIssue(getContext(), Integer.valueOf(tinyDB.getString("issueNumber")), "open");
+                        IssueActions.closeReopenIssue(getContext(), Integer.parseInt(tinyDB.getString("issueNumber")), "open");
                         dismiss();
 
                     }
