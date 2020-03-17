@@ -27,10 +27,10 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetRepoFragment;
 import org.mian.gitnex.fragments.BranchesFragment;
-import org.mian.gitnex.fragments.ClosedIssuesFragment;
+import org.mian.gitnex.fragments.IssuesClosedFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
-import org.mian.gitnex.fragments.IssuesFragment;
+import org.mian.gitnex.fragments.IssuesOpenFragment;
 import org.mian.gitnex.fragments.LabelsFragment;
 import org.mian.gitnex.fragments.MilestonesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
@@ -262,10 +262,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
                 case 1: // files
                     return FilesFragment.newInstance(repoOwner, repoName);
                 case 2: // issues
-                    fragment = new IssuesFragment();
+                    fragment = new IssuesOpenFragment();
                     break;
                 case 3: // closed issues
-                    fragment = new ClosedIssuesFragment();
+                    fragment = new IssuesClosedFragment();
                     break;
                 case 4: // pull requests
                     fragment = new PullRequestsFragment();

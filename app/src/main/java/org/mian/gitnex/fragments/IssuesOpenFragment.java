@@ -39,7 +39,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class IssuesFragment extends Fragment {
+public class IssuesOpenFragment extends Fragment {
 
     private ProgressBar mProgressBar;
     private RecyclerView recyclerView;
@@ -51,6 +51,7 @@ public class IssuesFragment extends Fragment {
     private int pageSize = 1;
     private TextView noDataIssues;
     private int resultLimit = 50;
+    private String requestType = "issues" ;
 
     @Nullable
     @Override
@@ -86,7 +87,7 @@ public class IssuesFragment extends Fragment {
                     public void run() {
 
                         swipeRefresh.setRefreshing(false);
-                        loadInitial(instanceToken, repoOwner, repoName, resultLimit);
+                        loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType);
                         adapter.notifyDataChanged();
 
                     }
@@ -105,7 +106,7 @@ public class IssuesFragment extends Fragment {
                         if(issuesList.size() == 10 || pageSize == 10) {
 
                             int page = (issuesList.size() + 10) / 10;
-                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit);
+                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, requestType);
 
                         }
                         /*else {
@@ -124,7 +125,7 @@ public class IssuesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         api = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
-        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit);
+        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType);
 
         return v;
 
@@ -144,16 +145,16 @@ public class IssuesFragment extends Fragment {
 
         if(tinyDb.getBoolean("resumeIssues")) {
 
-            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit);
+            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType);
             tinyDb.putBoolean("resumeIssues", false);
 
         }
 
     }
 
-    private void loadInitial(String token, String repoOwner, String repoName, int resultLimit) {
+    private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType) {
 
-        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName,  1, resultLimit);
+        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName,  1, resultLimit, requestType);
 
         call.enqueue(new Callback<List<Issues>>() {
 
@@ -193,13 +194,13 @@ public class IssuesFragment extends Fragment {
 
     }
 
-    private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit){
+    private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType){
 
         //add loading progress view
         issuesList.add(new Issues("load"));
         adapter.notifyItemInserted((issuesList.size() - 1));
 
-        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page, resultLimit);
+        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page, resultLimit, requestType);
 
         call.enqueue(new Callback<List<Issues>>() {
 
