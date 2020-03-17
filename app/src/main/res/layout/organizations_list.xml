@@ -15,6 +15,12 @@
         android:padding="10dp"
         tools:context=".activities.MainActivity">
 
+        <TextView
+            android:id="@+id/organizationId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
         <ImageView
             android:id="@+id/imageAvatar"
             android:layout_width="40dp"

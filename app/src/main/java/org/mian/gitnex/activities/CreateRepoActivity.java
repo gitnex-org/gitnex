@@ -32,7 +32,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class NewRepoActivity extends BaseActivity {
+public class CreateRepoActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
@@ -43,7 +43,7 @@ public class NewRepoActivity extends BaseActivity {
     private CheckBox repoAccess;
     final Context ctx = this;
 
-    List<OrgOwner> orgsList = new ArrayList<>();
+    List<OrgOwner> organizationsList = new ArrayList<>();
 
     @Override
     protected int getLayoutResourceId(){
@@ -72,7 +72,7 @@ public class NewRepoActivity extends BaseActivity {
 
         spinner = findViewById(R.id.ownerSpinner);
         spinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        getOrgs(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), userLogin);
+        getOrganizations(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), userLogin);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -225,7 +225,9 @@ public class NewRepoActivity extends BaseActivity {
 
     }
 
-    private void getOrgs(String instanceUrl, String instanceToken, final String userLogin) {
+    private void getOrganizations(String instanceUrl, String instanceToken, final String userLogin) {
+
+        TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         Call<List<OrgOwner>> call = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
@@ -240,26 +242,37 @@ public class NewRepoActivity extends BaseActivity {
                 if(response.isSuccessful()) {
                     if(response.code() == 200) {
 
-                        List<OrgOwner> orgsList_ = response.body();
+                        int organizationId = 0;
 
-                        orgsList.add(new OrgOwner(userLogin));
-                        assert orgsList_ != null;
-                        if(orgsList_.size() > 0) {
-                            for (int i = 0; i < orgsList_.size(); i++) {
+                        List<OrgOwner> organizationsList_ = response.body();
 
+                        organizationsList.add(new OrgOwner(userLogin));
+                        assert organizationsList_ != null;
+                        if(organizationsList_.size() > 0) {
+                            for (int i = 0; i < organizationsList_.size(); i++) {
+
+                                if(Integer.parseInt(tinyDb.getString("organizationId")) == organizationsList_.get(i).getId()) {
+                                    organizationId = i + 1;
+                                }
                                 OrgOwner data = new OrgOwner(
-                                        orgsList_.get(i).getUsername()
+                                        organizationsList_.get(i).getUsername()
                                 );
-                                orgsList.add(data);
+                                organizationsList.add(data);
 
                             }
                         }
 
                         ArrayAdapter<OrgOwner> adapter = new ArrayAdapter<>(getApplicationContext(),
-                                R.layout.spinner_item, orgsList);
+                                R.layout.spinner_item, organizationsList);
 
                         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                         spinner.setAdapter(adapter);
+
+                        if (tinyDb.getBoolean("organizationAction")) {
+                            spinner.setSelection(organizationId);
+                            tinyDb.putBoolean("organizationAction", false);
+                        }
+
                         enableProcessButton();
 
                     }

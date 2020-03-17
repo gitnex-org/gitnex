@@ -24,7 +24,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class NewOrganizationActivity extends BaseActivity {
+public class CreateOrganizationActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;

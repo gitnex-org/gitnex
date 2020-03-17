@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.NewRepoActivity;
+import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.adapters.StarredReposListAdapter;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserRepositories;
@@ -104,7 +104,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), NewRepoActivity.class);
+                Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
                 startActivity(intent);
             }
 

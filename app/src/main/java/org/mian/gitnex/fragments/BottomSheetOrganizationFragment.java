@@ -25,11 +25,20 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
         View v = inflater.inflate(R.layout.bottom_sheet_organization_layout, container, false);
 
         TextView createTeam = v.findViewById(R.id.createTeam);
+        TextView createRepository = v.findViewById(R.id.createRepository);
 
         createTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bmListener.onButtonClicked("team");
+                dismiss();
+            }
+        });
+
+        createRepository.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bmListener.onButtonClicked("repository");
                 dismiss();
             }
         });

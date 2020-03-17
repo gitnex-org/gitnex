@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.NewOrganizationActivity;
+import org.mian.gitnex.activities.CreateOrganizationActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.util.AppUtil;
@@ -77,7 +77,7 @@ public class OrganizationsFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), NewOrganizationActivity.class);
+                Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
                 startActivity(intent);
             }
 

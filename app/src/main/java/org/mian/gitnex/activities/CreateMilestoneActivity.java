@@ -28,7 +28,7 @@ import java.util.Calendar;
  * Author M M Arif
  */
 
-public class NewMilestoneActivity extends BaseActivity implements View.OnClickListener {
+public class CreateMilestoneActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText milestoneDueDate;
     private View.OnClickListener onClickListener;

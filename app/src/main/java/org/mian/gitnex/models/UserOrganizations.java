@@ -6,6 +6,7 @@ package org.mian.gitnex.models;
 
 public class UserOrganizations {
 
+    private int id;
     private String username;
     private String avatar_url;
     private String description;
@@ -18,6 +19,10 @@ public class UserOrganizations {
         this.description = description;
         this.website = website;
         this.location = location;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {
