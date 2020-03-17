@@ -6,6 +6,7 @@ package org.mian.gitnex.models;
 
 public class OrgOwner {
 
+    private int id;
     private String username;
 
     public OrgOwner(String username) {
@@ -14,6 +15,10 @@ public class OrgOwner {
 
     public String getUsername() {
         return username;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override

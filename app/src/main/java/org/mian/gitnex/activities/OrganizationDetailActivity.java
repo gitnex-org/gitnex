@@ -29,7 +29,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class OrgDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
+public class OrganizationDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
 
     @Override
     protected int getLayoutResourceId(){
@@ -50,7 +50,7 @@ public class OrgDetailActivity extends BaseActivity implements BottomSheetOrgani
         Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        OrgDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter = new OrgDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
+        OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter = new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
         ViewPager mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -130,9 +130,15 @@ public class OrgDetailActivity extends BaseActivity implements BottomSheetOrgani
     @Override
     public void onButtonClicked(String text) {
 
+        TinyDB tinyDb = new TinyDB(getApplicationContext());
+
         switch (text) {
+            case "repository":
+                tinyDb.putBoolean("organizationAction", true);
+                startActivity(new Intent(OrganizationDetailActivity.this, CreateRepoActivity.class));
+                break;
             case "team":
-                startActivity(new Intent(OrgDetailActivity.this, CreateTeamByOrgActivity.class));
+                startActivity(new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class));
                 break;
         }
         //Log.i("clicked", text);
@@ -142,7 +148,7 @@ public class OrgDetailActivity extends BaseActivity implements BottomSheetOrgani
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @NonNull
@@ -151,7 +157,7 @@ public class OrgDetailActivity extends BaseActivity implements BottomSheetOrgani
 
             TinyDB tinyDb = new TinyDB(getApplicationContext());
             String orgName;
-            if(getIntent().getStringExtra("orgName") != null || !getIntent().getStringExtra("orgName").equals("")) {
+            if(getIntent().getStringExtra("orgName") != null || !Objects.equals(getIntent().getStringExtra("orgName"), "")) {
                 orgName = getIntent().getStringExtra("orgName");
             }
             else {

@@ -21,7 +21,7 @@ import java.util.Objects;
  * Author M M Arif
  */
 
-public class OrgTeamMembersActivity extends BaseActivity {
+public class OrganizationTeamMembersActivity extends BaseActivity {
 
     private TextView noDataMembers;
     private View.OnClickListener onClickListener;

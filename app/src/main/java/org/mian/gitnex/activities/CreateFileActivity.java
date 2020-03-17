@@ -32,7 +32,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class NewFileActivity extends BaseActivity {
+public class CreateFileActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;

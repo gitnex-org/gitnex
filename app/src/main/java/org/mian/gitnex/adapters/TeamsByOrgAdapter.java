@@ -9,7 +9,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.OrgTeamMembersActivity;
+import org.mian.gitnex.activities.OrganizationTeamMembersActivity;
 import org.mian.gitnex.models.Teams;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
 
                     Context context = v.getContext();
 
-                    Intent intent = new Intent(context, OrgTeamMembersActivity.class);
+                    Intent intent = new Intent(context, OrganizationTeamMembersActivity.class);
                     intent.putExtra("teamTitle", teamTitle.getText().toString());
                     intent.putExtra("teamId", teamId.getText().toString());
                     context.startActivity(intent);

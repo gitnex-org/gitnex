@@ -20,7 +20,7 @@
             android:name=".activities.FileViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.NewFileActivity"
+            android:name=".activities.CreateFileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RepoWatchersActivity"
@@ -41,16 +41,16 @@
         <activity android:name=".activities.ProfileEmailActivity" />
         <activity android:name=".activities.AddCollaboratorToRepositoryActivity" />
         <activity android:name=".activities.CreateTeamByOrgActivity" />
-        <activity android:name=".activities.OrgTeamMembersActivity" />
+        <activity android:name=".activities.OrganizationTeamMembersActivity" />
         <activity
-            android:name=".activities.OrgDetailActivity"
+            android:name=".activities.OrganizationDetailActivity"
             android:label="@string/title_activity_org_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.SponsorsActivity" />
         <activity android:name=".activities.CreditsActivity" />
         <activity android:name=".activities.CreateLabelActivity" />
         <activity android:name=".activities.CreateIssueActivity" />
-        <activity android:name=".activities.NewMilestoneActivity" />
+        <activity android:name=".activities.CreateMilestoneActivity" />
         <activity android:name=".activities.ReplyToIssueActivity" />
         <activity
             android:name=".activities.IssueDetailActivity"
@@ -69,8 +69,8 @@
         <activity
             android:name=".activities.LoginActivity"
             android:launchMode="singleTask" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name=".activities.NewRepoActivity" />
-        <activity android:name=".activities.NewOrganizationActivity" />
+        <activity android:name=".activities.CreateRepoActivity" />
+        <activity android:name=".activities.CreateOrganizationActivity" />
         <activity android:name=".activities.OpenRepoInBrowserActivity" />
         <activity android:name=".activities.FileDiffActivity" />
     </application>

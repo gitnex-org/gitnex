@@ -213,7 +213,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
                 startActivity(new Intent(RepoDetailActivity.this, CreateIssueActivity.class));
                 break;
             case "newMilestone":
-                startActivity(new Intent(RepoDetailActivity.this, NewMilestoneActivity.class));
+                startActivity(new Intent(RepoDetailActivity.this, CreateMilestoneActivity.class));
                 break;
             case "addCollaborator":
                 startActivity(new Intent(RepoDetailActivity.this, AddCollaboratorToRepositoryActivity.class));
@@ -233,7 +233,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
                 startActivity(Intent.createChooser(sharingIntent, url.toString()));
                 break;
             case "newFile":
-                startActivity(new Intent(RepoDetailActivity.this, NewFileActivity.class));
+                startActivity(new Intent(RepoDetailActivity.this, CreateFileActivity.class));
                 break;
         }
 

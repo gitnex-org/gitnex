@@ -559,4 +559,5 @@
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
     <string name="shareRepository">Share Repository</string>
+    <string name="createRepository">Create Repository</string>
 </resources>
