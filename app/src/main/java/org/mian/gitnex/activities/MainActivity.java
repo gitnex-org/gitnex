@@ -32,6 +32,7 @@ import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.UserInfo;
@@ -284,6 +285,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             tinyDb.putBoolean("noConnection", false);
 
         }
+
+        // Changelog popup
+        ChangeLog changelogDialog = new ChangeLog(this);
+        changelogDialog.showDialog();
 
     }
 

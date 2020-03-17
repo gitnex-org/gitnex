@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+
+    <release version="2.4.0" versioncode="90">
+        <change>New: Light theme (choose from settings)</change>
+        <change>New: Icons</change>
+        <change>New: Download files in Fileviewer (needs write permission)</change>
+        <change>New: Custom fonts (choose from settings)</change>
+        <change>New: PDF support in Fileviewer</change>
+        <change>New: Night mode for PDF in Fileviewer (choose from settings)</change>
+        <change>New: Default list of repositories in Explore screen</change>
+        <change>New: Latvian language support</change>
+        <change>Improvement: Support more files in file viewer syntax highlighter</change>
+        <change>Improvement: Exclude BIN files rendering in diff viewer</change>
+        <change>Improvement: Exclude specific files in Fileviewer like doc, xls etc</change>
+        <change>Improvement: Single issue id and support copy title and description to clipboard</change>
+        <change>Improvement: Translation updates</change>
+        <change>Bugfix: Don’t refresh repositories without action</change>
+    </release>
+
+    <release version="2.3.2" versioncode="82">
+        <change>Bugfix: Slashes in URL(file viewer)</change>
+        <change>Bugfix: No milestones when creating issue if user has other language selected</change>
+    </release>
+
+</changelog>
