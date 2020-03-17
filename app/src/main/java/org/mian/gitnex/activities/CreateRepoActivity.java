@@ -251,8 +251,10 @@ public class CreateRepoActivity extends BaseActivity {
                         if(organizationsList_.size() > 0) {
                             for (int i = 0; i < organizationsList_.size(); i++) {
 
-                                if(Integer.parseInt(tinyDb.getString("organizationId")) == organizationsList_.get(i).getId()) {
-                                    organizationId = i + 1;
+                                if(!tinyDb.getString("organizationId").isEmpty()) {
+                                    if (Integer.parseInt(tinyDb.getString("organizationId")) == organizationsList_.get(i).getId()) {
+                                        organizationId = i + 1;
+                                    }
                                 }
                                 OrgOwner data = new OrgOwner(
                                         organizationsList_.get(i).getUsername()
@@ -268,7 +270,7 @@ public class CreateRepoActivity extends BaseActivity {
                         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                         spinner.setAdapter(adapter);
 
-                        if (tinyDb.getBoolean("organizationAction")) {
+                        if (tinyDb.getBoolean("organizationAction") & organizationId != 0) {
                             spinner.setSelection(organizationId);
                             tinyDb.putBoolean("organizationAction", false);
                         }
