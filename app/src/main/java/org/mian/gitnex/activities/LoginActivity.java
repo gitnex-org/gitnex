@@ -530,7 +530,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void letTheUserIn(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP) {
 
-        final String credential = Credentials.basic(loginUid, loginPass);
+        final String credential = Credentials.basic(loginUid, loginPass, Charset.forName("UTF-8"));
 
         Call<List<UserTokens>> call;
         if(loginOTP != 0) {
