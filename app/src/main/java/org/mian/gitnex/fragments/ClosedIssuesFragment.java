@@ -52,6 +52,7 @@ public class ClosedIssuesFragment extends Fragment {
     private TextView noDataIssuesClosed;
     private String issueState = "closed";
     private int resultLimit = 50;
+    private String requestType = "issues";
 
     @Nullable
     @Override
@@ -87,7 +88,7 @@ public class ClosedIssuesFragment extends Fragment {
                     public void run() {
 
                         swipeRefresh.setRefreshing(false);
-                        loadInitial(instanceToken, repoOwner, repoName, issueState, resultLimit);
+                        loadInitial(instanceToken, repoOwner, repoName, issueState, resultLimit, requestType);
                         adapterClosed.notifyDataChanged();
 
                     }
@@ -106,7 +107,7 @@ public class ClosedIssuesFragment extends Fragment {
                         if(issuesListClosed.size() == 10 || pageSize == 10) {
 
                             int page = (issuesListClosed.size() + 10) / 10;
-                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, issueState, resultLimit);
+                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, issueState, resultLimit, requestType);
 
                         }
                         /*else {
@@ -125,7 +126,7 @@ public class ClosedIssuesFragment extends Fragment {
         recyclerViewClosed.setAdapter(adapterClosed);
 
         apiClosed = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
-        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, issueState, resultLimit);
+        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, issueState, resultLimit, requestType);
 
         return v;
 
@@ -145,16 +146,16 @@ public class ClosedIssuesFragment extends Fragment {
 
         if(tinyDb.getBoolean("resumeClosedIssues")) {
 
-            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, issueState, resultLimit);
+            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, issueState, resultLimit, requestType);
             tinyDb.putBoolean("resumeClosedIssues", false);
 
         }
 
     }
 
-    private void loadInitial(String token, String repoOwner, String repoName, String issueState, int resultLimit) {
+    private void loadInitial(String token, String repoOwner, String repoName, String issueState, int resultLimit, String requestType) {
 
-        Call<List<Issues>> call = apiClosed.getClosedIssues(token, repoOwner, repoName,  1, issueState, resultLimit);
+        Call<List<Issues>> call = apiClosed.getClosedIssues(token, repoOwner, repoName,  1, issueState, resultLimit, requestType);
 
         call.enqueue(new Callback<List<Issues>>() {
 
@@ -194,13 +195,13 @@ public class ClosedIssuesFragment extends Fragment {
 
     }
 
-    private void loadMore(String token, String repoOwner, String repoName, int page, String issueState, int resultLimit){
+    private void loadMore(String token, String repoOwner, String repoName, int page, String issueState, int resultLimit, String requestType){
 
         //add loading progress view
         issuesListClosed.add(new Issues("load"));
         adapterClosed.notifyItemInserted((issuesListClosed.size() - 1));
 
-        Call<List<Issues>> call = apiClosed.getClosedIssues(token, repoOwner, repoName, page, issueState, resultLimit);
+        Call<List<Issues>> call = apiClosed.getClosedIssues(token, repoOwner, repoName, page, issueState, resultLimit, requestType);
 
         call.enqueue(new Callback<List<Issues>>() {
 
