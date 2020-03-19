@@ -32,6 +32,7 @@ import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -284,7 +285,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     if(appUtil.checkIntegers(loginOTP_)) {
 
-                        loginOTP = Integer.valueOf(loginOTP_);
+                        loginOTP = Integer.parseInt(loginOTP_);
                     }
                     else {
 
@@ -530,7 +531,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void letTheUserIn(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP) {
 
-        final String credential = Credentials.basic(loginUid, loginPass, Charset.forName("UTF-8"));
+        final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
         Call<List<UserTokens>> call;
         if(loginOTP != 0) {
