@@ -1,0 +1,16 @@
+2.4.1
+Improvement: Show issues only in Issues Tabs 
+Bugfix: Files breadcrumb navigation links
+Bugfix: Login with special characters
+
+2.4.0
+New: Light theme (choose from settings)
+New: Download files in Fileviewer (need write permissions)
+New: Custom fonts (choose from settings)
+New: PDF support in Fileviewer
+New: Night mode in PDF (Fileviewer)
+New: Default list of repositories in Explore screen
+New: Latvian language support
+
+For more, check the release notes.
+https://gitea.com/gitnex/GitNex/releases
