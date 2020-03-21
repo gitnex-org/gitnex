@@ -35,7 +35,7 @@ public class ChangeLog {
 
 		while ((eventType != XmlPullParser.END_TAG) || (aXml.getName().equals("change"))) {
 
-			if ((eventType == XmlPullParser.START_TAG) &&(aXml.getName().equals("change"))) {
+			if ((eventType == XmlPullParser.START_TAG) && (aXml.getName().equals("change"))) {
 				eventType = aXml.next();
 				strBuilder.append(aXml.getText()).append("<br>");
 			}
@@ -93,7 +93,8 @@ public class ChangeLog {
 		androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(changelogActivity);
 		builder.setTitle(R.string.changelogTitle);
 		builder.setMessage(Html.fromHtml("<small>" + changelogMessage + "</small>"));
-		builder.setNegativeButton(R.string.okButton, (dialog, which) -> dialog.cancel());
+		builder.setNegativeButton(R.string.close, (dialog, which) -> dialog.cancel());
+		builder.setCancelable(false);
 		builder.create();
 		builder.show();
 

@@ -11,6 +11,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -157,7 +159,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        final View hView =  navigationView.getHeaderView(0);
+        final View hView = navigationView.getHeaderView(0);
 
         ImageView navSubMenu = hView.findViewById(R.id.navSubMenu);
         navSubMenu.setOnClickListener(new View.OnClickListener() {
@@ -287,8 +289,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         // Changelog popup
-        ChangeLog changelogDialog = new ChangeLog(this);
-        changelogDialog.showDialog();
+        int versionCode = 0;
+        try {
+            PackageInfo packageInfo = getApplicationContext().getPackageManager()
+                    .getPackageInfo(getApplicationContext().getPackageName(), 0);
+            versionCode = packageInfo.versionCode;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            Log.e("changelogDialog", Objects.requireNonNull(e.getMessage()));
+        }
+
+        if (!tinyDb.getBoolean("versionFlag")) {
+            if (versionCode > tinyDb.getInt("versionCode")) {
+                tinyDb.putInt("versionCode", versionCode);
+                tinyDb.putBoolean("versionFlag", true);
+            }
+            else {
+                tinyDb.putBoolean("versionFlag", false);
+            }
+        }
+        else {
+            tinyDb.putBoolean("versionFlag", false);
+        }
+
+        if(tinyDb.getBoolean("versionFlag")) {
+            ChangeLog changelogDialog = new ChangeLog(this);
+            changelogDialog.showDialog();
+        }
 
     }
 

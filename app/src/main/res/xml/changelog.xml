@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="2.4.1" versioncode="91">
+        <change>Improvement: Show issues only in Issues Tabs</change>
+        <change>Bugfix: Files breadcrumb navigation links</change>
+        <change>Bugfix: Login with special characters</change>
+    </release>
+
     <release version="2.4.0" versioncode="90">
         <change>New: Light theme (choose from settings)</change>
         <change>New: Icons</change>
