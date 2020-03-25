@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor" >
+
+    <LinearLayout
+        android:id="@+id/linearLayoutFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/commitTitle"
+                android:layout_width="0dp"
+                android:layout_weight=".70"
+                android:layout_height="wrap_content"
+                android:text="@string/commitTitle"
+                android:textIsSelectable="true"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

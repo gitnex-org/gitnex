@@ -27,6 +27,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetRepoFragment;
 import org.mian.gitnex.fragments.BranchesFragment;
+import org.mian.gitnex.fragments.CommitsFragment;
 import org.mian.gitnex.fragments.IssuesClosedFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
@@ -270,15 +271,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
                 case 4: // pull requests
                     fragment = new PullRequestsFragment();
                     break;
-                case 5: // milestones
+                case 5: // commits
+                    fragment = new CommitsFragment();
+                    break;
+                case 6: // milestones
                     return MilestonesFragment.newInstance(repoOwner, repoName);
-                case 6: // labels
+                case 7: // labels
                     return LabelsFragment.newInstance(repoOwner, repoName);
-                case 7: // branches
+                case 8: // branches
                     return BranchesFragment.newInstance(repoOwner, repoName);
-                case 8: // releases
+                case 9: // releases
                     return ReleasesFragment.newInstance(repoOwner, repoName);
-                case 9: // collaborators
+                case 10: // collaborators
                     return CollaboratorsFragment.newInstance(repoOwner, repoName);
             }
             return fragment;
@@ -286,7 +290,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
         @Override
         public int getCount() {
-            return 10;
+            return 11;
         }
 
     }

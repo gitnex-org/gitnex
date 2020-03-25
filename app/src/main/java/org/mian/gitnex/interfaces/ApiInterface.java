@@ -3,6 +3,7 @@ package org.mian.gitnex.interfaces;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.models.AddEmail;
 import org.mian.gitnex.models.Branches;
+import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.models.ExploreRepositories;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.models.MergePullRequest;
@@ -259,4 +260,7 @@ public interface ApiInterface {
 
     @POST("repos/{owner}/{repo}/pulls/{index}/merge") // merge a pull request
     Call<ResponseBody> mergePullRequest(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int index, @Body MergePullRequest jsonStr);
+
+    @GET("repos/{owner}/{repo}/commits") // get all commits
+    Call<List<Commits>> getRepositoryCommits(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 }

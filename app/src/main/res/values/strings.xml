@@ -560,4 +560,6 @@
     <string name="shareIssue">Share Issue</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
+    <string name="repositoryTabCommits">Commits</string>
+    <string name="commitTitle">Commit Title</string>
 </resources>
