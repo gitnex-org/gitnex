@@ -506,6 +506,7 @@
     <string name="strPrivate" translatable="false">private</string>
     <string name="strPublic" translatable="false">public</string>
     <string name="defaultCopy" translatable="false">Default</string>
+    <string name="viewInBrowser">View in Browser</string>
     <!-- generic copy -->
 
     <string name="translateText">Translate GitNex with Crowdin</string>
@@ -562,4 +563,5 @@
     <string name="createRepository">Create Repository</string>
     <string name="repositoryTabCommits">Commits</string>
     <string name="commitTitle">Commit Title</string>
+    <string name="commitCommittedBy">Committed by %1$s</string>
 </resources>

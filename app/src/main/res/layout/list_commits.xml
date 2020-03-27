@@ -2,9 +2,10 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/commitList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor" >
+    android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
         android:id="@+id/linearLayoutFrame"
@@ -16,19 +17,54 @@
         android:layout_margin="15dp"
         tools:ignore="UselessParent">
 
+        <TextView
+            android:id="@+id/commitTitleVw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/commitTitle"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/commitCommitterVw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp" />
+
         <LinearLayout
+            android:id="@+id/frameViewnDate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/frameViewInBrowser"
+                android:layout_width="0dp"
+                android:layout_weight=".25"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/commitHtmlUrlVw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="@string/viewInBrowser"
+                    android:textColorLink="@color/lightBlue"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/commitTitle"
+                android:id="@+id/commitDateVw"
                 android:layout_width="0dp"
-                android:layout_weight=".70"
+                android:layout_weight=".25"
                 android:layout_height="wrap_content"
-                android:text="@string/commitTitle"
-                android:textIsSelectable="true"
+                android:gravity="end"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

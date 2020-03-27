@@ -1,5 +1,6 @@
 package org.mian.gitnex.models;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class Commits {
 
             String name;
             String email;
-            String date;
+            Date date;
 
             public String getName() {
                 return name;
@@ -50,7 +51,7 @@ public class Commits {
                 return email;
             }
 
-            public String getDate() {
+            public Date getDate() {
                 return date;
             }
 
@@ -60,7 +61,7 @@ public class Commits {
 
             String name;
             String email;
-            String date;
+            Date date;
 
             public String getName() {
                 return name;
@@ -70,7 +71,7 @@ public class Commits {
                 return email;
             }
 
-            public String getDate() {
+            public Date getDate() {
                 return date;
             }
 
