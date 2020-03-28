@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.tooltip.Tooltip;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.NetworkObserver;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.VersionCheck;
 import org.mian.gitnex.models.GiteaVersion;
@@ -65,7 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
 
         TinyDB tinyDb = new TinyDB(getApplicationContext());
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        NetworkObserver networkMonitor = new NetworkObserver(this);
 
         loginButton = findViewById(R.id.login_button);
         instanceUrlET = findViewById(R.id.instance_url);
@@ -105,30 +106,39 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         info_button.setOnClickListener(infoListener);
 
-        if(!connToInternet) {
+        loginMethod.setOnCheckedChangeListener((group, checkedId) -> {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
-            return;
+            if(checkedId == R.id.loginToken) {
 
-        }
+                loginUidET.setVisibility(View.GONE);
+                loginPassword.setVisibility(View.GONE);
+                otpCode.setVisibility(View.GONE);
+                otpInfo.setVisibility(View.GONE);
+                loginTokenCode.setVisibility(View.VISIBLE);
 
-        loginMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.loginUsernamePassword){
-                    loginUidET.setVisibility(View.VISIBLE);
-                    loginPassword.setVisibility(View.VISIBLE);
-                    otpCode.setVisibility(View.VISIBLE);
-                    otpInfo.setVisibility(View.VISIBLE);
-                    loginTokenCode.setVisibility(View.GONE);
-                } else {
-                    loginUidET.setVisibility(View.GONE);
-                    loginPassword.setVisibility(View.GONE);
-                    otpCode.setVisibility(View.GONE);
-                    otpInfo.setVisibility(View.GONE);
-                    loginTokenCode.setVisibility(View.VISIBLE);
-                }
             }
+            else {
+
+                loginUidET.setVisibility(View.VISIBLE);
+                loginPassword.setVisibility(View.VISIBLE);
+                otpCode.setVisibility(View.VISIBLE);
+                otpInfo.setVisibility(View.VISIBLE);
+                loginTokenCode.setVisibility(View.GONE);
+
+            }
+
+        });
+
+        networkMonitor.onInternetStateListener(isAvailable -> {
+
+            if(isAvailable) {
+                enableProcessButton();
+            }
+            else {
+                disableProcessButton();
+                Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            }
+
         });
 
         //login_button.setOnClickListener(this);
