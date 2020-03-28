@@ -1,20 +1,20 @@
-package org.mian.gitnex.fragments;
+package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +32,7 @@ import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,12 +42,13 @@ import static com.mikepenz.fastadapter.adapters.ItemAdapter.items;
  * Author M M Arif
  */
 
-public class CommitsFragment extends Fragment implements ItemFilterListener<CommitsItems> {
+public class CommitsActivity extends BaseActivity implements ItemFilterListener<CommitsItems> {
 
+    private View.OnClickListener onClickListener;
     private TextView noData;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private String TAG = "CommitsFragment - ";
+    private String TAG = "CommitsActivity - ";
     private int resultLimit = 50;
     private boolean loadNextFlag = false;
 
@@ -55,14 +57,19 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
     private ItemAdapter footerAdapter;
     private EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected int getLayoutResourceId(){
+        return R.layout.activity_commits;
+    }
 
-        final View v = inflater.inflate(R.layout.fragment_commits, container, false);
-        setHasOptionsMenu(true);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-        TinyDB tinyDb = new TinyDB(getContext());
+        super.onCreate(savedInstanceState);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -71,13 +78,23 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
         final String repoOwner = parts[0];
         final String repoName = parts[1];
 
-        noData = v.findViewById(R.id.noDataCommits);
-        progressBar = v.findViewById(R.id.progress_bar);
-        swipeRefreshLayout = v.findViewById(R.id.pullToRefresh);
+        String branchName = getIntent().getStringExtra("branchName");
 
-        RecyclerView recyclerView = v.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setMovementMethod(new ScrollingMovementMethod());
+        toolbar_title.setText(branchName);
+
+        ImageView closeActivity = findViewById(R.id.close);
+        noData = findViewById(R.id.noDataCommits);
+        progressBar = findViewById(R.id.progress_bar);
+        swipeRefreshLayout = findViewById(R.id.pullToRefresh);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
+
+        initCloseListener();
+        closeActivity.setOnClickListener(onClickListener);
 
         fastItemAdapter = new FastItemAdapter<>();
         fastItemAdapter.withSelectable(true);
@@ -86,20 +103,11 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
         //noinspection unchecked
         fastItemAdapter.addAdapter(1, footerAdapter);
 
-        fastItemAdapter.getItemFilter().withFilterPredicate(new IItemAdapter.Predicate<CommitsItems>() {
-
-            @Override
-            public boolean filter(@NonNull CommitsItems item, CharSequence constraint) {
-
-                return item.getCommitTitle().toString().toLowerCase().contains(constraint.toString().toLowerCase());
-
-            }
-
-        });
+        fastItemAdapter.getItemFilter().withFilterPredicate((IItemAdapter.Predicate<CommitsItems>) (item, constraint) -> item.getCommitTitle().toLowerCase().contains(Objects.requireNonNull(constraint).toString().toLowerCase()));
 
         fastItemAdapter.getItemFilter().withItemFilterListener(this);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(fastItemAdapter);
 
@@ -108,7 +116,7 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
             @Override
             public void onLoadMore(final int currentPage) {
 
-                loadNext(instanceUrl, instanceToken, repoOwner, repoName, currentPage);
+                loadNext(instanceUrl, instanceToken, repoOwner, repoName, currentPage, branchName);
 
             }
 
@@ -125,21 +133,19 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
 
         recyclerView.addOnScrollListener(endlessRecyclerOnScrollListener);
 
-        loadInitial(instanceUrl, instanceToken, repoOwner, repoName);
+        loadInitial(instanceUrl, instanceToken, repoOwner, repoName, branchName);
 
         assert savedInstanceState != null;
         fastItemAdapter.withSavedInstanceState(savedInstanceState);
 
-        return v;
-
     }
 
-    private void loadInitial(String instanceUrl, String token, String repoOwner, String repoName) {
+    private void loadInitial(String instanceUrl, String token, String repoOwner, String repoName, String branchName) {
 
         Call<List<Commits>> call = RetrofitClient
-                .getInstance(instanceUrl, getContext())
+                .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
-                .getRepositoryCommits(token, repoOwner, repoName,  1);
+                .getRepositoryCommits(token, repoOwner, repoName,  1, branchName);
 
         call.enqueue(new Callback<List<Commits>>() {
 
@@ -158,7 +164,7 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
 
                         for (int i = 0; i < response.body().size(); i++) {
 
-                            items.add(new CommitsItems(getContext()).withNewItems(response.body().get(i).getCommit().getMessage(), response.body().get(i).getHtml_url(),
+                            items.add(new CommitsItems(getApplicationContext()).withNewItems(response.body().get(i).getCommit().getMessage(), response.body().get(i).getHtml_url(),
                                     response.body().get(i).getCommit().getCommitter().getName(), response.body().get(i).getCommit().getCommitter().getDate()));
 
                         }
@@ -194,73 +200,68 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
 
     }
 
-    private void loadNext(String instanceUrl, String token, String repoOwner, String repoName, final int currentPage) {
+    private void loadNext(String instanceUrl, String token, String repoOwner, String repoName, final int currentPage, String branchName) {
 
         footerAdapter.clear();
         //noinspection unchecked
         footerAdapter.add(new ProgressItem().withEnabled(false));
         Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
+        handler.postDelayed(() -> {
 
-            @Override
-            public void run() {
+            Call<List<Commits>> call = RetrofitClient
+                    .getInstance(instanceUrl, getApplicationContext())
+                    .getApiInterface()
+                    .getRepositoryCommits(token, repoOwner, repoName, currentPage + 1, branchName);
 
-                Call<List<Commits>> call = RetrofitClient
-                        .getInstance(instanceUrl, getContext())
-                        .getApiInterface()
-                        .getRepositoryCommits(token, repoOwner, repoName, currentPage + 1);
+            call.enqueue(new Callback<List<Commits>>() {
 
-                call.enqueue(new Callback<List<Commits>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<Commits>> call, @NonNull Response<List<Commits>> response) {
 
-                    @Override
-                    public void onResponse(@NonNull Call<List<Commits>> call, @NonNull Response<List<Commits>> response) {
+                    if (response.isSuccessful()) {
 
-                        if (response.isSuccessful()) {
+                        assert response.body() != null;
 
-                            assert response.body() != null;
+                        if (response.body().size() > 0) {
 
-                            if (response.body().size() > 0) {
+                            loadNextFlag = response.body().size() == resultLimit;
 
-                                loadNextFlag = response.body().size() == resultLimit;
+                            for (int i = 0; i < response.body().size(); i++) {
 
-                                for (int i = 0; i < response.body().size(); i++) {
-
-                                    fastItemAdapter.add(fastItemAdapter.getAdapterItemCount(), new CommitsItems(getContext()).withNewItems(response.body().get(i).getCommit().getMessage(),
-                                            response.body().get(i).getHtml_url(), response.body().get(i).getCommit().getCommitter().getName(),
-                                            response.body().get(i).getCommit().getCommitter().getDate()));
-
-                                }
-
-                                footerAdapter.clear();
+                                fastItemAdapter.add(fastItemAdapter.getAdapterItemCount(), new CommitsItems(getApplicationContext()).withNewItems(response.body().get(i).getCommit().getMessage(),
+                                        response.body().get(i).getHtml_url(), response.body().get(i).getCommit().getCommitter().getName(),
+                                        response.body().get(i).getCommit().getCommitter().getDate()));
 
                             }
-                            else {
 
-                                footerAdapter.clear();
-                            }
-
-                            progressBar.setVisibility(View.GONE);
+                            footerAdapter.clear();
 
                         }
                         else {
 
-                            Log.e(TAG, String.valueOf(response.code()));
-
+                            footerAdapter.clear();
                         }
 
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<List<Commits>> call, @NonNull Throwable t) {
-
-                        Log.e(TAG, t.toString());
+                        progressBar.setVisibility(View.GONE);
 
                     }
+                    else {
 
-                });
+                        Log.e(TAG, String.valueOf(response.code()));
 
-            }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<List<Commits>> call, @NonNull Throwable t) {
+
+                    Log.e(TAG, t.toString());
+
+                }
+
+            });
 
         }, 1000);
 
@@ -273,10 +274,10 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
@@ -298,6 +299,7 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
         });
 
         endlessRecyclerOnScrollListener.enable();
+        return super.onCreateOptionsMenu(menu);
 
     }
 
@@ -311,4 +313,13 @@ public class CommitsFragment extends Fragment implements ItemFilterListener<Comm
         endlessRecyclerOnScrollListener.enable();
     }
 
+    private void initCloseListener() {
+        onClickListener = view -> {
+            getIntent().removeExtra("branchName");
+            finish();
+        };
+    }
+
 }
+
+

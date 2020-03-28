@@ -562,6 +562,7 @@
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="repositoryTabCommits">Commits</string>
-    <string name="commitTitle">Commit Title</string>
+    <string name="commitTitle">Branch Commits</string>
     <string name="commitCommittedBy">Committed by %1$s</string>
+    <string name="viewCommits">View Commits</string>
 </resources>
