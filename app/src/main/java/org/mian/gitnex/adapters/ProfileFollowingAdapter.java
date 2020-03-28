@@ -47,7 +47,7 @@ public class ProfileFollowingAdapter extends RecyclerView.Adapter<ProfileFollowi
     @NonNull
     @Override
     public ProfileFollowingAdapter.FollowingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_following_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_following, parent, false);
         return new ProfileFollowingAdapter.FollowingViewHolder(v);
     }
 

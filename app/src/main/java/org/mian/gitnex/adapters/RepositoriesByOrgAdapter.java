@@ -26,7 +26,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -159,7 +158,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
     @NonNull
     @Override
     public RepositoriesByOrgAdapter.OrgReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.repositories_by_org_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories_by_org, parent, false);
         return new RepositoriesByOrgAdapter.OrgReposViewHolder(v);
     }
 

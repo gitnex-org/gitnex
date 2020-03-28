@@ -58,7 +58,7 @@ public class ClosedIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LayoutInflater inflater = LayoutInflater.from(context);
 
         if(viewType == TYPE_LOAD){
-            return new ClosedIssuesAdapter.IssuesHolder(inflater.inflate(R.layout.repo_issues_list, parent,false));
+            return new ClosedIssuesAdapter.IssuesHolder(inflater.inflate(R.layout.list_issues, parent,false));
         }
         else {
             return new ClosedIssuesAdapter.LoadHolder(inflater.inflate(R.layout.row_load,parent,false));

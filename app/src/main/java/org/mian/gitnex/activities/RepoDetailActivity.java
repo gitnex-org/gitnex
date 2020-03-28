@@ -271,26 +271,24 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
                 case 4: // pull requests
                     fragment = new PullRequestsFragment();
                     break;
-                case 5: // commits
-                    fragment = new CommitsFragment();
-                    break;
-                case 6: // milestones
-                    return MilestonesFragment.newInstance(repoOwner, repoName);
-                case 7: // labels
-                    return LabelsFragment.newInstance(repoOwner, repoName);
-                case 8: // branches
+                case 5: // branches
                     return BranchesFragment.newInstance(repoOwner, repoName);
-                case 9: // releases
+                case 6: // releases
                     return ReleasesFragment.newInstance(repoOwner, repoName);
-                case 10: // collaborators
+                case 7: // milestones
+                    return MilestonesFragment.newInstance(repoOwner, repoName);
+                case 8: // labels
+                    return LabelsFragment.newInstance(repoOwner, repoName);
+                case 9: // collaborators
                     return CollaboratorsFragment.newInstance(repoOwner, repoName);
             }
+            assert fragment != null;
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 11;
+            return 10;
         }
 
     }
