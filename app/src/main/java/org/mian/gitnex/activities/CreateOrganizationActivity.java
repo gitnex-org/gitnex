@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,9 +46,15 @@ public class CreateOrganizationActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         closeActivity = findViewById(R.id.close);
         orgName = findViewById(R.id.newOrganizationName);
         orgDesc = findViewById(R.id.newOrganizationDescription);
+
+        orgName.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(orgName, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

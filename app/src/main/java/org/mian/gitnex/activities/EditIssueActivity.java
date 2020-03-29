@@ -12,6 +12,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -70,6 +71,8 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -87,6 +90,10 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         editIssueTitle = findViewById(R.id.editIssueTitle);
         editIssueDescription = findViewById(R.id.editIssueDescription);
         editIssueDueDate = findViewById(R.id.editIssueDueDate);
+
+        editIssueTitle.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(editIssueTitle, InputMethodManager.SHOW_IMPLICIT);
 
         defaultMentionAdapter = new MentionArrayAdapter<>(this);
         loadCollaboratorsList();

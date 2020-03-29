@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,10 +63,16 @@ public class CreateRepoActivity extends BaseActivity {
         final String userLogin = tinyDb.getString("userLogin");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         closeActivity = findViewById(R.id.close);
         repoName = findViewById(R.id.newRepoName);
         repoDesc = findViewById(R.id.newRepoDescription);
         repoAccess = findViewById(R.id.newRepoPrivate);
+
+        repoName.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(repoName, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

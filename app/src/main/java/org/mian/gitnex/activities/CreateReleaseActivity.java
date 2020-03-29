@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,6 +60,8 @@ public class CreateReleaseActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
@@ -74,6 +77,10 @@ public class CreateReleaseActivity extends BaseActivity {
         releaseContent = findViewById(R.id.releaseContent);
         releaseType = findViewById(R.id.releaseType);
         releaseDraft = findViewById(R.id.releaseDraft);
+
+        releaseTagName.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(releaseTagName, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

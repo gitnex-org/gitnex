@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,6 +49,8 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
@@ -60,6 +63,10 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
         mRecyclerView = findViewById(R.id.recyclerViewUserSearch);
         mProgressBar = findViewById(R.id.progress_bar);
         noData = findViewById(R.id.noData);
+
+        addCollaboratorSearch.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(addCollaboratorSearch, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

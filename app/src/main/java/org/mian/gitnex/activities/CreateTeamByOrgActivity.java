@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -76,6 +77,8 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         ImageView closeActivity = findViewById(R.id.close);
         teamName = findViewById(R.id.teamName);
         teamDesc = findViewById(R.id.teamDesc);
@@ -84,6 +87,10 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
         teamAccessControls = findViewById(R.id.teamAccessControls);
         teamAccessControlsArray = findViewById(R.id.teamAccessControlsArray);
         createTeamButton = findViewById(R.id.createTeamButton);
+
+        teamName.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(teamName, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

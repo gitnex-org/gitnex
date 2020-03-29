@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,8 +56,14 @@ public class MergePullRequestActivity extends BaseActivity {
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
         TinyDB tinyDb = new TinyDB(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         mergePR = findViewById(R.id.mergePR);
         mergePR.setShowSoftInputOnFocus(true);
+
+        mergePR.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(mergePR, InputMethodManager.SHOW_IMPLICIT);
 
         defaultMentionAdapter = new MentionArrayAdapter<>(this);
         loadCollaboratorsList();

@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,6 +51,8 @@ public class CreateLabelActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
@@ -61,7 +64,7 @@ public class CreateLabelActivity extends BaseActivity {
 
         if(getIntent().getStringExtra("labelAction") != null && Objects.requireNonNull(getIntent().getStringExtra("labelAction")).equals("delete")) {
 
-            deleteLabel(instanceUrl, instanceToken, repoOwner, repoName, Integer.valueOf(Objects.requireNonNull(getIntent().getStringExtra("labelId"))), loginUid);
+            deleteLabel(instanceUrl, instanceToken, repoOwner, repoName, Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("labelId"))), loginUid);
             finish();
             return;
 
@@ -73,6 +76,10 @@ public class CreateLabelActivity extends BaseActivity {
         colorPicker = findViewById(R.id.colorPicker);
         labelName = findViewById(R.id.labelName);
         createLabelButton = findViewById(R.id.createLabelButton);
+
+        labelName.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(labelName, InputMethodManager.SHOW_IMPLICIT);
 
         final ColorPicker cp = new ColorPicker(CreateLabelActivity.this, 235, 113, 33);
 
