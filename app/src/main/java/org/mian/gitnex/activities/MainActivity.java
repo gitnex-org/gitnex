@@ -299,24 +299,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Log.e("changelogDialog", Objects.requireNonNull(e.getMessage()));
         }
 
-        if (!tinyDb.getBoolean("versionFlag")) {
-            if (versionCode > tinyDb.getInt("versionCode")) {
-                tinyDb.putInt("versionCode", versionCode);
-                tinyDb.putBoolean("versionFlag", true);
-            }
-            else {
-                tinyDb.putBoolean("versionFlag", false);
-            }
-        }
-        else {
-            tinyDb.putBoolean("versionFlag", false);
-        }
-
-        if(tinyDb.getBoolean("versionFlag")) {
+        if (versionCode > tinyDb.getInt("versionCode")) {
+            tinyDb.putInt("versionCode", versionCode);
+            tinyDb.putBoolean("versionFlag", true);
             ChangeLog changelogDialog = new ChangeLog(this);
             changelogDialog.showDialog();
         }
-
     }
 
     public void setActionBarTitle (@NonNull String title) {
