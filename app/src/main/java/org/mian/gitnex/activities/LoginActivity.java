@@ -245,7 +245,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             else {
                 instanceUrl = "http://" + instanceHost + "/api/v1/";
-                instanceUrlWithProtocol = "https://" + instanceHost;
+                instanceUrlWithProtocol = "http://" + instanceHost;
             }
 
             tinyDb.putString("instanceUrlRaw", instanceHost);
@@ -334,7 +334,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             else {
                 instanceUrl = "http://" + instanceHost + "/api/v1/";
-                instanceUrlWithProtocol = "https://" + instanceHost;
+                instanceUrlWithProtocol = "http://" + instanceHost;
             }
 
             tinyDb.putString("instanceUrlRaw", instanceHost);
