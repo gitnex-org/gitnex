@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -53,6 +54,8 @@ public class ReplyToIssueActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
         TinyDB tinyDb = new TinyDB(getApplicationContext());
 
@@ -66,6 +69,10 @@ public class ReplyToIssueActivity extends BaseActivity {
 
         closeActivity = findViewById(R.id.close);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
+
+        addComment.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(addComment, InputMethodManager.SHOW_IMPLICIT);
 
         if(!tinyDb.getString("issueTitle").isEmpty()) {
             toolbar_title.setText(tinyDb.getString("issueTitle"));

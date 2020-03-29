@@ -558,6 +558,7 @@
 
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
+    <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
 

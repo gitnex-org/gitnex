@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -48,11 +49,17 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         milestoneDueDate = findViewById(R.id.milestoneDueDate);
         ImageView closeActivity = findViewById(R.id.close);
         createNewMilestoneButton = findViewById(R.id.createNewMilestoneButton);
         milestoneTitle = findViewById(R.id.milestoneTitle);
         milestoneDescription = findViewById(R.id.milestoneDescription);
+
+        milestoneTitle.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(milestoneTitle, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -77,6 +78,8 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
@@ -95,6 +98,10 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         newIssueTitle = findViewById(R.id.newIssueTitle);
         newIssueDescription = findViewById(R.id.newIssueDescription);
         labelsIdHolder = findViewById(R.id.labelsIdHolder);
+
+        newIssueTitle.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(newIssueTitle, InputMethodManager.SHOW_IMPLICIT);
 
         defaultMentionAdapter = new MentionArrayAdapter<>(this);
         loadCollaboratorsList();

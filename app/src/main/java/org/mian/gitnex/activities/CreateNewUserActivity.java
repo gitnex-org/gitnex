@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,12 +48,18 @@ public class CreateNewUserActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         ImageView closeActivity = findViewById(R.id.close);
         createUserButton = findViewById(R.id.createUserButton);
         fullName = findViewById(R.id.fullName);
         userUserName = findViewById(R.id.userUserName);
         userEmail = findViewById(R.id.userEmail);
         userPassword = findViewById(R.id.userPassword);
+
+        fullName.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(fullName, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

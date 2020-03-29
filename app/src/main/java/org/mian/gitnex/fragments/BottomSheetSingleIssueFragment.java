@@ -62,6 +62,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
             editIssue.setText(R.string.editPrText);
             copyIssueUrl.setText(R.string.copyPrUrlText);
+            shareIssue.setText(R.string.sharePr);
 
             if(tinyDB.getBoolean("prMerged")) {
                 mergePullRequest.setVisibility(View.GONE);
@@ -200,7 +201,8 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
                     }
                 });
 
-            } else if (tinyDB.getString("issueState").equals("closed")) {
+            }
+            else if (tinyDB.getString("issueState").equals("closed")) {
 
                 closeIssue.setVisibility(View.GONE);
 

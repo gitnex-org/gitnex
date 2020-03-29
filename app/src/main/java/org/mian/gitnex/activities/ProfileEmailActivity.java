@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,9 +48,15 @@ public class ProfileEmailActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         ImageView closeActivity = findViewById(R.id.close);
         userEmail = findViewById(R.id.userEmail);
         addEmailButton = findViewById(R.id.addEmailButton);
+
+        userEmail.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(userEmail, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

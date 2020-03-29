@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,6 +60,8 @@ public class CreateFileActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         TinyDB tinyDb = new TinyDB(getApplicationContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
@@ -73,6 +76,10 @@ public class CreateFileActivity extends BaseActivity {
         newFileContent = findViewById(R.id.newFileContent);
         newFileBranchName = findViewById(R.id.newFileBranchName);
         newFileCommitMessage = findViewById(R.id.newFileCommitMessage);
+
+        newFileName.requestFocus();
+        assert imm != null;
+        imm.showSoftInput(newFileName, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
