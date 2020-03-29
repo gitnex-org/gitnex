@@ -285,7 +285,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     if(appUtil.checkIntegers(loginOTP_)) {
 
-                        loginOTP = Integer.valueOf(loginOTP_);
+                        loginOTP = Integer.parseInt(loginOTP_);
                     }
                     else {
 

@@ -560,4 +560,7 @@
     <string name="shareIssue">Share Issue</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
+
+    <string name="changelogTitle" translatable="false">Changelog</string>
+
 </resources>
