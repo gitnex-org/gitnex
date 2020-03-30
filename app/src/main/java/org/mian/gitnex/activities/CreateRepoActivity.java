@@ -25,7 +25,9 @@ import org.mian.gitnex.models.OrganizationRepository;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -46,11 +48,15 @@ public class CreateRepoActivity extends BaseActivity {
 
     List<OrgOwner> organizationsList = new ArrayList<>();
 
+    //https://github.com/go-gitea/gitea/blob/52cfd2743c0e85b36081cf80a850e6a5901f1865/models/repo.go#L964-L967
+    final List<String> reservedRepoNames = Arrays.asList(".", "..");
+    final Pattern reservedRepoPatterns = Pattern.compile("\\.(git|wiki)$");
+
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_new_repo;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +111,6 @@ public class CreateRepoActivity extends BaseActivity {
             createRepo.setOnClickListener(createRepoListener);
 
         }
-
     }
 
     private View.OnClickListener createRepoListener = new View.OnClickListener() {
@@ -154,14 +159,22 @@ public class CreateRepoActivity extends BaseActivity {
             Toasty.info(getApplicationContext(), getString(R.string.repoNameErrorInvalid));
 
         }
+        else if (reservedRepoNames.contains(newRepoName)) {
+
+            Toasty.info(getApplicationContext(), getString(R.string.repoNameErrorReservedName));
+
+        }
+        else if (reservedRepoPatterns.matcher(newRepoName).find()) {
+
+            Toasty.info(getApplicationContext(), getString(R.string.repoNameErrorReservedPatterns));
+
+        }
         else {
 
-            //Log.i("repoOwner", String.valueOf(repoOwner));
             disableProcessButton();
             createNewRepository(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), loginUid, newRepoName, newRepoDesc, repoOwner, newRepoAccess);
 
         }
-
     }
 
     private void createNewRepository(final String instanceUrl, final String token, String loginUid, String repoName, String repoDesc, String repoOwner, boolean isPrivate) {
@@ -229,7 +242,6 @@ public class CreateRepoActivity extends BaseActivity {
                 enableProcessButton();
             }
         });
-
     }
 
     private void getOrganizations(String instanceUrl, String instanceToken, final String userLogin) {
@@ -304,7 +316,6 @@ public class CreateRepoActivity extends BaseActivity {
                 enableProcessButton();
             }
         });
-
     }
 
     private void initCloseListener() {
