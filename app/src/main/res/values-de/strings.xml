@@ -63,6 +63,7 @@
     <string name="logo">In Gitea anmelden</string>
     <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld</string>
     <string name="loginFailed">Falscher Benutzername/Passwort </string>
+    <string name="malformedUrl">Verbindung zum Host fehlgeschlagen. Bitte prüfen Sie Ihre URL und den Port auf etwaige Fehler.</string>
     <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, du testest in einem lokalen Netzwerk.</string>
     <string name="malformedJson">Fehlerhaftes JSON erhalten. Serveranfrage war nicht erfolgreich.</string>
     <string name="emptyFieldURL">Instanzen-URL ist erforderlich</string>

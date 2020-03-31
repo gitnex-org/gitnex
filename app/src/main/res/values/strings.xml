@@ -92,6 +92,7 @@
     <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="loginFailed">Wrong username/password</string>
     <string name="protocolDelimiter" translatable="false">://</string>
+    <string name="malformedUrl">Could'nt connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network.</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful.</string>
     <string name="emptyFieldURL">Instance URL is required</string>

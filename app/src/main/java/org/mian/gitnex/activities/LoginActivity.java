@@ -464,7 +464,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				Log.e("onFailure-version", t.toString());
 
 				if(t instanceof NoRouteToHostException) {
-					Toasty.info(getApplicationContext(), "Could not connect to host. Please check your url or port " + "for issues.");
+					Toasty.info(getApplicationContext(), getResources().getString(R.string.malformedUrl));
 				}
 				else {
 					Toasty.info(getApplicationContext(), getResources().getString(R.string.commentError));
