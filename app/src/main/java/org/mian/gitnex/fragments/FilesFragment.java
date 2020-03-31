@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -145,7 +146,9 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
         final String finalDirName_ = dirName_;
 
         mBreadcrumbsView.addItem(createItem(dirName));
+        //noinspection unchecked
         mBreadcrumbsView.setCallback(new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onNavigateBack(BreadcrumbItem item, int position) {
 

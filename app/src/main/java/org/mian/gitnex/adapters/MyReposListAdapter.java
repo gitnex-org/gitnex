@@ -26,7 +26,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -158,7 +157,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
     @NonNull
     @Override
     public MyReposListAdapter.MyReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_repos_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_my_repos, parent, false);
         return new MyReposListAdapter.MyReposViewHolder(v);
     }
 

@@ -63,7 +63,7 @@ public class RepoWatchersAdapter extends BaseAdapter {
         RepoWatchersAdapter.ViewHolder viewHolder;
 
         if (finalView == null) {
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.repo_watchers_list, null);
+            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_repo_watchers, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }

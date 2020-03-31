@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -155,7 +154,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
     @NonNull
     @Override
     public ExploreRepositoriesAdapter.ReposSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.repos_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repos, parent, false);
         return new ExploreRepositoriesAdapter.ReposSearchViewHolder(v);
     }
 

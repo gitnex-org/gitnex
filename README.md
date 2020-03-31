@@ -2,6 +2,7 @@
 [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://gitea.com/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://gitea.com/gitnex/GitNex/releases)
 [![Build Status](https://drone.gitea.com/api/badges/gitnex/GitNex/status.svg)](https://drone.gitea.com/gitnex/GitNex)
 [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex)
+[![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
 
 [<img alt="Become a Patroen" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif)
 [<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"/>](https://liberapay.com/mmarif/donate)
@@ -90,5 +91,6 @@ Open source libraries
 - Caverock/androidsvg
 - Droidsonroids.gif/android-gif-drawable
 - Barteksc/AndroidPdfViewer
+- Mikepenz/fastadapter
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)

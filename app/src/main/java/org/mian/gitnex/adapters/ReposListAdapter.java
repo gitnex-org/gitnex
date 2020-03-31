@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -162,7 +161,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
     @NonNull
     @Override
     public ReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.repos_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repos, parent, false);
         return new ReposViewHolder(v);
     }
 

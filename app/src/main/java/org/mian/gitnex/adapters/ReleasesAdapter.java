@@ -80,7 +80,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
     @NonNull
     @Override
     public ReleasesAdapter.ReleasesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.releases_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_releases, parent, false);
         return new ReleasesAdapter.ReleasesViewHolder(v);
     }
 

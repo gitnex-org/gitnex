@@ -63,7 +63,7 @@ public class RepoStargazersAdapter extends BaseAdapter {
         RepoStargazersAdapter.ViewHolder viewHolder;
 
         if (finalView == null) {
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.repo_stargazers_list, null);
+            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_repo_stargazers, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
