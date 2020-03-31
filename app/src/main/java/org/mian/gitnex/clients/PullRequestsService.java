@@ -3,7 +3,7 @@ package org.mian.gitnex.clients;
 import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
-import org.mian.gitnex.ssl.MemorizingTrustManager;
+import org.mian.gitnex.helpers.MemorizingTrustManager;
 import org.mian.gitnex.util.AppUtil;
 import java.io.File;
 import java.io.IOException;

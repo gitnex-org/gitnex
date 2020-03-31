@@ -1,4 +1,4 @@
-package org.mian.gitnex.ssl;
+package org.mian.gitnex.helpers;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

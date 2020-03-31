@@ -1,4 +1,4 @@
-package org.mian.gitnex.ssl;
+package org.mian.gitnex.helpers;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +9,7 @@ import org.mian.gitnex.R;
 /**
  * Author Georg Lukas, modified by anonTree1417
  */
+
 public class MemorizingActivity extends Activity {
 
 	@Override
