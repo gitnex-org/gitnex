@@ -145,11 +145,11 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
                 //.useFont(Typeface.DEFAULT)
                 .bold()
                 .textColor(new ColorInverter().getContrastColor(color))
-                .fontSize(36)
+                .fontSize(40)
                 .width(LabelWidthCalculator.customWidth(getMaxLabelLength()))
-                .height(60)
+                .height(65)
                 .endConfig()
-                .buildRoundRect(labelName, color, 8);
+                .buildRoundRect(labelName, color, 10);
         holder.labelsView.setImageDrawable(drawable);
 
     }
