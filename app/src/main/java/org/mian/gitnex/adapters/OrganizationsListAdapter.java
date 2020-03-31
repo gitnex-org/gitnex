@@ -74,7 +74,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
     @NonNull
     @Override
     public OrganizationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.organizations_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_organizations, parent, false);
         return new OrganizationsViewHolder(v);
     }
 

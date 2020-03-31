@@ -13,7 +13,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/Widget.AppCompat.SearchView">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -75,18 +75,6 @@
                 android:text="@string/tabPullRequests" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem3_ml"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_ml" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem4_labels"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_labels" />
-
-            <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem5_branches"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,6 +85,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_releases" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem3_ml"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_ml" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem4_labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_labels" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem7_collaborators"

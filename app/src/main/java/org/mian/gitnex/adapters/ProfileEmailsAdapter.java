@@ -44,7 +44,7 @@ public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdap
     @NonNull
     @Override
     public ProfileEmailsAdapter.EmailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_emails_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_emails, parent, false);
         return new ProfileEmailsAdapter.EmailsViewHolder(v);
     }
 

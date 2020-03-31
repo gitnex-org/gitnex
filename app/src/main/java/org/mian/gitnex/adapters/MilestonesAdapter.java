@@ -110,7 +110,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
     @NonNull
     @Override
     public MilestonesAdapter.MilestonesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.milestones_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_milestones, parent, false);
         return new MilestonesAdapter.MilestonesViewHolder(v);
     }
 

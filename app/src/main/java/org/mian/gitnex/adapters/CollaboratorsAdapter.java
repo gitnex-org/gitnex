@@ -61,7 +61,7 @@ public class CollaboratorsAdapter extends BaseAdapter  {
         ViewHolder viewHolder = null;
 
         if (finalView == null) {
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.collaborators_list, null);
+            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_collaborators, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }

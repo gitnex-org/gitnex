@@ -57,7 +57,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LayoutInflater inflater = LayoutInflater.from(context);
 
         if(viewType == TYPE_LOAD){
-            return new PullRequestsAdapter.PullRequestsHolder(inflater.inflate(R.layout.repo_pr_list, parent,false));
+            return new PullRequestsAdapter.PullRequestsHolder(inflater.inflate(R.layout.list_pr, parent,false));
         }
         else {
             return new PullRequestsAdapter.LoadHolder(inflater.inflate(R.layout.row_load,parent,false));

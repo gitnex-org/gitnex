@@ -29,16 +29,16 @@
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/branchCommitHash"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            android:textColorLink="@color/lightBlue"/>
+            android:textColor="@color/lightBlue"
+            android:text="@string/viewCommits"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

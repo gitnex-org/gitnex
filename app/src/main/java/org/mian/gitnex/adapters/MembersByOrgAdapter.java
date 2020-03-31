@@ -67,7 +67,7 @@ public class MembersByOrgAdapter extends BaseAdapter implements Filterable {
         MembersByOrgAdapter.ViewHolder viewHolder = null;
 
         if (finalView == null) {
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.members_by_org_list, null);
+            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_members_by_org, null);
             viewHolder = new MembersByOrgAdapter.ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
