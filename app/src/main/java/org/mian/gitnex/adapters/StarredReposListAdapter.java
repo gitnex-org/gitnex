@@ -159,7 +159,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
     @NonNull
     @Override
     public StarredReposListAdapter.StarredReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.starred_repos_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_starred_repos, parent, false);
         return new StarredReposListAdapter.StarredReposViewHolder(v);
     }
 

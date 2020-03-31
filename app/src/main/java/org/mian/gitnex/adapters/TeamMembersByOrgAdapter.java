@@ -64,7 +64,7 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         TeamMembersByOrgAdapter.ViewHolder viewHolder = null;
 
         if (finalView == null) {
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.members_by_team_by_org_list, null);
+            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_members_by_team_by_org, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }

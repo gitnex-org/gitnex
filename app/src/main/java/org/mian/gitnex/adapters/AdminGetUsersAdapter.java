@@ -57,7 +57,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
     @NonNull
     @Override
     public AdminGetUsersAdapter.UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_users_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_admin_users, parent, false);
         return new AdminGetUsersAdapter.UsersViewHolder(v);
     }
 

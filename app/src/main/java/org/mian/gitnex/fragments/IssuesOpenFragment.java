@@ -51,7 +51,7 @@ public class IssuesOpenFragment extends Fragment {
     private int pageSize = 1;
     private TextView noDataIssues;
     private int resultLimit = 50;
-    private String requestType = "issues" ;
+    private String requestType = "issues";
 
     @Nullable
     @Override

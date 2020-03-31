@@ -53,7 +53,7 @@ public class FilesDiffAdapter extends RecyclerView.Adapter<FilesDiffAdapter.File
     @NonNull
     @Override
     public FilesDiffAdapter.FilesDiffViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.files_diffs_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_files_diffs, parent, false);
         return new FilesDiffAdapter.FilesDiffViewHolder(v);
     }
 
