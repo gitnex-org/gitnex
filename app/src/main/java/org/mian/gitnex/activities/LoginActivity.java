@@ -31,6 +31,7 @@ import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserTokens;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
+import java.net.NoRouteToHostException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -465,7 +466,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFailure(@NonNull Call<GiteaVersion> callVersion, Throwable t) {
+
                 Log.e("onFailure-version", t.toString());
+
+                if(t instanceof NoRouteToHostException) {
+                    Toasty.info(getApplicationContext(), "Could not connect to host. Please check your url or port " +
+                            "for issues.");
+                }
+                else {
+                    Toasty.info(getApplicationContext(), getResources().getString(R.string.commentError));
+                }
+
+                enableProcessButton();
+                loginButton.setText(R.string.btnLogin);
+
             }
 
         });
