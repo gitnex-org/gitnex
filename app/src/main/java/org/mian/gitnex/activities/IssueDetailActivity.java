@@ -427,7 +427,7 @@ public class IssueDetailActivity extends BaseActivity {
 
                         if(singleIssue.getLabels() != null) {
                             labelsScrollView.setVisibility(View.VISIBLE);
-                            int width = 33;
+                            int width = 25;
                             for (int i = 0; i < singleIssue.getLabels().size(); i++) {
 
                                 String labelColor = singleIssue.getLabels().get(i).getColor();
@@ -443,11 +443,11 @@ public class IssueDetailActivity extends BaseActivity {
                                         .beginConfig()
                                         .useFont(Typeface.DEFAULT)
                                         .textColor(new ColorInverter().getContrastColor(color))
-                                        .fontSize(36)
+                                        .fontSize(30)
                                         .width((width * labelName.length()) - ((width / 4) * labelName.length()))
-                                        .height(60)
+                                        .height(50)
                                         .endConfig()
-                                        .buildRoundRect(labelName, color, 8);
+                                        .buildRoundRect(labelName, color, 10);
                                 labelsView.setImageDrawable(drawable);
 
                                 labelsLayout.addView(labelsView);
