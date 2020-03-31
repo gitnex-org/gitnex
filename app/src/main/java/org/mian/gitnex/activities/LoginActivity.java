@@ -21,7 +21,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import com.tooltip.Tooltip;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
@@ -455,9 +454,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
 
             @Override
-            public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NotNull Throwable throwable) {
-                Log.e("onFailure-version", throwable.toString());
+            public void onFailure(@NonNull Call<GiteaVersion> callVersion, Throwable t) {
+                Log.e("onFailure-version", t.toString());
             }
+
         });
 
     }
@@ -481,6 +481,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (response.isSuccessful()) {
 
                     if (response.code() == 200) {
+
                         tinyDb.putBoolean("loggedInMode", true);
                         assert userDetails != null;
                         tinyDb.putString(userDetails.getLogin() + "-token", loginToken_);

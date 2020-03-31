@@ -44,6 +44,7 @@ import javax.net.ssl.X509TrustManager;
 /**
  * Author Georg Lukas, modified by anonTree1417
  */
+
 public class MemorizingTrustManager implements X509TrustManager {
 	private final static String DECISION_INTENT = "de.duenndns.ssl.DECISION";
 	final static String DECISION_INTENT_ID     = DECISION_INTENT + ".decisionId";

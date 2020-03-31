@@ -1,6 +1,7 @@
 package org.mian.gitnex.clients;
 
 import android.content.Context;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.ssl.MemorizingTrustManager;
 import org.mian.gitnex.util.AppUtil;
@@ -25,10 +26,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PullRequestsService {
 
-    public static <S> S createService(Class<S> serviceClass, String instanceURL, Context context) {
+    public static <S> S createService(Class<S> serviceClass, String instanceURL, Context ctx) {
 
-        final boolean connToInternet = AppUtil.haveNetworkConnection(context);
-        File httpCacheDirectory = new File(context.getCacheDir(), "responses");
+        final boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
+        File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
         int cacheSize = 50 * 1024 * 1024; // 50MB
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
@@ -38,7 +39,7 @@ public class PullRequestsService {
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
 
-            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(context);
+            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
             sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
 
             OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache).sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager).hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).addInterceptor(new Interceptor() {
@@ -62,8 +63,9 @@ public class PullRequestsService {
 
             Retrofit retrofit = builder.build();
             return retrofit.create(serviceClass);
-        } catch(Exception e) {
-            e.printStackTrace();
+        }
+        catch(Exception e) {
+	        Log.e("onFailure", e.toString());
         }
 
         return null;

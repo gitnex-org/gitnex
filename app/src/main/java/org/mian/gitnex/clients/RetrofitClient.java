@@ -1,6 +1,7 @@
 package org.mian.gitnex.clients;
 
 import android.content.Context;
+import android.util.Log;
 import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.ssl.MemorizingTrustManager;
 import org.mian.gitnex.util.AppUtil;
@@ -25,10 +26,10 @@ public class RetrofitClient {
 
     private Retrofit retrofit;
 
-    private RetrofitClient(String instanceUrl, Context context) {
-        final boolean connToInternet = AppUtil.haveNetworkConnection(context);
+    private RetrofitClient(String instanceUrl, Context ctx) {
+        final boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
         int cacheSize = 50 * 1024 * 1024; // 50MB
-        File httpCacheDirectory = new File(context.getCacheDir(), "responses");
+        File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -37,21 +38,23 @@ public class RetrofitClient {
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
 
-            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(context);
+            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
             sslContext.init(null, new X509TrustManager[] { memorizingTrustManager }, new SecureRandom());
 
             OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
                     .cache(cache)
+		            //.addInterceptor(logging)
                     .sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
                     .hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
                     .addInterceptor(chain -> {
+
                         Request request = chain.request();
-
-                        request = (connToInternet) ?
-                                request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build() :
-                                request.newBuilder().header("Cache-Control",
-                                        "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
-
+                        if(connToInternet) {
+                        	request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                        }
+                        else {
+                        	request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
+                        }
                         return chain.proceed(request);
                     });
 
@@ -63,8 +66,9 @@ public class RetrofitClient {
 
             retrofit = builder.build();
 
-        } catch(Exception e) {
-            e.printStackTrace();
+        }
+        catch(Exception e) {
+	        Log.e("onFailure", e.toString());
         }
     }
 
