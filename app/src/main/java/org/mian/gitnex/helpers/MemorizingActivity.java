@@ -18,9 +18,9 @@ public class MemorizingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
-		int decisionId = intent.getIntExtra(MemorizingTrustManager.DECISION_INTENT_ID, MTMDecision.DECISION_INVALID);
-		int titleId = intent.getIntExtra(MemorizingTrustManager.DECISION_TITLE_ID, R.string.mtm_accept_cert);
-		String cert = intent.getStringExtra(MemorizingTrustManager.DECISION_INTENT_CERT);
+		int decisionId = intent.getIntExtra("DECISION_INTENT_ID", MTMDecision.DECISION_INVALID);
+		int titleId = intent.getIntExtra("DECISION_TITLE_ID", R.string.mtm_accept_cert);
+		String cert = intent.getStringExtra("DECISION_INTENT_CERT");
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(MemorizingActivity.this);
 		builder.setTitle(titleId);

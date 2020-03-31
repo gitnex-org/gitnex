@@ -36,7 +36,7 @@ public class PullRequestsService {
 		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-		try {
+		try { // try-catch can be problematic here
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 
 			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);

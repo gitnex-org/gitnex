@@ -46,20 +46,12 @@ import javax.net.ssl.X509TrustManager;
  */
 
 public class MemorizingTrustManager implements X509TrustManager {
-
-	private final static String DECISION_INTENT = "de.duenndns.ssl.DECISION";
-	final static String DECISION_INTENT_ID = DECISION_INTENT + ".decisionId";
-	final static String DECISION_INTENT_CERT = DECISION_INTENT + ".cert";
-
-	private final static Logger LOGGER = Logger.getLogger(MemorizingTrustManager.class.getName());
-	final static String DECISION_TITLE_ID = DECISION_INTENT + ".titleId";
 	private final static int NOTIFICATION_ID = 100509;
 
 	private final static String KEYSTORE_NAME = "keystore";
 	private final static String KEYSTORE_KEY = "keystore";
 
 	private Context context;
-	private Activity foregroundAct;
 	private NotificationManager notificationManager;
 	private static int decisionId = 0;
 	private static final SparseArray<MTMDecision> openDecisions = new SparseArray<>();
@@ -141,38 +133,6 @@ public class MemorizingTrustManager implements X509TrustManager {
 	public static X509TrustManager[] getInstanceList(Context c) {
 
 		return new X509TrustManager[]{new MemorizingTrustManager(c)};
-	}
-
-	/**
-	 * Binds an Activity to the MTM for displaying the query dialog.
-	 * <p>
-	 * This is useful if your connection is run from a service that is
-	 * triggered by user interaction -- in such cases the activity is
-	 * visible and the user tends to ignore the service notification.
-	 * <p>
-	 * You should never have a hidden activity bound to MTM! Use this
-	 * function in onResume() and @see unbindDisplayActivity in onPause().
-	 *
-	 * @param act Activity to be bound
-	 */
-	private void bindDisplayActivity(Activity act) {
-
-		foregroundAct = act;
-	}
-
-	/**
-	 * Removes an Activity from the MTM display stack.
-	 * <p>
-	 * Always call this function when the Activity added with
-	 * {@link #bindDisplayActivity(Activity)} is hidden.
-	 *
-	 * @param act Activity to be unbound
-	 */
-	public void unbindDisplayActivity(Activity act) {
-		// do not remove if it was overridden by a different activity
-		if(foregroundAct == act) {
-			foregroundAct = null;
-		}
 	}
 
 	/**
@@ -365,6 +325,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 			}
 			e = e.getCause();
 		} while(e != null);
+
 		return false;
 	}
 
@@ -374,17 +335,16 @@ public class MemorizingTrustManager implements X509TrustManager {
 			if(e instanceof CertPathValidatorException) {
 				return true;
 			}
+
 			e = e.getCause();
 		} while(e != null);
+
 		return false;
 	}
 
 	private void checkCertTrusted(X509Certificate[] chain, String authType, boolean isServer) throws CertificateException {
-
-		LOGGER.log(Level.FINE, "checkCertTrusted(" + Arrays.toString(chain) + ", " + authType + ", " + isServer + ")");
-
 		try {
-			LOGGER.log(Level.FINE, "checkCertTrusted: trying appTrustManager");
+
 			if(isServer) {
 				appTrustManager.checkServerTrusted(chain, authType);
 			}
@@ -393,22 +353,15 @@ public class MemorizingTrustManager implements X509TrustManager {
 			}
 		}
 		catch(CertificateException ae) {
-			LOGGER.log(Level.FINER, "checkCertTrusted: appTrustManager did not verify certificate. Will fall back to secondary verification mechanisms (if any).", ae);
 			// if the cert is stored in our appTrustManager, we ignore expiredness
-			if(isExpiredException(ae)) {
-				LOGGER.log(Level.INFO, "checkCertTrusted: accepting expired certificate from keystore");
+			if(isExpiredException(ae) || isCertKnown(chain[0])) {
 				return;
 			}
-			if(isCertKnown(chain[0])) {
-				LOGGER.log(Level.INFO, "checkCertTrusted: accepting cert already stored in keystore");
-				return;
-			}
+
 			try {
 				if(defaultTrustManager == null) {
-					LOGGER.fine("No defaultTrustManager set. Verification failed, throwing " + ae);
 					throw ae;
 				}
-				LOGGER.log(Level.FINE, "checkCertTrusted: trying defaultTrustManager");
 				if(isServer) {
 					defaultTrustManager.checkServerTrusted(chain, authType);
 				}
@@ -417,7 +370,6 @@ public class MemorizingTrustManager implements X509TrustManager {
 				}
 			}
 			catch(CertificateException e) {
-				LOGGER.log(Level.FINER, "checkCertTrusted: defaultTrustManager failed", e);
 				interactCert(chain, authType, e);
 			}
 		}
@@ -452,12 +404,14 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private static String hexString(byte[] data) {
 
 		StringBuilder si = new StringBuilder();
+
 		for(int i = 0; i < data.length; i++) {
 			si.append(String.format("%02x", data[i]));
 			if(i < data.length - 1) {
 				si.append(":");
 			}
 		}
+
 		return si.toString();
 	}
 
@@ -473,91 +427,97 @@ public class MemorizingTrustManager implements X509TrustManager {
 		}
 	}
 
-	private static void certDetails(StringBuilder si, X509Certificate c) {
+	private static void certDetails(StringBuilder stringBuilder, X509Certificate c) {
 
 		SimpleDateFormat validityDateFormater = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-		si.append("\n");
-		si.append(c.getSubjectDN().toString());
-		si.append("\n");
-		si.append(validityDateFormater.format(c.getNotBefore()));
-		si.append(" - ");
-		si.append(validityDateFormater.format(c.getNotAfter()));
-		si.append("\nSHA-256: ");
-		si.append(certHash(c, "SHA-256"));
-		si.append("\nSHA-1: ");
-		si.append(certHash(c, "SHA-1"));
-		si.append("\nSigned by: ");
-		si.append(c.getIssuerDN().toString());
-		si.append("\n");
+
+		stringBuilder.append("\n")
+				.append(c.getSubjectDN().toString())
+				.append("\n")
+				.append(validityDateFormater.format(c.getNotBefore()))
+				.append(" - ")
+				.append(validityDateFormater.format(c.getNotAfter()))
+				.append("\nSHA-256: ")
+				.append(certHash(c, "SHA-256"))
+				.append("\nSHA-1: ")
+				.append(certHash(c, "SHA-1"))
+				.append("\nSigned by: ")
+				.append(c.getIssuerDN().toString())
+				.append("\n");
 	}
 
 	private String certChainMessage(final X509Certificate[] chain, CertificateException cause) {
 
 		Throwable e = cause;
-		StringBuilder si = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 
 		if(isPathException(e)) {
-			si.append(context.getString(R.string.mtm_trust_anchor));
+			stringBuilder.append(context.getString(R.string.mtm_trust_anchor));
 		}
 		else if(isExpiredException(e)) {
-			si.append(context.getString(R.string.mtm_cert_expired));
+			stringBuilder.append(context.getString(R.string.mtm_cert_expired));
 		}
 		else {
 			// get to the cause
-			while(e.getCause() != null)
+			while(e.getCause() != null) {
 				e = e.getCause();
-			si.append(e.getLocalizedMessage());
+			}
+
+			stringBuilder.append(e.getLocalizedMessage());
 		}
 
-		si.append("\n\n");
-		si.append(context.getString(R.string.mtm_connect_anyway));
-		si.append("\n\n");
-		si.append(context.getString(R.string.mtm_cert_details));
+		stringBuilder.append("\n\n");
+		stringBuilder.append(context.getString(R.string.mtm_connect_anyway));
+		stringBuilder.append("\n\n");
+		stringBuilder.append(context.getString(R.string.mtm_cert_details));
+
 		for(X509Certificate c : chain) {
-			certDetails(si, c);
+			certDetails(stringBuilder, c);
 		}
-		return si.toString();
+
+		return stringBuilder.toString();
 	}
 
 	private String hostNameMessage(X509Certificate cert, String hostname) {
 
-		StringBuilder si = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 
-		si.append(context.getString(R.string.mtm_hostname_mismatch, hostname));
-		si.append("\n\n");
+		stringBuilder.append(context.getString(R.string.mtm_hostname_mismatch, hostname));
+		stringBuilder.append("\n\n");
 
 		try {
 			Collection<List<?>> sans = cert.getSubjectAlternativeNames();
+
 			if(sans == null) {
-				si.append(cert.getSubjectDN());
-				si.append("\n");
+				stringBuilder.append(cert.getSubjectDN());
+				stringBuilder.append("\n");
 			}
 			else {
 				for(List<?> altName : sans) {
 					Object name = altName.get(1);
 					if(name instanceof String) {
-						si.append("[");
-						si.append(altName.get(0));
-						si.append("] ");
-						si.append(name);
-						si.append("\n");
+						stringBuilder.append("[");
+						stringBuilder.append(altName.get(0));
+						stringBuilder.append("] ");
+						stringBuilder.append(name);
+						stringBuilder.append("\n");
 					}
 				}
 			}
 		}
 		catch(CertificateParsingException e) {
 			e.printStackTrace();
-			si.append("<Parsing error: ");
-			si.append(e.getLocalizedMessage());
-			si.append(">\n");
+			stringBuilder.append("<Parsing error: ");
+			stringBuilder.append(e.getLocalizedMessage());
+			stringBuilder.append(">\n");
 		}
 
-		si.append("\n");
-		si.append(context.getString(R.string.mtm_connect_anyway));
-		si.append("\n\n");
-		si.append(context.getString(R.string.mtm_cert_details));
-		certDetails(si, cert);
-		return si.toString();
+		stringBuilder.append("\n");
+		stringBuilder.append(context.getString(R.string.mtm_connect_anyway));
+		stringBuilder.append("\n\n");
+		stringBuilder.append(context.getString(R.string.mtm_cert_details));
+		certDetails(stringBuilder, cert);
+		return stringBuilder.toString();
 	}
 
 	/**
@@ -584,29 +544,24 @@ public class MemorizingTrustManager implements X509TrustManager {
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void startActivityNotification(Intent intent, int decisionId, String certName) {
 
 		final PendingIntent call = PendingIntent.getActivity(context, 0, intent, 0);
 		final String mtmNotification = context.getString(R.string.mtm_notification);
 
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ssl").setSmallIcon(android.R.drawable.ic_lock_lock).setContentTitle(mtmNotification).setContentText(certName).setTicker(certName).setContentIntent(call).setAutoCancel(true).setPriority(NotificationCompat.PRIORITY_HIGH);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ssl")
+				.setSmallIcon(android.R.drawable.ic_lock_lock)
+				.setContentTitle(mtmNotification)
+				.setContentText(certName)
+				.setTicker(certName)
+				.setContentIntent(call)
+				.setAutoCancel(true)
+				.setPriority(NotificationCompat.PRIORITY_HIGH);
 
 		notificationManager.notify(NOTIFICATION_ID + decisionId, builder.build());
 	}
 
-	/**
-	 * Returns the top-most entry of the activity stack.
-	 *
-	 * @return the Context of the currently bound UI or the master context if none is bound
-	 */
-	Context getUI() {
-
-		return (foregroundAct != null) ? foregroundAct : context;
-	}
-
 	private int interact(final String message, final int titleId) {
-		/* prepare the MTMDecision blocker object */
 		MTMDecision choice = new MTMDecision();
 		final int myId = createDecisionId(choice);
 
@@ -615,19 +570,14 @@ public class MemorizingTrustManager implements X509TrustManager {
 			public void run() {
 
 				Intent intent = new Intent(context, MemorizingActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.setData(Uri.parse(MemorizingTrustManager.class.getName() + "/" + myId));
-				intent.putExtra(DECISION_INTENT_ID, myId);
-				intent.putExtra(DECISION_INTENT_CERT, message);
-				intent.putExtra(DECISION_TITLE_ID, titleId);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				intent.putExtra("DECISION_INTENT_ID", myId);
+				intent.putExtra("DECISION_INTENT_CERT", message);
+				intent.putExtra("DECISION_TITLE_ID", titleId);
 
-				// we try to directly start the activity and fall back to
-				// making a notification. If no foreground activity is set
-				// (foregroundAct==null) or if the app developer set an
-				// invalid / expired activity, the catch-all fallback is
-				// deployed.
 				try {
-					foregroundAct.startActivity(intent);
+					context.startActivity(intent);
 				}
 				catch(Exception e) {
 					startActivityNotification(intent, myId, message);
