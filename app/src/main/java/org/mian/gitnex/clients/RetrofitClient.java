@@ -24,60 +24,56 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
 
-    private Retrofit retrofit;
+	private Retrofit retrofit;
 
-    private RetrofitClient(String instanceUrl, Context ctx) {
-        final boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
-        int cacheSize = 50 * 1024 * 1024; // 50MB
-        File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
-        Cache cache = new Cache(httpCacheDirectory, cacheSize);
+	private RetrofitClient(String instanceUrl, Context ctx) {
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+		final boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
+		int cacheSize = 50 * 1024 * 1024; // 50MB
+		File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
+		Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
-        try {
-            SSLContext sslContext = SSLContext.getInstance("TLS");
+		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
-            sslContext.init(null, new X509TrustManager[] { memorizingTrustManager }, new SecureRandom());
+		try {
+			SSLContext sslContext = SSLContext.getInstance("TLS");
 
-            OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
-                    .cache(cache)
-		            //.addInterceptor(logging)
-                    .sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
-                    .hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
-                    .addInterceptor(chain -> {
+			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
+			sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
 
-                        Request request = chain.request();
-                        if(connToInternet) {
-                        	request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
-                        }
-                        else {
-                        	request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
-                        }
-                        return chain.proceed(request);
-                    });
+			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder().cache(cache)
+					//.addInterceptor(logging)
+					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager).hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).addInterceptor(chain -> {
 
-            Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl(instanceUrl)
-                    .client(okHttpClient.build())
-                    .addConverterFactory(ScalarsConverterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create());
+						Request request = chain.request();
+						if(connToInternet) {
+							request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+						}
+						else {
+							request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
+						}
+						return chain.proceed(request);
+					});
 
-            retrofit = builder.build();
+			Retrofit.Builder builder = new Retrofit.Builder().baseUrl(instanceUrl).client(okHttpClient.build()).addConverterFactory(ScalarsConverterFactory.create()).addConverterFactory(GsonConverterFactory.create());
 
-        }
-        catch(Exception e) {
-	        Log.e("onFailure", e.toString());
-        }
-    }
+			retrofit = builder.build();
 
-    public static synchronized RetrofitClient getInstance(String instanceUrl, Context ctx) {
-        return new RetrofitClient(instanceUrl, ctx);
-    }
+		}
+		catch(Exception e) {
+			Log.e("onFailure", e.toString());
+		}
+	}
 
-    public ApiInterface getApiInterface() {
-        return retrofit.create(ApiInterface.class);
-    }
+	public static synchronized RetrofitClient getInstance(String instanceUrl, Context ctx) {
+
+		return new RetrofitClient(instanceUrl, ctx);
+	}
+
+	public ApiInterface getApiInterface() {
+
+		return retrofit.create(ApiInterface.class);
+	}
 
 }

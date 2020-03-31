@@ -14,6 +14,7 @@ public class MemorizingActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
@@ -34,7 +35,9 @@ public class MemorizingActivity extends Activity {
 	}
 
 	private void onSendResult(int decisionId, int decision) {
+
 		MemorizingTrustManager.interactResult(decisionId, decision);
 		finish();
 	}
+
 }
