@@ -26,12 +26,14 @@
 
         <ImageView
             android:id="@+id/labelsOptionsMenu"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_weight="0.15"
+            android:contentDescription="@string/labelMenuContentDesc"
             android:gravity="end"
-            android:src="@drawable/ic_dotted_menu_horizontal"
-            android:contentDescription="@string/labelMenuContentDesc" />
+            android:scaleType="fitEnd"
+            android:src="@drawable/ic_dotted_menu_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
