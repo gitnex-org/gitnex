@@ -33,7 +33,6 @@ import java.util.Locale;
 import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import io.noties.markwon.AbstractMarkwonPlugin;
@@ -179,9 +178,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
         }
 
         if (currentItem.getUser().getAvatar_url() != null) {
-            Picasso.get().load(currentItem.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
+            Picasso.get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
         } else {
-            Picasso.get().load(currentItem.getUser().getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
+            Picasso.get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
         }
 
         String cleanIssueComments = currentItem.getBody().trim();

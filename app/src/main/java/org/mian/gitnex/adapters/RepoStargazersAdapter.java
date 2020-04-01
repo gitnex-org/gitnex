@@ -79,7 +79,7 @@ public class RepoStargazersAdapter extends BaseAdapter {
     private void initData(RepoStargazersAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = stargazersList.get(position);
-        Picasso.get().load(currentItem.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
+        Picasso.get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
 
         final TinyDB tinyDb = new TinyDB(mCtx);
         Typeface myTypeface;

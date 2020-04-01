@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment {
         TextView userEmail = v.findViewById(R.id.userEmail);
 
         userFullName.setText(tinyDb.getString("userFullname"));
-        Picasso.get().load(tinyDb.getString("userAvatar")).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
+        Picasso.get().load(tinyDb.getString("userAvatar")).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
         userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
         userEmail.setText(tinyDb.getString("userEmail"));
 
