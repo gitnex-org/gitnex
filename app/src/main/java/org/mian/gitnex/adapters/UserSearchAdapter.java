@@ -141,7 +141,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         }
 
         if (!currentItem.getAvatar().equals("")) {
-            Picasso.get().load(currentItem.getAvatar()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+            Picasso.get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
         }
 
         if(getItemCount() > 0) {

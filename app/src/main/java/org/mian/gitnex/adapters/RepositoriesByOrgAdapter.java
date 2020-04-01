@@ -184,7 +184,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 
         if (currentItem.getAvatar_url() != null) {
             if (!currentItem.getAvatar_url().equals("")) {
-                Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
+                Picasso.get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
             } else {
                 holder.image.setImageDrawable(drawable);
             }

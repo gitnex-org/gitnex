@@ -77,7 +77,7 @@ public class CollaboratorsAdapter extends BaseAdapter  {
     private void initData(ViewHolder viewHolder, int position) {
 
         Collaborators currentItem = collaboratorsList.get(position);
-        Picasso.get().load(currentItem.getAvatar_url()).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
+        Picasso.get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
 
         if(!currentItem.getFull_name().equals("")) {
             viewHolder.collaboratorName.setText(currentItem.getFull_name());
