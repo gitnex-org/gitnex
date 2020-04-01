@@ -27,8 +27,7 @@ public class MemorizingActivity extends Activity {
 		builder.setMessage(cert);
 
 		builder.setPositiveButton(R.string.mtm_decision_always, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ALWAYS));
-		builder.setNeutralButton(R.string.mtm_decision_once, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ONCE));
-		builder.setNegativeButton(R.string.mtm_decision_abort, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ABORT));
+		builder.setNeutralButton(R.string.mtm_decision_abort, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ABORT));
 		builder.setOnCancelListener(dialog -> onSendResult(decisionId, MTMDecision.DECISION_ABORT));
 
 		builder.create().show();

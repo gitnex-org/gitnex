@@ -39,7 +39,7 @@ public class PicassoService {
 			builder.downloader(new OkHttp3Downloader(okHttpClient.build()));
 			builder.listener((picasso, uri, exception) -> {
 
-				Log.e("PicassoService", Objects.requireNonNull(uri.toString())); // important!!
+				//Log.e("PicassoService", Objects.requireNonNull(uri.toString()));
 				Log.e("PicassoService", exception.toString());
 
 			});

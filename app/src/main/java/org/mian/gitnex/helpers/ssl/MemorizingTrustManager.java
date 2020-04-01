@@ -596,26 +596,20 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	private void interactCert(final X509Certificate[] chain, String authType, CertificateException cause) throws CertificateException {
 
-		switch(interact(certChainMessage(chain, cause), R.string.mtm_accept_cert)) {
-			case MTMDecision.DECISION_ALWAYS:
-				storeCert(chain[0]); // only store the server cert, not the whole chain
-			case MTMDecision.DECISION_ONCE:
-				break;
-			default:
-				throw (cause);
+		if(interact(certChainMessage(chain, cause), R.string.mtm_accept_cert) == MTMDecision.DECISION_ALWAYS) {
+			storeCert(chain[0]); // only store the server cert, not the whole chain
 		}
+
+		throw (cause);
 	}
 
 	private boolean interactHostname(X509Certificate cert, String hostname) {
 
-		switch(interact(hostNameMessage(cert, hostname), R.string.mtm_accept_servername)) {
-			case MTMDecision.DECISION_ALWAYS:
-				storeCert(hostname, cert);
-			case MTMDecision.DECISION_ONCE:
-				return true;
-			default:
-				return false;
+		if(interact(hostNameMessage(cert, hostname), R.string.mtm_accept_servername) == MTMDecision.DECISION_ALWAYS) {
+			storeCert(hostname, cert);
 		}
+
+		return false;
 	}
 
 	static void interactResult(int decisionId, int choice) {
