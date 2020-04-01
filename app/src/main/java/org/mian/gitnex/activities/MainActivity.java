@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.AboutFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
@@ -207,7 +208,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 userAvatar = hView.findViewById(R.id.userAvatar);
                 if (!userAvatarNav.equals("")) {
-                    Picasso.get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
+                    PicassoService.getInstance(ctx).get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
                 }
 
                 userAvatar.setOnClickListener(new View.OnClickListener() {
@@ -488,7 +489,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                         userAvatar = hView.findViewById(R.id.userAvatar);
                         if (!Objects.requireNonNull(userDetails).getAvatar().equals("")) {
-                            Picasso.get().load(userDetails.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
+                            PicassoService.getInstance(ctx).get().load(userDetails.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
                         } else {
                             userAvatar.setImageResource(R.mipmap.app_logo_round);
                         }

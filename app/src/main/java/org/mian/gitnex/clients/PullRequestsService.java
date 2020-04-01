@@ -42,7 +42,11 @@ public class PullRequestsService {
 			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
 			sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
 
-			OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache).sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager).hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).addInterceptor(new Interceptor() {
+			OkHttpClient okHttpClient = new OkHttpClient.Builder()
+					.cache(cache)
+					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
+					.addInterceptor(new Interceptor() {
 
 				@NonNull
 				@Override

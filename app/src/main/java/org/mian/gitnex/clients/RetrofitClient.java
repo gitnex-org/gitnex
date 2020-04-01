@@ -42,9 +42,12 @@ public class RetrofitClient {
 			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
 			sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
 
-			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder().cache(cache)
+			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
+					.cache(cache)
 					//.addInterceptor(logging)
-					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager).hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).addInterceptor(chain -> {
+					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
+					.addInterceptor(chain -> {
 
 						Request request = chain.request();
 						if(connToInternet) {

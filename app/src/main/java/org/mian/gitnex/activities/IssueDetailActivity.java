@@ -54,6 +54,7 @@ import com.squareup.picasso.Picasso;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -388,7 +389,7 @@ public class IssueDetailActivity extends BaseActivity {
                         tinyDb.putString("issueState", singleIssue.getState());
                         tinyDb.putString("issueTitle", singleIssue.getTitle());
 
-                        Picasso.get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
+                        PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
                         String issueNumber_ = "<font color='" + getApplicationContext().getResources().getColor(R.color.lightGray) + "'>" + getApplicationContext().getResources().getString(R.string.hash) + singleIssue.getNumber() + "</font>";
                         issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
                         String cleanIssueDescription = singleIssue.getBody().trim();
@@ -406,7 +407,7 @@ public class IssueDetailActivity extends BaseActivity {
 
                                 ImageView assigneesView = new ImageView(getApplicationContext());
 
-                                Picasso.get().load(singleIssue.getAssignees().get(i).getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop().into(assigneesView);
+                                PicassoService.getInstance(ctx).get().load(singleIssue.getAssignees().get(i).getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop().into(assigneesView);
 
                                 assigneesLayout.addView(assigneesView);
                                 assigneesView.setLayoutParams(params1);

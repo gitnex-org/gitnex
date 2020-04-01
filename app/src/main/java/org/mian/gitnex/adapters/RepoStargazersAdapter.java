@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.TinyDB;
@@ -79,7 +80,7 @@ public class RepoStargazersAdapter extends BaseAdapter {
     private void initData(RepoStargazersAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = stargazersList.get(position);
-        Picasso.get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
+        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
 
         final TinyDB tinyDb = new TinyDB(mCtx);
         Typeface myTypeface;

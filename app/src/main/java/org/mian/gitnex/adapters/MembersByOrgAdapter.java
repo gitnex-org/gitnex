@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.UserInfo;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class MembersByOrgAdapter extends BaseAdapter implements Filterable {
     private void initData(MembersByOrgAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = membersList.get(position);
-        Picasso.get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
+        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
 
         if(!currentItem.getFullname().equals("")) {
             viewHolder.memberName.setText(currentItem.getFullname());

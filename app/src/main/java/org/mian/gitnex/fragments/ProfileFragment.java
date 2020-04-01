@@ -21,6 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.util.TinyDB;
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class ProfileFragment extends Fragment {
         TextView userEmail = v.findViewById(R.id.userEmail);
 
         userFullName.setText(tinyDb.getString("userFullname"));
-        Picasso.get().load(tinyDb.getString("userAvatar")).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
+        PicassoService.getInstance(ctx).get().load(tinyDb.getString("userAvatar")).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(userAvatar);
         userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
         userEmail.setText(tinyDb.getString("userEmail"));
 
