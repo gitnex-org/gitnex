@@ -1,7 +1,6 @@
 package org.mian.gitnex.clients;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -12,6 +11,10 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
+
+/**
+ * Author anonTree1417
+ */
 
 public class PicassoService {
 
