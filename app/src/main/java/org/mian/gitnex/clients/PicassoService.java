@@ -40,7 +40,7 @@ public class PicassoService {
 			builder.listener((picasso, uri, exception) -> {
 
 				//Log.e("PicassoService", Objects.requireNonNull(uri.toString()));
-				Log.e("PicassoService", exception.toString());
+				//Log.e("PicassoService", exception.toString());
 
 			});
 

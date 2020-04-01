@@ -84,5 +84,4 @@ dependencies {
     implementation "com.mikepenz:fastadapter:$fastadapter"
     implementation "com.mikepenz:fastadapter-commons:$fastadapter"
     implementation "com.mikepenz:fastadapter-extensions:$fastadapter"
-    //implementation "org.conscrypt:conscrypt-android:2.2.1"
 }
