@@ -115,61 +115,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
             });
 
-            /*commentsOptionsMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    final Context context = v.getContext();
-                    //Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
-
-                    PopupMenu popupMenu = new PopupMenu(context, v);
-                    popupMenu.inflate(R.menu.issue_comment_menu);
-
-                    Object menuHelper;
-                    Class[] argTypes;
-                    try {
-
-                        Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-                        fMenuHelper.setAccessible(true);
-                        menuHelper = fMenuHelper.get(popupMenu);
-                        argTypes = new Class[] { boolean.class };
-                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon",
-                                argTypes).invoke(menuHelper, true);
-
-                    } catch (Exception e) {
-
-                        popupMenu.show();
-                        return;
-
-                    }
-
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.commentMenuEdit:
-
-                                    Intent intent = new Intent(context, ReplyToIssueActivity.class);
-                                    intent.putExtra("commentId", commendId.getText());
-                                    intent.putExtra("commentAction", "edit");
-                                    intent.putExtra("commentBody", commendBodyRaw.getText());
-                                    context.startActivity(intent);
-                                    break;
-
-                                case R.id.commentMenuDelete:
-
-                                    break;
-
-                            }
-                            return false;
-                        }
-                    });
-
-                    popupMenu.show();
-
-                }
-            });*/
-
         }
     }
 
