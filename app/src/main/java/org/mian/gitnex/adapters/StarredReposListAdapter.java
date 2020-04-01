@@ -88,7 +88,9 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
                 TextView repoOpenInBrowser = view.findViewById(R.id.repoOpenInBrowser);
                 TextView repoStargazers = view.findViewById(R.id.repoStargazers);
                 TextView repoWatchers = view.findViewById(R.id.repoWatchers);
+                TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
+                bottomSheetHeader.setText(fullName.getText());
                 BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(view);
                 dialog.show();
@@ -102,7 +104,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
 
                 });
 
-                repoStargazers.setOnClickListener(openInBrowser -> {
+                repoStargazers.setOnClickListener(stargazers -> {
 
                     Intent intent = new Intent(context, RepoStargazersActivity.class);
                     intent.putExtra("repoFullNameForStars", fullName.getText());
@@ -111,7 +113,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
 
                 });
 
-                repoWatchers.setOnClickListener(openInBrowser -> {
+                repoWatchers.setOnClickListener(watchers -> {
 
                     Intent intentW = new Intent(context, RepoWatchersActivity.class);
                     intentW.putExtra("repoFullNameForWatchers", fullName.getText());

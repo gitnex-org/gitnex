@@ -21,7 +21,7 @@
                 android:id="@+id/bottomSheetHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/repoName"
+                android:text="@string/labelName"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp"
                 android:paddingTop="16dp"
@@ -30,36 +30,24 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/repoOpenInBrowser"
+                android:id="@+id/labelMenuEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/openWebRepo"
-                android:drawableStart="@drawable/ic_open_in_browser"
+                android:text="@string/labelMenuEdit"
+                android:drawableStart="@drawable/ic_edit"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/repoStargazers"
+                android:id="@+id/labelMenuDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/repoStargazersInMenu"
-                android:drawableStart="@drawable/ic_star"
-                android:drawablePadding="24dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="16dp" />
-
-            <TextView
-                android:id="@+id/repoWatchers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/repoWatchersInMenu"
-                android:drawableStart="@drawable/ic_watchers"
+                android:text="@string/labelMenuDelete"
+                android:drawableStart="@drawable/ic_delete"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"

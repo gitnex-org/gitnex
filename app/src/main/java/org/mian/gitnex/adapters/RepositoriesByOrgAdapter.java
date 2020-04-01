@@ -88,7 +88,9 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                 TextView repoOpenInBrowser = view.findViewById(R.id.repoOpenInBrowser);
                 TextView repoStargazers = view.findViewById(R.id.repoStargazers);
                 TextView repoWatchers = view.findViewById(R.id.repoWatchers);
+                TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
+                bottomSheetHeader.setText(fullName.getText());
                 BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(view);
                 dialog.show();
