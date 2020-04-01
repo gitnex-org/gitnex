@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
-import org.mian.gitnex.helpers.MemorizingTrustManager;
+import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import java.security.SecureRandom;
 import java.util.Objects;
 import javax.net.ssl.HttpsURLConnection;
@@ -41,14 +41,17 @@ public class PicassoService {
 
 				Log.e("PicassoService", Objects.requireNonNull(uri.toString())); // important!!
 				Log.e("PicassoService", exception.toString());
+
 			});
 
 			picasso = builder.build();
+
 		}
 		catch(Exception e) {
 
-			e.printStackTrace();
+			Log.e("PicassoService", e.toString());
 		}
+
 	}
 
 	public Picasso get() {

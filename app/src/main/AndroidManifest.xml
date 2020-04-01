@@ -74,7 +74,7 @@
         <activity android:name=".activities.OpenRepoInBrowserActivity" />
         <activity android:name=".activities.FileDiffActivity" />
         <activity android:name=".activities.CommitsActivity" />
-        <activity android:name=".helpers.MemorizingActivity" android:theme="@android:style/Theme.Material.NoActionBar.TranslucentDecor" />
+        <activity android:name=".helpers.ssl.MemorizingActivity" android:theme="@android:style/Theme.Material.Dialog" />
     </application>
 
 </manifest>

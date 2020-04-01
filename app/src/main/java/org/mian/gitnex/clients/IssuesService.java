@@ -3,7 +3,7 @@ package org.mian.gitnex.clients;
 import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
-import org.mian.gitnex.helpers.MemorizingTrustManager;
+import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import org.mian.gitnex.util.AppUtil;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,8 @@ public class IssuesService {
 		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-		try { // try-catch can be problematic here
+		try {
+
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 
 			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
@@ -44,6 +45,7 @@ public class IssuesService {
 
 			OkHttpClient okHttpClient = new OkHttpClient.Builder()
 					.cache(cache)
+					//.addInterceptor(logging)
 					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
 					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
 					.addInterceptor(new Interceptor() {
@@ -63,10 +65,14 @@ public class IssuesService {
 				}
 			}).build();
 
-			Retrofit.Builder builder = new Retrofit.Builder().baseUrl(instanceURL).client(okHttpClient).addConverterFactory(GsonConverterFactory.create());
+			Retrofit.Builder builder = new Retrofit.Builder()
+					.baseUrl(instanceURL)
+					.client(okHttpClient)
+					.addConverterFactory(GsonConverterFactory.create());
 
 			Retrofit retrofit = builder.build();
 			return retrofit.create(serviceClass);
+
 		}
 		catch(Exception e) {
 			Log.e("onFailure", e.toString());

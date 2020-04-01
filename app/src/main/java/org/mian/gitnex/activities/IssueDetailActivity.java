@@ -50,7 +50,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.squareup.picasso.Picasso;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;

@@ -1,4 +1,4 @@
-package org.mian.gitnex.helpers;
+package org.mian.gitnex.helpers.ssl;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,12 +32,14 @@ public class MemorizingActivity extends Activity {
 		builder.setOnCancelListener(dialog -> onSendResult(decisionId, MTMDecision.DECISION_ABORT));
 
 		builder.create().show();
+
 	}
 
 	private void onSendResult(int decisionId, int decision) {
 
 		MemorizingTrustManager.interactResult(decisionId, decision);
 		finish();
+
 	}
 
 }
