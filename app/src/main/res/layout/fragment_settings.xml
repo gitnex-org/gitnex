@@ -33,7 +33,7 @@
                 layout="@layout/layout_settings_fileview"/>
 
             <View
-                android:id="@+id/translationDivider"
+                android:id="@+id/certsDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="44dp"
@@ -41,6 +41,20 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_below="@id/fileViewLayout" />
+
+            <include
+                android:id="@+id/certsLayout"
+                layout="@layout/layout_settings_certs" />
+
+            <View
+                android:id="@+id/translationDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@id/certsLayout" />
 
             <include
                 android:id="@+id/langLayout"

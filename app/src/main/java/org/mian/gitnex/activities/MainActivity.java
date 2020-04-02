@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
         if(!tinyDb.getBoolean("loggedInMode")) {
-            logout();
+            logout(this, ctx);
             return;
         }
 
@@ -354,7 +355,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         new SettingsFragment()).commit();
                 break;
             case R.id.nav_logout:
-                logout();
+                logout(this, ctx);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.nav_about:
@@ -392,15 +393,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    public void logout() {
+    public static void logout(Activity activity, Context ctx) {
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(ctx.getApplicationContext());
         tinyDb.putBoolean("loggedInMode", false);
         tinyDb.remove("basicAuthPassword");
         tinyDb.putBoolean("basicAuthFlag", false);
         //tinyDb.clear();
-        finish();
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        activity.finish();
+        ctx.startActivity(new Intent(ctx, LoginActivity.class));
 
     }
 

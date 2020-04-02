@@ -45,8 +45,8 @@ import javax.net.ssl.X509TrustManager;
 public class MemorizingTrustManager implements X509TrustManager {
 	private final static int NOTIFICATION_ID = 100509;
 
-	private final static String KEYSTORE_NAME = "keystore";
-	private final static String KEYSTORE_KEY = "keystore";
+	public final static String KEYSTORE_NAME = "keystore";
+	public final static String KEYSTORE_KEY = "keystore";
 
 	private Context context;
 	private NotificationManager notificationManager;

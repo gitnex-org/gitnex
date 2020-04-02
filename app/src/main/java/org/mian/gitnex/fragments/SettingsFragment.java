@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import org.mian.gitnex.util.TinyDB;
 import java.util.Objects;
 import androidx.annotation.NonNull;
@@ -67,6 +69,7 @@ public class SettingsFragment extends Fragment {
         LinearLayout homeScreenFrame = v.findViewById(R.id.homeScreenFrame);
         LinearLayout customFontFrame = v.findViewById(R.id.customFontFrame);
         LinearLayout themeFrame = v.findViewById(R.id.themeSelectionFrame);
+        LinearLayout certsFrame = v.findViewById(R.id.certsFrame);
 
         Switch issuesSwitch =  v.findViewById(R.id.switchIssuesBadge);
         Switch pdfModeSwitch =  v.findViewById(R.id.switchPdfMode);
@@ -143,6 +146,32 @@ public class SettingsFragment extends Fragment {
         else {
             pdfModeSwitch.setChecked(false);
         }
+
+        // certs deletion
+        certsFrame.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                builder.setTitle("Delete trusted certificates?");
+                builder.setMessage("Are you really sure to delete any manually trusted certificate?\n\nNotice: Your will be logged out too.");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ctx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE)
+                                .edit()
+                                .remove(MemorizingTrustManager.KEYSTORE_KEY)
+                                .apply();
+
+                        MainActivity.logout(Objects.requireNonNull(getActivity()), ctx);
+                    }
+                });
+
+                builder.setNeutralButton("NO", (dialog, which) -> dialog.dismiss());
+                builder.create().show();
+            }
+        });
 
         // issues badge switcher
         issuesSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -246,6 +246,8 @@
 
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Translation</string>
+    <string name="settingsCertsHeader">Certs</string>
+    <string name="settingsCertsSelectorHeader">Delete certificates</string>
     <string name="settingsDateTimeHeaderText">Date &amp; Time</string>
     <string name="settingsSave">Settings saved</string>
     <string name="settingsLanguageSelectorHeader">Language</string>
