@@ -92,6 +92,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         protocolSpinner.setAdapter(adapterProtocols);
 
         protocolSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
                 String value = getResources().getStringArray(R.array.protocolValues)[pos];
@@ -100,8 +101,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
 
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
             }
+
         });
 
         info_button.setOnClickListener(infoListener);
@@ -385,8 +388,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void versionCheck(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP, final String loginToken_, final int loginType) {
 
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
-
         Call<GiteaVersion> callVersion = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
@@ -410,7 +411,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         case SUPPORTED_LATEST:
                         case SUPPORTED_OLD:
                         case DEVELOPMENT:
-                            saveUserName(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
+                            login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
                             return;
                         case UNSUPPORTED_OLD:
 
@@ -421,21 +422,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     .setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
                                     .setCancelable(true)
                                     .setIcon(R.drawable.ic_warning)
-                                    .setNegativeButton(getString(R.string.cancelButton), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            enableProcessButton();
-                                        }
+                                    .setNegativeButton(getString(R.string.cancelButton), (dialog, which) -> {
+
+                                        dialog.dismiss();
+                                        enableProcessButton();
+
                                     })
-                                    .setPositiveButton(getString(R.string.textContinue), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
+                                    .setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
 
-                                            dialog.dismiss();
-                                            saveUserName(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
+                                        dialog.dismiss();
+                                        login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
 
-                                        }
                                     });
 
                             AlertDialog alertDialog = alertDialogBuilder.create();
@@ -450,8 +447,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 }
                 else if (responseVersion.code() == 403) {
-                    saveUserName(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
+
+                    login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
+
                 }
+            }
+
+            private void login(int loginType, String instanceUrl, String loginUid, String loginPass, int loginOTP, String loginToken_) {
+
+                if (loginType == 1) {
+                    letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+                }
+                else if (loginType == 2) { // token
+                    letTheUserInViaToken(instanceUrl, loginToken_);
+                }
+
             }
 
             @Override
@@ -464,50 +474,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
 
     }
-
-    private void saveUserName(int loginType, String instanceUrl, String loginUid, String loginPass, int loginOTP, String loginToken_) {
-
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
-
-        if (loginType == 1) {      // basic auth
-            tinyDb.putString("loginUid", loginUid);
-            letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
-        }
-        else if (loginType == 2) { // token
-
-            Call<UserInfo> callVersion = RetrofitClient
-                    .getInstance(instanceUrl, getApplicationContext())
-                    .getApiInterface()
-                    .getUserInfo(loginToken_);
-
-            callVersion.enqueue(new Callback<UserInfo>() {
-
-                @Override
-                public void onResponse(@NonNull final Call<UserInfo> callVersion, @NonNull retrofit2.Response<UserInfo> response) {
-
-                    if (response.code() == 200) {
-
-                        UserInfo user = response.body();
-                        tinyDb.putString("loginUid", user.getLogin());
-                        letTheUserInViaToken(instanceUrl, loginToken_);
-
-                    } else {
-                        Toasty.info(getApplicationContext(),
-                                getString(R.string.errorWrongStatus) +  " " + String.valueOf(response.code()));
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<UserInfo> callVersion, Throwable t) {
-
-                    Log.e("onFailure-version", t.toString());
-
-                }
-
-            });
-        }
-    }
-
 
     private void letTheUserInViaToken(String instanceUrl, final String loginToken_) {
 
@@ -533,6 +499,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         assert userDetails != null;
                         tinyDb.putString(userDetails.getLogin() + "-token", loginToken_);
                         tinyDb.putString("loginUid", userDetails.getLogin());
+                        tinyDb.putString("userLogin", userDetails.getUsername());
 
                         enableProcessButton();
                         loginButton.setText(R.string.btnLogin);
@@ -565,10 +532,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 Toasty.info(getApplicationContext(), getResources().getString(R.string.genericError));
                 enableProcessButton();
                 loginButton.setText(R.string.btnLogin);
+
             }
         });
 
@@ -580,16 +549,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         Call<List<UserTokens>> call;
         if(loginOTP != 0) {
+
             call = RetrofitClient
                     .getInstance(instanceUrl, getApplicationContext())
                     .getApiInterface()
                     .getUserTokensWithOTP(credential, loginOTP, loginUid);
+
         }
         else {
+
             call = RetrofitClient
                     .getInstance(instanceUrl, getApplicationContext())
                     .getApiInterface()
                     .getUserTokens(credential, loginUid);
+
         }
 
         call.enqueue(new Callback<List<UserTokens>>() {
@@ -642,16 +615,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                             Call<UserTokens> callCreateToken;
                             if(loginOTP != 0) {
+
                                 callCreateToken = RetrofitClient
                                         .getInstance(instanceUrl, getApplicationContext())
                                         .getApiInterface()
                                         .createNewTokenWithOTP(credential, loginOTP, loginUid, createUserToken);
+
                             }
                             else {
+
                                 callCreateToken = RetrofitClient
                                         .getInstance(instanceUrl, getApplicationContext())
                                         .getApiInterface()
                                         .createNewToken(credential, loginUid, createUserToken);
+
                             }
 
                             callCreateToken.enqueue(new Callback<UserTokens>() {
@@ -669,14 +646,66 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                                             if (!newToken.getSha1().equals("")) {
 
-                                                tinyDb.remove("loginPass");
-                                                tinyDb.putBoolean("loggedInMode", true);
-                                                tinyDb.putString(loginUid + "-token", newToken.getSha1());
-                                                tinyDb.putString(loginUid + "-token-last-eight", appUtil.getLastCharactersOfWord(newToken.getSha1(), 8));
-                                                //Log.i("Tokens", "new:" + newToken.getSha1() + " old:" + tinyDb.getString(loginUid + "-token"));
+                                                Call<UserInfo> call = RetrofitClient
+                                                        .getInstance(instanceUrl, getApplicationContext())
+                                                        .getApiInterface()
+                                                        .getUserInfo("token " + newToken.getSha1());
 
-                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                finish();
+                                                call.enqueue(new Callback<UserInfo>() {
+
+                                                    @Override
+                                                    public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+
+                                                        UserInfo userDetails = response.body();
+
+                                                        if (response.isSuccessful()) {
+
+                                                            if (response.code() == 200) {
+
+                                                                tinyDb.remove("loginPass");
+                                                                tinyDb.putBoolean("loggedInMode", true);
+                                                                assert userDetails != null;
+                                                                tinyDb.putString("userLogin", userDetails.getUsername());
+                                                                tinyDb.putString(loginUid + "-token", newToken.getSha1());
+                                                                tinyDb.putString(loginUid + "-token-last-eight", appUtil.getLastCharactersOfWord(newToken.getSha1(), 8));
+
+                                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                                                finish();
+
+                                                            }
+
+                                                        }
+                                                        else if(response.code() == 401) {
+
+                                                            String toastError = getResources().getString(R.string.unauthorizedApiError);
+                                                            Toasty.info(getApplicationContext(), toastError);
+
+                                                            enableProcessButton();
+                                                            loginButton.setText(R.string.btnLogin);
+
+                                                        }
+                                                        else {
+
+                                                            String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
+                                                            Toasty.info(getApplicationContext(), toastError);
+
+                                                            enableProcessButton();
+                                                            loginButton.setText(R.string.btnLogin);
+
+                                                        }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+
+                                                        Log.e("onFailure", t.toString());
+                                                        Toasty.info(getApplicationContext(), getResources().getString(R.string.genericError));
+                                                        enableProcessButton();
+                                                        loginButton.setText(R.string.btnLogin);
+
+                                                    }
+                                                });
 
                                             }
 
@@ -695,15 +724,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 }
 
                                 @Override
-                                public void onFailure(@NonNull Call<UserTokens> createUserToken, Throwable t) {
+                                public void onFailure(@NonNull Call<UserTokens> createUserToken, @NonNull Throwable t) {
 
+                                    Log.e("onFailure-token", t.toString());
+                                    
                                 }
 
                             });
                         }
                         else {
 
-                            //Log.i("Current Token", tinyDb.getString(loginUid + "-token"));
                             tinyDb.putBoolean("loggedInMode", true);
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
@@ -724,8 +754,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 else {
 
                     String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
-                    //Log.i("error message else4", String.valueOf(response.code()));
-
                     Toasty.info(getApplicationContext(), toastError);
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
@@ -736,10 +764,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFailure(@NonNull Call<List<UserTokens>> call, @NonNull Throwable t) {
+
                 Log.e("onFailure-login", t.toString());
                 Toasty.info(getApplicationContext(), getResources().getString(R.string.malformedJson));
                 enableProcessButton();
                 loginButton.setText(R.string.btnLogin);
+
             }
         });
 

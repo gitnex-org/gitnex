@@ -536,7 +536,6 @@
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Please enter the correct token</string>
-    <string name="errorWrongStatus">API returned unexpected Status:</string>
 
     <string name="noDataPullRequests">No pull requests found</string>
     <string name="prCreator">Creator :\u0020</string>
