@@ -72,18 +72,18 @@ public class FileDiffActivity extends BaseActivity {
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        String fileDiffName = tinyDb.getString("issueNumber")+".diff";
+        String pullIndex = tinyDb.getString("issueNumber");
 
-        getFileContents(tinyDb.getString("instanceUrlWithProtocol"), repoOwner, repoName, fileDiffName);
+        getPullDiffContent(tinyDb.getString("instanceUrlWithProtocol"), repoOwner, repoName, pullIndex);
 
     }
 
-    private void getFileContents(String instanceUrl, String owner, String repo, String filename) {
+    private void getPullDiffContent(String instanceUrl, String owner, String repo, String filename) {
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
-                .getApiInterface()
-                .getFileDiffContents(owner, repo, filename);
+                .getWebInterface()
+                .getPullDiffContent(owner, repo, filename);
 
         call.enqueue(new Callback<ResponseBody>() {
 
