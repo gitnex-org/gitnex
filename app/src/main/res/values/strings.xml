@@ -246,8 +246,10 @@
 
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Translation</string>
-    <string name="settingsCertsHeader">Certs</string>
+    <string name="settingsCertsHeader">Certificates</string>
     <string name="settingsCertsSelectorHeader">Delete certificates</string>
+    <string name="settingsCertsPopupTitle">Delete trusted certificates?</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? You will also be logged out.</string>
     <string name="settingsDateTimeHeaderText">Date &amp; Time</string>
     <string name="settingsSave">Settings saved</string>
     <string name="settingsLanguageSelectorHeader">Language</string>

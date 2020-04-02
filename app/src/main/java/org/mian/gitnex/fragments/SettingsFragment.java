@@ -153,8 +153,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                builder.setTitle("Delete trusted certificates?");
-                builder.setMessage("Are you really sure to delete any manually trusted certificate?\n\nNotice: Your will be logged out too.");
+                builder.setTitle(getResources().getString(R.string.settingsCertsPopupTitle));
+                builder.setMessage(getResources().getString(R.string.settingsCertsPopupMessage));
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                     @Override
