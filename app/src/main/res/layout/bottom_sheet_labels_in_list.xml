@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:background="?attr/primaryBackgroundColor"
+    android:paddingTop="8dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/bottomSheetHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/labelName"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/labelMenuEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/labelMenuEdit"
+                android:drawableStart="@drawable/ic_edit"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/labelMenuDelete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/labelMenuDelete"
+                android:drawableStart="@drawable/ic_delete"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

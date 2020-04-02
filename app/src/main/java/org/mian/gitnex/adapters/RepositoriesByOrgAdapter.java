@@ -1,10 +1,10 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -22,11 +23,9 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.TinyDB;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -64,85 +63,65 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
             ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
             repoType = itemView.findViewById(R.id.repoType);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            itemView.setOnClickListener(v -> {
 
-                    Context context = v.getContext();
+                Context context = v.getContext();
 
-                    Intent intent = new Intent(context, RepoDetailActivity.class);
-                    intent.putExtra("repoFullName", fullName.getText().toString());
+                Intent intent = new Intent(context, RepoDetailActivity.class);
+                intent.putExtra("repoFullName", fullName.getText().toString());
 
-                    TinyDB tinyDb = new TinyDB(context);
-                    tinyDb.putString("repoFullName", fullName.getText().toString());
-                    tinyDb.putString("repoType", repoType.getText().toString());
-                    tinyDb.putBoolean("resumeIssues", true);
-                    context.startActivity(intent);
+                TinyDB tinyDb = new TinyDB(context);
+                tinyDb.putString("repoFullName", fullName.getText().toString());
+                tinyDb.putString("repoType", repoType.getText().toString());
+                tinyDb.putBoolean("resumeIssues", true);
+                context.startActivity(intent);
 
-                }
             });
 
-            reposDropdownMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            reposDropdownMenu.setOnClickListener(v -> {
 
-                    final Context context = v.getContext();
-                    //Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+                final Context context = v.getContext();
 
-                    PopupMenu popupMenu = new PopupMenu(context, v);
-                    popupMenu.inflate(R.menu.repo_dotted_list_menu);
+                @SuppressLint("InflateParams")
+                View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_repository_in_list, null);
 
-                    Object menuHelper;
-                    Class[] argTypes;
-                    try {
+                TextView repoOpenInBrowser = view.findViewById(R.id.repoOpenInBrowser);
+                TextView repoStargazers = view.findViewById(R.id.repoStargazers);
+                TextView repoWatchers = view.findViewById(R.id.repoWatchers);
+                TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
-                        Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-                        fMenuHelper.setAccessible(true);
-                        menuHelper = fMenuHelper.get(popupMenu);
-                        argTypes = new Class[] { boolean.class };
-                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon",
-                                argTypes).invoke(menuHelper, true);
+                bottomSheetHeader.setText(fullName.getText());
+                BottomSheetDialog dialog = new BottomSheetDialog(context);
+                dialog.setContentView(view);
+                dialog.show();
 
-                    } catch (Exception e) {
+                repoOpenInBrowser.setOnClickListener(openInBrowser -> {
 
-                        popupMenu.show();
-                        return;
+                    Intent intentOpenInBrowser = new Intent(context, OpenRepoInBrowserActivity.class);
+                    intentOpenInBrowser.putExtra("repoFullNameBrowser", fullName.getText());
+                    context.startActivity(intentOpenInBrowser);
+                    dialog.dismiss();
 
-                    }
+                });
 
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.repoStargazers:
+                repoStargazers.setOnClickListener(openInBrowser -> {
 
-                                    Intent intent = new Intent(context, RepoStargazersActivity.class);
-                                    intent.putExtra("repoFullNameForStars", fullName.getText());
-                                    context.startActivity(intent);
-                                    break;
+                    Intent intent = new Intent(context, RepoStargazersActivity.class);
+                    intent.putExtra("repoFullNameForStars", fullName.getText());
+                    context.startActivity(intent);
+                    dialog.dismiss();
 
-                                case R.id.repoWatchers:
+                });
 
-                                    Intent intentW = new Intent(context, RepoWatchersActivity.class);
-                                    intentW.putExtra("repoFullNameForWatchers", fullName.getText());
-                                    context.startActivity(intentW);
-                                    break;
+                repoWatchers.setOnClickListener(openInBrowser -> {
 
-                                case R.id.repoOpenInBrowser:
+                    Intent intentW = new Intent(context, RepoWatchersActivity.class);
+                    intentW.putExtra("repoFullNameForWatchers", fullName.getText());
+                    context.startActivity(intentW);
+                    dialog.dismiss();
 
-                                    Intent intentOpenInBrowser = new Intent(context, OpenRepoInBrowserActivity.class);
-                                    intentOpenInBrowser.putExtra("repoFullNameBrowser", fullName.getText());
-                                    context.startActivity(intentOpenInBrowser);
-                                    break;
+                });
 
-                            }
-                            return false;
-                        }
-                    });
-
-                    popupMenu.show();
-
-                }
             });
 
         }
