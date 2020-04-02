@@ -467,7 +467,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					Toasty.info(getApplicationContext(), getResources().getString(R.string.malformedUrl));
 				}
 				else {
-					Toasty.info(getApplicationContext(), getResources().getString(R.string.commentError));
+					Toasty.info(getApplicationContext(), getResources().getString(R.string.genericError));
 				}
 
 				enableProcessButton();

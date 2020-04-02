@@ -598,15 +598,16 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		if(interact(certChainMessage(chain, cause), R.string.mtm_accept_cert) == MTMDecision.DECISION_ALWAYS) {
 			storeCert(chain[0]); // only store the server cert, not the whole chain
+		} else {
+			throw (cause);
 		}
-
-		throw (cause);
 	}
 
 	private boolean interactHostname(X509Certificate cert, String hostname) {
 
 		if(interact(hostNameMessage(cert, hostname), R.string.mtm_accept_servername) == MTMDecision.DECISION_ALWAYS) {
 			storeCert(hostname, cert);
+			return true;
 		}
 
 		return false;
