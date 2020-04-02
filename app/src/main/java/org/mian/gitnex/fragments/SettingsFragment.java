@@ -148,29 +148,25 @@ public class SettingsFragment extends Fragment {
         }
 
         // certs deletion
-        certsFrame.setOnClickListener(new View.OnClickListener() {
+        certsFrame.setOnClickListener(v1 -> {
 
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                builder.setTitle(getResources().getString(R.string.settingsCertsPopupTitle));
-                builder.setMessage(getResources().getString(R.string.settingsCertsPopupMessage));
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+            builder.setTitle(getResources().getString(R.string.settingsCertsPopupTitle));
+            builder.setMessage(getResources().getString(R.string.settingsCertsPopupMessage));
+            builder.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ctx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE)
-                                .edit()
-                                .remove(MemorizingTrustManager.KEYSTORE_KEY)
-                                .apply();
+                ctx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE)
+                        .edit()
+                        .remove(MemorizingTrustManager.KEYSTORE_KEY)
+                        .apply();
 
-                        MainActivity.logout(Objects.requireNonNull(getActivity()), ctx);
-                    }
-                });
+                MainActivity.logout(Objects.requireNonNull(getActivity()), ctx);
 
-                builder.setNeutralButton("NO", (dialog, which) -> dialog.dismiss());
-                builder.create().show();
-            }
+            });
+
+            builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
+            builder.create().show();
+
         });
 
         // issues badge switcher

@@ -5,16 +5,16 @@
     android:layout_height="wrap_content"
     android:id="@+id/layoutSettingsCerts"
     android:orientation="vertical"
-    android:layout_below="@+id/certsDivider"
+    android:layout_below="@+id/securityDivider"
     android:background="?attr/primaryBackgroundColor">
 
     <TextView
-        android:id="@+id/tvCert"
+        android:id="@+id/tvSecurity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_lock_open"
+        android:drawableStart="@drawable/ic_security_24dp"
         android:drawablePadding="20dp"
-        android:text="@string/settingsCertsHeader"
+        android:text="@string/settingsSecurityHeader"
         android:textColor="@color/colorDarkGreen"
         android:textSize="14sp"
         android:textStyle="bold" />
