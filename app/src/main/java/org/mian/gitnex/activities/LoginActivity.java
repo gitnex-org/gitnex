@@ -410,7 +410,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         case SUPPORTED_LATEST:
                         case SUPPORTED_OLD:
                         case DEVELOPMENT:
-                            login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
+                            saveUserName(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
                             return;
                         case UNSUPPORTED_OLD:
 
@@ -433,7 +433,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         public void onClick(DialogInterface dialog, int which) {
 
                                             dialog.dismiss();
-                                            login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
+                                            saveUserName(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
 
                                         }
                                     });
@@ -450,16 +450,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 }
                 else if (responseVersion.code() == 403) {
-                    login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
-                }
-            }
-
-            private void login(int loginType, String instanceUrl, String loginUid, String loginPass, int loginOTP, String loginToken_) {
-                if (loginType == 1) {
-                    letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
-                }
-                else if (loginType == 2) { // token
-                    letTheUserInViaToken(instanceUrl, loginToken_);
+                    saveUserName(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken_);
                 }
             }
 
@@ -473,6 +464,50 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
 
     }
+
+    private void saveUserName(int loginType, String instanceUrl, String loginUid, String loginPass, int loginOTP, String loginToken_) {
+
+        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+        if (loginType == 1) {      // basic auth
+            tinyDb.putString("loginUid", loginUid);
+            letTheUserIn(instanceUrl, loginUid, loginPass, loginOTP);
+        }
+        else if (loginType == 2) { // token
+
+            Call<UserInfo> callVersion = RetrofitClient
+                    .getInstance(instanceUrl, getApplicationContext())
+                    .getApiInterface()
+                    .getUserInfo(loginToken_);
+
+            callVersion.enqueue(new Callback<UserInfo>() {
+
+                @Override
+                public void onResponse(@NonNull final Call<UserInfo> callVersion, @NonNull retrofit2.Response<UserInfo> response) {
+
+                    if (response.code() == 200) {
+
+                        UserInfo user = response.body();
+                        tinyDb.putString("loginUid", user.getLogin());
+                        letTheUserInViaToken(instanceUrl, loginToken_);
+
+                    } else {
+                        Toasty.info(getApplicationContext(),
+                                getString(R.string.errorWrongStatus) +  " " + String.valueOf(response.code()));
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<UserInfo> callVersion, Throwable t) {
+
+                    Log.e("onFailure-version", t.toString());
+
+                }
+
+            });
+        }
+    }
+
 
     private void letTheUserInViaToken(String instanceUrl, final String loginToken_) {
 
