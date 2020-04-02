@@ -3,6 +3,7 @@ package org.mian.gitnex.clients;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.interfaces.ApiInterface;
+import org.mian.gitnex.interfaces.WebInterface;
 import org.mian.gitnex.util.AppUtil;
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +68,10 @@ public class RetrofitClient {
 
     public ApiInterface getApiInterface() {
         return retrofit.create(ApiInterface.class);
+    }
+
+    public WebInterface getWebInterface() {
+        return retrofit.create(WebInterface.class);
     }
 
 }
