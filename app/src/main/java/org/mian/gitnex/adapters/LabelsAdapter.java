@@ -1,27 +1,26 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.models.Labels;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -50,65 +49,45 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
             labelId = itemView.findViewById(R.id.labelId);
             labelColor = itemView.findViewById(R.id.labelColor);
 
-            labelsOptionsMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            labelsOptionsMenu.setOnClickListener(v -> {
 
-                    final Context context = v.getContext();
-                    //Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+                final Context context = v.getContext();
 
-                    PopupMenu popupMenu = new PopupMenu(context, v);
-                    popupMenu.inflate(R.menu.labels_menu);
+                @SuppressLint("InflateParams")
+                View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_labels_in_list, null);
 
-                    Object menuHelper;
-                    Class[] argTypes;
-                    try {
+                TextView labelMenuEdit = view.findViewById(R.id.labelMenuEdit);
+                TextView labelMenuDelete = view.findViewById(R.id.labelMenuDelete);
+                TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
-                        Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-                        fMenuHelper.setAccessible(true);
-                        menuHelper = fMenuHelper.get(popupMenu);
-                        argTypes = new Class[] { boolean.class };
-                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon",
-                                argTypes).invoke(menuHelper, true);
+                bottomSheetHeader.setText(labelTitle.getText());
+                BottomSheetDialog dialog = new BottomSheetDialog(context);
+                dialog.setContentView(view);
+                dialog.show();
 
-                    } catch (Exception e) {
+                labelMenuEdit.setOnClickListener(editLabel -> {
 
-                        popupMenu.show();
-                        return;
+                    Intent intent = new Intent(context, CreateLabelActivity.class);
+                    intent.putExtra("labelId", labelId.getText());
+                    intent.putExtra("labelTitle", labelTitle.getText());
+                    intent.putExtra("labelColor", labelColor.getText());
+                    intent.putExtra("labelAction", "edit");
+                    context.startActivity(intent);
+                    dialog.dismiss();
 
-                    }
+                });
 
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.labelMenuEdit:
+                labelMenuDelete.setOnClickListener(deleteLabel -> {
 
-                                    Intent intent = new Intent(context, CreateLabelActivity.class);
-                                    intent.putExtra("labelId", labelId.getText());
-                                    intent.putExtra("labelTitle", labelTitle.getText());
-                                    intent.putExtra("labelColor", labelColor.getText());
-                                    intent.putExtra("labelAction", "edit");
-                                    context.startActivity(intent);
-                                    break;
+                    AlertDialogs.labelDeleteDialog(context, labelTitle.getText().toString(), labelId.getText().toString(),
+                            context.getResources().getString(R.string.labelDeleteTitle),
+                            context.getResources().getString(R.string.labelDeleteMessage),
+                            context.getResources().getString(R.string.labelDeletePositiveButton),
+                            context.getResources().getString(R.string.labelDeleteNegativeButton));
+                    dialog.dismiss();
 
-                                case R.id.labelMenuDelete:
+                });
 
-                                    AlertDialogs.labelDeleteDialog(context, labelTitle.getText().toString(), labelId.getText().toString(),
-                                            context.getResources().getString(R.string.labelDeleteTitle),
-                                            context.getResources().getString(R.string.labelDeleteMessage),
-                                            context.getResources().getString(R.string.labelDeletePositiveButton),
-                                            context.getResources().getString(R.string.labelDeleteNegativeButton));
-                                    break;
-
-                            }
-                            return false;
-                        }
-                    });
-
-                    popupMenu.show();
-
-                }
             });
 
         }

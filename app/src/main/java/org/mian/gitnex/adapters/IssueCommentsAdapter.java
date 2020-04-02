@@ -7,11 +7,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spanned;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
@@ -23,7 +23,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.helpers.ClickListener;
 import org.ocpsoft.prettytime.PrettyTime;
-import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -33,7 +32,6 @@ import java.util.Locale;
 import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
@@ -84,59 +82,37 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
             commendBodyRaw = itemView.findViewById(R.id.commendBodyRaw);
             commentModified = itemView.findViewById(R.id.commentModified);
 
-            commentsOptionsMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            commentsOptionsMenu.setOnClickListener(v -> {
 
-                    final Context context = v.getContext();
-                    //Context context_ = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+                final Context context = v.getContext();
 
-                    PopupMenu popupMenu = new PopupMenu(context, v);
-                    popupMenu.inflate(R.menu.issue_comment_menu);
+                @SuppressLint("InflateParams")
+                View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_issue_comments, null);
 
-                    Object menuHelper;
-                    Class[] argTypes;
-                    try {
+                TextView commentMenuEdit = view.findViewById(R.id.commentMenuEdit);
+                //TextView commentMenuDelete = view.findViewById(R.id.commentMenuDelete);
 
-                        Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-                        fMenuHelper.setAccessible(true);
-                        menuHelper = fMenuHelper.get(popupMenu);
-                        argTypes = new Class[] { boolean.class };
-                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon",
-                                argTypes).invoke(menuHelper, true);
+                BottomSheetDialog dialog = new BottomSheetDialog(context);
+                dialog.setContentView(view);
+                dialog.show();
 
-                    } catch (Exception e) {
+                commentMenuEdit.setOnClickListener(ediComment -> {
 
-                        popupMenu.show();
-                        return;
+                    Intent intent = new Intent(context, ReplyToIssueActivity.class);
+                    intent.putExtra("commentId", commendId.getText());
+                    intent.putExtra("commentAction", "edit");
+                    intent.putExtra("commentBody", commendBodyRaw.getText());
+                    context.startActivity(intent);
+                    dialog.dismiss();
 
-                    }
+                });
 
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.commentMenuEdit:
+                /*commentMenuDelete.setOnClickListener(deleteComment -> {
 
-                                    Intent intent = new Intent(context, ReplyToIssueActivity.class);
-                                    intent.putExtra("commentId", commendId.getText());
-                                    intent.putExtra("commentAction", "edit");
-                                    intent.putExtra("commentBody", commendBodyRaw.getText());
-                                    context.startActivity(intent);
-                                    break;
+                    dialog.dismiss();
 
-                                case R.id.commentMenuDelete:
+                });*/
 
-                                    break;
-
-                            }
-                            return false;
-                        }
-                    });
-
-                    popupMenu.show();
-
-                }
             });
 
         }
