@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
@@ -141,7 +141,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         }
 
         if (!currentItem.getAvatar().equals("")) {
-            Picasso.get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+            PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
         }
 
         if(getItemCount() > 0) {

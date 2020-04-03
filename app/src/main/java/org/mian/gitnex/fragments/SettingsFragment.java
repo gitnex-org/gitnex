@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import org.mian.gitnex.util.TinyDB;
 import java.util.Objects;
 import androidx.annotation.NonNull;
@@ -67,6 +69,7 @@ public class SettingsFragment extends Fragment {
         LinearLayout homeScreenFrame = v.findViewById(R.id.homeScreenFrame);
         LinearLayout customFontFrame = v.findViewById(R.id.customFontFrame);
         LinearLayout themeFrame = v.findViewById(R.id.themeSelectionFrame);
+        LinearLayout certsFrame = v.findViewById(R.id.certsFrame);
 
         Switch issuesSwitch =  v.findViewById(R.id.switchIssuesBadge);
         Switch pdfModeSwitch =  v.findViewById(R.id.switchPdfMode);
@@ -143,6 +146,28 @@ public class SettingsFragment extends Fragment {
         else {
             pdfModeSwitch.setChecked(false);
         }
+
+        // certs deletion
+        certsFrame.setOnClickListener(v1 -> {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+            builder.setTitle(getResources().getString(R.string.settingsCertsPopupTitle));
+            builder.setMessage(getResources().getString(R.string.settingsCertsPopupMessage));
+            builder.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
+
+                ctx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE)
+                        .edit()
+                        .remove(MemorizingTrustManager.KEYSTORE_KEY)
+                        .apply();
+
+                MainActivity.logout(Objects.requireNonNull(getActivity()), ctx);
+
+            });
+
+            builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
+            builder.create().show();
+
+        });
 
         // issues badge switcher
         issuesSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

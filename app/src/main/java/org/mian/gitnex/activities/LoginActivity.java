@@ -31,6 +31,7 @@ import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserTokens;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
+import java.net.NoRouteToHostException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -727,7 +728,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 public void onFailure(@NonNull Call<UserTokens> createUserToken, @NonNull Throwable t) {
 
                                     Log.e("onFailure-token", t.toString());
-                                    
+
                                 }
 
                             });

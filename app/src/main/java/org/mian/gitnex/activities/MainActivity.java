@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +23,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.AboutFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
         if(!tinyDb.getBoolean("loggedInMode")) {
-            logout();
+            logout(this, ctx);
             return;
         }
 
@@ -207,7 +208,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 userAvatar = hView.findViewById(R.id.userAvatar);
                 if (!userAvatarNav.equals("")) {
-                    Picasso.get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
+                    PicassoService.getInstance(ctx).get().load(userAvatarNav).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
                 }
 
                 userAvatar.setOnClickListener(new View.OnClickListener() {
@@ -354,7 +355,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         new SettingsFragment()).commit();
                 break;
             case R.id.nav_logout:
-                logout();
+                logout(this, ctx);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.nav_about:
@@ -392,15 +393,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    public void logout() {
+    public static void logout(Activity activity, Context ctx) {
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(ctx.getApplicationContext());
         tinyDb.putBoolean("loggedInMode", false);
         tinyDb.remove("basicAuthPassword");
         tinyDb.putBoolean("basicAuthFlag", false);
         //tinyDb.clear();
-        finish();
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        activity.finish();
+        ctx.startActivity(new Intent(ctx, LoginActivity.class));
 
     }
 
@@ -488,7 +489,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                         userAvatar = hView.findViewById(R.id.userAvatar);
                         if (!Objects.requireNonNull(userDetails).getAvatar().equals("")) {
-                            Picasso.get().load(userDetails.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
+                            PicassoService.getInstance(ctx).get().load(userDetails.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(160, 160).centerCrop().into(userAvatar);
                         } else {
                             userAvatar.setImageResource(R.mipmap.app_logo_round);
                         }

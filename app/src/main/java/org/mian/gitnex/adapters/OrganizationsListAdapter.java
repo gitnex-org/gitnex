@@ -12,9 +12,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.models.UserOrganizations;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.util.TinyDB;
@@ -86,7 +86,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
         holder.mTextView2.setVisibility(View.GONE);
         holder.organizationId.setText(Integer.toString(currentItem.getId()));
 
-        Picasso.get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
+        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
         holder.mTextView1.setText(currentItem.getUsername());
         if (!currentItem.getDescription().equals("")) {
             holder.mTextView2.setVisibility(View.VISIBLE);

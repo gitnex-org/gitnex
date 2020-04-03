@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -104,7 +104,7 @@ public class OrganizationInfoFragment extends Fragment {
                     if (response.code() == 200) {
 
                         assert orgInfo != null;
-                        Picasso.get().load(orgInfo.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(orgAvatar);
+                        PicassoService.getInstance(ctx).get().load(orgInfo.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(orgAvatar);
                         orgDescInfo.setText(orgInfo.getDescription());
                         orgWebsiteInfo.setText(orgInfo.getWebsite());
                         orgLocationInfo.setText(orgInfo.getLocation());

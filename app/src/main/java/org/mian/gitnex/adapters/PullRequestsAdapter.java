@@ -14,9 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.squareup.picasso.Picasso;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -170,9 +170,9 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             if (prModel.getUser().getAvatar_url() != null) {
-                Picasso.get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
+                PicassoService.getInstance(context).get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
             } else {
-                Picasso.get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
+                PicassoService.getInstance(context).get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
             }
 
             String prNumber_ = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources().getString(R.string.hash) + prModel.getNumber() + "</font>";

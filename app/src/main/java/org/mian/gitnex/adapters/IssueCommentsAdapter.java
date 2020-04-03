@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.squareup.picasso.Picasso;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.models.IssueComments;
@@ -153,7 +153,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
             holder.issueCommenterAvatar.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.issueCommenter) + currentItem.getUser().getLogin(), mCtx));
         }
 
-        Picasso.get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
+        PicassoService.getInstance(mCtx).get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
 
         String cleanIssueComments = currentItem.getBody().trim();
 
