@@ -30,6 +30,18 @@
                 android:padding="16dp" />
 
             <TextView
+                android:id="@+id/issueCommentShare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/issueCommentShare"
+                android:drawableStart="@drawable/ic_share_24dp"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
                 android:id="@+id/commentMenuDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
