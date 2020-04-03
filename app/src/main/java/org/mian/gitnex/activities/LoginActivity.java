@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
@@ -31,7 +30,6 @@ import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserTokens;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
-import java.net.NoRouteToHostException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
