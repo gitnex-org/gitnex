@@ -63,6 +63,7 @@
     <string name="logo">Se connecter à Gitea</string>
     <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA</string>
     <string name="loginFailed">Mauvais nom d’utilisateur/mot de passe</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">Il n’est recommandé d’utiliser le protocole HTTP que pour des tests en réseau local.</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
     <string name="emptyFieldURL">URL de l’instance requise</string>
@@ -71,6 +72,8 @@
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
     <string name="repoNameErrorEmpty">Nom du dépôt requis</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="repoNameErrorReservedName">Ce nom de dépôt est réservé</string>
+    <string name="repoNameErrorReservedPatterns">Ce nom de dépôt contient des mots clés réservés</string>
     <string name="repoDescError">La description du dépôt dépasse la limite de 255 caractères</string>
     <string name="repoCreated">Dépôt créé</string>
     <string name="repoCreatedError">Une erreur s’est produite, veuillez réessayer</string>
@@ -181,6 +184,10 @@
     <string name="noLabelsFound">Aucune étiquette</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduction</string>
+    <string name="settingsSecurityHeader">Security</string>
+    <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
+    <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsDateTimeHeaderText">Date et heure</string>
     <string name="settingsSave">Réglages enregistrés</string>
     <string name="settingsLanguageSelectorHeader">Langue</string>
@@ -203,6 +210,7 @@
     <string name="themeSelectionHeaderText">Thème</string>
     <string name="settingsPdfModeHeaderText">PDF mode nuit</string>
     <string name="fileViewerHeader">Visionneuse de fichiers</string>
+    <string name="settingsCounterBadges">Counter Badges</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -404,6 +412,7 @@
     <string name="emptyFields">Tous les champs sont requis</string>
     <string name="textContinue">Continuer</string>
     <string name="copyToken">Jeton</string>
+    <string name="viewInBrowser">Voir dans le navigateur</string>
     <!-- generic copy -->
     <string name="translateText">Traduire GitNex avec Crowdin</string>
     <string name="exploreTextBoxHint">Explorer les dépôts</string>
@@ -442,8 +451,30 @@
     <string name="mergeCommentText">Commentaire de la fusion</string>
     <string name="mergePRSuccessMsg">La demande de tirage a été fusionnée</string>
     <string name="mergePR404ErrorMsg">La demande de tirage ne peut pas être fusionnée</string>
-    <string name="downloadFile">Download This File</string>
-    <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
-    <string name="downloadFileSaved">File is saved to Download directory</string>
-    <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="downloadFile">Télécharger ce fichier</string>
+    <string name="waitLoadingDownloadFile">Chargement du fichier dans la mémoire</string>
+    <string name="downloadFileSaved">Le fichier a été téléchargé</string>
+    <string name="excludeFilesInFileviewer">La visionneuse ne prend pas en charge ce type de fichier. Télécharger ce fichier ?</string>
+    <string name="sizeCopy">Taille</string>
+    <string name="shareIssue">Partager le ticket</string>
+    <string name="sharePr">Partager la demande de tirage</string>
+    <string name="shareRepository">Partager le dépôt</string>
+    <string name="createRepository">Créer un dépôt</string>
+    <string name="repositoryTabCommits">Révisions</string>
+    <string name="commitTitle">Révisions de la branche</string>
+    <string name="commitCommittedBy">Révision de %1$s</string>
+    <string name="viewCommits">Voir révisions</string>
+    <!-- Memorizing Trust Manager -->
+    <string name="mtm_notification">Certificate Verification</string>
+    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
+    <string name="mtm_cert_expired">The server certificate is expired.</string>
+    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
+    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
+    <string name="mtm_cert_details">Certificate details:</string>
+    <string name="mtm_decision_always">Trust</string>
+    <string name="mtm_decision_once">Once</string>
+    <string name="mtm_decision_abort">Abort</string>
+    <string name="issueCommentShare">Share Comment</string>
 </resources>

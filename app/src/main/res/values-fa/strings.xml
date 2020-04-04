@@ -66,6 +66,7 @@
 3. اگر احراز هویت دو مرحله‌ای را برای حساب خود فعال کرده‌اید، کد را در کادر OTP وارد کنید.
 4. برای احراز هویت عادی HTTP از نام‌کاربری@دامنه در کادر URL استفاده کنید.</string>
     <string name="loginFailed">نام‌کاربری/گذر واژه اشتباه است</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">استفلده از پروتوکل HTTP توصیه نمی‌شود مگر اینکه در حال آزمایش در شبکه محلی باشید.</string>
     <string name="malformedJson">یک سند JSON ناقص دریافت شد. پاسخ سرور موفق نبود.</string>
     <string name="emptyFieldURL">URL نمونه مورد نیاز است</string>
@@ -74,6 +75,8 @@
     <string name="checkNetConnection">عدم دسترسی به شبکه، لطفا از برقراری ارتباط با اینترنت مطمئن شوید</string>
     <string name="repoNameErrorEmpty">نام مخزن خالی است</string>
     <string name="repoNameErrorInvalid">نام مخزن اشتباه است. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="repoNameErrorReservedName">Repository name is reserved</string>
+    <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
     <string name="repoDescError">توضیحات مخزن از سقف 255 کاراکتر بیشتر است</string>
     <string name="repoCreated">مخزن با موفقیت ساخته شد</string>
     <string name="repoCreatedError">مشکلی پیش آمده. لطفا دوباره تلاش کنید</string>
@@ -184,6 +187,10 @@
     <string name="noLabelsFound">برچسبی پیدا نشد</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">ترجمه</string>
+    <string name="settingsSecurityHeader">Security</string>
+    <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
+    <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsDateTimeHeaderText">تاریخ و زمان</string>
     <string name="settingsSave">تنظیمات ذخیره شد</string>
     <string name="settingsLanguageSelectorHeader">زبان</string>
@@ -206,6 +213,7 @@
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
+    <string name="settingsCounterBadges">Counter Badges</string>
     <!-- settings -->
     <string name="noMoreData">اطلاعات بیشتری موجود نیست</string>
     <string name="createLabel">برچسب جدید</string>
@@ -407,6 +415,7 @@
     <string name="emptyFields">All fields are required</string>
     <string name="textContinue">Continue</string>
     <string name="copyToken">Token</string>
+    <string name="viewInBrowser">View in Browser</string>
     <!-- generic copy -->
     <string name="translateText">Translate GitNex with Crowdin</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
@@ -449,4 +458,26 @@
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File is saved to Download directory</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="sizeCopy">Size</string>
+    <string name="shareIssue">Share Issue</string>
+    <string name="sharePr">Share Pull Request</string>
+    <string name="shareRepository">Share Repository</string>
+    <string name="createRepository">Create Repository</string>
+    <string name="repositoryTabCommits">Commits</string>
+    <string name="commitTitle">Branch Commits</string>
+    <string name="commitCommittedBy">Committed by %1$s</string>
+    <string name="viewCommits">View Commits</string>
+    <!-- Memorizing Trust Manager -->
+    <string name="mtm_notification">Certificate Verification</string>
+    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
+    <string name="mtm_cert_expired">The server certificate is expired.</string>
+    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
+    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
+    <string name="mtm_cert_details">Certificate details:</string>
+    <string name="mtm_decision_always">Trust</string>
+    <string name="mtm_decision_once">Once</string>
+    <string name="mtm_decision_abort">Abort</string>
+    <string name="issueCommentShare">Share Comment</string>
 </resources>

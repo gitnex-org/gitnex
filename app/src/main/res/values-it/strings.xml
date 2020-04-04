@@ -63,6 +63,7 @@
     <string name="logo">Accedi a Gitea</string>
     <string name="urlInfoTooltip">1- Scegli il protocollo corretto(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="loginFailed">Username o password errata</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">Non si consiglia di utilizzare il protocollo HTTP a meno che non si stia testando sulla rete locale.</string>
     <string name="malformedJson">È stato ricevuto JSON non valido. La risposta del server non ha avuto successo.</string>
     <string name="emptyFieldURL">Istanza 
@@ -72,6 +73,8 @@ URL è richiesto</string>
     <string name="checkNetConnection">Errore di connessione. Controllare la connessione Internet</string>
     <string name="repoNameErrorEmpty">Il nome del repository è vuoto</string>
     <string name="repoNameErrorInvalid">Nome del repository non è valido. [a&#8211;z A&#8211;Z 0&#8211;char@@9 &#8211; _]</string>
+    <string name="repoNameErrorReservedName">Repository name is reserved</string>
+    <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
     <string name="repoDescError">La descrizione del repository supera il limite massimo di 255 caratteri</string>
     <string name="repoCreated">Il repository è stato creato</string>
     <string name="repoCreatedError">Qualcosa è andato storto, riprova</string>
@@ -182,6 +185,10 @@ URL è richiesto</string>
     <string name="noLabelsFound">Nessun label trovato</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduzione</string>
+    <string name="settingsSecurityHeader">Security</string>
+    <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
+    <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsDateTimeHeaderText">Data &amp; Ora</string>
     <string name="settingsSave">Impostazioni salvate</string>
     <string name="settingsLanguageSelectorHeader">Lingua</string>
@@ -204,6 +211,7 @@ URL è richiesto</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
+    <string name="settingsCounterBadges">Counter Badges</string>
     <!-- settings -->
     <string name="noMoreData">Nessun altro dato disponibile</string>
     <string name="createLabel">Nuovo label</string>
@@ -406,6 +414,7 @@ autorizzazione</string>
     <string name="emptyFields">Tutti i campi sono obbligatori</string>
     <string name="textContinue">Continua</string>
     <string name="copyToken">Token</string>
+    <string name="viewInBrowser">View in Browser</string>
     <!-- generic copy -->
     <string name="translateText">Traduci GitNex con Crowdin</string>
     <string name="exploreTextBoxHint">Esplora i repository</string>
@@ -448,4 +457,26 @@ autorizzazione</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File is saved to Download directory</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="sizeCopy">Size</string>
+    <string name="shareIssue">Share Issue</string>
+    <string name="sharePr">Share Pull Request</string>
+    <string name="shareRepository">Share Repository</string>
+    <string name="createRepository">Create Repository</string>
+    <string name="repositoryTabCommits">Commits</string>
+    <string name="commitTitle">Branch Commits</string>
+    <string name="commitCommittedBy">Committed by %1$s</string>
+    <string name="viewCommits">View Commits</string>
+    <!-- Memorizing Trust Manager -->
+    <string name="mtm_notification">Certificate Verification</string>
+    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
+    <string name="mtm_cert_expired">The server certificate is expired.</string>
+    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
+    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
+    <string name="mtm_cert_details">Certificate details:</string>
+    <string name="mtm_decision_always">Trust</string>
+    <string name="mtm_decision_once">Once</string>
+    <string name="mtm_decision_abort">Abort</string>
+    <string name="issueCommentShare">Share Comment</string>
 </resources>

@@ -63,6 +63,7 @@
     <string name="logo">Пријави ме</string>
     <string name="urlInfoTooltip">1. Одабери одговарајући протокол (HTTPS или HTTP).\n2. Унеси URL инстанце, нпр. try.gitea.io.\n3. Ако користиш 2FA, унеси OTP код.\n4. Ако користиш HTTP протокол, унеси URL инстанце у формату korisnickoime@domen.com.</string>
     <string name="loginFailed">Погрешно корисничко име или лозинка</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">Употреба HTTP протокола није препоручена уколико не тестираш на локалној мрежи</string>
     <string name="malformedJson">Сервер је послао неисправан JSON</string>
     <string name="emptyFieldURL">URL инстанце је обавезан</string>
@@ -71,6 +72,8 @@
     <string name="checkNetConnection">Не могу да приступим мрежи, провери интернет конекцију</string>
     <string name="repoNameErrorEmpty">Назив репозиторијума је обавезан</string>
     <string name="repoNameErrorInvalid">Назив репозиторијума није валидан [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="repoNameErrorReservedName">Repository name is reserved</string>
+    <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
     <string name="repoDescError">Опис је дужи од максималних 255 карактера</string>
     <string name="repoCreated">Репозиторијум је успешно креиран</string>
     <string name="repoCreatedError">Нешто је пошло наопако, покушај поново</string>
@@ -181,6 +184,10 @@
     <string name="noLabelsFound">Ниједна ознака није пронађена</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Превод</string>
+    <string name="settingsSecurityHeader">Security</string>
+    <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
+    <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsDateTimeHeaderText">Датум и време</string>
     <string name="settingsSave">Подешавања су сачувана</string>
     <string name="settingsLanguageSelectorHeader">Језик</string>
@@ -203,6 +210,7 @@
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
+    <string name="settingsCounterBadges">Counter Badges</string>
     <!-- settings -->
     <string name="noMoreData">Нема више података</string>
     <string name="createLabel">Нова ознака</string>
@@ -404,6 +412,7 @@
     <string name="emptyFields">Сва поља су обавезна</string>
     <string name="textContinue">Настави</string>
     <string name="copyToken">Токен</string>
+    <string name="viewInBrowser">View in Browser</string>
     <!-- generic copy -->
     <string name="translateText">Преведи GitNex на платформи Crowdin</string>
     <string name="exploreTextBoxHint">Претражи репозиторијуме</string>
@@ -446,4 +455,26 @@
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File is saved to Download directory</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="sizeCopy">Size</string>
+    <string name="shareIssue">Share Issue</string>
+    <string name="sharePr">Share Pull Request</string>
+    <string name="shareRepository">Share Repository</string>
+    <string name="createRepository">Create Repository</string>
+    <string name="repositoryTabCommits">Commits</string>
+    <string name="commitTitle">Branch Commits</string>
+    <string name="commitCommittedBy">Committed by %1$s</string>
+    <string name="viewCommits">View Commits</string>
+    <!-- Memorizing Trust Manager -->
+    <string name="mtm_notification">Certificate Verification</string>
+    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
+    <string name="mtm_cert_expired">The server certificate is expired.</string>
+    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
+    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
+    <string name="mtm_cert_details">Certificate details:</string>
+    <string name="mtm_decision_always">Trust</string>
+    <string name="mtm_decision_once">Once</string>
+    <string name="mtm_decision_abort">Abort</string>
+    <string name="issueCommentShare">Share Comment</string>
 </resources>
