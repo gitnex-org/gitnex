@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/loginForm">
 
     <LinearLayout
         android:layout_width="match_parent"

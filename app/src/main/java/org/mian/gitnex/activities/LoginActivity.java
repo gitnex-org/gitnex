@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -23,7 +24,7 @@ import com.tooltip.Tooltip;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.NetworkObserver;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.VersionCheck;
 import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.UserInfo;
@@ -53,6 +54,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private RadioGroup loginMethod;
     final Context ctx = this;
     private String device_id = "token";
+    private ScrollView layoutView;
 
     @Override
     protected int getLayoutResourceId(){
@@ -78,6 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         protocolSpinner = findViewById(R.id.httpsSpinner);
         loginMethod = findViewById(R.id.loginMethod);
         loginTokenCode = findViewById(R.id.loginTokenCode);
+        layoutView = findViewById(R.id.loginForm);
 
         viewTextAppVersion.setText(AppUtil.getAppVersion(getApplicationContext()));
 
@@ -96,7 +99,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 String value = getResources().getStringArray(R.array.protocolValues)[pos];
                 if(value.toLowerCase().equals("http")) {
-                    Toasty.info(getApplicationContext(), getResources().getString(R.string.protocolError));
+                    SnackBar.warning(getApplicationContext(), layoutView,getResources().getString(R.string.protocolError));
                 }
 
             }
@@ -135,10 +138,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             if(isAvailable) {
                 enableProcessButton();
+                SnackBar.success(getApplicationContext(), layoutView, getResources().getString(R.string.netConnectionIsBack));
             }
             else {
                 disableProcessButton();
-                Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+                SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.checkNetConnection));
             }
 
         });
@@ -189,20 +193,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     };
 
-    private View.OnClickListener infoListener = new View.OnClickListener() {
-        public void onClick(View v) {
-        new Tooltip.Builder(v)
-            .setText(R.string.urlInfoTooltip)
-            .setTextColor(getResources().getColor(R.color.white))
-            .setBackgroundColor(getResources().getColor(R.color.tooltipBackground))
-            .setCancelable(true)
-            .setDismissOnClick(true)
-            .setPadding(30)
-            .setCornerRadius(R.dimen.tooltipCornor)
-            .setGravity(Gravity.BOTTOM)
-            .show();
-        }
-    };
+    private View.OnClickListener infoListener = v -> new Tooltip.Builder(v)
+        .setText(R.string.urlInfoTooltip)
+        .setTextColor(getResources().getColor(R.color.white))
+        .setBackgroundColor(getResources().getColor(R.color.tooltipBackground))
+        .setCancelable(true)
+        .setDismissOnClick(true)
+        .setPadding(30)
+        .setCornerRadius(R.dimen.tooltipCornor)
+        .setGravity(Gravity.BOTTOM)
+        .show();
 
     @SuppressLint("ResourceAsColor")
     private void login() {
@@ -269,7 +269,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 if(instanceUrlET.getText().toString().equals("")) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldURL));
+                    SnackBar.warning(getApplicationContext(), layoutView, getResources().getString(R.string.emptyFieldURL));
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
                     return;
@@ -277,7 +277,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 if(loginUid.equals("")) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldUsername));
+                    SnackBar.warning(getApplicationContext(), layoutView, getResources().getString(R.string.emptyFieldUsername));
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
                     return;
@@ -285,7 +285,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 if(loginPassword.getText().toString().equals("")) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldPassword));
+                    SnackBar.warning(getApplicationContext(), layoutView, getResources().getString(R.string.emptyFieldPassword));
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
                     return;
@@ -301,7 +301,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     }
                     else {
 
-                        Toasty.info(getApplicationContext(), getString(R.string.loginOTPTypeError));
+                        SnackBar.warning(getApplicationContext(), layoutView, getResources().getString(R.string.loginOTPTypeError));
                         enableProcessButton();
                         loginButton.setText(R.string.btnLogin);
                         return;
@@ -315,7 +315,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             else {
 
-                Toasty.info(getApplicationContext(), getString(R.string.checkNetConnection));
+                SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.checkNetConnection));
 
             }
 
@@ -358,7 +358,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 if (instanceUrlET.getText().toString().equals("")) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.emptyFieldURL));
+                    SnackBar.warning(getApplicationContext(), layoutView, getResources().getString(R.string.emptyFieldURL));
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
                     return;
@@ -366,7 +366,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 if (loginToken_.equals("")) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.loginTokenError));
+                    SnackBar.warning(getApplicationContext(), layoutView, getResources().getString(R.string.loginTokenError));
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
                     return;
@@ -377,7 +377,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             else {
 
-                Toasty.info(getApplicationContext(), getString(R.string.checkNetConnection));
+                SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.checkNetConnection));
 
             }
 
@@ -406,7 +406,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     switch (vt) {
                         case UNSUPPORTED_NEW:
-                            //Toasty.info(getApplicationContext(), getString(R.string.versionUnsupportedNew));
+                            //SnackBar.warning(getApplicationContext(), layoutView, getResources().getString(R.string.versionUnsupportedNew));
                         case SUPPORTED_LATEST:
                         case SUPPORTED_OLD:
                         case DEVELOPMENT:
@@ -439,7 +439,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             alertDialog.show();
                             return;
                         default: // UNKNOWN
-                            Toasty.info(getApplicationContext(), getString(R.string.versionUnknow));
+                            SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.versionUnknow));
                             enableProcessButton();
 
                     }
@@ -510,18 +510,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 else if(response.code() == 401) {
 
-                    String toastError = getResources().getString(R.string.unauthorizedApiError);
-                    Toasty.info(getApplicationContext(), toastError);
-
+                    SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.unauthorizedApiError));
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
 
                 }
                 else {
 
-                    String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
-                    Toasty.info(getApplicationContext(), toastError);
-
+                    SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.genericApiStatusError) + response.code());
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
 
@@ -533,7 +529,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
-                Toasty.info(getApplicationContext(), getResources().getString(R.string.genericError));
+                SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.genericError));
                 enableProcessButton();
                 loginButton.setText(R.string.btnLogin);
 
@@ -676,18 +672,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                         }
                                                         else if(response.code() == 401) {
 
-                                                            String toastError = getResources().getString(R.string.unauthorizedApiError);
-                                                            Toasty.info(getApplicationContext(), toastError);
-
+                                                            SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.unauthorizedApiError));
                                                             enableProcessButton();
                                                             loginButton.setText(R.string.btnLogin);
 
                                                         }
                                                         else {
 
-                                                            String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
-                                                            Toasty.info(getApplicationContext(), toastError);
-
+                                                            SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.genericApiStatusError) + response.code());
                                                             enableProcessButton();
                                                             loginButton.setText(R.string.btnLogin);
 
@@ -699,7 +691,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                     public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
 
                                                         Log.e("onFailure", t.toString());
-                                                        Toasty.info(getApplicationContext(), getResources().getString(R.string.genericError));
+                                                        SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.genericError));
                                                         enableProcessButton();
                                                         loginButton.setText(R.string.btnLogin);
 
@@ -713,8 +705,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     }
                                     else if(responseCreate.code() == 500) {
 
-                                        String toastError = getResources().getString(R.string.genericApiStatusError) + responseCreate.code();
-                                        Toasty.info(getApplicationContext(), toastError);
+                                        SnackBar.error(getApplicationContext(), layoutView,getResources().getString(R.string.genericApiStatusError) + responseCreate.code());
                                         enableProcessButton();
                                         loginButton.setText(R.string.btnLogin);
 
@@ -744,16 +735,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 else if(response.code() == 500) {
 
-                    String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
-                    Toasty.info(getApplicationContext(), toastError);
+                    SnackBar.error(getApplicationContext(), layoutView,getResources().getString(R.string.genericApiStatusError) + response.code());
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
 
                 }
                 else {
 
-                    String toastError = getResources().getString(R.string.genericApiStatusError) + response.code();
-                    Toasty.info(getApplicationContext(), toastError);
+                    SnackBar.error(getApplicationContext(), layoutView,getResources().getString(R.string.genericApiStatusError) + response.code());
                     enableProcessButton();
                     loginButton.setText(R.string.btnLogin);
 
@@ -765,7 +754,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onFailure(@NonNull Call<List<UserTokens>> call, @NonNull Throwable t) {
 
                 Log.e("onFailure-login", t.toString());
-                Toasty.info(getApplicationContext(), getResources().getString(R.string.malformedJson));
+                SnackBar.error(getApplicationContext(), layoutView,getResources().getString(R.string.malformedJson));
                 enableProcessButton();
                 loginButton.setText(R.string.btnLogin);
 

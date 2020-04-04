@@ -100,6 +100,7 @@
     <string name="emptyFieldPassword">Password is required</string>
 
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
+    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
 
     <string name="repoNameErrorEmpty">Repository name is empty</string>
     <string name="repoNameErrorInvalid">Repository name is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
