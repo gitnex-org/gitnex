@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -71,18 +70,18 @@ public class SettingsFragment extends Fragment {
         LinearLayout themeFrame = v.findViewById(R.id.themeSelectionFrame);
         LinearLayout certsFrame = v.findViewById(R.id.certsFrame);
 
-        Switch issuesSwitch =  v.findViewById(R.id.switchIssuesBadge);
+        Switch counterBadgesSwitch =  v.findViewById(R.id.switchCounterBadge);
         Switch pdfModeSwitch =  v.findViewById(R.id.switchPdfMode);
         TextView helpTranslate = v.findViewById(R.id.helpTranslate);
 
-        helpTranslate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse(getResources().getString(R.string.crowdInLink)));
-                startActivity(intent);
-            }
+        helpTranslate.setOnClickListener(v12 -> {
+
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse(getResources().getString(R.string.crowdInLink)));
+            startActivity(intent);
+
         });
 
         if(!tinyDb.getString("localeStr").isEmpty()) {
@@ -133,11 +132,11 @@ public class SettingsFragment extends Fragment {
             themeSelectedChoice = tinyDb.getInt("themeId");
         }
 
-        if(tinyDb.getBoolean("enableCounterIssueBadge")) {
-            issuesSwitch.setChecked(true);
+        if(tinyDb.getBoolean("enableCounterBadges")) {
+            counterBadgesSwitch.setChecked(true);
         }
         else {
-            issuesSwitch.setChecked(false);
+            counterBadgesSwitch.setChecked(false);
         }
 
         if(tinyDb.getBoolean("enablePdfMode")) {
@@ -169,345 +168,310 @@ public class SettingsFragment extends Fragment {
 
         });
 
-        // issues badge switcher
-        issuesSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    tinyDb.putBoolean("enableCounterIssueBadge", true);
-                    tinyDb.putString("enableCounterIssueBadgeInit", "yes");
-                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-                } else {
-                    tinyDb.putBoolean("enableCounterIssueBadge", false);
-                    tinyDb.putString("enableCounterIssueBadgeInit", "yes");
-                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-                }
+        // counter badge switcher
+        counterBadgesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if (isChecked) {
+                tinyDb.putBoolean("enableCounterBadges", true);
+                tinyDb.putString("enableCounterBadgesInit", "yes");
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
             }
+            else {
+                tinyDb.putBoolean("enableCounterBadges", false);
+                tinyDb.putString("enableCounterBadgesInit", "yes");
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+            }
+
         });
 
         // pdf night mode switcher
-        pdfModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    tinyDb.putBoolean("enablePdfMode", true);
-                    tinyDb.putString("enablePdfModeInit", "yes");
-                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-                } else {
-                    tinyDb.putBoolean("enablePdfMode", false);
-                    tinyDb.putString("enablePdfModeInit", "yes");
-                    Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-                }
+        pdfModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if (isChecked) {
+                tinyDb.putBoolean("enablePdfMode", true);
+                tinyDb.putString("enablePdfModeInit", "yes");
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
             }
+            else {
+                tinyDb.putBoolean("enablePdfMode", false);
+                tinyDb.putString("enablePdfModeInit", "yes");
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+            }
+
         });
 
         // theme selection dialog
-        themeFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        themeFrame.setOnClickListener(view -> {
 
-                AlertDialog.Builder tsBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder tsBuilder = new AlertDialog.Builder(ctx);
 
-                tsBuilder.setTitle(R.string.themeSelectorDialogTitle);
-                if(themeSelectedChoice != -1) {
-                    tsBuilder.setCancelable(true);
-                }
-                else {
-                    tsBuilder.setCancelable(false);
-                }
-
-                tsBuilder.setSingleChoiceItems(themeList, themeSelectedChoice, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterfaceTheme, int i) {
-
-                        themeSelectedChoice = i;
-                        themeSelected.setText(themeList[i]);
-                        tinyDb.putString("themeStr", themeList[i]);
-                        tinyDb.putInt("themeId", i);
-
-                        Objects.requireNonNull(getActivity()).recreate();
-                        getActivity().overridePendingTransition(0, 0);
-                        dialogInterfaceTheme.dismiss();
-                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-
-                    }
-                });
-
-                AlertDialog cfDialog = tsBuilder.create();
-                cfDialog.show();
-
+            tsBuilder.setTitle(R.string.themeSelectorDialogTitle);
+            if(themeSelectedChoice != -1) {
+                tsBuilder.setCancelable(true);
             }
+            else {
+                tsBuilder.setCancelable(false);
+            }
+
+            tsBuilder.setSingleChoiceItems(themeList, themeSelectedChoice, (dialogInterfaceTheme, i) -> {
+
+                themeSelectedChoice = i;
+                themeSelected.setText(themeList[i]);
+                tinyDb.putString("themeStr", themeList[i]);
+                tinyDb.putInt("themeId", i);
+
+                Objects.requireNonNull(getActivity()).recreate();
+                getActivity().overridePendingTransition(0, 0);
+                dialogInterfaceTheme.dismiss();
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+
+            });
+
+            AlertDialog cfDialog = tsBuilder.create();
+            cfDialog.show();
+
         });
 
         // custom font dialog
-        customFontFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        customFontFrame.setOnClickListener(view -> {
 
-                AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder cfBuilder = new AlertDialog.Builder(ctx);
 
-                cfBuilder.setTitle(R.string.settingsCustomFontSelectorDialogTitle);
-                if(customFontSelectedChoice != -1) {
-                    cfBuilder.setCancelable(true);
-                }
-                else {
-                    cfBuilder.setCancelable(false);
-                }
-
-                cfBuilder.setSingleChoiceItems(customFontList, customFontSelectedChoice, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterfaceCustomFont, int i) {
-
-                        customFontSelectedChoice = i;
-                        customFontSelected.setText(customFontList[i]);
-                        tinyDb.putString("customFontStr", customFontList[i]);
-                        tinyDb.putInt("customFontId", i);
-
-                        Objects.requireNonNull(getActivity()).recreate();
-                        getActivity().overridePendingTransition(0, 0);
-                        dialogInterfaceCustomFont.dismiss();
-                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-
-                    }
-                });
-
-                AlertDialog cfDialog = cfBuilder.create();
-                cfDialog.show();
-
+            cfBuilder.setTitle(R.string.settingsCustomFontSelectorDialogTitle);
+            if(customFontSelectedChoice != -1) {
+                cfBuilder.setCancelable(true);
             }
+            else {
+                cfBuilder.setCancelable(false);
+            }
+
+            cfBuilder.setSingleChoiceItems(customFontList, customFontSelectedChoice, (dialogInterfaceCustomFont, i) -> {
+
+                customFontSelectedChoice = i;
+                customFontSelected.setText(customFontList[i]);
+                tinyDb.putString("customFontStr", customFontList[i]);
+                tinyDb.putInt("customFontId", i);
+
+                Objects.requireNonNull(getActivity()).recreate();
+                getActivity().overridePendingTransition(0, 0);
+                dialogInterfaceCustomFont.dismiss();
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+
+            });
+
+            AlertDialog cfDialog = cfBuilder.create();
+            cfDialog.show();
+
         });
 
         // home screen dialog
-        homeScreenFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        homeScreenFrame.setOnClickListener(view -> {
 
-                AlertDialog.Builder hsBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder hsBuilder = new AlertDialog.Builder(ctx);
 
-                hsBuilder.setTitle(R.string.settingshomeScreenSelectorDialogTitle);
-                if(homeScreenSelectedChoice != -1) {
-                    hsBuilder.setCancelable(true);
-                }
-                else {
-                    hsBuilder.setCancelable(false);
-                }
-
-                hsBuilder.setSingleChoiceItems(homeScreenList, homeScreenSelectedChoice, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterfaceHomeScreen, int i) {
-
-                        homeScreenSelectedChoice = i;
-                        homeScreenSelected.setText(homeScreenList[i]);
-                        tinyDb.putString("homeScreenStr", homeScreenList[i]);
-                        tinyDb.putInt("homeScreenId", i);
-
-                        dialogInterfaceHomeScreen.dismiss();
-                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-
-                    }
-                });
-
-                AlertDialog hsDialog = hsBuilder.create();
-                hsDialog.show();
-
+            hsBuilder.setTitle(R.string.settingshomeScreenSelectorDialogTitle);
+            if(homeScreenSelectedChoice != -1) {
+                hsBuilder.setCancelable(true);
             }
+            else {
+                hsBuilder.setCancelable(false);
+            }
+
+            hsBuilder.setSingleChoiceItems(homeScreenList, homeScreenSelectedChoice, (dialogInterfaceHomeScreen, i) -> {
+
+                homeScreenSelectedChoice = i;
+                homeScreenSelected.setText(homeScreenList[i]);
+                tinyDb.putString("homeScreenStr", homeScreenList[i]);
+                tinyDb.putInt("homeScreenId", i);
+
+                dialogInterfaceHomeScreen.dismiss();
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+
+            });
+
+            AlertDialog hsDialog = hsBuilder.create();
+            hsDialog.show();
+
         });
 
         // code block dialog
-        codeBlockFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        codeBlockFrame.setOnClickListener(view -> {
 
-                AlertDialog.Builder cBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder cBuilder = new AlertDialog.Builder(ctx);
 
-                cBuilder.setTitle(R.string.settingsCodeBlockSelectorDialogTitle);
-                if(codeBlockSelectedChoice != -1) {
-                    cBuilder.setCancelable(true);
-                }
-                else {
-                    cBuilder.setCancelable(false);
-                }
-
-                cBuilder.setSingleChoiceItems(codeBlockList, codeBlockSelectedChoice, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterfaceCodeBlock, int i) {
-
-                        codeBlockSelectedChoice = i;
-                        codeBlockSelected.setText(codeBlockList[i]);
-                        tinyDb.putString("codeBlockStr", codeBlockList[i]);
-                        tinyDb.putInt("codeBlockId", i);
-
-                        switch (codeBlockList[i]) {
-                            case "White - Black":
-                                tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.white));
-                                tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
-                                break;
-                            case "Grey - Black":
-                                tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorAccent));
-                                tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
-                                break;
-                            case "White - Grey":
-                                tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.white));
-                                tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.colorAccent));
-                                break;
-                            case "Dark - White":
-                                tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorPrimary));
-                                tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.white));
-                                break;
-                            default:
-                                tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorLightGreen));
-                                tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
-                                break;
-                        }
-
-                        dialogInterfaceCodeBlock.dismiss();
-                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-
-                    }
-                });
-
-                AlertDialog cDialog = cBuilder.create();
-                cDialog.show();
-
+            cBuilder.setTitle(R.string.settingsCodeBlockSelectorDialogTitle);
+            if(codeBlockSelectedChoice != -1) {
+                cBuilder.setCancelable(true);
             }
+            else {
+                cBuilder.setCancelable(false);
+            }
+
+            cBuilder.setSingleChoiceItems(codeBlockList, codeBlockSelectedChoice, (dialogInterfaceCodeBlock, i) -> {
+
+                codeBlockSelectedChoice = i;
+                codeBlockSelected.setText(codeBlockList[i]);
+                tinyDb.putString("codeBlockStr", codeBlockList[i]);
+                tinyDb.putInt("codeBlockId", i);
+
+                switch (codeBlockList[i]) {
+                    case "White - Black":
+                        tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.white));
+                        tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
+                        break;
+                    case "Grey - Black":
+                        tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorAccent));
+                        tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
+                        break;
+                    case "White - Grey":
+                        tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.white));
+                        tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.colorAccent));
+                        break;
+                    case "Dark - White":
+                        tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorPrimary));
+                        tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.white));
+                        break;
+                    default:
+                        tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorLightGreen));
+                        tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
+                        break;
+                }
+
+                dialogInterfaceCodeBlock.dismiss();
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+
+            });
+
+            AlertDialog cDialog = cBuilder.create();
+            cDialog.show();
+
         });
 
         // language dialog
-        langFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        langFrame.setOnClickListener(view -> {
 
-                AlertDialog.Builder lBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder lBuilder = new AlertDialog.Builder(ctx);
 
-                lBuilder.setTitle(R.string.settingsLanguageSelectorDialogTitle);
-                if(langSelectedChoice != -1) {
-                    lBuilder.setCancelable(true);
-                }
-                else {
-                    lBuilder.setCancelable(false);
-                }
-
-                lBuilder.setSingleChoiceItems(langList, langSelectedChoice, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        langSelectedChoice = i;
-                        tvLanguageSelected.setText(langList[i]);
-                        tinyDb.putString("localeStr", langList[i]);
-                        tinyDb.putInt("langId", i);
-
-                        switch (langList[i]) {
-                            case "Arabic":
-                                tinyDb.putString("locale", "ar");
-                                break;
-                            case "Chinese":
-                                tinyDb.putString("locale", "zh");
-                                break;
-                            case "Finnish":
-                                tinyDb.putString("locale", "fi");
-                                break;
-                            case "French":
-                                tinyDb.putString("locale", "fr");
-                                break;
-                            case "German":
-                                tinyDb.putString("locale", "de");
-                                break;
-                            case "Italian":
-                                tinyDb.putString("locale", "it");
-                                break;
-                            case "Latvian":
-                                tinyDb.putString("locale", "lv");
-                                break;
-                            case "Persian":
-                                tinyDb.putString("locale", "fa");
-                                break;
-                            case "Portuguese/Brazilian":
-                                tinyDb.putString("locale", "pt");
-                                break;
-                            case "Russian":
-                                tinyDb.putString("locale", "ru");
-                                break;
-                            case "Serbian":
-                                tinyDb.putString("locale", "sr");
-                                break;
-                            case "Turkish":
-                                tinyDb.putString("locale", "tr");
-                                break;
-                            case "Ukrainian":
-                                tinyDb.putString("locale", "uk");
-                                break;
-                            default:
-                                tinyDb.putString("locale", "en");
-                                break;
-                        }
-
-                        dialogInterface.dismiss();
-                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-                        Objects.requireNonNull(getActivity()).recreate();
-                        getActivity().overridePendingTransition(0, 0);
-
-                    }
-                });
-                lBuilder.setNegativeButton(getString(R.string.cancelButton), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog lDialog = lBuilder.create();
-                lDialog.show();
-
+            lBuilder.setTitle(R.string.settingsLanguageSelectorDialogTitle);
+            if(langSelectedChoice != -1) {
+                lBuilder.setCancelable(true);
             }
+            else {
+                lBuilder.setCancelable(false);
+            }
+
+            lBuilder.setSingleChoiceItems(langList, langSelectedChoice, (dialogInterface, i) -> {
+
+                langSelectedChoice = i;
+                tvLanguageSelected.setText(langList[i]);
+                tinyDb.putString("localeStr", langList[i]);
+                tinyDb.putInt("langId", i);
+
+                switch (langList[i]) {
+                    case "Arabic":
+                        tinyDb.putString("locale", "ar");
+                        break;
+                    case "Chinese":
+                        tinyDb.putString("locale", "zh");
+                        break;
+                    case "Finnish":
+                        tinyDb.putString("locale", "fi");
+                        break;
+                    case "French":
+                        tinyDb.putString("locale", "fr");
+                        break;
+                    case "German":
+                        tinyDb.putString("locale", "de");
+                        break;
+                    case "Italian":
+                        tinyDb.putString("locale", "it");
+                        break;
+                    case "Latvian":
+                        tinyDb.putString("locale", "lv");
+                        break;
+                    case "Persian":
+                        tinyDb.putString("locale", "fa");
+                        break;
+                    case "Portuguese/Brazilian":
+                        tinyDb.putString("locale", "pt");
+                        break;
+                    case "Russian":
+                        tinyDb.putString("locale", "ru");
+                        break;
+                    case "Serbian":
+                        tinyDb.putString("locale", "sr");
+                        break;
+                    case "Turkish":
+                        tinyDb.putString("locale", "tr");
+                        break;
+                    case "Ukrainian":
+                        tinyDb.putString("locale", "uk");
+                        break;
+                    default:
+                        tinyDb.putString("locale", "en");
+                        break;
+                }
+
+                dialogInterface.dismiss();
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+                Objects.requireNonNull(getActivity()).recreate();
+                getActivity().overridePendingTransition(0, 0);
+
+            });
+
+            lBuilder.setNegativeButton(getString(R.string.cancelButton), (dialog, which) -> dialog.dismiss());
+
+            AlertDialog lDialog = lBuilder.create();
+            lDialog.show();
+
         });
 
         // time n date dialog
-        timeFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        timeFrame.setOnClickListener(view -> {
 
-                AlertDialog.Builder tBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder tBuilder = new AlertDialog.Builder(ctx);
 
-                tBuilder.setTitle(R.string.settingsTimeSelectorDialogTitle);
-                if(timeSelectedChoice != -1) {
-                    tBuilder.setCancelable(true);
-                }
-                else {
-                    tBuilder.setCancelable(false);
-                }
-
-                tBuilder.setSingleChoiceItems(timeList, timeSelectedChoice, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterfaceTime, int i) {
-
-                        timeSelectedChoice = i;
-                        tvDateTimeSelected.setText(timeList[i]);
-                        tinyDb.putString("timeStr", timeList[i]);
-                        tinyDb.putInt("timeId", i);
-
-                        if ("Normal".equals(timeList[i])) {
-                            tinyDb.putString("dateFormat", "normal");
-                        } else {
-                            tinyDb.putString("dateFormat", "pretty");
-                        }
-
-                        dialogInterfaceTime.dismiss();
-                        Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-
-                    }
-                });
-
-                AlertDialog tDialog = tBuilder.create();
-                tDialog.show();
-
+            tBuilder.setTitle(R.string.settingsTimeSelectorDialogTitle);
+            if(timeSelectedChoice != -1) {
+                tBuilder.setCancelable(true);
             }
+            else {
+                tBuilder.setCancelable(false);
+            }
+
+            tBuilder.setSingleChoiceItems(timeList, timeSelectedChoice, (dialogInterfaceTime, i) -> {
+
+                timeSelectedChoice = i;
+                tvDateTimeSelected.setText(timeList[i]);
+                tinyDb.putString("timeStr", timeList[i]);
+                tinyDb.putInt("timeId", i);
+
+                if ("Normal".equals(timeList[i])) {
+                    tinyDb.putString("dateFormat", "normal");
+                } else {
+                    tinyDb.putString("dateFormat", "pretty");
+                }
+
+                dialogInterfaceTime.dismiss();
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+
+            });
+
+            AlertDialog tDialog = tBuilder.create();
+            tDialog.show();
+
         });
 
         return v;
+
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
+
         super.onAttach(context);
         ctx = context;
+
     }
 
 }

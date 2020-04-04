@@ -50,7 +50,9 @@ import android.net.Uri;
 
 public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoFragment.BottomSheetListener {
 
-    private TextView textViewBadge;
+    private TextView textViewBadgeIssue;
+    private TextView textViewBadgePull;
+    private TextView textViewBadgeRelease;
 
     @Override
     protected int getLayoutResourceId(){
@@ -129,25 +131,55 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        if(tinyDb.getBoolean("enableCounterIssueBadge")) {
+        if(tinyDb.getBoolean("enableCounterBadges")) {
 
-            @SuppressLint("InflateParams") View tabHeader = LayoutInflater.from(this).inflate(R.layout.badge, null);
-            textViewBadge = tabHeader.findViewById(R.id.counterBadge);
-            if(!tinyDb.getString("issuesCounter").isEmpty()) {
-                getRepoInfo(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
-            }
-            Objects.requireNonNull(tabLayout.getTabAt(2)).setCustomView(tabHeader);
+            @SuppressLint("InflateParams") View tabHeader2 = LayoutInflater.from(this).inflate(R.layout.badge_issue, null);
+            textViewBadgeIssue = tabHeader2.findViewById(R.id.counterBadgeIssue);
 
-            TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(2);
+            @SuppressLint("InflateParams") View tabHeader4 = LayoutInflater.from(this).inflate(R.layout.badge_pull, null);
+            textViewBadgePull = tabHeader4.findViewById(R.id.counterBadgePull);
+
+            @SuppressLint("InflateParams") View tabHeader6 = LayoutInflater.from(this).inflate(R.layout.badge_release, null);
+            textViewBadgeRelease = tabHeader6.findViewById(R.id.counterBadgeRelease);
+
+            textViewBadgeIssue.setVisibility(View.GONE);
+            textViewBadgePull.setVisibility(View.GONE);
+            textViewBadgeRelease.setVisibility(View.GONE);
+
+            getRepoInfo(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
             ColorStateList textColor = tabLayout.getTabTextColors();
-            assert tabOpenIssues != null;
-            TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeText);
-            openIssueTabView.setTextColor(textColor);
 
+            // issue count
+            if (textViewBadgeIssue.getText() != "") {
+                TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(2);
+                Objects.requireNonNull(tabLayout.getTabAt(2)).setCustomView(tabHeader2);
+                assert tabOpenIssues != null;
+                TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeIssueText);
+                openIssueTabView.setTextColor(textColor);
+            }
+
+            // pull count
+            if (textViewBadgePull.getText() != "") { // only show if API returned a number
+                Objects.requireNonNull(tabLayout.getTabAt(4)).setCustomView(tabHeader4);
+                TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(4);
+                assert tabOpenPulls != null;
+                TextView openPullTabView = Objects.requireNonNull(tabOpenPulls.getCustomView()).findViewById(R.id.counterBadgePullText);
+                openPullTabView.setTextColor(textColor);
+            }
+
+            // release count
+            if (textViewBadgeRelease.getText() != "") { // only show if API returned a number
+                Objects.requireNonNull(tabLayout.getTabAt(6)).setCustomView(tabHeader6);
+                TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(6);
+                assert tabOpenRelease != null;
+                TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
+                openReleaseTabView.setTextColor(textColor);
+            }
         }
 
         checkRepositoryStarStatus(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
         checkRepositoryWatchStatus(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName1);
+
     }
 
     @Override
@@ -166,13 +198,16 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
         if(tinyDb.getBoolean("enableCounterIssueBadge")) {
             getRepoInfo(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
         }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.repo_dotted_menu, menu);
         return true;
+
     }
 
     @Override
@@ -294,6 +329,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
     private void getRepoInfo(String instanceUrl, String token, final String owner, String repo) {
 
+        TinyDB tinyDb = new TinyDB(getApplicationContext());
+
         Call<UserRepositories> call = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
@@ -310,8 +347,24 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
                     if (response.code() == 200) {
 
-                        assert repoInfo != null;
-                        textViewBadge.setText(repoInfo.getOpen_issues_count());
+                        if(tinyDb.getBoolean("enableCounterBadges")) {
+                            assert repoInfo != null;
+
+                            if(repoInfo.getOpen_issues_count() != null) {
+                                textViewBadgeIssue.setVisibility(View.VISIBLE);
+                                textViewBadgeIssue.setText(repoInfo.getOpen_issues_count());
+                            }
+
+                            if(repoInfo.getOpen_pull_count() != null) {
+                                textViewBadgePull.setVisibility(View.VISIBLE);
+                                textViewBadgePull.setText(repoInfo.getOpen_pull_count());
+                            }
+
+                            if(repoInfo.getRelease_count() != null) {
+                                textViewBadgeRelease.setVisibility(View.VISIBLE);
+                                textViewBadgeRelease.setText(repoInfo.getRelease_count());
+                            }
+                        }
 
                     }
 
@@ -326,6 +379,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
             public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
                 Log.e("onFailure", t.toString());
             }
+
         });
 
     }

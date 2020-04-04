@@ -62,7 +62,6 @@ public class IssuesOpenFragment extends Fragment {
 
         TinyDB tinyDb = new TinyDB(getContext());
         String repoFullName = tinyDb.getString("repoFullName");
-        //Log.i("repoFullName", tinyDb.getString("repoFullName"));
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];

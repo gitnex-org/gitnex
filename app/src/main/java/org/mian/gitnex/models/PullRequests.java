@@ -80,6 +80,8 @@ public class PullRequests {
             private int forks_count;
             private int id;
             private int open_issues_count;
+            private int open_pr_counter;
+            private int release_counter;
             private int size;
             private int stars_count;
             private int watchers_count;
@@ -254,6 +256,14 @@ public class PullRequests {
 
             public int getOpen_issues_count() {
                 return open_issues_count;
+            }
+
+            public int getOpen_pull_count() {
+                return open_pr_counter;
+            }
+
+            public int getRelease_count() {
+                return release_counter;
             }
 
             public int getSize() {

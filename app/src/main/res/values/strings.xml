@@ -275,6 +275,7 @@
     <string name="themeSelectionSelectedText" translatable="false">Dark</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
+    <string name="settingsCounterBadges">Counter Badges</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>

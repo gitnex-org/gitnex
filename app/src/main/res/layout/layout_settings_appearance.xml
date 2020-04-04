@@ -109,25 +109,25 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/issueBadgeFrame"
+        android:id="@+id/counterBadgeFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvIssueBadgeHeader"
+            android:id="@+id/tvCounterBadgeHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
-            android:text="@string/settingsIssueBadgeHeaderText"
+            android:text="@string/settingsCounterBadges"
             android:textColor="?attr/primaryTextColor"/>
 
         <Switch
-            android:id="@+id/switchIssuesBadge"
-            android:layout_toEndOf="@+id/tvIssueBadgeHeader"
+            android:id="@+id/switchCounterBadge"
+            android:layout_toEndOf="@+id/tvCounterBadgeHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:switchMinWidth="56dp"

@@ -18,6 +18,8 @@ public class UserRepositories {
     private String stars_count;
     private String watchers_count;
     private String open_issues_count;
+    private String open_pr_counter;
+    private String release_counter;
     private String html_url;
     private String default_branch;
     private Date created_at;
@@ -52,6 +54,14 @@ public class UserRepositories {
 
     public String getStars_count() {
         return stars_count;
+    }
+
+    public String getOpen_pull_count() {
+        return open_pr_counter;
+    }
+
+    public String getRelease_count() {
+        return release_counter;
     }
 
     public String getWatchers_count() {
