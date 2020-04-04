@@ -95,7 +95,7 @@
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight=".25"
-                    android:drawableStart="@drawable/ic_issue_comments"
+                    android:drawableStart="@drawable/ic_issue_open"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
                     android:layout_gravity="center_vertical"
