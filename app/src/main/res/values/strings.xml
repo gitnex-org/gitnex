@@ -387,6 +387,8 @@
     <string name="addRemoveAssignees2">Add Assignees</string>
     <string name="addRemoveAssignees">Add / Remove Assignees</string>
     <string name="assigneesUpdated">Assignees updated</string>
+    <string name="singleIssueSubscribe">Subscribe</string>
+    <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
 
     <!-- multi select dialog -->
@@ -591,4 +593,9 @@
     <string name="mtm_decision_abort">Abort</string>
 
     <string name="issueCommentShare">Share Comment</string>
+
+    <string name="issueSubscribtion">Issue Subscribed</string>
+    <string name="issueSubscribtionError">Issue Subscription failed</string>
+    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
+    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
 </resources>

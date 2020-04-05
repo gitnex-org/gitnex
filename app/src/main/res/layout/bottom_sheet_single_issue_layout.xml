@@ -90,6 +90,31 @@
                 android:textSize="16sp"
                 android:padding="16dp" />
 
+            <TextView
+                android:id="@+id/subscribeIssue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/singleIssueSubscribe"
+                android:drawableStart="@drawable/ic_watchers"
+                android:drawablePadding="24dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/unsubscribeIssue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableStart="@drawable/ic_unwatch"
+                android:drawablePadding="24dp"
+                android:padding="16dp"
+                android:text="@string/singleIssueUnSubscribe"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -152,7 +177,8 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

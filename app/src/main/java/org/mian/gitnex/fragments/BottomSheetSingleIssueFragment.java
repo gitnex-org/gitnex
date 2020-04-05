@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.util.TinyDB;
 import androidx.annotation.NonNull;
@@ -22,6 +25,8 @@ import androidx.annotation.Nullable;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import java.util.Objects;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -35,7 +40,8 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
         View v = inflater.inflate(R.layout.bottom_sheet_single_issue_layout, container, false);
 
-        final TinyDB tinyDB = new TinyDB(getContext());
+        final Context ctx = getContext();
+        final TinyDB tinyDB = new TinyDB(ctx);
 
         TextView replyToIssue = v.findViewById(R.id.replyToIssue);
         TextView editIssue = v.findViewById(R.id.editIssue);
@@ -47,12 +53,14 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
         TextView openFilesDiff = v.findViewById(R.id.openFilesDiff);
         TextView mergePullRequest = v.findViewById(R.id.mergePullRequest);
         TextView shareIssue = v.findViewById(R.id.shareIssue);
+        TextView subscribeIssue = v.findViewById(R.id.subscribeIssue);
+        TextView unsubscribeIssue = v.findViewById(R.id.unsubscribeIssue);
 
         replyToIssue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), ReplyToIssueActivity.class));
+                startActivity(new Intent(ctx, ReplyToIssueActivity.class));
                 dismiss();
 
             }
@@ -89,7 +97,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), MergePullRequestActivity.class));
+                startActivity(new Intent(ctx, MergePullRequestActivity.class));
                 dismiss();
 
             }
@@ -99,7 +107,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), FileDiffActivity.class));
+                startActivity(new Intent(ctx, FileDiffActivity.class));
                 dismiss();
 
             }
@@ -109,7 +117,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), EditIssueActivity.class));
+                startActivity(new Intent(ctx, EditIssueActivity.class));
                 dismiss();
 
             }
@@ -119,7 +127,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), AddRemoveLabelsActivity.class));
+                startActivity(new Intent(ctx, AddRemoveLabelsActivity.class));
                 dismiss();
 
             }
@@ -129,7 +137,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), AddRemoveAssigneesActivity.class));
+                startActivity(new Intent(ctx, AddRemoveAssigneesActivity.class));
                 dismiss();
 
             }
@@ -173,14 +181,14 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
                 String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
 
                 // copy to clipboard
-                ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(getContext()).getSystemService(android.content.Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(android.content.Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("issueUrl", issueUrl);
                 assert clipboard != null;
                 clipboard.setPrimaryClip(clip);
 
                 dismiss();
 
-                Toasty.info(getContext(), getContext().getString(R.string.copyIssueUrlToastMsg));
+                Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
 
             }
         });
@@ -195,7 +203,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onClick(View v) {
 
-                        IssueActions.closeReopenIssue(getContext(), Integer.parseInt(tinyDB.getString("issueNumber")), "closed");
+                        IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "closed");
                         dismiss();
 
                     }
@@ -210,7 +218,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onClick(View v) {
 
-                        IssueActions.closeReopenIssue(getContext(), Integer.parseInt(tinyDB.getString("issueNumber")), "open");
+                        IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "open");
                         dismiss();
 
                     }
@@ -224,6 +232,31 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
             reOpenIssue.setVisibility(View.GONE);
             closeIssue.setVisibility(View.GONE);
 
+        }
+
+        subscribeIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                IssueActions.subscribe(ctx, subscribeIssue, unsubscribeIssue);
+
+            }
+        });
+
+        unsubscribeIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                IssueActions.unsubscribe(ctx, subscribeIssue, unsubscribeIssue);
+
+            }
+        });
+
+        //if RepoWatch True Provide Unsubscribe first
+        // ToDo: API to check if user is subscribed to an issue (do not exist can be guessed by many api endpoints :/)
+        if (tinyDB.getBoolean("repoWatch")) {
+            subscribeIssue.setVisibility(View.GONE);
+            unsubscribeIssue.setVisibility(View.VISIBLE);
         }
 
         return v;

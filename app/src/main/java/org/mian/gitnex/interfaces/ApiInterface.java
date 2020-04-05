@@ -252,6 +252,12 @@ public interface ApiInterface {
     @DELETE("repos/{owner}/{repo}/subscription") // un watch a repository
     Call<JsonElement> unWatchRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
+    @PUT("repos/{owner}/{repo}/issues/{index}/subscriptions/{user}") // subscribe user to issue
+    Call<Void> addIssueSubscriber(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex, @Path("user") String issueSubscriber);
+
+    @DELETE("repos/{owner}/{repo}/issues/{index}/subscriptions/{user}") // unsubscribe user to issue
+    Call<Void> delIssueSubscriber(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex, @Path("user") String issueSubscriber);
+
     @GET("repos/{owner}/{repo}/pulls") // get repository pull requests
     Call<List<PullRequests>> getPullRequests(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("state") String state, @Query("limit") int limit);
 

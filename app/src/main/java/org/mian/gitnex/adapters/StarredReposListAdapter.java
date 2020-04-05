@@ -20,13 +20,18 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.UserRepositories;
+import org.mian.gitnex.models.WatchRepository;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -74,6 +79,50 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
                 tinyDb.putString("repoFullName", fullName.getText().toString());
                 tinyDb.putString("repoType", repoType.getText().toString());
                 tinyDb.putBoolean("resumeIssues", true);
+
+                //store if user is watching this repo
+                {
+                    final String instanceUrl = tinyDb.getString("instanceUrl");
+                    String[] parts = fullName.getText().toString().split("/");
+                    final String repoOwner = parts[0];
+                    final String repoName = parts[1];
+                    final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
+
+                    WatchRepository watch = new WatchRepository();
+
+                    Call<WatchRepository> call;
+
+                    call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface().checkRepoWatchStatus(token, repoOwner, repoName);
+
+                    call.enqueue(new Callback<WatchRepository>() {
+
+                        @Override
+                        public void onResponse(@NonNull Call<WatchRepository> call, @NonNull retrofit2.Response<WatchRepository> response) {
+
+                            if(response.isSuccessful()) {
+
+                                tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
+
+                            }
+                            else {
+
+                                tinyDb.putBoolean("repoWatch", false);
+                                Toasty.info(context, context.getString(R.string.genericApiStatusError));
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<WatchRepository> call, @NonNull Throwable t) {
+
+                            tinyDb.putBoolean("repoWatch", false);
+                            Toasty.info(context, context.getString(R.string.genericApiStatusError));
+
+                        }
+                    });
+                }
+
                 context.startActivity(intent);
 
             });
