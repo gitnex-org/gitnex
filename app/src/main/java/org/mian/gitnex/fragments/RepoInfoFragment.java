@@ -136,9 +136,8 @@ public class RepoInfoFragment extends Fragment {
         repoForksCountInfo = v.findViewById(R.id.repoForksCountInfo);
         repoCreatedAtInfo = v.findViewById(R.id.repoCreatedAtInfo);
         repoFileContents = v.findViewById(R.id.repoFileContents);
-        TextView repoFilename = v.findViewById(R.id.repoFilename);
         repoMetaFrame = v.findViewById(R.id.repoMetaFrame);
-        TextView repoMetaData = v.findViewById(R.id.repoMetaData);
+        LinearLayout repoMetaFrameHeader = v.findViewById(R.id.repoMetaFrameHeader);
         repoMetaDataExpandCollapse = v.findViewById(R.id.repoMetaDataExpandCollapse);
         repoFilenameExpandCollapse = v.findViewById(R.id.repoFilenameExpandCollapse);
         fileContentsFrameHeader = v.findViewById(R.id.fileContentsFrameHeader);
@@ -149,13 +148,13 @@ public class RepoInfoFragment extends Fragment {
         getRepoInfo(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, locale, timeFormat);
         getFileContents(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
 
-        repoFilename.setOnClickListener(new View.OnClickListener() {
+        fileContentsFrameHeader.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 collapseExpandView();
             }
         });
 
-        repoMetaData.setOnClickListener(new View.OnClickListener() {
+        repoMetaFrameHeader.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 collapseExpandViewMeta();
             }
