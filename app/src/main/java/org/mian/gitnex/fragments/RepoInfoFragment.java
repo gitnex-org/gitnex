@@ -263,47 +263,51 @@ public class RepoInfoFragment extends Fragment {
                             }
 
                             repoMetaForks.setText(repoInfo.getForks_count());
-                            repoMetaSize.setText(AppUtil.formatFileSize(repoInfo.getSize()));
                             repoMetaWatchers.setText(repoInfo.getWatchers_count());
 
-	                        repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
-	                        if(timeFormat.equals("pretty")) {
-		                        repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
-	                        }
+                            if(repoInfo.getSize() != 0) {
+                                repoMetaSize.setText(AppUtil.formatFileSize(repoInfo.getSize()));
+                            }
+                            else {
+                                repoMetaSize.setText("0");
+                            }
+
+                            repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
+                            if(timeFormat.equals("pretty")) {
+                                repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
+                            }
+
+                            String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdated_at(), new Locale(locale), timeFormat, ctx);
 
                             String website = (repoInfo.getWebsite().isEmpty()) ? getResources().getString(R.string.noDataWebsite) : repoInfo.getWebsite();
                             repoMetaWebsite.setText(website);
 
-                            repoAdditionalButton.setOnClickListener(new View.OnClickListener() {
+                            repoAdditionalButton.setOnClickListener(v -> {
 
-	                            @Override
-	                            public void onClick(View v) {
+                                StringBuilder message = new StringBuilder();
 
-	                            	StringBuilder message = new StringBuilder();
+                                message.append(getResources().getString(R.string.infoTabRepoDefaultBranch))
+                                        .append(" :\n").append(repoInfo.getDefault_branch()).append("\n\n");
 
-	                            	message.append(getResources().getString(R.string.infoTabRepoDefaultBranchText))
-				                            .append(":\n").append(repoInfo.getDefault_branch()).append("\n\n");
+                                message.append(getResources().getString(R.string.infoTabRepoUpdatedAt))
+                                        .append(" :\n").append(repoMetaUpdatedAt).append("\n\n");
 
-	                            	message.append(getResources().getString(R.string.infoTabRepoUpdatedAt))
-				                            .append(":\n").append(repoInfo.getUpdated_at()).append("\n\n");
+                                message.append(getResources().getString(R.string.infoTabRepoSshUrl))
+                                        .append(" :\n").append(repoInfo.getSsh_url()).append("\n\n");
 
-	                            	message.append(getResources().getString(R.string.infoTabRepoSshUrl))
-				                            .append(":\n").append(repoInfo.getSsh_url()).append("\n\n");
+                                message.append(getResources().getString(R.string.infoTabRepoCloneUrl))
+                                        .append(" :\n").append(repoInfo.getClone_url()).append("\n\n");
 
-	                            	message.append(getResources().getString(R.string.infoTabRepoCloneUrl))
-				                            .append(":\n").append(repoInfo.getClone_url()).append("\n\n");
+                                message.append(getResources().getString(R.string.infoTabRepoRepoUrl))
+                                        .append(" :\n").append(repoInfo.getHtml_url());
 
-	                            	message.append(getResources().getString(R.string.infoTabRepoRepoUrl))
-				                            .append(":\n").append(repoInfo.getHtml_url());
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
 
-		                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+                                alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
+                                alertDialog.setMessage(message);
+                                alertDialog.setPositiveButton(getResources().getString(R.string.close), (dialog, which) -> dialog.dismiss());
+                                alertDialog.create().show();
 
-		                            alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
-		                            alertDialog.setMessage(message);
-		                            alertDialog.setPositiveButton(getResources().getString(R.string.close), (dialog, which) -> dialog.dismiss());
-		                            alertDialog.create().show();
-
-	                            }
                             });
 
                             if(repoInfo.getHas_issues() != null) {

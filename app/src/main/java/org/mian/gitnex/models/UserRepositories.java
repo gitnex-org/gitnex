@@ -23,7 +23,7 @@ public class UserRepositories {
     private String html_url;
     private String default_branch;
     private Date created_at;
-    private String updated_at;
+    private Date updated_at;
     private String clone_url;
     private long size;
     private String ssh_url;
@@ -84,7 +84,7 @@ public class UserRepositories {
         return created_at;
     }
 
-    public String getUpdated_at() {
+    public Date getUpdated_at() {
         return updated_at;
     }
 
