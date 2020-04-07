@@ -31,18 +31,6 @@
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/replyToIssue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/replyToIssue"
-                android:drawableStart="@drawable/ic_reply"
-                android:drawablePadding="24dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="16dp" />
-
-            <TextView
                 android:id="@+id/mergePullRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -29,6 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -95,6 +96,7 @@ public class IssueDetailActivity extends BaseActivity {
     private HorizontalScrollView assigneesScrollView;
     private ScrollView scrollViewComments;
     private TextView issueModified;
+    private ImageView createNewComment;
     final Context ctx = this;
     private LinearLayout labelsLayout;
     private LinearLayout assigneesLayout;
@@ -132,6 +134,7 @@ public class IssueDetailActivity extends BaseActivity {
         assigneesScrollView = findViewById(R.id.assigneesScrollView);
         scrollViewComments = findViewById(R.id.scrollViewComments);
         issueModified = findViewById(R.id.issueModified);
+        createNewComment = findViewById(R.id.addNewComment);
         labelsLayout = findViewById(R.id.frameLabels);
         assigneesLayout = findViewById(R.id.frameAssignees);
 
@@ -147,9 +150,37 @@ public class IssueDetailActivity extends BaseActivity {
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        createNewComment = findViewById(R.id.addNewComment);
+        createNewComment.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(ctx, ReplyToIssueActivity.class));
+
+            }
+        });
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+                if (dy > 0 && createNewComment.isShown()) {
+                    createNewComment.setVisibility(View.GONE);
+                } else if (dy < 0) {
+                    createNewComment.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -165,24 +196,24 @@ public class IssueDetailActivity extends BaseActivity {
         });
 
         Typeface myTypeface;
-        if(tinyDb.getInt("customFontId") == 0) {
 
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+        switch(tinyDb.getInt("customFontId")) {
 
-        }
-        else if (tinyDb.getInt("customFontId") == 1) {
+            case 0:
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+                break;
 
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");
+            case 1:
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");
+                break;
 
-        }
-        else if (tinyDb.getInt("customFontId") == 2) {
+            case 2:
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+                break;
 
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
-
-        }
-        else {
-
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+            default:
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+                break;
 
         }
 

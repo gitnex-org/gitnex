@@ -38,7 +38,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:background="@drawable/circle"
-        android:padding="12dp"
+        android:padding="@dimen/fab_padding"
         android:contentDescription="@string/addNewContent" />
 
     <TextView

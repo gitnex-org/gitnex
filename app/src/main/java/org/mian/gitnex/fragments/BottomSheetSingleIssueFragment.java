@@ -43,7 +43,6 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
         final Context ctx = getContext();
         final TinyDB tinyDB = new TinyDB(ctx);
 
-        TextView replyToIssue = v.findViewById(R.id.replyToIssue);
         TextView editIssue = v.findViewById(R.id.editIssue);
         TextView editLabels = v.findViewById(R.id.editLabels);
         TextView closeIssue = v.findViewById(R.id.closeIssue);
@@ -55,16 +54,6 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
         TextView shareIssue = v.findViewById(R.id.shareIssue);
         TextView subscribeIssue = v.findViewById(R.id.subscribeIssue);
         TextView unsubscribeIssue = v.findViewById(R.id.unsubscribeIssue);
-
-        replyToIssue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(ctx, ReplyToIssueActivity.class));
-                dismiss();
-
-            }
-        });
 
         if(tinyDB.getString("issueType").equals("pr")) {
 

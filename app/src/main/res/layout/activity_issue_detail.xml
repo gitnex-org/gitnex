@@ -212,6 +212,19 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <ImageView
+            android:id="@+id/addNewComment"
+            android:src="@drawable/ic_reply"
+            android:tint="@color/white"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_margin="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/circle"
+            android:padding="@dimen/fab_padding"
+            android:contentDescription="@string/addNewContent" />
+
     </RelativeLayout>
 
 </LinearLayout>
