@@ -60,6 +60,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         }
 
+        // enabling counter badges by default
+        if(tinyDb.getString("enableCounterBadgesInit").isEmpty()) {
+            tinyDb.putBoolean("enableCounterBadges", true);
+            tinyDb.putString("enableCounterBadgesInit", "yes");
+        }
+
     }
 
     protected abstract int getLayoutResourceId();

@@ -99,9 +99,9 @@ public class SettingsFragment extends Fragment {
 			homeScreenSelected.setText(tinyDb.getString("homeScreenStr"));
 		}
 
-		if(!tinyDb.getString("customFontStr").isEmpty()) {
-			customFontSelected.setText(tinyDb.getString("customFontStr"));
-		}
+        if(!tinyDb.getString("customFontStr").isEmpty()) {
+            customFontSelected.setText(tinyDb.getString("customFontStr"));
+        }
 
 		if(!tinyDb.getString("themeStr").isEmpty()) {
 			themeSelected.setText(tinyDb.getString("themeStr"));
@@ -167,16 +167,14 @@ public class SettingsFragment extends Fragment {
 		// counter badge switcher
 		counterBadgesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			if(isChecked) {
-				tinyDb.putBoolean("enableCounterBadges", true);
-				tinyDb.putString("enableCounterBadgesInit", "yes");
-				Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-			}
-			else {
-				tinyDb.putBoolean("enableCounterBadges", false);
-				tinyDb.putString("enableCounterBadgesInit", "yes");
-				Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
-			}
+            if (isChecked) {
+                tinyDb.putBoolean("enableCounterBadges", true);
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+            }
+            else {
+                tinyDb.putBoolean("enableCounterBadges", false);
+                Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+            }
 
 		});
 
