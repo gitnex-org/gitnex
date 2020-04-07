@@ -724,9 +724,61 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         }
                         else {
 
-                            tinyDb.putBoolean("loggedInMode", true);
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
+                            String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+
+                            Call<UserInfo> callGetUsername = RetrofitClient
+                                    .getInstance(instanceUrl, getApplicationContext())
+                                    .getApiInterface()
+                                    .getUserInfo(instanceToken);
+
+                            callGetUsername.enqueue(new Callback<UserInfo>() {
+
+                                @Override
+                                public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+
+                                    UserInfo userDetails = response.body();
+
+                                    if (response.isSuccessful()) {
+
+                                        if (response.code() == 200) {
+
+                                            assert userDetails != null;
+                                            tinyDb.putString("userLogin", userDetails.getUsername());
+
+                                            tinyDb.putBoolean("loggedInMode", true);
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            finish();
+
+                                        }
+
+                                    }
+                                    else if(response.code() == 401) {
+
+                                        SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.unauthorizedApiError));
+                                        enableProcessButton();
+                                        loginButton.setText(R.string.btnLogin);
+
+                                    }
+                                    else {
+
+                                        SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.genericApiStatusError) + response.code());
+                                        enableProcessButton();
+                                        loginButton.setText(R.string.btnLogin);
+
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+
+                                    Log.e("onFailure", t.toString());
+                                    SnackBar.error(getApplicationContext(), layoutView, getResources().getString(R.string.genericError));
+                                    enableProcessButton();
+                                    loginButton.setText(R.string.btnLogin);
+
+                                }
+                            });
 
                         }
 
