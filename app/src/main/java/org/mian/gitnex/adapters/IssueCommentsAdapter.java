@@ -23,6 +23,7 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.helpers.ClickListener;
 import org.ocpsoft.prettytime.PrettyTime;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -261,30 +262,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		}
 
-		switch(timeFormat) {
+		holder.issueCommentDate.setText(TimeHelper.formatTime(currentItem.getCreated_date(), new Locale(locale), timeFormat, mCtx));
 
-			case "pretty": {
-				PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-				String createdTime = prettyTime.format(currentItem.getCreated_at());
-				holder.issueCommentDate.setText(createdTime);
-				holder.issueCommentDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), mCtx));
-				break;
-			}
-			case "normal": {
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + mCtx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-				String createdTime = formatter.format(currentItem.getCreated_at());
-				holder.issueCommentDate.setText(createdTime);
-				break;
-			}
-			case "normal1": {
-				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + mCtx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-				String createdTime = formatter.format(currentItem.getCreated_at());
-				holder.issueCommentDate.setText(createdTime);
-				break;
-			}
-
+		if(timeFormat.equals("pretty")) {
+			holder.issueCommentDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), mCtx));
 		}
-
 	}
 
 	@Override

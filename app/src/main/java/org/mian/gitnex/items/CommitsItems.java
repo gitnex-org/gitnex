@@ -138,26 +138,10 @@ public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHo
             commitTitleVw.setText(item.getCommitTitle());
             commitCommitterVw.setText(ctx.getString(R.string.commitCommittedBy, item.getcommitCommitter()));
 
-            switch (timeFormat) {
-                case "pretty": {
-                    PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-                    String createdTime = prettyTime.format(item.getcommitDate());
-                    commitDateVw.setText(createdTime);
-                    commitDateVw.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(item.getcommitDate()), ctx));
-                    break;
-                }
-                case "normal": {
-                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + ctx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(item.getcommitDate());
-                    commitDateVw.setText(createdTime);
-                    break;
-                }
-                case "normal1": {
-                    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + ctx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(item.getcommitDate());
-                    commitDateVw.setText(createdTime);
-                    break;
-                }
+            commitDateVw.setText(TimeHelper.formatTime(item.getcommitDate(), new Locale(locale), timeFormat, ctx));
+
+            if(timeFormat.equals("pretty")) {
+                commitDateVw.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(item.getcommitDate()), ctx));
             }
 
             commitHtmlUrlVw.setText(Html.fromHtml("<a href='" + item.getCommitHtmlUrl() + "'>" + ctx.getResources().getString(R.string.viewInBrowser) + "</a> "));

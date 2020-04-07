@@ -165,6 +165,9 @@
     <string name="infoTabRepoZero" translatable="false">0</string>
     <string name="infoTabRepoDefaultBranchText" translatable="false">master</string>
 
+    <string name="infoShowMoreInformation">Show more information</string>
+    <string name="infoMoreInformation">More information</string>
+
     <string name="timeAtText">at</string>
     <string name="hash" translatable="false">#</string>
     <string name="createdText">Opened\u0020</string>
@@ -451,6 +454,7 @@
     <string name="repoWatchersInMenu">Watchers</string>
     <string name="noDataStargazers">No stars found</string>
     <string name="noDataWatchers">No watchers found</string>
+    <string name="noDataWebsite">No website found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
 

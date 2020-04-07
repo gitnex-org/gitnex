@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
@@ -30,6 +31,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,9 +46,6 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
-import org.ocpsoft.prettytime.PrettyTime;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
@@ -58,7 +57,7 @@ import java.util.Objects;
 
 public class RepoInfoFragment extends Fragment {
 
-    private Context ctx = getContext();
+    private Context ctx;
     private ProgressBar mProgressBar;
     private LinearLayout pageContent;
     private static String repoNameF = "param2";
@@ -66,17 +65,17 @@ public class RepoInfoFragment extends Fragment {
 
     private String repoName;
     private String repoOwner;
-    private TextView repoNameInfo;
-    private TextView repoOwnerInfo;
-    private TextView repoDescriptionInfo;
-    private TextView repoWebsiteInfo;
-    private TextView repoSizeInfo;
-    private TextView repoDefaultBranchInfo;
-    private TextView repoSshUrlInfo;
-    private TextView repoCloneUrlInfo;
-    private TextView repoRepoUrlInfo;
-    private TextView repoForksCountInfo;
-    private TextView repoCreatedAtInfo;
+    private TextView repoMetaName;
+    private TextView repoMetaDescription;
+    private TextView repoMetaStars;
+    private TextView repoMetaPullRequests;
+    private LinearLayout repoMetaPullRequestsFrame;
+    private TextView repoMetaForks;
+    private TextView repoMetaSize;
+    private TextView repoMetaWatchers;
+    private TextView repoMetaCreatedAt;
+    private TextView repoMetaWebsite;
+    private Button repoAdditionalButton;
     private TextView repoFileContents;
     private LinearLayout repoMetaFrame;
     private ImageView repoMetaDataExpandCollapse;
@@ -120,21 +119,23 @@ public class RepoInfoFragment extends Fragment {
         final String locale = tinyDb.getString("locale");
         final String timeFormat = tinyDb.getString("dateFormat");
 
+        ctx = getActivity();
+
         pageContent = v.findViewById(R.id.repoInfoLayout);
         pageContent.setVisibility(View.GONE);
 
         mProgressBar = v.findViewById(R.id.progress_bar);
-        repoNameInfo = v.findViewById(R.id.repoNameInfo);
-        repoOwnerInfo = v.findViewById(R.id.repoOwnerInfo);
-        repoDescriptionInfo = v.findViewById(R.id.repoDescriptionInfo);
-        repoWebsiteInfo = v.findViewById(R.id.repoWebsiteInfo);
-        repoSizeInfo = v.findViewById(R.id.repoSizeInfo);
-        repoDefaultBranchInfo = v.findViewById(R.id.repoDefaultBranchInfo);
-        repoSshUrlInfo = v.findViewById(R.id.repoSshUrlInfo);
-        repoCloneUrlInfo = v.findViewById(R.id.repoCloneUrlInfo);
-        repoRepoUrlInfo = v.findViewById(R.id.repoRepoUrlInfo);
-        repoForksCountInfo = v.findViewById(R.id.repoForksCountInfo);
-        repoCreatedAtInfo = v.findViewById(R.id.repoCreatedAtInfo);
+        repoMetaName = v.findViewById(R.id.repoMetaName);
+        repoMetaDescription = v.findViewById(R.id.repoMetaDescription);
+        repoMetaStars = v.findViewById(R.id.repoMetaStars);
+        repoMetaPullRequests = v.findViewById(R.id.repoMetaPullRequests);
+        repoMetaPullRequestsFrame = v.findViewById(R.id.repoMetaPullRequestsFrame);
+        repoMetaForks = v.findViewById(R.id.repoMetaForks);
+        repoMetaSize = v.findViewById(R.id.repoMetaSize);
+        repoMetaWatchers = v.findViewById(R.id.repoMetaWatchers);
+        repoMetaCreatedAt = v.findViewById(R.id.repoMetaCreatedAt);
+        repoMetaWebsite = v.findViewById(R.id.repoMetaWebsite);
+	    repoAdditionalButton = v.findViewById(R.id.repoAdditionalButton);
         repoFileContents = v.findViewById(R.id.repoFileContents);
         repoMetaFrame = v.findViewById(R.id.repoMetaFrame);
         LinearLayout repoMetaFrameHeader = v.findViewById(R.id.repoMetaFrameHeader);
@@ -148,15 +149,23 @@ public class RepoInfoFragment extends Fragment {
         getRepoInfo(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, locale, timeFormat);
         getFileContents(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
 
+        if(isExpandViewVisible()) {
+        	toggleExpandView();
+        }
+
+        if(!isExpandViewMetaVisible()) {
+        	toggleExpandViewMeta();
+        }
+
         fileContentsFrameHeader.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                collapseExpandView();
+                toggleExpandView();
             }
         });
 
         repoMetaFrameHeader.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                collapseExpandViewMeta();
+                toggleExpandViewMeta();
             }
         });
 
@@ -179,7 +188,7 @@ public class RepoInfoFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void collapseExpandView() {
+    private void toggleExpandView() {
 
         if (repoFileContents.getVisibility() == View.GONE) {
             repoFilenameExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
@@ -193,10 +202,14 @@ public class RepoInfoFragment extends Fragment {
             //Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
             //fileContentsFrame.startAnimation(slide_up);
         }
-
     }
 
-    private void collapseExpandViewMeta() {
+    private boolean isExpandViewVisible() {
+    	return repoFileContents.getVisibility() == View.VISIBLE;
+    }
+
+    private void toggleExpandViewMeta() {
+
         if (repoMetaFrame.getVisibility() == View.GONE) {
             repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
             repoMetaFrame.setVisibility(View.VISIBLE);
@@ -209,8 +222,11 @@ public class RepoInfoFragment extends Fragment {
             //Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
             //repoMetaFrame.startAnimation(slide_up);
         }
-
     }
+
+	private boolean isExpandViewMetaVisible() {
+		return repoMetaFrame.getVisibility() == View.VISIBLE;
+	}
 
     private void getRepoInfo(String instanceUrl, String token, final String owner, String repo, final String locale, final String timeFormat) {
 
@@ -235,44 +251,66 @@ public class RepoInfoFragment extends Fragment {
                         if (response.code() == 200) {
 
                             assert repoInfo != null;
-                            repoNameInfo.setText(repoInfo.getName());
-                            repoOwnerInfo.setText(owner);
-                            repoDescriptionInfo.setText(repoInfo.getDescription());
-                            repoWebsiteInfo.setText(repoInfo.getWebsite());
-                            repoSizeInfo.setText(AppUtil.formatFileSize(repoInfo.getSize()));
-                            repoDefaultBranchInfo.setText(repoInfo.getDefault_branch());
-                            repoSshUrlInfo.setText(repoInfo.getSsh_url());
-                            repoCloneUrlInfo.setText(repoInfo.getClone_url());
-                            repoRepoUrlInfo.setText(repoInfo.getHtml_url());
-                            repoForksCountInfo.setText(repoInfo.getForks_count());
+                            repoMetaName.setText(repoInfo.getName());
+                            repoMetaDescription.setText(repoInfo.getDescription());
+                            repoMetaStars.setText(repoInfo.getStars_count());
+
+                            if(repoInfo.getOpen_pull_count() != null) {
+                                repoMetaPullRequests.setText(repoInfo.getOpen_pull_count());
+                            }
+                            else {
+                                repoMetaPullRequestsFrame.setVisibility(View.GONE);
+                            }
+
+                            repoMetaForks.setText(repoInfo.getForks_count());
+                            repoMetaSize.setText(AppUtil.formatFileSize(repoInfo.getSize()));
+                            repoMetaWatchers.setText(repoInfo.getWatchers_count());
+
+	                        repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
+	                        if(timeFormat.equals("pretty")) {
+		                        repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
+	                        }
+
+                            String website = (repoInfo.getWebsite().isEmpty()) ? getResources().getString(R.string.noDataWebsite) : repoInfo.getWebsite();
+                            repoMetaWebsite.setText(website);
+
+                            repoAdditionalButton.setOnClickListener(new View.OnClickListener() {
+
+	                            @Override
+	                            public void onClick(View v) {
+
+	                            	StringBuilder message = new StringBuilder();
+
+	                            	message.append(getResources().getString(R.string.infoTabRepoDefaultBranchText))
+				                            .append(":\n").append(repoInfo.getDefault_branch()).append("\n\n");
+
+	                            	message.append(getResources().getString(R.string.infoTabRepoUpdatedAt))
+				                            .append(":\n").append(repoInfo.getUpdated_at()).append("\n\n");
+
+	                            	message.append(getResources().getString(R.string.infoTabRepoSshUrl))
+				                            .append(":\n").append(repoInfo.getSsh_url()).append("\n\n");
+
+	                            	message.append(getResources().getString(R.string.infoTabRepoCloneUrl))
+				                            .append(":\n").append(repoInfo.getClone_url()).append("\n\n");
+
+	                            	message.append(getResources().getString(R.string.infoTabRepoRepoUrl))
+				                            .append(":\n").append(repoInfo.getHtml_url());
+
+		                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+
+		                            alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
+		                            alertDialog.setMessage(message);
+		                            alertDialog.setPositiveButton(getResources().getString(R.string.close), (dialog, which) -> dialog.dismiss());
+		                            alertDialog.create().show();
+
+	                            }
+                            });
 
                             if(repoInfo.getHas_issues() != null) {
                                 tinyDb.putBoolean("hasIssues", repoInfo.getHas_issues());
                             }
                             else {
                                 tinyDb.putBoolean("hasIssues", true);
-                            }
-
-                            switch (timeFormat) {
-                                case "pretty": {
-                                    PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-                                    String createdTime = prettyTime.format(repoInfo.getCreated_at());
-                                    repoCreatedAtInfo.setText(createdTime);
-                                    repoCreatedAtInfo.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), getContext()));
-                                    break;
-                                }
-                                case "normal": {
-                                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                                    String createdTime = formatter.format(repoInfo.getCreated_at());
-                                    repoCreatedAtInfo.setText(createdTime);
-                                    break;
-                                }
-                                case "normal1": {
-                                    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                                    String createdTime = formatter.format(repoInfo.getCreated_at());
-                                    repoCreatedAtInfo.setText(createdTime);
-                                    break;
-                                }
                             }
 
                             mProgressBar.setVisibility(View.GONE);
@@ -373,12 +411,13 @@ public class RepoInfoFragment extends Fragment {
                             .build();
 
                         Spanned bodyWithMD = null;
+
                         if (response.body() != null) {
                             bodyWithMD = markwon.toMarkdown(response.body());
                         }
+
                         assert bodyWithMD != null;
                         markwon.setParsedMarkdown(repoFileContents, bodyWithMD);
-
 
                     } else if (response.code() == 401) {
 

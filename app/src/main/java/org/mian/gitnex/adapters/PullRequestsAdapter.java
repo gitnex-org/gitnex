@@ -181,26 +181,10 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             prNumber.setText(String.valueOf(prModel.getNumber()));
             prCommentsCount.setText(String.valueOf(prModel.getComments()));
 
-            switch (timeFormat) {
-                case "pretty": {
-                    PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-                    String createdTime = prettyTime.format(prModel.getCreated_at());
-                    prCreatedTime.setText(createdTime);
-                    prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(prModel.getCreated_at()), context));
-                    break;
-                }
-                case "normal": {
-                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(prModel.getCreated_at());
-                    prCreatedTime.setText(createdTime);
-                    break;
-                }
-                case "normal1": {
-                    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(prModel.getCreated_at());
-                    prCreatedTime.setText(createdTime);
-                    break;
-                }
+            prCreatedTime.setText(TimeHelper.formatTime(prModel.getCreated_at(), new Locale(locale), timeFormat, context));
+
+            if(timeFormat.equals("pretty")) {
+                prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(prModel.getCreated_at()), context));
             }
 
         }

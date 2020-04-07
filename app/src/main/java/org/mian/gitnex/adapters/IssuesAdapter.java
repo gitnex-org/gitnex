@@ -189,26 +189,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             issueNumber.setText(String.valueOf(issuesModel.getNumber()));
             issueCommentsCount.setText(String.valueOf(issuesModel.getComments()));
 
-            switch (timeFormat) {
-                case "pretty": {
-                    PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-                    String createdTime = prettyTime.format(issuesModel.getCreated_at());
-                    issueCreatedTime.setText(createdTime);
-                    issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issuesModel.getCreated_at()), context));
-                    break;
-                }
-                case "normal": {
-                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(issuesModel.getCreated_at());
-                    issueCreatedTime.setText(createdTime);
-                    break;
-                }
-                case "normal1": {
-                    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-                    String createdTime = formatter.format(issuesModel.getCreated_at());
-                    issueCreatedTime.setText(createdTime);
-                    break;
-                }
+            issueCreatedTime.setText(TimeHelper.formatTime(issuesModel.getCreated_at(), new Locale(locale), timeFormat, context));
+
+            if(timeFormat.equals("pretty")) {
+                issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issuesModel.getCreated_at()), context));
             }
 
         }
