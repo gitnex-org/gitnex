@@ -37,6 +37,7 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.VersionCheck;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.models.WatchRepository;
 import org.mian.gitnex.util.AppUtil;
@@ -168,12 +169,14 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
             }
 
             // release count
-            if (textViewBadgeRelease.getText() != "") { // only show if API returned a number
-                Objects.requireNonNull(tabLayout.getTabAt(6)).setCustomView(tabHeader6);
-                TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(6);
-                assert tabOpenRelease != null;
-                TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
-                openReleaseTabView.setTextColor(textColor);
+            if (VersionCheck.compareVersion("1.11.5", tinyDb.getString("giteaVersion")) < 1) {
+                if(textViewBadgeRelease.getText() != "") { // only show if API returned a number
+                    Objects.requireNonNull(tabLayout.getTabAt(6)).setCustomView(tabHeader6);
+                    TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(6);
+                    assert tabOpenRelease != null;
+                    TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
+                    openReleaseTabView.setTextColor(textColor);
+                }
             }
         }
 

@@ -102,6 +102,22 @@ public enum VersionCheck {
      * 2 = more
      */
     public static int compareVersion(String A, String B) {
+        final Pattern pattern_stable_release = Pattern.compile("^(\\d)\\.(\\d+)\\.(\\d+)");
+        final Pattern pattern_dev_release = Pattern.compile("^(\\d).(\\d+).(\\d+)(\\D)(.+)");
+        Matcher match;
+        match = pattern_dev_release.matcher(A);
+        if (match.find()) {
+            match = pattern_stable_release.matcher(A);
+            match.find();
+            A = match.group();
+        }
+        match = pattern_dev_release.matcher(B);
+        if (match.find()) {
+            match = pattern_stable_release.matcher(B);
+            match.find();
+            B = match.group();
+        }
+
         //throw new IllegalArgumentException
         if((!A.matches("[0-9]+(\\.[0-9]+)*")) || (!B.matches("[0-9]+(\\.[0-9]+)*"))) throw new IllegalArgumentException("Invalid version format");
 
