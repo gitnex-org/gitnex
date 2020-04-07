@@ -70,6 +70,7 @@
     <string name="emptyFieldUsername">Nome de usuário é necessário</string>
     <string name="emptyFieldPassword">A senha é necessária</string>
     <string name="checkNetConnection">Não é possível acessar a rede, por favor, verifique sua conexão com a Internet</string>
+    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
     <string name="repoNameErrorEmpty">Nome do repositório está vazio</string>
     <string name="repoNameErrorInvalid">O nome do repositório não é válido. [um&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -307,6 +308,8 @@
     <string name="addRemoveAssignees2">Adicionar Designados</string>
     <string name="addRemoveAssignees">Adicionar/Remover designados</string>
     <string name="assigneesUpdated">Designados atualizados</string>
+    <string name="singleIssueSubscribe">Subscribe</string>
+    <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Selecionar</string>
@@ -477,4 +480,8 @@
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
     <string name="issueCommentShare">Share Comment</string>
+    <string name="issueSubscribtion">Issue Subscribed</string>
+    <string name="issueSubscribtionError">Issue Subscription failed</string>
+    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
+    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
 </resources>

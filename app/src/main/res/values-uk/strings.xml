@@ -70,6 +70,7 @@
     <string name="emptyFieldUsername">Ім\'я користувача є обов\'язковим</string>
     <string name="emptyFieldPassword">Пароль є обов\'язковим</string>
     <string name="checkNetConnection">Неможливо отримати доступ до мережі, будь ласка, перевірте підключення до Інтернету</string>
+    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
     <string name="repoNameErrorEmpty">Назва репозиторія порожня</string>
     <string name="repoNameErrorInvalid">Назва репозиторія некоректна. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -307,6 +308,8 @@
     <string name="addRemoveAssignees2">Додати виконавців</string>
     <string name="addRemoveAssignees">Додати / Видалити виконавців</string>
     <string name="assigneesUpdated">Виконавців оновлено</string>
+    <string name="singleIssueSubscribe">Subscribe</string>
+    <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Обрати записи</string>
@@ -477,4 +480,8 @@
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
     <string name="issueCommentShare">Share Comment</string>
+    <string name="issueSubscribtion">Issue Subscribed</string>
+    <string name="issueSubscribtionError">Issue Subscription failed</string>
+    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
+    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
 </resources>

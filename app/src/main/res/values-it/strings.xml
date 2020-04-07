@@ -71,6 +71,7 @@ URL è richiesto</string>
     <string name="emptyFieldUsername">Nome utente obbligatorio</string>
     <string name="emptyFieldPassword">Password obbligatoria</string>
     <string name="checkNetConnection">Errore di connessione. Controllare la connessione Internet</string>
+    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
     <string name="repoNameErrorEmpty">Il nome del repository è vuoto</string>
     <string name="repoNameErrorInvalid">Nome del repository non è valido. [a&#8211;z A&#8211;Z 0&#8211;char@@9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -309,6 +310,8 @@ autorizzazione</string>
     <string name="addRemoveAssignees2">Aggiungi Assegnatari</string>
     <string name="addRemoveAssignees">Aggiungi/Rimuovi Assegnatari</string>
     <string name="assigneesUpdated">Assegnatari aggiornati</string>
+    <string name="singleIssueSubscribe">Subscribe</string>
+    <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Elementi selezionati</string>
@@ -479,4 +482,8 @@ autorizzazione</string>
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
     <string name="issueCommentShare">Share Comment</string>
+    <string name="issueSubscribtion">Issue Subscribed</string>
+    <string name="issueSubscribtionError">Issue Subscription failed</string>
+    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
+    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
 </resources>

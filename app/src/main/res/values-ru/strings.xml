@@ -63,17 +63,18 @@
     <string name="logo">Войти в Gitea</string>
     <string name="urlInfoTooltip">1. Выберите протокол (https или http) \n2. Укажите URL Gitea, например: try.gitea.io \n3. Если для учетной записи включена 2FA, введите код OTP в соответствующее поле. \n4. Для базовой аутентификации HTTP укажите USERNAME@DOMAIN.COM в поле URL.</string>
     <string name="loginFailed">Неверные логин и/или пароль</string>
-    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
+    <string name="malformedUrl">Не удалось подключиться к хосту. Пожалуйста, проверьте URL-адрес или порт на наличие ошибок.</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете инстанцию в локальной сети.</string>
     <string name="malformedJson">Неожиданный ответ от сервера. Попробуйте сменить протокол или обратитесь к администратору инстанции.</string>
     <string name="emptyFieldURL">Требуется URL экземпляра</string>
     <string name="emptyFieldUsername">Требуется имя пользователя</string>
     <string name="emptyFieldPassword">Требуется пароль</string>
     <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
+    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
     <string name="repoNameErrorEmpty">Название репозитория пустое.</string>
     <string name="repoNameErrorInvalid">Недоступное название репозитория. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
-    <string name="repoNameErrorReservedName">Repository name is reserved</string>
-    <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
+    <string name="repoNameErrorReservedName">Название репозитория зарезервировано</string>
+    <string name="repoNameErrorReservedPatterns">Имя репозитория содержит зарезервированные ключевые слова</string>
     <string name="repoDescError">Описание репозитория превышает 255 символов.</string>
     <string name="repoCreated">Репозиторий успешно создан!</string>
     <string name="repoCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
@@ -184,10 +185,10 @@
     <string name="noLabelsFound">Меток не обнаружено</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Перевод</string>
-    <string name="settingsSecurityHeader">Security</string>
-    <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
-    <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
-    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
+    <string name="settingsSecurityHeader">Безопасность</string>
+    <string name="settingsCertsSelectorHeader">Удалить доверенные сертификаты</string>
+    <string name="settingsCertsPopupTitle">Удалить доверенные сертификаты?</string>
+    <string name="settingsCertsPopupMessage">Вы уверены, что хотите удалить любой вручную доверенный сертификат или имя хоста? \n\nВы также выйдите из системы.</string>
     <string name="settingsDateTimeHeaderText">Дата и время</string>
     <string name="settingsSave">Сохранено</string>
     <string name="settingsLanguageSelectorHeader">Язык</string>
@@ -210,7 +211,7 @@
     <string name="themeSelectionHeaderText">Тема</string>
     <string name="settingsPdfModeHeaderText">Ночной режим PDF</string>
     <string name="fileViewerHeader">Просмотрщик файла</string>
-    <string name="settingsCounterBadges">Counter Badges</string>
+    <string name="settingsCounterBadges">Значки счётчика</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -307,6 +308,8 @@
     <string name="addRemoveAssignees2">Добавить исполнителей</string>
     <string name="addRemoveAssignees">Добавить / удалить исполнителей</string>
     <string name="assigneesUpdated">Исполнители обновлены</string>
+    <string name="singleIssueSubscribe">Subscribe</string>
+    <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Выбрать записи</string>
@@ -412,7 +415,7 @@
     <string name="emptyFields">Все поля обязательны для заполнения</string>
     <string name="textContinue">Продолжить</string>
     <string name="copyToken">Токен</string>
-    <string name="viewInBrowser">View in Browser</string>
+    <string name="viewInBrowser">Просмотреть в браузере</string>
     <!-- generic copy -->
     <string name="translateText">Перевести GitNex на Crowdin</string>
     <string name="exploreTextBoxHint">Просмотреть репозитории</string>
@@ -455,26 +458,30 @@
     <string name="waitLoadingDownloadFile">Пожалуйста дождитесь загрузки файла</string>
     <string name="downloadFileSaved">Файл сохранен в папку Загрузки</string>
     <string name="excludeFilesInFileviewer">Этот тип файла не поддерживается в средстве просмотра файлов. Загрузить его?</string>
-    <string name="sizeCopy">Size</string>
-    <string name="shareIssue">Share Issue</string>
-    <string name="sharePr">Share Pull Request</string>
-    <string name="shareRepository">Share Repository</string>
-    <string name="createRepository">Create Repository</string>
-    <string name="repositoryTabCommits">Commits</string>
-    <string name="commitTitle">Branch Commits</string>
-    <string name="commitCommittedBy">Committed by %1$s</string>
-    <string name="viewCommits">View Commits</string>
+    <string name="sizeCopy">Размер</string>
+    <string name="shareIssue">Поделиться задачей</string>
+    <string name="sharePr">Поделиться запросом на слияние</string>
+    <string name="shareRepository">Поделиться репозиторием</string>
+    <string name="createRepository">Создать репозиторий</string>
+    <string name="repositoryTabCommits">Коммиты</string>
+    <string name="commitTitle">Коммиты ветки</string>
+    <string name="commitCommittedBy">Коммит от %1$s</string>
+    <string name="viewCommits">Просмотр коммитов</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Certificate Verification</string>
-    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
-    <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
-    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
-    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
-    <string name="mtm_cert_details">Certificate details:</string>
-    <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_once">Once</string>
-    <string name="mtm_decision_abort">Abort</string>
-    <string name="issueCommentShare">Share Comment</string>
+    <string name="mtm_notification">Проверка сертификата</string>
+    <string name="mtm_accept_cert">Принять неизвестный сертификат?</string>
+    <string name="mtm_trust_anchor">Сертификат сервера не подписан известным центром сертификации.</string>
+    <string name="mtm_cert_expired">Срок действия сертификата сервера истек.</string>
+    <string name="mtm_accept_servername">Имя сервера не совпадает. Принять?</string>
+    <string name="mtm_hostname_mismatch">Сервер не может быть опознан как \&quot;%s\&quot;. Сертификат действителен только для:</string>
+    <string name="mtm_connect_anyway">Вы все равно хотите продолжить?</string>
+    <string name="mtm_cert_details">Детали о сертификате:</string>
+    <string name="mtm_decision_always">Доверять</string>
+    <string name="mtm_decision_once">Один раз</string>
+    <string name="mtm_decision_abort">Прервать</string>
+    <string name="issueCommentShare">Поделиться комментарием</string>
+    <string name="issueSubscribtion">Issue Subscribed</string>
+    <string name="issueSubscribtionError">Issue Subscription failed</string>
+    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
+    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
 </resources>

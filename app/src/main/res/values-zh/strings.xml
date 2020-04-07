@@ -70,6 +70,7 @@
     <string name="emptyFieldUsername">用户名必填</string>
     <string name="emptyFieldPassword">密码为必填</string>
     <string name="checkNetConnection">连接错误: 请检查您的网络连接</string>
+    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
     <string name="repoNameErrorEmpty">仓库名称为空</string>
     <string name="repoNameErrorInvalid">仓库名称无效。[a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -307,6 +308,8 @@
     <string name="addRemoveAssignees2">添加被指派人</string>
     <string name="addRemoveAssignees">添加/移除分配人</string>
     <string name="assigneesUpdated">受让人已更新</string>
+    <string name="singleIssueSubscribe">Subscribe</string>
+    <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">选择条目</string>
@@ -477,4 +480,8 @@
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
     <string name="issueCommentShare">Share Comment</string>
+    <string name="issueSubscribtion">Issue Subscribed</string>
+    <string name="issueSubscribtionError">Issue Subscription failed</string>
+    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
+    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
 </resources>

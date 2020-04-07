@@ -63,13 +63,14 @@
     <string name="logo">Se connecter à Gitea</string>
     <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA</string>
     <string name="loginFailed">Mauvais nom d’utilisateur/mot de passe</string>
-    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
+    <string name="malformedUrl">Connexion impossible. Vérifiez que l’URL et le port sont corrects.</string>
     <string name="protocolError">Il n’est recommandé d’utiliser le protocole HTTP que pour des tests en réseau local.</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
     <string name="emptyFieldURL">URL de l’instance requise</string>
     <string name="emptyFieldUsername">Nom d’utilisateur requis</string>
     <string name="emptyFieldPassword">Mot de passe requis</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
+    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
     <string name="repoNameErrorEmpty">Nom du dépôt requis</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Ce nom de dépôt est réservé</string>
@@ -184,10 +185,10 @@
     <string name="noLabelsFound">Aucune étiquette</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduction</string>
-    <string name="settingsSecurityHeader">Security</string>
-    <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
-    <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
-    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
+    <string name="settingsSecurityHeader">Sécurité</string>
+    <string name="settingsCertsSelectorHeader">Supprimer les certificats de confiance</string>
+    <string name="settingsCertsPopupTitle">Supprimer les certificats de confiance ?</string>
+    <string name="settingsCertsPopupMessage">Supprimer les nom d’hôtes et certificats ajoutés manuellement ? \n\nVous serez déconnecté.</string>
     <string name="settingsDateTimeHeaderText">Date et heure</string>
     <string name="settingsSave">Réglages enregistrés</string>
     <string name="settingsLanguageSelectorHeader">Langue</string>
@@ -210,7 +211,7 @@
     <string name="themeSelectionHeaderText">Thème</string>
     <string name="settingsPdfModeHeaderText">PDF mode nuit</string>
     <string name="fileViewerHeader">Visionneuse de fichiers</string>
-    <string name="settingsCounterBadges">Counter Badges</string>
+    <string name="settingsCounterBadges">Compteurs</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -307,6 +308,8 @@
     <string name="addRemoveAssignees2">Ajouter des assignés</string>
     <string name="addRemoveAssignees">Ajouter/supprimer des assignés</string>
     <string name="assigneesUpdated">Assignés mis à jour</string>
+    <string name="singleIssueSubscribe">Subscribe</string>
+    <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Sélection des entrées</string>
@@ -465,16 +468,20 @@
     <string name="commitCommittedBy">Révision de %1$s</string>
     <string name="viewCommits">Voir révisions</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Certificate Verification</string>
-    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
-    <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
-    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
-    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
-    <string name="mtm_cert_details">Certificate details:</string>
-    <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_once">Once</string>
-    <string name="mtm_decision_abort">Abort</string>
-    <string name="issueCommentShare">Share Comment</string>
+    <string name="mtm_notification">Vérification du certificat</string>
+    <string name="mtm_accept_cert">Accepter le certificat inconnu ?</string>
+    <string name="mtm_trust_anchor">Le certificat du serveur n’est pas signé par une autorité de certification connue.</string>
+    <string name="mtm_cert_expired">Le certificat du serveur a expiré.</string>
+    <string name="mtm_accept_servername">Accepter le nom de serveur incohérent ?</string>
+    <string name="mtm_hostname_mismatch">Le serveur ne peut s’authentifier comme « %s ». Le certificat est valide pour :</string>
+    <string name="mtm_connect_anyway">Se connecter malgré tout ?</string>
+    <string name="mtm_cert_details">Détails du certificat :</string>
+    <string name="mtm_decision_always">Faire confiance</string>
+    <string name="mtm_decision_once">Une fois</string>
+    <string name="mtm_decision_abort">Abandonner</string>
+    <string name="issueCommentShare">Partager le commentaire</string>
+    <string name="issueSubscribtion">Issue Subscribed</string>
+    <string name="issueSubscribtionError">Issue Subscription failed</string>
+    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
+    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
 </resources>
