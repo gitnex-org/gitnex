@@ -15,8 +15,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.MilestoneActions;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.models.Milestones;
@@ -32,7 +34,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
@@ -42,7 +43,6 @@ import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.ext.tables.TablePlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
 import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.AsyncDrawable;
 import io.noties.markwon.image.DefaultMediaDecoder;
 import io.noties.markwon.image.ImageItem;
 import io.noties.markwon.image.ImagesPlugin;
@@ -63,6 +63,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
 
     static class MilestonesViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView milestoneId;
         private TextView msTitle;
         private TextView msDescription;
         private TextView msOpenIssues;
@@ -70,10 +71,12 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
         private TextView msDueDate;
         private ImageView msStatus;
         private ProgressBar msProgress;
+	    private TextView milestoneStatus;
 
         private MilestonesViewHolder(View itemView) {
             super(itemView);
 
+            milestoneId = itemView.findViewById(R.id.milestoneId);
             msTitle = itemView.findViewById(R.id.milestoneTitle);
             msStatus = itemView.findViewById(R.id.milestoneState);
             msDescription = itemView.findViewById(R.id.milestoneDescription);
@@ -81,23 +84,52 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
             msClosedIssues = itemView.findViewById(R.id.milestoneIssuesClosed);
             msDueDate = itemView.findViewById(R.id.milestoneDueDate);
             msProgress = itemView.findViewById(R.id.milestoneProgress);
+	        ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
+	        milestoneStatus = itemView.findViewById(R.id.milestoneStatus);
 
-            /*msTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            milestonesMenu.setOnClickListener(v -> {
 
-                    Context context = v.getContext();
-                    Log.i("issueNumber", issueNumber.getText().toString());
+                Context ctx = v.getContext();
+                int milestoneId_ = Integer.parseInt(milestoneId.getText().toString());
 
-                    Intent intent = new Intent(context, IssueDetailActivity.class);
-                    intent.putExtra("issueNumber", issueNumber.getText());
+                @SuppressLint("InflateParams") View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_milestones_in_list, null);
 
-                    TinyDB tinyDb = new TinyDB(context);
-                    tinyDb.putString("issueNumber", issueNumber.getText().toString());
-                    context.startActivity(intent);
+	            TextView closeMilestone = view.findViewById(R.id.closeMilestone);
+	            TextView openMilestone = view.findViewById(R.id.openMilestone);
 
-                }
-            });*/
+	            BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+	            dialog.setContentView(view);
+	            dialog.show();
+
+	            if(milestoneStatus.getText().toString().equals("open")) {
+
+	            	closeMilestone.setVisibility(View.VISIBLE);
+		            openMilestone.setVisibility(View.GONE);
+
+	            }
+	            else {
+
+		            closeMilestone.setVisibility(View.GONE);
+		            openMilestone.setVisibility(View.VISIBLE);
+
+	            }
+
+	            closeMilestone.setOnClickListener(v12 -> {
+
+		            MilestoneActions.closeMilestone(ctx, milestoneId_);
+		            dialog.dismiss();
+
+	            });
+
+	            openMilestone.setOnClickListener(v12 -> {
+
+		            MilestoneActions.openMilestone(ctx, milestoneId_);
+		            dialog.dismiss();
+
+	            });
+
+            });
+
         }
     }
 
@@ -123,46 +155,40 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
 
         Milestones currentItem = milestonesList.get(position);
 
+        holder.milestoneId.setText(String.valueOf(currentItem.getId()));
+        holder.milestoneStatus.setText(currentItem.getState());
+
         final Markwon markwon = Markwon.builder(Objects.requireNonNull(mCtx))
                 .usePlugin(CorePlugin.create())
-                .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-                    @Override
-                    public void configureImages(@NonNull ImagesPlugin plugin) {
-                        plugin.addSchemeHandler(new SchemeHandler() {
-                            @NonNull
-                            @Override
-                            public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
+                .usePlugin(ImagesPlugin.create(plugin -> {
+                    plugin.addSchemeHandler(new SchemeHandler() {
+                        @NonNull
+                        @Override
+                        public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-                                final int resourceId = mCtx.getResources().getIdentifier(
-                                        raw.substring("drawable://".length()),
-                                        "drawable",
-                                        mCtx.getPackageName());
+                            final int resourceId = mCtx.getResources().getIdentifier(
+                                    raw.substring("drawable://".length()),
+                                    "drawable",
+                                    mCtx.getPackageName());
 
-                                final Drawable drawable = mCtx.getDrawable(resourceId);
+                            final Drawable drawable = mCtx.getDrawable(resourceId);
 
-                                assert drawable != null;
-                                return ImageItem.withResult(drawable);
-                            }
+                            assert drawable != null;
+                            return ImageItem.withResult(drawable);
+                        }
 
-                            @NonNull
-                            @Override
-                            public Collection<String> supportedSchemes() {
-                                return Collections.singleton("drawable");
-                            }
-                        });
-                        plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-                            @Nullable
-                            @Override
-                            public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-                                return null;
-                            }
-                        });
-                        plugin.addMediaDecoder(GifMediaDecoder.create(false));
-                        plugin.addMediaDecoder(SvgMediaDecoder.create(mCtx.getResources()));
-                        plugin.addMediaDecoder(SvgMediaDecoder.create());
-                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create(mCtx.getResources()));
-                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-                    }
+                        @NonNull
+                        @Override
+                        public Collection<String> supportedSchemes() {
+                            return Collections.singleton("drawable");
+                        }
+                    });
+                    plugin.placeholderProvider(drawable -> null);
+                    plugin.addMediaDecoder(GifMediaDecoder.create(false));
+                    plugin.addMediaDecoder(SvgMediaDecoder.create(mCtx.getResources()));
+                    plugin.addMediaDecoder(SvgMediaDecoder.create());
+                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create(mCtx.getResources()));
+                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
                 }))
                 .usePlugin(new AbstractMarkwonPlugin() {
                     @Override
@@ -182,7 +208,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
 
         Spanned msTitle = markwon.toMarkdown(currentItem.getTitle());
         markwon.setParsedMarkdown(holder.msTitle, msTitle);
-        //holder.msStatus.setText(currentItem.getState());
 
         if(currentItem.getState().equals("open")) {
 
@@ -261,13 +286,14 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                String dueDate = formatter.format(date);
                 assert date != null;
+                String dueDate = formatter.format(date);
+
                 if(date.before(new Date())) {
                     holder.msDueDate.setTextColor(mCtx.getResources().getColor(R.color.darkRed));
                 }
 
-                holder.msDueDate.setText(dueDate);
+                holder.msDueDate.setText(mCtx.getResources().getString(R.string.dueDate, dueDate));
                 holder.msDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToast(currentItem.getDue_on()), mCtx));
 
             } else if (timeFormat.equals("normal1")) {
@@ -279,7 +305,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
                     e.printStackTrace();
                 }
                 String dueDate = formatter.format(date1);
-                holder.msDueDate.setText(dueDate);
+                holder.msDueDate.setText(mCtx.getResources().getString(R.string.dueDate, dueDate));
             }
 
         }
@@ -300,6 +326,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
     }
 
     private Filter milestoneFilter = new Filter() {
+
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Milestones> filteredList = new ArrayList<>();
@@ -328,6 +355,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
             milestonesList.addAll((List) results.values);
             notifyDataSetChanged();
         }
+
     };
 
 }

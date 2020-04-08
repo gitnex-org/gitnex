@@ -183,7 +183,7 @@
     <string name="issueCommenter">Commenter:\u0020</string>
     <string name="issueTitleWithId" translatable="false">#%1$d %2$s</string>
     <string name="issueMilestone">Milestone %1$s</string>
-    <string name="dueDate">Due %1$s</string>
+    <string name="dueDate">Due on %1$s</string>
     <string name="createdTime">Opened %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
     <string name="commentButtonText">Comment</string>
@@ -602,4 +602,8 @@
     <string name="issueSubscribtionError">Issue Subscription failed</string>
     <string name="issueUnsubscribtion">Issue Unsubscribed</string>
     <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+
+    <string name="closeMilestone">Close Milestone</string>
+    <string name="openMilestone">Open Milestone</string>
+    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
 </resources>
