@@ -17,7 +17,6 @@ import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.ext.tables.TablePlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
 import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.AsyncDrawable;
 import io.noties.markwon.image.DefaultMediaDecoder;
 import io.noties.markwon.image.ImageItem;
 import io.noties.markwon.image.ImagesPlugin;
@@ -34,6 +33,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -152,47 +152,37 @@ public class IssueDetailActivity extends BaseActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        createNewComment = findViewById(R.id.addNewComment);
-        createNewComment.setOnClickListener(new View.OnClickListener() {
+        createNewComment.setOnClickListener(v -> startActivity(new Intent(ctx, ReplyToIssueActivity.class)));
 
-            @Override
-            public void onClick(View v) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                startActivity(new Intent(ctx, ReplyToIssueActivity.class));
+            scrollViewComments.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
-            }
-        });
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
-                if (dy > 0 && createNewComment.isShown()) {
+                if ((scrollY - oldScrollY) > 0 && createNewComment.isShown()) {
                     createNewComment.setVisibility(View.GONE);
-                } else if (dy < 0) {
+                }
+                else if ((scrollY - oldScrollY) < 0) {
                     createNewComment.setVisibility(View.VISIBLE);
                 }
 
-            }
+                if (!scrollViewComments.canScrollVertically(1)) { // bottom
+                    createNewComment.setVisibility(View.GONE);
+                }
 
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+                if (!scrollViewComments.canScrollVertically(-1)) { // top
+                    createNewComment.setVisibility(View.VISIBLE);
+                }
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                        IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
-                    }
-                }, 500);
-            }
-        });
+            });
+
+        }
+
+        swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+
+            swipeRefresh.setRefreshing(false);
+            IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
+
+        }, 500));
 
         Typeface myTypeface;
 
@@ -352,44 +342,35 @@ public class IssueDetailActivity extends BaseActivity {
 
                         final Markwon markwon = Markwon.builder(Objects.requireNonNull(getApplicationContext()))
                                 .usePlugin(CorePlugin.create())
-                                .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-                                    @Override
-                                    public void configureImages(@NonNull ImagesPlugin plugin) {
-                                        plugin.addSchemeHandler(new SchemeHandler() {
-                                            @NonNull
-                                            @Override
-                                            public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
+                                .usePlugin(ImagesPlugin.create(plugin -> {
+                                    plugin.addSchemeHandler(new SchemeHandler() {
+                                        @NonNull
+                                        @Override
+                                        public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-                                                final int resourceId = getApplicationContext().getResources().getIdentifier(
-                                                        raw.substring("drawable://".length()),
-                                                        "drawable",
-                                                        getApplicationContext().getPackageName());
+                                            final int resourceId = getApplicationContext().getResources().getIdentifier(
+                                                    raw.substring("drawable://".length()),
+                                                    "drawable",
+                                                    getApplicationContext().getPackageName());
 
-                                                final Drawable drawable = getApplicationContext().getDrawable(resourceId);
+                                            final Drawable drawable = getApplicationContext().getDrawable(resourceId);
 
-                                                assert drawable != null;
-                                                return ImageItem.withResult(drawable);
-                                            }
+                                            assert drawable != null;
+                                            return ImageItem.withResult(drawable);
+                                        }
 
-                                            @NonNull
-                                            @Override
-                                            public Collection<String> supportedSchemes() {
-                                                return Collections.singleton("drawable");
-                                            }
-                                        });
-                                        plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-                                            @Nullable
-                                            @Override
-                                            public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-                                                return null;
-                                            }
-                                        });
-                                        plugin.addMediaDecoder(GifMediaDecoder.create(false));
-                                        plugin.addMediaDecoder(SvgMediaDecoder.create(getApplicationContext().getResources()));
-                                        plugin.addMediaDecoder(SvgMediaDecoder.create());
-                                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getApplicationContext().getResources()));
-                                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-                                    }
+                                        @NonNull
+                                        @Override
+                                        public Collection<String> supportedSchemes() {
+                                            return Collections.singleton("drawable");
+                                        }
+                                    });
+                                    plugin.placeholderProvider(drawable -> null);
+                                    plugin.addMediaDecoder(GifMediaDecoder.create(false));
+                                    plugin.addMediaDecoder(SvgMediaDecoder.create(getApplicationContext().getResources()));
+                                    plugin.addMediaDecoder(SvgMediaDecoder.create());
+                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getApplicationContext().getResources()));
+                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
 
                                 }))
                                 .usePlugin(new AbstractMarkwonPlugin() {
@@ -575,12 +556,7 @@ public class IssueDetailActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+        View.OnClickListener onClickListener = view -> finish();
     }
 
 }
