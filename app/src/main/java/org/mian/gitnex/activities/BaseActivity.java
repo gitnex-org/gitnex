@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.FontsOverride;
+import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.util.TinyDB;
 
 /**
@@ -19,6 +20,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         if(tinyDb.getInt("themeId") == 1) {
             setTheme(R.style.AppThemeLight);
+        }
+        else if(tinyDb.getInt("themeId") == 2) {
+
+            boolean timeSetterFlag = TimeHelper.timeBetweenHours(18, 6); // 6pm to 6am
+
+            if(timeSetterFlag) {
+                setTheme(R.style.AppTheme);
+            }
+            else {
+                setTheme(R.style.AppThemeLight);
+            }
+
         }
         else {
             setTheme(R.style.AppTheme);
