@@ -11,9 +11,11 @@ public class MergePullRequest {
     private String MergeTitleField;
 
     public MergePullRequest(String Do, String MergeMessageField, String MergeTitleField) {
+
         this.Do = Do;
         this.MergeMessageField = MergeMessageField;
         this.MergeTitleField = MergeTitleField;
+
     }
 
 }

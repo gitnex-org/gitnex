@@ -151,6 +151,7 @@ public class PullRequestsFragment extends Fragment {
 
             loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, prState, resultLimit);
             tinyDb.putBoolean("resumePullRequests", false);
+            tinyDb.putBoolean("prMerged", false);
 
         }
 
