@@ -25,6 +25,10 @@ public class Milestones {
         this.title = title;
     }
 
+    public Milestones(String state) {
+        this.state = state;
+    }
+
     public int getId() {
         return id;
     }

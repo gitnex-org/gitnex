@@ -68,7 +68,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
-import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -198,10 +197,6 @@ public class IssueDetailActivity extends BaseActivity {
         Typeface myTypeface;
 
         switch(tinyDb.getInt("customFontId")) {
-
-            case 0:
-                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
-                break;
 
             case 1:
                 myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");
