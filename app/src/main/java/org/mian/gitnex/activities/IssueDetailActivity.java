@@ -59,6 +59,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.models.IssueComments;
@@ -451,7 +452,7 @@ public class IssueDetailActivity extends BaseActivity {
                                         .useFont(Typeface.DEFAULT)
                                         .textColor(new ColorInverter().getContrastColor(color))
                                         .fontSize(30)
-                                        .width((width * labelName.length()) - ((width / 4) * labelName.length()))
+                                        .width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, 30, 15))
                                         .height(50)
                                         .endConfig()
                                         .buildRoundRect(labelName, color, 10);
