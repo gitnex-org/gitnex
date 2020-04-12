@@ -111,6 +111,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         info_button.setOnClickListener(infoListener);
 
+        if(tinyDb.getBoolean("loginType")) { // username/password
+
+            loginMethod.check(R.id.loginUsernamePassword);
+
+            loginUidET.setVisibility(View.VISIBLE);
+            loginPassword.setVisibility(View.VISIBLE);
+            otpCode.setVisibility(View.VISIBLE);
+            otpInfo.setVisibility(View.VISIBLE);
+            loginTokenCode.setVisibility(View.GONE);
+
+        }
+        else {
+
+            loginMethod.check(R.id.loginToken);
+
+            loginUidET.setVisibility(View.GONE);
+            loginPassword.setVisibility(View.GONE);
+            otpCode.setVisibility(View.GONE);
+            otpInfo.setVisibility(View.GONE);
+            loginTokenCode.setVisibility(View.VISIBLE);
+
+        }
+
         loginMethod.setOnCheckedChangeListener((group, checkedId) -> {
 
             if(checkedId == R.id.loginToken) {
@@ -221,6 +244,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         if(loginMethodType == R.id.loginUsernamePassword) {
 
+            tinyDb.putBoolean("loginType", true);
+
             if(instanceUrl.contains("@")) {
 
                 String[] urlForHttpAuth = instanceUrl.split("@");
@@ -321,6 +346,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         }
         else {
+
+            tinyDb.putBoolean("loginType", false);
 
             String instanceHost;
             if(AppUtil.httpCheck(instanceUrl)) {
