@@ -111,7 +111,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         info_button.setOnClickListener(infoListener);
 
-        if(tinyDb.getBoolean("loginType")) { // username/password
+        if(tinyDb.getString("loginType").equals("basic")) { // username/password
 
             loginMethod.check(R.id.loginUsernamePassword);
 
@@ -244,7 +244,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         if(loginMethodType == R.id.loginUsernamePassword) {
 
-            tinyDb.putBoolean("loginType", true);
+            tinyDb.putString("loginType", "basic");
 
             if(instanceUrl.contains("@")) {
 
@@ -347,7 +347,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         else {
 
-            tinyDb.putBoolean("loginType", false);
+            tinyDb.putString("loginType", "token");
 
             String instanceHost;
             if(AppUtil.httpCheck(instanceUrl)) {
