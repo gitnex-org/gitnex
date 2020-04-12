@@ -207,7 +207,7 @@ URL è richiesto</string>
     <string name="settingshomeScreenSelectorDialogTitle">Seleziona schermata Home</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Scegli un Font</string>
-    <string name="settingsCustomFontDefault">Roboto</string>
+    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>

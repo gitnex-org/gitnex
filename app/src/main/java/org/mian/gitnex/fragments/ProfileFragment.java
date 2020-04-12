@@ -58,24 +58,20 @@ public class ProfileFragment extends Fragment {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         Typeface myTypeface;
-        if(tinyDb.getInt("customFontId") == 0) {
 
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/roboto.ttf");
+        switch(tinyDb.getInt("customFontId", -1)) {
 
-        }
-        else if (tinyDb.getInt("customFontId") == 1) {
+            case 0:
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/roboto.ttf");
+                break;
 
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/manroperegular.ttf");
+            case 2:
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+                break;
 
-        }
-        else if (tinyDb.getInt("customFontId") == 2) {
-
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
-
-        }
-        else {
-
-            myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/roboto.ttf");
+            default:
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/manroperegular.ttf");
+                break;
 
         }
 

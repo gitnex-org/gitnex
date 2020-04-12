@@ -73,7 +73,7 @@
             android:textSize="14sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
-            android:text="@string/defaultCopy"
+            android:text="@string/settingsCustomFontDefault"
             android:textColor="?attr/selectedTextColor"/>
 
     </LinearLayout>

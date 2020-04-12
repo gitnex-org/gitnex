@@ -272,7 +272,7 @@
     <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
-    <string name="settingsCustomFontDefault">Roboto</string>
+    <string name="settingsCustomFontDefault" translatable="false">Manrope</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="themeSelectionSelectedText" translatable="false">Dark</string>

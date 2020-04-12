@@ -124,7 +124,7 @@ public class SettingsFragment extends Fragment {
 		}
 
 		if(customFontSelectedChoice == 0) {
-			customFontSelectedChoice = tinyDb.getInt("customFontId");
+			customFontSelectedChoice = tinyDb.getInt("customFontId", 1);
 		}
 
 		if(themeSelectedChoice == 0) {

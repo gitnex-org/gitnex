@@ -186,7 +186,7 @@ public class IssueDetailActivity extends BaseActivity {
 
         Typeface myTypeface;
 
-        switch(tinyDb.getInt("customFontId")) {
+        switch(tinyDb.getInt("customFontId", -1)) {
 
             case 1:
                 myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");

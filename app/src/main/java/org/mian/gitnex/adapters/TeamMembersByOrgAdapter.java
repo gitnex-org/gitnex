@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.TinyDB;
@@ -85,24 +86,19 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         final TinyDB tinyDb = new TinyDB(mCtx);
         Typeface myTypeface;
 
-        if(tinyDb.getInt("customFontId") == 0) {
+        switch(tinyDb.getInt("customFontId", -1)) {
 
-            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
+            case 0:
+                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
+                break;
 
-        }
-        else if (tinyDb.getInt("customFontId") == 1) {
+            case 2:
+                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/sourcecodeproregular.ttf");
+                break;
 
-            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/manroperegular.ttf");
-
-        }
-        else if (tinyDb.getInt("customFontId") == 2) {
-
-            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/sourcecodeproregular.ttf");
-
-        }
-        else {
-
-            myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
+            default:
+                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/manroperegular.ttf");
+                break;
 
         }
 
