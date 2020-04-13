@@ -49,4 +49,34 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/sourceCodeThemeFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sourceCodeThemeHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/settingsFileviewerSourceCodeHeaderText"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <TextView
+            android:id="@+id/sourceCodeThemeSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/settingsFileviewerSourceCodeSelectedText"
+            android:textColor="?attr/selectedTextColor"/>
+
+    </LinearLayout>
+
 </LinearLayout>

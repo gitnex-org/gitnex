@@ -279,6 +279,9 @@
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="settingsFileviewerSourceCodeSelectedText" translatable="false">Sublime</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
