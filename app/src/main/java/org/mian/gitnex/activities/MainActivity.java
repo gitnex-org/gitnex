@@ -404,10 +404,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         final TinyDB tinyDb = new TinyDB(getApplicationContext());
 
+        final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
+
         Call<GiteaVersion> callVersion = RetrofitClient
                 .getInstance(instanceUrl, getApplicationContext())
                 .getApiInterface()
-                .getGiteaVersion();
+                .getGiteaVersionWithToken(token);
 
         callVersion.enqueue(new Callback<GiteaVersion>() {
 

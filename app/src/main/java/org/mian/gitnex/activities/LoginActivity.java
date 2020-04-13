@@ -377,7 +377,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
 
             tinyDb.putString("instanceUrlRaw", instanceHost);
-            //tinyDb.putString("loginUid", loginUid);
             tinyDb.putString("instanceUrl", instanceUrl);
             tinyDb.putString("instanceUrlWithProtocol", instanceUrlWithProtocol);
 
@@ -414,10 +413,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void versionCheck(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP, final String loginToken_, final int loginType) {
 
-        Call<GiteaVersion> callVersion = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
-                .getApiInterface()
-                .getGiteaVersion();
+        Call<GiteaVersion> callVersion;
+        if (!loginToken_.isEmpty()) {
+            callVersion = RetrofitClient
+                    .getInstance(instanceUrl, getApplicationContext())
+                    .getApiInterface()
+                    .getGiteaVersionWithToken(loginToken_);
+        }
+        else {
+            final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
+            if (loginOTP != 0) {
+                callVersion = RetrofitClient
+                        .getInstance(instanceUrl, getApplicationContext())
+                        .getApiInterface()
+                        .getGiteaVersionWithOTP(credential,loginOTP);
+            }
+            else {
+                callVersion = RetrofitClient
+                        .getInstance(instanceUrl, getApplicationContext())
+                        .getApiInterface()
+                        .getGiteaVersionWithBasic(credential);
+            }
+        }
 
         callVersion.enqueue(new Callback<GiteaVersion>() {
 
@@ -520,7 +537,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (response.isSuccessful()) {
 
                     if (response.code() == 200) {
-                        
+
                         tinyDb.putBoolean("loggedInMode", true);
                         assert userDetails != null;
                         tinyDb.putString(userDetails.getLogin() + "-token", loginToken_);
