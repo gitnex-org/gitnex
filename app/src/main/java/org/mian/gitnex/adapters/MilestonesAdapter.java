@@ -249,7 +249,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
             holder.msDescription.setText(bodyWithMD);
         }
         else {
-            holder.msDescription.setVisibility(View.GONE);
+            holder.msDescription.setText("");
         }
 
         holder.msOpenIssues.setText(String.valueOf(currentItem.getOpen_issues()));
@@ -304,13 +304,14 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                assert date1 != null;
                 String dueDate = formatter.format(date1);
                 holder.msDueDate.setText(mCtx.getResources().getString(R.string.dueDate, dueDate));
             }
 
         }
         else {
-            holder.msDueDate.setVisibility(View.GONE);
+            holder.msDueDate.setText("");
         }
 
     }
