@@ -52,7 +52,13 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @GET("version") // gitea version API
-    Call<GiteaVersion> getGiteaVersion();
+    Call<GiteaVersion> getGiteaVersionWithBasic(@Header("Authorization") String authorization);
+
+    @GET("version") // gitea version API
+    Call<GiteaVersion> getGiteaVersionWithOTP(@Header("Authorization") String authorization, @Header("X-Gitea-OTP") int loginOTP);
+
+    @GET("version") // gitea version API
+    Call<GiteaVersion> getGiteaVersionWithToken(@Header("Authorization") String token);
 
     @GET("user") // username, full name, email
     Call<UserInfo> getUserInfo(@Header("Authorization") String token);
