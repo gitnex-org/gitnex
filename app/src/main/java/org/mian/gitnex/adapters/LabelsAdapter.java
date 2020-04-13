@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +110,6 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
     public void onBindViewHolder(@NonNull LabelsAdapter.LabelsViewHolder holder, int position) {
 
         Labels currentItem = labelsList.get(position);
-        int width = 33;
 
         holder.labelTitle.setText(currentItem.getName());
         holder.labelId.setText(String.valueOf(currentItem.getId()));
@@ -117,32 +117,21 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
 
         String labelColor = currentItem.getColor();
         String labelName = currentItem.getName();
+
         int color = Color.parseColor("#" + labelColor);
 
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
-                //.useFont(Typeface.DEFAULT)
+                .useFont(Typeface.DEFAULT)
                 .bold()
                 .textColor(new ColorInverter().getContrastColor(color))
-                .fontSize(40)
-                .width(LabelWidthCalculator.customWidth(getMaxLabelLength()))
-                .height(65)
+                .fontSize(35)
+                .width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, 40, 20))
+                .height(55)
                 .endConfig()
                 .buildRoundRect(labelName, color, 10);
+
         holder.labelsView.setImageDrawable(drawable);
-
-    }
-
-    private int getMaxLabelLength() {
-
-        for(int i = 0; i < labelsList.size(); i++) {
-
-            Labels labelItem = labelsList.get(i);
-            labelsArray.add(labelItem.getName().length());
-
-        }
-
-        return Collections.max(labelsArray);
 
     }
 
