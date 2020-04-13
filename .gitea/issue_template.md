@@ -1,22 +1,31 @@
-#### Description - describe the bug / feature / suggestion in brief : 
+## # What do you want to address?
+(This step is required; examples are shown below)
+
+- [ ] Bug
+- [ ] Feature
+- [ ] Suggestion
+
+## # Describe your matter briefly
+(This step is required)
 
 
-#### Expected behaviour - describe what should be the expected result : 
+##### What did you expect? (Useful when addressing bugs)
+---
+_(This step is optional)_
 
 
-#### GitNex version : 
+##### Some additional details (Useful, when we are trying to reproduce a bug)
+---
+_(This step is optional; an example is shown below)_
+
+* The version of **Gitea** you are using: 
+* The version of **GitNex** you are using: 
+* The type of certificate you are using (self-signed, signed): 
+* How you used to log in (via password or token): 
 
 
-#### Gitea setup : 
- * Version : 
- * If ssl used witch kind of cert is used : 
- * (if login issue) witch auth method : 
+##### We would appreciate some screenshots or stacktrace's, but this is also not required.
+---
+_(Screenshots and stacktrace's can go here)_
 
-
-#### Android version : 
-
-
-#### Screenshots - if any : 
-
-
-#### Logs - if any : 
+#### Thank you for your time.
