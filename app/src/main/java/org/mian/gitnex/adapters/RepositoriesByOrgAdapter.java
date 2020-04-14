@@ -105,13 +105,18 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 
                             if(response.isSuccessful()) {
 
+                                assert response.body() != null;
                                 tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
 
-                            }
-                            else {
+                            } else {
 
                                 tinyDb.putBoolean("repoWatch", false);
-                                Toasty.info(context, context.getString(R.string.genericApiStatusError));
+
+                                if(response.code() != 404) {
+
+                                    Toasty.info(context, context.getString(R.string.genericApiStatusError));
+
+                                }
 
                             }
 
