@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="2.5.0-rc1" versioncode="100">
+        <change>Release notes will be published with the stable release.</change>
+        <change>In the mean time check the milestone for pull requests and issues that are merged/closed.</change>
+    </release>
+
     <release version="2.4.1" versioncode="91">
         <change>Improvement: Show issues only in Issues Tabs</change>
         <change>Bugfix: Files breadcrumb navigation links</change>
