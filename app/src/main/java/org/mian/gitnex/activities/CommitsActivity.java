@@ -27,7 +27,7 @@ import com.mikepenz.fastadapter_extensions.items.ProgressItem;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.items.CommitsItems;
+import org.mian.gitnex.adapters.CommitsAdapter;
 import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import static com.mikepenz.fastadapter.adapters.ItemAdapter.items;
  * Author M M Arif
  */
 
-public class CommitsActivity extends BaseActivity implements ItemFilterListener<CommitsItems> {
+public class CommitsActivity extends BaseActivity implements ItemFilterListener<CommitsAdapter> {
 
     private View.OnClickListener onClickListener;
     private TextView noData;
@@ -52,8 +52,8 @@ public class CommitsActivity extends BaseActivity implements ItemFilterListener<
     private int resultLimit = 50;
     private boolean loadNextFlag = false;
 
-    private List<CommitsItems> items = new ArrayList<>();
-    private FastItemAdapter<CommitsItems> fastItemAdapter;
+    private List<CommitsAdapter> items = new ArrayList<>();
+    private FastItemAdapter<CommitsAdapter> fastItemAdapter;
     private ItemAdapter footerAdapter;
     private EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
 
@@ -103,7 +103,7 @@ public class CommitsActivity extends BaseActivity implements ItemFilterListener<
         //noinspection unchecked
         fastItemAdapter.addAdapter(1, footerAdapter);
 
-        fastItemAdapter.getItemFilter().withFilterPredicate((IItemAdapter.Predicate<CommitsItems>) (item, constraint) -> item.getCommitTitle().toLowerCase().contains(Objects.requireNonNull(constraint).toString().toLowerCase()));
+        fastItemAdapter.getItemFilter().withFilterPredicate((IItemAdapter.Predicate<CommitsAdapter>) (item, constraint) -> item.getCommitTitle().toLowerCase().contains(Objects.requireNonNull(constraint).toString().toLowerCase()));
 
         fastItemAdapter.getItemFilter().withItemFilterListener(this);
 
@@ -164,7 +164,7 @@ public class CommitsActivity extends BaseActivity implements ItemFilterListener<
 
                         for (int i = 0; i < response.body().size(); i++) {
 
-                            items.add(new CommitsItems(getApplicationContext()).withNewItems(response.body().get(i).getCommit().getMessage(), response.body().get(i).getHtml_url(),
+                            items.add(new CommitsAdapter(getApplicationContext()).withNewItems(response.body().get(i).getCommit().getMessage(), response.body().get(i).getHtml_url(),
                                     response.body().get(i).getCommit().getCommitter().getName(), response.body().get(i).getCommit().getCommitter().getDate()));
 
                         }
@@ -229,7 +229,7 @@ public class CommitsActivity extends BaseActivity implements ItemFilterListener<
 
                             for (int i = 0; i < response.body().size(); i++) {
 
-                                fastItemAdapter.add(fastItemAdapter.getAdapterItemCount(), new CommitsItems(getApplicationContext()).withNewItems(response.body().get(i).getCommit().getMessage(),
+                                fastItemAdapter.add(fastItemAdapter.getAdapterItemCount(), new CommitsAdapter(getApplicationContext()).withNewItems(response.body().get(i).getCommit().getMessage(),
                                         response.body().get(i).getHtml_url(), response.body().get(i).getCommit().getCommitter().getName(),
                                         response.body().get(i).getCommit().getCommitter().getDate()));
 
@@ -304,7 +304,7 @@ public class CommitsActivity extends BaseActivity implements ItemFilterListener<
     }
 
     @Override
-    public void itemsFiltered(@Nullable CharSequence constraint, @Nullable List<CommitsItems> results) {
+    public void itemsFiltered(@Nullable CharSequence constraint, @Nullable List<CommitsAdapter> results) {
         endlessRecyclerOnScrollListener.disable();
     }
 

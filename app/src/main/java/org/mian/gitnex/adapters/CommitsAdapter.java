@@ -1,4 +1,4 @@
-package org.mian.gitnex.items;
+package org.mian.gitnex.adapters;
 
 import android.content.Context;
 import android.text.Html;
@@ -12,9 +12,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.util.TinyDB;
-import org.ocpsoft.prettytime.PrettyTime;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -23,7 +20,7 @@ import java.util.Locale;
  * Author M M Arif
  */
 
-public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHolder> {
+public class CommitsAdapter extends AbstractItem<CommitsAdapter, CommitsAdapter.ViewHolder> {
 
     final private Context ctx;
     private String commitTitle;
@@ -33,11 +30,11 @@ public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHo
 
     private boolean isSelectable = true;
 
-    public CommitsItems(Context ctx) {
+    public CommitsAdapter(Context ctx) {
         this.ctx = ctx;
     }
 
-    public CommitsItems withNewItems(String commitTitle, String commitHtmlUrl, String commitCommitter, Date commitDate) {
+    public CommitsAdapter withNewItems(String commitTitle, String commitHtmlUrl, String commitCommitter, Date commitDate) {
 
         this.setNewItems(commitTitle, commitHtmlUrl, commitCommitter, commitDate);
         return this;
@@ -75,7 +72,7 @@ public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHo
     }
 
     @Override
-    public CommitsItems withEnabled(boolean enabled) {
+    public CommitsAdapter withEnabled(boolean enabled) {
         return null;
     }
 
@@ -85,7 +82,7 @@ public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHo
     }
 
     @Override
-    public CommitsItems withSelectable(boolean selectable) {
+    public CommitsAdapter withSelectable(boolean selectable) {
 
         this.isSelectable = selectable;
         return this;
@@ -104,13 +101,13 @@ public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHo
 
     @NonNull
     @Override
-    public CommitsItems.ViewHolder getViewHolder(@NonNull View v) {
+    public CommitsAdapter.ViewHolder getViewHolder(@NonNull View v) {
 
-        return new CommitsItems.ViewHolder(v);
+        return new CommitsAdapter.ViewHolder(v);
 
     }
 
-    public class ViewHolder extends FastAdapter.ViewHolder<CommitsItems> {
+    public class ViewHolder extends FastAdapter.ViewHolder<CommitsAdapter> {
 
         final TinyDB tinyDb = new TinyDB(ctx);
         final String locale = tinyDb.getString("locale");
@@ -133,7 +130,7 @@ public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHo
         }
 
         @Override
-        public void bindView(CommitsItems item, @NonNull List<Object> payloads) {
+        public void bindView(CommitsAdapter item, @NonNull List<Object> payloads) {
 
             commitTitleVw.setText(item.getCommitTitle());
             commitCommitterVw.setText(ctx.getString(R.string.commitCommittedBy, item.getcommitCommitter()));
@@ -150,7 +147,7 @@ public class CommitsItems extends AbstractItem<CommitsItems, CommitsItems.ViewHo
         }
 
         @Override
-        public void unbindView(@NonNull CommitsItems item) {
+        public void unbindView(@NonNull CommitsAdapter item) {
 
             commitTitleVw.setText(null);
             commitCommitterVw.setText(null);

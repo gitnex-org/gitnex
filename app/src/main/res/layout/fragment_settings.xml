@@ -16,7 +16,7 @@
 
             <include
                 android:id="@+id/timeLayout"
-                layout="@layout/layout_settings_appearance" />
+                layout="@layout/settings_appearance" />
 
             <View
                 android:id="@+id/fileViewDivider"
@@ -30,7 +30,7 @@
 
             <include
                 android:id="@+id/fileViewLayout"
-                layout="@layout/layout_settings_fileview"/>
+                layout="@layout/settings_fileview"/>
 
             <View
                 android:id="@+id/securityDivider"
@@ -44,7 +44,7 @@
 
             <include
                 android:id="@+id/securityLayout"
-                layout="@layout/layout_settings_security" />
+                layout="@layout/settings_security" />
 
             <View
                 android:id="@+id/translationDivider"
@@ -58,7 +58,7 @@
 
             <include
                 android:id="@+id/langLayout"
-                layout="@layout/layout_settings_languages" />
+                layout="@layout/settings_languages" />
 
         </RelativeLayout>
 

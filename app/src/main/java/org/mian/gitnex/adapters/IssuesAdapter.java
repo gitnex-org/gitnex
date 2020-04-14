@@ -1,271 +1,245 @@
 package org.mian.gitnex.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter.listeners.ClickEventHook;
+import com.mikepenz.fastadapter.utils.EventHookUtil;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.util.TinyDB;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author M M Arif
  */
 
-public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+public class IssuesAdapter extends AbstractItem<IssuesAdapter, IssuesAdapter.ViewHolder> {
+
+	final private Context ctx;
+	private String issueTitle;
+	private int issueNumber;
+	private String issueAssigneeAvatar;
+	private Date issueCreatedTime;
+	private int issueCommentsCount;
+	private String userFullname;
+	private String userLogin;
+
+	private boolean isSelectable = true;
+
+	public IssuesAdapter(Context ctx) {
+		this.ctx = ctx;
+	}
+
+	public IssuesAdapter withNewItems(String issueTitle, int issueNumber, String issueAssigneeAvatar, Date issueCreatedTime, int issueCommentsCount, String userFullname, String userLogin) {
+
+		this.setNewItems(issueTitle, issueNumber, issueAssigneeAvatar, issueCreatedTime, issueCommentsCount, userFullname, userLogin);
+		return this;
+
+	}
+
+	private void setNewItems(String issueTitle, int issueNumber, String issueAssigneeAvatar, Date issueCreatedTime, int issueCommentsCount, String userFullname, String userLogin) {
+
+		this.issueTitle = issueTitle;
+		this.issueNumber = issueNumber;
+		this.issueAssigneeAvatar = issueAssigneeAvatar;
+		this.issueCreatedTime = issueCreatedTime;
+		this.issueCommentsCount = issueCommentsCount;
+		this.userFullname = userFullname;
+		this.userLogin = userLogin;
+
+	}
+
+	private int getIssueNumber() {
+		return issueNumber;
+	}
+
+	public String getIssueTitle() {
+		return issueTitle;
+	}
 
-    private Context context;
-    private final int TYPE_LOAD = 0;
-    private List<Issues> issuesList;
-    private List<Issues> issuesListFull;
-    private OnLoadMoreListener loadMoreListener;
-    private boolean isLoading = false, isMoreDataAvailable = true;
+	private String getIssueAssigneeAvatar() {
+		return issueAssigneeAvatar;
+	}
 
-    public IssuesAdapter(Context context, List<Issues> issuesListMain) {
+	private Date getIssueCreatedTime() {
+		return issueCreatedTime;
+	}
+
+	private int getIssueCommentsCount() {
+		return issueCommentsCount;
+	}
+
+	private String getUserFullname() {
+		return userFullname;
+	}
+
+	private String getUserLogin() {
+		return userLogin;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public IssuesAdapter withEnabled(boolean enabled) {
+		return null;
+	}
+
+	@Override
+	public boolean isSelectable() {
+		return isSelectable;
+	}
+
+	@Override
+	public IssuesAdapter withSelectable(boolean selectable) {
+		this.isSelectable = selectable;
+		return this;
+	}
+
+	@Override
+	public int getType() {
+		return R.id.relativeLayoutFrameIssuesList;
+	}
+
+	@Override
+	public int getLayoutRes() {
+		return R.layout.list_issues;
+	}
 
-        this.context = context;
-        this.issuesList = issuesListMain;
-        issuesListFull = new ArrayList<>(issuesList);
+	@NonNull
+	@Override
+	public IssuesAdapter.ViewHolder getViewHolder(@NonNull View v) {
+		return new IssuesAdapter.ViewHolder(v);
+	}
 
-    }
+	public class ViewHolder extends FastAdapter.ViewHolder<IssuesAdapter> {
 
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		final TinyDB tinyDb = new TinyDB(ctx);
+		final String locale = tinyDb.getString("locale");
+		final String timeFormat = tinyDb.getString("dateFormat");
 
-        LayoutInflater inflater = LayoutInflater.from(context);
+		private TextView issueNumber;
+		private ImageView issueAssigneeAvatar;
+		private TextView issueTitle;
+		private TextView issueCreatedTime;
+		private TextView issueCommentsCount;
 
-        if(viewType == TYPE_LOAD){
-            return new IssuesHolder(inflater.inflate(R.layout.list_issues, parent,false));
-        }
-        else {
-            return new LoadHolder(inflater.inflate(R.layout.row_load,parent,false));
-        }
+		public ViewHolder(View itemView) {
 
-    }
+			super(itemView);
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+			issueNumber = itemView.findViewById(R.id.issueNumber);
+			issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
+			issueTitle = itemView.findViewById(R.id.issueTitle);
+			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
+			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
 
-        if(position >= getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null) {
+		}
 
-            isLoading = true;
-            loadMoreListener.onLoadMore();
+		@Override
+		public void bindView(@NonNull IssuesAdapter item, @NonNull List<Object> payloads) {
 
-        }
+			if (!item.getUserFullname().equals("")) {
+				issueAssigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + item.getUserFullname(), ctx));
+			}
+			else {
+				issueAssigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + item.getUserLogin(), ctx));
+			}
 
-        if(getItemViewType(position) == TYPE_LOAD) {
+			PicassoService.getInstance(ctx).get().load(item.getIssueAssigneeAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
 
-            ((IssuesHolder)holder).bindData(issuesList.get(position));
+			String issueNumber_ = "<font color='" + ctx.getResources().getColor(R.color.lightGray) + "'>" + ctx.getResources().getString(R.string.hash) + item.getIssueNumber() + "</font>";
+			issueTitle.setText(Html.fromHtml(issueNumber_ + " " + item.getIssueTitle()));
 
-        }
+			issueNumber.setText(String.valueOf(item.getIssueNumber()));
+			issueCommentsCount.setText(String.valueOf(item.getIssueCommentsCount()));
 
-    }
+			switch (timeFormat) {
 
-    @Override
-    public int getItemViewType(int position) {
+				case "pretty": {
+					PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+					String createdTime = prettyTime.format(item.getIssueCreatedTime());
+					issueCreatedTime.setText(createdTime);
+					issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(item.getIssueCreatedTime()), ctx));
+					break;
+				}
+				case "normal": {
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + ctx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+					String createdTime = formatter.format(item.getIssueCreatedTime());
+					issueCreatedTime.setText(createdTime);
+					break;
+				}
+				case "normal1": {
+					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + ctx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+					String createdTime = formatter.format(item.getIssueCreatedTime());
+					issueCreatedTime.setText(createdTime);
+					break;
+				}
 
-        if(issuesList.get(position).getTitle() != null) {
-            return TYPE_LOAD;
-        }
-        else {
-            return 1;
-        }
+			}
 
-    }
+		}
 
-    @Override
-    public int getItemCount() {
+		@Override
+		public void unbindView(@NonNull IssuesAdapter item) {
 
-        return issuesList.size();
+			issueTitle.setText(null);
+			issueCommentsCount.setText(null);
+			issueCreatedTime.setText(null);
 
-    }
+		}
 
-    class IssuesHolder extends RecyclerView.ViewHolder {
+	}
 
-        private TextView issueNumber;
-        private ImageView issueAssigneeAvatar;
-        private TextView issueTitle;
-        private TextView issueCreatedTime;
-        private TextView issueCommentsCount;
-        private RelativeLayout relativeLayoutFrame;
+	public static class IssueTitleClickEvent extends ClickEventHook<IssuesAdapter> {
 
-        IssuesHolder(View itemView) {
+		@Nullable
+		@Override
+		public List<View> onBindMany(@NonNull RecyclerView.ViewHolder viewHolder) {
 
-            super(itemView);
+			if (viewHolder instanceof IssuesAdapter.ViewHolder) {
+				return EventHookUtil.toList(((ViewHolder) viewHolder).issueTitle);
+			}
 
-            issueNumber = itemView.findViewById(R.id.issueNumber);
-            issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
-            issueTitle = itemView.findViewById(R.id.issueTitle);
-            issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
-            LinearLayout frameCommentsCount = itemView.findViewById(R.id.frameCommentsCount);
-            issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
-            relativeLayoutFrame = itemView.findViewById(R.id.relativeLayoutFrame);
+			return super.onBindMany(viewHolder);
 
-            issueTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+		}
 
-                    Context context = v.getContext();
-                    //Log.i("issueNumber", issueNumber.getText().toString());
+		@Override
+		public void onClick(View v, int position, @NonNull FastAdapter<IssuesAdapter> fastAdapter, IssuesAdapter item) {
 
-                    Intent intent = new Intent(context, IssueDetailActivity.class);
-                    intent.putExtra("issueNumber", issueNumber.getText());
+			Context context = v.getContext();
 
-                    TinyDB tinyDb = new TinyDB(context);
-                    tinyDb.putString("issueNumber", issueNumber.getText().toString());
-                    tinyDb.putString("issueType", "issue");
-                    context.startActivity(intent);
+			Intent intent = new Intent(context, IssueDetailActivity.class);
+			intent.putExtra("issueNumber", item.getIssueNumber());
 
-                }
-            });
-            frameCommentsCount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+			TinyDB tinyDb = new TinyDB(context);
+			tinyDb.putString("issueNumber", String.valueOf(item.getIssueNumber()));
+			tinyDb.putString("issueType", "issue");
+			context.startActivity(intent);
 
-                    Context context = v.getContext();
-                    //Log.i("issueNumber", issueNumber.getText().toString());
+		}
 
-                    Intent intent = new Intent(context, IssueDetailActivity.class);
-                    intent.putExtra("issueNumber", issueNumber.getText());
-
-                    TinyDB tinyDb = new TinyDB(context);
-                    tinyDb.putString("issueNumber", issueNumber.getText().toString());
-                    tinyDb.putString("issueType", "issue");
-                    context.startActivity(intent);
-
-                }
-            });
-
-        }
-
-        @SuppressLint("SetTextI18n")
-        void bindData(Issues issuesModel){
-
-            final TinyDB tinyDb = new TinyDB(context);
-            final String locale = tinyDb.getString("locale");
-            final String timeFormat = tinyDb.getString("dateFormat");
-
-            /*if(issuesModel.getPull_request() != null) {
-                if (!issuesModel.getPull_request().isMerged()) {
-                    relativeLayoutFrame.setVisibility(View.GONE);
-                    relativeLayoutFrame.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-                }
-            }*/
-
-            if (!issuesModel.getUser().getFull_name().equals("")) {
-                issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getFull_name(), context));
-            } else {
-                issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getLogin(), context));
-            }
-
-            PicassoService.getInstance(context).get().load(issuesModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
-
-            String issueNumber_ = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources().getString(R.string.hash) + issuesModel.getNumber() + "</font>";
-            issueTitle.setText(Html.fromHtml(issueNumber_ + " " + issuesModel.getTitle()));
-
-            issueNumber.setText(String.valueOf(issuesModel.getNumber()));
-            issueCommentsCount.setText(String.valueOf(issuesModel.getComments()));
-
-            issueCreatedTime.setText(TimeHelper.formatTime(issuesModel.getCreated_at(), new Locale(locale), timeFormat, context));
-
-            if(timeFormat.equals("pretty")) {
-                issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issuesModel.getCreated_at()), context));
-            }
-
-        }
-
-    }
-
-    static class LoadHolder extends RecyclerView.ViewHolder {
-
-        LoadHolder(View itemView) {
-            super(itemView);
-        }
-
-    }
-
-    public void setMoreDataAvailable(boolean moreDataAvailable) {
-
-        isMoreDataAvailable = moreDataAvailable;
-
-    }
-
-    public void notifyDataChanged() {
-
-        notifyDataSetChanged();
-        isLoading = false;
-
-    }
-
-    public interface OnLoadMoreListener {
-
-        void onLoadMore();
-
-    }
-
-    public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-
-        this.loadMoreListener = loadMoreListener;
-
-    }
-
-    @Override
-    public Filter getFilter() {
-        return issuesFilter;
-    }
-
-    private Filter issuesFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Issues> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(issuesList);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (Issues item : issuesList) {
-                    if (item.getTitle().toLowerCase().contains(filterPattern) || item.getBody().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            issuesList.clear();
-            issuesList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
+	}
 
 }

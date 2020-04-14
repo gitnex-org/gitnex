@@ -1,10 +1,10 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,266 +22,287 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.mikepenz.fastadapter.IItemAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
+import com.mikepenz.fastadapter.listeners.ItemFilterListener;
+import com.mikepenz.fastadapter_extensions.items.ProgressItem;
+import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.VersionCheck;
 import org.mian.gitnex.adapters.IssuesAdapter;
-import org.mian.gitnex.clients.IssuesService;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.Issues;
-import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import static com.mikepenz.fastadapter.adapters.ItemAdapter.items;
 
 /**
  * Author M M Arif
  */
 
-public class IssuesOpenFragment extends Fragment {
-
-    private ProgressBar mProgressBar;
-    private RecyclerView recyclerView;
-    private List<Issues> issuesList;
-    private IssuesAdapter adapter;
-    private ApiInterface api;
-    private String TAG = "IssuesListFragment - ";
-    private Context context;
-    private int pageSize = 1;
-    private TextView noDataIssues;
-    private int resultLimit = 50;
-    private String requestType = "issues";
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+public class IssuesOpenFragment extends Fragment implements ItemFilterListener<IssuesAdapter> {
 
-        final View v = inflater.inflate(R.layout.fragment_issues, container, false);
-        setHasOptionsMenu(true);
+	private ProgressBar mProgressBar;
+	private boolean loadNextFlag = false;
+	private String TAG = StaticGlobalVariables.tagIssuesListOpen;
+	private TextView noDataIssues;
+	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+	private String requestType = StaticGlobalVariables.issuesRequestType;
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+	private List<IssuesAdapter> items = new ArrayList<>();
+	private FastItemAdapter<IssuesAdapter> fastItemAdapter;
+	private ItemAdapter footerAdapter;
+	private EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        context = getContext();
-        recyclerView = v.findViewById(R.id.recyclerView);
-        issuesList = new ArrayList<>();
+		final View v = inflater.inflate(R.layout.fragment_issues, container, false);
+		setHasOptionsMenu(true);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
-        noDataIssues = v.findViewById(R.id.noDataIssues);
+		TinyDB tinyDb = new TinyDB(getContext());
+		final String instanceUrl = tinyDb.getString("instanceUrl");
+		final String loginUid = tinyDb.getString("loginUid");
+		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		String repoFullName = tinyDb.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+		final String repoOwner = parts[0];
+		final String repoName = parts[1];
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+		if (VersionCheck.compareVersion("1.12.0", tinyDb.getString("giteaVersion")) < 1) {
+			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+		}
 
-                        swipeRefresh.setRefreshing(false);
-                        loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType);
-                        adapter.notifyDataChanged();
-
-                    }
-                }, 200);
-            }
-        });
+		noDataIssues = v.findViewById(R.id.noDataIssues);
+		mProgressBar = v.findViewById(R.id.progress_bar);
+		final SwipeRefreshLayout swipeRefreshLayout = v.findViewById(R.id.pullToRefresh);
 
-        adapter = new IssuesAdapter(getContext(), issuesList);
-        adapter.setLoadMoreListener(new IssuesAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
+		RecyclerView recyclerView = v.findViewById(R.id.recyclerView);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		recyclerView.setHasFixedSize(true);
 
-                recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(issuesList.size() == 10 || pageSize == 10) {
+		fastItemAdapter = new FastItemAdapter<>();
+		fastItemAdapter.withSelectable(true);
 
-                            int page = (issuesList.size() + 10) / 10;
-                            loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, requestType);
+		footerAdapter = items();
+		//noinspection unchecked
+		fastItemAdapter.addAdapter(StaticGlobalVariables.issuesPageInit, footerAdapter);
 
-                        }
-                        /*else {
+		fastItemAdapter.getItemFilter().withFilterPredicate((IItemAdapter.Predicate<IssuesAdapter>) (item, constraint) -> item.getIssueTitle().toLowerCase().contains(constraint.toString().toLowerCase()));
 
-                            Toasty.info(context, getString(R.string.noMoreData));
+		fastItemAdapter.getItemFilter().withItemFilterListener(this);
 
-                        }*/
-                    }
-                });
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		recyclerView.setItemAnimator(new DefaultItemAnimator());
+		recyclerView.setAdapter(fastItemAdapter);
 
-            }
-        });
+		endlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(footerAdapter) {
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(adapter);
+			@Override
+			public void onLoadMore(final int currentPage) {
 
-        api = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
-        loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType);
+				loadNext(instanceUrl, instanceToken, repoOwner, repoName, resultLimit, requestType, currentPage);
 
-        return v;
+			}
 
-    }
+		};
 
-    @Override
-    public void onResume() {
+		swipeRefreshLayout.setOnRefreshListener(() -> {
 
-        super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String loginUid = tinyDb.getString("loginUid");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+			mProgressBar.setVisibility(View.VISIBLE);
+			fastItemAdapter.clear();
+			endlessRecyclerOnScrollListener.resetPageCount();
+			swipeRefreshLayout.setRefreshing(false);
 
-        if(tinyDb.getBoolean("resumeIssues")) {
+		});
 
-            loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType);
-            tinyDb.putBoolean("resumeIssues", false);
+		recyclerView.addOnScrollListener(endlessRecyclerOnScrollListener);
 
-        }
+		loadInitial(instanceUrl, instanceToken, repoOwner, repoName, resultLimit, requestType);
 
-    }
+		fastItemAdapter.withEventHook(new IssuesAdapter.IssueTitleClickEvent());
 
-    private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType) {
+		assert savedInstanceState != null;
+		fastItemAdapter.withSavedInstanceState(savedInstanceState);
 
-        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName,  1, resultLimit, requestType);
+		return v;
 
-        call.enqueue(new Callback<List<Issues>>() {
+	}
 
-            @Override
-            public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
+	@Override
+	public void onResume() {
 
-                if(response.isSuccessful()) {
+		super.onResume();
+		TinyDB tinyDb = new TinyDB(getContext());
 
-                    assert response.body() != null;
-                    if(response.body().size() > 0) {
+		if(tinyDb.getBoolean("resumeIssues")) {
 
-                        issuesList.clear();
-                        issuesList.addAll(response.body());
-                        adapter.notifyDataChanged();
-                        noDataIssues.setVisibility(View.GONE);
+			mProgressBar.setVisibility(View.VISIBLE);
+			fastItemAdapter.clear();
+			endlessRecyclerOnScrollListener.resetPageCount();
+			tinyDb.putBoolean("resumeIssues", false);
 
-                    }
-                    else {
-                        issuesList.clear();
-                        adapter.notifyDataChanged();
-                        noDataIssues.setVisibility(View.VISIBLE);
-                    }
-                    mProgressBar.setVisibility(View.GONE);
-                }
-                else {
-                    Log.e(TAG, String.valueOf(response.code()));
-                }
+		}
 
-            }
+	}
 
-            @Override
-            public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
-                Log.e(TAG, t.toString());
-            }
+	private void loadInitial(String instanceUrl, String token, String repoOwner, String repoName, int resultLimit, String requestType) {
 
-        });
+		Call<List<Issues>> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().getIssues(token, repoOwner, repoName, 1, resultLimit, requestType);
 
-    }
+		call.enqueue(new Callback<List<Issues>>() {
 
-    private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType){
+			@Override
+			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
-        //add loading progress view
-        issuesList.add(new Issues("load"));
-        adapter.notifyItemInserted((issuesList.size() - 1));
+				if(response.isSuccessful()) {
 
-        Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page, resultLimit, requestType);
+					assert response.body() != null;
+					if(response.body().size() > 0) {
 
-        call.enqueue(new Callback<List<Issues>>() {
+						if(response.body().size() == resultLimit) {
+							loadNextFlag = true;
+						}
 
-            @Override
-            public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
+						for(int i = 0; i < response.body().size(); i++) {
+							items.add(new IssuesAdapter(getContext()).withNewItems(response.body().get(i).getTitle(), response.body().get(i).getNumber(), response.body().get(i).getUser().getAvatar_url(), response.body().get(i).getCreated_at(), response.body().get(i).getComments(), response.body().get(i).getUser().getFull_name(), response.body().get(i).getUser().getLogin()));
+						}
 
-                if(response.isSuccessful()){
+						fastItemAdapter.add(items);
+						noDataIssues.setVisibility(View.GONE);
 
-                    //remove loading view
-                    issuesList.remove(issuesList.size()-1);
+					}
+					else {
+						noDataIssues.setVisibility(View.VISIBLE);
+					}
 
-                    List<Issues> result = response.body();
+					mProgressBar.setVisibility(View.GONE);
 
-                    assert result != null;
-                    if(result.size() > 0) {
+				}
+				else {
+					Log.i(TAG, String.valueOf(response.code()));
+				}
 
-                        pageSize = result.size();
-                        issuesList.addAll(result);
+			}
 
-                    }
-                    else {
+			@Override
+			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-                        Toasty.info(context, getString(R.string.noMoreData));
-                        adapter.setMoreDataAvailable(false);
+				Log.e(TAG, t.toString());
+			}
 
-                    }
+		});
 
-                    adapter.notifyDataChanged();
+	}
 
-                }
-                else {
+	private void loadNext(String instanceUrl, String token, String repoOwner, String repoName, int resultLimit, String requestType, final int currentPage) {
 
-                    Log.e(TAG, String.valueOf(response.code()));
+		footerAdapter.clear();
+		//noinspection unchecked
+		footerAdapter.add(new ProgressItem().withEnabled(false));
+		Handler handler = new Handler();
 
-                }
+		handler.postDelayed(() -> {
 
-            }
+			Call<List<Issues>> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().getIssues(token, repoOwner, repoName, currentPage + 1, resultLimit, requestType);
 
-            @Override
-            public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
+			call.enqueue(new Callback<List<Issues>>() {
 
-                Log.e(TAG, t.toString());
+				@Override
+				public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
-            }
+					if(response.isSuccessful()) {
 
-        });
-    }
+						assert response.body() != null;
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+						if(response.body().size() > 0) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+							loadNextFlag = response.body().size() == resultLimit;
 
-        inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+							for(int i = 0; i < response.body().size(); i++) {
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        //searchView.setQueryHint(getContext().getString(R.string.strFilter));
+								fastItemAdapter.add(fastItemAdapter.getAdapterItemCount(), new IssuesAdapter(getContext()).withNewItems(response.body().get(i).getTitle(), response.body().get(i).getNumber(), response.body().get(i).getUser().getAvatar_url(), response.body().get(i).getCreated_at(), response.body().get(i).getComments(), response.body().get(i).getUser().getFull_name(), response.body().get(i).getUser().getLogin()));
 
-        /*if(!connToInternet) {
-            return;
-        }*/
+							}
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+							footerAdapter.clear();
+							noDataIssues.setVisibility(View.GONE);
 
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+						}
+						else {
+							footerAdapter.clear();
+						}
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
+						mProgressBar.setVisibility(View.GONE);
 
-                adapter.getFilter().filter(newText);
-                return false;
+					}
+					else {
+						Log.i(TAG, String.valueOf(response.code()));
+					}
 
-            }
+				}
 
-        });
+				@Override
+				public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-    }
+					Log.i(TAG, t.toString());
+				}
+
+			});
+
+		}, 1000);
+
+		if(!loadNextFlag) {
+			footerAdapter.clear();
+		}
+
+	}
+
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+		inflater.inflate(R.menu.search_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+
+				fastItemAdapter.filter(newText);
+				return true;
+			}
+
+		});
+
+		endlessRecyclerOnScrollListener.enable();
+
+	}
+
+	@Override
+	public void itemsFiltered(@Nullable CharSequence constraint, @Nullable List<IssuesAdapter> results) {
+
+		endlessRecyclerOnScrollListener.disable();
+	}
+
+	@Override
+	public void onReset() {
+
+		endlessRecyclerOnScrollListener.enable();
+	}
 
 }

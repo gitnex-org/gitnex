@@ -22,7 +22,7 @@
             android:id="@+id/toolbar"
             app:titleTextColor="?attr/primaryTextColor"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:theme="@style/Widget.AppCompat.SearchView"
             android:elevation="4dp">
 
             <TextView

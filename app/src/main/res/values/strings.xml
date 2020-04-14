@@ -165,8 +165,8 @@
     <string name="infoTabRepoZero" translatable="false">0</string>
     <string name="infoTabRepoDefaultBranchText" translatable="false">master</string>
 
-    <string name="infoShowMoreInformation">Show more information</string>
-    <string name="infoMoreInformation">More information</string>
+    <string name="infoShowMoreInformation">Show More Information</string>
+    <string name="infoMoreInformation">More Information</string>
 
     <string name="timeAtText">at</string>
     <string name="hash" translatable="false">#</string>
@@ -613,4 +613,7 @@
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
+    
+    <string name="tabIssueOpen">Open</string>
+    <string name="tabIssueClosed">Closed</string>
 </resources>

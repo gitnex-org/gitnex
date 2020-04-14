@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayoutFrame"
+    android:id="@+id/relativeLayoutFrameIssuesList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"

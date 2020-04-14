@@ -77,7 +77,7 @@
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                android:textColorHighlight="?attr/primaryTextColor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -102,10 +102,10 @@
                 android:scrollbars="vertical"
                 android:gravity="top|start"
                 android:textSize="14sp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHighlight="@color/white" />
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
+                android:textColorHighlight="?attr/primaryTextColor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -124,8 +124,8 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill"
                 android:background="@drawable/shape_inputs"
-                android:textColor="?attr/primaryTextColor"
-                android:textColorHint="?attr/primaryTextColor"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
                 android:inputType="none"
                 android:textColorHighlight="?attr/primaryTextColor"/>
 
@@ -180,8 +180,8 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill"
                 android:background="@drawable/shape_inputs"
-                android:textColor="?attr/primaryTextColor"
-                android:textColorHint="?attr/primaryTextColor"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
                 android:inputType="none"
                 android:textColorHighlight="?attr/primaryTextColor"/>
 
@@ -203,8 +203,8 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill"
                 android:background="@drawable/shape_inputs"
-                android:textColor="?attr/primaryTextColor"
-                android:textColorHint="?attr/primaryTextColor"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
                 android:textColorHighlight="?attr/primaryTextColor"/>
 
             <Button

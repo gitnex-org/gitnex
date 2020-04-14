@@ -27,10 +27,9 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetRepoFragment;
 import org.mian.gitnex.fragments.BranchesFragment;
-import org.mian.gitnex.fragments.IssuesClosedFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
-import org.mian.gitnex.fragments.IssuesOpenFragment;
+import org.mian.gitnex.fragments.IssuesMainFragment;
 import org.mian.gitnex.fragments.LabelsFragment;
 import org.mian.gitnex.fragments.MilestonesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
@@ -126,7 +125,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
         }
 
         // only show Collaborators if you have permission to
-        final View collaboratorTab = vg.getChildAt(9);
+        final View collaboratorTab = vg.getChildAt(8);
         if (tinyDb.getBoolean("isRepoAdmin")) {
             collaboratorTab.setVisibility(View.VISIBLE);
         }
@@ -166,8 +165,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
             // pull count
             if (textViewBadgePull.getText() != "") { // only show if API returned a number
-                Objects.requireNonNull(tabLayout.getTabAt(4)).setCustomView(tabHeader4);
-                TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(4);
+                Objects.requireNonNull(tabLayout.getTabAt(3)).setCustomView(tabHeader4);
+                TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(3);
                 assert tabOpenPulls != null;
                 TextView openPullTabView = Objects.requireNonNull(tabOpenPulls.getCustomView()).findViewById(R.id.counterBadgePullText);
                 openPullTabView.setTextColor(textColor);
@@ -176,8 +175,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
             // release count
             if (VersionCheck.compareVersion("1.11.5", tinyDb.getString("giteaVersion")) < 1) {
                 if(textViewBadgeRelease.getText() != "") { // only show if API returned a number
-                    Objects.requireNonNull(tabLayout.getTabAt(6)).setCustomView(tabHeader6);
-                    TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(6);
+                    Objects.requireNonNull(tabLayout.getTabAt(5)).setCustomView(tabHeader6);
+                    TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(5);
                     assert tabOpenRelease != null;
                     TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
                     openReleaseTabView.setTextColor(textColor);
@@ -305,23 +304,20 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
                 case 1: // files
                     return FilesFragment.newInstance(repoOwner, repoName);
                 case 2: // issues
-                    fragment = new IssuesOpenFragment();
+                    fragment = new IssuesMainFragment();
                     break;
-                case 3: // closed issues
-                    fragment = new IssuesClosedFragment();
-                    break;
-                case 4: // pull requests
+                case 3: // pull requests
                     fragment = new PullRequestsFragment();
                     break;
-                case 5: // branches
+                case 4: // branches
                     return BranchesFragment.newInstance(repoOwner, repoName);
-                case 6: // releases
+                case 5: // releases
                     return ReleasesFragment.newInstance(repoOwner, repoName);
-                case 7: // milestones
+                case 6: // milestones
                     return MilestonesFragment.newInstance(repoOwner, repoName);
-                case 8: // labels
+                case 7: // labels
                     return LabelsFragment.newInstance(repoOwner, repoName);
-                case 9: // collaborators
+                case 8: // collaborators
                     return CollaboratorsFragment.newInstance(repoOwner, repoName);
             }
             assert fragment != null;
@@ -330,7 +326,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
         @Override
         public int getCount() {
-            return 10;
+            return 9;
         }
 
     }

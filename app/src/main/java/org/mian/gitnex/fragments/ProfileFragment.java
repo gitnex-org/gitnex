@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
     public static class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @NonNull
