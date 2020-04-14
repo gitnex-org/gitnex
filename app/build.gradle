@@ -12,7 +12,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -33,26 +34,26 @@ configurations {
 
 dependencies {
     def lifecycle_version = "2.2.0"
-    def markwon_version = '4.3.0'
+    def markwon_version = '4.3.1'
     def fastadapter = "3.3.1"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "com.google.android.material:material:1.2.0-alpha05"
+    implementation "com.google.android.material:material:1.2.0-alpha06"
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     testImplementation "junit:junit:4.13"
     androidTestImplementation "androidx.test:runner:1.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
     implementation "com.github.vihtarb:tooltip:0.2.0"
-    implementation 'com.squareup.okhttp3:okhttp:4.4.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.picasso:picasso:2.71828"
     implementation "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
     implementation 'com.squareup.retrofit2:converter-scalars:2.8.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
     implementation "com.vdurmont:emoji-java:5.1.1"
     implementation "com.pes.materialcolorpicker:library:1.2.5"
