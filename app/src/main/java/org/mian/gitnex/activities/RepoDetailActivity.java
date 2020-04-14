@@ -125,6 +125,15 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
             }
         }
 
+        // only show Collaborators if you have permission to
+        final View collaboratorTab = vg.getChildAt(9);
+        if (tinyDb.getBoolean("isRepoAdmin")) {
+            collaboratorTab.setVisibility(View.VISIBLE);
+        }
+        else {
+            collaboratorTab.setVisibility(View.GONE);
+        }
+
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 

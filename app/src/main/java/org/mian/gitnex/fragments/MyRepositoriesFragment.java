@@ -91,6 +91,7 @@ public class MyRepositoriesFragment extends Fragment {
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         final String userLogin =  tinyDb.getString("userLogin");
+        tinyDb.putBoolean("isRepoAdmin", true);
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
 
