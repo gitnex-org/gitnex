@@ -24,6 +24,32 @@ steps:
     commands:
       - ./gradlew build
 
+  - name: sign
+    image: nextcloudci/android:android-49
+    environment:
+      TOKEN:
+        from_secret: BOT_TOKEN
+      KS_PASS:
+        from_secret: KS_PASS
+      KEY_PASS:
+        from_secret: KEY_PASS
+      OUTPUT: signed.apk
+      GITEA: https://gitea.com
+      KS_FILE: ci_keystore.jks
+      KS_REPO:
+        from_secret: KS_REPO
+    commands:
+      - ./scripts/sign-build.sh
+
+  - name: publish
+    image: vividboarder/drone-webdav
+    environment:
+      WEBDAV_USERNAME: GitNexBot
+      WEBDAV_PASSWORD:
+        from_secret: NC_TOKEN
+      PLUGIN_FILE: signed.apk
+      PLUGIN_DESTINATION: https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/latest.apk
+
 trigger:
   event:
     - push
