@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Kullanıcı adı gerekli</string>
     <string name="emptyFieldPassword">Parola gerekli</string>
     <string name="checkNetConnection">Ağa erişilemiyor, lütfen internet bağlantınızı kontrol edin</string>
-    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
+    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
     <string name="repoNameErrorEmpty">Depo adı boş</string>
     <string name="repoNameErrorInvalid">Depo adı geçerli değil. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -120,6 +120,8 @@
     <string name="infoTabRepoForksCount">Çatallar</string>
     <string name="infoTabRepoCreatedAt">Oluşturuldu</string>
     <string name="infoTabRepoUpdatedAt">Son Güncellenme</string>
+    <string name="infoShowMoreInformation">Show More Information</string>
+    <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">de</string>
     <string name="createdText">Açıldı\u0020</string>
     <string name="dueDateText">Bitiş Tarihi</string>
@@ -133,7 +135,7 @@
     <string name="issueTypePullRequest">Tür: Çekme İsteği</string>
     <string name="issueCommenter">Yorumlayıcı:\u0020</string>
     <string name="issueMilestone">Kilometre taşı %1$s</string>
-    <string name="dueDate">%1$s nedeniyle</string>
+    <string name="dueDate">Due on %1$s</string>
     <string name="createdTime">%1$s Açık</string>
     <string name="assignedTo">Atanmış: %1$s</string>
     <string name="commentButtonText">Yorum Yap</string>
@@ -206,12 +208,13 @@
     <string name="settingshomeScreenSelectorDialogTitle">Ana Ekranı Seç</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
-    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <!-- settings -->
     <string name="noMoreData">Daha fazla veri yok</string>
     <string name="createLabel">Yeni Etiket</string>
@@ -363,6 +366,7 @@
     <string name="repoWatchersInMenu">İzleyiciler</string>
     <string name="noDataStargazers">Yıldız bulunamadı</string>
     <string name="noDataWatchers">İzleyici bulunamadı</string>
+    <string name="noDataWebsite">No website found</string>
     <string name="starMember">Yıldız</string>
     <string name="watcherMember">İzleyici</string>
     <string name="commitLinkBranchesTab">İşleme</string>
@@ -454,6 +458,10 @@
     <string name="mergeCommentText">Yorumu birleştir</string>
     <string name="mergePRSuccessMsg">Çekme İsteği başarıyla birleştirildi</string>
     <string name="mergePR404ErrorMsg">Çekme İsteği birleştirme için uygun değil</string>
+    <string name="mergeOptionMerge">Merge Pull Request</string>
+    <string name="mergeOptionRebase">Rebase and Merge</string>
+    <string name="mergeOptionRebaseCommit">Rebase and Merge (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">Squash and Merge</string>
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File is saved to Download directory</string>
@@ -484,4 +492,9 @@
     <string name="issueSubscribtionError">Issue Subscription failed</string>
     <string name="issueUnsubscribtion">Issue Unsubscribed</string>
     <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="closeMilestone">Close Milestone</string>
+    <string name="openMilestone">Open Milestone</string>
+    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
+    <string name="tabIssueOpen">Open</string>
+    <string name="tabIssueClosed">Closed</string>
 </resources>

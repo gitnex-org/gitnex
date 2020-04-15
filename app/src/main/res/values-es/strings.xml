@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Se requiere el usuario</string>
     <string name="emptyFieldPassword">Se requiere la contraseña</string>
     <string name="checkNetConnection">No se puede acceder a la red, por favor comprueba tu conexión a internet</string>
-    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
+    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
     <string name="repoNameErrorEmpty">El nombre del repositorio está vacío</string>
     <string name="repoNameErrorInvalid">El nombre del repositorio es inválido. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Nombre del repositorio reservado</string>
@@ -120,6 +120,8 @@
     <string name="infoTabRepoForksCount">Bifurcaciones</string>
     <string name="infoTabRepoCreatedAt">Creado</string>
     <string name="infoTabRepoUpdatedAt">Última actualización</string>
+    <string name="infoShowMoreInformation">Show More Information</string>
+    <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">a las</string>
     <string name="createdText">Abierto\u0020</string>
     <string name="dueDateText">Fecha final</string>
@@ -133,7 +135,7 @@
     <string name="issueTypePullRequest">Tipo: Peticion pull</string>
     <string name="issueCommenter">Autor de comentario:\u0020</string>
     <string name="issueMilestone">Milestone %1$s</string>
-    <string name="dueDate">Vencido %1$s</string>
+    <string name="dueDate">Due on %1$s</string>
     <string name="createdTime">Abierto el %1$s</string>
     <string name="assignedTo">Asignado a: %1$s</string>
     <string name="commentButtonText">Comentar</string>
@@ -206,12 +208,13 @@
     <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
-    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <!-- settings -->
     <string name="noMoreData">No more data available</string>
     <string name="createLabel">Nueva etiqueta</string>
@@ -363,6 +366,7 @@
     <string name="repoWatchersInMenu">Watchers</string>
     <string name="noDataStargazers">No stars found</string>
     <string name="noDataWatchers">No watchers found</string>
+    <string name="noDataWebsite">No website found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
     <string name="commitLinkBranchesTab">Commit</string>
@@ -454,6 +458,10 @@
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
+    <string name="mergeOptionMerge">Fusionar Pull Request</string>
+    <string name="mergeOptionRebase">Hacer Rebase y Fusionar</string>
+    <string name="mergeOptionRebaseCommit">Hacer Rebase y Fusionar (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">Hacer Squash y Fusionar</string>
     <string name="downloadFile">Descargar este archivo</string>
     <string name="waitLoadingDownloadFile">Por favor espere a que el dispositivo cargue</string>
     <string name="downloadFileSaved">El archivo se ha guardado en el directorio de descargas</string>
@@ -484,4 +492,9 @@
     <string name="issueSubscribtionError">Issue Subscription failed</string>
     <string name="issueUnsubscribtion">Issue Unsubscribed</string>
     <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="closeMilestone">Close Milestone</string>
+    <string name="openMilestone">Open Milestone</string>
+    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
+    <string name="tabIssueOpen">Open</string>
+    <string name="tabIssueClosed">Closed</string>
 </resources>

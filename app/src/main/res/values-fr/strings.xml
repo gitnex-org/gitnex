@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Nom d’utilisateur requis</string>
     <string name="emptyFieldPassword">Mot de passe requis</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
-    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
+    <string name="netConnectionIsBack">On a Internet, youpi !</string>
     <string name="repoNameErrorEmpty">Nom du dépôt requis</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Ce nom de dépôt est réservé</string>
@@ -120,6 +120,8 @@
     <string name="infoTabRepoForksCount">Bifurcations</string>
     <string name="infoTabRepoCreatedAt">Créé</string>
     <string name="infoTabRepoUpdatedAt">Dernière modification</string>
+    <string name="infoShowMoreInformation">Show More Information</string>
+    <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">à</string>
     <string name="createdText">Ouvert\u0020</string>
     <string name="dueDateText">Échéance</string>
@@ -133,7 +135,7 @@
     <string name="issueTypePullRequest">Type : demande d’ajout</string>
     <string name="issueCommenter">Commentateur :\u0020</string>
     <string name="issueMilestone">Jalon %1$s</string>
-    <string name="dueDate">Échéance %1$s</string>
+    <string name="dueDate">Échéance au %1$s</string>
     <string name="createdTime">Ouvert %1$s</string>
     <string name="assignedTo">Assigné à : %1$s</string>
     <string name="commentButtonText">Publier</string>
@@ -206,12 +208,13 @@
     <string name="settingshomeScreenSelectorDialogTitle">Écran d’accueil</string>
     <string name="settingsCustomFontHeaderText">Police</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choisir la police</string>
-    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">Sélectionnez le thème de l’application</string>
     <string name="themeSelectionHeaderText">Thème</string>
     <string name="settingsPdfModeHeaderText">PDF mode nuit</string>
     <string name="fileViewerHeader">Visionneuse de fichiers</string>
     <string name="settingsCounterBadges">Compteurs</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -308,8 +311,8 @@
     <string name="addRemoveAssignees2">Ajouter des assignés</string>
     <string name="addRemoveAssignees">Ajouter/supprimer des assignés</string>
     <string name="assigneesUpdated">Assignés mis à jour</string>
-    <string name="singleIssueSubscribe">Subscribe</string>
-    <string name="singleIssueUnSubscribe">Unsubscribe</string>
+    <string name="singleIssueSubscribe">S’abonner</string>
+    <string name="singleIssueUnSubscribe">Se désabonner</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Sélection des entrées</string>
@@ -363,6 +366,7 @@
     <string name="repoWatchersInMenu">Observateurs</string>
     <string name="noDataStargazers">Aucun fan</string>
     <string name="noDataWatchers">Aucun observateur</string>
+    <string name="noDataWebsite">Aucun site trouvé</string>
     <string name="starMember">Ajouter aux favoris</string>
     <string name="watcherMember">Observateur</string>
     <string name="commitLinkBranchesTab">Dernière révision</string>
@@ -454,6 +458,10 @@
     <string name="mergeCommentText">Commentaire de la fusion</string>
     <string name="mergePRSuccessMsg">La demande de tirage a été fusionnée</string>
     <string name="mergePR404ErrorMsg">La demande de tirage ne peut pas être fusionnée</string>
+    <string name="mergeOptionMerge">Fusionner la demande de tirage</string>
+    <string name="mergeOptionRebase">Rebaser et fusionner</string>
+    <string name="mergeOptionRebaseCommit">Rebaser et fusionner (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">Squasher et fusionner</string>
     <string name="downloadFile">Télécharger ce fichier</string>
     <string name="waitLoadingDownloadFile">Chargement du fichier dans la mémoire</string>
     <string name="downloadFileSaved">Le fichier a été téléchargé</string>
@@ -480,8 +488,13 @@
     <string name="mtm_decision_once">Une fois</string>
     <string name="mtm_decision_abort">Abandonner</string>
     <string name="issueCommentShare">Partager le commentaire</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="issueSubscribtion">Abonné au ticket</string>
+    <string name="issueSubscribtionError">Impossible de s’abonner au ticket</string>
+    <string name="issueUnsubscribtion">Désabonné du ticket</string>
+    <string name="issueUnsubscribtionError">Impossible de se désabonner du ticket</string>
+    <string name="closeMilestone">Fermer le jalon</string>
+    <string name="openMilestone">Ouvrir le jalon</string>
+    <string name="milestoneStatusUpdate">Jalon mis à jour</string>
+    <string name="tabIssueOpen">Open</string>
+    <string name="tabIssueClosed">Closed</string>
 </resources>

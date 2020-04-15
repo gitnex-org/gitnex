@@ -71,7 +71,7 @@ URL è richiesto</string>
     <string name="emptyFieldUsername">Nome utente obbligatorio</string>
     <string name="emptyFieldPassword">Password obbligatoria</string>
     <string name="checkNetConnection">Errore di connessione. Controllare la connessione Internet</string>
-    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
+    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
     <string name="repoNameErrorEmpty">Il nome del repository è vuoto</string>
     <string name="repoNameErrorInvalid">Nome del repository non è valido. [a&#8211;z A&#8211;Z 0&#8211;char@@9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -121,6 +121,8 @@ URL è richiesto</string>
     <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Creato</string>
     <string name="infoTabRepoUpdatedAt">Ultimo aggiornamento</string>
+    <string name="infoShowMoreInformation">Show More Information</string>
+    <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">alle</string>
     <string name="createdText">Aperto\u0020</string>
     <string name="dueDateText">Data Scadenza</string>
@@ -134,7 +136,7 @@ URL è richiesto</string>
     <string name="issueTypePullRequest">Tipo: Richiesta Pull</string>
     <string name="issueCommenter">Commentatore:\u0020</string>
     <string name="issueMilestone">Milestone %1$s</string>
-    <string name="dueDate">Scaduto %1$s</string>
+    <string name="dueDate">Due on %1$s</string>
     <string name="createdTime">Aperto alle: %1$s</string>
     <string name="assignedTo">Assegnato a: %1$s</string>
     <string name="commentButtonText">Commento</string>
@@ -207,12 +209,13 @@ URL è richiesto</string>
     <string name="settingshomeScreenSelectorDialogTitle">Seleziona schermata Home</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Scegli un Font</string>
-    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <!-- settings -->
     <string name="noMoreData">Nessun altro dato disponibile</string>
     <string name="createLabel">Nuovo label</string>
@@ -365,6 +368,7 @@ autorizzazione</string>
     <string name="repoWatchersInMenu">Osservatori</string>
     <string name="noDataStargazers">Nessuna star trovata</string>
     <string name="noDataWatchers">Nessun osservatore trovato</string>
+    <string name="noDataWebsite">No website found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Osservatore</string>
     <string name="commitLinkBranchesTab">Commit</string>
@@ -456,6 +460,10 @@ autorizzazione</string>
     <string name="mergeCommentText">Unisci commento</string>
     <string name="mergePRSuccessMsg">Pull Request è stata unita con successo</string>
     <string name="mergePR404ErrorMsg">La Pull Request non è disponibile per l\'merge</string>
+    <string name="mergeOptionMerge">Unisci Pull Request</string>
+    <string name="mergeOptionRebase">Fai rebase e unisci</string>
+    <string name="mergeOptionRebaseCommit">Fai rebase e unisci (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">Fai squash e unisci</string>
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File is saved to Download directory</string>
@@ -486,4 +494,9 @@ autorizzazione</string>
     <string name="issueSubscribtionError">Issue Subscription failed</string>
     <string name="issueUnsubscribtion">Issue Unsubscribed</string>
     <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="closeMilestone">Close Milestone</string>
+    <string name="openMilestone">Open Milestone</string>
+    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
+    <string name="tabIssueOpen">Open</string>
+    <string name="tabIssueClosed">Closed</string>
 </resources>

@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Username is required</string>
     <string name="emptyFieldPassword">Password is required</string>
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
-    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
+    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
     <string name="repoNameErrorEmpty">Repository name is empty</string>
     <string name="repoNameErrorInvalid">Repository name is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -120,6 +120,8 @@
     <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Created</string>
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
+    <string name="infoShowMoreInformation">Show More Information</string>
+    <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">at</string>
     <string name="createdText">Opened\u0020</string>
     <string name="dueDateText">Due Date</string>
@@ -133,7 +135,7 @@
     <string name="issueTypePullRequest">Type: Pull Request</string>
     <string name="issueCommenter">Commenter:\u0020</string>
     <string name="issueMilestone">Milestone %1$s</string>
-    <string name="dueDate">Due %1$s</string>
+    <string name="dueDate">Due on %1$s</string>
     <string name="createdTime">Opened %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
     <string name="commentButtonText">Comment</string>
@@ -206,12 +208,13 @@
     <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
-    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <!-- settings -->
     <string name="noMoreData">No more data available</string>
     <string name="createLabel">New Label</string>
@@ -363,6 +366,7 @@
     <string name="repoWatchersInMenu">Watchers</string>
     <string name="noDataStargazers">No stars found</string>
     <string name="noDataWatchers">No watchers found</string>
+    <string name="noDataWebsite">No website found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
     <string name="commitLinkBranchesTab">Commit</string>
@@ -454,6 +458,10 @@
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
+    <string name="mergeOptionMerge">Izmaiņu pieprasījuma sapludināšana</string>
+    <string name="mergeOptionRebase">Rebase a sloučit</string>
+    <string name="mergeOptionRebaseCommit">Rebase a sloučit (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">Saspiest un sapludināt</string>
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File is saved to Download directory</string>
@@ -484,4 +492,9 @@
     <string name="issueSubscribtionError">Issue Subscription failed</string>
     <string name="issueUnsubscribtion">Issue Unsubscribed</string>
     <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="closeMilestone">Close Milestone</string>
+    <string name="openMilestone">Open Milestone</string>
+    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
+    <string name="tabIssueOpen">Open</string>
+    <string name="tabIssueClosed">Closed</string>
 </resources>

@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Требуется имя пользователя</string>
     <string name="emptyFieldPassword">Требуется пароль</string>
     <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
-    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
+    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
     <string name="repoNameErrorEmpty">Название репозитория пустое.</string>
     <string name="repoNameErrorInvalid">Недоступное название репозитория. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Название репозитория зарезервировано</string>
@@ -120,6 +120,8 @@
     <string name="infoTabRepoForksCount">Кол-во форков</string>
     <string name="infoTabRepoCreatedAt">Создан</string>
     <string name="infoTabRepoUpdatedAt">Последнее обновление</string>
+    <string name="infoShowMoreInformation">Show More Information</string>
+    <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">в</string>
     <string name="createdText">Создано\u0020</string>
     <string name="dueDateText">Дата исполнения</string>
@@ -133,7 +135,7 @@
     <string name="issueTypePullRequest">Тип: pull request</string>
     <string name="issueCommenter">Комментатор:\u0020</string>
     <string name="issueMilestone">Вехи %1$s</string>
-    <string name="dueDate">Исполнение %1$s</string>
+    <string name="dueDate">Due on %1$s</string>
     <string name="createdTime">Создано %1$s</string>
     <string name="assignedTo">Назначено: %1$s</string>
     <string name="commentButtonText">Комментарий</string>
@@ -206,12 +208,13 @@
     <string name="settingshomeScreenSelectorDialogTitle">Выбрать главный экран</string>
     <string name="settingsCustomFontHeaderText">Шрифт</string>
     <string name="settingsCustomFontSelectorDialogTitle">Выберите шрифт</string>
-    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">Выбрать тему приложения</string>
     <string name="themeSelectionHeaderText">Тема</string>
     <string name="settingsPdfModeHeaderText">Ночной режим PDF</string>
     <string name="fileViewerHeader">Просмотрщик файла</string>
     <string name="settingsCounterBadges">Значки счётчика</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -363,6 +366,7 @@
     <string name="repoWatchersInMenu">Наблюдатели</string>
     <string name="noDataStargazers">Звезды не найдены</string>
     <string name="noDataWatchers">Наблюдателей не найдено</string>
+    <string name="noDataWebsite">No website found</string>
     <string name="starMember">В избранное</string>
     <string name="watcherMember">Наблюдатель</string>
     <string name="commitLinkBranchesTab">Коммит</string>
@@ -454,6 +458,10 @@
     <string name="mergeCommentText">Комментарий для слияния</string>
     <string name="mergePRSuccessMsg">Запрос на слияние был успешно выполнен</string>
     <string name="mergePR404ErrorMsg">Запрос на слияние не доступен для слияния</string>
+    <string name="mergeOptionMerge">Принять Pull Request</string>
+    <string name="mergeOptionRebase">Выполнить rebase и принять PR</string>
+    <string name="mergeOptionRebaseCommit">Выполнить rebase и принять PR (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">Объединить и принять PR</string>
     <string name="downloadFile">Скачать этот файл</string>
     <string name="waitLoadingDownloadFile">Пожалуйста дождитесь загрузки файла</string>
     <string name="downloadFileSaved">Файл сохранен в папку Загрузки</string>
@@ -484,4 +492,9 @@
     <string name="issueSubscribtionError">Issue Subscription failed</string>
     <string name="issueUnsubscribtion">Issue Unsubscribed</string>
     <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="closeMilestone">Close Milestone</string>
+    <string name="openMilestone">Open Milestone</string>
+    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
+    <string name="tabIssueOpen">Open</string>
+    <string name="tabIssueClosed">Closed</string>
 </resources>

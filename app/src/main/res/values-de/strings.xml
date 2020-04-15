@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Benutzername ist erforderlich</string>
     <string name="emptyFieldPassword">Passwort ist erforderlich</string>
     <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen. Bitte überprüfe die Internetverbindung</string>
-    <string name="netConnectionIsBack">Yay, Internet connection is back</string>
+    <string name="netConnectionIsBack">Juhu, wir haben Internetverbindung!</string>
     <string name="repoNameErrorEmpty">Der Repository Name ist leer.</string>
     <string name="repoNameErrorInvalid">Der Repository Name ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository-Name ist reserviert</string>
@@ -120,20 +120,22 @@
     <string name="infoTabRepoForksCount">Anzahl an Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
+    <string name="infoShowMoreInformation">Mehr Informationen anzeigen</string>
+    <string name="infoMoreInformation">Mehr Informationen</string>
     <string name="timeAtText">um</string>
     <string name="createdText">Erstellt\u0020</string>
     <string name="dueDateText">Fälligkeitsdatum</string>
     <string name="issueStatusTextOpen">Status: offen</string>
     <string name="issueStatusOpen">öffnen</string>
     <string name="issueStatusTextClosed">Status: geschlossen</string>
-    <string name="issueStatusClosed">schließen</string>
+    <string name="issueStatusClosed">geschlossen</string>
     <string name="issueCreator">Ersteller:\u0020</string>
     <string name="issueAssigneesText">Zuständige</string>
     <string name="issueTypeIssue">Typ: Issue</string>
     <string name="issueTypePullRequest">Typ: Pull Request</string>
     <string name="issueCommenter">Kommentator:\u0020</string>
     <string name="issueMilestone">Meilenstein %1$s</string>
-    <string name="dueDate">Fällig %1$s</string>
+    <string name="dueDate">Fällig am %1$s</string>
     <string name="createdTime">Erstellt %1$s</string>
     <string name="assignedTo">Zugewiesen an: %1$s</string>
     <string name="commentButtonText">Kommentar</string>
@@ -206,12 +208,13 @@
     <string name="settingshomeScreenSelectorDialogTitle">Home Screen Auswählen</string>
     <string name="settingsCustomFontHeaderText">Schriftart</string>
     <string name="settingsCustomFontSelectorDialogTitle">Wähle eine Schriftart</string>
-    <string name="settingsCustomFontDefault">Manrope</string>
     <string name="themeSelectorDialogTitle">App-Design auswählen</string>
     <string name="themeSelectionHeaderText">Design</string>
     <string name="settingsPdfModeHeaderText">PDF Nachtmodus</string>
     <string name="fileViewerHeader">Dateibetrachter</string>
     <string name="settingsCounterBadges">Zähler für Tabs</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Quellcode-Theme</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Wähle dein Quellcode-Theme</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -308,8 +311,8 @@
     <string name="addRemoveAssignees2">Füge Zuständige hinzu</string>
     <string name="addRemoveAssignees">Zuständige hinzufügen/entfernen</string>
     <string name="assigneesUpdated">Zuständige aktualisiert</string>
-    <string name="singleIssueSubscribe">Subscribe</string>
-    <string name="singleIssueUnSubscribe">Unsubscribe</string>
+    <string name="singleIssueSubscribe">Abonnieren</string>
+    <string name="singleIssueUnSubscribe">De-Abonnieren</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Einträge auswählen</string>
@@ -363,6 +366,7 @@
     <string name="repoWatchersInMenu">Beobachter</string>
     <string name="noDataStargazers">Keine Favorisierer gefunden</string>
     <string name="noDataWatchers">Keine Beobachter gefunden</string>
+    <string name="noDataWebsite">Keine Webseite gefunden</string>
     <string name="starMember">Favorisierer</string>
     <string name="watcherMember">Beobachter</string>
     <string name="commitLinkBranchesTab">Commit</string>
@@ -454,6 +458,10 @@
     <string name="mergeCommentText">Zusammenführ-Kommentar</string>
     <string name="mergePRSuccessMsg">Dieser Pull-Request wurde erfolgreich zusammengeführt</string>
     <string name="mergePR404ErrorMsg">Pull-Request kann nicht zusammengeführt werden</string>
+    <string name="mergeOptionMerge">Pull-Request zusammenführen</string>
+    <string name="mergeOptionRebase">Rebase und Mergen</string>
+    <string name="mergeOptionRebaseCommit">Rebasen und Mergen (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">Zusammenfassen und Mergen</string>
     <string name="downloadFile">Datei herunterladen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei wurde ins Download-Verzeichnis gespeichert</string>
@@ -480,8 +488,13 @@
     <string name="mtm_decision_once">Einmal</string>
     <string name="mtm_decision_abort">Abbrechen</string>
     <string name="issueCommentShare">Kommentar teilen</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="issueSubscribtion">Issue abonniert</string>
+    <string name="issueSubscribtionError">Abonnieren ist fehlgeschlagen</string>
+    <string name="issueUnsubscribtion">Issue De-Abonnieren</string>
+    <string name="issueUnsubscribtionError">De-Abonnieren ist fehlgeschlagen</string>
+    <string name="closeMilestone">Meilenstein schließen</string>
+    <string name="openMilestone">Meilenstein wieder öffnen</string>
+    <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>
+    <string name="tabIssueOpen">Offene</string>
+    <string name="tabIssueClosed">Geschlossene</string>
 </resources>
