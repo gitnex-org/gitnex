@@ -36,6 +36,7 @@ dependencies {
     def lifecycle_version = "2.2.0"
     def markwon_version = '4.3.1'
     def fastadapter = "3.3.1"
+    def acra = "5.5.0"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:1.1.0"
@@ -85,4 +86,8 @@ dependencies {
     implementation "com.mikepenz:fastadapter:$fastadapter"
     implementation "com.mikepenz:fastadapter-commons:$fastadapter"
     implementation "com.mikepenz:fastadapter-extensions:$fastadapter"
+    implementation "ch.acra:acra-mail:$acra"
+    implementation "ch.acra:acra-limiter:$acra"
+    implementation "ch.acra:acra-notification:$acra"
+
 }

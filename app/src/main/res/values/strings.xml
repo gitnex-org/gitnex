@@ -2,7 +2,7 @@
 
     <string name="app_name" translatable="false">GitNex</string>
     <string name="appAuthor" translatable="false">Developer : M M Arif</string>
-    <string name="appEmail" translatable="false">gitnex@gitnex.com</string>
+    <string name="appEmail" translatable="false">gitnex@swatian.com</string>
     <string name="appRepo" translatable="false">Source code</string>
     <string name="appRepoLink" translatable="false">https://gitea.com/gitnex/GitNex</string>
     <string name="appRepoIssuesLink" translatable="false">https://gitea.com/gitnex/GitNex/issues</string>
@@ -15,6 +15,7 @@
     <string name="appVerBuild" translatable="false">%1$s / build %2$d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tool Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
     <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
+    <string name="crashReportEmailSubject" translatable="false">[GitNex] - Crash Report #%1$d</string>
 
     <string name="appRepoIssuesText" translatable="false">Report issues at Gitea</string>
     <string name="supportText" translatable="false">Support the App on Liberapay</string>
@@ -616,4 +617,10 @@
     
     <string name="tabIssueOpen">Open</string>
     <string name="tabIssueClosed">Closed</string>
+
+    <string name="reportViewerHeader">Crash Reports</string>
+    <string name="settingsEnableReportsText">Enable Crash Reports</string>
+    <string name="crashTitle">GitNex has stopped :(</string>
+    <string name="setCrashReports">Crash reports</string>
+    <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
 </resources>

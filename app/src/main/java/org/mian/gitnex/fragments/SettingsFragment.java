@@ -76,6 +76,7 @@ public class SettingsFragment extends Fragment {
 
 		Switch counterBadgesSwitch = v.findViewById(R.id.switchCounterBadge);
 		Switch pdfModeSwitch = v.findViewById(R.id.switchPdfMode);
+		Switch crashReportsSwitch = v.findViewById(R.id.crashReportsSwitch);
 		TextView helpTranslate = v.findViewById(R.id.helpTranslate);
 
 		helpTranslate.setOnClickListener(v12 -> {
@@ -158,6 +159,13 @@ public class SettingsFragment extends Fragment {
 			pdfModeSwitch.setChecked(false);
 		}
 
+		if(tinyDb.getBoolean("crashReportingEnabled")) {
+			crashReportsSwitch.setChecked(true);
+		}
+		else {
+			crashReportsSwitch.setChecked(false);
+		}
+
 		// fileviewer srouce code theme selection dialog
 		sourceCodeThemeFrame.setOnClickListener(view -> {
 
@@ -234,6 +242,20 @@ public class SettingsFragment extends Fragment {
 			else {
 				tinyDb.putBoolean("enablePdfMode", false);
 				tinyDb.putString("enablePdfModeInit", "yes");
+				Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+			}
+
+		});
+
+		// crash reports switcher
+		crashReportsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+			if(isChecked) {
+				tinyDb.putBoolean("crashReportingEnabled", true);
+				Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
+			}
+			else {
+				tinyDb.putBoolean("crashReportingEnabled", false);
 				Toasty.info(getContext(), getResources().getString(R.string.settingsSave));
 			}
 

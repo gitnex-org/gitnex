@@ -7,7 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor" >
+        android:background="?attr/primaryBackgroundColor">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -59,6 +59,20 @@
             <include
                 android:id="@+id/langLayout"
                 layout="@layout/settings_languages" />
+
+            <View
+                android:id="@+id/crashReportsDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@id/langLayout" />
+
+            <include
+                android:id="@+id/reportingLayout"
+                layout="@layout/settings_reporting" />
 
         </RelativeLayout>
 
