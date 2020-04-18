@@ -15,9 +15,6 @@ import org.mian.gitnex.activities.AddRemoveLabelsActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
-import org.mian.gitnex.activities.ReplyToIssueActivity;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.util.TinyDB;
 import androidx.annotation.NonNull;
@@ -25,8 +22,6 @@ import androidx.annotation.Nullable;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import java.util.Objects;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -187,30 +182,26 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
             if (tinyDB.getString("issueState").equals("open")) { // close issue
 
                 reOpenIssue.setVisibility(View.GONE);
+                closeIssue.setVisibility(View.VISIBLE);
 
-                closeIssue.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                closeIssue.setOnClickListener(closeSingleIssue -> {
 
-                        IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "closed");
-                        dismiss();
+                    IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "closed");
+                    dismiss();
 
-                    }
                 });
 
             }
             else if (tinyDB.getString("issueState").equals("closed")) {
 
                 closeIssue.setVisibility(View.GONE);
+                reOpenIssue.setVisibility(View.VISIBLE);
 
-                reOpenIssue.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                reOpenIssue.setOnClickListener(reOpenSingleIssue -> {
 
-                        IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "open");
-                        dismiss();
+                    IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "open");
+                    dismiss();
 
-                    }
                 });
 
             }
@@ -223,22 +214,18 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
         }
 
-        subscribeIssue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        subscribeIssue.setOnClickListener(subscribeToIssue -> {
 
-                IssueActions.subscribe(ctx, subscribeIssue, unsubscribeIssue);
+            IssueActions.subscribe(ctx, subscribeIssue, unsubscribeIssue);
+            //dismiss();
 
-            }
         });
 
-        unsubscribeIssue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        unsubscribeIssue.setOnClickListener(unsubscribeToIssue -> {
 
-                IssueActions.unsubscribe(ctx, subscribeIssue, unsubscribeIssue);
+            IssueActions.unsubscribe(ctx, subscribeIssue, unsubscribeIssue);
+            //dismiss();
 
-            }
         });
 
         //if RepoWatch True Provide Unsubscribe first

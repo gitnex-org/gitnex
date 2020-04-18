@@ -120,11 +120,18 @@ public class IssueActions {
 
                         tinyDb.putBoolean("resumeIssues", true);
                         tinyDb.putBoolean("resumeClosedIssues", true);
+
                         if(issueState.equals("closed")) {
+
                             Toasty.info(ctx, ctx.getString(R.string.issueStateClosed));
+                            tinyDb.putString("issueState", "closed");
+
                         }
                         else if(issueState.equals("open")) {
+
                             Toasty.info(ctx, ctx.getString(R.string.issueStateReopened));
+                            tinyDb.putString("issueState", "open");
+
                         }
 
                     }
@@ -191,9 +198,14 @@ public class IssueActions {
 
                 if(response.isSuccessful()) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.issueSubscribtion));
-                    subscribeIssue.setVisibility(View.GONE);
-                    unsubscribeIssue.setVisibility(View.VISIBLE);
+                    if(response.code() == 201) {
+
+                        unsubscribeIssue.setVisibility(View.VISIBLE);
+                        subscribeIssue.setVisibility(View.GONE);
+                        Toasty.info(ctx, ctx.getString(R.string.issueSubscribtion));
+                        tinyDB.putString("issueSubscriptionState", "unsubscribeToIssue");
+
+                    }
 
                 }
                 else if(response.code() == 401) {
@@ -248,9 +260,14 @@ public class IssueActions {
 
                 if(response.isSuccessful()) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtion));
-                    unsubscribeIssue.setVisibility(View.GONE);
-                    subscribeIssue.setVisibility(View.VISIBLE);
+                    if(response.code() == 201) {
+
+                        unsubscribeIssue.setVisibility(View.GONE);
+                        subscribeIssue.setVisibility(View.VISIBLE);
+                        Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtion));
+                        tinyDB.putString("issueSubscriptionState", "subscribeToIssue");
+
+                    }
 
                 }
                 else if(response.code() == 401) {
