@@ -262,7 +262,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		}
 
-		holder.issueCommentDate.setText(TimeHelper.formatTime(currentItem.getCreated_date(), new Locale(locale), timeFormat, mCtx));
+		holder.issueCommentDate.setText(TimeHelper.formatTime(currentItem.getCreated_at(), new Locale(locale), timeFormat, mCtx));
 
 		if(timeFormat.equals("pretty")) {
 			holder.issueCommentDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), mCtx));

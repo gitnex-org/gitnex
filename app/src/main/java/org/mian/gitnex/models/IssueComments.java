@@ -8,94 +8,106 @@ import java.util.Date;
 
 public class IssueComments {
 
-    private int id;
-    private String html_url;
-    private String pull_request_url;
-    private String issue_url;
-    private String body;
-    private Date created_at;
-    private Date created_date;
-    private Date updated_at;
+	private int id;
+	private String html_url;
+	private String pull_request_url;
+	private String issue_url;
+	private String body;
+	private Date created_at;
+	private Date updated_at;
 
-    private userObject user;
+	private userObject user;
 
-    public IssueComments(String body) {
-        this.body = body;
-    }
+	public IssueComments(String body) {
 
-    public class userObject {
+		this.body = body;
+	}
 
-        private int id;
-        private String login;
-        private String full_name;
-        private String email;
-        private String avatar_url;
-        private String language;
-        private String username;
+	public class userObject {
 
-        public int getId() {
-            return id;
-        }
+		private int id;
+		private String login;
+		private String full_name;
+		private String email;
+		private String avatar_url;
+		private String language;
+		private String username;
 
-        public String getLogin() {
-            return login;
-        }
+		public int getId() {
 
-        public String getFull_name() {
-            return full_name;
-        }
+			return id;
+		}
 
-        public String getEmail() {
-            return email;
-        }
+		public String getLogin() {
 
-        public String getAvatar_url() {
-            return avatar_url;
-        }
+			return login;
+		}
 
-        public String getLanguage() {
-            return language;
-        }
+		public String getFull_name() {
 
-        public String getUsername() {
-            return username;
-        }
+			return full_name;
+		}
 
-    }
+		public String getEmail() {
 
-    public int getId() {
-        return id;
-    }
+			return email;
+		}
 
-    public String getHtml_url() {
-        return html_url;
-    }
+		public String getAvatar_url() {
 
-    public String getPull_request_url() {
-        return pull_request_url;
-    }
+			return avatar_url;
+		}
 
-    public String getIssue_url() {
-        return issue_url;
-    }
+		public String getLanguage() {
 
-    public String getBody() {
-        return body;
-    }
+			return language;
+		}
 
-    public Date getCreated_at() {
-        return created_at;
-    }
+		public String getUsername() {
 
-    public Date getCreated_date() {
-        return created_date;
-    }
+			return username;
+		}
 
-    public userObject getUser() {
-        return user;
-    }
+	}
 
-    public Date getUpdated_at() {
-        return updated_at;
-    }
+	public int getId() {
+
+		return id;
+	}
+
+	public String getHtml_url() {
+
+		return html_url;
+	}
+
+	public String getPull_request_url() {
+
+		return pull_request_url;
+	}
+
+	public String getIssue_url() {
+
+		return issue_url;
+	}
+
+	public String getBody() {
+
+		return body;
+	}
+
+	public Date getCreated_at() {
+
+		return created_at;
+	}
+
+	public userObject getUser() {
+
+		return user;
+	}
+
+	public Date getUpdated_at() {
+
+		return updated_at;
+	}
+
 }
