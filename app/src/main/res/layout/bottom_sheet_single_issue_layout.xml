@@ -88,7 +88,8 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/unsubscribeIssue"
