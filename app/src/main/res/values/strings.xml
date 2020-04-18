@@ -618,6 +618,8 @@
     <string name="tabIssueOpen">Open</string>
     <string name="tabIssueClosed">Closed</string>
 
+    <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
+
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
