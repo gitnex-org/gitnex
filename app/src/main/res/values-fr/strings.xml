@@ -120,8 +120,8 @@
     <string name="infoTabRepoForksCount">Bifurcations</string>
     <string name="infoTabRepoCreatedAt">Créé</string>
     <string name="infoTabRepoUpdatedAt">Dernière modification</string>
-    <string name="infoShowMoreInformation">Show More Information</string>
-    <string name="infoMoreInformation">More Information</string>
+    <string name="infoShowMoreInformation">Voir plus d’informations</string>
+    <string name="infoMoreInformation">Plus d’informations</string>
     <string name="timeAtText">à</string>
     <string name="createdText">Ouvert\u0020</string>
     <string name="dueDateText">Échéance</string>
@@ -213,8 +213,8 @@
     <string name="settingsPdfModeHeaderText">PDF mode nuit</string>
     <string name="fileViewerHeader">Visionneuse de fichiers</string>
     <string name="settingsCounterBadges">Compteurs</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Thème du code source</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Thème du code source</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -495,6 +495,12 @@
     <string name="closeMilestone">Fermer le jalon</string>
     <string name="openMilestone">Ouvrir le jalon</string>
     <string name="milestoneStatusUpdate">Jalon mis à jour</string>
-    <string name="tabIssueOpen">Open</string>
-    <string name="tabIssueClosed">Closed</string>
+    <string name="tabIssueOpen">Ouvert</string>
+    <string name="tabIssueClosed">Fermé</string>
+    <string name="errorOnLogin">Impossible d’accéder au serveur, veuillez vérifier son statut</string>
+    <string name="reportViewerHeader">Rapports de plantage</string>
+    <string name="settingsEnableReportsText">Activer les rapports de plantage</string>
+    <string name="crashTitle">GitNex s’est arrêté :(</string>
+    <string name="setCrashReports">Rapports de plantage</string>
+    <string name="crashMessage">Appuyez sur OK pour nous envoyer le rapport de plantage par e-mail. Cela nous aidera à corriger le problème :)\n\nVous pouvez également y ajouter vos propres remarques. Merci !</string>
 </resources>

@@ -63,7 +63,7 @@
     <string name="logo">登录到 Gitea</string>
     <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。 \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。</string>
     <string name="loginFailed">用户名或密码错误</string>
-    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
+    <string name="malformedUrl">无法连接到主机，请检查您的URL或端口是否有任何错误。</string>
     <string name="protocolError">非本地网络建议使用HTTPS安全协议进行访问。</string>
     <string name="malformedJson">JSON 格式错误。服务器响应不成功。</string>
     <string name="emptyFieldURL">未填写 Gitea访问地址</string>
@@ -497,4 +497,10 @@
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
     <string name="tabIssueOpen">Open</string>
     <string name="tabIssueClosed">Closed</string>
+    <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
+    <string name="reportViewerHeader">Crash Reports</string>
+    <string name="settingsEnableReportsText">Enable Crash Reports</string>
+    <string name="crashTitle">GitNex has stopped :(</string>
+    <string name="setCrashReports">Crash reports</string>
+    <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
 </resources>

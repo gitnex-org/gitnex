@@ -499,4 +499,10 @@ autorizzazione</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
     <string name="tabIssueOpen">Open</string>
     <string name="tabIssueClosed">Closed</string>
+    <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
+    <string name="reportViewerHeader">Crash Reports</string>
+    <string name="settingsEnableReportsText">Enable Crash Reports</string>
+    <string name="crashTitle">GitNex has stopped :(</string>
+    <string name="setCrashReports">Crash reports</string>
+    <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
 </resources>
