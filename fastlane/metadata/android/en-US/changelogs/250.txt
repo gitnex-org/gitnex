@@ -1,0 +1,18 @@
+2.5.0
+
+New:
+- Share issues, repositories, comments
+- Changelog popup
+- Show size of files in Files tab
+- Repository commits
+- Self signed certificates support
+- Counter badges for PR and Releases
+- Subscribe/unsubscribe to issue
+- Redesign repo info screen
+- Close / Reopen milestone
+- Theme auto switcher (choose from settings)
+- Merge open and closed issues under one tab
+- Integrate crash reporting
+
+Check release notes for complete list
+https://gitea.com/gitnex/GitNex/releases
