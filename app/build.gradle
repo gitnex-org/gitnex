@@ -6,8 +6,8 @@ android {
         applicationId "org.mian.gitnex"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 104
-        versionName "2.5.0-rc4"
+        versionCode 250
+        versionName "2.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="2.5.0-rc4" versioncode="104">
-        <change>Release notes will be published with the stable release.</change>
-        <change>In the mean time check the milestone 2.5.0 for pull requests and issues that are merged/closed.</change>
+    <release version="2.5.0" versioncode="250">
+        <change>New: Share issues, repositories, comments</change>
+        <change>New: Changelog popup</change>
+        <change>New: Show size of files in Files tab</change>
+        <change>New: Repository commits</change>
+        <change>New: Self signed certificates support</change>
+        <change>New: Counter badges for PR and Releases</change>
+        <change>New: Subscribe/unsubscribe to issue</change>
+        <change>New: Redesign repo info screen</change>
+        <change>New: Close / Reopen milestone</change>
+        <change>New: Theme auto switcher (choose from settings)</change>
+        <change>New: Merge open and closed issues under one tab</change>
+        <change>New: Integrate crash reporting</change>
+        <change>Improvement: Better detection of internet connection on login screen</change>
+        <change>Improvement: Token login is now prioritized (login via token is recommended)</change>
+        <change>Improvement: Focus on input and trigger keyboard</change>
+        <change>Improvement: Create repo from organization</change>
+        <change>Improvement: Show useful message for reserved keywords</change>
+        <change>Improvement: Placeholder for images</change>
+        <change>Improvement: Bottomsheets instead of popup menus</change>
+        <change>Improvement: Caching images for offline mode</change>
+        <change>Improvement: FAB button to comment on issue</change>
+        <change>Improvement: Snackbar (login screen)</change>
+        <change>Improvement: Refactor Issues tabs</change>
+        <change>Improvement: Multiple merge options like web UI</change>
+        <change>Improvement: Manrope as default font</change>
+        <change>Improvement: Remember login type</change>
+        <change>Improvement: Improve labels</change>
+        <change>Improvement: Hide collaborators tab for non admins</change>
+        <change>Bugfix: Use correct protocol when open repo in browser</change>
+        <change>Bugfix: Can't choose token selector when internet is Off</change>
+        <change>Bugfix: Empty repositories screen on new logins</change>
+        <change>Bugfix: Issues search bug</change>
+        <change>Bugfix: Crash on version API when REQUIRE_SIGNIN_VIEW is set to true</change>
+        <change>Bugfix: Milestone desc and due date disappreance bug</change>
+        <change>Bugfix: Date/time in issue comments bug</change>
     </release>
 
 </changelog>
