@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Nazwa użytkownika jest wymagana</string>
     <string name="emptyFieldPassword">Hasło jest wymagane</string>
     <string name="checkNetConnection">Nie można uzyskać dostępu do sieci, sprawdź swoje połączenie internetowe</string>
-    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
+    <string name="netConnectionIsBack">Jej, mamy połączenie z Internetem!</string>
     <string name="repoNameErrorEmpty">Nazwa repozytorium jest pusta</string>
     <string name="repoNameErrorInvalid">Nazwa repozytorium jest nieprawidłowa. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Nazwa repozytorium jest zarezerwowana</string>
@@ -120,8 +120,8 @@
     <string name="infoTabRepoForksCount">Forki</string>
     <string name="infoTabRepoCreatedAt">Utworzono</string>
     <string name="infoTabRepoUpdatedAt">Ostatnia aktualizacja</string>
-    <string name="infoShowMoreInformation">Show More Information</string>
-    <string name="infoMoreInformation">More Information</string>
+    <string name="infoShowMoreInformation">Pokaż więcej informacji</string>
+    <string name="infoMoreInformation">Więcej informacji</string>
     <string name="timeAtText">w</string>
     <string name="createdText">Otwarty\u0020</string>
     <string name="dueDateText">Termin</string>
@@ -135,7 +135,7 @@
     <string name="issueTypePullRequest">Typ: Pull Request</string>
     <string name="issueCommenter">Komentujący:\u0020</string>
     <string name="issueMilestone">Etap %1$s</string>
-    <string name="dueDate">Due on %1$s</string>
+    <string name="dueDate">Termin %1$s</string>
     <string name="createdTime">Otwarto %1$s</string>
     <string name="assignedTo">Przypisano do: %1$s</string>
     <string name="commentButtonText">Komentarz</string>
@@ -143,15 +143,15 @@
     <string name="commentSuccess">Komentarz wysłany</string>
     <string name="commentError">Coś poszło nie tak, spróbuj ponownie</string>
     <string name="generalImgContentText">Awatar</string>
-    <string name="noDataMilestonesTab">Nie znaleziono kamieni milowych</string>
-    <string name="commitAuthor">Autor commit: %1$s</string>
+    <string name="noDataMilestonesTab">Nie znaleziono etapów</string>
+    <string name="commitAuthor">Autor commitu: %1$s</string>
     <string name="commitHash">Hash commita \n%1$s%2$s</string>
     <string name="releaseTitle">Tytuł wydania</string>
     <string name="releaseDescription">Opis wydania</string>
     <string name="releaseDownloadText">Pobrania</string>
     <string name="releaseType">Typ wydania</string>
-    <string name="releaseZip">Wydaj Zip</string>
-    <string name="releaseTar">Wydaj Tar</string>
+    <string name="releaseZip">Wydanie Zip</string>
+    <string name="releaseTar">Wydanie Tar</string>
     <string name="noDataReleasesTab">Nie znaleziono wydań</string>
     <string name="releaseTag">Tag: %1$s</string>
     <string name="collaboratorsNameToast">Współpracujący: %1$s</string>
@@ -213,8 +213,8 @@
     <string name="settingsPdfModeHeaderText">Tryb nocny PDF</string>
     <string name="fileViewerHeader">Przeglądarka plików</string>
     <string name="settingsCounterBadges">Odznaki liczników</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Motyw kodu źródłowego</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Wybierz motyw kodu źródłowego</string>
     <!-- settings -->
     <string name="noMoreData">Brak dostępnych danych</string>
     <string name="createLabel">Nowa etykieta</string>
@@ -245,10 +245,10 @@
     <!-- org tabbed layout str -->
     <string name="title_activity_org_detail">Szczegółowa aktywność organizacji</string>
     <string name="orgTabRepos">Repozytoria</string>
-    <string name="orgTabTeams">Drużyny</string>
+    <string name="orgTabTeams">Zespoły</string>
     <string name="orgTabMembers">Członkowie</string>
     <string name="orgCreateTeam">Nowy zespół</string>
-    <string name="noDataTeams">Nie znaleziono drużyn</string>
+    <string name="noDataTeams">Nie znaleziono zespołów</string>
     <string name="teamTitle">Nazwa zespołu</string>
     <string name="teamDescription">Opis zespołu</string>
     <string name="teamPermission">Pozwolenie: %1$s</string>
@@ -311,8 +311,8 @@
     <string name="addRemoveAssignees2">Dodaj przypisanych osób</string>
     <string name="addRemoveAssignees">Dodaj / Usuń przypisanych osób</string>
     <string name="assigneesUpdated">Zaktualizowano przypisanych</string>
-    <string name="singleIssueSubscribe">Subscribe</string>
-    <string name="singleIssueUnSubscribe">Unsubscribe</string>
+    <string name="singleIssueSubscribe">Subskrybuj</string>
+    <string name="singleIssueUnSubscribe">Anuluj subskrypcję</string>
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Wybierz wpisy</string>
@@ -366,11 +366,11 @@
     <string name="repoWatchersInMenu">Obserwatorzy</string>
     <string name="noDataStargazers">Nie znaleziono gwiazdek</string>
     <string name="noDataWatchers">Nie znaleziono obserwatorów</string>
-    <string name="noDataWebsite">No website found</string>
+    <string name="noDataWebsite">Nie znaleziono strony internetowej</string>
     <string name="starMember">Gwiazdka</string>
     <string name="watcherMember">Obserwujący</string>
     <string name="commitLinkBranchesTab">Commit</string>
-    <string name="zipArchiveDownloadReleasesTab">Archiwum ZIP</string>
+    <string name="zipArchiveDownloadReleasesTab">Archiwum Zip</string>
     <string name="tarArchiveDownloadReleasesTab">Archiwum Tar</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">Nazwa pliku</string>
@@ -433,7 +433,7 @@
     <string name="unWatchRepositorySuccess">Repozytorium usunięte z listy obserwacyjnej</string>
     <string name="versionUnsupportedOld">Wykryto nieobsługiwaną starą wersję(%1$s) Gitea. Proszę zaktualizować do najnowszej stabilnej wersji. Jeśli kontynuujesz, aplikacja może nie działać poprawnie.</string>
     <string name="versionSupportedOld">Wykryto starą wersję Gitea, proszę zaktualizować do najnowszej stabilnej wersji</string>
-    <string name="versionUnsupportedNew">Wykryto nową wersję Gitea! Proszę AKTUALIZUJ GitNex!</string>
+    <string name="versionUnsupportedNew">Wykryto nową wersję Gitea! Proszę ZAKTUALIZOWAĆ GitNex!</string>
     <string name="versionSupportedLatest">Wersja Gitea jest aktualna</string>
     <string name="versionDevelopment">Wersja rozwojowa Gitea</string>
     <string name="versionUnknow">Nie wykryto Gitea!</string>
@@ -446,7 +446,7 @@
     <string name="noDataPullRequests">Nie znaleziono pull requestów</string>
     <string name="prCreator">Twórca:\u0020</string>
     <string name="editPrText">Edytuj Pull Request</string>
-    <string name="copyPrUrlText">Skopiuj Pull Request URL</string>
+    <string name="copyPrUrlText">Skopiuj adres URL Pull Requesta</string>
     <string name="editPrNavHeader">Edytuj Pull Request #%1$s</string>
     <string name="editPrSuccessMessage">Zaktualizowano Pull Request</string>
     <string name="fileDiffViewHeader">%1$s Plików zmienionych</string>
@@ -488,13 +488,19 @@
     <string name="mtm_decision_once">Raz</string>
     <string name="mtm_decision_abort">Przerwij</string>
     <string name="issueCommentShare">Udostępnij komentarz</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
-    <string name="closeMilestone">Close Milestone</string>
-    <string name="openMilestone">Open Milestone</string>
-    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="tabIssueOpen">Open</string>
-    <string name="tabIssueClosed">Closed</string>
+    <string name="issueSubscribtion">Problem zasubskrybowany</string>
+    <string name="issueSubscribtionError">Błąd subskrypcji</string>
+    <string name="issueUnsubscribtion">Subskrypcja problemu anulowana</string>
+    <string name="issueUnsubscribtionError">Błąd anulowania subskrypcji</string>
+    <string name="closeMilestone">Zamknij etap</string>
+    <string name="openMilestone">Otwórz etap</string>
+    <string name="milestoneStatusUpdate">Status etapu zaktualizowany pomyślnie</string>
+    <string name="tabIssueOpen">Otwarte</string>
+    <string name="tabIssueClosed">Zamknięte</string>
+    <string name="errorOnLogin">Nie możemy połączyć się z serwerem, sprawdź status serwera</string>
+    <string name="reportViewerHeader">Raporty awarii</string>
+    <string name="settingsEnableReportsText">Włącz raporty awarii</string>
+    <string name="crashTitle">GitNex zatrzymał się :(</string>
+    <string name="setCrashReports">Raporty awarii</string>
+    <string name="crashMessage">Możesz nacisnąć przycisk OK, aby wysłać raport o awarii pocztą elektroniczną. Pomoże to naprawić to :)\n\nMożesz również dodać dodatkowe treści w wiadomości e-mail. Dziękujemy!</string>
 </resources>
