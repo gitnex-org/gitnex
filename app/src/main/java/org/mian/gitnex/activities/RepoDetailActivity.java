@@ -165,8 +165,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
             // pull count
             if (textViewBadgePull.getText() != "") { // only show if API returned a number
-                Objects.requireNonNull(tabLayout.getTabAt(3)).setCustomView(tabHeader4);
-                TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(3);
+                Objects.requireNonNull(tabLayout.getTabAt(4)).setCustomView(tabHeader4);
+                TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(4);
                 assert tabOpenPulls != null;
                 TextView openPullTabView = Objects.requireNonNull(tabOpenPulls.getCustomView()).findViewById(R.id.counterBadgePullText);
                 openPullTabView.setTextColor(textColor);
@@ -299,18 +299,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
             Fragment fragment = null;
             switch (position) {
-                case 0: // information
-                    return RepoInfoFragment.newInstance(repoOwner, repoName);
-                case 1: // files
+                case 0: // files
                     return FilesFragment.newInstance(repoOwner, repoName);
+                case 1: // information
+                    return RepoInfoFragment.newInstance(repoOwner, repoName);
                 case 2: // issues
                     fragment = new IssuesMainFragment();
                     break;
-                case 3: // pull requests
+                case 3: // branches
+                    return BranchesFragment.newInstance(repoOwner, repoName);
+                case 4: // pull requests
                     fragment = new PullRequestsFragment();
                     break;
-                case 4: // branches
-                    return BranchesFragment.newInstance(repoOwner, repoName);
                 case 5: // releases
                     return ReleasesFragment.newInstance(repoOwner, repoName);
                 case 6: // milestones
