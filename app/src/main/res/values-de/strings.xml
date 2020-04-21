@@ -70,7 +70,7 @@
     <string name="emptyFieldUsername">Benutzername ist erforderlich</string>
     <string name="emptyFieldPassword">Passwort ist erforderlich</string>
     <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen. Bitte überprüfe die Internetverbindung</string>
-    <string name="netConnectionIsBack">Juhu, wir haben Internetverbindung!</string>
+    <string name="netConnectionIsBack">Juhu, wir haben eine Internetverbindung!</string>
     <string name="repoNameErrorEmpty">Der Repository Name ist leer.</string>
     <string name="repoNameErrorInvalid">Der Repository Name ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository-Name ist reserviert</string>
@@ -495,6 +495,12 @@
     <string name="closeMilestone">Meilenstein schließen</string>
     <string name="openMilestone">Meilenstein wieder öffnen</string>
     <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>
-    <string name="tabIssueOpen">Offene</string>
-    <string name="tabIssueClosed">Geschlossene</string>
+    <string name="tabIssueOpen">Offen</string>
+    <string name="tabIssueClosed">Geschlossen</string>
+    <string name="errorOnLogin">Der Server kann nicht erreicht werden, bitte überprüfe deinen Serverstatus</string>
+    <string name="reportViewerHeader">Absturzberichte</string>
+    <string name="settingsEnableReportsText">Absturzberichte aktivieren</string>
+    <string name="crashTitle">GitNex hat gestoppt :(</string>
+    <string name="setCrashReports">Absturzberichte</string>
+    <string name="crashMessage">Klicke auf OK, um den Absturzbericht per E-Mail zu senden. Es wird helfen, diesen zu beheben :)\n\nDu könntest auch zusätzliche Infos in der E-Mail angeben. Danke für deine Hilfe!</string>
 </resources>
