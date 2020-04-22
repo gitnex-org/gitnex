@@ -17,7 +17,7 @@ No trackers are used and source code is available here for anyone to audit.
 ## Downloads
 [<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex)
-[<img alt='Download APK' src='https://gitnex.com/img/download-apk.png' height="80"/>](https://gitnex.com/download/)
+[<img alt='Download APK' src='https://gitnex.com/img/download-apk.png' height="80"/>](https://cloud.swatian.com/s/QoDFzMxmnf2FfYw)
 
 Download latest build from master: [https://cloud.swatian.com/s/Cq592xGEfnsGAAW](https://cloud.swatian.com/s/Cq592xGEfnsGAAW)
 
