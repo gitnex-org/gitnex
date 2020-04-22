@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitsActivity;
@@ -34,7 +35,7 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.Branch
 
             branchNameTv = itemView.findViewById(R.id.branchName);
             branchCommitAuthor = itemView.findViewById(R.id.branchCommitAuthor);
-            TextView branchCommitHash = itemView.findViewById(R.id.branchCommitHash);
+            Button branchCommitHash = itemView.findViewById(R.id.branchCommitHash);
 
             branchCommitHash.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
