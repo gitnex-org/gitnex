@@ -464,6 +464,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         assert userDetails != null;
                         if(userDetails.getIs_admin() != null) {
                             tinyDb.putBoolean("userIsAdmin", userDetails.getIs_admin());
+                            navigationView.getMenu().findItem(R.id.nav_administration).setVisible(userDetails.getIs_admin());
                         }
                         tinyDb.putString("userLogin", userDetails.getLogin());
                         tinyDb.putInt("userId", userDetails.getId());
