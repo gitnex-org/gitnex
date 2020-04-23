@@ -32,6 +32,7 @@
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">Logout</string>
     <string name="navExplore">Explore</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
 
     <!-- page titles -->
@@ -56,6 +57,7 @@
     <string name="pageTitleAddEmail">Add Email Address</string>
     <string name="pageTitleNewFile">New File</string>
     <string name="pageTitleExplore">Explore</string>
+    <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
 
     <string name="appVersion">Version\u0020:\u0020</string>
@@ -413,7 +415,7 @@
 
     <!-- admin -->
     <string name="adminCreateNewUser">Add New User</string>
-    <string name="adminUsers">Users</string>
+    <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Admin</string>
     <!-- admin -->
 

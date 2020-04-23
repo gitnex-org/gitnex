@@ -23,6 +23,10 @@
         <item android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person_24dp"
             android:title="@string/navProfile" />
+        <item android:id="@+id/nav_administration"
+            android:icon="@drawable/ic_admin"
+            android:title="@string/navAdministration"
+            android:visible="false" />
     </group>
 
     <group android:checkableBehavior="single"
