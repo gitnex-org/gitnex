@@ -16,20 +16,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.adapters.PullRequestsAdapter;
-import org.mian.gitnex.clients.PullRequestsService;
+import org.mian.gitnex.adapters.IssuesAdapter;
+import org.mian.gitnex.clients.IssuesService;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.VersionCheck;
 import org.mian.gitnex.interfaces.ApiInterface;
-import org.mian.gitnex.models.PullRequests;
+import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,25 +41,26 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class PullRequestsFragment extends Fragment {
+public class IssuesFragment extends Fragment {
 
 	private Menu menu;
-	private ProgressBar mProgressBar;
 	private RecyclerView recyclerView;
-	private List<PullRequests> prList;
-	private PullRequestsAdapter adapter;
-	private ApiInterface apiPR;
-	private String TAG = StaticGlobalVariables.tagPullRequestsList;
+	private List<Issues> issuesList;
+	private IssuesAdapter adapter;
+	private ApiInterface api;
 	private Context context;
-	private int pageSize = StaticGlobalVariables.prPageInit;
-	private TextView noData;
+	private int pageSize = StaticGlobalVariables.issuesPageInit;
+	private ProgressBar mProgressBar;
+	private String TAG = StaticGlobalVariables.tagIssuesList;
+	private TextView noDataIssues;
 	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+	private String requestType = StaticGlobalVariables.issuesRequestType;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		final View v = inflater.inflate(R.layout.fragment_pull_requests, container, false);
+		final View v = inflater.inflate(R.layout.fragment_issues, container, false);
 		setHasOptionsMenu(true);
 		context = getContext();
 
@@ -81,58 +81,56 @@ public class PullRequestsFragment extends Fragment {
 		}
 
 		recyclerView = v.findViewById(R.id.recyclerView);
-		prList = new ArrayList<>();
+		issuesList = new ArrayList<>();
 
 		mProgressBar = v.findViewById(R.id.progress_bar);
-		noData = v.findViewById(R.id.noData);
+		noDataIssues = v.findViewById(R.id.noDataIssues);
 
 		swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
-			loadInitial(instanceToken, repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);
+			loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 			adapter.notifyDataChanged();
 
 		}, 200));
 
-		adapter = new PullRequestsAdapter(getContext(), prList);
+		adapter = new IssuesAdapter(getContext(), issuesList);
 		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
 
-			if(prList.size() == 10 || pageSize == resultLimit) {
+			if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 
-				int page = (prList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, tinyDb.getString("repoPrState"), resultLimit);
+				int page = (issuesList.size() + resultLimit) / resultLimit;
+				loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
 			}
 
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		recyclerView.setHasFixedSize(true);
-		recyclerView.addItemDecoration(dividerItemDecoration);
 		recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		recyclerView.setAdapter(adapter);
 
-		((RepoDetailActivity) Objects.requireNonNull(getActivity())).setFragmentRefreshListenerPr(prState -> {
+		((RepoDetailActivity) Objects.requireNonNull(getActivity())).setFragmentRefreshListener(issueState -> {
 
-			if(prState.equals("closed")) {
+			if(issueState.equals("closed")) {
 				menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
 			}
 			else {
 				menu.getItem(1).setIcon(R.drawable.ic_filter);
 			}
 
-			prList.clear();
-			adapter = new PullRequestsAdapter(context, prList);
-			tinyDb.putString("repoPrState", prState);
+			issuesList.clear();
+			adapter = new IssuesAdapter(getContext(), issuesList);
+			tinyDb.putString("repoIssuesState", issueState);
 			mProgressBar.setVisibility(View.VISIBLE);
-			noData.setVisibility(View.GONE);
-			loadInitial(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, pageSize, prState, resultLimit);
+			noDataIssues.setVisibility(View.GONE);
+			loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, issueState);
 			recyclerView.setAdapter(adapter);
 
 		});
 
-		apiPR = PullRequestsService.createService(ApiInterface.class, instanceUrl, context);
-		loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);
+		api = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
+		loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
 		return v;
 
@@ -150,53 +148,50 @@ public class PullRequestsFragment extends Fragment {
 		final String repoName = parts[1];
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-		if(tinyDb.getBoolean("resumePullRequests")) {
+		if(tinyDb.getBoolean("resumeIssues")) {
 
-			loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);
-			tinyDb.putBoolean("resumePullRequests", false);
-			tinyDb.putBoolean("prMerged", false);
+			loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+			tinyDb.putBoolean("resumeIssues", false);
 
 		}
 
 	}
 
-	private void loadInitial(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
+	private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType, String issueState) {
 
-		Call<List<PullRequests>> call = apiPR.getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
+		Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, 1, resultLimit, requestType, issueState);
 
-		call.enqueue(new Callback<List<PullRequests>>() {
+		call.enqueue(new Callback<List<Issues>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<PullRequests>> call, @NonNull Response<List<PullRequests>> response) {
+			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
 				if(response.isSuccessful()) {
 
 					assert response.body() != null;
 					if(response.body().size() > 0) {
 
-						prList.clear();
-						prList.addAll(response.body());
+						issuesList.clear();
+						issuesList.addAll(response.body());
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.GONE);
+						noDataIssues.setVisibility(View.GONE);
 
 					}
 					else {
-						prList.clear();
+						issuesList.clear();
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.VISIBLE);
+						noDataIssues.setVisibility(View.VISIBLE);
 					}
 					mProgressBar.setVisibility(View.GONE);
 				}
 				else {
-					Log.i(TAG, String.valueOf(response.code()));
+					Log.e(TAG, String.valueOf(response.code()));
 				}
-
-				Log.i(TAG, String.valueOf(response.code()));
 
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<PullRequests>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
 				Log.e(TAG, t.toString());
 			}
@@ -205,31 +200,31 @@ public class PullRequestsFragment extends Fragment {
 
 	}
 
-	private void loadMore(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
+	private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState) {
 
 		//add loading progress view
-		prList.add(new PullRequests("load"));
-		adapter.notifyItemInserted((prList.size() - 1));
+		issuesList.add(new Issues("load"));
+		adapter.notifyItemInserted((issuesList.size() - 1));
 
-		Call<List<PullRequests>> call = apiPR.getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
+		Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState);
 
-		call.enqueue(new Callback<List<PullRequests>>() {
+		call.enqueue(new Callback<List<Issues>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<PullRequests>> call, @NonNull Response<List<PullRequests>> response) {
+			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
 				if(response.isSuccessful()) {
 
 					//remove loading view
-					prList.remove(prList.size() - 1);
+					issuesList.remove(issuesList.size() - 1);
 
-					List<PullRequests> result = response.body();
+					List<Issues> result = response.body();
 
 					assert result != null;
 					if(result.size() > 0) {
 
 						pageSize = result.size();
-						prList.addAll(result);
+						issuesList.addAll(result);
 
 					}
 					else {
@@ -251,7 +246,7 @@ public class PullRequestsFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<PullRequests>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
 				Log.e(TAG, t.toString());
 
@@ -265,12 +260,12 @@ public class PullRequestsFragment extends Fragment {
 
 		this.menu = menu;
 		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu_pr, menu);
+		inflater.inflate(R.menu.filter_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 
 		TinyDB tinyDb = new TinyDB(context);
 
-		if(tinyDb.getString("repoPrState").equals("closed")) {
+		if(tinyDb.getString("repoIssuesState").equals("closed")) {
 			menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
 		}
 		else {
@@ -303,9 +298,9 @@ public class PullRequestsFragment extends Fragment {
 
 	private void filter(String text) {
 
-		List<PullRequests> arr = new ArrayList<>();
+		List<Issues> arr = new ArrayList<>();
 
-		for(PullRequests d : prList) {
+		for(Issues d : issuesList) {
 			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text)) {
 				arr.add(d);
 			}

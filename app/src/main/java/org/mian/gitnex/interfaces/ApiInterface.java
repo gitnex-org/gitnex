@@ -97,10 +97,7 @@ public interface ApiInterface {
     Call<UserRepositories> getUserRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
     @GET("repos/{owner}/{repo}/issues") // get issues by repo
-    Call<List<Issues>> getIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("limit") int limit, @Query("type") String requestType);
-
-    @GET("repos/{owner}/{repo}/issues") // get closed issues by repo
-    Call<List<Issues>> getClosedIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("state") String issueState, @Query("limit") int limit, @Query("type") String requestType);
+    Call<List<Issues>> getIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("limit") int limit, @Query("type") String requestType, @Query("state") String issueState);
 
     @GET("repos/{owner}/{repo}/issues/{index}") // get issue by id
     Call<Issues> getIssueByIndex(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex);
