@@ -27,9 +27,9 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.AboutFragment;
+import org.mian.gitnex.fragments.AdministrationFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
-import org.mian.gitnex.fragments.BottomSheetNavSubMenuFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
@@ -151,19 +151,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         else if (fragmentById instanceof AboutFragment) {
             toolbarTitle.setText(getResources().getString(R.string.pageTitleAbout));
         }
+        else if (fragmentById instanceof AdministrationFragment) {
+            toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
+        }
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         final View hView = navigationView.getHeaderView(0);
-
-        ImageView navSubMenu = hView.findViewById(R.id.navSubMenu);
-        navSubMenu.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                BottomSheetNavSubMenuFragment bottomSheet = new BottomSheetNavSubMenuFragment();
-                bottomSheet.show(getSupportFragmentManager(), "adminMenuBottomSheet");
-            }
-        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -370,6 +365,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ExploreRepositoriesFragment()).commit();
+                break;
+            case R.id.nav_administration:
+                toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AdministrationFragment()).commit();
                 break;
 
         }

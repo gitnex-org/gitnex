@@ -50,16 +50,6 @@
             android:paddingStart="20dp"
             android:paddingEnd="5dp" />
 
-        <ImageView
-            android:id="@+id/navSubMenu"
-            android:layout_width="0dp"
-            android:layout_weight="0.15"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_dotted_menu"
-            android:layout_gravity="bottom"
-            android:scaleType="fitStart"
-            android:contentDescription="@string/menuContentDesc"/>
-
     </LinearLayout>
 
     <View
