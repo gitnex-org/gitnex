@@ -2,7 +2,6 @@ package org.mian.gitnex.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -207,57 +206,52 @@ public class IssuesClosedFragment extends Fragment implements ItemFilterListener
         footerAdapter.clear();
         //noinspection unchecked
         footerAdapter.add(new ProgressItem().withEnabled(false));
-        Handler handler = new Handler();
 
-        handler.postDelayed(() -> {
+        Call<List<Issues>> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().getClosedIssues(token, repoOwner, repoName, currentPage + 1, issueState, resultLimit, requestType);
 
-            Call<List<Issues>> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().getClosedIssues(token, repoOwner, repoName, currentPage + 1, issueState, resultLimit, requestType);
+        call.enqueue(new Callback<List<Issues>>() {
 
-            call.enqueue(new Callback<List<Issues>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
-                @Override
-                public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
+                if(response.isSuccessful()) {
 
-                    if(response.isSuccessful()) {
+                    assert response.body() != null;
 
-                        assert response.body() != null;
+                    if(response.body().size() > 0) {
 
-                        if(response.body().size() > 0) {
+                        loadNextFlag = response.body().size() == resultLimit;
 
-                            loadNextFlag = response.body().size() == resultLimit;
+                        for(int i = 0; i < response.body().size(); i++) {
 
-                            for(int i = 0; i < response.body().size(); i++) {
-
-                                fastItemAdapter.add(fastItemAdapter.getAdapterItemCount(), new IssuesAdapter(getContext()).withNewItems(response.body().get(i).getTitle(), response.body().get(i).getNumber(), response.body().get(i).getUser().getAvatar_url(), response.body().get(i).getCreated_at(), response.body().get(i).getComments(), response.body().get(i).getUser().getFull_name(), response.body().get(i).getUser().getLogin()));
-
-                            }
-
-                            footerAdapter.clear();
-                            mProgressBarClosed.setVisibility(View.GONE);
+                            fastItemAdapter.add(fastItemAdapter.getAdapterItemCount(), new IssuesAdapter(getContext()).withNewItems(response.body().get(i).getTitle(), response.body().get(i).getNumber(), response.body().get(i).getUser().getAvatar_url(), response.body().get(i).getCreated_at(), response.body().get(i).getComments(), response.body().get(i).getUser().getFull_name(), response.body().get(i).getUser().getLogin()));
 
                         }
-                        else {
-                            footerAdapter.clear();
-                        }
 
+                        footerAdapter.clear();
                         mProgressBarClosed.setVisibility(View.GONE);
 
                     }
                     else {
-                        Log.i(TAG, String.valueOf(response.code()));
+                        footerAdapter.clear();
                     }
 
+                    mProgressBarClosed.setVisibility(View.GONE);
+
+                }
+                else {
+                    Log.i(TAG, String.valueOf(response.code()));
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
+            }
 
-                    Log.i(TAG, t.toString());
-                }
+            @Override
+            public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-            });
+                Log.i(TAG, t.toString());
+            }
 
-        }, 1000);
+        });
 
         if(!loadNextFlag) {
             footerAdapter.clear();
