@@ -1,18 +1,12 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://gitea.com/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://gitea.com/gitnex/GitNex/releases)
-[![Build Status](https://drone.gitea.com/api/badges/gitnex/GitNex/status.svg)](https://drone.gitea.com/gitnex/GitNex)
-[![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex)
-[![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://gitea.com/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://gitea.com/gitnex/GitNex/releases) [![Build Status](https://drone.gitea.com/api/badges/gitnex/GitNex/status.svg)](https://drone.gitea.com/gitnex/GitNex) [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex) [![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
 
-[<img alt="Become a Patroen" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif)
-[<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"/>](https://liberapay.com/mmarif/donate)
+[<img alt="Become a Patroen" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif) [<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"/>](https://liberapay.com/mmarif/donate)
 
 # GitNex - Android client for Gitea
 
 GitNex is a free, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
 
-GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text.
-No trackers are used and source code is available here for anyone to audit.
+GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. No trackers are used and source code is available here for anyone to audit.
 
 ## Downloads
 [<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
@@ -46,8 +40,7 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`
 ## Translation
 Help us translate GitNex to your native language.
 
-We use [Crowdin](https://crowdin.com/project/gitnex) for translation.
-If your language is not listed, please request [here](https://gitea.com/gitnex/GitNex/issues) to add it to the project.
+We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your language is not listed, please request [here](https://gitea.com/gitnex/GitNex/issues) to add it to the project.
 
 **Link: https://crowdin.com/project/GitNex**
 
