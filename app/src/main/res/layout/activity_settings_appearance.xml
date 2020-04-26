@@ -2,21 +2,48 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/layoutTime"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="?attr/primaryBackgroundColor">
 
-    <TextView
-        android:id="@+id/tvAppearance"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:drawableStart="@drawable/ic_color"
-        android:drawablePadding="20dp"
-        android:text="@string/settingsAppearanceHeader"
-        android:textStyle="bold"
-        android:textColor="@color/colorDarkGreen"/>
+        android:theme="@style/Widget.AppCompat.SearchView">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/settingsAppearanceHeader"
+                android:textColor="?attr/primaryTextColor"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/themeSelectionFrame"
@@ -32,7 +59,7 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/themeSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -42,7 +69,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/themeSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"/>
 
@@ -52,7 +79,7 @@
         android:id="@+id/customFontFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -62,7 +89,7 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsCustomFontHeaderText"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -72,7 +99,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsCustomFontDefault"
             android:textColor="?attr/selectedTextColor"/>
 
@@ -82,7 +109,7 @@
         android:id="@+id/timeFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -92,7 +119,7 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsDateTimeHeaderText"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -102,7 +129,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsDateTimeHeaderDefault"
             android:textColor="?attr/selectedTextColor"/>
 
@@ -112,7 +139,7 @@
         android:id="@+id/counterBadgeFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
         <TextView
@@ -121,7 +148,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsCounterBadges"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -131,6 +158,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:switchMinWidth="56dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="24dp"
             android:layout_alignParentEnd="true"
             android:gravity="end"
             android:layout_gravity="end" />
@@ -141,7 +170,7 @@
         android:id="@+id/codeBlockFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -151,7 +180,7 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/codeBlockHeaderText"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -161,7 +190,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/codeBlockSelectedText"
             android:textColor="?attr/selectedTextColor"/>
 
@@ -171,7 +200,7 @@
         android:id="@+id/homeScreenFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -181,7 +210,7 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsHomeScreenHeaderText"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -191,7 +220,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsHomeScreenSelectedText"
             android:textColor="?attr/selectedTextColor"/>
 

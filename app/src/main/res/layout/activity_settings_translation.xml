@@ -2,21 +2,48 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_below="@+id/translationDivider"
     android:background="?attr/primaryBackgroundColor">
 
-    <TextView
-        android:id="@+id/tvLanguage"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:drawableStart="@drawable/ic_language"
-        android:drawablePadding="20dp"
-        android:text="@string/settingsLanguageHeaderText"
-        android:textStyle="bold"
-        android:textColor="@color/colorDarkGreen"/>
+        android:theme="@style/Widget.AppCompat.SearchView">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/settingsLanguageHeaderText"
+                android:textColor="?attr/primaryTextColor"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/langFrame"
@@ -32,7 +59,7 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsLanguageSelectorHeader"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -42,7 +69,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/settingsLanguageSelectedHeaderDefault"
             android:textColor="?attr/selectedTextColor"/>
 
@@ -52,7 +79,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginStart="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="24dp"
             android:autoLink="web"
             android:layout_marginTop="20dp"
             android:text="@string/settingsHelpTranslateText"

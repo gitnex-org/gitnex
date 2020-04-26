@@ -97,9 +97,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			tinyDb.putInt("homeScreenId", 0);
 		}
 
-		String appLocale = tinyDb.getString("locale");
-		AppUtil.setAppLocale(getResources(), appLocale);
-
 		boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
 
 		if(!tinyDb.getBoolean("loggedInMode")) {

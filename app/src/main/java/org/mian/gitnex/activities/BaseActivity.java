@@ -50,6 +50,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 			setTheme(R.style.AppTheme);
 		}
 
+		String appLocale = tinyDb.getString("locale");
+		AppUtil.setAppLocale(getResources(), appLocale);
+
 		super.onCreate(savedInstanceState);
 		setContentView(getLayoutResourceId());
 

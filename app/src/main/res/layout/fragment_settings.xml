@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/primaryBackgroundColor">
@@ -9,72 +10,178 @@
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/settingsMainFrame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/timeLayout"
-                layout="@layout/settings_appearance" />
-
-            <View
-                android:id="@+id/fileViewDivider"
+            <LinearLayout
+                android:id="@+id/appreanceFrame"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="44dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_below="@id/timeLayout" />
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
 
-            <include
-                android:id="@+id/fileViewLayout"
-                layout="@layout/settings_fileview"/>
+                <TextView
+                    android:id="@+id/tvAppearance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_color"
+                    android:drawablePadding="24dp"
+                    android:text="@string/settingsAppearanceHeader"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
-            <View
-                android:id="@+id/securityDivider"
+                <TextView
+                    android:id="@+id/appreanceHintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/appreanceHintText"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fileViewerFrame"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="44dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_below="@id/fileViewLayout" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp">
 
-            <include
-                android:id="@+id/securityLayout"
-                layout="@layout/settings_security" />
+                <TextView
+                    android:id="@+id/fileViewer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_file"
+                    android:drawablePadding="24dp"
+                    android:text="@string/fileViewerHeader"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
-            <View
-                android:id="@+id/translationDivider"
+                <TextView
+                    android:id="@+id/fileViewerHintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/fileViewerHintText"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/securityFrame"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="44dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_below="@id/securityLayout" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp">
 
-            <include
-                android:id="@+id/langLayout"
-                layout="@layout/settings_languages" />
+                <TextView
+                    android:id="@+id/tvSecurity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_security_24dp"
+                    android:drawablePadding="24dp"
+                    android:text="@string/settingsSecurityHeader"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
-            <View
-                android:id="@+id/crashReportsDivider"
+                <TextView
+                    android:id="@+id/securityHintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/securityHintText"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/languagesFrame"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="44dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_below="@id/langLayout" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp">
 
-            <include
-                android:id="@+id/reportingLayout"
-                layout="@layout/settings_reporting" />
+                <TextView
+                    android:id="@+id/tvLanguages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_flag_country"
+                    android:drawablePadding="24dp"
+                    android:text="@string/settingsLanguageHeaderText"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/languagesHintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/languagesHintText"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reportsFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp">
+
+                <TextView
+                    android:id="@+id/appReports"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_bug_report"
+                    android:drawablePadding="24dp"
+                    android:text="@string/reportViewerHeader"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
+
+                <TextView
+                    android:id="@+id/reportsHintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/reportsHintText"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 
