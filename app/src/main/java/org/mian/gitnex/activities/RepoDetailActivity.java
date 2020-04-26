@@ -292,12 +292,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	public void onButtonClicked(String text) {
 
 		TinyDB tinyDb = new TinyDB(getApplicationContext());
-		String repoFullName = tinyDb.getString("repoFullName");
-		String instanceUrlWithProtocol = "https://" + tinyDb.getString("instanceUrlRaw");
-		if(!tinyDb.getString("instanceUrlWithProtocol").isEmpty()) {
-			instanceUrlWithProtocol = tinyDb.getString("instanceUrlWithProtocol");
-		}
-		Uri url = Uri.parse(instanceUrlWithProtocol + "/" + repoFullName);
 
 		switch(text) {
 			case "label":
@@ -316,15 +310,15 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 				startActivity(new Intent(RepoDetailActivity.this, CreateReleaseActivity.class));
 				break;
 			case "openWebRepo":
-				Intent i = new Intent(Intent.ACTION_VIEW, url);
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(tinyDb.getString("repoHtmlUrl")));
 				startActivity(i);
 				break;
 			case "shareRepo":
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, url);
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url);
-				startActivity(Intent.createChooser(sharingIntent, url.toString()));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, tinyDb.getString("repoHtmlUrl"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tinyDb.getString("repoHtmlUrl"));
+				startActivity(Intent.createChooser(sharingIntent, tinyDb.getString("repoHtmlUrl")));
 				break;
 			case "newFile":
 				startActivity(new Intent(RepoDetailActivity.this, CreateFileActivity.class));
