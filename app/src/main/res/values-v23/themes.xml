@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/lightThemeBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
+
+        <item name="primaryTextColor">@color/lightThemeTextColor</item>
+        <item name="primaryBackgroundColor">@color/lightThemeBackground</item>
+        <item name="inputBackgroundColor">@color/lightThemeInputBackground</item>
+        <item name="inputTextColor">@color/lightThemeInputTextColor</item>
+        <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/darkGreen</item>
+        <item name="alertDialogTheme">@style/AppThemeLightConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemeLightPopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_24dp</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeLightSearchAutoCompleteTextView</item>
+        <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
+        <item name="dividerColor">@color/lightThemeDividerColor</item>
+    </style>
+
+</resources>
