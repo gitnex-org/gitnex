@@ -29,6 +29,10 @@ public class Commits {
         return html_url;
     }
 
+    public Commits(String url) {
+        this.url = url;
+    }
+
     public static class commitObject {
 
         private String url;

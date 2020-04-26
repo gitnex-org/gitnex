@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/commitList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    tools:context=".activities.CommitsActivity"
     android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
@@ -37,7 +37,6 @@
             android:id="@+id/frameViewnDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -47,13 +46,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <Button
                     android:id="@+id/commitHtmlUrlVw"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:text="@string/viewInBrowser"
-                    android:textColorLink="@color/lightBlue"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/btnTextColor"
+                    android:textSize="14sp"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="8dp"
+                    android:background="@drawable/shape_buttons" />
 
             </LinearLayout>
 
@@ -64,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_marginTop="20dp"/>
 
         </LinearLayout>
 

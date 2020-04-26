@@ -86,7 +86,6 @@ Open source libraries
 - Caverock/androidsvg
 - Droidsonroids.gif/android-gif-drawable
 - Barteksc/AndroidPdfViewer
-- Mikepenz/fastadapter
 - Ge0rg/MemorizingTrustManager
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)

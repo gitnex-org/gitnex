@@ -35,7 +35,6 @@ configurations {
 dependencies {
     def lifecycle_version = "2.2.0"
     def markwon_version = '4.3.1'
-    def fastadapter = "3.3.1"
     def acra = "5.5.0"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -82,10 +81,6 @@ dependencies {
     implementation "com.github.chrisbanes:PhotoView:2.3.0"
     implementation "com.pddstudio:highlightjs-android:1.5.0"
     implementation "com.github.barteksc:android-pdf-viewer:3.2.0-beta.1"
-    //noinspection GradleDependency
-    implementation "com.mikepenz:fastadapter:$fastadapter"
-    implementation "com.mikepenz:fastadapter-commons:$fastadapter"
-    implementation "com.mikepenz:fastadapter-extensions:$fastadapter"
     implementation "ch.acra:acra-mail:$acra"
     implementation "ch.acra:acra-limiter:$acra"
     implementation "ch.acra:acra-notification:$acra"
