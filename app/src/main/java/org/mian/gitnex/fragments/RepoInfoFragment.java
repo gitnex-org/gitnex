@@ -317,6 +317,8 @@ public class RepoInfoFragment extends Fragment {
                                 tinyDb.putBoolean("hasIssues", true);
                             }
 
+                            tinyDb.putString("repoHtmlUrl", repoInfo.getHtml_url());
+
                             mProgressBar.setVisibility(View.GONE);
                             pageContent.setVisibility(View.VISIBLE);
 
