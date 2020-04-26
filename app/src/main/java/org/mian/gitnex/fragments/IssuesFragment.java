@@ -120,10 +120,24 @@ public class IssuesFragment extends Fragment {
 			}
 
 			issuesList.clear();
+
 			adapter = new IssuesAdapter(getContext(), issuesList);
+			adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+
+				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
+
+					int page = (issuesList.size() + resultLimit) / resultLimit;
+					loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+
+				}
+
+			}));
+
 			tinyDb.putString("repoIssuesState", issueState);
+
 			mProgressBar.setVisibility(View.VISIBLE);
 			noDataIssues.setVisibility(View.GONE);
+
 			loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, issueState);
 			recyclerView.setAdapter(adapter);
 

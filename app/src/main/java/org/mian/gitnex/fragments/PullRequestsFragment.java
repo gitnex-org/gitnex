@@ -122,10 +122,24 @@ public class PullRequestsFragment extends Fragment {
 			}
 
 			prList.clear();
+
 			adapter = new PullRequestsAdapter(context, prList);
+			adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+
+				if(prList.size() == 10 || pageSize == resultLimit) {
+
+					int page = (prList.size() + resultLimit) / resultLimit;
+					loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, tinyDb.getString("repoPrState"), resultLimit);
+
+				}
+
+			}));
+
 			tinyDb.putString("repoPrState", prState);
+
 			mProgressBar.setVisibility(View.VISIBLE);
 			noData.setVisibility(View.GONE);
+
 			loadInitial(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, pageSize, prState, resultLimit);
 			recyclerView.setAdapter(adapter);
 
