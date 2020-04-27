@@ -60,6 +60,7 @@ public class FilesDiffAdapter extends RecyclerView.Adapter<FilesDiffAdapter.File
     @Override
     public void onBindViewHolder(@NonNull FilesDiffViewHolder holder, int position) {
 
+        holder.setIsRecyclable(false);
         FileDiffView data = dataList.get(position);
 
         if(data.isFileType()) {
