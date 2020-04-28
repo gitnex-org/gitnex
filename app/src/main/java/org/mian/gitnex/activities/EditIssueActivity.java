@@ -388,7 +388,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                                         }
                                     }
 
-                                    ArrayAdapter<Milestones> adapter_ = new ArrayAdapter<>(getApplicationContext(),
+                                    ArrayAdapter<Milestones> adapter_ = new ArrayAdapter<>(EditIssueActivity.this,
                                             R.layout.spinner_item, milestonesList);
 
                                     adapter_.setDropDownViewResource(R.layout.spinner_dropdown_item);

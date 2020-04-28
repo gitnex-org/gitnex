@@ -293,7 +293,7 @@ public class CreateFileActivity extends BaseActivity {
                             }
                         }
 
-                        ArrayAdapter<Branches> adapter = new ArrayAdapter<>(getApplicationContext(),
+                        ArrayAdapter<Branches> adapter = new ArrayAdapter<>(CreateFileActivity.this,
                                 R.layout.spinner_item, branchesList);
 
                         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);

@@ -367,7 +367,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
                             }
                         }
 
-                        ArrayAdapter<Milestones> adapter = new ArrayAdapter<>(getApplicationContext(),
+                        ArrayAdapter<Milestones> adapter = new ArrayAdapter<>(CreateIssueActivity.this,
                                 R.layout.spinner_item, milestonesList);
 
                         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
