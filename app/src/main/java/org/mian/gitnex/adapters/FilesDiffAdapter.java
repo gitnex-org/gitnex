@@ -1,138 +1,267 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ReplyToIssueActivity;
+import org.mian.gitnex.helpers.DiffTextView;
 import org.mian.gitnex.models.FileDiffView;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
- * Author M M Arif
+ * Author opyale
  */
 
-public class FilesDiffAdapter extends RecyclerView.Adapter<FilesDiffAdapter.FilesDiffViewHolder> {
+public class FilesDiffAdapter extends BaseAdapter {
 
-    private List<FileDiffView> dataList;
-    private Context ctx;
+	private static Map<Long, View> selectedViews;
+	private static final int MAXIMUM_LINES = 5000;
 
-    static class FilesDiffViewHolder extends RecyclerView.ViewHolder {
+	private static int COLOR_ADDED;
+	private static int COLOR_REMOVED;
+	private static int COLOR_NORMAL;
+	private static int COLOR_SELECTED;
+	private static int COLOR_FONT;
 
-        private TextView fileContents;
-        private TextView fileName;
-        private TextView fileInfo;
-        private ImageView fileImage;
-        private HorizontalScrollView fileContentsView;
-        private LinearLayout allLines;
+	private Context context;
+	private List<FileDiffView> fileDiffViews;
 
-        private FilesDiffViewHolder(View itemView) {
-            super(itemView);
+	public FilesDiffAdapter(Context context, List<FileDiffView> fileDiffViews) {
 
-            fileContents = itemView.findViewById(R.id.fileContents);
-            fileName = itemView.findViewById(R.id.fileName);
-            fileInfo = itemView.findViewById(R.id.fileInfo);
-            fileImage = itemView.findViewById(R.id.fileImage);
-            fileContentsView = itemView.findViewById(R.id.fileContentsView);
-            allLines = itemView.findViewById(R.id.allLinesLayout);
+		this.context = context;
+		this.fileDiffViews = fileDiffViews;
 
-        }
-    }
+		selectedViews = new ConcurrentSkipListMap<>();
 
-    public FilesDiffAdapter(List<FileDiffView> dataListMain, Context ctx) {
-        this.dataList = dataListMain;
-        this.ctx = ctx;
-    }
+		COLOR_ADDED = getColorFromAttribute(R.attr.diffAddedColor);
+		COLOR_REMOVED = getColorFromAttribute(R.attr.diffRemovedColor);
+		COLOR_NORMAL = getColorFromAttribute(R.attr.primaryBackgroundColor);
+		COLOR_SELECTED = getColorFromAttribute(R.attr.diffSelectedColor);
+		COLOR_FONT = getColorFromAttribute(R.attr.inputTextColor);
 
-    @NonNull
-    @Override
-    public FilesDiffAdapter.FilesDiffViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_files_diffs, parent, false);
-        return new FilesDiffAdapter.FilesDiffViewHolder(v);
-    }
+	}
 
-    @Override
-    public void onBindViewHolder(@NonNull FilesDiffViewHolder holder, int position) {
+	@Override
+	public int getCount() {
 
-        FileDiffView data = dataList.get(position);
+		return fileDiffViews.size();
+	}
 
-        if(data.isFileType()) {
+	@Override
+	public Object getItem(int position) {
 
-            holder.fileName.setText(data.getFileName());
+		return fileDiffViews.get(position);
+	}
 
-            holder.fileInfo.setVisibility(View.GONE);
+	@Override
+	public long getItemId(int position) {
 
-            //byte[] imageData = Base64.decode(data.getFileContents(), Base64.DEFAULT);
-            //Drawable imageDrawable = new BitmapDrawable(ctx.getResources(), BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
-            //holder.fileImage.setImageDrawable(imageDrawable);
-            holder.fileContentsView.setVisibility(View.GONE);
+		return position;
+	}
 
-        }
-        else {
+	@SuppressLint({"ViewHolder", "InflateParams"})
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
 
-            String[] splitData = data.getFileContents().split("\\R");
+		convertView = LayoutInflater.from(context).inflate(R.layout.list_files_diffs, null, false);
 
-            for (String eachSplit : splitData) {
+		TextView headerFileName = convertView.findViewById(R.id.headerFileName);
+		TextView headerFileInfo = convertView.findViewById(R.id.headerFileInfo);
+		ImageView footerImage = convertView.findViewById(R.id.footerImage);
+		LinearLayout diffStats = convertView.findViewById(R.id.diff_stats);
+		LinearLayout diffLines = convertView.findViewById(R.id.diffLines);
 
-                TextView textLine = new TextView(ctx);
-                textLine.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+		FileDiffView data = (FileDiffView) getItem(position);
+		headerFileName.setText(data.getFileName());
 
-                if (eachSplit.startsWith("+")) {
+		if(data.isFileType()) {
 
-                    textLine.setText(eachSplit);
-                    holder.allLines.addView(textLine);
+			diffStats.setVisibility(View.GONE);
+			diffLines.addView(getMessageView(context.getResources().getString(R.string.binaryFileError)));
 
-                    textLine.setTextColor(ctx.getResources().getColor(R.color.colorPrimary));
-                    textLine.setPadding(5, 5, 5, 5);
-                    textLine.setBackgroundColor(ctx.getResources().getColor(R.color.diffAddedColor));
+		}
+		else {
 
-                }
-                else if (eachSplit.startsWith("-")) {
+			diffStats.setVisibility(View.VISIBLE);
+			headerFileInfo.setText(data.getFileInfo());
 
-                    textLine.setText(eachSplit);
-                    holder.allLines.addView(textLine);
+			String[] codeLines = getLines(data.getFileContents());
 
-                    textLine.setTextColor(ctx.getResources().getColor(R.color.colorPrimary));
-                    textLine.setPadding(5, 5, 5, 5);
-                    textLine.setBackgroundColor(ctx.getResources().getColor(R.color.diffRemovedColor));
+			if(MAXIMUM_LINES > codeLines.length) {
 
-                }
-                else {
+				for(int l=0; l<codeLines.length; l++) {
 
-                    if(eachSplit.length() > 0) {
-                        textLine.setText(eachSplit);
-                        holder.allLines.addView(textLine);
+					if(codeLines[l].length() > 0) {
 
-                        textLine.setTextColor(ctx.getResources().getColor(R.color.colorPrimary));
-                        textLine.setPadding(5, 5, 5, 5);
-                        textLine.setBackgroundColor(ctx.getResources().getColor(R.color.white));
-                    }
+						int uniquePosition = l + (position * MAXIMUM_LINES);
 
-                }
+						DiffTextView diffTextView = new DiffTextView(context);
 
-            }
+						diffTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+						diffTextView.setPadding(15, 2, 15, 2);
+						diffTextView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf"));
+						diffTextView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+						diffTextView.setPosition(uniquePosition);
 
-            holder.fileName.setText(data.getFileName());
-            if(!data.getFileInfo().equals("")) {
-                holder.fileInfo.setText(ctx.getResources().getString(R.string.fileDiffInfoChanges, data.getFileInfo()));
-            }
-            else {
-                holder.fileInfo.setVisibility(View.GONE);
-            }
+						boolean isSelected = false;
 
-        }
+						for(View view : selectedViews.values()) {
 
-    }
+							if(((DiffTextView) view).getPosition() == uniquePosition) {
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
-    }
+								diffTextView.setBackgroundColor(COLOR_SELECTED);
+								isSelected = true;
+								break;
+
+							}
+
+						}
+
+
+						if(codeLines[l].startsWith("+")) {
+
+							diffTextView.setText(codeLines[l]);
+							diffTextView.setTextColor(COLOR_FONT);
+
+							if(!isSelected) {
+
+								diffTextView.setInitialBackgroundColor(COLOR_ADDED);
+							}
+
+						}
+						else if(codeLines[l].startsWith("-")) {
+
+							diffTextView.setText(codeLines[l]);
+							diffTextView.setTextColor(COLOR_FONT);
+
+							if(!isSelected) {
+
+								diffTextView.setInitialBackgroundColor(COLOR_REMOVED);
+							}
+
+						}
+						else {
+
+							diffTextView.setText(codeLines[l]);
+							diffTextView.setTextColor(COLOR_FONT);
+
+							if(!isSelected) {
+
+								diffTextView.setInitialBackgroundColor(COLOR_NORMAL);
+							}
+
+						}
+
+
+						diffTextView.setOnClickListener(v -> {
+
+							if(((DiffTextView) v).getCurrentBackgroundColor() != COLOR_SELECTED) {
+
+								selectedViews.put(((DiffTextView) v).getPosition(), v);
+								v.setBackgroundColor(COLOR_SELECTED);
+
+							}
+							else {
+
+								selectedViews.remove(((DiffTextView) v).getPosition());
+								v.setBackgroundColor(((DiffTextView) v).getInitialBackgroundColor());
+
+							}
+
+						});
+
+
+						diffTextView.setOnLongClickListener(v -> {
+
+							if(((DiffTextView) v).getCurrentBackgroundColor() == COLOR_SELECTED) {
+
+								StringBuilder stringBuilder = new StringBuilder();
+								stringBuilder.append("```\n");
+
+								for(View view : selectedViews.values()) {
+
+									stringBuilder.append(((DiffTextView) view).getText());
+									stringBuilder.append("\n");
+
+								}
+
+								stringBuilder.append("```\n\n");
+
+								selectedViews.clear();
+
+								Intent intent = new Intent(context, ReplyToIssueActivity.class);
+								intent.putExtra("commentBody", stringBuilder.toString());
+								intent.putExtra("cursorToEnd", true);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+								context.startActivity(intent);
+
+							}
+
+							return true;
+
+						});
+
+						diffLines.addView(diffTextView);
+
+					}
+
+				}
+
+			}
+			else {
+
+				diffLines.addView(getMessageView(context.getResources().getString(R.string.fileTooLarge)));
+
+			}
+
+		}
+
+		return convertView;
+
+	}
+
+	private TextView getMessageView(String message) {
+
+		TextView textView = new TextView(context);
+
+		textView.setTextColor(COLOR_FONT);
+		textView.setBackgroundColor(COLOR_NORMAL);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+		textView.setPadding(15, 15, 15, 15);
+		textView.setTypeface(Typeface.DEFAULT);
+		textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		textView.setText(message);
+
+		return textView;
+
+	}
+
+	private String[] getLines(String content) {
+
+		return content.split("\\R");
+
+	}
+
+	private int getColorFromAttribute(int resid) {
+
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(resid, typedValue, true);
+
+		return typedValue.data;
+
+	}
 
 }

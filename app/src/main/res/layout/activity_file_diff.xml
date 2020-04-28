@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/close"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/close_button_size"
+                android:layout_height="@dimen/close_button_size"
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
                 android:gravity="center_vertical"
@@ -53,12 +53,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <ListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/primaryBackgroundColor"
-            android:padding="4dp"
             android:scrollbars="vertical" />
 
     </LinearLayout>
@@ -66,9 +65,10 @@
     <ProgressBar
         android:id="@+id/progress_bar"
         style="@style/Base.Widget.AppCompat.ProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
         android:indeterminate="true"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </LinearLayout>

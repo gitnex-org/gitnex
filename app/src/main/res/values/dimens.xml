@@ -6,6 +6,7 @@
 
     <dimen name="tooltipCornor">5dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="close_button_size">26dp</dimen>
     <dimen name="fab_padding">15dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 </resources>

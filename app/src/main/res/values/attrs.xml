@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="diffAddedColor" format="reference"/>
+    <attr name="diffRemovedColor" format="reference"/>
+    <attr name="diffSelectedColor" format="reference"/>
     <attr name="primaryTextColor" format="reference"/>
     <attr name="primaryBackgroundColor" format="reference" />
     <attr name="inputBackgroundColor" format="reference" />

@@ -26,11 +26,15 @@
     <color name="lightGray">#b6bbbf</color>
     <color name="darkGreen">#368f73</color>
     <color name="lightDimGreen">#63fdd9</color>
-    <color name="diffRemovedColor">#ffe0e0</color>
-    <color name="diffAddedColor">#d6fcd6</color>
+    <color name="diffRemovedColor">#574343</color>
+    <color name="diffAddedColor">#485A4B</color>
+    <color name="diffSelectedColor">#434343</color>
     <color name="dividerColorDark">#1d1d1d</color>
     <color name="lightYellow">#efd34a</color>
 
+    <color name="lightThemeDiffRemovedColor">#FCEDED</color>
+    <color name="lightThemeDiffAddedColor">#EAF8ED</color>
+    <color name="lightThemeDiffSelectedColor">#e0e0e0</color>
     <color name="lightThemeTextColor">#646565</color>
     <color name="lightThemeBackground">#f9f9f9</color>
     <color name="lightThemeInputBackground">#b6bbbf</color>

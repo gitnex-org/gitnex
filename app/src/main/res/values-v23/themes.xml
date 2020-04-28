@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
 
+        <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
+        <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
+        <item name="diffSelectedColor">@color/lightThemeDiffSelectedColor</item>
         <item name="primaryTextColor">@color/lightThemeTextColor</item>
         <item name="primaryBackgroundColor">@color/lightThemeBackground</item>
         <item name="inputBackgroundColor">@color/lightThemeInputBackground</item>

@@ -121,6 +121,9 @@
     <string name="orgCreatedError">Something went wrong, please try again</string>
     <string name="orgExistsError">Organization already exists</string>
 
+    <string name="binaryFileError">Binary files are not supported yet.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
+
     <string name="processingText">Processing</string>
     <string name="search">Search</string>
     <string name="wip">Work in progress</string>
