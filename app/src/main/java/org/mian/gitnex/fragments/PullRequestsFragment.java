@@ -23,7 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
-import org.mian.gitnex.clients.PullRequestsService;
+import org.mian.gitnex.clients.AppApiService;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
@@ -145,7 +145,7 @@ public class PullRequestsFragment extends Fragment {
 
 		});
 
-		apiPR = PullRequestsService.createService(ApiInterface.class, instanceUrl, context);
+		apiPR = AppApiService.createService(ApiInterface.class, instanceUrl, context);
 		loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);
 
 		return v;
