@@ -89,13 +89,13 @@
 
     </LinearLayout>
 
-    <com.pddstudio.highlightjs.HighlightJsView
-        android:id="@+id/singleCodeContents"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:layout_height="match_parent"
+        android:id="@+id/highlightJs"
         android:layout_marginTop="42dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:orientation="vertical" />
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imageView"

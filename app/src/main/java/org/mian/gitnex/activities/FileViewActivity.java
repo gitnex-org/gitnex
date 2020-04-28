@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,7 +59,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 	private View.OnClickListener onClickListener;
 	private TextView singleFileContents;
 	private LinearLayout singleFileContentsFrame;
-	private HighlightJsView singleCodeContents;
+	private LinearLayout highlightJs;
+	//private HighlightJsView singleCodeContents;
 	private PhotoView imageView;
 	final Context ctx = this;
 	private ProgressBar mProgressBar;
@@ -92,7 +95,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 		ImageView closeActivity = findViewById(R.id.close);
 		singleFileContents = findViewById(R.id.singleFileContents);
-		singleCodeContents = findViewById(R.id.singleCodeContents);
+		highlightJs = findViewById(R.id.highlightJs);
+		//singleCodeContents = findViewById(R.id.singleCodeContents);
 		imageView = findViewById(R.id.imageView);
 		mProgressBar = findViewById(R.id.progress_bar);
 		pdfView = findViewById(R.id.pdfView);
@@ -157,7 +161,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 						if(appUtil.imageExtension(fileExtension)) { // file is image
 
 							singleFileContentsFrame.setVisibility(View.GONE);
-							singleCodeContents.setVisibility(View.GONE);
+							highlightJs.setVisibility(View.GONE);
+							//singleCodeContents.setVisibility(View.GONE);
 							pdfViewFrame.setVisibility(View.GONE);
 							imageView.setVisibility(View.VISIBLE);
 
@@ -168,40 +173,59 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 						}
 						else if(appUtil.sourceCodeExtension(fileExtension)) { // file is sourcecode
 
-							imageView.setVisibility(View.GONE);
-							singleFileContentsFrame.setVisibility(View.GONE);
 							pdfViewFrame.setVisibility(View.GONE);
-							singleCodeContents.setVisibility(View.VISIBLE);
+							imageView.setVisibility(View.GONE);
 
-							switch(tinyDb.getInt("fileviewerSourceCodeThemeId")) {
-								case 1:
-									singleCodeContents.setTheme(Theme.ARDUINO_LIGHT);
-									break;
-								case 2:
-									singleCodeContents.setTheme(Theme.GITHUB);
-									break;
-								case 3:
-									singleCodeContents.setTheme(Theme.FAR);
-									break;
-								case 4:
-									singleCodeContents.setTheme(Theme.IR_BLACK);
-									break;
-								case 5:
-									singleCodeContents.setTheme(Theme.ANDROID_STUDIO);
-									break;
-								default:
-									singleCodeContents.setTheme(Theme.MONOKAI_SUBLIME);
+							if(Build.VERSION.SDK_INT > 23) {
+
+								highlightJs.setVisibility(View.VISIBLE);
+								LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+								assert inflater != null;
+								@SuppressLint("InflateParams") View mView = inflater.inflate(R.layout.custom_highlightjs, null);
+								HighlightJsView singleCodeContents = mView.findViewById(R.id.singleCodeContents);
+								highlightJs.addView(mView);
+
+								singleFileContentsFrame.setVisibility(View.GONE);
+								singleCodeContents.setVisibility(View.VISIBLE);
+
+								switch(tinyDb.getInt("fileviewerSourceCodeThemeId")) {
+									case 1:
+										singleCodeContents.setTheme(Theme.ARDUINO_LIGHT);
+										break;
+									case 2:
+										singleCodeContents.setTheme(Theme.GITHUB);
+										break;
+									case 3:
+										singleCodeContents.setTheme(Theme.FAR);
+										break;
+									case 4:
+										singleCodeContents.setTheme(Theme.IR_BLACK);
+										break;
+									case 5:
+										singleCodeContents.setTheme(Theme.ANDROID_STUDIO);
+										break;
+									default:
+										singleCodeContents.setTheme(Theme.MONOKAI_SUBLIME);
+								}
+
+								singleCodeContents.setShowLineNumbers(true);
+								singleCodeContents.setSource(appUtil.decodeBase64(response.body().getContent()));
+
 							}
+							else {
 
-							singleCodeContents.setShowLineNumbers(true);
-							singleCodeContents.setSource(appUtil.decodeBase64(response.body().getContent()));
+								singleFileContents.setVisibility(View.VISIBLE);
+								singleFileContents.setText(appUtil.decodeBase64(response.body().getContent()));
+
+							}
 
 						}
 						else if(appUtil.pdfExtension(fileExtension)) { // file is pdf
 
 							imageView.setVisibility(View.GONE);
 							singleFileContentsFrame.setVisibility(View.GONE);
-							singleCodeContents.setVisibility(View.GONE);
+							highlightJs.setVisibility(View.GONE);
+							//singleCodeContents.setVisibility(View.GONE);
 							pdfViewFrame.setVisibility(View.VISIBLE);
 
 							pdfNightMode = tinyDb.getBoolean("enablePdfMode");
@@ -213,7 +237,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 						else if(appUtil.excludeFilesInFileViewerExtension(fileExtension)) { // files need to be excluded
 
 							imageView.setVisibility(View.GONE);
-							singleCodeContents.setVisibility(View.GONE);
+							highlightJs.setVisibility(View.GONE);
+							//singleCodeContents.setVisibility(View.GONE);
 							pdfViewFrame.setVisibility(View.GONE);
 							singleFileContentsFrame.setVisibility(View.VISIBLE);
 
@@ -225,7 +250,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 						else { // file type not known - plain text view
 
 							imageView.setVisibility(View.GONE);
-							singleCodeContents.setVisibility(View.GONE);
+							highlightJs.setVisibility(View.GONE);
+							//singleCodeContents.setVisibility(View.GONE);
 							pdfViewFrame.setVisibility(View.GONE);
 							singleFileContentsFrame.setVisibility(View.VISIBLE);
 
