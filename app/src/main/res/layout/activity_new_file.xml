@@ -155,6 +155,7 @@
                 android:gravity="end" />
 
             <TextView
+                android:id="@+id/branchNameId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileBranchTintCopy"
@@ -178,6 +179,7 @@
                 android:inputType="textCapSentences|text" />
 
             <TextView
+                android:id="@+id/branchNameHintText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileNewBranchMessage"

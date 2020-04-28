@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
@@ -76,6 +77,8 @@ public class CreateFileActivity extends BaseActivity {
         newFileContent = findViewById(R.id.newFileContent);
         newFileBranchName = findViewById(R.id.newFileBranchName);
         newFileCommitMessage = findViewById(R.id.newFileCommitMessage);
+        TextView branchNameId = findViewById(R.id.branchNameId);
+        TextView branchNameHintText = findViewById(R.id.branchNameHintText);
 
         newFileName.requestFocus();
         assert imm != null;
@@ -99,13 +102,18 @@ public class CreateFileActivity extends BaseActivity {
                                        View arg1, int arg2, long arg3)
             {
                 Branches bModelValue = (Branches) newFileBranchesSpinner.getSelectedItem();
-                Log.i("bModelSelected", bModelValue.toString());
 
                 if(bModelValue.toString().equals("No branch")) {
                     newFileBranchName.setEnabled(true);
+                    newFileBranchName.setVisibility(View.VISIBLE);
+                    branchNameId.setVisibility(View.VISIBLE);
+                    branchNameHintText.setVisibility(View.VISIBLE);
                 }
                 else {
                     newFileBranchName.setEnabled(false);
+                    newFileBranchName.setVisibility(View.GONE);
+                    branchNameId.setVisibility(View.GONE);
+                    branchNameHintText.setVisibility(View.GONE);
                     newFileBranchName.setText("");
                 }
 
@@ -132,11 +140,7 @@ public class CreateFileActivity extends BaseActivity {
 
     }
 
-    private View.OnClickListener createFileListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processNewFile();
-        }
-    };
+    private View.OnClickListener createFileListener = v -> processNewFile();
 
     private void processNewFile() {
 
@@ -314,12 +318,7 @@ public class CreateFileActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+        onClickListener = view -> finish();
     }
 
     private void disableProcessButton() {
