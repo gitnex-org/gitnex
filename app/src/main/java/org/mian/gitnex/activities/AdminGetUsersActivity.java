@@ -38,6 +38,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
 
     private View.OnClickListener onClickListener;
     final Context ctx = this;
+    private Context appCtx;
     private AdminGetUsersAdapter adapter;
     private RecyclerView mRecyclerView;
     private TextView noDataUsers;
@@ -52,8 +53,9 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -71,7 +73,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
         closeActivity.setOnClickListener(onClickListener);
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
@@ -84,13 +86,13 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
                     @Override
                     public void run() {
                         swipeRefresh.setRefreshing(false);
-                        AdminGetUsersViewModel.loadUsersList(getApplicationContext(), instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken));
+                        AdminGetUsersViewModel.loadUsersList(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
                     }
                 }, 500);
             }
         });
 
-        fetchDataAsync(getApplicationContext(), instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken));
+        fetchDataAsync(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
 
     }
 
@@ -101,7 +103,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
         usersModel.getUsersList(ctx, instanceUrl, instanceToken).observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> usersListMain) {
-                adapter = new AdminGetUsersAdapter(getApplicationContext(), usersListMain);
+                adapter = new AdminGetUsersAdapter(ctx, usersListMain);
                 if(adapter.getItemCount() > 0) {
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(adapter);
@@ -130,7 +132,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
             public void run() {
                 if(searchFilter) {
 
-                    boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getApplicationContext()));
+                    boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
                     inflater.inflate(R.menu.search_menu, menu);
 

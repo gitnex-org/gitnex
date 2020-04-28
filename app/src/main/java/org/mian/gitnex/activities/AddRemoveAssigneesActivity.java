@@ -34,6 +34,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
     private Boolean assigneesFlag = false;
     private MultiSelectDialog multiSelectDialogAssignees;
     final Context ctx = this;
+    private Context appCtx;
 
     @Override
     protected int getLayoutResourceId(){
@@ -44,11 +45,12 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
         getWindow().getDecorView().setBackground(new ColorDrawable(Color.TRANSPARENT));
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         String repoFullName = tinyDb.getString("repoFullName");
@@ -64,12 +66,12 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
 
     private void getAssignees(final String instanceUrl, final String instanceToken, final String repoOwner, final String repoName, final int issueIndex, final String loginUid) {
 
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
 
         Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getCollaborators(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+                .getCollaborators(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
 
         call.enqueue(new Callback<List<Collaborators>>() {
 
@@ -92,9 +94,9 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
 
                         // get current issue assignees
                         Call<Issues> callSingleIssueAssignees = RetrofitClient
-                                .getInstance(instanceUrl, getApplicationContext())
+                                .getInstance(instanceUrl, ctx)
                                 .getApiInterface()
-                                .getIssueByIndex(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
+                                .getIssueByIndex(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
 
                         callSingleIssueAssignees.enqueue(new Callback<Issues>() {
 
@@ -141,7 +143,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
 
                                                         Log.i("selectedNames", String.valueOf(selectedNames));
 
-                                                        updateIssueAssignees(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, loginUid, issueIndex, selectedNames);
+                                                        updateIssueAssignees(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, loginUid, issueIndex, selectedNames);
                                                         tinyDb.putBoolean("singleIssueUpdate", true);
                                                         CloseActivity();
                                                     }
@@ -167,7 +169,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
                                                     @Override
                                                     public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
 
-                                                        updateIssueAssignees(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, loginUid, issueIndex, selectedNames);
+                                                        updateIssueAssignees(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, loginUid, issueIndex, selectedNames);
                                                         tinyDb.putBoolean("singleIssueUpdate", true);
                                                         CloseActivity();
 
@@ -215,7 +217,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
                     }
                     else {
 
-                        Toasty.info(getApplicationContext(), getString(R.string.genericError));
+                        Toasty.info(ctx, getString(R.string.genericError));
 
                     }
                 }
@@ -241,9 +243,9 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
         Call<JsonElement> call3;
 
         call3 = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .patchIssueAssignees(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, updateAssigneeJson);
+                .patchIssueAssignees(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, updateAssigneeJson);
 
         call3.enqueue(new Callback<JsonElement>() {
 
@@ -275,7 +277,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
                 }
                 else {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.genericError));
+                    Toasty.info(ctx, getString(R.string.genericError));
 
                 }
 

@@ -34,6 +34,7 @@ public class CreateOrganizationActivity extends BaseActivity {
     private EditText orgName;
     private EditText orgDesc;
     final Context ctx = this;
+    private Context appCtx;
 
     @Override
     protected int getLayoutResourceId(){
@@ -42,9 +43,11 @@ public class CreateOrganizationActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
+
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -94,9 +97,9 @@ public class CreateOrganizationActivity extends BaseActivity {
 
     private void processNewOrganization() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -106,7 +109,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
@@ -114,7 +117,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         if(!newOrgDesc.equals("")) {
             if (appUtil.charactersLength(newOrgDesc) > 255) {
 
-                Toasty.info(getApplicationContext(), getString(R.string.orgDescError));
+                Toasty.info(ctx, getString(R.string.orgDescError));
                 return;
 
             }
@@ -122,18 +125,18 @@ public class CreateOrganizationActivity extends BaseActivity {
 
         if(newOrgName.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.orgNameErrorEmpty));
+            Toasty.info(ctx, getString(R.string.orgNameErrorEmpty));
 
         }
         else if(!appUtil.checkStrings(newOrgName)) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.orgNameErrorInvalid));
+            Toasty.info(ctx, getString(R.string.orgNameErrorInvalid));
 
         }
         else {
 
             disableProcessButton();
-            createNewOrganization(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), newOrgName, newOrgDesc);
+            createNewOrganization(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), newOrgName, newOrgDesc);
 
         }
 
@@ -144,7 +147,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         UserOrganizations createOrganization = new UserOrganizations(orgName, null, orgDesc, null, null);
 
         Call<UserOrganizations> call = RetrofitClient
-            .getInstance(instanceUrl, getApplicationContext())
+            .getInstance(instanceUrl, ctx)
             .getApiInterface()
             .createNewOrganization(token, createOrganization);
 
@@ -155,10 +158,10 @@ public class CreateOrganizationActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(getApplicationContext());
+                    TinyDB tinyDb = new TinyDB(appCtx);
                     tinyDb.putBoolean("orgCreated", true);
                     enableProcessButton();
-                    Toasty.info(getApplicationContext(), getString(R.string.orgCreated));
+                    Toasty.info(ctx, getString(R.string.orgCreated));
                     finish();
 
                 }
@@ -174,24 +177,24 @@ public class CreateOrganizationActivity extends BaseActivity {
                 else if(response.code() == 409) {
 
                     enableProcessButton();
-                    Toasty.info(getApplicationContext(), getString(R.string.orgExistsError));
+                    Toasty.info(ctx, getString(R.string.orgExistsError));
 
                 }
                 else if(response.code() == 422) {
 
                     enableProcessButton();
-                    Toasty.info(getApplicationContext(), getString(R.string.orgExistsError));
+                    Toasty.info(ctx, getString(R.string.orgExistsError));
 
                 }
                 else {
 
                     if(response.code() == 404) {
                         enableProcessButton();
-                        Toasty.info(getApplicationContext(), getString(R.string.apiNotFound));
+                        Toasty.info(ctx, getString(R.string.apiNotFound));
                     }
                     else {
                         enableProcessButton();
-                        Toasty.info(getApplicationContext(), getString(R.string.orgCreatedError));
+                        Toasty.info(ctx, getString(R.string.orgCreatedError));
                     }
 
                 }

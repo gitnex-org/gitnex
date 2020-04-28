@@ -41,6 +41,7 @@ public class CreateLabelActivity extends BaseActivity {
     private EditText labelName;
     private Button createLabelButton;
     final Context ctx = this;
+    private Context appCtx;
 
     @Override
     protected int getLayoutResourceId(){
@@ -49,11 +50,13 @@ public class CreateLabelActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -70,7 +73,7 @@ public class CreateLabelActivity extends BaseActivity {
 
         }
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
         ImageView closeActivity = findViewById(R.id.close);
         colorPicker = findViewById(R.id.colorPicker);
@@ -150,8 +153,8 @@ public class CreateLabelActivity extends BaseActivity {
 
     private void processUpdateLabel() {
 
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
@@ -173,21 +176,21 @@ public class CreateLabelActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(updateLabelName.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.labelEmptyError));
+            Toasty.info(ctx, getString(R.string.labelEmptyError));
             return;
 
         }
 
         if(!appUtil.checkStrings(updateLabelName)) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.labelNameError));
+            Toasty.info(ctx, getString(R.string.labelNameError));
             return;
 
         }
@@ -199,9 +202,9 @@ public class CreateLabelActivity extends BaseActivity {
 
     private void processCreateLabel() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -213,7 +216,7 @@ public class CreateLabelActivity extends BaseActivity {
         String newLabelName = labelName.getText().toString();
         String newLabelColor;
         if(tinyDb.getString("labelColor").isEmpty()) {
-            newLabelColor = String.format("#%06X", (0xFFFFFF & ContextCompat.getColor(getApplicationContext(), R.color.releasePre)));
+            newLabelColor = String.format("#%06X", (0xFFFFFF & ContextCompat.getColor(ctx, R.color.releasePre)));
         }
         else {
             newLabelColor = tinyDb.getString("labelColor");
@@ -221,21 +224,21 @@ public class CreateLabelActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newLabelName.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.labelEmptyError));
+            Toasty.info(ctx, getString(R.string.labelEmptyError));
             return;
 
         }
 
         if(!appUtil.checkStrings(newLabelName)) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.labelNameError));
+            Toasty.info(ctx, getString(R.string.labelNameError));
             return;
 
         }
@@ -248,14 +251,14 @@ public class CreateLabelActivity extends BaseActivity {
     private void createNewLabel(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String newLabelName, String newLabelColor, String loginUid) {
 
         CreateLabel createLabelFunc = new CreateLabel(newLabelName, newLabelColor);
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
 
         Call<CreateLabel> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .createLabel(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, createLabelFunc);
+                .createLabel(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, createLabelFunc);
 
         call.enqueue(new Callback<CreateLabel>() {
 
@@ -264,7 +267,7 @@ public class CreateLabelActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.labelCreated));
+                    Toasty.info(ctx, getString(R.string.labelCreated));
                     tinyDb.putString("labelColor", "");
                     tinyDb.putBoolean("labelsRefresh", true);
                     finish();
@@ -283,7 +286,7 @@ public class CreateLabelActivity extends BaseActivity {
 
                     enableProcessButton();
                     tinyDb.putString("labelColor", "");
-                    Toasty.info(getApplicationContext(), getString(R.string.labelGeneralError));
+                    Toasty.info(ctx, getString(R.string.labelGeneralError));
 
                 }
 
@@ -302,14 +305,14 @@ public class CreateLabelActivity extends BaseActivity {
     private void patchLabel(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String updateLabelName, String updateLabelColor, int labelId, String loginUid) {
 
         CreateLabel createLabelFunc = new CreateLabel(updateLabelName, updateLabelColor);
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
 
         Call<CreateLabel> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .patchLabel(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, labelId, createLabelFunc);
+                .patchLabel(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, labelId, createLabelFunc);
 
         call.enqueue(new Callback<CreateLabel>() {
 
@@ -319,7 +322,7 @@ public class CreateLabelActivity extends BaseActivity {
                 if(response.isSuccessful()) {
                     if(response.code() == 200) {
 
-                        Toasty.info(getApplicationContext(), getString(R.string.labelUpdated));
+                        Toasty.info(ctx, getString(R.string.labelUpdated));
                         tinyDb.putString("labelColor", "");
                         tinyDb.putBoolean("labelsRefresh", true);
                         tinyDb.putString("labelColorDefault", "");
@@ -345,7 +348,7 @@ public class CreateLabelActivity extends BaseActivity {
                     enableProcessButton();
                     tinyDb.putString("labelColor", "");
                     tinyDb.putString("labelColorDefault", "");
-                    Toasty.info(getApplicationContext(), getString(R.string.labelGeneralError));
+                    Toasty.info(ctx, getString(R.string.labelGeneralError));
 
                 }
 
@@ -380,9 +383,9 @@ public class CreateLabelActivity extends BaseActivity {
         Call<Labels> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .deleteLabel(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, labelId);
+                .deleteLabel(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, labelId);
 
         call.enqueue(new Callback<Labels>() {
 
@@ -392,8 +395,8 @@ public class CreateLabelActivity extends BaseActivity {
                 if(response.isSuccessful()) {
                     if(response.code() == 204) {
 
-                        Toasty.info(getApplicationContext(), getString(R.string.labelDeleteText));
-                        LabelsViewModel.loadLabelsList(instanceUrl, instanceToken, repoOwner, repoName, getApplicationContext());
+                        Toasty.info(ctx, getString(R.string.labelDeleteText));
+                        LabelsViewModel.loadLabelsList(instanceUrl, instanceToken, repoOwner, repoName, ctx);
                         getIntent().removeExtra("labelAction");
                         getIntent().removeExtra("labelId");
 
@@ -409,7 +412,7 @@ public class CreateLabelActivity extends BaseActivity {
                 }
                 else {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.labelDeleteErrorText));
+                    Toasty.info(ctx, getString(R.string.labelDeleteErrorText));
 
                 }
 

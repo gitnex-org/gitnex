@@ -35,6 +35,7 @@ public class ProfileEmailActivity extends BaseActivity {
     private View.OnClickListener onClickListener;
     private EditText userEmail;
     final Context ctx = this;
+    private Context appCtx;
     private Button addEmailButton;
 
     @Override
@@ -44,9 +45,11 @@ public class ProfileEmailActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
+
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -81,8 +84,8 @@ public class ProfileEmailActivity extends BaseActivity {
 
     private void processAddNewEmail() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -91,20 +94,20 @@ public class ProfileEmailActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newUserEmail.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.emailErrorEmpty));
+            Toasty.info(ctx, getString(R.string.emailErrorEmpty));
             return;
 
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.emailErrorInvalid));
+            Toasty.info(ctx, getString(R.string.emailErrorInvalid));
             return;
 
         }
@@ -112,19 +115,19 @@ public class ProfileEmailActivity extends BaseActivity {
         List<String> newEmailList = new ArrayList<>(Arrays.asList(newUserEmail.split(",")));
 
         disableProcessButton();
-        addNewEmail(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), newEmailList);
+        addNewEmail(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), newEmailList);
 
     }
 
     private void addNewEmail(final String instanceUrl, final String token, List<String> newUserEmail) {
 
         AddEmail addEmailFunc = new AddEmail(newUserEmail);
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
 
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .addNewEmail(token, addEmailFunc);
 
@@ -135,7 +138,7 @@ public class ProfileEmailActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.emailAddedText));
+                    Toasty.info(ctx, getString(R.string.emailAddedText));
                     tinyDb.putBoolean("emailsRefresh", true);
                     enableProcessButton();
                     finish();
@@ -171,7 +174,7 @@ public class ProfileEmailActivity extends BaseActivity {
                 else {
 
                     enableProcessButton();
-                    Toasty.info(getApplicationContext(), getString(R.string.labelGeneralError));
+                    Toasty.info(ctx, getString(R.string.labelGeneralError));
 
                 }
 

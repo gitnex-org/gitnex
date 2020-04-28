@@ -34,6 +34,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     final Context ctx = this;
+    private Context appCtx;
     private TextView addCollaboratorSearch;
     private TextView noData;
     private ProgressBar mProgressBar;
@@ -47,11 +48,13 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         String repoFullName = tinyDb.getString("repoFullName");
@@ -76,7 +79,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     if(!addCollaboratorSearch.getText().toString().equals("")) {
-                        loadUserSearchList(instanceUrl, instanceToken, addCollaboratorSearch.getText().toString(), getApplicationContext(), loginUid);
+                        loadUserSearchList(instanceUrl, instanceToken, addCollaboratorSearch.getText().toString(), loginUid);
                     }
                 }
                 return false;
@@ -85,12 +88,12 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
     }
 
-    public void loadUserSearchList(String instanceUrl, String token, String searchKeyword, final Context context, String loginUid) {
+    public void loadUserSearchList(String instanceUrl, String token, String searchKeyword, String loginUid) {
 
         Call<UserSearch> call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getUserBySearch(Authorization.returnAuthentication(getApplicationContext(), loginUid, token), searchKeyword, 10);
+                .getUserBySearch(Authorization.returnAuthentication(ctx, loginUid, token), searchKeyword, 10);
 
         call.enqueue(new Callback<UserSearch>() {
 
@@ -99,7 +102,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    getUsersList(response.body().getData(), context);
+                    getUsersList(response.body().getData(), ctx);
                 } else {
                     Log.i("onResponse", String.valueOf(response.code()));
                 }
@@ -119,7 +122,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
         UserSearchAdapter adapter = new UserSearchAdapter(dataList, context);
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);

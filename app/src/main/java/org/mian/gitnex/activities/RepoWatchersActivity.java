@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
@@ -29,6 +30,9 @@ public class RepoWatchersActivity extends BaseActivity {
     private GridView mGridView;
     private ProgressBar mProgressBar;
 
+    final Context ctx = this;
+    private Context appCtx;
+
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_repo_watchers;
@@ -36,9 +40,11 @@ public class RepoWatchersActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
+
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -59,7 +65,7 @@ public class RepoWatchersActivity extends BaseActivity {
 
         toolbarTitle.setText(R.string.repoWatchersInMenu);
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
 
     }
 
@@ -67,10 +73,10 @@ public class RepoWatchersActivity extends BaseActivity {
 
         RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
-        repoWatchersModel.getRepoWatchers(instanceUrl, instanceToken, repoOwner, repoName, getApplicationContext()).observe(this, new Observer<List<UserInfo>>() {
+        repoWatchersModel.getRepoWatchers(instanceUrl, instanceToken, repoOwner, repoName, ctx).observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> watchersListMain) {
-                adapter = new RepoWatchersAdapter(getApplicationContext(), watchersListMain);
+                adapter = new RepoWatchersAdapter(ctx, watchersListMain);
                 if(adapter.getCount() > 0) {
                     mGridView.setAdapter(adapter);
                     noDataWatchers.setVisibility(View.GONE);

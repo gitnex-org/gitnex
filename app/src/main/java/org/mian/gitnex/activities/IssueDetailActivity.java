@@ -98,6 +98,7 @@ public class IssueDetailActivity extends BaseActivity {
     private TextView issueModified;
     private ImageView createNewComment;
     final Context ctx = this;
+    private Context appCtx;
     private LinearLayout labelsLayout;
     private LinearLayout assigneesLayout;
 
@@ -110,8 +111,9 @@ public class IssueDetailActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
 
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
 
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
@@ -148,7 +150,7 @@ public class IssueDetailActivity extends BaseActivity {
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
@@ -181,7 +183,7 @@ public class IssueDetailActivity extends BaseActivity {
         swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
+            IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, ctx);
 
         }, 500));
 
@@ -190,15 +192,15 @@ public class IssueDetailActivity extends BaseActivity {
         switch(tinyDb.getInt("customFontId", -1)) {
 
             case 1:
-                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/manroperegular.ttf");
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(ctx).getAssets(), "fonts/manroperegular.ttf");
                 break;
 
             case 2:
-                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(ctx).getAssets(), "fonts/sourcecodeproregular.ttf");
                 break;
 
             default:
-                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getApplicationContext()).getAssets(), "fonts/roboto.ttf");
+                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(ctx).getAssets(), "fonts/roboto.ttf");
                 break;
 
         }
@@ -240,7 +242,7 @@ public class IssueDetailActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         String repoFullName = tinyDb.getString("repoFullName");
@@ -254,7 +256,7 @@ public class IssueDetailActivity extends BaseActivity {
             scrollViewComments.post(new Runnable() {
                 @Override
                 public void run() {
-                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
+                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, ctx);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -272,7 +274,7 @@ public class IssueDetailActivity extends BaseActivity {
             scrollViewComments.post(new Runnable() {
                 @Override
                 public void run() {
-                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, getApplicationContext());
+                    IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, ctx);
                     tinyDb.putBoolean("commentEdited", false);
                 }
             });
@@ -312,10 +314,10 @@ public class IssueDetailActivity extends BaseActivity {
 
         IssueCommentsViewModel issueCommentsModel = new ViewModelProvider(this).get(IssueCommentsViewModel.class);
 
-        issueCommentsModel.getIssueCommentList(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), owner, repo, index, getApplicationContext()).observe(this, new Observer<List<IssueComments>>() {
+        issueCommentsModel.getIssueCommentList(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), owner, repo, index, ctx).observe(this, new Observer<List<IssueComments>>() {
             @Override
             public void onChanged(@Nullable List<IssueComments> issueCommentsMain) {
-                adapter = new IssueCommentsAdapter(getApplicationContext(), issueCommentsMain);
+                adapter = new IssueCommentsAdapter(ctx, issueCommentsMain);
                 mRecyclerView.setAdapter(adapter);
             }
         });
@@ -324,11 +326,11 @@ public class IssueDetailActivity extends BaseActivity {
 
     private void getSingleIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid) {
 
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
         Call<Issues> call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getIssueByIndex(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
+                .getIssueByIndex(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
 
         call.enqueue(new Callback<Issues>() {
 
@@ -341,7 +343,7 @@ public class IssueDetailActivity extends BaseActivity {
                         Issues singleIssue = response.body();
                         assert singleIssue != null;
 
-                        final Markwon markwon = Markwon.builder(Objects.requireNonNull(getApplicationContext()))
+                        final Markwon markwon = Markwon.builder(Objects.requireNonNull(ctx))
                                 .usePlugin(CorePlugin.create())
                                 .usePlugin(ImagesPlugin.create(plugin -> {
                                     plugin.addSchemeHandler(new SchemeHandler() {
@@ -349,12 +351,12 @@ public class IssueDetailActivity extends BaseActivity {
                                         @Override
                                         public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-                                            final int resourceId = getApplicationContext().getResources().getIdentifier(
+                                            final int resourceId = ctx.getResources().getIdentifier(
                                                     raw.substring("drawable://".length()),
                                                     "drawable",
-                                                    getApplicationContext().getPackageName());
+                                                    ctx.getPackageName());
 
-                                            final Drawable drawable = getApplicationContext().getDrawable(resourceId);
+                                            final Drawable drawable = ctx.getDrawable(resourceId);
 
                                             assert drawable != null;
                                             return ImageItem.withResult(drawable);
@@ -368,9 +370,9 @@ public class IssueDetailActivity extends BaseActivity {
                                     });
                                     plugin.placeholderProvider(drawable -> null);
                                     plugin.addMediaDecoder(GifMediaDecoder.create(false));
-                                    plugin.addMediaDecoder(SvgMediaDecoder.create(getApplicationContext().getResources()));
+                                    plugin.addMediaDecoder(SvgMediaDecoder.create(ctx.getResources()));
                                     plugin.addMediaDecoder(SvgMediaDecoder.create());
-                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getApplicationContext().getResources()));
+                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create(ctx.getResources()));
                                     plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
 
                                 }))
@@ -383,25 +385,26 @@ public class IssueDetailActivity extends BaseActivity {
                                                 .linkColor(getResources().getColor(R.color.lightBlue));
                                     }
                                 })
-                                .usePlugin(TablePlugin.create(getApplicationContext()))
-                                .usePlugin(TaskListPlugin.create(getApplicationContext()))
+                                .usePlugin(TablePlugin.create(ctx))
+                                .usePlugin(TaskListPlugin.create(ctx))
                                 .usePlugin(HtmlPlugin.create())
                                 .usePlugin(StrikethroughPlugin.create())
                                 .usePlugin(LinkifyPlugin.create())
                                 .build();
 
-                        TinyDB tinyDb = new TinyDB(getApplicationContext());
+                        TinyDB tinyDb = new TinyDB(appCtx);
                         final String locale = tinyDb.getString("locale");
                         final String timeFormat = tinyDb.getString("dateFormat");
                         tinyDb.putString("issueState", singleIssue.getState());
                         tinyDb.putString("issueTitle", singleIssue.getTitle());
 
                         PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
-                        String issueNumber_ = "<font color='" + getApplicationContext().getResources().getColor(R.color.lightGray) + "'>" + getApplicationContext().getResources().getString(R.string.hash) + singleIssue.getNumber() + "</font>";
+                        String issueNumber_ = "<font color='" + appCtx.getResources().getColor(R.color.lightGray) + "'>" + appCtx.getResources().getString(R.string.hash) + singleIssue.getNumber() +
+                                "</font>";
                         issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
                         String cleanIssueDescription = singleIssue.getBody().trim();
                         Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
-                        markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(getApplicationContext(), bodyWithMD, cleanIssueDescription));
+                        markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(ctx, bodyWithMD, cleanIssueDescription));
 
                         RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams)issueDescription.getLayoutParams();
 
@@ -412,16 +415,16 @@ public class IssueDetailActivity extends BaseActivity {
                             assigneesScrollView.setVisibility(View.VISIBLE);
                             for (int i = 0; i < singleIssue.getAssignees().size(); i++) {
 
-                                ImageView assigneesView = new ImageView(getApplicationContext());
+                                ImageView assigneesView = new ImageView(ctx);
 
                                 PicassoService.getInstance(ctx).get().load(singleIssue.getAssignees().get(i).getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop().into(assigneesView);
 
                                 assigneesLayout.addView(assigneesView);
                                 assigneesView.setLayoutParams(params1);
                                 if (!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
-                                    assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), getApplicationContext()));
+                                    assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), ctx));
                                 } else {
-                                    assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), getApplicationContext()));
+                                    assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), ctx));
                                 }
 
                             }
@@ -442,7 +445,7 @@ public class IssueDetailActivity extends BaseActivity {
                                 String labelName = singleIssue.getLabels().get(i).getName();
                                 int color = Color.parseColor("#" + labelColor);
 
-                                ImageView labelsView = new ImageView(getApplicationContext());
+                                ImageView labelsView = new ImageView(ctx);
                                 labelsLayout.setOrientation(LinearLayout.HORIZONTAL);
                                 labelsLayout.setGravity(Gravity.START | Gravity.TOP);
                                 labelsView.setLayoutParams(params);
@@ -472,7 +475,7 @@ public class IssueDetailActivity extends BaseActivity {
                                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
                                 String dueDate = formatter.format(singleIssue.getDue_date());
                                 issueDueDate.setText(getString(R.string.dueDate, dueDate));
-                                issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), getApplicationContext()));
+                                issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), ctx));
                             } else if (timeFormat.equals("normal1")) {
                                 DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
                                 String dueDate = formatter.format(singleIssue.getDue_date());
@@ -529,9 +532,9 @@ public class IssueDetailActivity extends BaseActivity {
                         }
 
                         if (!singleIssue.getUser().getFull_name().equals("")) {
-                            assigneeAvatar.setOnClickListener(new ClickListener(getApplicationContext().getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), getApplicationContext()));
+                            assigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), ctx));
                         } else {
-                            assigneeAvatar.setOnClickListener(new ClickListener(getApplicationContext().getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), getApplicationContext()));
+                            assigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), ctx));
                         }
 
                     }

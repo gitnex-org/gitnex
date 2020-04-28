@@ -3,6 +3,7 @@ package org.mian.gitnex.activities;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -28,6 +29,9 @@ public class OrganizationTeamMembersActivity extends BaseActivity {
     private TeamMembersByOrgAdapter adapter;
     private GridView mGridView;
 
+    final Context ctx = this;
+    private Context appCtx;
+
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_org_team_members;
@@ -35,9 +39,11 @@ public class OrganizationTeamMembersActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
+
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -69,7 +75,7 @@ public class OrganizationTeamMembersActivity extends BaseActivity {
         //Log.i("teamId", getIntent().getStringExtra("teamId"));
 
         assert teamId != null;
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), Integer.valueOf(teamId));
+        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), Integer.valueOf(teamId));
 
     }
 
@@ -77,10 +83,10 @@ public class OrganizationTeamMembersActivity extends BaseActivity {
 
         TeamMembersByOrgViewModel teamMembersModel = new ViewModelProvider(this).get(TeamMembersByOrgViewModel.class);
 
-        teamMembersModel.getMembersByOrgList(instanceUrl, instanceToken, teamId, getApplicationContext()).observe(this, new Observer<List<UserInfo>>() {
+        teamMembersModel.getMembersByOrgList(instanceUrl, instanceToken, teamId, ctx).observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> teamMembersListMain) {
-                adapter = new TeamMembersByOrgAdapter(getApplicationContext(), teamMembersListMain);
+                adapter = new TeamMembersByOrgAdapter(ctx, teamMembersListMain);
                 if(adapter.getCount() > 0) {
                     mGridView.setAdapter(adapter);
                     noDataMembers.setVisibility(View.GONE);

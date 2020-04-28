@@ -19,7 +19,7 @@ import org.mian.gitnex.util.TinyDB;
 
 public class SettingsTranslationActivity extends BaseActivity {
 
-	private Context ctx;
+	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	private static String[] langList = {"English", "Arabic", "Chinese", "Finnish", "French", "German", "Italian", "Latvian", "Persian", "Polish", "Portuguese/Brazilian", "Russian", "Serbian", "Spanish", "Turkish",
@@ -36,8 +36,9 @@ public class SettingsTranslationActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		this.ctx = getApplicationContext();
-		TinyDB tinyDb = new TinyDB(ctx);
+		appCtx = getApplicationContext();
+
+		TinyDB tinyDb = new TinyDB(appCtx);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -142,7 +143,7 @@ public class SettingsTranslationActivity extends BaseActivity {
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterface.dismiss();
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 

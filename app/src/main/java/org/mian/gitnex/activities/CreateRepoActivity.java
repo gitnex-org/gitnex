@@ -45,6 +45,7 @@ public class CreateRepoActivity extends BaseActivity {
     private EditText repoDesc;
     private CheckBox repoAccess;
     final Context ctx = this;
+    private Context appCtx;
 
     List<OrgOwner> organizationsList = new ArrayList<>();
 
@@ -59,11 +60,13 @@ public class CreateRepoActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String userLogin = tinyDb.getString("userLogin");
@@ -85,7 +88,7 @@ public class CreateRepoActivity extends BaseActivity {
 
         spinner = findViewById(R.id.ownerSpinner);
         spinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        getOrganizations(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), userLogin);
+        getOrganizations(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), userLogin);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,9 +124,9 @@ public class CreateRepoActivity extends BaseActivity {
 
     private void processNewRepo() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -135,7 +138,7 @@ public class CreateRepoActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
@@ -143,7 +146,7 @@ public class CreateRepoActivity extends BaseActivity {
         if(!newRepoDesc.equals("")) {
             if (appUtil.charactersLength(newRepoDesc) > 255) {
 
-                Toasty.info(getApplicationContext(), getString(R.string.repoDescError));
+                Toasty.info(ctx, getString(R.string.repoDescError));
                 return;
 
             }
@@ -151,28 +154,28 @@ public class CreateRepoActivity extends BaseActivity {
 
         if(newRepoName.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.repoNameErrorEmpty));
+            Toasty.info(ctx, getString(R.string.repoNameErrorEmpty));
 
         }
         else if(!appUtil.checkStrings(newRepoName)) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.repoNameErrorInvalid));
+            Toasty.info(ctx, getString(R.string.repoNameErrorInvalid));
 
         }
         else if (reservedRepoNames.contains(newRepoName)) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.repoNameErrorReservedName));
+            Toasty.info(ctx, getString(R.string.repoNameErrorReservedName));
 
         }
         else if (reservedRepoPatterns.matcher(newRepoName).find()) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.repoNameErrorReservedPatterns));
+            Toasty.info(ctx, getString(R.string.repoNameErrorReservedPatterns));
 
         }
         else {
 
             disableProcessButton();
-            createNewRepository(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), loginUid, newRepoName, newRepoDesc, repoOwner, newRepoAccess);
+            createNewRepository(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), loginUid, newRepoName, newRepoDesc, repoOwner, newRepoAccess);
 
         }
     }
@@ -185,7 +188,7 @@ public class CreateRepoActivity extends BaseActivity {
         if(repoOwner.equals(loginUid)) {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl, getApplicationContext())
+                    .getInstance(instanceUrl, ctx)
                     .getApiInterface()
                     .createNewUserRepository(token, createRepository);
 
@@ -193,7 +196,7 @@ public class CreateRepoActivity extends BaseActivity {
         else {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl, getApplicationContext())
+                    .getInstance(instanceUrl, ctx)
                     .getApiInterface()
                     .createNewUserOrgRepository(token, repoOwner, createRepository);
 
@@ -206,9 +209,9 @@ public class CreateRepoActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(getApplicationContext());
+                    TinyDB tinyDb = new TinyDB(appCtx);
                     tinyDb.putBoolean("repoCreated", true);
-                    Toasty.info(getApplicationContext(), getString(R.string.repoCreated));
+                    Toasty.info(ctx, getString(R.string.repoCreated));
                     enableProcessButton();
                     finish();
                 }
@@ -224,13 +227,13 @@ public class CreateRepoActivity extends BaseActivity {
                 else if(response.code() == 409) {
 
                     enableProcessButton();
-                    Toasty.info(getApplicationContext(), getString(R.string.repoExistsError));
+                    Toasty.info(ctx, getString(R.string.repoExistsError));
 
                 }
                 else {
 
                     enableProcessButton();
-                    Toasty.info(getApplicationContext(), getString(R.string.repoCreatedError));
+                    Toasty.info(ctx, getString(R.string.repoCreatedError));
 
                 }
 
@@ -246,10 +249,10 @@ public class CreateRepoActivity extends BaseActivity {
 
     private void getOrganizations(String instanceUrl, String instanceToken, final String userLogin) {
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
 
         Call<List<OrgOwner>> call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getOrgOwners(instanceToken);
 

@@ -15,7 +15,7 @@ import org.mian.gitnex.util.TinyDB;
 
 public class SettingsReportsActivity extends BaseActivity {
 
-	private Context ctx;
+	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	@Override
@@ -28,8 +28,9 @@ public class SettingsReportsActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		this.ctx = getApplicationContext();
-		TinyDB tinyDb = new TinyDB(ctx);
+		appCtx = getApplicationContext();
+
+		TinyDB tinyDb = new TinyDB(appCtx);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -50,11 +51,11 @@ public class SettingsReportsActivity extends BaseActivity {
 
 			if(isChecked) {
 				tinyDb.putBoolean("crashReportingEnabled", true);
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 			}
 			else {
 				tinyDb.putBoolean("crashReportingEnabled", false);
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 			}
 
 		});

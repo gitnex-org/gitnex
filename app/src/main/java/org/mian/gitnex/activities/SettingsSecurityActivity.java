@@ -17,7 +17,7 @@ import org.mian.gitnex.util.TinyDB;
 
 public class SettingsSecurityActivity extends BaseActivity {
 
-	private Context ctx;
+	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	@Override
@@ -30,8 +30,9 @@ public class SettingsSecurityActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		this.ctx = getApplicationContext();
-		TinyDB tinyDb = new TinyDB(ctx);
+		appCtx = getApplicationContext();
+
+		TinyDB tinyDb = new TinyDB(appCtx);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -49,16 +50,16 @@ public class SettingsSecurityActivity extends BaseActivity {
 			builder.setMessage(getResources().getString(R.string.settingsCertsPopupMessage));
 			builder.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
-				ctx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE).edit().remove(MemorizingTrustManager.KEYSTORE_KEY).apply();
+				appCtx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE).edit().remove(MemorizingTrustManager.KEYSTORE_KEY).apply();
 
 				tinyDb.putBoolean("loggedInMode", false);
 				tinyDb.remove("basicAuthPassword");
 				tinyDb.putBoolean("basicAuthFlag", false);
 				//tinyDb.clear();
 
-				Intent loginActivityIntent = new Intent().setClass(ctx, LoginActivity.class);
+				Intent loginActivityIntent = new Intent().setClass(appCtx, LoginActivity.class);
 				loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				ctx.startActivity(loginActivityIntent);
+				appCtx.startActivity(loginActivityIntent);
 
 			});
 

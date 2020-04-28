@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,6 +32,9 @@ import java.util.Objects;
 
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
 
+    final Context ctx = this;
+    private Context appCtx;
+
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_org_detail;
@@ -38,9 +42,11 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
+
+        TinyDB tinyDb = new TinyDB(appCtx);
         String orgName = tinyDb.getString("orgName");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -62,15 +68,15 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
         switch(tinyDb.getInt("customFontId", -1)) {
 
             case 0:
-                myTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/roboto.ttf");
+                myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
                 break;
 
             case 2:
-                myTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/sourcecodeproregular.ttf");
+                myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
                 break;
 
             default:
-                myTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/manroperegular.ttf");
+                myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
                 break;
 
         }
@@ -126,7 +132,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
     @Override
     public void onButtonClicked(String text) {
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
 
         switch (text) {
             case "repository":
@@ -151,7 +157,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
         @Override
         public Fragment getItem(int position) {
 
-            TinyDB tinyDb = new TinyDB(getApplicationContext());
+            TinyDB tinyDb = new TinyDB(appCtx);
             String orgName;
             if(getIntent().getStringExtra("orgName") != null || !Objects.equals(getIntent().getStringExtra("orgName"), "")) {
                 orgName = getIntent().getStringExtra("orgName");

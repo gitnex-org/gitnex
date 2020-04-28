@@ -18,7 +18,7 @@ import org.mian.gitnex.util.TinyDB;
 
 public class SettingsAppearanceActivity extends BaseActivity {
 
-	private Context ctx;
+	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	private static String[] timeList = {"Pretty", "Normal"};
@@ -46,8 +46,9 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		this.ctx = getApplicationContext();
-		final TinyDB tinyDb = new TinyDB(ctx);
+		appCtx = getApplicationContext();
+
+		final TinyDB tinyDb = new TinyDB(appCtx);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -120,11 +121,11 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 			if (isChecked) {
 				tinyDb.putBoolean("enableCounterBadges", true);
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 			}
 			else {
 				tinyDb.putBoolean("enableCounterBadges", false);
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 			}
 
 		});
@@ -153,7 +154,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterfaceTheme.dismiss();
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -186,7 +187,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterfaceCustomFont.dismiss();
-				Toasty.info(ctx, ctx.getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, appCtx.getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -216,7 +217,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				tinyDb.putInt("homeScreenId", i);
 
 				dialogInterfaceHomeScreen.dismiss();
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -269,7 +270,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				}
 
 				dialogInterfaceCodeBlock.dismiss();
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -306,7 +307,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				}
 
 				dialogInterfaceTime.dismiss();
-				Toasty.info(ctx, getResources().getString(R.string.settingsSave));
+				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 

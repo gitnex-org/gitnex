@@ -45,6 +45,7 @@ public class CreateReleaseActivity extends BaseActivity {
     private CheckBox releaseDraft;
     private Button createNewRelease;
     final Context ctx = this;
+    private Context appCtx;
 
     List<Branches> branchesList = new ArrayList<>();
 
@@ -57,12 +58,13 @@ public class CreateReleaseActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -87,7 +89,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
         releaseBranch = findViewById(R.id.releaseBranch);
         releaseBranch.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        getBranches(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+        getBranches(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
         releaseBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -123,9 +125,9 @@ public class CreateReleaseActivity extends BaseActivity {
 
     private void processNewRelease() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -143,27 +145,27 @@ public class CreateReleaseActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newReleaseTagName.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.tagNameErrorEmpty));
+            Toasty.info(ctx, getString(R.string.tagNameErrorEmpty));
             return;
 
         }
 
         if(newReleaseTitle.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.titleErrorEmpty));
+            Toasty.info(ctx, getString(R.string.titleErrorEmpty));
             return;
 
         }
 
         disableProcessButton();
-        createNewReleaseFunc(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, newReleaseTagName, newReleaseTitle, newReleaseContent, newReleaseBranch, newReleaseType, newReleaseDraft);
+        createNewReleaseFunc(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newReleaseTagName, newReleaseTitle, newReleaseContent, newReleaseBranch, newReleaseType, newReleaseDraft);
 
     }
 
@@ -174,7 +176,7 @@ public class CreateReleaseActivity extends BaseActivity {
         Call<Releases> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .createNewRelease(token, repoOwner, repoName, createReleaseJson);
 
@@ -185,9 +187,9 @@ public class CreateReleaseActivity extends BaseActivity {
 
                 if (response.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(getApplicationContext());
+                    TinyDB tinyDb = new TinyDB(appCtx);
                     tinyDb.putBoolean("updateReleases", true);
-                    Toasty.info(getApplicationContext(), getString(R.string.releaseCreatedText));
+                    Toasty.info(ctx, getString(R.string.releaseCreatedText));
                     enableProcessButton();
                     finish();
 
@@ -234,7 +236,7 @@ public class CreateReleaseActivity extends BaseActivity {
     private void getBranches(String instanceUrl, String instanceToken, final String repoOwner, final String repoName) {
 
         Call<List<Branches>> call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .getBranches(instanceToken, repoOwner, repoName);
 

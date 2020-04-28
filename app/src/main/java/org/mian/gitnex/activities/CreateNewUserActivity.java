@@ -35,6 +35,7 @@ public class CreateNewUserActivity extends BaseActivity {
     private EditText userPassword;
     private Button createUserButton;
     final Context ctx = this;
+    private Context appCtx;
 
     @Override
     protected int getLayoutResourceId(){
@@ -45,8 +46,9 @@ public class CreateNewUserActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -78,9 +80,9 @@ public class CreateNewUserActivity extends BaseActivity {
 
     private void processCreateNewUser() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(getApplicationContext());
+        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -92,41 +94,41 @@ public class CreateNewUserActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(getApplicationContext(), getResources().getString(R.string.checkNetConnection));
+            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newFullName.equals("") || newUserName.equals("") | newUserEmail.equals("") || newUserPassword.equals("")) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.emptyFields));
+            Toasty.info(ctx, getString(R.string.emptyFields));
             return;
 
         }
 
         if(!appUtil.checkStrings(newFullName)) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.userInvalidFullName));
+            Toasty.info(ctx, getString(R.string.userInvalidFullName));
             return;
 
         }
 
         if(!appUtil.checkStringsWithAlphaNumeric(newUserName)) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.userInvalidUserName));
+            Toasty.info(ctx, getString(R.string.userInvalidUserName));
             return;
 
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
-            Toasty.info(getApplicationContext(), getString(R.string.userInvalidEmail));
+            Toasty.info(ctx, getString(R.string.userInvalidEmail));
             return;
 
         }
 
         disableProcessButton();
-        createNewUser(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), newFullName, newUserName, newUserEmail, newUserPassword);
+        createNewUser(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), newFullName, newUserName, newUserEmail, newUserPassword);
 
     }
 
@@ -137,7 +139,7 @@ public class CreateNewUserActivity extends BaseActivity {
         Call<UserInfo> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
                 .createNewUser(instanceToken, createUser);
 
@@ -148,7 +150,7 @@ public class CreateNewUserActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.userCreatedText));
+                    Toasty.info(ctx, getString(R.string.userCreatedText));
                     enableProcessButton();
                     finish();
 
@@ -183,7 +185,7 @@ public class CreateNewUserActivity extends BaseActivity {
                 else {
 
                     enableProcessButton();
-                    Toasty.info(getApplicationContext(), getString(R.string.genericError));
+                    Toasty.info(ctx, getString(R.string.genericError));
 
                 }
 

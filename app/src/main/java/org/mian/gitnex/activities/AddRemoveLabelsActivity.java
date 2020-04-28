@@ -32,6 +32,7 @@ public class AddRemoveLabelsActivity extends BaseActivity {
     private Boolean labelsFlag = false;
     private MultiSelectDialog multiSelectDialogLabels;
     final Context ctx = this;
+    private Context appCtx;
 
     @Override
     protected int getLayoutResourceId(){
@@ -40,12 +41,14 @@ public class AddRemoveLabelsActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        appCtx = getApplicationContext();
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
         getWindow().getDecorView().setBackground(new ColorDrawable(Color.TRANSPARENT));
 
-        TinyDB tinyDb = new TinyDB(getApplicationContext());
+        TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         String repoFullName = tinyDb.getString("repoFullName");
@@ -61,12 +64,12 @@ public class AddRemoveLabelsActivity extends BaseActivity {
 
     private void getLabels(final String instanceUrl, final String instanceToken, final String repoOwner, final String repoName, final int issueIndex, final String loginUid) {
 
-        final TinyDB tinyDb = new TinyDB(getApplicationContext());
+        final TinyDB tinyDb = new TinyDB(appCtx);
 
         Call<List<Labels>> call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getlabels(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName);
+                .getlabels(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
 
         call.enqueue(new Callback<List<Labels>>() {
 
@@ -89,9 +92,9 @@ public class AddRemoveLabelsActivity extends BaseActivity {
 
                         // get current issue labels
                         Call<List<Labels>> callSingleIssueLabels = RetrofitClient
-                                .getInstance(instanceUrl, getApplicationContext())
+                                .getInstance(instanceUrl, ctx)
                                 .getApiInterface()
-                                .getIssueLabels(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex);
+                                .getIssueLabels(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
 
                         callSingleIssueLabels.enqueue(new Callback<List<Labels>>() {
 
@@ -142,7 +145,7 @@ public class AddRemoveLabelsActivity extends BaseActivity {
                                                             integers = new int[0];
                                                         }
 
-                                                        updateIssueLabels(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, integers, loginUid);
+                                                        updateIssueLabels(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, integers, loginUid);
                                                         tinyDb.putBoolean("singleIssueUpdate", true);
                                                         CloseActivity();
                                                     }
@@ -183,7 +186,7 @@ public class AddRemoveLabelsActivity extends BaseActivity {
                                                             integers = new int[0];
                                                         }
 
-                                                        updateIssueLabels(instanceUrl, Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, integers, loginUid);
+                                                        updateIssueLabels(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, integers, loginUid);
                                                         tinyDb.putBoolean("singleIssueUpdate", true);
                                                         CloseActivity();
 
@@ -231,7 +234,7 @@ public class AddRemoveLabelsActivity extends BaseActivity {
                     }
                     else {
 
-                        Toasty.info(getApplicationContext(), getString(R.string.genericError));
+                        Toasty.info(ctx, getString(R.string.genericError));
 
                     }
                 }
@@ -251,9 +254,9 @@ public class AddRemoveLabelsActivity extends BaseActivity {
         Labels patchIssueLabels = new Labels(issueLabels);
 
         Call<JsonElement> call = RetrofitClient
-                .getInstance(instanceUrl, getApplicationContext())
+                .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .updateIssueLabels(Authorization.returnAuthentication(getApplicationContext(), loginUid, instanceToken), repoOwner, repoName, issueIndex, patchIssueLabels);
+                .updateIssueLabels(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, patchIssueLabels);
 
         call.enqueue(new Callback<JsonElement>() {
 
@@ -285,7 +288,7 @@ public class AddRemoveLabelsActivity extends BaseActivity {
                 }
                 else {
 
-                    Toasty.info(getApplicationContext(), getString(R.string.genericError));
+                    Toasty.info(ctx, getString(R.string.genericError));
 
                 }
 
