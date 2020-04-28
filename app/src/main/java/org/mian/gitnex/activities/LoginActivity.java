@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Resources res = getResources();
         String[] allProtocols = res.getStringArray(R.array.protocolValues);
 
-        final ArrayAdapter<String> adapterProtocols = new ArrayAdapter<String>(Objects.requireNonNull(getApplicationContext()),
+        final ArrayAdapter<String> adapterProtocols = new ArrayAdapter<String>(LoginActivity.this,
                 R.layout.spinner_item, allProtocols);
 
         adapterProtocols.setDropDownViewResource(R.layout.spinner_dropdown_item);

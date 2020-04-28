@@ -283,7 +283,7 @@ public class CreateRepoActivity extends BaseActivity {
                             }
                         }
 
-                        ArrayAdapter<OrgOwner> adapter = new ArrayAdapter<>(getApplicationContext(),
+                        ArrayAdapter<OrgOwner> adapter = new ArrayAdapter<>(CreateRepoActivity.this,
                                 R.layout.spinner_item, organizationsList);
 
                         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);

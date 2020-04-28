@@ -143,7 +143,7 @@ public class MergePullRequestActivity extends BaseActivity {
 			mergeList.add(new MergePullRequestSpinner("squash", getResources().getString(R.string.mergeOptionSquash)));
 		}
 
-		ArrayAdapter<MergePullRequestSpinner> adapter = new ArrayAdapter<>(ctx, R.layout.spinner_item, mergeList);
+		ArrayAdapter<MergePullRequestSpinner> adapter = new ArrayAdapter<>(MergePullRequestActivity.this, R.layout.spinner_item, mergeList);
 		adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 		mergeModeSpinner.setAdapter(adapter);
 
