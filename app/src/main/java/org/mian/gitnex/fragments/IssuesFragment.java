@@ -22,7 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
-import org.mian.gitnex.clients.IssuesService;
+import org.mian.gitnex.clients.AppApiService;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
@@ -143,7 +143,7 @@ public class IssuesFragment extends Fragment {
 
 		});
 
-		api = IssuesService.createService(ApiInterface.class, instanceUrl, getContext());
+		api = AppApiService.createService(ApiInterface.class, instanceUrl, getContext());
 		loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
 		return v;
