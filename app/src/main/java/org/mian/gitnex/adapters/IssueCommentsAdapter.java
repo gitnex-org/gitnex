@@ -11,29 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.models.IssueComments;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.util.TinyDB;
-import org.mian.gitnex.helpers.ClickListener;
-import org.ocpsoft.prettytime.PrettyTime;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.core.CorePlugin;
@@ -42,7 +41,6 @@ import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.ext.tables.TablePlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
 import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.AsyncDrawable;
 import io.noties.markwon.image.DefaultMediaDecoder;
 import io.noties.markwon.image.ImageItem;
 import io.noties.markwon.image.ImagesPlugin;
@@ -50,6 +48,8 @@ import io.noties.markwon.image.SchemeHandler;
 import io.noties.markwon.image.gif.GifMediaDecoder;
 import io.noties.markwon.image.svg.SvgMediaDecoder;
 import io.noties.markwon.linkify.LinkifyPlugin;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -60,14 +60,20 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	private List<IssueComments> issuesComments;
 	private Context mCtx;
 
-	static class IssueCommentViewHolder extends RecyclerView.ViewHolder {
+	public IssueCommentsAdapter(Context mCtx, List<IssueComments> issuesCommentsMain) {
+
+		this.mCtx = mCtx;
+		this.issuesComments = issuesCommentsMain;
+
+	}
+
+	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
 		private TextView issueNumber;
 		private TextView commendId;
 		private ImageView issueCommenterAvatar;
 		private TextView issueComment;
 		private TextView issueCommentDate;
-		private ImageView commentsOptionsMenu;
 		private TextView commendBodyRaw;
 		private TextView commentModified;
 		private TextView commenterUsername;
@@ -82,7 +88,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			issueCommenterAvatar = itemView.findViewById(R.id.issueCommenterAvatar);
 			issueComment = itemView.findViewById(R.id.issueComment);
 			issueCommentDate = itemView.findViewById(R.id.issueCommentDate);
-			commentsOptionsMenu = itemView.findViewById(R.id.commentsOptionsMenu);
+			ImageView commentsOptionsMenu = itemView.findViewById(R.id.commentsOptionsMenu);
 			commendBodyRaw = itemView.findViewById(R.id.commendBodyRaw);
 			commentModified = itemView.findViewById(R.id.commentModified);
 			commenterUsername = itemView.findViewById(R.id.commenterUsername);
@@ -90,32 +96,32 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 			commentsOptionsMenu.setOnClickListener(v -> {
 
-				final Context context = v.getContext();
-				final TinyDB tinyDb = new TinyDB(context);
+				final Context ctx = v.getContext();
+				final TinyDB tinyDb = new TinyDB(ctx);
 				final String loginUid = tinyDb.getString("loginUid");
 
-				@SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_issue_comments, null);
+				@SuppressLint("InflateParams") View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_issue_comments, null);
 
 				TextView commentMenuEdit = view.findViewById(R.id.commentMenuEdit);
 				TextView commentShare = view.findViewById(R.id.issueCommentShare);
-				//TextView commentMenuDelete = view.findViewById(R.id.commentMenuDelete);
+				TextView commentMenuDelete = view.findViewById(R.id.commentMenuDelete);
 
 				if(!loginUid.contentEquals(commenterUsername.getText())) {
 					commentMenuEdit.setVisibility(View.GONE);
-					//commentMenuDelete.setVisibility(View.GONE);
+					commentMenuDelete.setVisibility(View.GONE);
 				}
 
-				BottomSheetDialog dialog = new BottomSheetDialog(context);
+				BottomSheetDialog dialog = new BottomSheetDialog(ctx);
 				dialog.setContentView(view);
 				dialog.show();
 
 				commentMenuEdit.setOnClickListener(ediComment -> {
 
-					Intent intent = new Intent(context, ReplyToIssueActivity.class);
+					Intent intent = new Intent(ctx, ReplyToIssueActivity.class);
 					intent.putExtra("commentId", commendId.getText());
 					intent.putExtra("commentAction", "edit");
 					intent.putExtra("commentBody", commendBodyRaw.getText());
-					context.startActivity(intent);
+					ctx.startActivity(intent);
 					dialog.dismiss();
 
 				});
@@ -128,20 +134,21 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					// share issue comment
 					Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 					sharingIntent.setType("text/plain");
-					String intentHeader = tinyDb.getString("issueNumber") + context.getResources().getString(R.string.hash) + "issuecomment-" + commendId.getText() + " " + tinyDb.getString("issueTitle");
+					String intentHeader = tinyDb.getString("issueNumber") + ctx.getResources().getString(R.string.hash) + "issuecomment-" + commendId.getText() + " " + tinyDb.getString("issueTitle");
 					sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, intentHeader);
 					sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, commentUrl);
-					context.startActivity(Intent.createChooser(sharingIntent, intentHeader));
+					ctx.startActivity(Intent.createChooser(sharingIntent, intentHeader));
 
 					dialog.dismiss();
 
 				});
 
-                /*commentMenuDelete.setOnClickListener(deleteComment -> {
+				commentMenuDelete.setOnClickListener(deleteComment -> {
 
-                    dialog.dismiss();
+					deleteIssueComment(ctx, Integer.parseInt(commendId.getText().toString()), getAdapterPosition());
+					dialog.dismiss();
 
-                });*/
+				});
 
 			});
 
@@ -149,10 +156,79 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	}
 
-	public IssueCommentsAdapter(Context mCtx, List<IssueComments> issuesCommentsMain) {
+	private void updateAdapter(int position) {
 
-		this.mCtx = mCtx;
-		this.issuesComments = issuesCommentsMain;
+		issuesComments.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, issuesComments.size());
+
+	}
+
+	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
+
+		final TinyDB tinyDb = new TinyDB(ctx);
+		final String instanceUrl = tinyDb.getString("instanceUrl");
+		final String loginUid = tinyDb.getString("loginUid");
+		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		String[] repoFullName = tinyDb.getString("repoFullName").split("/");
+		if (repoFullName.length != 2) {
+			return;
+		}
+		final String repoOwner = repoFullName[0];
+		final String repoName = repoFullName[1];
+
+		Call<JsonElement> call;
+
+		call = RetrofitClient
+				.getInstance(instanceUrl, ctx)
+				.getApiInterface()
+				.deleteComment(instanceToken, repoOwner, repoName, commentId);
+
+		call.enqueue(new Callback<JsonElement>() {
+
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+
+				if(response.code() == 204) {
+
+					updateAdapter(position);
+					Toasty.info(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
+
+				}
+				else if(response.code() == 401) {
+
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
+							ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
+							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+
+				}
+				else if(response.code() == 403) {
+
+					Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+
+				}
+				else if(response.code() == 404) {
+
+					Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+
+				}
+				else {
+
+					Toasty.info(ctx, ctx.getString(R.string.genericError));
+
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+
+				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
+
+			}
+
+		});
 
 	}
 
@@ -218,20 +294,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 						return Collections.singleton("drawable");
 					}
 				});
-				plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-
-					@Nullable
-					@Override
-					public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-
-						return null;
-					}
-				});
+				plugin.placeholderProvider(drawable -> null);
 				plugin.addMediaDecoder(GifMediaDecoder.create(false));
 				plugin.addMediaDecoder(SvgMediaDecoder.create(mCtx.getResources()));
 				plugin.addMediaDecoder(SvgMediaDecoder.create());
 				plugin.defaultMediaDecoder(DefaultMediaDecoder.create(mCtx.getResources()));
 				plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
+
 			}
 		})).usePlugin(new AbstractMarkwonPlugin() {
 

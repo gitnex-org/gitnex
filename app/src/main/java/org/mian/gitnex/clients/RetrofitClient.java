@@ -2,9 +2,9 @@ package org.mian.gitnex.clients;
 
 import android.content.Context;
 import android.util.Log;
+import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.interfaces.WebInterface;
-import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import org.mian.gitnex.util.AppUtil;
 import java.io.File;
 import java.security.SecureRandom;
@@ -44,12 +44,9 @@ public class RetrofitClient {
 			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
 			sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
 
-			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
-					.cache(cache)
+			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder().cache(cache)
 					//.addInterceptor(logging)
-					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
-					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
-					.addInterceptor(chain -> {
+					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager).hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).addInterceptor(chain -> {
 
 						Request request = chain.request();
 						if(connToInternet) {
@@ -61,11 +58,7 @@ public class RetrofitClient {
 						return chain.proceed(request);
 					});
 
-			Retrofit.Builder builder = new Retrofit.Builder()
-					.baseUrl(instanceUrl)
-					.client(okHttpClient.build())
-					.addConverterFactory(ScalarsConverterFactory.create())
-					.addConverterFactory(GsonConverterFactory.create());
+			Retrofit.Builder builder = new Retrofit.Builder().baseUrl(instanceUrl).client(okHttpClient.build()).addConverterFactory(ScalarsConverterFactory.create()).addConverterFactory(GsonConverterFactory.create());
 
 			retrofit = builder.build();
 
@@ -77,15 +70,18 @@ public class RetrofitClient {
 	}
 
 	public static synchronized RetrofitClient getInstance(String instanceUrl, Context ctx) {
+
 		return new RetrofitClient(instanceUrl, ctx);
 	}
 
 	public ApiInterface getApiInterface() {
+
 		return retrofit.create(ApiInterface.class);
 	}
 
-    public WebInterface getWebInterface() {
-        return retrofit.create(WebInterface.class);
-    }
+	public WebInterface getWebInterface() {
+
+		return retrofit.create(WebInterface.class);
+	}
 
 }

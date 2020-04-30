@@ -272,4 +272,7 @@ public interface ApiInterface {
 
     @PATCH("repos/{owner}/{repo}/milestones/{index}") // close / reopen milestone
     Call<JsonElement> closeReopenMilestone(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int index, @Body Milestones jsonStr);
+
+    @DELETE("repos/{owner}/{repo}/issues/comments/{id}") // delete own comment from issue
+    Call<JsonElement> deleteComment(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("id") int commentIndex);
 }

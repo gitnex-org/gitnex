@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
@@ -11,10 +12,9 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.UpdateIssueState;
 import org.mian.gitnex.models.IssueComments;
+import org.mian.gitnex.models.UpdateIssueState;
 import org.mian.gitnex.util.TinyDB;
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -24,273 +24,253 @@ import retrofit2.Callback;
 
 public class IssueActions {
 
-    public static void editIssueComment(final Context ctx, final int commentId, final String commentBody) {
+	public static void editIssueComment(final Context ctx, final int commentId, final String commentBody) {
 
-        final TinyDB tinyDb = new TinyDB(ctx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
+		final TinyDB tinyDb = new TinyDB(ctx);
+		final String instanceUrl = tinyDb.getString("instanceUrl");
+		final String loginUid = tinyDb.getString("loginUid");
+		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		String repoFullName = tinyDb.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+		final String repoOwner = parts[0];
+		final String repoName = parts[1];
 
-        IssueComments commentBodyJson = new IssueComments(commentBody);
-        Call<IssueComments> call;
+		IssueComments commentBodyJson = new IssueComments(commentBody);
+		Call<IssueComments> call;
 
-        call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .patchIssueComment(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, commentId, commentBodyJson);
+		call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().patchIssueComment(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, commentId, commentBodyJson);
 
-        call.enqueue(new Callback<IssueComments>() {
+		call.enqueue(new Callback<IssueComments>() {
 
-            @Override
-            public void onResponse(@NonNull Call<IssueComments> call, @NonNull retrofit2.Response<IssueComments> response) {
+			@Override
+			public void onResponse(@NonNull Call<IssueComments> call, @NonNull retrofit2.Response<IssueComments> response) {
 
-                if(response.isSuccessful()) {
-                    if(response.code() == 200) {
+				if(response.isSuccessful()) {
+					if(response.code() == 200) {
 
-                        tinyDb.putBoolean("commentEdited", true);
-                        Toasty.info(ctx, ctx.getString(R.string.editCommentUpdatedText));
-                        ((ReplyToIssueActivity)ctx).finish();
+						tinyDb.putBoolean("commentEdited", true);
+						Toasty.info(ctx, ctx.getString(R.string.editCommentUpdatedText));
+						((ReplyToIssueActivity) ctx).finish();
 
-                    }
-                }
-                else if(response.code() == 401) {
+					}
+				}
+				else if(response.code() == 401) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle), ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 
-                }
-                else if(response.code() == 403) {
+				}
+				else if(response.code() == 403) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+					Toasty.info(ctx, ctx.getString(R.string.authorizeError));
 
-                }
-                else if(response.code() == 404) {
+				}
+				else if(response.code() == 404) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+					Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
 
-                }
-                else {
+				}
+				else {
 
-                    Toasty.info(ctx, ctx.getString(R.string.genericError));
+					Toasty.info(ctx, ctx.getString(R.string.genericError));
 
-                }
+				}
 
-            }
+			}
 
-            @Override
-            public void onFailure(@NonNull Call<IssueComments> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
-        });
+			@Override
+			public void onFailure(@NonNull Call<IssueComments> call, @NonNull Throwable t) {
 
-    }
+				Log.e("onFailure", t.toString());
+			}
+		});
 
-    public static void closeReopenIssue(final Context ctx, final int issueIndex, final String issueState) {
+	}
 
-        final TinyDB tinyDb = new TinyDB(ctx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
+	public static void closeReopenIssue(final Context ctx, final int issueIndex, final String issueState) {
 
-        UpdateIssueState issueStatJson = new UpdateIssueState(issueState);
-        Call<JsonElement> call;
+		final TinyDB tinyDb = new TinyDB(ctx);
+		final String instanceUrl = tinyDb.getString("instanceUrl");
+		final String loginUid = tinyDb.getString("loginUid");
+		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		String repoFullName = tinyDb.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+		final String repoOwner = parts[0];
+		final String repoName = parts[1];
 
-        call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .closeReopenIssue(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, issueStatJson);
+		UpdateIssueState issueStatJson = new UpdateIssueState(issueState);
+		Call<JsonElement> call;
 
-        call.enqueue(new Callback<JsonElement>() {
+		call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().closeReopenIssue(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, issueStatJson);
 
-            @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+		call.enqueue(new Callback<JsonElement>() {
 
-                if(response.isSuccessful()) {
-                    if(response.code() == 201) {
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-                        tinyDb.putBoolean("resumeIssues", true);
-                        tinyDb.putBoolean("resumeClosedIssues", true);
+				if(response.isSuccessful()) {
+					if(response.code() == 201) {
 
-                        if(issueState.equals("closed")) {
+						tinyDb.putBoolean("resumeIssues", true);
+						tinyDb.putBoolean("resumeClosedIssues", true);
 
-                            Toasty.info(ctx, ctx.getString(R.string.issueStateClosed));
-                            tinyDb.putString("issueState", "closed");
+						if(issueState.equals("closed")) {
 
-                        }
-                        else if(issueState.equals("open")) {
+							Toasty.info(ctx, ctx.getString(R.string.issueStateClosed));
+							tinyDb.putString("issueState", "closed");
 
-                            Toasty.info(ctx, ctx.getString(R.string.issueStateReopened));
-                            tinyDb.putString("issueState", "open");
+						}
+						else if(issueState.equals("open")) {
 
-                        }
+							Toasty.info(ctx, ctx.getString(R.string.issueStateReopened));
+							tinyDb.putString("issueState", "open");
 
-                    }
-                }
-                else if(response.code() == 401) {
+						}
 
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+					}
+				}
+				else if(response.code() == 401) {
 
-                }
-                else if(response.code() == 403) {
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle), ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+				}
+				else if(response.code() == 403) {
 
-                }
-                else if(response.code() == 404) {
+					Toasty.info(ctx, ctx.getString(R.string.authorizeError));
 
-                    Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+				}
+				else if(response.code() == 404) {
 
-                }
-                else {
+					Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
 
-                    Toasty.info(ctx, ctx.getString(R.string.genericError));
+				}
+				else {
 
-                }
+					Toasty.info(ctx, ctx.getString(R.string.genericError));
 
-            }
+				}
 
-            @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
-        });
+			}
 
-    }
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
-    public static void subscribe(final Context ctx, final TextView subscribeIssue, final TextView unsubscribeIssue) {
+				Log.e("onFailure", t.toString());
+			}
+		});
 
-        final TinyDB tinyDB = new TinyDB(ctx);
+	}
 
-        final String instanceUrl = tinyDB.getString("instanceUrl");
-        String repoFullName = tinyDB.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-        final String loginUid = tinyDB.getString("loginUid");
-        final String userLogin = tinyDB.getString("userLogin");
-        final String token = "token " + tinyDB.getString(loginUid + "-token");
-        final int issueNr = Integer.parseInt(tinyDB.getString("issueNumber"));
+	public static void subscribe(final Context ctx, final TextView subscribeIssue, final TextView unsubscribeIssue) {
 
-        Call<Void> call;
+		final TinyDB tinyDB = new TinyDB(ctx);
 
-        call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .addIssueSubscriber(token, repoOwner, repoName, issueNr, userLogin);
+		final String instanceUrl = tinyDB.getString("instanceUrl");
+		String repoFullName = tinyDB.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+		final String repoOwner = parts[0];
+		final String repoName = parts[1];
+		final String loginUid = tinyDB.getString("loginUid");
+		final String userLogin = tinyDB.getString("userLogin");
+		final String token = "token " + tinyDB.getString(loginUid + "-token");
+		final int issueNr = Integer.parseInt(tinyDB.getString("issueNumber"));
 
-        call.enqueue(new Callback<Void>() {
+		Call<Void> call;
 
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+		call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().addIssueSubscriber(token, repoOwner, repoName, issueNr, userLogin);
 
-                if(response.isSuccessful()) {
+		call.enqueue(new Callback<Void>() {
 
-                    if(response.code() == 201) {
+			@Override
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
-                        unsubscribeIssue.setVisibility(View.VISIBLE);
-                        subscribeIssue.setVisibility(View.GONE);
-                        Toasty.info(ctx, ctx.getString(R.string.issueSubscribtion));
-                        tinyDB.putString("issueSubscriptionState", "unsubscribeToIssue");
+				if(response.isSuccessful()) {
 
-                    }
+					if(response.code() == 201) {
 
-                }
-                else if(response.code() == 401) {
+						unsubscribeIssue.setVisibility(View.VISIBLE);
+						subscribeIssue.setVisibility(View.GONE);
+						Toasty.info(ctx, ctx.getString(R.string.issueSubscribtion));
+						tinyDB.putString("issueSubscriptionState", "unsubscribeToIssue");
 
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+					}
 
-                }
-                else {
+				}
+				else if(response.code() == 401) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.issueSubscribtionError));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle), ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 
-                }
+				}
+				else {
 
-            }
+					Toasty.info(ctx, ctx.getString(R.string.issueSubscribtionError));
 
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Toasty.info(ctx, ctx.getString(R.string.issueSubscribtionError));
-            }
-        });
+				}
 
-    }
+			}
 
-    public static void unsubscribe(final Context ctx, final TextView subscribeIssue, final TextView unsubscribeIssue) {
+			@Override
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-        final TinyDB tinyDB = new TinyDB(ctx);
+				Toasty.info(ctx, ctx.getString(R.string.issueSubscribtionError));
+			}
+		});
 
-        final String instanceUrl = tinyDB.getString("instanceUrl");
-        String repoFullName = tinyDB.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-        final String loginUid = tinyDB.getString("loginUid");
-        final String userLogin = tinyDB.getString("userLogin");
-        final String token = "token " + tinyDB.getString(loginUid + "-token");
-        final int issueNr = Integer.parseInt(tinyDB.getString("issueNumber"));
+	}
 
-        Call<Void> call;
+	public static void unsubscribe(final Context ctx, final TextView subscribeIssue, final TextView unsubscribeIssue) {
 
-        call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .delIssueSubscriber(token, repoOwner, repoName, issueNr, userLogin);
+		final TinyDB tinyDB = new TinyDB(ctx);
 
-        call.enqueue(new Callback<Void>() {
+		final String instanceUrl = tinyDB.getString("instanceUrl");
+		String repoFullName = tinyDB.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+		final String repoOwner = parts[0];
+		final String repoName = parts[1];
+		final String loginUid = tinyDB.getString("loginUid");
+		final String userLogin = tinyDB.getString("userLogin");
+		final String token = "token " + tinyDB.getString(loginUid + "-token");
+		final int issueNr = Integer.parseInt(tinyDB.getString("issueNumber"));
 
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+		Call<Void> call;
 
-                if(response.isSuccessful()) {
+		call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().delIssueSubscriber(token, repoOwner, repoName, issueNr, userLogin);
 
-                    if(response.code() == 201) {
+		call.enqueue(new Callback<Void>() {
 
-                        unsubscribeIssue.setVisibility(View.GONE);
-                        subscribeIssue.setVisibility(View.VISIBLE);
-                        Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtion));
-                        tinyDB.putString("issueSubscriptionState", "subscribeToIssue");
+			@Override
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
-                    }
+				if(response.isSuccessful()) {
 
-                }
-                else if(response.code() == 401) {
+					if(response.code() == 201) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+						unsubscribeIssue.setVisibility(View.GONE);
+						subscribeIssue.setVisibility(View.VISIBLE);
+						Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtion));
+						tinyDB.putString("issueSubscriptionState", "subscribeToIssue");
 
-                }
-                else {
+					}
 
-                    Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtionError));
+				}
+				else if(response.code() == 401) {
 
-                }
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle), ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 
-            }
+				}
+				else {
 
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtionError));
-            }
-        });
-    }
+					Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtionError));
+
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+				Toasty.info(ctx, ctx.getString(R.string.issueUnsubscribtionError));
+			}
+		});
+	}
 
 }

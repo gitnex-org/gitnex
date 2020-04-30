@@ -356,11 +356,13 @@
     <string name="teamCreatedError">Something went wrong, please try again</string>
     <!-- create team -->
 
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Edit Comment</string>
     <string name="editCommentButtonText">Edit</string>
     <string name="editCommentUpdatedText">Comment updated</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Share Comment</string>
+    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <!-- issue comments -->
 
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Add / Remove Collaborator</string>
@@ -531,6 +533,7 @@
     <string name="strPublic" translatable="false">public</string>
     <string name="defaultCopy" translatable="false">Default</string>
     <string name="viewInBrowser">View in Browser</string>
+    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
 
     <string name="translateText">Translate GitNex with Crowdin</string>
@@ -609,7 +612,6 @@
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
 
-    <string name="issueCommentShare">Share Comment</string>
 
     <string name="issueSubscribtion">Issue Subscribed</string>
     <string name="issueSubscribtionError">Issue Subscription failed</string>
@@ -619,7 +621,7 @@
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    
+
     <string name="tabIssueOpen">Open</string>
     <string name="tabIssueClosed">Closed</string>
 

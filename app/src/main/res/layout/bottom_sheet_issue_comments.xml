@@ -30,6 +30,18 @@
                 android:padding="16dp" />
 
             <TextView
+                android:id="@+id/commentMenuDelete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/menuDeleteText"
+                android:drawableStart="@drawable/ic_delete"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp" />
+
+            <TextView
                 android:id="@+id/issueCommentShare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,19 +52,6 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
-
-            <TextView
-                android:id="@+id/commentMenuDelete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/menuDeleteText"
-                android:drawableStart="@drawable/ic_delete"
-                android:drawablePadding="24dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="16dp"
-                android:visibility="gone" />
 
         </LinearLayout>
 
