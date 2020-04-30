@@ -1,0 +1,12 @@
+2.5.1
+
+Bugfix:
+- Fix crash when swiping issues tabs
+- Fix share repo empty url
+- Notification icons
+- Fix duplicate entries in diff view of PR files
+- Fix crash on tapping dropdowns (Android 5 bug)
+- Fix code highlighter (Android 5 and 6 bug)
+
+Check release notes for complete list
+https://gitea.com/gitnex/GitNex/releases
