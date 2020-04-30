@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="2.5.1" versioncode="251">
+        <change>Bugfix: Crash when swiping issues tabs</change>
+        <change>Bugfix: Share repo empty url</change>
+        <change>Bugfix: Notification icons</change>
+        <change>Bugfix: Duplicate entries in diff view of PR files</change>
+        <change>Bugfix: Crash on tapping dropdowns (Android 5 bug)</change>
+        <change>Bugfix: Code highlighter (Android 5 and 6 bug)</change>
+    </release>
+
     <release version="2.5.0" versioncode="250">
         <change>New: Share issues, repositories, comments</change>
         <change>New: Changelog popup</change>
