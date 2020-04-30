@@ -21,8 +21,8 @@ public class SettingsFileViewerActivity extends BaseActivity {
 	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
-	private static String[] fileveiwerSourceCodeThemesList = {"Sublime", "Arduino Light", "Github", "Far ", "Ir Black", "Android Studio"};
-	private static int fileveiwerSourceCodeThemesSelectedChoice = 0;
+	private static String[] fileViewerSourceCodeThemesList = {"Sublime", "Arduino Light", "Github", "Far ", "Ir Black", "Android Studio"};
+	private static int fileViewerSourceCodeThemesSelectedChoice = 0;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -43,18 +43,18 @@ public class SettingsFileViewerActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		final TextView fileveiwerSourceCodeThemesSelected = findViewById(R.id.sourceCodeThemeSelected); // setter for fileviewer theme
+		final TextView fileViewerSourceCodeThemesSelected = findViewById(R.id.sourceCodeThemeSelected); // setter for fileviewer theme
 
 		LinearLayout sourceCodeThemeFrame = findViewById(R.id.sourceCodeThemeFrame);
 
 		Switch pdfModeSwitch = findViewById(R.id.switchPdfMode);
 
 		if(!tinyDb.getString("fileviewerSourceCodeThemeStr").isEmpty()) {
-			fileveiwerSourceCodeThemesSelected.setText(tinyDb.getString("fileviewerSourceCodeThemeStr"));
+			fileViewerSourceCodeThemesSelected.setText(tinyDb.getString("fileviewerSourceCodeThemeStr"));
 		}
 
-		if(fileveiwerSourceCodeThemesSelectedChoice == 0) {
-			fileveiwerSourceCodeThemesSelectedChoice = tinyDb.getInt("fileviewerThemeId");
+		if(fileViewerSourceCodeThemesSelectedChoice == 0) {
+			fileViewerSourceCodeThemesSelectedChoice = tinyDb.getInt("fileviewerThemeId");
 		}
 
 		if(tinyDb.getBoolean("enablePdfMode")) {
@@ -70,18 +70,18 @@ public class SettingsFileViewerActivity extends BaseActivity {
 			AlertDialog.Builder fvtsBuilder = new AlertDialog.Builder(SettingsFileViewerActivity.this);
 
 			fvtsBuilder.setTitle(R.string.fileviewerSourceCodeThemeSelectorDialogTitle);
-			if(fileveiwerSourceCodeThemesSelectedChoice != -1) {
+			if(fileViewerSourceCodeThemesSelectedChoice != -1) {
 				fvtsBuilder.setCancelable(true);
 			}
 			else {
 				fvtsBuilder.setCancelable(false);
 			}
 
-			fvtsBuilder.setSingleChoiceItems(fileveiwerSourceCodeThemesList, fileveiwerSourceCodeThemesSelectedChoice, (dialogInterfaceTheme, i) -> {
+			fvtsBuilder.setSingleChoiceItems(fileViewerSourceCodeThemesList, fileViewerSourceCodeThemesSelectedChoice, (dialogInterfaceTheme, i) -> {
 
-				fileveiwerSourceCodeThemesSelectedChoice = i;
-				fileveiwerSourceCodeThemesSelected.setText(fileveiwerSourceCodeThemesList[i]);
-				tinyDb.putString("fileviewerSourceCodeThemeStr", fileveiwerSourceCodeThemesList[i]);
+				fileViewerSourceCodeThemesSelectedChoice = i;
+				fileViewerSourceCodeThemesSelected.setText(fileViewerSourceCodeThemesList[i]);
+				tinyDb.putString("fileviewerSourceCodeThemeStr", fileViewerSourceCodeThemesList[i]);
 				tinyDb.putInt("fileviewerSourceCodeThemeId", i);
 
 				dialogInterfaceTheme.dismiss();
@@ -113,9 +113,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 	}
 
 	private void initCloseListener() {
-		onClickListener = view -> {
-			finish();
-		};
+		onClickListener = view -> finish();
 	}
 
 }

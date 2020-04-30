@@ -28,14 +28,14 @@ import androidx.core.content.ContextCompat;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.pddstudio.highlightjs.HighlightJsView;
-import com.pddstudio.highlightjs.models.Theme;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.highlightjs.HighlightJsView;
+import org.mian.gitnex.helpers.highlightjs.models.Theme;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
@@ -196,7 +196,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 									singleCodeContents.setTheme(Theme.MONOKAI_SUBLIME);
 							}
 
-							singleCodeContents.setShowLineNumbers(true);
 							singleCodeContents.setSource(appUtil.decodeBase64(response.body().getContent()));
 
 						}

@@ -89,7 +89,7 @@
 
     </LinearLayout>
 
-    <com.pddstudio.highlightjs.HighlightJsView
+    <org.mian.gitnex.helpers.highlightjs.HighlightJsView
         android:id="@+id/singleCodeContents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
