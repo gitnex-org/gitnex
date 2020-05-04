@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context=".activities.RepoDetailActivity">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:id="@+id/fileStructure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <moe.feng.common.view.breadcrumbs.BreadcrumbsView
             android:id="@+id/breadcrumbs_view"
@@ -27,7 +27,7 @@
             app:CustomTextSize="16sp"
             app:SelectedTextColor="?attr/primaryTextColor"
             app:UnSelectedTextColor="@color/lightGray"
-            android:text="@string/filesBreadcrumbRoot"/>
+            android:text="@string/filesBreadcrumbRoot" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -59,4 +59,4 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-</LinearLayout>
+</RelativeLayout>

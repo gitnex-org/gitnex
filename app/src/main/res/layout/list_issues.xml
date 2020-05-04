@@ -8,13 +8,14 @@
     android:layout_marginTop="15dp"
     android:layout_marginStart="15dp"
     android:layout_marginEnd="15dp"
+    android:background="?attr/primaryBackgroundColor"
     tools:context=".activities.RepoDetailActivity">
 
     <TextView
         android:id="@+id/issueNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/assigneeAvatar"
