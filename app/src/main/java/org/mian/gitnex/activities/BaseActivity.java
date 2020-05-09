@@ -95,6 +95,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 			tinyDb.putString("crashReportingEnabledInit", "yes");
 		}
 
+		// default cache setter
+		if(tinyDb.getString("cacheSizeStr").isEmpty()) {
+			tinyDb.putString("cacheSizeStr", getResources().getString(R.string.cacheSizeDataSelectionSelectedText));
+		}
+		if(tinyDb.getString("cacheSizeImagesStr").isEmpty()) {
+			tinyDb.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
+		}
+
 		if (tinyDb.getBoolean("crashReportingEnabled")) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);

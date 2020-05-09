@@ -49,7 +49,7 @@ public class PicassoService {
 			//noinspection ResultOfMethodCallIgnored
 			cachePath.mkdirs();
 
-			picasso = builder.memoryCache(new PicassoCache(cachePath)).build();
+			picasso = builder.memoryCache(new PicassoCache(cachePath, context)).build();
 
 		}
 		catch(Exception e) {

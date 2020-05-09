@@ -66,4 +66,94 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/cacheSizeDataSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cacheSizeDataHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/cacheSizeDataSelectionHeaderText"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <TextView
+            android:id="@+id/cacheSizeDataSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/cacheSizeDataSelectionSelectedText"
+            android:textColor="?attr/selectedTextColor"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cacheSizeImagesSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cacheSizeImagesHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/cacheSizeImagesSelectionHeaderText"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <TextView
+            android:id="@+id/cacheSizeImagesSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/cacheSizeImagesSelectionSelectedText"
+            android:textColor="?attr/selectedTextColor"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/clearCacheSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/clearCacheHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/clearCacheSelectionHeaderText"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <TextView
+            android:id="@+id/clearCacheSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/clearCacheSelectionSelectedText"
+            android:textColor="?attr/selectedTextColor"/>
+
+    </LinearLayout>
+
 </LinearLayout>

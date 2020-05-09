@@ -288,6 +288,16 @@
     <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
     <string name="settingsFileviewerSourceCodeSelectedText" translatable="false">Sublime</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionSelectedText" translatable="false">50 MB</string>
+    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionSelectedText" translatable="false">50 MB</string>
+    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheSelectionSelectedText" translatable="false">0 B</string>
+    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -635,7 +645,7 @@
 
     <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
-    <string name="securityHintText">SSL certificates</string>
+    <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
 </resources>
