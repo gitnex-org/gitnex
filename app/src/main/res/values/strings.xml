@@ -197,6 +197,9 @@
     <string name="commentSuccess">Comment posted</string>
     <string name="commentError">Something went wrong, please try again</string>
 
+    <string name="featureDeprecated">This function will be removed in the future.</string>
+    <string name="screamingInFearEmoticon" translatable="false">😱</string>
+
     <string name="generalImgContentText">Avatar</string>
     <string name="generalPageTitle" translatable="false">GitNex</string>
 
@@ -621,7 +624,6 @@
     <string name="mtm_decision_always">Trust</string>
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
-
 
     <string name="issueSubscribtion">Issue Subscribed</string>
     <string name="issueSubscribtionError">Issue Subscription failed</string>
