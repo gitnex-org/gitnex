@@ -17,11 +17,11 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/appreanceFrame"
+                android:id="@+id/appearanceFrame"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/tvAppearance"
@@ -29,21 +29,20 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_color"
                     android:drawablePadding="24dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:text="@string/settingsAppearanceHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp" />
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/appreanceHintText"
+                    android:id="@+id/appearanceHintText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/appreanceHintText"
                     android:paddingStart="60dp"
                     android:paddingEnd="12dp"
+                    android:text="@string/appreanceHintText"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="12sp" />
 
@@ -62,21 +61,20 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_file"
                     android:drawablePadding="24dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:text="@string/fileViewerHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/fileViewerHintText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/fileViewerHintText"
                     android:paddingStart="60dp"
                     android:paddingEnd="12dp"
+                    android:text="@string/fileViewerHintText"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="12sp" />
 
@@ -95,12 +93,11 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_security_24dp"
                     android:drawablePadding="24dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:text="@string/settingsSecurityHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/securityHintText"
@@ -128,12 +125,11 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_flag_country"
                     android:drawablePadding="24dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:text="@string/settingsLanguageHeaderText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/languagesHintText"
@@ -161,12 +157,11 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_bug_report"
                     android:drawablePadding="24dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:text="@string/reportViewerHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/reportsHintText"
