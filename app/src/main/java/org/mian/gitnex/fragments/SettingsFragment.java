@@ -30,13 +30,13 @@ public class SettingsFragment extends Fragment {
 
 		View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-		LinearLayout appreanceFrame = v.findViewById(R.id.appreanceFrame);
+		LinearLayout appearanceFrame = v.findViewById(R.id.appearanceFrame);
 		LinearLayout fileViewerFrame = v.findViewById(R.id.fileViewerFrame);
 		LinearLayout securityFrame = v.findViewById(R.id.securityFrame);
 		LinearLayout languagesFrame = v.findViewById(R.id.languagesFrame);
 		LinearLayout reportsFrame = v.findViewById(R.id.reportsFrame);
 
-		appreanceFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsAppearanceActivity.class)));
+		appearanceFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsAppearanceActivity.class)));
 
 		fileViewerFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsFileViewerActivity.class)));
 
