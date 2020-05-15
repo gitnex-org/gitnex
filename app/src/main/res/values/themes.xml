@@ -69,6 +69,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlActivated">@color/darkGreen</item>
+        <item name="android:windowBackground">@drawable/round_corners</item>
     </style>
 
     <style name="AppThemeLightConfirmDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -77,6 +78,7 @@
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="colorControlNormal">@color/lightThemeTextColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
+        <item name="android:windowBackground">@drawable/round_corners</item>
     </style>
 
     <style name="AppThemePopupMenuStyle" parent="Widget.AppCompat.PopupMenu">
