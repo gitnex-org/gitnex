@@ -23,7 +23,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.VersionCheck;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.MergePullRequest;
 import org.mian.gitnex.models.MergePullRequestSpinner;
@@ -110,7 +110,7 @@ public class MergePullRequestActivity extends BaseActivity {
 
 		if(!tinyDb.getString("issueTitle").isEmpty()) {
 			toolbar_title.setText(tinyDb.getString("issueTitle"));
-			mergeTitle.setText(tinyDb.getString("issueTitle") + " (#" + tinyDb.getString("issueNumber")+ ")");
+			mergeTitle.setText(tinyDb.getString("issueTitle") + " (#" + tinyDb.getString("issueNumber") + ")");
 		}
 
 		initCloseListener();
@@ -140,8 +140,8 @@ public class MergePullRequestActivity extends BaseActivity {
 		mergeList.add(new MergePullRequestSpinner("merge", getResources().getString(R.string.mergeOptionMerge)));
 		mergeList.add(new MergePullRequestSpinner("rebase", getResources().getString(R.string.mergeOptionRebase)));
 		mergeList.add(new MergePullRequestSpinner("rebase-merge", getResources().getString(R.string.mergeOptionRebaseCommit)));
-		//squash merge works only on gitea v1.11.5 and higher due to a bug
-		if(VersionCheck.compareVersion("1.11.5", tinyDb.getString("giteaVersion")) < 1) {
+		//squash merge works only on gitea > v1.11.4 due to a bug
+		if(new Version(tinyDb.getString("giteaVersion")).higher("1.11.4")) {
 			mergeList.add(new MergePullRequestSpinner("squash", getResources().getString(R.string.mergeOptionSquash)));
 		}
 

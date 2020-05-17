@@ -38,7 +38,7 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.VersionCheck;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.models.WatchRepository;
 import org.mian.gitnex.util.AppUtil;
@@ -222,7 +222,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 			}
 
 			// release count
-			if(VersionCheck.compareVersion("1.11.5", tinyDb.getString("giteaVersion")) < 1) {
+			if(new Version("1.11.4").less(tinyDb.getString("giteaVersion"))) {
 				if(textViewBadgeRelease.getText() != "") { // only show if API returned a number
 					Objects.requireNonNull(tabLayout.getTabAt(5)).setCustomView(tabHeader6);
 					TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(5);

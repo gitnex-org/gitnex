@@ -27,7 +27,7 @@ import org.mian.gitnex.clients.AppApiService;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.VersionCheck;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.PullRequests;
 import org.mian.gitnex.util.TinyDB;
@@ -76,7 +76,7 @@ public class PullRequestsFragment extends Fragment {
 		final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
 
 		// if gitea is 1.12 or higher use the new limit
-		if(VersionCheck.compareVersion("1.12.0", tinyDb.getString("giteaVersion")) >= 1) {
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 

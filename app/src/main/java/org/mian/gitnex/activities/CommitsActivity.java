@@ -24,7 +24,7 @@ import org.mian.gitnex.clients.AppApiService;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.VersionCheck;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.util.TinyDB;
@@ -92,7 +92,7 @@ public class CommitsActivity extends BaseActivity {
 		closeActivity.setOnClickListener(onClickListener);
 
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
-		if(VersionCheck.compareVersion("1.12.0", tinyDb.getString("giteaVersion")) >= 1) {
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12")) {
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 

@@ -18,7 +18,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.VersionCheck;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.util.AppUtil;
@@ -134,7 +134,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         String finalMilestoneDueDate = null;
         if(!newMilestoneDueDate.isEmpty()) {
             finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
-        } else if (VersionCheck.compareVersion("1.10.0", tinyDb.getString("giteaVersion")) > 1) {
+        } else if (new Version(tinyDb.getString("giteaVersion")).less("1.10.0")) {
             // if Gitea version is less than 1.10.0 DueDate is required
             Toasty.info(ctx, getString(R.string.milestoneDateEmpty));
             return;
