@@ -48,7 +48,11 @@ steps:
       WEBDAV_PASSWORD:
         from_secret: NC_TOKEN
       PLUGIN_FILE: signed.apk
+      PLUGIN_TIMEOUT: 480
+      PLUGIN_ATTEMPTS: 3
+      PLUGIN_PROXY_URL: socks5://218.5.229.147:38801
       PLUGIN_DESTINATION: https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/latest.apk
+      PLUGIN_CUSTOM_ARGUMENTS: --progress-bar
 
 trigger:
   event:
