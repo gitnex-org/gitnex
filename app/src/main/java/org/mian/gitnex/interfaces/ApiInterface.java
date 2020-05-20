@@ -275,4 +275,13 @@ public interface ApiInterface {
 
     @DELETE("repos/{owner}/{repo}/issues/comments/{id}") // delete own comment from issue
     Call<JsonElement> deleteComment(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("id") int commentIndex);
+
+    @GET("teams/{teamId}/members/{username}") // check team member
+    Call<UserInfo> checkTeamMember(@Header("Authorization") String token, @Path("teamId") int teamId, @Path("username") String username);
+
+    @PUT("teams/{teamId}/members/{username}") // add new team member
+    Call<JsonElement> addTeamMember(@Header("Authorization") String token, @Path("teamId") int teamId, @Path("username") String username);
+
+    @DELETE("teams/{teamId}/members/{username}") // remove team member
+    Call<JsonElement> removeTeamMember(@Header("Authorization") String token, @Path("teamId") int teamId, @Path("username") String username);
 }

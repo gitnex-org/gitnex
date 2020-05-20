@@ -8,6 +8,12 @@
     android:paddingEnd="20dp"
     android:background="?attr/primaryBackgroundColor" >
 
+    <TextView
+        android:id="@+id/teamId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/userAvatar"
         android:layout_width="40dp"

@@ -74,16 +74,16 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        addCollaboratorSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    if(!addCollaboratorSearch.getText().toString().equals("")) {
-                        loadUserSearchList(instanceUrl, instanceToken, addCollaboratorSearch.getText().toString(), loginUid);
-                    }
+        addCollaboratorSearch.setOnEditorActionListener((v, actionId, event) -> {
+
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                if(!addCollaboratorSearch.getText().toString().equals("")) {
+                    loadUserSearchList(instanceUrl, instanceToken, addCollaboratorSearch.getText().toString(), loginUid);
                 }
-                return false;
             }
+
+            return false;
+
         });
 
     }
@@ -142,12 +142,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+        onClickListener = view -> finish();
     }
 
 

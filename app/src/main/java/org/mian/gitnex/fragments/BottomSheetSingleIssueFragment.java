@@ -33,7 +33,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.bottom_sheet_single_issue_layout, container, false);
+		View v = inflater.inflate(R.layout.bottom_sheet_single_issue, container, false);
 
 		final Context ctx = getContext();
 		final TinyDB tinyDB = new TinyDB(ctx);

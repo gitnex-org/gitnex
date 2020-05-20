@@ -80,6 +80,7 @@
         <activity android:name=".activities.SettingsSecurityActivity" />
         <activity android:name=".activities.SettingsTranslationActivity" />
         <activity android:name=".activities.SettingsReportsActivity" />
+        <activity android:name=".activities.AddNewTeamMemberActivity" />
     </application>
 
 </manifest>

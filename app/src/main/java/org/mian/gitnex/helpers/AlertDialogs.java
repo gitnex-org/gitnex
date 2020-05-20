@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.TeamActions;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.actions.CollaboratorActions;
@@ -25,25 +26,17 @@ public class AlertDialogs {
                 .setMessage(message)
                 .setCancelable(true)
                 .setIcon(R.drawable.ic_warning)
-                .setNegativeButton(copyNegativeButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButton(copyPositiveButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton(copyNegativeButton, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(copyPositiveButton, (dialog, which) -> {
 
-                        final TinyDB tinyDb = new TinyDB(context);
-                        tinyDb.putBoolean("loggedInMode", false);
-                        tinyDb.remove("basicAuthPassword");
-                        tinyDb.putBoolean("basicAuthFlag", false);
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        context.startActivity(intent);
-                        dialog.dismiss();
+                    final TinyDB tinyDb = new TinyDB(context);
+                    tinyDb.putBoolean("loggedInMode", false);
+                    tinyDb.remove("basicAuthPassword");
+                    tinyDb.putBoolean("basicAuthFlag", false);
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                    dialog.dismiss();
 
-                    }
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
 
@@ -56,15 +49,14 @@ public class AlertDialogs {
             .setTitle(title + labelTitle)
             .setMessage(message)
             .setIcon(R.drawable.ic_delete)
-            .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
+            .setPositiveButton(positiveButton, (dialog, whichButton) -> {
 
-                    Intent intent = new Intent(context, CreateLabelActivity.class);
-                    intent.putExtra("labelId", labelId);
-                    intent.putExtra("labelAction", "delete");
-                    context.startActivity(intent);
+                Intent intent = new Intent(context, CreateLabelActivity.class);
+                intent.putExtra("labelId", labelId);
+                intent.putExtra("labelAction", "delete");
+                context.startActivity(intent);
 
-                }})
+            })
             .setNegativeButton(negativeButton, null).show();
 
     }
@@ -74,13 +66,27 @@ public class AlertDialogs {
         new AlertDialog.Builder(context)
                 .setTitle(title + userNameMain)
                 .setMessage(message)
-                .setIcon(R.drawable.ic_warning)
-                .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                .setPositiveButton(positiveButton, (dialog, whichButton) -> CollaboratorActions.deleteCollaborator(context,  searchKeyword, userNameMain))
+                .setNegativeButton(negativeButton, null).show();
 
-                        CollaboratorActions.deleteCollaborator(context,  searchKeyword, userNameMain);
+    }
 
-                    }})
+    public static void addMemberDialog(final Context context, final String userNameMain, String title, String message, String positiveButton, String negativeButton, int teamId) {
+
+        new AlertDialog.Builder(context)
+                .setTitle(title + userNameMain)
+                .setMessage(message)
+                .setPositiveButton(positiveButton, (dialog, whichButton) -> TeamActions.addTeamMember(context, userNameMain, teamId))
+                .setNegativeButton(negativeButton, null).show();
+
+    }
+
+    public static void removeMemberDialog(final Context context, final String userNameMain, String title, String message, String positiveButton, String negativeButton, int teamId) {
+
+        new AlertDialog.Builder(context)
+                .setTitle(title + userNameMain)
+                .setMessage(message)
+                .setPositiveButton(positiveButton, (dialog, whichButton) -> TeamActions.removeTeamMember(context, userNameMain, teamId))
                 .setNegativeButton(negativeButton, null).show();
 
     }
