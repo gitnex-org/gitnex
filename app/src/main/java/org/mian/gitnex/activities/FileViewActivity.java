@@ -1,14 +1,13 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
@@ -22,9 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -40,8 +38,8 @@ import org.mian.gitnex.models.Files;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Objects;
@@ -67,7 +65,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 	private LinearLayout pdfViewFrame;
 	private byte[] decodedPdf;
 	private Boolean pdfNightMode;
-	private static final int PERMISSION_REQUEST_CODE = 1;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -304,21 +301,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 	@Override
 	public void onButtonClicked(String text) {
 
-		switch(text) {
-			case "downloadFile":
+		if("downloadFile".equals(text)) {
 
-				if(Build.VERSION.SDK_INT >= 23) {
-					if(checkPermission()) {
-						requestFileDownload();
-					}
-					else {
-						requestPermission();
-					}
-				}
-				else {
-					requestFileDownload();
-				}
-				break;
+			requestFileDownload();
 
 		}
 
@@ -330,24 +315,17 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 		if(!tinyDb.getString("downloadFileContents").isEmpty()) {
 
+			int CREATE_REQUEST_CODE = 40;
+
 			File outputFileName = new File(tinyDb.getString("downloadFileName"));
-			final File downloadFilePath = new File(Environment.getExternalStorageDirectory().getPath() + "/Download/" + outputFileName.getName());
 
-			byte[] pdfAsBytes = Base64.decode(tinyDb.getString("downloadFileContents"), 0);
-			FileOutputStream fileOutputStream = null;
+			Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
 
-			try {
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			intent.setType("*/*");
+			intent.putExtra(Intent.EXTRA_TITLE, outputFileName.getName());
 
-				fileOutputStream = new FileOutputStream(downloadFilePath, false);
-				Objects.requireNonNull(fileOutputStream).write(pdfAsBytes);
-				fileOutputStream.flush();
-				fileOutputStream.close();
-				Toasty.info(ctx, getString(R.string.downloadFileSaved));
-
-			}
-			catch(IOException e) {
-				Log.e("errorFileDownloading", Objects.requireNonNull(e.getMessage()));
-			}
+			startActivityForResult(intent, CREATE_REQUEST_CODE);
 
 		}
 		else {
@@ -356,42 +334,47 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 	}
 
-	private boolean checkPermission() {
-
-		int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-		return result == PackageManager.PERMISSION_GRANTED;
-	}
-
-	private void requestPermission() {
-
-		ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-	}
-
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-		switch(requestCode) {
-			case PERMISSION_REQUEST_CODE:
-				if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-					Log.i("PermissionsCheck", "Permission Granted");
-				}
-				else {
-					Log.e("PermissionsCheck", "Permission Denied");
-				}
-				break;
+		super.onActivityResult(requestCode, resultCode, data);
+
+		final TinyDB tinyDb = new TinyDB(appCtx);
+
+		if (requestCode == 40 && resultCode == RESULT_OK) {
+
+			try {
+
+				assert data != null;
+				Uri uri = data.getData();
+
+				assert uri != null;
+				OutputStream outputStream = getContentResolver().openOutputStream(uri);
+
+				byte[] dataAsBytes = Base64.decode(tinyDb.getString("downloadFileContents"), 0);
+
+				assert outputStream != null;
+				outputStream.write(dataAsBytes);
+				outputStream.close();
+
+				Toasty.info(ctx, getString(R.string.downloadFileSaved));
+
+			}
+			catch (IOException e) {
+				Log.e("errorFileDownloading", Objects.requireNonNull(e.getMessage()));
+			}
+
 		}
+
 	}
 
 	private void initCloseListener() {
 
-		onClickListener = new View.OnClickListener() {
+		onClickListener = view -> {
 
-			@Override
-			public void onClick(View view) {
+			getIntent().removeExtra("singleFileName");
+			finish();
 
-				getIntent().removeExtra("singleFileName");
-				finish();
-			}
 		};
 	}
 
