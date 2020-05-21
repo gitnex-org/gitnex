@@ -2,24 +2,19 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.google.gson.JsonElement;
 import com.hendraanggrian.appcompat.socialview.Mention;
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
-import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityMergePullRequestBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
@@ -42,17 +37,12 @@ import retrofit2.Response;
 
 public class MergePullRequestActivity extends BaseActivity {
 
-	public ImageView closeActivity;
 	private View.OnClickListener onClickListener;
-
 	final Context ctx = this;
 	private Context appCtx;
+	private ActivityMergePullRequestBinding viewBinding;
 
-	private SocialAutoCompleteTextView mergeDescription;
-	private EditText mergeTitle;
-	private Spinner mergeModeSpinner;
 	private ArrayAdapter<Mention> defaultMentionAdapter;
-	private Button mergeButton;
 	private String Do;
 
 	@Override
@@ -68,22 +58,22 @@ public class MergePullRequestActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		appCtx = getApplicationContext();
 
+		viewBinding = ActivityMergePullRequestBinding.inflate(getLayoutInflater());
+		View view = viewBinding.getRoot();
+		setContentView(view);
+
 		boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 		TinyDB tinyDb = new TinyDB(appCtx);
 
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		mergeModeSpinner = findViewById(R.id.mergeSpinner);
-		mergeDescription = findViewById(R.id.mergeDescription);
-		mergeTitle = findViewById(R.id.mergeTitle);
-
-		mergeTitle.requestFocus();
+		viewBinding.mergeTitle.requestFocus();
 		assert imm != null;
-		imm.showSoftInput(mergeTitle, InputMethodManager.SHOW_IMPLICIT);
+		imm.showSoftInput(viewBinding.mergeTitle, InputMethodManager.SHOW_IMPLICIT);
 
 		setMergeAdapter();
 
-		mergeModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		viewBinding.mergeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -103,20 +93,35 @@ public class MergePullRequestActivity extends BaseActivity {
 		defaultMentionAdapter = new MentionArrayAdapter<>(this);
 		loadCollaboratorsList();
 
-		mergeDescription.setMentionAdapter(defaultMentionAdapter);
-
-		closeActivity = findViewById(R.id.close);
-		TextView toolbar_title = findViewById(R.id.toolbar_title);
+		viewBinding.mergeDescription.setMentionAdapter(defaultMentionAdapter);
 
 		if(!tinyDb.getString("issueTitle").isEmpty()) {
-			toolbar_title.setText(tinyDb.getString("issueTitle"));
-			mergeTitle.setText(tinyDb.getString("issueTitle") + " (#" + tinyDb.getString("issueNumber") + ")");
+			viewBinding.toolbarTitle.setText(tinyDb.getString("issueTitle"));
+			viewBinding.mergeTitle.setText(tinyDb.getString("issueTitle") + " (#" + tinyDb.getString("issueNumber") + ")");
 		}
 
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		viewBinding.close.setOnClickListener(onClickListener);
 
-		mergeButton = findViewById(R.id.mergeButton);
+		// if gitea version is greater/equal(1.12.0) than user installed version (installed.higherOrEqual(compareVer))
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+			viewBinding.deleteBranch.setVisibility(View.VISIBLE);
+		}
+
+		if(tinyDb.getString("prMergeable").equals("false")) {
+			disableProcessButton();
+			viewBinding.mergeInfoDisabledMessage.setVisibility(View.VISIBLE);
+		}
+		else {
+			viewBinding.mergeInfoDisabledMessage.setVisibility(View.GONE);
+		}
+
+		if(tinyDb.getString("prIsFork").equals("true")) {
+			viewBinding.deleteBranchForkInfo.setVisibility(View.VISIBLE);
+		}
+		else {
+			viewBinding.deleteBranchForkInfo.setVisibility(View.GONE);
+		}
 
 		if(!connToInternet) {
 
@@ -125,7 +130,7 @@ public class MergePullRequestActivity extends BaseActivity {
 		}
 		else {
 
-			mergeButton.setOnClickListener(mergePullRequest);
+			viewBinding.mergeButton.setOnClickListener(mergePullRequest);
 
 		}
 
@@ -140,14 +145,14 @@ public class MergePullRequestActivity extends BaseActivity {
 		mergeList.add(new MergePullRequestSpinner("merge", getResources().getString(R.string.mergeOptionMerge)));
 		mergeList.add(new MergePullRequestSpinner("rebase", getResources().getString(R.string.mergeOptionRebase)));
 		mergeList.add(new MergePullRequestSpinner("rebase-merge", getResources().getString(R.string.mergeOptionRebaseCommit)));
-		//squash merge works only on gitea > v1.11.4 due to a bug
+		// squash merge works only on gitea > v1.11.4 due to a bug
 		if(new Version(tinyDb.getString("giteaVersion")).higher("1.11.4")) {
 			mergeList.add(new MergePullRequestSpinner("squash", getResources().getString(R.string.mergeOptionSquash)));
 		}
 
 		ArrayAdapter<MergePullRequestSpinner> adapter = new ArrayAdapter<>(MergePullRequestActivity.this, R.layout.spinner_item, mergeList);
 		adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-		mergeModeSpinner.setAdapter(adapter);
+		viewBinding.mergeSpinner.setAdapter(adapter);
 
 	}
 
@@ -208,8 +213,9 @@ public class MergePullRequestActivity extends BaseActivity {
 
 	private void processMergePullRequest() {
 
-		String mergePRDesc = mergeDescription.getText().toString();
-		String mergePRTitle = mergeTitle.getText().toString();
+		String mergePRDesc = viewBinding.mergeDescription.getText().toString();
+		String mergePRTitle = viewBinding.mergeTitle.getText().toString();
+		boolean deleteBranch = viewBinding.deleteBranch.isChecked();
 
 		boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
 
@@ -221,11 +227,11 @@ public class MergePullRequestActivity extends BaseActivity {
 		}
 
 		disableProcessButton();
-		mergeFunction(Do, mergePRDesc, mergePRTitle);
+		mergeFunction(Do, mergePRDesc, mergePRTitle, deleteBranch);
 
 	}
 
-	private void mergeFunction(String Do, String mergePRDT, String mergeTitle) {
+	private void mergeFunction(String Do, String mergePRDT, String mergeTitle, boolean deleteBranch) {
 
 		final TinyDB tinyDb = new TinyDB(appCtx);
 
@@ -249,10 +255,48 @@ public class MergePullRequestActivity extends BaseActivity {
 
 				if(response.code() == 200) {
 
-					Toasty.info(ctx, getString(R.string.mergePRSuccessMsg));
-					tinyDb.putBoolean("prMerged", true);
-					tinyDb.putBoolean("resumePullRequests", true);
-					finish();
+					if(deleteBranch) {
+
+						if(tinyDb.getString("prIsFork").equals("true")) {
+
+							String repoFullName = tinyDb.getString("prForkFullName");
+							String[] parts = repoFullName.split("/");
+							final String repoOwner = parts[0];
+							final String repoName = parts[1];
+
+							deleteBranchFunction(repoOwner, repoName);
+
+							Toasty.info(ctx, getString(R.string.mergePRSuccessMsg));
+							tinyDb.putBoolean("prMerged", true);
+							tinyDb.putBoolean("resumePullRequests", true);
+							finish();
+
+						}
+						else {
+
+							String repoFullName = tinyDb.getString("repoFullName");
+							String[] parts = repoFullName.split("/");
+							final String repoOwner = parts[0];
+							final String repoName = parts[1];
+
+							deleteBranchFunction(repoOwner, repoName);
+
+							Toasty.info(ctx, getString(R.string.mergePRSuccessMsg));
+							tinyDb.putBoolean("prMerged", true);
+							tinyDb.putBoolean("resumePullRequests", true);
+							finish();
+
+						}
+
+					}
+					else {
+
+						Toasty.info(ctx, getString(R.string.mergePRSuccessMsg));
+						tinyDb.putBoolean("prMerged", true);
+						tinyDb.putBoolean("resumePullRequests", true);
+						finish();
+
+					}
 
 				}
 				else if(response.code() == 401) {
@@ -287,23 +331,56 @@ public class MergePullRequestActivity extends BaseActivity {
 
 	}
 
+	private void deleteBranchFunction(String repoOwner, String repoName) {
+
+		TinyDB tinyDb = new TinyDB(appCtx);
+
+		String instanceUrl = tinyDb.getString("instanceUrl");
+		String loginUid = tinyDb.getString("loginUid");
+		String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		String branchName = tinyDb.getString("prHeadBranch");
+
+		Call<JsonElement> call = RetrofitClient
+				.getInstance(instanceUrl, ctx)
+				.getApiInterface()
+				.deleteBranch(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, branchName);
+
+		call.enqueue(new Callback<JsonElement>() {
+
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+
+				if(response.code() == 204) {
+
+					Log.i("deleteBranch", "Branch deleted successfully");
+
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+
+				Log.e("onFailure", t.toString());
+				enableProcessButton();
+
+			}
+
+		});
+
+	}
+
 	private void disableProcessButton() {
 
-		mergeButton.setEnabled(false);
-		GradientDrawable shape = new GradientDrawable();
-		shape.setCornerRadius(8);
-		shape.setColor(getResources().getColor(R.color.hintColor));
-		mergeButton.setBackground(shape);
+		viewBinding.mergeButton.setEnabled(false);
+		viewBinding.mergeButton.setBackground(getResources().getDrawable(R.drawable.shape_buttons_disabled));
 
 	}
 
 	private void enableProcessButton() {
 
-		mergeButton.setEnabled(true);
-		GradientDrawable shape = new GradientDrawable();
-		shape.setCornerRadius(8);
-		shape.setColor(getResources().getColor(R.color.btnBackground));
-		mergeButton.setBackground(shape);
+		viewBinding.mergeButton.setEnabled(true);
+		viewBinding.mergeButton.setBackground(getResources().getDrawable(R.drawable.shape_buttons));
 
 	}
 

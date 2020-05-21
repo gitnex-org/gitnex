@@ -42,7 +42,7 @@ public class PullRequests {
         this.body = body;
     }
 
-    public class headObject {
+    public static class headObject {
 
         private int repo_id;
         private String label;
@@ -51,7 +51,7 @@ public class PullRequests {
 
         private repoObject repo;
 
-        public class repoObject {
+        public static class repoObject {
 
             private int repo_id;
             private boolean allow_merge_commits;
@@ -91,7 +91,7 @@ public class PullRequests {
             private ownerObject owner;
             private permissionsObject permissions;
 
-            public class ownerObject {
+            public static class ownerObject {
 
                 private int repo_id;
                 private boolean is_admin;
@@ -135,7 +135,7 @@ public class PullRequests {
                 }
             }
 
-            public class permissionsObject {
+            public static class permissionsObject {
 
                 private boolean admin;
                 private boolean pull;
@@ -295,9 +295,34 @@ public class PullRequests {
             }
         }
 
+        public int getRepo_id() {
+
+            return repo_id;
+        }
+
+        public String getLabel() {
+
+            return label;
+        }
+
+        public String getRef() {
+
+            return ref;
+        }
+
+        public String getSha() {
+
+            return sha;
+        }
+
+        public repoObject getRepo() {
+
+            return repo;
+        }
+
     }
 
-    public class baseObject {
+    public static class baseObject {
 
         private int repo_id;
         private String label;
@@ -306,7 +331,7 @@ public class PullRequests {
 
         private repoObject repo;
 
-        public class repoObject {
+        public static class repoObject {
 
             private int repo_id;
             private boolean allow_merge_commits;
@@ -344,7 +369,7 @@ public class PullRequests {
             private ownerObject owner;
             private permissionsObject permissions;
 
-            public class ownerObject {
+            public static class ownerObject {
 
                 private int repo_id;
                 private boolean is_admin;
@@ -388,7 +413,7 @@ public class PullRequests {
                 }
             }
 
-            public class permissionsObject {
+            public static class permissionsObject {
 
                 private boolean admin;
                 private boolean pull;
@@ -540,9 +565,34 @@ public class PullRequests {
             }
         }
 
+        public int getRepo_id() {
+
+            return repo_id;
+        }
+
+        public String getLabel() {
+
+            return label;
+        }
+
+        public String getRef() {
+
+            return ref;
+        }
+
+        public String getSha() {
+
+            return sha;
+        }
+
+        public repoObject getRepo() {
+
+            return repo;
+        }
+
     }
 
-    public class userObject {
+    public static class userObject {
 
         private int id;
         private String login;
@@ -581,7 +631,7 @@ public class PullRequests {
         }
     }
 
-    public class labelsObject {
+    public static class labelsObject {
 
         private int id;
         private String name;
@@ -605,7 +655,7 @@ public class PullRequests {
         }
     }
 
-    public class assigneesObject {
+    public static class assigneesObject {
 
         private int id;
         private String login;
@@ -644,7 +694,7 @@ public class PullRequests {
         }
     }
 
-    public class mergedByObject {
+    public static class mergedByObject {
 
         private int id;
         private String login;
@@ -683,7 +733,7 @@ public class PullRequests {
         }
     }
 
-    public class milestoneObject {
+    public static class milestoneObject {
 
         private int id;
         private String title;

@@ -287,4 +287,7 @@ public interface ApiInterface {
 
     @DELETE("teams/{teamId}/members/{username}") // remove team member
     Call<JsonElement> removeTeamMember(@Header("Authorization") String token, @Path("teamId") int teamId, @Path("username") String username);
+
+    @DELETE("repos/{owner}/{repo}/branches/{branch}") // delete branch
+    Call<JsonElement> deleteBranch(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("branch") String branchName);
 }

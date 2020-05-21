@@ -14,6 +14,30 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"/>
 
+    <TextView
+        android:id="@+id/prMergeable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/prHeadBranch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/prIsFork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/prForkFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
     <ImageView
         android:id="@+id/assigneeAvatar"
         android:layout_width="48dp"

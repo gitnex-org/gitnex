@@ -594,7 +594,10 @@
     <string name="openFileDiffText">Files Changed</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
     <string name="mergePullRequestButtonText">Merge</string>
+    <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge.</string>
+    <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
