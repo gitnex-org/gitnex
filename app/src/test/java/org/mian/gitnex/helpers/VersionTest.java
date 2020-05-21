@@ -39,6 +39,8 @@ public class VersionTest {
 		assertTrue(new Version("1.12.0").less("v2"));
 		assertTrue(new Version("v1.12.0").less("1.12.1-wowowow"));
 		assertTrue(new Version("1.2.3").less("1.2.4"));
+		assertTrue(new Version("1.2.4").less("1.3.1"));
+		assertTrue(new Version("1.2").less("2.1"));
 
 		assertFalse(new Version("1").less("1.1.10"));
 		assertFalse(new Version("1.12.1").less("1.12.0+dev-211-g316db0fe7"));
@@ -46,7 +48,6 @@ public class VersionTest {
 		assertFalse(new Version("v1.12.0").less("1.10.0"));
 		assertFalse(new Version("2.12.0").less("v1.12"));
 		assertFalse(new Version("2").less("1"));
-		assertFalse(new Version("1.2").less("2.1"));
 		assertFalse(new Version("2.2").less("2.1.120"));
 
 	}
@@ -80,6 +81,8 @@ public class VersionTest {
 		assertTrue(new Version("v2").higher("1.12.0"));
 		assertTrue(new Version("1.12.1-wowowow").higher("v1.12.0"));
 		assertTrue(new Version("1.2.4").higher("1.2.3"));
+		assertTrue(new Version("1.13.0+dev-30-gb02d2c377").higher("1.11.4"));
+		assertTrue(new Version("2.1").higher("1.2"));
 
 		assertFalse(new Version("1").higher("1.1.10"));
 		assertFalse(new Version("1.12.0+dev-211-g316db0fe7").higher("1.12.1"));
@@ -87,7 +90,6 @@ public class VersionTest {
 		assertFalse(new Version("1.10.0").higher("v1.12.0"));
 		assertFalse(new Version("v1.12").higher("2.12.0"));
 		assertFalse(new Version("1").higher("2"));
-		assertFalse(new Version("2.1").higher("1.2"));
 		assertFalse(new Version("2.1.120").higher("2.2"));
 
 	}

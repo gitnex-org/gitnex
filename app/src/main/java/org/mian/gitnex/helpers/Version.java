@@ -114,6 +114,9 @@ public class Version {
 				if(this.values.get(i) > v.values.get(i)) {
 					return false;
 				}
+				else if(this.values.get(i) < v.values.get(i)) {
+					return true;
+				}
 			}
 		}
 		return true;
@@ -151,6 +154,9 @@ public class Version {
 			else {
 				if(this.values.get(i) < v.values.get(i)) {
 					return false;
+				}
+				else if(this.values.get(i) > v.values.get(i)) {
+					return true;
 				}
 			}
 		}
