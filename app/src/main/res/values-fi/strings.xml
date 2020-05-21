@@ -11,6 +11,7 @@
     <string name="navRate">Anna palautetta</string>
     <string name="navLogout">Kirjaudu ulos</string>
     <string name="navExplore">Explore</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Tietoja</string>
@@ -34,6 +35,7 @@
     <string name="pageTitleAddEmail">Lisää sähköpostiosoite</string>
     <string name="pageTitleNewFile">Uusi tiedosto</string>
     <string name="pageTitleExplore">Explore</string>
+    <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
     <string name="appVersion">Versio\u0020:\u0020</string>
     <string name="appBuild">Alaversio \u0020:\u0020</string>
@@ -85,6 +87,8 @@
     <string name="orgCreated">Organization created successfully</string>
     <string name="orgCreatedError">Something went wrong, please try again</string>
     <string name="orgExistsError">Organization already exists</string>
+    <string name="binaryFileError">Binary files are not supported yet.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">Processing</string>
     <string name="search">Search</string>
     <string name="wip">Work in progress</string>
@@ -142,6 +146,7 @@
     <string name="commentEmptyError">Please write your comment</string>
     <string name="commentSuccess">Comment posted</string>
     <string name="commentError">Something went wrong, please try again</string>
+    <string name="featureDeprecated">This function will be removed in the future.</string>
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">No milestones found</string>
     <string name="commitAuthor">Commit author: %1$s</string>
@@ -215,6 +220,13 @@
     <string name="settingsCounterBadges">Counter Badges</string>
     <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <!-- settings -->
     <string name="noMoreData">No more data available</string>
     <string name="createLabel">New Label</string>
@@ -255,6 +267,13 @@
     <string name="noDataMembers">No members found</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
+    <string name="addNewMember">Add / Remove New Member</string>
+    <string name="removeTeamMemberTitle">Remove\u0020</string>
+    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
+    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
+    <string name="memberAddedMessage">Member added to the team successfully</string>
+    <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Team Name</string>
@@ -272,11 +291,13 @@
     <string name="teamCreated">Team created successfully</string>
     <string name="teamCreatedError">Something went wrong, please try again</string>
     <!-- create team -->
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Edit Comment</string>
     <string name="editCommentButtonText">Edit</string>
     <string name="editCommentUpdatedText">Comment updated</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Share Comment</string>
+    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Add / Remove Collaborator</string>
     <string name="addCollaboratorSearchHint">Search users</string>
@@ -327,7 +348,7 @@
     <string name="repoMetaData">Repository Meta</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Add New User</string>
-    <string name="adminUsers">Users</string>
+    <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Admin</string>
     <!-- admin -->
     <!-- create user -->
@@ -420,6 +441,7 @@
     <string name="textContinue">Continue</string>
     <string name="copyToken">Token</string>
     <string name="viewInBrowser">View in Browser</string>
+    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Translate GitNex with Crowdin</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
@@ -464,7 +486,7 @@
     <string name="mergeOptionSquash">Squash and Merge</string>
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
-    <string name="downloadFileSaved">File is saved to Download directory</string>
+    <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
@@ -487,11 +509,12 @@
     <string name="mtm_decision_always">Trust</string>
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
-    <string name="issueCommentShare">Share Comment</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="subscribedSuccessfully">Subscribed successfully</string>
+    <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscribtionError">Subscription failed</string>
+    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
+    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
@@ -503,4 +526,9 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
+    <string name="fileViewerHintText">PDF mode, source code theme</string>
+    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="languagesHintText">Languages</string>
+    <string name="reportsHintText">Crash reports</string>
 </resources>

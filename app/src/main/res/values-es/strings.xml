@@ -11,6 +11,7 @@
     <string name="navRate">Valorar GitNex</string>
     <string name="navLogout">Cerrar sesión</string>
     <string name="navExplore">Explorar</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Sobre</string>
@@ -34,6 +35,7 @@
     <string name="pageTitleAddEmail">Añadir dirección de email</string>
     <string name="pageTitleNewFile">Nuevo archivo</string>
     <string name="pageTitleExplore">Explorar</string>
+    <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
     <string name="appVersion">Versión\u0020:\u0020</string>
     <string name="appBuild">Construir No.\u0020:\u0020</string>
@@ -85,6 +87,8 @@
     <string name="orgCreated">La organización se ha creado correctamente</string>
     <string name="orgCreatedError">Algo salió mal, por favor, inténtalo de nuevo</string>
     <string name="orgExistsError">La organización ya existe</string>
+    <string name="binaryFileError">Binary files are not supported yet.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">En proceso</string>
     <string name="search">Buscar</string>
     <string name="wip">Trabajo en curso</string>
@@ -142,6 +146,7 @@
     <string name="commentEmptyError">Por favor, escribe un comentario</string>
     <string name="commentSuccess">Comentario publicado</string>
     <string name="commentError">Algo salió mal, por favor, inténtalo de nuevo</string>
+    <string name="featureDeprecated">This function will be removed in the future.</string>
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">No se han encontrado milestones</string>
     <string name="commitAuthor">Autor del commit: %1$s</string>
@@ -215,6 +220,13 @@
     <string name="settingsCounterBadges">Counter Badges</string>
     <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <!-- settings -->
     <string name="noMoreData">No more data available</string>
     <string name="createLabel">Nueva etiqueta</string>
@@ -255,6 +267,13 @@
     <string name="noDataMembers">No members found</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
+    <string name="addNewMember">Add / Remove New Member</string>
+    <string name="removeTeamMemberTitle">Remove\u0020</string>
+    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
+    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
+    <string name="memberAddedMessage">Member added to the team successfully</string>
+    <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Team Name</string>
@@ -272,11 +291,13 @@
     <string name="teamCreated">Team created successfully</string>
     <string name="teamCreatedError">Algo salió mal, por favor, inténtalo de nuevo</string>
     <!-- create team -->
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Edit Comment</string>
     <string name="editCommentButtonText">Editar</string>
     <string name="editCommentUpdatedText">Comment updated</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Share Comment</string>
+    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Add / Remove Collaborator</string>
     <string name="addCollaboratorSearchHint">Search users</string>
@@ -327,7 +348,7 @@
     <string name="repoMetaData">Repository Meta</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Add New User</string>
-    <string name="adminUsers">Users</string>
+    <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Admin</string>
     <!-- admin -->
     <!-- create user -->
@@ -420,6 +441,7 @@
     <string name="textContinue">Continue</string>
     <string name="copyToken">Token</string>
     <string name="viewInBrowser">Ver en el navegador</string>
+    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Translate GitNex with Crowdin</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
@@ -464,7 +486,7 @@
     <string name="mergeOptionSquash">Hacer Squash y Fusionar</string>
     <string name="downloadFile">Descargar este archivo</string>
     <string name="waitLoadingDownloadFile">Por favor espere a que el dispositivo cargue</string>
-    <string name="downloadFileSaved">El archivo se ha guardado en el directorio de descargas</string>
+    <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">Este tipo de archivo no es compatible con el visor de archivos. ¿Descargarlo en su lugar desde el menú de tres puntos?</string>
     <string name="sizeCopy">Tamaño</string>
     <string name="shareIssue">Compartir problema</string>
@@ -487,11 +509,12 @@
     <string name="mtm_decision_always">Trust</string>
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
-    <string name="issueCommentShare">Share Comment</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="subscribedSuccessfully">Subscribed successfully</string>
+    <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscribtionError">Subscription failed</string>
+    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
+    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
@@ -503,4 +526,9 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
+    <string name="fileViewerHintText">PDF mode, source code theme</string>
+    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="languagesHintText">Languages</string>
+    <string name="reportsHintText">Crash reports</string>
 </resources>

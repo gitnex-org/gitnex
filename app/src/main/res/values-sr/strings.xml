@@ -11,6 +11,7 @@
     <string name="navRate">Оцени GitNex</string>
     <string name="navLogout">Одјави ме</string>
     <string name="navExplore">Претражи репозиторијуме</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">О програму</string>
@@ -20,20 +21,21 @@
     <string name="pageTitleProfile">Профил</string>
     <string name="pageTitleNewRepo">Нови репозиторијум</string>
     <string name="pageTitleOrganizations">Организације</string>
-    <string name="pageTitleIssues">Проблеми</string>
+    <string name="pageTitleIssues">Тикети</string>
     <string name="pageTitleSettings">Подешавања</string>
     <string name="pageTitleCreateOrganization">Нова организација</string>
     <string name="pageTitleCreateMilestone">Нова фаза</string>
-    <string name="pageTitleCreateNewIssue">Нови проблем</string>
+    <string name="pageTitleCreateNewIssue">Нови тикет</string>
     <string name="pageTitleCreateLabel">Нова ознака</string>
     <string name="pageTitleCredits">Заслуге</string>
     <string name="pageTitleLabelUpdate">Ажурирај ознаку</string>
-    <string name="pageTitleSponsors">Спонзори</string>
+    <string name="pageTitleSponsors">Донатори</string>
     <string name="pageTitleStarredRepos">Омиљени репозиторијуми</string>
     <string name="pageTitleCreateTeam">Нови тим</string>
     <string name="pageTitleAddEmail">Додај имејл-адресу</string>
     <string name="pageTitleNewFile">Нови фајл</string>
     <string name="pageTitleExplore">Претражи репозиторијуме</string>
+    <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
     <string name="appVersion">Верзија\u0020:\u0020</string>
     <string name="appBuild">Build No.\u0020:\u0020</string>
@@ -46,13 +48,13 @@
     <string name="noDataOrg">Ниједна организација није пронађена</string>
     <string name="newCreateButtonCopy">Креирај</string>
     <string name="newUpdateButtonCopy">Ажурирај</string>
-    <string name="newRepoTintCopy">Назив репозиторијума</string>
-    <string name="newRepoDescTintCopy">Опис репозиторијума</string>
+    <string name="newRepoTintCopy">Назив</string>
+    <string name="newRepoDescTintCopy">Опис</string>
     <string name="newRepoPrivateCopy">Приватни</string>
     <string name="newRepoDescInfo">Максимално 255 карактера</string>
     <string name="newRepoOwner">Власник</string>
-    <string name="newOrgTintCopy">Назив организације</string>
-    <string name="newOrgDescTintCopy">Опис организације</string>
+    <string name="newOrgTintCopy">Назив</string>
+    <string name="newOrgDescTintCopy">Опис</string>
     <string name="newOrgDescInfo">Максимално 255 карактера</string>
     <string name="userName">Корисничко име</string>
     <string name="passWord">Лозинка</string>
@@ -63,7 +65,7 @@
     <string name="logo">Пријави ме</string>
     <string name="urlInfoTooltip">1. Одабери одговарајући протокол (HTTPS или HTTP).\n2. Унеси URL инстанце, нпр. try.gitea.io.\n3. Ако користиш 2FA, унеси OTP код.\n4. Ако користиш HTTP протокол, унеси URL инстанце у формату korisnickoime@domen.com.</string>
     <string name="loginFailed">Погрешно корисничко име или лозинка</string>
-    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
+    <string name="malformedUrl">Повезивање није успело. Провери конфигурацију.</string>
     <string name="protocolError">Употреба HTTP протокола није препоручена уколико не тестираш на локалној мрежи</string>
     <string name="malformedJson">Сервер је послао неисправан JSON</string>
     <string name="emptyFieldURL">URL инстанце је обавезан</string>
@@ -85,6 +87,8 @@
     <string name="orgCreated">Организација је успешно креирана</string>
     <string name="orgCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="orgExistsError">Организација већ постоји</string>
+    <string name="binaryFileError">Binary files are not supported yet.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">Пријављивање у току</string>
     <string name="search">Претражи</string>
     <string name="wip">У току</string>
@@ -120,8 +124,8 @@
     <string name="infoTabRepoForksCount">Број форкова</string>
     <string name="infoTabRepoCreatedAt">Креиран</string>
     <string name="infoTabRepoUpdatedAt">Ажуриран</string>
-    <string name="infoShowMoreInformation">Show More Information</string>
-    <string name="infoMoreInformation">More Information</string>
+    <string name="infoShowMoreInformation">Прикажи више информација</string>
+    <string name="infoMoreInformation">Више информација</string>
     <string name="timeAtText">у</string>
     <string name="createdText">Пријављен\u0020</string>
     <string name="dueDateText">Рок</string>
@@ -135,13 +139,14 @@
     <string name="issueTypePullRequest">Тип: пул захтев</string>
     <string name="issueCommenter">Коментатор:\u0020</string>
     <string name="issueMilestone">Фаза %1$s</string>
-    <string name="dueDate">Due on %1$s</string>
+    <string name="dueDate">Рок: </string>
     <string name="createdTime">Отворен: %1$s</string>
     <string name="assignedTo">Додељен: %1$s</string>
     <string name="commentButtonText">Коментар</string>
     <string name="commentEmptyError">Унеси коментар</string>
     <string name="commentSuccess">Коментар је послат</string>
     <string name="commentError">Нешто је пошло наопако, покушај поново</string>
+    <string name="featureDeprecated">This function will be removed in the future.</string>
     <string name="generalImgContentText">Аватар</string>
     <string name="noDataMilestonesTab">Ниједна фаза није пронађена</string>
     <string name="commitAuthor">Аутор комита: %1$s</string>
@@ -190,7 +195,7 @@
     <string name="settingsSecurityHeader">Безбедност</string>
     <string name="settingsCertsSelectorHeader">Избриши сертификате</string>
     <string name="settingsCertsPopupTitle">Да ли желиш да избришеш сертификате?</string>
-    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
+    <string name="settingsCertsPopupMessage">Да ли желиш да избришеш сертификате?\n\nТо би подразумевало и одјављивање.</string>
     <string name="settingsDateTimeHeaderText">Датум и време</string>
     <string name="settingsSave">Подешавања су сачувана</string>
     <string name="settingsLanguageSelectorHeader">Језик</string>
@@ -212,9 +217,16 @@
     <string name="themeSelectionHeaderText">Тема</string>
     <string name="settingsPdfModeHeaderText">PDF ноћни режим</string>
     <string name="fileViewerHeader">Прегледач фајлова</string>
-    <string name="settingsCounterBadges">Counter Badges</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="settingsCounterBadges">Беџеви</string>
+    <string name="settingsFileviewerSourceCodeHeaderText">Тема</string>
+    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Изабери тему</string>
+    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <!-- settings -->
     <string name="noMoreData">Нема више података</string>
     <string name="createLabel">Нова ознака</string>
@@ -255,6 +267,13 @@
     <string name="noDataMembers">Ниједан члан није пронађен</string>
     <string name="orgMember">Чланови организације</string>
     <string name="orgTeamMembers">Чланови тима</string>
+    <string name="addNewMember">Add / Remove New Member</string>
+    <string name="removeTeamMemberTitle">Remove\u0020</string>
+    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
+    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
+    <string name="memberAddedMessage">Member added to the team successfully</string>
+    <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Назив тима</string>
@@ -272,11 +291,13 @@
     <string name="teamCreated">Тим је успешно креиран</string>
     <string name="teamCreatedError">Нешто је пошло наопако, покушај поново</string>
     <!-- create team -->
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Уреди коментар</string>
     <string name="editCommentButtonText">Уреди</string>
     <string name="editCommentUpdatedText">Коментар је ажуриран</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Подели коментар</string>
+    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Додај или уклони сарадника</string>
     <string name="addCollaboratorSearchHint">Претражи кориснике</string>
@@ -327,7 +348,7 @@
     <string name="repoMetaData">Основни подаци</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Додај новог корисника</string>
-    <string name="adminUsers">Корисници</string>
+    <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Администратор</string>
     <!-- admin -->
     <!-- create user -->
@@ -420,6 +441,7 @@
     <string name="textContinue">Настави</string>
     <string name="copyToken">Токен</string>
     <string name="viewInBrowser">Отвори у претраживачу</string>
+    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Преведи GitNex на платформи Crowdin</string>
     <string name="exploreTextBoxHint">Претражи репозиторијуме</string>
@@ -440,8 +462,8 @@
     <string name="versionAlertTitle">Упозорење у вези са верзијом</string>
     <string name="versionAlertDialogHeader">Верзија програма Gitea коју тренутно користиш није подржана</string>
     <string name="loginViaPassword">Корисничко име и лозинка</string>
-    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
-    <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
+    <string name="loginMethodText">Одабери начин за пријављивање. Имај у виду да је токен безбеднији него корисничко име и лозинка.</string>
+    <string name="unauthorizedApiError">Грешка. Провери креденцијале и покушај поново.</string>
     <string name="loginTokenError">Унеси исправан токен</string>
     <string name="noDataPullRequests">Ниједан пул захтев није пронађен</string>
     <string name="prCreator">Аутор: \u0020</string>
@@ -454,7 +476,7 @@
     <string name="openFileDiffText">Фајлови су измењени</string>
     <string name="mergePullRequestText">Обједини пул захтев</string>
     <string name="mergePullRequestButtonText">Обједини</string>
-    <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
+    <string name="mergeNoteText">Спајање може бити неуспешно уколико немаш ауторизацију</string>
     <string name="mergeCommentText">Обједини коментар</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
@@ -464,7 +486,7 @@
     <string name="mergeOptionSquash">Squash and Merge</string>
     <string name="downloadFile">Преузми овај фајл</string>
     <string name="waitLoadingDownloadFile">Сачекај да се фајл учита у меморију</string>
-    <string name="downloadFileSaved">Фајл је сачуван</string>
+    <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">Прегледач фајлова не подржава овај тип. Да ли желиш да преузмеш фајл?</string>
     <string name="sizeCopy">Величина</string>
     <string name="shareIssue">Подели проблем</string>
@@ -487,11 +509,12 @@
     <string name="mtm_decision_always">Trust</string>
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
-    <string name="issueCommentShare">Подели коментар</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="subscribedSuccessfully">Subscribed successfully</string>
+    <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscribtionError">Subscription failed</string>
+    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
+    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Затвори фазу</string>
     <string name="openMilestone">Отвори фазу</string>
     <string name="milestoneStatusUpdate">Фаза је ажурирана</string>
@@ -503,4 +526,9 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
+    <string name="fileViewerHintText">PDF mode, source code theme</string>
+    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="languagesHintText">Languages</string>
+    <string name="reportsHintText">Crash reports</string>
 </resources>

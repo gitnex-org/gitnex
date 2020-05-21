@@ -11,6 +11,7 @@
     <string name="navRate">Oceń GitNex</string>
     <string name="navLogout">Wyloguj się</string>
     <string name="navExplore">Przeglądaj</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">O programie</string>
@@ -34,6 +35,7 @@
     <string name="pageTitleAddEmail">Dodaj adres e-mail</string>
     <string name="pageTitleNewFile">Nowy plik</string>
     <string name="pageTitleExplore">Przeglądaj</string>
+    <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
     <string name="appVersion">Wersja\u0020:\u0020</string>
     <string name="appBuild">Build nr\u0020:\u0020</string>
@@ -85,6 +87,8 @@
     <string name="orgCreated">Organizacja utworzona pomyślnie</string>
     <string name="orgCreatedError">Coś poszło nie tak, spróbuj ponownie</string>
     <string name="orgExistsError">Organizacja już istnieje</string>
+    <string name="binaryFileError">Binary files are not supported yet.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">Przetwarzanie</string>
     <string name="search">Szukaj</string>
     <string name="wip">Prace w toku</string>
@@ -142,6 +146,7 @@
     <string name="commentEmptyError">Napisz swój komentarz</string>
     <string name="commentSuccess">Komentarz wysłany</string>
     <string name="commentError">Coś poszło nie tak, spróbuj ponownie</string>
+    <string name="featureDeprecated">This function will be removed in the future.</string>
     <string name="generalImgContentText">Awatar</string>
     <string name="noDataMilestonesTab">Nie znaleziono etapów</string>
     <string name="commitAuthor">Autor commitu: %1$s</string>
@@ -215,6 +220,13 @@
     <string name="settingsCounterBadges">Odznaki liczników</string>
     <string name="settingsFileviewerSourceCodeHeaderText">Motyw kodu źródłowego</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Wybierz motyw kodu źródłowego</string>
+    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <!-- settings -->
     <string name="noMoreData">Brak dostępnych danych</string>
     <string name="createLabel">Nowa etykieta</string>
@@ -255,6 +267,13 @@
     <string name="noDataMembers">Nie znaleziono członków</string>
     <string name="orgMember">Członkowie organizacji</string>
     <string name="orgTeamMembers">Członkowie zespołu organizacji</string>
+    <string name="addNewMember">Add / Remove New Member</string>
+    <string name="removeTeamMemberTitle">Remove\u0020</string>
+    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
+    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
+    <string name="memberAddedMessage">Member added to the team successfully</string>
+    <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nazwa zespołu</string>
@@ -272,11 +291,13 @@
     <string name="teamCreated">Zespół utworzony pomyślnie</string>
     <string name="teamCreatedError">Coś poszło nie tak, spróbuj ponownie</string>
     <!-- create team -->
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Edytuj komentarz</string>
     <string name="editCommentButtonText">Edytuj</string>
     <string name="editCommentUpdatedText">Komentarz zaktualizowany</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Udostępnij komentarz</string>
+    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Dodaj / Usuń współpracownika</string>
     <string name="addCollaboratorSearchHint">Szukaj użytkowników</string>
@@ -327,7 +348,7 @@
     <string name="repoMetaData">Meta repozytorium</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Dodaj nowego użytkownika</string>
-    <string name="adminUsers">Użytkownicy</string>
+    <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Administrator</string>
     <!-- admin -->
     <!-- create user -->
@@ -420,6 +441,7 @@
     <string name="textContinue">Kontynuuj</string>
     <string name="copyToken">Token</string>
     <string name="viewInBrowser">Zobacz w przeglądarce</string>
+    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Przetłumacz GitNex z Crowdin</string>
     <string name="exploreTextBoxHint">Przeglądaj repozytoria</string>
@@ -464,7 +486,7 @@
     <string name="mergeOptionSquash">Zmiażdż i scal</string>
     <string name="downloadFile">Pobierz ten plik</string>
     <string name="waitLoadingDownloadFile">Poczekaj aż plik załaduje się do pamięci</string>
-    <string name="downloadFileSaved">Plik został zapisany do katalogu pobierania</string>
+    <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">Ten typ pliku nie jest obsługiwany w przeglądarce plików. Pobrać go z trzech kropkowanych menu?</string>
     <string name="sizeCopy">Rozmiar</string>
     <string name="shareIssue">Udostępnij problem</string>
@@ -487,11 +509,12 @@
     <string name="mtm_decision_always">Zaufaj</string>
     <string name="mtm_decision_once">Raz</string>
     <string name="mtm_decision_abort">Przerwij</string>
-    <string name="issueCommentShare">Udostępnij komentarz</string>
-    <string name="issueSubscribtion">Problem zasubskrybowany</string>
-    <string name="issueSubscribtionError">Błąd subskrypcji</string>
-    <string name="issueUnsubscribtion">Subskrypcja problemu anulowana</string>
-    <string name="issueUnsubscribtionError">Błąd anulowania subskrypcji</string>
+    <string name="subscribedSuccessfully">Subscribed successfully</string>
+    <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscribtionError">Subscription failed</string>
+    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
+    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Zamknij etap</string>
     <string name="openMilestone">Otwórz etap</string>
     <string name="milestoneStatusUpdate">Status etapu zaktualizowany pomyślnie</string>
@@ -503,4 +526,9 @@
     <string name="crashTitle">GitNex zatrzymał się :(</string>
     <string name="setCrashReports">Raporty awarii</string>
     <string name="crashMessage">Możesz nacisnąć przycisk OK, aby wysłać raport o awarii pocztą elektroniczną. Pomoże to naprawić to :)\n\nMożesz również dodać dodatkowe treści w wiadomości e-mail. Dziękujemy!</string>
+    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
+    <string name="fileViewerHintText">PDF mode, source code theme</string>
+    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="languagesHintText">Languages</string>
+    <string name="reportsHintText">Crash reports</string>
 </resources>

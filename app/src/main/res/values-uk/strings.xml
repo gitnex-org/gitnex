@@ -11,6 +11,7 @@
     <string name="navRate">Оцінити GitNex</string>
     <string name="navLogout">Вийти</string>
     <string name="navExplore">Огляд</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Про додаток</string>
@@ -34,6 +35,7 @@
     <string name="pageTitleAddEmail">Додати адресу Email</string>
     <string name="pageTitleNewFile">Новий файл</string>
     <string name="pageTitleExplore">Огляд</string>
+    <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
     <string name="appVersion">Версія\u0020:\u0020</string>
     <string name="appBuild">Збірка\u0020:\u0020</string>
@@ -85,6 +87,8 @@
     <string name="orgCreated">Організацію створено успішно</string>
     <string name="orgCreatedError">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="orgExistsError">Організація вже існує</string>
+    <string name="binaryFileError">Binary files are not supported yet.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">Обробляється</string>
     <string name="search">Пошук</string>
     <string name="wip">Робота в процесі</string>
@@ -142,6 +146,7 @@
     <string name="commentEmptyError">Будь ласка, напишіть свій коментар</string>
     <string name="commentSuccess">Коментар опубліковано</string>
     <string name="commentError">Щось пішло не так. Будь ласка, спробуйте знову</string>
+    <string name="featureDeprecated">This function will be removed in the future.</string>
     <string name="generalImgContentText">Аватар</string>
     <string name="noDataMilestonesTab">Етапів не знайдено</string>
     <string name="commitAuthor">Автор коміту: %1$s</string>
@@ -215,6 +220,13 @@
     <string name="settingsCounterBadges">Counter Badges</string>
     <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <!-- settings -->
     <string name="noMoreData">Даних більше немає</string>
     <string name="createLabel">Створити мітку</string>
@@ -255,6 +267,13 @@
     <string name="noDataMembers">Учасників не знайдено</string>
     <string name="orgMember">Учасники організації</string>
     <string name="orgTeamMembers">Учасники команд організації</string>
+    <string name="addNewMember">Add / Remove New Member</string>
+    <string name="removeTeamMemberTitle">Remove\u0020</string>
+    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
+    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
+    <string name="memberAddedMessage">Member added to the team successfully</string>
+    <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Назва команди</string>
@@ -272,11 +291,13 @@
     <string name="teamCreated">Команду успішно створено</string>
     <string name="teamCreatedError">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <!-- create team -->
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Редагувати коментар</string>
     <string name="editCommentButtonText">Редагувати</string>
     <string name="editCommentUpdatedText">Коментар змінено</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Share Comment</string>
+    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Додати / Вилучити співавтора</string>
     <string name="addCollaboratorSearchHint">Знайти користувачів</string>
@@ -327,7 +348,7 @@
     <string name="repoMetaData">Метаінформація репозиторія</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Додати нового користувача</string>
-    <string name="adminUsers">Користувачі</string>
+    <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Адміністратор</string>
     <!-- admin -->
     <!-- create user -->
@@ -420,6 +441,7 @@
     <string name="textContinue">Продовжити</string>
     <string name="copyToken">Токен</string>
     <string name="viewInBrowser">View in Browser</string>
+    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Перекласти GitNex на Crowdin</string>
     <string name="exploreTextBoxHint">Переглянути репозиторії</string>
@@ -464,7 +486,7 @@
     <string name="mergeOptionSquash">Squash and Merge</string>
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
-    <string name="downloadFileSaved">File is saved to Download directory</string>
+    <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
@@ -487,11 +509,12 @@
     <string name="mtm_decision_always">Trust</string>
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
-    <string name="issueCommentShare">Share Comment</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="subscribedSuccessfully">Subscribed successfully</string>
+    <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscribtionError">Subscription failed</string>
+    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
+    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
@@ -503,4 +526,9 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
+    <string name="fileViewerHintText">PDF mode, source code theme</string>
+    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="languagesHintText">Languages</string>
+    <string name="reportsHintText">Crash reports</string>
 </resources>

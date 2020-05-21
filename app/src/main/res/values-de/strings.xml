@@ -11,6 +11,7 @@
     <string name="navRate">Bewerte GitNex</string>
     <string name="navLogout">Ausloggen</string>
     <string name="navExplore">Erkunden</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Über</string>
@@ -34,6 +35,7 @@
     <string name="pageTitleAddEmail">E-Mail Adresse hinzufügen</string>
     <string name="pageTitleNewFile">Neue Datei</string>
     <string name="pageTitleExplore">Erkunden</string>
+    <string name="pageTitleAdministration">Gitea-Administration</string>
     <!-- page titles -->
     <string name="appVersion">Version\u0020:\u0020</string>
     <string name="appBuild">Build Nr.\u0020:\u0020</string>
@@ -85,6 +87,8 @@
     <string name="orgCreated">Organisation erfolgreich erstellt!</string>
     <string name="orgCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="orgExistsError">Organisation existiert bereits</string>
+    <string name="binaryFileError">Binäre Dateien werden noch nicht unterstützt.</string>
+    <string name="fileTooLarge">Diese Datei überschreitet die maximal möglichen Diff-Länge.</string>
     <string name="processingText">verarbeite</string>
     <string name="search">Suche</string>
     <string name="wip">In Arbeit</string>
@@ -142,6 +146,7 @@
     <string name="commentEmptyError">Bitte schreibe deinen Kommentar!</string>
     <string name="commentSuccess">Kommentar gepostet</string>
     <string name="commentError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
+    <string name="featureDeprecated">Diese Funktion wird in Zukunft entfernt.</string>
     <string name="generalImgContentText">Benutzerbild</string>
     <string name="noDataMilestonesTab">Kein Meilenstein gefunden!</string>
     <string name="commitAuthor">Commit Autor: %1$s</string>
@@ -215,6 +220,13 @@
     <string name="settingsCounterBadges">Zähler für Tabs</string>
     <string name="settingsFileviewerSourceCodeHeaderText">Quellcode-Theme</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Wähle dein Quellcode-Theme</string>
+    <string name="cacheSizeDataDialogHeader">Daten-Cache Größe</string>
+    <string name="cacheSizeDataSelectionHeaderText">Daten-Cache Größe</string>
+    <string name="cacheSizeImagesDialogHeader">Bilder-Cache Größe</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Bilder-Cache Größe</string>
+    <string name="clearCacheSelectionHeaderText">Cache löschen</string>
+    <string name="clearCacheDialogHeader">Cache löschen?</string>
+    <string name="clearCacheDialogMessage">Dadurch werden alle Cache-Daten einschließlich Dateien und Bilder gelöscht.\n\nMit dem Löschen fortfahren?</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -255,6 +267,13 @@
     <string name="noDataMembers">Keine Mitglieder gefunden!</string>
     <string name="orgMember">Org Mitglieder</string>
     <string name="orgTeamMembers">Mitglieder der Organisation</string>
+    <string name="addNewMember">Mitglied hinzufügen / entfernen</string>
+    <string name="removeTeamMemberTitle">Entfernen\u0020</string>
+    <string name="addTeamMemberTitle">Hinzufügen\u0020</string>
+    <string name="addTeamMemberMessage">Möchten Sie diesen Benutzer dem Team hinzufügen?</string>
+    <string name="removeTeamMemberMessage">Soll dieser Benutzer aus dem Team entfernt werden?</string>
+    <string name="memberAddedMessage">Mitglied wurde erfolgreich zum Team hinzugefügt</string>
+    <string name="memberRemovedMessage">Mitglied wurde erfolgreich aus dem Team entfernt</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Name des Teams</string>
@@ -272,11 +291,13 @@
     <string name="teamCreated">Team erfolgreich erstellt.</string>
     <string name="teamCreatedError">Etwas ist schief gelaufen, bitte versuche es erneut.</string>
     <!-- create team -->
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Kommentar bearbeiten</string>
     <string name="editCommentButtonText">Bearbeiten</string>
     <string name="editCommentUpdatedText">Kommentar erfolgreich bearbeitet</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Kommentar teilen</string>
+    <string name="deleteCommentSuccess">Kommentar erfolgreich gelöscht</string>
+    <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Mitarbeiter hinzufügen</string>
     <string name="addCollaboratorSearchHint">Benutzer durchsuchen</string>
@@ -327,7 +348,7 @@
     <string name="repoMetaData">Repository Informationen</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Neuen Benutzer erstellen</string>
-    <string name="adminUsers">Benutzer</string>
+    <string name="adminUsers">Systembenutzer</string>
     <string name="userRoleAdmin">Administrator</string>
     <!-- admin -->
     <!-- create user -->
@@ -420,6 +441,7 @@
     <string name="textContinue">Fortfahren</string>
     <string name="copyToken">Token</string>
     <string name="viewInBrowser">In Browser betrachten</string>
+    <string name="genericServerResponseError">Wir können den Server im Moment nicht erreichen. Bitte überprüfen Sie Ihren Serverstatus und versuchen Sie es erneut</string>
     <!-- generic copy -->
     <string name="translateText">GitNex mit Crowdin übersetzen</string>
     <string name="exploreTextBoxHint">Repositories entdecken</string>
@@ -464,7 +486,7 @@
     <string name="mergeOptionSquash">Zusammenfassen und Mergen</string>
     <string name="downloadFile">Datei herunterladen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
-    <string name="downloadFileSaved">Datei wurde ins Download-Verzeichnis gespeichert</string>
+    <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
     <string name="excludeFilesInFileviewer">Dieser Dateityp wird nicht vom Datei-Viewer unterstützt. Du kannst sie stattdessen übers Menü herunterladen.</string>
     <string name="sizeCopy">Größe</string>
     <string name="shareIssue">Issue teilen</string>
@@ -487,11 +509,12 @@
     <string name="mtm_decision_always">Vertrauen</string>
     <string name="mtm_decision_once">Einmal</string>
     <string name="mtm_decision_abort">Abbrechen</string>
-    <string name="issueCommentShare">Kommentar teilen</string>
-    <string name="issueSubscribtion">Issue abonniert</string>
-    <string name="issueSubscribtionError">Abonnieren ist fehlgeschlagen</string>
-    <string name="issueUnsubscribtion">Issue De-Abonnieren</string>
-    <string name="issueUnsubscribtionError">De-Abonnieren ist fehlgeschlagen</string>
+    <string name="subscribedSuccessfully">Erfolgreich abonniert</string>
+    <string name="alreadySubscribed">Du hast bereits abonniert</string>
+    <string name="subscribtionError">Abonnieren fehlgeschlagen</string>
+    <string name="unsubscribedSuccessfully">Erfolgreich de-abonniert</string>
+    <string name="alreadyUnsubscribed">Du hast bereits de-abonniert</string>
+    <string name="unsubscribtionError">De-Abonnieren fehlgeschlagen</string>
     <string name="closeMilestone">Meilenstein schließen</string>
     <string name="openMilestone">Meilenstein wieder öffnen</string>
     <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>
@@ -503,4 +526,9 @@
     <string name="crashTitle">GitNex hat gestoppt :(</string>
     <string name="setCrashReports">Absturzberichte</string>
     <string name="crashMessage">Klicke auf OK, um den Absturzbericht per E-Mail zu senden. Es wird helfen, diesen zu beheben :)\n\nDu könntest auch zusätzliche Infos in der E-Mail angeben. Danke für deine Hilfe!</string>
+    <string name="appreanceHintText">Designs, Schriftarten, Plaketten, Code Block-Template</string>
+    <string name="fileViewerHintText">PDF-Modus, Quellcode Theme</string>
+    <string name="securityHintText">SSL-Zertifikate, Cache</string>
+    <string name="languagesHintText">Sprachen</string>
+    <string name="reportsHintText">Absturzberichte</string>
 </resources>

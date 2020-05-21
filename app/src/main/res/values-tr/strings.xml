@@ -11,6 +11,7 @@
     <string name="navRate">GitNex\'i Puanla</string>
     <string name="navLogout">Çıkış Yap</string>
     <string name="navExplore">Keşfet</string>
+    <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Hakkında</string>
@@ -34,6 +35,7 @@
     <string name="pageTitleAddEmail">E-posta Adresi Ekle</string>
     <string name="pageTitleNewFile">Yeni Dosya</string>
     <string name="pageTitleExplore">Keşfet</string>
+    <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
     <string name="appVersion">Sürüm\u0020:\u0020</string>
     <string name="appBuild">Yapı No.\u0020:\u0020</string>
@@ -85,6 +87,8 @@
     <string name="orgCreated">Organizasyon başarıyla oluşturuldu</string>
     <string name="orgCreatedError">Bir şeyler ters gitti lütfen tekrar deneyin</string>
     <string name="orgExistsError">Organizasyon zaten var</string>
+    <string name="binaryFileError">Binary files are not supported yet.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">İşlem devam ediyor</string>
     <string name="search">Ara</string>
     <string name="wip">Yapım aşamasında</string>
@@ -142,6 +146,7 @@
     <string name="commentEmptyError">Lütfen yorumunuzu yazın</string>
     <string name="commentSuccess">Yorum gönderildi</string>
     <string name="commentError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
+    <string name="featureDeprecated">This function will be removed in the future.</string>
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">Kilometre taşı bulunamadı</string>
     <string name="commitAuthor">İşleme yazarı: %1$s</string>
@@ -215,6 +220,13 @@
     <string name="settingsCounterBadges">Counter Badges</string>
     <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
+    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <!-- settings -->
     <string name="noMoreData">Daha fazla veri yok</string>
     <string name="createLabel">Yeni Etiket</string>
@@ -255,6 +267,13 @@
     <string name="noDataMembers">Üye bulunamadı</string>
     <string name="orgMember">Organizasyon üyeleri</string>
     <string name="orgTeamMembers">Organizasyon takım üyeleri</string>
+    <string name="addNewMember">Add / Remove New Member</string>
+    <string name="removeTeamMemberTitle">Remove\u0020</string>
+    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
+    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
+    <string name="memberAddedMessage">Member added to the team successfully</string>
+    <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Takım Adı</string>
@@ -272,11 +291,13 @@
     <string name="teamCreated">Takım başarıyla oluşturuldu</string>
     <string name="teamCreatedError">Bir şeyler ters gitti lütfen tekrar deneyin</string>
     <!-- create team -->
-    <!-- edit comment -->
+    <!-- issue comments -->
     <string name="editCommentTitle">Yorumu Düzenle</string>
     <string name="editCommentButtonText">Düzenle</string>
     <string name="editCommentUpdatedText">Yorum güncellendi</string>
-    <!-- edit comment -->
+    <string name="issueCommentShare">Share Comment</string>
+    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">İşbirlikçi Ekle / Kaldır</string>
     <string name="addCollaboratorSearchHint">Kullanıcıları ara</string>
@@ -327,7 +348,7 @@
     <string name="repoMetaData">Depo Meta</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Yeni Kullanıcı Ekle</string>
-    <string name="adminUsers">Kullanıcılar</string>
+    <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Yönetici</string>
     <!-- admin -->
     <!-- create user -->
@@ -420,6 +441,7 @@
     <string name="textContinue">Devam et</string>
     <string name="copyToken">Jeton</string>
     <string name="viewInBrowser">View in Browser</string>
+    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Crowdin\'de GitNex için Çeviri Yap</string>
     <string name="exploreTextBoxHint">Depoları keşfet</string>
@@ -464,7 +486,7 @@
     <string name="mergeOptionSquash">Squash and Merge</string>
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
-    <string name="downloadFileSaved">File is saved to Download directory</string>
+    <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
@@ -487,11 +509,12 @@
     <string name="mtm_decision_always">Trust</string>
     <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
-    <string name="issueCommentShare">Share Comment</string>
-    <string name="issueSubscribtion">Issue Subscribed</string>
-    <string name="issueSubscribtionError">Issue Subscription failed</string>
-    <string name="issueUnsubscribtion">Issue Unsubscribed</string>
-    <string name="issueUnsubscribtionError">Issue Un-Subscription failed</string>
+    <string name="subscribedSuccessfully">Subscribed successfully</string>
+    <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscribtionError">Subscription failed</string>
+    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
+    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
@@ -503,4 +526,9 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
+    <string name="fileViewerHintText">PDF mode, source code theme</string>
+    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="languagesHintText">Languages</string>
+    <string name="reportsHintText">Crash reports</string>
 </resources>
