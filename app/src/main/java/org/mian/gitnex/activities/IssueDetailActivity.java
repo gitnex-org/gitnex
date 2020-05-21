@@ -47,8 +47,10 @@ import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.UserMentions;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.IssueComments;
 import org.mian.gitnex.models.Issues;
+import org.mian.gitnex.models.WatchInfo;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
 import java.text.DateFormat;
@@ -549,6 +551,38 @@ public class IssueDetailActivity extends BaseActivity {
 				Log.e("onFailure", t.toString());
 			}
 		});
+
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+
+			Call<WatchInfo> call2 = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().checkIssueWatchStatus(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
+
+			call2.enqueue(new Callback<WatchInfo>() {
+
+				@Override
+				public void onResponse(@NonNull Call<WatchInfo> call, @NonNull Response<WatchInfo> response) {
+
+					if(response.isSuccessful()) {
+
+						tinyDb.putBoolean("issueSubscribed", response.body().getSubscribed());
+
+					}
+					else {
+
+						tinyDb.putBoolean("issueSubscribed", false);
+
+					}
+
+				}
+
+				@Override
+				public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
+
+					tinyDb.putBoolean("issueSubscribed", false);
+
+				}
+			});
+
+		}
 
 	}
 

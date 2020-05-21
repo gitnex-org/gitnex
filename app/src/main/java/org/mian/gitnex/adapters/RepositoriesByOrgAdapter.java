@@ -25,7 +25,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.UserRepositories;
-import org.mian.gitnex.models.WatchRepository;
+import org.mian.gitnex.models.WatchInfo;
 import org.mian.gitnex.util.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,16 +92,16 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                     final String repoName = parts[1];
                     final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
-                    WatchRepository watch = new WatchRepository();
+                    WatchInfo watch = new WatchInfo();
 
-                    Call<WatchRepository> call;
+                    Call<WatchInfo> call;
 
                     call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface().checkRepoWatchStatus(token, repoOwner, repoName);
 
-                    call.enqueue(new Callback<WatchRepository>() {
+                    call.enqueue(new Callback<WatchInfo>() {
 
                         @Override
-                        public void onResponse(@NonNull Call<WatchRepository> call, @NonNull retrofit2.Response<WatchRepository> response) {
+                        public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
 
                             if(response.isSuccessful()) {
 
@@ -123,7 +123,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                         }
 
                         @Override
-                        public void onFailure(@NonNull Call<WatchRepository> call, @NonNull Throwable t) {
+                        public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
 
                             tinyDb.putBoolean("repoWatch", false);
                             Toasty.info(context, context.getString(R.string.genericApiStatusError));
