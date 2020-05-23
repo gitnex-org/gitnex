@@ -180,7 +180,7 @@ public class IssuesFragment extends Fragment {
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
-				if(response.isSuccessful()) {
+				if(response.code() == 200) {
 
 					assert response.body() != null;
 					if(response.body().size() > 0) {
@@ -192,11 +192,21 @@ public class IssuesFragment extends Fragment {
 
 					}
 					else {
+
 						issuesList.clear();
 						adapter.notifyDataChanged();
 						noDataIssues.setVisibility(View.VISIBLE);
+
 					}
+
 					mProgressBar.setVisibility(View.GONE);
+
+				}
+				else if(response.code() == 404) {
+
+					noDataIssues.setVisibility(View.VISIBLE);
+					mProgressBar.setVisibility(View.GONE);
+
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
@@ -227,7 +237,7 @@ public class IssuesFragment extends Fragment {
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
-				if(response.isSuccessful()) {
+				if(response.code() == 200) {
 
 					//remove loading view
 					issuesList.remove(issuesList.size() - 1);

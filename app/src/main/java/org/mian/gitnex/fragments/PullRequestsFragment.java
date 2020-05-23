@@ -183,7 +183,7 @@ public class PullRequestsFragment extends Fragment {
 			@Override
 			public void onResponse(@NonNull Call<List<PullRequests>> call, @NonNull Response<List<PullRequests>> response) {
 
-				if(response.isSuccessful()) {
+				if(response.code() == 200) {
 
 					assert response.body() != null;
 					if(response.body().size() > 0) {
@@ -195,14 +195,26 @@ public class PullRequestsFragment extends Fragment {
 
 					}
 					else {
+
 						prList.clear();
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.VISIBLE);
+
 					}
+
 					mProgressBar.setVisibility(View.GONE);
+
+				}
+				else if(response.code() == 404) {
+
+					noData.setVisibility(View.VISIBLE);
+					mProgressBar.setVisibility(View.GONE);
+
 				}
 				else {
+
 					Log.i(TAG, String.valueOf(response.code()));
+
 				}
 
 				Log.i(TAG, String.valueOf(response.code()));
@@ -232,7 +244,7 @@ public class PullRequestsFragment extends Fragment {
 			@Override
 			public void onResponse(@NonNull Call<List<PullRequests>> call, @NonNull Response<List<PullRequests>> response) {
 
-				if(response.isSuccessful()) {
+				if(response.code() == 200) {
 
 					//remove loading view
 					prList.remove(prList.size() - 1);
