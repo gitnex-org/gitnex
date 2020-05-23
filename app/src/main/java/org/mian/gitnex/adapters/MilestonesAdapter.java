@@ -6,35 +6,34 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.MilestoneActions;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.util.TinyDB;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.core.CorePlugin;
@@ -55,13 +54,57 @@ import io.noties.markwon.linkify.LinkifyPlugin;
  * Author M M Arif
  */
 
-public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.MilestonesViewHolder> implements Filterable {
+public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Milestones> milestonesList;
-    private Context mCtx;
-    private List<Milestones> milestonesListFull;
+    private Context context;
+    private final int TYPE_LOAD = 0;
+    private List<Milestones> dataList;
+    private OnLoadMoreListener loadMoreListener;
+    private boolean isLoading = false;
+    private boolean isMoreDataAvailable = true;
+    private String TAG = StaticGlobalVariables.tagMilestonesAdapter;
 
-    static class MilestonesViewHolder extends RecyclerView.ViewHolder {
+    public MilestonesAdapter(Context context, List<Milestones> dataListMain) {
+
+        this.context = context;
+        this.dataList = dataListMain;
+
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        if(viewType == TYPE_LOAD) {
+            return new MilestonesAdapter.DataHolder(inflater.inflate(R.layout.list_milestones, parent, false));
+        }
+        else {
+            return new MilestonesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+
+            isLoading = true;
+            loadMoreListener.onLoadMore();
+
+        }
+
+        if(getItemViewType(position) == TYPE_LOAD) {
+
+            ((MilestonesAdapter.DataHolder) holder).bindData(dataList.get(position));
+
+        }
+
+    }
+
+    class DataHolder extends RecyclerView.ViewHolder {
 
         private TextView milestoneId;
         private TextView msTitle;
@@ -71,9 +114,10 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
         private TextView msDueDate;
         private ImageView msStatus;
         private ProgressBar msProgress;
-	    private TextView milestoneStatus;
+        private TextView milestoneStatus;
 
-        private MilestonesViewHolder(View itemView) {
+        DataHolder(View itemView) {
+
             super(itemView);
 
             milestoneId = itemView.findViewById(R.id.milestoneId);
@@ -84,8 +128,8 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
             msClosedIssues = itemView.findViewById(R.id.milestoneIssuesClosed);
             msDueDate = itemView.findViewById(R.id.milestoneDueDate);
             msProgress = itemView.findViewById(R.id.milestoneProgress);
-	        ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
-	        milestoneStatus = itemView.findViewById(R.id.milestoneStatus);
+            ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
+            milestoneStatus = itemView.findViewById(R.id.milestoneStatus);
 
             milestonesMenu.setOnClickListener(v -> {
 
@@ -94,269 +138,287 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Mi
 
                 @SuppressLint("InflateParams") View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_milestones_in_list, null);
 
-	            TextView closeMilestone = view.findViewById(R.id.closeMilestone);
-	            TextView openMilestone = view.findViewById(R.id.openMilestone);
+                TextView closeMilestone = view.findViewById(R.id.closeMilestone);
+                TextView openMilestone = view.findViewById(R.id.openMilestone);
 
-	            BottomSheetDialog dialog = new BottomSheetDialog(ctx);
-	            dialog.setContentView(view);
-	            dialog.show();
+                BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+                dialog.setContentView(view);
+                dialog.show();
 
-	            if(milestoneStatus.getText().toString().equals("open")) {
+                if(milestoneStatus.getText().toString().equals("open")) {
 
-	            	closeMilestone.setVisibility(View.VISIBLE);
-		            openMilestone.setVisibility(View.GONE);
+                    closeMilestone.setVisibility(View.VISIBLE);
+                    openMilestone.setVisibility(View.GONE);
 
-	            }
-	            else {
+                }
+                else {
 
-		            closeMilestone.setVisibility(View.GONE);
-		            openMilestone.setVisibility(View.VISIBLE);
+                    closeMilestone.setVisibility(View.GONE);
+                    openMilestone.setVisibility(View.VISIBLE);
 
-	            }
+                }
 
-	            closeMilestone.setOnClickListener(v12 -> {
+                closeMilestone.setOnClickListener(v12 -> {
 
-		            MilestoneActions.closeMilestone(ctx, milestoneId_);
-		            dialog.dismiss();
+                    MilestoneActions.closeMilestone(ctx, milestoneId_);
+                    dialog.dismiss();
+                    updateAdapter(getAdapterPosition());
 
-	            });
+                });
 
-	            openMilestone.setOnClickListener(v12 -> {
+                openMilestone.setOnClickListener(v12 -> {
 
-		            MilestoneActions.openMilestone(ctx, milestoneId_);
-		            dialog.dismiss();
+                    MilestoneActions.openMilestone(ctx, milestoneId_);
+                    dialog.dismiss();
+                    updateAdapter(getAdapterPosition());
 
-	            });
+                });
 
             });
 
         }
-    }
 
-    public MilestonesAdapter(Context mCtx, List<Milestones> milestonesMain) {
-        this.mCtx = mCtx;
-        this.milestonesList = milestonesMain;
-        milestonesListFull = new ArrayList<>(milestonesList);
-    }
+        @SuppressLint("SetTextI18n")
+        void bindData(Milestones dataModel) {
 
-    @NonNull
-    @Override
-    public MilestonesAdapter.MilestonesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_milestones, parent, false);
-        return new MilestonesAdapter.MilestonesViewHolder(v);
-    }
+            final TinyDB tinyDb = new TinyDB(context);
+            final String locale = tinyDb.getString("locale");
+            final String timeFormat = tinyDb.getString("dateFormat");
 
-    @Override
-    public void onBindViewHolder(@NonNull MilestonesAdapter.MilestonesViewHolder holder, int position) {
+            milestoneId.setText(String.valueOf(dataModel.getId()));
+            milestoneStatus.setText(dataModel.getState());
 
-        final TinyDB tinyDb = new TinyDB(mCtx);
-        final String locale = tinyDb.getString("locale");
-        final String timeFormat = tinyDb.getString("dateFormat");
+            final Markwon markwon = Markwon.builder(Objects.requireNonNull(context))
+                    .usePlugin(CorePlugin.create())
+                    .usePlugin(ImagesPlugin.create(plugin -> {
+                        plugin.addSchemeHandler(new SchemeHandler() {
+                            @NonNull
+                            @Override
+                            public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-        Milestones currentItem = milestonesList.get(position);
+                                final int resourceId = context.getResources().getIdentifier(
+                                        raw.substring("drawable://".length()),
+                                        "drawable",
+                                        context.getPackageName());
 
-        holder.milestoneId.setText(String.valueOf(currentItem.getId()));
-        holder.milestoneStatus.setText(currentItem.getState());
+                                final Drawable drawable = context.getDrawable(resourceId);
 
-        final Markwon markwon = Markwon.builder(Objects.requireNonNull(mCtx))
-                .usePlugin(CorePlugin.create())
-                .usePlugin(ImagesPlugin.create(plugin -> {
-                    plugin.addSchemeHandler(new SchemeHandler() {
-                        @NonNull
+                                assert drawable != null;
+                                return ImageItem.withResult(drawable);
+                            }
+
+                            @NonNull
+                            @Override
+                            public Collection<String> supportedSchemes() {
+                                return Collections.singleton("drawable");
+                            }
+                        });
+                        plugin.placeholderProvider(drawable -> null);
+                        plugin.addMediaDecoder(GifMediaDecoder.create(false));
+                        plugin.addMediaDecoder(SvgMediaDecoder.create(context.getResources()));
+                        plugin.addMediaDecoder(SvgMediaDecoder.create());
+                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create(context.getResources()));
+                        plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
+                    }))
+                    .usePlugin(new AbstractMarkwonPlugin() {
                         @Override
-                        public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
-
-                            final int resourceId = mCtx.getResources().getIdentifier(
-                                    raw.substring("drawable://".length()),
-                                    "drawable",
-                                    mCtx.getPackageName());
-
-                            final Drawable drawable = mCtx.getDrawable(resourceId);
-
-                            assert drawable != null;
-                            return ImageItem.withResult(drawable);
+                        public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+                            builder
+                                    .codeTextColor(tinyDb.getInt("codeBlockColor"))
+                                    .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
+                                    .linkColor(context.getResources().getColor(R.color.lightBlue));
                         }
+                    })
+                    .usePlugin(TablePlugin.create(context))
+                    .usePlugin(TaskListPlugin.create(context))
+                    .usePlugin(HtmlPlugin.create())
+                    .usePlugin(StrikethroughPlugin.create())
+                    .usePlugin(LinkifyPlugin.create())
+                    .build();
 
-                        @NonNull
-                        @Override
-                        public Collection<String> supportedSchemes() {
-                            return Collections.singleton("drawable");
-                        }
-                    });
-                    plugin.placeholderProvider(drawable -> null);
-                    plugin.addMediaDecoder(GifMediaDecoder.create(false));
-                    plugin.addMediaDecoder(SvgMediaDecoder.create(mCtx.getResources()));
-                    plugin.addMediaDecoder(SvgMediaDecoder.create());
-                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create(mCtx.getResources()));
-                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-                }))
-                .usePlugin(new AbstractMarkwonPlugin() {
-                    @Override
-                    public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-                        builder
-                                .codeTextColor(tinyDb.getInt("codeBlockColor"))
-                                .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-                                .linkColor(mCtx.getResources().getColor(R.color.lightBlue));
-                    }
-                })
-                .usePlugin(TablePlugin.create(mCtx))
-                .usePlugin(TaskListPlugin.create(mCtx))
-                .usePlugin(HtmlPlugin.create())
-                .usePlugin(StrikethroughPlugin.create())
-                .usePlugin(LinkifyPlugin.create())
-                .build();
+            Spanned msTitle_ = markwon.toMarkdown(dataModel.getTitle());
+            markwon.setParsedMarkdown(msTitle, msTitle_);
 
-        Spanned msTitle = markwon.toMarkdown(currentItem.getTitle());
-        markwon.setParsedMarkdown(holder.msTitle, msTitle);
+            if(dataModel.getState().equals("open")) {
 
-        if(currentItem.getState().equals("open")) {
+                @SuppressLint("ResourceType") int color = Color.parseColor(context.getResources().getString(R.color.releaseStable));
+                TextDrawable drawable = TextDrawable.builder()
+                        .beginConfig()
+                        //.useFont(Typeface.DEFAULT)
+                        .textColor(context.getResources().getColor(R.color.white))
+                        .fontSize(30)
+                        .toUpperCase()
+                        .width(120)
+                        .height(60)
+                        .endConfig()
+                        .buildRoundRect("open", color, 8);
 
-            @SuppressLint("ResourceType") int color = Color.parseColor(mCtx.getResources().getString(R.color.releaseStable));
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    //.useFont(Typeface.DEFAULT)
-                    .textColor(mCtx.getResources().getColor(R.color.white))
-                    .fontSize(30)
-                    .toUpperCase()
-                    .width(120)
-                    .height(60)
-                    .endConfig()
-                    .buildRoundRect("open", color, 8);
+                msStatus.setImageDrawable(drawable);
 
-            holder.msStatus.setImageDrawable(drawable);
+            }
+            else if(dataModel.getState().equals("closed")) {
 
-        }
-        else if(currentItem.getState().equals("closed")) {
+                @SuppressLint("ResourceType") int color = Color.parseColor(context.getResources().getString(R.color.colorRed));
+                TextDrawable drawable = TextDrawable.builder()
+                        .beginConfig()
+                        //.useFont(Typeface.DEFAULT)
+                        .textColor(context.getResources().getColor(R.color.white))
+                        .fontSize(30)
+                        .toUpperCase()
+                        .width(140)
+                        .height(60)
+                        .endConfig()
+                        .buildRoundRect("closed", color, 8);
 
-            @SuppressLint("ResourceType") int color = Color.parseColor(mCtx.getResources().getString(R.color.colorRed));
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    //.useFont(Typeface.DEFAULT)
-                    .textColor(mCtx.getResources().getColor(R.color.white))
-                    .fontSize(30)
-                    .toUpperCase()
-                    .width(140)
-                    .height(60)
-                    .endConfig()
-                    .buildRoundRect("closed", color, 8);
+                msStatus.setImageDrawable(drawable);
 
-            holder.msStatus.setImageDrawable(drawable);
+            }
 
-        }
-
-        if (!currentItem.getDescription().equals("")) {
-            final CharSequence bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(currentItem.getDescription()));
-            holder.msDescription.setText(bodyWithMD);
-        }
-        else {
-            holder.msDescription.setText("");
-        }
-
-        holder.msOpenIssues.setText(String.valueOf(currentItem.getOpen_issues()));
-        holder.msOpenIssues.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneOpenIssues, currentItem.getOpen_issues()), mCtx));
-
-        holder.msClosedIssues.setText(String.valueOf(currentItem.getClosed_issues()));
-        holder.msClosedIssues.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneClosedIssues, currentItem.getClosed_issues()), mCtx));
-
-        if ((currentItem.getOpen_issues() + currentItem.getClosed_issues()) > 0) {
-
-            if (currentItem.getOpen_issues() == 0) {
-                holder.msProgress.setProgress(100);
-                holder.msProgress.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneCompletion, 100), mCtx));
+            if (!dataModel.getDescription().equals("")) {
+                final CharSequence bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(dataModel.getDescription()));
+                msDescription.setText(bodyWithMD);
             }
             else {
-                int msCompletion = 100 * currentItem.getClosed_issues() / (currentItem.getOpen_issues() + currentItem.getClosed_issues());
-                holder.msProgress.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneCompletion, msCompletion), mCtx));
-                holder.msProgress.setProgress(msCompletion);
+                msDescription.setText("");
+            }
+
+            msOpenIssues.setText(String.valueOf(dataModel.getOpen_issues()));
+            msOpenIssues.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneOpenIssues, dataModel.getOpen_issues()), context));
+
+            msClosedIssues.setText(String.valueOf(dataModel.getClosed_issues()));
+            msClosedIssues.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneClosedIssues, dataModel.getClosed_issues()), context));
+
+            if ((dataModel.getOpen_issues() + dataModel.getClosed_issues()) > 0) {
+
+                if (dataModel.getOpen_issues() == 0) {
+                    msProgress.setProgress(100);
+                    msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, 100), context));
+                }
+                else {
+                    int msCompletion = 100 * dataModel.getClosed_issues() / (dataModel.getOpen_issues() + dataModel.getClosed_issues());
+                    msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, msCompletion), context));
+                    msProgress.setProgress(msCompletion);
+                }
+
+            }
+            else {
+                msProgress.setProgress(0);
+                msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, 0), context));
+            }
+
+            if(dataModel.getDue_on() != null) {
+
+                if (timeFormat.equals("normal") || timeFormat.equals("pretty")) {
+
+                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
+                    Date date = null;
+                    try {
+                        date = formatter.parse(dataModel.getDue_on());
+                    }
+                    catch (ParseException e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    assert date != null;
+                    String dueDate = formatter.format(date);
+
+                    if(date.before(new Date())) {
+                        msDueDate.setTextColor(context.getResources().getColor(R.color.darkRed));
+                    }
+
+                    msDueDate.setText(dueDate);
+                    msDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToast(dataModel.getDue_on()), context));
+
+                }
+                else if (timeFormat.equals("normal1")) {
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
+                    Date date1 = null;
+                    try {
+                        date1 = formatter.parse(dataModel.getDue_on());
+                    }
+                    catch (ParseException e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    assert date1 != null;
+                    String dueDate = formatter.format(date1);
+                    msDueDate.setText(dueDate);
+
+                }
+
+            }
+            else {
+                msDueDate.setText("");
             }
 
         }
-        else {
-            holder.msProgress.setProgress(0);
-            holder.msProgress.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.milestoneCompletion, 0), mCtx));
-        }
 
-        if(currentItem.getDue_on() != null) {
+    }
 
-            if (timeFormat.equals("normal") || timeFormat.equals("pretty")) {
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
-                Date date = null;
-                try {
-                    date = formatter.parse(currentItem.getDue_on());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                assert date != null;
-                String dueDate = formatter.format(date);
+    private void updateAdapter(int position) {
 
-                if(date.before(new Date())) {
-                    holder.msDueDate.setTextColor(mCtx.getResources().getColor(R.color.darkRed));
-                }
+        dataList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, dataList.size());
 
-                holder.msDueDate.setText(mCtx.getResources().getString(R.string.dueDate, dueDate));
-                holder.msDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToast(currentItem.getDue_on()), mCtx));
+    }
 
-            } else if (timeFormat.equals("normal1")) {
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
-                Date date1 = null;
-                try {
-                    date1 = formatter.parse(currentItem.getDue_on());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                assert date1 != null;
-                String dueDate = formatter.format(date1);
-                holder.msDueDate.setText(mCtx.getResources().getString(R.string.dueDate, dueDate));
-            }
+    @Override
+    public int getItemViewType(int position) {
 
+        if(dataList.get(position).getTitle() != null) {
+            return TYPE_LOAD;
         }
         else {
-            holder.msDueDate.setText("");
+            return 1;
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return milestonesList.size();
+
+        return dataList.size();
+
     }
 
-    @Override
-    public Filter getFilter() {
-        return milestoneFilter;
+    static class LoadHolder extends RecyclerView.ViewHolder {
+
+        LoadHolder(View itemView) {
+
+            super(itemView);
+        }
+
     }
 
-    private Filter milestoneFilter = new Filter() {
+    public void setMoreDataAvailable(boolean moreDataAvailable) {
 
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Milestones> filteredList = new ArrayList<>();
+        isMoreDataAvailable = moreDataAvailable;
 
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(milestonesListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
+    }
 
-                for (Milestones item : milestonesListFull) {
-                    if (item.getTitle().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
+    public void notifyDataChanged() {
 
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
+        notifyDataSetChanged();
+        isLoading = false;
 
-            return results;
-        }
+    }
 
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            milestonesList.clear();
-            milestonesList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
+    public interface OnLoadMoreListener {
 
-    };
+        void onLoadMore();
+
+    }
+
+    public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+
+        this.loadMoreListener = loadMoreListener;
+
+    }
+
+    public void updateList(List<Milestones> list) {
+
+        dataList = list;
+        notifyDataSetChanged();
+    }
 
 }

@@ -26,6 +26,7 @@ import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetIssuesFilterFragment;
+import org.mian.gitnex.fragments.BottomSheetMilestonesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetPullRequestFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetRepoFragment;
 import org.mian.gitnex.fragments.BranchesFragment;
@@ -51,7 +52,8 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoFragment.BottomSheetListener, BottomSheetIssuesFilterFragment.BottomSheetListener, BottomSheetPullRequestFilterFragment.BottomSheetListener {
+public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoFragment.BottomSheetListener, BottomSheetIssuesFilterFragment.BottomSheetListener,
+		BottomSheetPullRequestFilterFragment.BottomSheetListener, BottomSheetMilestonesFilterFragment.BottomSheetListener {
 
 	private TextView textViewBadgeIssue;
 	private TextView textViewBadgePull;
@@ -59,6 +61,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListenerPr fragmentRefreshListenerPr;
+	private FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone;
 
 	final Context ctx = this;
 	private Context appCtx;
@@ -97,6 +100,23 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 	}
 
+	// milestones interface
+	public FragmentRefreshListenerMilestone getFragmentRefreshListenerMilestone() {
+
+		return fragmentRefreshListenerMilestone;
+	}
+
+	public void setFragmentRefreshListenerMilestone(FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone) {
+
+		this.fragmentRefreshListenerMilestone = fragmentRefreshListenerMilestone;
+	}
+
+	public interface FragmentRefreshListenerMilestone {
+
+		void onRefresh(String text);
+
+	}
+
 	@Override
 	protected int getLayoutResourceId() {
 
@@ -121,6 +141,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 		tinyDb.putString("repoIssuesState", "open");
 		tinyDb.putString("repoPrState", "open");
+		tinyDb.putString("milestoneState", "open");
 
 		String appLocale = tinyDb.getString("locale");
 		AppUtil.setAppLocale(getResources(), appLocale);
@@ -287,6 +308,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 				BottomSheetPullRequestFilterFragment filterPrBottomSheet = new BottomSheetPullRequestFilterFragment();
 				filterPrBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuPrBottomSheet");
 				return true;
+			case R.id.filterMilestone:
+				BottomSheetMilestonesFilterFragment filterMilestoneBottomSheet = new BottomSheetMilestonesFilterFragment();
+				filterMilestoneBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -348,6 +373,16 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 					getFragmentRefreshListenerPr().onRefresh("closed");
 				}
 				break;
+			case "openMilestone":
+				if(getFragmentRefreshListenerMilestone() != null) {
+					getFragmentRefreshListenerMilestone().onRefresh("open");
+				}
+				break;
+			case "closedMilestone":
+				if(getFragmentRefreshListenerMilestone() != null) {
+					getFragmentRefreshListenerMilestone().onRefresh("closed");
+				}
+				break;
 		}
 
 	}
@@ -386,7 +421,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 				case 5: // releases
 					return ReleasesFragment.newInstance(repoOwner, repoName);
 				case 6: // milestones
-					return MilestonesFragment.newInstance(repoOwner, repoName);
+					fragment = new MilestonesFragment();
+					break;
 				case 7: // labels
 					return LabelsFragment.newInstance(repoOwner, repoName);
 				case 8: // collaborators

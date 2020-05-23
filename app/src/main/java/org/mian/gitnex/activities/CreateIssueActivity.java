@@ -28,6 +28,8 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.MultiSelectDialog;
+import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.Labels;
@@ -62,6 +64,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
     private boolean labelsFlag;
     final Context ctx = this;
     private Context appCtx;
+    private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
 
     List<Milestones> milestonesList = new ArrayList<>();
     ArrayList<MultiSelectModel> listOfAssignees = new ArrayList<>();
@@ -93,6 +96,11 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         final String repoName = parts[1];
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
+        // if gitea is 1.12 or higher use the new limit
+        if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+            resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+        }
+
         ImageView closeActivity = findViewById(R.id.close);
         assigneesList = findViewById(R.id.newIssueAssigneesList);
         newIssueLabels = findViewById(R.id.newIssueLabels);
@@ -120,7 +128,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         newIssueMilestoneSpinner = findViewById(R.id.newIssueMilestoneSpinner);
         newIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
+        getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid, resultLimit);
 
         getLabels(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
         getCollaborators(instanceUrl, instanceToken, repoOwner, repoName, loginUid, loginFullName);
@@ -335,13 +343,13 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         };
     }
 
-    private void getMilestones(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {
+    private void getMilestones(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid, int resultLimit) {
 
         String msState = "open";
         Call<List<Milestones>> call = RetrofitClient
                 .getInstance(instanceUrl, ctx)
                 .getApiInterface()
-                .getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, msState);
+                .getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, 1, resultLimit, msState);
 
         call.enqueue(new Callback<List<Milestones>>() {
 

@@ -179,9 +179,7 @@
     <string name="createdText">Opened\u0020</string>
     <string name="dueDateText">Due Date</string>
     <string name="issueStatusTextOpen">Status: open</string>
-    <string name="issueStatusOpen">open</string>
     <string name="issueStatusTextClosed">Status: closed</string>
-    <string name="issueStatusClosed">closed</string>
     <string name="issueCreator">Creator :\u0020</string>
     <string name="issueAssigneesText">Assignees</string>
     <string name="issueTypeIssue">Type: Issue</string>
@@ -553,6 +551,8 @@
     <string name="strPublic" translatable="false">public</string>
     <string name="defaultCopy" translatable="false">Default</string>
     <string name="viewInBrowser">View in Browser</string>
+    <string name="isOpen">Open</string>
+    <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
 
@@ -645,9 +645,6 @@
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-
-    <string name="tabIssueOpen">Open</string>
-    <string name="tabIssueClosed">Closed</string>
 
     <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
 

@@ -28,7 +28,9 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.Issues;
@@ -50,6 +52,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
     final Context ctx = this;
     private Context appCtx;
     private View.OnClickListener onClickListener;
+    private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
 
     private EditText editIssueTitle;
     private SocialAutoCompleteTextView editIssueDescription;
@@ -93,6 +96,11 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         editIssueDescription = findViewById(R.id.editIssueDescription);
         editIssueDueDate = findViewById(R.id.editIssueDueDate);
 
+        // if gitea is 1.12 or higher use the new limit
+        if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+            resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+        }
+
         editIssueTitle.requestFocus();
         assert imm != null;
         imm.showSoftInput(editIssueTitle, InputMethodManager.SHOW_IMPLICIT);
@@ -122,7 +130,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         }
 
         disableProcessButton();
-        getIssue(instanceUrl, instanceToken, loginUid, repoOwner, repoName, issueIndex);
+        getIssue(instanceUrl, instanceToken, loginUid, repoOwner, repoName, issueIndex, resultLimit);
 
 
     }
@@ -328,7 +336,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    private void getIssue(final String instanceUrl, final String instanceToken, final String loginUid, final String repoOwner, final String repoName, int issueIndex) {
+    private void getIssue(final String instanceUrl, final String instanceToken, final String loginUid, final String repoOwner, final String repoName, int issueIndex, int resultLimit) {
 
         Call<Issues> call = RetrofitClient
                 .getInstance(instanceUrl, ctx)
@@ -357,7 +365,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                         Call<List<Milestones>> call_ = RetrofitClient
                                 .getInstance(instanceUrl, ctx)
                                 .getApiInterface()
-                                .getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, msState);
+                                .getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, 1, resultLimit, msState);
 
                         final int finalMsId = msId;
 

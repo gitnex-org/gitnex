@@ -7,11 +7,9 @@ import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.util.TinyDB;
-import org.mian.gitnex.viewmodels.MilestonesViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -51,7 +49,6 @@ public class MilestoneActions {
 				if(response.isSuccessful()) {
 
 					Toasty.info(ctx, ctx.getString(R.string.milestoneStatusUpdate));
-					MilestonesViewModel.loadMilestonesList(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, token), repoOwner, repoName, "all", ctx);
 
 				}
 				else if(response.code() == 401) {
@@ -110,7 +107,6 @@ public class MilestoneActions {
 				if(response.isSuccessful()) {
 
 					Toasty.info(ctx, ctx.getString(R.string.milestoneStatusUpdate));
-					MilestonesViewModel.loadMilestonesList(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, token), repoOwner, repoName, "all", ctx);
 
 				}
 				else if(response.code() == 401) {

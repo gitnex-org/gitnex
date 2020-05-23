@@ -18,24 +18,24 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/openIssues"
+                android:id="@+id/openMilestone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/isOpen"
-                android:drawableStart="@drawable/ic_issue_open"
+                android:drawableStart="@drawable/ic_check"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp" />
 
             <TextView
-                android:id="@+id/closedIssues"
+                android:id="@+id/closedMilestone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/isClosed"
-                android:drawableStart="@drawable/ic_done"
+                android:drawableStart="@drawable/ic_close"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
