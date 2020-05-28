@@ -81,15 +81,15 @@ steps:
 
   - name: publish
     image: vividboarder/drone-webdav
-    username: GitNexBot
-    file: 'signed.apk'
-    destination: 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/latest.apk'
-    custom_arguments: '--progress-bar'
-    timeout: 180
-    attempts: 5
     environment:
-      PLUGIN_PASSWORD:
+      WEBDAV_USERNAME: GitNexBot
+      WEBDAV_PASSWORD:
         from_secret: NC_TOKEN
+      PLUGIN_FILE: 'signed.apk'
+      PLUGIN_TIMEOUT: 180
+      PLUGIN_ATTEMPTS: 5
+      PLUGIN_DESTINATION: 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/latest.apk'
+      PLUGIN_CUSTOM_ARGUMENTS: '--progress-bar'
 
 trigger:
   event:
