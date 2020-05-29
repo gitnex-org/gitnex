@@ -11,19 +11,15 @@
         android:visibility="invisible" />
 
     <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/linearLayoutFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        android:padding="10dp"
-        tools:context=".activities.MainActivity">
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageAvatarMy"
+            android:id="@+id/imageAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="15dp"
@@ -34,7 +30,7 @@
             android:id="@+id/infoSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/imageAvatarMy"
+            android:layout_toEndOf="@+id/imageAvatar"
             android:orientation="vertical">
 
             <LinearLayout
@@ -44,28 +40,28 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/repoNameMy"
+                    android:id="@+id/repoName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".95"
                     android:layout_marginBottom="5dp"
+                    android:layout_weight=".95"
                     android:text="@string/repoName"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="18sp" />
 
                 <ImageView
-                    android:layout_weight=".05"
-                    android:id="@+id/imageRepoTypeMy"
+                    android:id="@+id/imageRepoType"
                     android:layout_width="10dp"
                     android:layout_height="20dp"
                     android:layout_gravity="end"
+                    android:layout_weight=".05"
                     android:contentDescription="@string/privateAvatar"
-                    android:src="@drawable/ic_lock_bold" />
+                    android:src="@drawable/ic_lock_24dp" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/repoFullNameMy"
+                android:id="@+id/repoFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -74,7 +70,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/repoDescriptionMy"
+                android:id="@+id/repoDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -83,61 +79,68 @@
                 android:textSize="16sp"
                 android:visibility="gone" />
 
+            <CheckBox
+                android:id="@+id/repoIsAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="#FFFFFF"
+                android:checked="false"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/repoOpenIssuesCountMy"
+                    android:id="@+id/repoOpenIssuesCount"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight=".25"
                     android:drawableStart="@drawable/ic_issue_open"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
-                    android:layout_gravity="center_vertical"
                     android:text="@string/repoWatchers"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/repoStarsMy"
+                    android:id="@+id/repoStars"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight=".25"
                     android:drawableStart="@drawable/ic_star"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
-                    android:layout_gravity="center_vertical"
                     android:text="@string/repoStars"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/repoForksMy"
+                    android:id="@+id/repoForks"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight=".25"
                     android:drawableStart="@drawable/ic_forks_24"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
-                    android:layout_gravity="center_vertical"
                     android:text="@string/repoWatchers"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/reposDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_weight=".10"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_weight=".10"
+                    android:contentDescription="@string/menuContentDesc"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_dotted_menu_horizontal"
-                    android:contentDescription="@string/menuContentDesc" />
+                    android:src="@drawable/ic_dotted_menu_horizontal" />
 
             </LinearLayout>
 

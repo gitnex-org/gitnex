@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -45,45 +46,48 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 
     static class MyReposViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imageMy;
-        private TextView mTextView1My;
-        private TextView mTextView2My;
-        private TextView fullNameMy;
-        private ImageView repoPrivatePublicMy;
-        private TextView repoStarsMy;
-        private TextView repoForksMy;
-        private TextView repoOpenIssuesCountMy;
+        private ImageView imageAvatar;
+        private TextView repoName;
+        private TextView repoDescription;
+        private TextView repoFullName;
+        private ImageView repoPrivatePublic;
+        private TextView repoStars;
+        private TextView repoForks;
+        private TextView repoOpenIssuesCount;
         private TextView repoType;
+	    private CheckBox isRepoAdmin;
 
         private MyReposViewHolder(View itemView) {
             super(itemView);
-            mTextView1My = itemView.findViewById(R.id.repoNameMy);
-            mTextView2My = itemView.findViewById(R.id.repoDescriptionMy);
-            imageMy = itemView.findViewById(R.id.imageAvatarMy);
-            fullNameMy = itemView.findViewById(R.id.repoFullNameMy);
-            repoPrivatePublicMy = itemView.findViewById(R.id.imageRepoTypeMy);
-            repoStarsMy = itemView.findViewById(R.id.repoStarsMy);
-            repoForksMy = itemView.findViewById(R.id.repoForksMy);
-            repoOpenIssuesCountMy = itemView.findViewById(R.id.repoOpenIssuesCountMy);
+	        repoName = itemView.findViewById(R.id.repoName);
+	        repoDescription = itemView.findViewById(R.id.repoDescription);
+	        imageAvatar = itemView.findViewById(R.id.imageAvatar);
+	        repoFullName = itemView.findViewById(R.id.repoFullName);
+            repoPrivatePublic = itemView.findViewById(R.id.imageRepoType);
+            repoStars = itemView.findViewById(R.id.repoStars);
+            repoForks = itemView.findViewById(R.id.repoForks);
+            repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
             ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
             repoType = itemView.findViewById(R.id.repoType);
+	        isRepoAdmin = itemView.findViewById(R.id.repoIsAdmin);
 
             itemView.setOnClickListener(v -> {
 
                 Context context = v.getContext();
 
                 Intent intent = new Intent(context, RepoDetailActivity.class);
-                intent.putExtra("repoFullName", fullNameMy.getText().toString());
+                intent.putExtra("repoFullName", repoFullName.getText().toString());
 
                 TinyDB tinyDb = new TinyDB(context);
-                tinyDb.putString("repoFullName", fullNameMy.getText().toString());
+                tinyDb.putString("repoFullName", repoFullName.getText().toString());
                 tinyDb.putString("repoType", repoType.getText().toString());
                 //tinyDb.putBoolean("resumeIssues", true);
+	            tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
 
                 //store if user is watching this repo
                 {
                     final String instanceUrl = tinyDb.getString("instanceUrl");
-                    String[] parts = fullNameMy.getText().toString().split("/");
+                    String[] parts = repoFullName.getText().toString().split("/");
                     final String repoOwner = parts[0];
                     final String repoName = parts[1];
                     final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
@@ -144,7 +148,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
                 TextView repoWatchers = view.findViewById(R.id.repoWatchers);
                 TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
-                bottomSheetHeader.setText(fullNameMy.getText());
+                bottomSheetHeader.setText(repoFullName.getText());
                 BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(view);
                 dialog.show();
@@ -152,7 +156,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
                 repoOpenInBrowser.setOnClickListener(openInBrowser -> {
 
                     Intent intentOpenInBrowser = new Intent(context, OpenRepoInBrowserActivity.class);
-                    intentOpenInBrowser.putExtra("repoFullNameBrowser", fullNameMy.getText());
+                    intentOpenInBrowser.putExtra("repoFullNameBrowser", repoFullName.getText());
                     context.startActivity(intentOpenInBrowser);
                     dialog.dismiss();
 
@@ -161,7 +165,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
                 repoStargazers.setOnClickListener(stargazers -> {
 
                     Intent intent = new Intent(context, RepoStargazersActivity.class);
-                    intent.putExtra("repoFullNameForStars", fullNameMy.getText());
+                    intent.putExtra("repoFullNameForStars", repoFullName.getText());
                     context.startActivity(intent);
                     dialog.dismiss();
 
@@ -170,7 +174,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
                 repoWatchers.setOnClickListener(watchers -> {
 
                     Intent intentW = new Intent(context, RepoWatchersActivity.class);
-                    intentW.putExtra("repoFullNameForWatchers", fullNameMy.getText());
+                    intentW.putExtra("repoFullNameForWatchers", repoFullName.getText());
                     context.startActivity(intentW);
                     dialog.dismiss();
 
@@ -190,7 +194,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
     @NonNull
     @Override
     public MyReposListAdapter.MyReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_my_repos, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories, parent, false);
         return new MyReposListAdapter.MyReposViewHolder(v);
     }
 
@@ -198,7 +202,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
     public void onBindViewHolder(@NonNull MyReposListAdapter.MyReposViewHolder holder, int position) {
 
         UserRepositories currentItem = reposList.get(position);
-        holder.mTextView2My.setVisibility(View.GONE);
+        holder.repoDescription.setVisibility(View.GONE);
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getColor(currentItem.getName());
@@ -216,32 +220,37 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 
         if (currentItem.getAvatar_url() != null) {
             if (!currentItem.getAvatar_url().equals("")) {
-                PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.imageMy);
+                PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.imageAvatar);
             } else {
-                holder.imageMy.setImageDrawable(drawable);
+                holder.imageAvatar.setImageDrawable(drawable);
             }
         }
         else {
-            holder.imageMy.setImageDrawable(drawable);
+            holder.imageAvatar.setImageDrawable(drawable);
         }
 
-        holder.mTextView1My.setText(currentItem.getName());
+        holder.repoName.setText(currentItem.getName());
         if (!currentItem.getDescription().equals("")) {
-            holder.mTextView2My.setVisibility(View.VISIBLE);
-            holder.mTextView2My.setText(currentItem.getDescription());
+            holder.repoDescription.setVisibility(View.VISIBLE);
+            holder.repoDescription.setText(currentItem.getDescription());
         }
-        holder.fullNameMy.setText(currentItem.getFullname());
+        holder.repoFullName.setText(currentItem.getFullname());
         if(currentItem.getPrivateFlag()) {
-            holder.repoPrivatePublicMy.setImageResource(R.drawable.ic_lock_bold);
+            holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock_bold);
             holder.repoType.setText(R.string.strPrivate);
         }
         else {
-            holder.repoPrivatePublicMy.setImageResource(R.drawable.ic_public);
+            holder.repoPrivatePublic.setImageResource(R.drawable.ic_public);
             holder.repoType.setText(R.string.strPublic);
         }
-        holder.repoStarsMy.setText(currentItem.getStars_count());
-        holder.repoForksMy.setText(currentItem.getForks_count());
-        holder.repoOpenIssuesCountMy.setText(currentItem.getOpen_issues_count());
+        holder.repoStars.setText(currentItem.getStars_count());
+        holder.repoForks.setText(currentItem.getForks_count());
+        holder.repoOpenIssuesCount.setText(currentItem.getOpen_issues_count());
+
+	    if(holder.isRepoAdmin == null) {
+		    holder.isRepoAdmin = new CheckBox(mCtx);
+	    }
+	    holder.isRepoAdmin.setChecked(currentItem.getPermissions().isAdmin());
 
     }
 

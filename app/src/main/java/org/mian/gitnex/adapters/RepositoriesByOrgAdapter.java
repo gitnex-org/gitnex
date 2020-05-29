@@ -194,7 +194,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
     @NonNull
     @Override
     public RepositoriesByOrgAdapter.OrgReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories_by_org, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories, parent, false);
         return new RepositoriesByOrgAdapter.OrgReposViewHolder(v);
     }
 
