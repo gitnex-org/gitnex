@@ -12,7 +12,7 @@ steps:
       - ./gradlew test
 
   - name: check-formatting
-    image: odannyc/eclint:latest
+    image: zosiab/eclint:latest
     depends_on: [ clone ]
     commands:
       - git pull origin master
@@ -39,7 +39,7 @@ name: code-analysis
 steps:
 
   - name: check-global-formatting
-    image: odannyc/eclint:latest
+    image: zosiab/eclint:latest
     depends_on: [ clone ]
     commands:
       - eclint check $(git ls-files)
