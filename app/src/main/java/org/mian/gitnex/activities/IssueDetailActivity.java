@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -103,6 +104,8 @@ public class IssueDetailActivity extends BaseActivity {
 	private Context appCtx;
 	private LinearLayout labelsLayout;
 	private LinearLayout assigneesLayout;
+	private View divider;
+	private ProgressBar progressBar;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -142,6 +145,8 @@ public class IssueDetailActivity extends BaseActivity {
 		createNewComment = findViewById(R.id.addNewComment);
 		labelsLayout = findViewById(R.id.frameLabels);
 		assigneesLayout = findViewById(R.id.frameAssignees);
+		divider = findViewById(R.id.divider);
+		progressBar = findViewById(R.id.progressBar);
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
@@ -258,67 +263,48 @@ public class IssueDetailActivity extends BaseActivity {
 		final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
 
 		if(tinyDb.getBoolean("commentPosted")) {
-			scrollViewComments.post(new Runnable() {
+			scrollViewComments.post(() -> {
 
-				@Override
-				public void run() {
+				IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, ctx);
 
-					IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, ctx);
+				new Handler().postDelayed(() -> scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN), 1000);
 
-					new Handler().postDelayed(new Runnable() {
+				tinyDb.putBoolean("commentPosted", false);
 
-						@Override
-						public void run() {
-
-							scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN);
-						}
-					}, 1000);
-
-					tinyDb.putBoolean("commentPosted", false);
-				}
 			});
 		}
 
 		if(tinyDb.getBoolean("commentEdited")) {
-			scrollViewComments.post(new Runnable() {
+			scrollViewComments.post(() -> {
 
-				@Override
-				public void run() {
+				IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, ctx);
+				tinyDb.putBoolean("commentEdited", false);
 
-					IssueCommentsViewModel.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, ctx);
-					tinyDb.putBoolean("commentEdited", false);
-				}
 			});
 		}
 
 		if(tinyDb.getBoolean("singleIssueUpdate")) {
 
-			new Handler().postDelayed(new Runnable() {
+			new Handler().postDelayed(() -> {
 
-				@Override
-				public void run() {
+				assigneesLayout.removeAllViews();
+				labelsLayout.removeAllViews();
+				getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+				tinyDb.putBoolean("singleIssueUpdate", false);
 
-					assigneesLayout.removeAllViews();
-					labelsLayout.removeAllViews();
-					getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
-					tinyDb.putBoolean("singleIssueUpdate", false);
-				}
 			}, 500);
 
 		}
 
 		if(tinyDb.getBoolean("issueEdited")) {
 
-			new Handler().postDelayed(new Runnable() {
+			new Handler().postDelayed(() -> {
 
-				@Override
-				public void run() {
+				assigneesLayout.removeAllViews();
+				labelsLayout.removeAllViews();
+				getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+				tinyDb.putBoolean("issueEdited", false);
 
-					assigneesLayout.removeAllViews();
-					labelsLayout.removeAllViews();
-					getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
-					tinyDb.putBoolean("issueEdited", false);
-				}
 			}, 500);
 
 		}
@@ -334,8 +320,14 @@ public class IssueDetailActivity extends BaseActivity {
 			@Override
 			public void onChanged(@Nullable List<IssueComments> issueCommentsMain) {
 
+				assert issueCommentsMain != null;
+				if(issueCommentsMain.size() > 0) {
+					divider.setVisibility(View.VISIBLE);
+				}
+
 				adapter = new IssueCommentsAdapter(ctx, issueCommentsMain);
 				mRecyclerView.setAdapter(adapter);
+
 			}
 		});
 
@@ -351,192 +343,192 @@ public class IssueDetailActivity extends BaseActivity {
 			@Override
 			public void onResponse(@NonNull Call<Issues> call, @NonNull Response<Issues> response) {
 
-				if(response.isSuccessful()) {
-					if(response.code() == 200) {
+				if(response.code() == 200) {
 
-						Issues singleIssue = response.body();
-						assert singleIssue != null;
+					Issues singleIssue = response.body();
+					assert singleIssue != null;
 
-						final Markwon markwon = Markwon.builder(Objects.requireNonNull(ctx)).usePlugin(CorePlugin.create()).usePlugin(ImagesPlugin.create(plugin -> {
-							plugin.addSchemeHandler(new SchemeHandler() {
+					final Markwon markwon = Markwon.builder(Objects.requireNonNull(ctx)).usePlugin(CorePlugin.create()).usePlugin(ImagesPlugin.create(plugin -> {
+						plugin.addSchemeHandler(new SchemeHandler() {
 
-								@NonNull
-								@Override
-								public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
-
-									final int resourceId = ctx.getResources().getIdentifier(raw.substring("drawable://".length()), "drawable", ctx.getPackageName());
-
-									final Drawable drawable = ctx.getDrawable(resourceId);
-
-									assert drawable != null;
-									return ImageItem.withResult(drawable);
-								}
-
-								@NonNull
-								@Override
-								public Collection<String> supportedSchemes() {
-
-									return Collections.singleton("drawable");
-								}
-							});
-							plugin.placeholderProvider(drawable -> null);
-							plugin.addMediaDecoder(GifMediaDecoder.create(false));
-							plugin.addMediaDecoder(SvgMediaDecoder.create(ctx.getResources()));
-							plugin.addMediaDecoder(SvgMediaDecoder.create());
-							plugin.defaultMediaDecoder(DefaultMediaDecoder.create(ctx.getResources()));
-							plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-
-						})).usePlugin(new AbstractMarkwonPlugin() {
-
+							@NonNull
 							@Override
-							public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+							public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-								builder.codeTextColor(tinyDb.getInt("codeBlockColor")).codeBackgroundColor(tinyDb.getInt("codeBlockBackground")).linkColor(getResources().getColor(R.color.lightBlue));
+								final int resourceId = ctx.getResources().getIdentifier(raw.substring("drawable://".length()), "drawable", ctx.getPackageName());
+
+								final Drawable drawable = ctx.getDrawable(resourceId);
+
+								assert drawable != null;
+								return ImageItem.withResult(drawable);
 							}
-						}).usePlugin(TablePlugin.create(ctx)).usePlugin(TaskListPlugin.create(ctx)).usePlugin(HtmlPlugin.create()).usePlugin(StrikethroughPlugin.create()).usePlugin(LinkifyPlugin.create()).build();
 
-						TinyDB tinyDb = new TinyDB(appCtx);
-						final String locale = tinyDb.getString("locale");
-						final String timeFormat = tinyDb.getString("dateFormat");
-						tinyDb.putString("issueState", singleIssue.getState());
-						tinyDb.putString("issueTitle", singleIssue.getTitle());
+							@NonNull
+							@Override
+							public Collection<String> supportedSchemes() {
 
-						PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
-						String issueNumber_ = "<font color='" + appCtx.getResources().getColor(R.color.lightGray) + "'>" + appCtx.getResources().getString(R.string.hash) + singleIssue.getNumber() + "</font>";
-						issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
-						String cleanIssueDescription = singleIssue.getBody().trim();
-						Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
-						markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(ctx, bodyWithMD, cleanIssueDescription));
-
-						RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams) issueDescription.getLayoutParams();
-
-						LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(80, 80);
-						params1.setMargins(15, 0, 0, 0);
-
-						if(singleIssue.getAssignees() != null) {
-							assigneesScrollView.setVisibility(View.VISIBLE);
-							for(int i = 0; i < singleIssue.getAssignees().size(); i++) {
-
-								ImageView assigneesView = new ImageView(ctx);
-
-								PicassoService.getInstance(ctx).get().load(singleIssue.getAssignees().get(i).getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop().into(assigneesView);
-
-								assigneesLayout.addView(assigneesView);
-								assigneesView.setLayoutParams(params1);
-								if(!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
-									assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), ctx));
-								}
-								else {
-									assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), ctx));
-								}
-
+								return Collections.singleton("drawable");
 							}
+						});
+						plugin.placeholderProvider(drawable -> null);
+						plugin.addMediaDecoder(GifMediaDecoder.create(false));
+						plugin.addMediaDecoder(SvgMediaDecoder.create(ctx.getResources()));
+						plugin.addMediaDecoder(SvgMediaDecoder.create());
+						plugin.defaultMediaDecoder(DefaultMediaDecoder.create(ctx.getResources()));
+						plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
+
+					})).usePlugin(new AbstractMarkwonPlugin() {
+
+						@Override
+						public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+
+							builder.codeTextColor(tinyDb.getInt("codeBlockColor")).codeBackgroundColor(tinyDb.getInt("codeBlockBackground")).linkColor(getResources().getColor(R.color.lightBlue));
 						}
-						else {
-							assigneesScrollView.setVisibility(View.GONE);
-						}
+					}).usePlugin(TablePlugin.create(ctx)).usePlugin(TaskListPlugin.create(ctx)).usePlugin(HtmlPlugin.create()).usePlugin(StrikethroughPlugin.create()).usePlugin(LinkifyPlugin.create()).build();
 
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-						params.setMargins(0, 0, 15, 0);
+					TinyDB tinyDb = new TinyDB(appCtx);
+					final String locale = tinyDb.getString("locale");
+					final String timeFormat = tinyDb.getString("dateFormat");
+					tinyDb.putString("issueState", singleIssue.getState());
+					tinyDb.putString("issueTitle", singleIssue.getTitle());
 
-						if(singleIssue.getLabels() != null) {
-							labelsScrollView.setVisibility(View.VISIBLE);
-							int width = 25;
-							for(int i = 0; i < singleIssue.getLabels().size(); i++) {
+					PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
+					String issueNumber_ = "<font color='" + appCtx.getResources().getColor(R.color.lightGray) + "'>" + appCtx.getResources().getString(R.string.hash) + singleIssue.getNumber() + "</font>";
+					issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
+					String cleanIssueDescription = singleIssue.getBody().trim();
+					Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
+					markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(ctx, bodyWithMD, cleanIssueDescription));
 
-								String labelColor = singleIssue.getLabels().get(i).getColor();
-								String labelName = singleIssue.getLabels().get(i).getName();
-								int color = Color.parseColor("#" + labelColor);
+					RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams) issueDescription.getLayoutParams();
 
-								ImageView labelsView = new ImageView(ctx);
-								labelsLayout.setOrientation(LinearLayout.HORIZONTAL);
-								labelsLayout.setGravity(Gravity.START | Gravity.TOP);
-								labelsView.setLayoutParams(params);
+					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(80, 80);
+					params1.setMargins(15, 0, 0, 0);
 
-								TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(30).width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, 30, 15)).height(50).endConfig().buildRoundRect(labelName, color, 10);
-								labelsView.setImageDrawable(drawable);
+					if(singleIssue.getAssignees() != null) {
+						assigneesScrollView.setVisibility(View.VISIBLE);
+						for(int i = 0; i < singleIssue.getAssignees().size(); i++) {
 
-								labelsLayout.addView(labelsView);
+							ImageView assigneesView = new ImageView(ctx);
 
+							PicassoService.getInstance(ctx).get().load(singleIssue.getAssignees().get(i).getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop().into(assigneesView);
+
+							assigneesLayout.addView(assigneesView);
+							assigneesView.setLayoutParams(params1);
+							if(!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
+								assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), ctx));
 							}
-						}
-						else {
-							labelsScrollView.setVisibility(View.GONE);
-						}
-
-						if(singleIssue.getDue_date() != null) {
-
-							if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
-								DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
-								String dueDate = formatter.format(singleIssue.getDue_date());
-								issueDueDate.setText(getString(R.string.dueDate, dueDate));
-								issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), ctx));
-							}
-							else if(timeFormat.equals("normal1")) {
-								DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
-								String dueDate = formatter.format(singleIssue.getDue_date());
-								issueDueDate.setText(getString(R.string.dueDate, dueDate));
+							else {
+								assigneesView.setOnClickListener(new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), ctx));
 							}
 
 						}
-						else {
+					}
+					else {
+						assigneesScrollView.setVisibility(View.GONE);
+					}
 
-							issueDueDate.setVisibility(View.GONE);
-						}
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+					params.setMargins(0, 0, 15, 0);
 
-						String edited;
+					if(singleIssue.getLabels() != null) {
+						labelsScrollView.setVisibility(View.VISIBLE);
+						int width = 25;
+						for(int i = 0; i < singleIssue.getLabels().size(); i++) {
 
-						if(!singleIssue.getUpdated_at().equals(singleIssue.getCreated_at())) {
-							edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
-							issueModified.setVisibility(View.VISIBLE);
-							issueModified.setText(edited);
-							issueModified.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getUpdated_at()), ctx));
-						}
-						else {
-							issueModified.setVisibility(View.INVISIBLE);
-						}
+							String labelColor = singleIssue.getLabels().get(i).getColor();
+							String labelName = singleIssue.getLabels().get(i).getName();
+							int color = Color.parseColor("#" + labelColor);
 
-						if((singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) && singleIssue.getAssignees() != null) {
-							paramsDesc.setMargins(0, 35, 0, 0);
-							issueDescription.setLayoutParams(paramsDesc);
-						}
-						else if(singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) {
-							paramsDesc.setMargins(0, 55, 0, 0);
-							issueDescription.setLayoutParams(paramsDesc);
-						}
-						else if(singleIssue.getAssignees() == null) {
-							paramsDesc.setMargins(0, 35, 0, 0);
-							issueDescription.setLayoutParams(paramsDesc);
-						}
-						else {
-							paramsDesc.setMargins(0, 15, 0, 0);
-							issueDescription.setLayoutParams(paramsDesc);
-						}
+							ImageView labelsView = new ImageView(ctx);
+							labelsLayout.setOrientation(LinearLayout.HORIZONTAL);
+							labelsLayout.setGravity(Gravity.START | Gravity.TOP);
+							labelsView.setLayoutParams(params);
 
-						issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), new Locale(locale), timeFormat, ctx));
-						issueCreatedTime.setVisibility(View.VISIBLE);
+							TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(30).width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, 30, 15)).height(50).endConfig().buildRoundRect(labelName, color, 10);
+							labelsView.setImageDrawable(drawable);
 
-						if(timeFormat.equals("pretty")) {
-							issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), ctx));
-						}
+							labelsLayout.addView(labelsView);
 
-						if(singleIssue.getMilestone() != null) {
-							issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
 						}
-						else {
-							issueMilestone.setVisibility(View.GONE);
-						}
+					}
+					else {
+						labelsScrollView.setVisibility(View.GONE);
+					}
 
-						if(!singleIssue.getUser().getFull_name().equals("")) {
-							assigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), ctx));
+					if(singleIssue.getDue_date() != null) {
+
+						if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
+							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
+							String dueDate = formatter.format(singleIssue.getDue_date());
+							issueDueDate.setText(dueDate);
+							issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), ctx));
 						}
-						else {
-							assigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), ctx));
+						else if(timeFormat.equals("normal1")) {
+							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
+							String dueDate = formatter.format(singleIssue.getDue_date());
+							issueDueDate.setText(dueDate);
 						}
 
 					}
+					else {
+
+						issueDueDate.setVisibility(View.GONE);
+					}
+
+					String edited;
+
+					if(!singleIssue.getUpdated_at().equals(singleIssue.getCreated_at())) {
+						edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
+						issueModified.setVisibility(View.VISIBLE);
+						issueModified.setText(edited);
+						issueModified.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getUpdated_at()), ctx));
+					}
+					else {
+						issueModified.setVisibility(View.INVISIBLE);
+					}
+
+					if((singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) && singleIssue.getAssignees() != null) {
+						paramsDesc.setMargins(0, 35, 0, 0);
+						issueDescription.setLayoutParams(paramsDesc);
+					}
+					else if(singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) {
+						paramsDesc.setMargins(0, 55, 0, 0);
+						issueDescription.setLayoutParams(paramsDesc);
+					}
+					else if(singleIssue.getAssignees() == null) {
+						paramsDesc.setMargins(0, 35, 0, 0);
+						issueDescription.setLayoutParams(paramsDesc);
+					}
+					else {
+						paramsDesc.setMargins(0, 15, 0, 0);
+						issueDescription.setLayoutParams(paramsDesc);
+					}
+
+					issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), new Locale(locale), timeFormat, ctx));
+					issueCreatedTime.setVisibility(View.VISIBLE);
+
+					if(timeFormat.equals("pretty")) {
+						issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), ctx));
+					}
+
+					if(singleIssue.getMilestone() != null) {
+						issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
+					}
+					else {
+						issueMilestone.setVisibility(View.GONE);
+					}
+
+					if(!singleIssue.getUser().getFull_name().equals("")) {
+						assigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), ctx));
+					}
+					else {
+						assigneeAvatar.setOnClickListener(new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), ctx));
+					}
+
+					progressBar.setVisibility(View.GONE);
 
 				}
+
 				else if(response.code() == 401) {
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
@@ -550,6 +542,7 @@ public class IssueDetailActivity extends BaseActivity {
 
 				Log.e("onFailure", t.toString());
 			}
+
 		});
 
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
@@ -563,6 +556,7 @@ public class IssueDetailActivity extends BaseActivity {
 
 					if(response.isSuccessful()) {
 
+						assert response.body() != null;
 						tinyDb.putBoolean("issueSubscribed", response.body().getSubscribed());
 
 					}
@@ -580,15 +574,11 @@ public class IssueDetailActivity extends BaseActivity {
 					tinyDb.putBoolean("issueSubscribed", false);
 
 				}
+
 			});
 
 		}
 
-	}
-
-	private void initCloseListener() {
-
-		View.OnClickListener onClickListener = view -> finish();
 	}
 
 }
