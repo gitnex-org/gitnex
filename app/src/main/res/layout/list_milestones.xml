@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/milestoneFrame"
@@ -14,10 +16,11 @@
         android:id="@+id/milestoneId" />
 
     <TextView
+        android:id="@+id/milestoneStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:id="@+id/milestoneStatus" />
+        tools:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/mainFrame"
@@ -31,115 +34,145 @@
             android:id="@+id/frameTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/milestoneTitle"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textColor="?attr/primaryTextColor"
                 android:textIsSelectable="true"
-                android:layout_height="wrap_content"
-                android:layout_weight=".80"
-                android:layout_marginBottom="5dp"
-                android:textColor="?attr/primaryTextColor"
                 android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/milestoneState"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".15"
-                android:layout_gravity="end"
-                android:gravity="end"
-                android:scaleType="fitEnd"
-                android:contentDescription="@string/pageTitleCreateMilestone"
-                android:layout_marginBottom="5dp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/milestoneDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/repoDescription"
-            android:textIsSelectable="true"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/milestoneIssuesClosed"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:text="@string/repoWatchers"
-                android:gravity="start"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp" />
 
             <ProgressBar
                 android:id="@+id/milestoneProgress"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="80"
+                android:layout_height="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:indeterminate="false"
                 android:progress="50"
-                android:layout_marginTop="2dp"
                 android:progressDrawable="@drawable/progress_bar"
-                android:progressTint="@color/colorLightGreen" />
-
-            <TextView
-                android:id="@+id/milestoneIssuesOpen"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:text="@string/repoStars"
-                android:gravity="end"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp" />
+                android:progressTint="@color/btnBackground" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/milestoneDateMenuFrame"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight=".90"
-                android:layout_height="wrap_content"
-                android:id="@+id/dueDateFrame"
-                android:orientation="horizontal"
-                android:layout_marginTop="3dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_calendar" />
 
                 <TextView
                     android:id="@+id/milestoneDueDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/dueDate"
-                    android:gravity="start"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_issue_open" />
+
+                <TextView
+                    android:id="@+id/milestoneIssuesOpen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/repoStars"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_issue_closed" />
+
+                <TextView
+                    android:id="@+id/milestoneIssuesClosed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/repoWatchers"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/milestoneDateMenuFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/dueDateFrame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_weight=".90"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/milestoneDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/repoDescription"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textIsSelectable="true"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
 
             </RelativeLayout>
 
             <ImageView
                 android:id="@+id/milestonesMenu"
                 android:layout_width="0dp"
-                android:layout_weight=".10"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="end|bottom"
+                android:layout_weight=".10"
+                android:contentDescription="@string/menuContentDesc"
                 android:scaleType="fitEnd"
-                android:src="@drawable/ic_dotted_menu_horizontal"
-                android:contentDescription="@string/menuContentDesc" />
+                android:src="@drawable/ic_dotted_menu_horizontal" />
 
         </LinearLayout>
 

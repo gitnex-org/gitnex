@@ -232,8 +232,10 @@
     <string name="milestoneCreated">Milestone created successfully</string>
     <string name="milestoneCreatedError">Something went wrong, please try again</string>
     <string name="milestoneDateEmpty">Please choose due date</string>
-    <string name="milestoneOpenIssues">Open issues : %1$d</string>
-    <string name="milestoneClosedIssues">Closed issues : %1$d</string>
+    <string name="milestoneNoDueDate">No due date</string>
+    <string name="milestoneNoDescription">No description</string>
+    <string name="milestoneIssueStatusOpen">%1$d Open</string>
+    <string name="milestoneIssueStatusClosed">%1$d Closed</string>
 
     <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
     <string name="newIssueSelectLabelsListTitle">Select Labels</string>
