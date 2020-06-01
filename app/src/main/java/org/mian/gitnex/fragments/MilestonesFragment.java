@@ -77,16 +77,20 @@ public class MilestonesFragment extends Fragment {
         dataList = new ArrayList<>();
         adapter = new MilestonesAdapter(ctx, dataList);
 
-        adapter.setLoadMoreListener(() -> viewBinding.recyclerView.post(() -> {
+	    if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
-            if(dataList.size() == resultLimit || pageSize == resultLimit) {
+		    adapter.setLoadMoreListener(() -> viewBinding.recyclerView.post(() -> {
 
-                int page = (dataList.size() + resultLimit) / resultLimit;
-                loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, tinyDb.getString("milestoneState"));
+			    if(dataList.size() == resultLimit || pageSize == resultLimit) {
 
-            }
+				    int page = (dataList.size() + resultLimit) / resultLimit;
+				    loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, tinyDb.getString("milestoneState"));
 
-        }));
+			    }
+
+		    }));
+
+	    }
 
         viewBinding.recyclerView.setHasFixedSize(true);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -113,16 +117,21 @@ public class MilestonesFragment extends Fragment {
             dataList.clear();
 
             adapter = new MilestonesAdapter(ctx, dataList);
-            adapter.setLoadMoreListener(() -> viewBinding.recyclerView.post(() -> {
 
-                if(dataList.size() == resultLimit || pageSize == resultLimit) {
+	        if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
-                    int page = (dataList.size() + resultLimit) / resultLimit;
-                    loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, milestoneState);
+		        adapter.setLoadMoreListener(() -> viewBinding.recyclerView.post(() -> {
 
-                }
+			        if(dataList.size() == resultLimit || pageSize == resultLimit) {
 
-            }));
+				        int page = (dataList.size() + resultLimit) / resultLimit;
+				        loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, milestoneState);
+
+			        }
+
+		        }));
+
+	        }
 
             tinyDb.putString("milestoneState", milestoneState);
 
@@ -171,7 +180,7 @@ public class MilestonesFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull Response<List<Milestones>> response) {
 
-                if(response.isSuccessful()) {
+                if(response.code() == 200) {
 
                     assert response.body() != null;
                     if(response.body().size() > 0) {
@@ -222,7 +231,7 @@ public class MilestonesFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull Response<List<Milestones>> response) {
 
-                if(response.isSuccessful()) {
+	            if(response.code() == 200) {
 
                     //remove loading view
                     dataList.remove(dataList.size() - 1);
@@ -238,7 +247,6 @@ public class MilestonesFragment extends Fragment {
                     }
                     else {
 
-                        Toasty.info(ctx, getString(R.string.noMoreData));
                         adapter.setMoreDataAvailable(false);
 
                     }

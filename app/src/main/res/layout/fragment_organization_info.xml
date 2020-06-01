@@ -15,7 +15,8 @@
             android:orientation="vertical"
             android:id="@+id/orgInfoLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/orgAvatar"
@@ -24,22 +25,16 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@string/orgContentAvatar"
-                android:layout_marginBottom="20dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/nameText"
-                android:textSize="16sp"
-                android:textColor="?attr/primaryTextColor"/>
+                android:layout_marginBottom="15dp"/>
 
             <TextView
                 android:id="@+id/orgNameInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
                 android:textIsSelectable="true"
                 android:textSize="16sp"
-                android:paddingTop="5dp"
                 android:textColor="?attr/primaryTextColor"/>
 
             <TextView

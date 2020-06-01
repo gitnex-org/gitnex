@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor" >
@@ -9,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:layout_margin="15dp" >
 
@@ -72,8 +72,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="?attr/inputBackgroundColor" />
+            android:id="@+id/divider"
+            android:background="?attr/dividerColor" />
 
         <TextView
             android:id="@+id/releaseZipDownload"

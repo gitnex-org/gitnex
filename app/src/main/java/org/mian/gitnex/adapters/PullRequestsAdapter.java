@@ -188,9 +188,11 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			prNumber.setText(String.valueOf(prModel.getNumber()));
 			prMergeable.setText(String.valueOf(prModel.isMergeable()));
-			prHeadBranch.setText(prModel.getHead().getRef());
-			prIsFork.setText(String.valueOf(prModel.getHead().getRepo().isFork()));
-			prForkFullName.setText(prModel.getHead().getRepo().getFull_name());
+			if(prModel.getHead() != null) {
+				prHeadBranch.setText(prModel.getHead().getRef());
+				prIsFork.setText(String.valueOf(prModel.getHead().getRepo().isFork()));
+				prForkFullName.setText(prModel.getHead().getRepo().getFull_name());
+			}
 			prCommentsCount.setText(String.valueOf(prModel.getComments()));
 
 			prCreatedTime.setText(TimeHelper.formatTime(prModel.getCreated_at(), new Locale(locale), timeFormat, context));

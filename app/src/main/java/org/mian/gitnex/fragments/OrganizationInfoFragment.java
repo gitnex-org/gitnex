@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.mian.gitnex.R;
@@ -37,6 +38,7 @@ public class OrganizationInfoFragment extends Fragment {
     private TextView orgDescInfo;
     private TextView orgWebsiteInfo;
     private TextView orgLocationInfo;
+    private LinearLayout orgInfoLayout;
 
     private RepoInfoFragment.OnFragmentInteractionListener mListener;
 
@@ -76,6 +78,7 @@ public class OrganizationInfoFragment extends Fragment {
         orgDescInfo = v.findViewById(R.id.orgDescInfo);
         orgWebsiteInfo = v.findViewById(R.id.orgWebsiteInfo);
         orgLocationInfo = v.findViewById(R.id.orgLocationInfo);
+	    orgInfoLayout = v.findViewById(R.id.orgInfoLayout);
 
         orgNameInfo.setText(orgName);
 
@@ -99,19 +102,22 @@ public class OrganizationInfoFragment extends Fragment {
 
                 Organization orgInfo = response.body();
 
-                if (response.isSuccessful()) {
+                if (response.code() == 200) {
 
-                    if (response.code() == 200) {
+                    orgInfoLayout.setVisibility(View.VISIBLE);
 
-                        assert orgInfo != null;
-                        PicassoService.getInstance(ctx).get().load(orgInfo.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(orgAvatar);
-                        orgDescInfo.setText(orgInfo.getDescription());
-                        orgWebsiteInfo.setText(orgInfo.getWebsite());
-                        orgLocationInfo.setText(orgInfo.getLocation());
+                    assert orgInfo != null;
+                    PicassoService.getInstance(ctx).get().load(orgInfo.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(orgAvatar);
+                    orgDescInfo.setText(orgInfo.getDescription());
+                    orgWebsiteInfo.setText(orgInfo.getWebsite());
+                    orgLocationInfo.setText(orgInfo.getLocation());
 
-                        mProgressBar.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.GONE);
 
-                    }
+                }
+                else if(response.code() == 404) {
+
+	                mProgressBar.setVisibility(View.GONE);
 
                 }
                 else {

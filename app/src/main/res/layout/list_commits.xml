@@ -1,10 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/commitList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".activities.CommitsActivity"
     android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
@@ -12,10 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:fitsSystemWindows="true"
         android:orientation="vertical"
-        android:layout_margin="15dp"
-        tools:ignore="UselessParent">
+        android:layout_margin="15dp">
 
         <TextView
             android:id="@+id/commitTitleVw"
@@ -80,7 +77,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:id="@+id/divider"
-        android:layout_marginTop="10dp"
         android:background="?attr/dividerColor" />
 
 </RelativeLayout>

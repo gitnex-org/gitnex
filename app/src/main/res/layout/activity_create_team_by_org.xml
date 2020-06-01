@@ -74,7 +74,7 @@
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                android:textColorHighlight="?attr/primaryTextColor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                android:textColorHighlight="?attr/primaryTextColor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -105,7 +105,7 @@
                 android:text="@string/newTeamPermission"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/teamPermission"
@@ -116,10 +116,10 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill"
                 android:background="@drawable/shape_inputs"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:inputType="none"
-                android:textColorHighlight="@color/white"/>
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="none" />
 
             <TextView
                 android:id="@+id/teamPermissionDetail"
@@ -128,7 +128,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="12sp"
                 android:gravity="start"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                 android:text="@string/newTeamAccessControls"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/teamAccessControls"
@@ -147,16 +147,16 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill"
                 android:background="@drawable/shape_inputs"
-                android:textColor="?attr/primaryTextColor"
-                android:textColorHint="?attr/primaryTextColor"
-                android:inputType="none"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:inputType="none" />
 
             <TextView
                 android:id="@+id/teamAccessControlsArray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/createTeamButton"
@@ -171,7 +171,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="35dp"/>
+                android:layout_height="35dp" />
 
         </LinearLayout>
 
