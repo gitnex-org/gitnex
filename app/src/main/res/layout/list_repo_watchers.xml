@@ -20,6 +20,7 @@
         android:gravity="top|center_horizontal"
         android:layout_marginTop="1dp"
         android:text="@string/watcherMember"
+        android:textColor="?attr/primaryTextColor"
         android:textSize="14sp" />
 
 </LinearLayout>
