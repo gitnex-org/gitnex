@@ -7,4 +7,4 @@
 - Enhancement: New nav background image
 
 Release Notes
-https://gitea.com/gitnex/GitNex/releases
+https://codeberg.org/gitnex/GitNex/releases

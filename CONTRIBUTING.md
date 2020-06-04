@@ -10,7 +10,7 @@ Please ask if you are not sure about the scope of work to be submitted to avoid 
 **Code Standards**
 Please follow the code standards, this will help other developers to understand your code too.  
 It also helps maintaining the code afterwards.  
-It is documented in the Wiki: [Code-Standards](https://gitea.com/gitnex/GitNex/wiki/Code-Standards)
+It is documented in the Wiki: [Code-Standards](https://codeberg.org/gitnex/GitNex/wiki/Code-Standards)
 
 **How to submit a PR**  
 Fork this repository. Pull the forked repository from your namespace to your local machine. Create new branch and work on the bug/feature/enhancement you would like to submit. Push it to your forked version. From there create Pull Request(PR) against **master** branch.

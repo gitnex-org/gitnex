@@ -10,4 +10,4 @@
 - Improvement: New languages support
 
 For more, check the release notes.
-https://gitea.com/gitnex/GitNex/releases
+https://codeberg.org/gitnex/GitNex/releases

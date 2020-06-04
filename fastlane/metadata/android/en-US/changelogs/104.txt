@@ -3,4 +3,4 @@
 Release notes will be published with the stable release.
 In the mean time check the milestone for pull requests and issues that are merged/closed.
 
-https://gitea.com/gitnex/GitNex/milestone/171?q=&type=all&state=closed
+https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

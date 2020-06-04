@@ -1,4 +1,4 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://gitea.com/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://gitea.com/gitnex/GitNex/releases) [![Build Status](https://drone.gitea.com/api/badges/gitnex/GitNex/status.svg)](https://drone.gitea.com/gitnex/GitNex) [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex) [![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://codeberg.org/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://codeberg.org/gitnex/GitNex/releases) [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex) [![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
 
 [<img alt="Become a Patroen" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif) [<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"/>](https://liberapay.com/mmarif/donate)
 
@@ -18,7 +18,7 @@ Download latest build from master: [https://cloud.swatian.com/s/Cq592xGEfnsGAAW]
 ## Note about Gitea version
 Please make sure that you are on latest stable release or later for better app experience.
 
-Check the versions [compatibility page](https://gitea.com/gitnex/GitNex/wiki/Compatibility) which lists all the supported versions with compatibility ratio.
+Check the versions [compatibility page](https://codeberg.org/gitnex/GitNex/wiki/Compatibility) which lists all the supported versions with compatibility ratio.
 
 ## Build from source
 Option 1 - Download the source code, open it in Android Studio and build it there.
@@ -32,36 +32,36 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`
 - Issues list
 - Pull requests
 - Merge pull request
-- [MANY MORE](https://gitea.com/gitnex/GitNex/wiki/Features)
+- [MANY MORE](https://codeberg.org/gitnex/GitNex/wiki/Features)
 
 ## Contributing
-[CONTRIBUTING](https://gitea.com/gitnex/GitNex/src/branch/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://codeberg.org/gitnex/GitNex/src/branch/master/CONTRIBUTING.md)
 
 ## Translation
 Help us translate GitNex to your native language.
 
-We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your language is not listed, please request [here](https://gitea.com/gitnex/GitNex/issues) to add it to the project.
+We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your language is not listed, please request [here](https://codeberg.org/gitnex/GitNex/issues) to add it to the project.
 
 **Link: https://crowdin.com/project/GitNex**
 
 ## Screenshots:
 
-<img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="001.png" width="200"/>  | <img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="002.png" width="200"/> | <img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="003.png" width="200"/> | <img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="004.png" width="200"/>
+<img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="001.png" width="200"/>  | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="002.png" width="200"/> | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="003.png" width="200"/> | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="004.png" width="200"/>
 ---|---|---|---
-<img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="005.png" width="200"/> | <img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="006.png" width="200"/> | <img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="007.png" width="200"/>  | <img src="https://gitea.com/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="008.png" width="200"/>
+<img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="005.png" width="200"/> | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="006.png" width="200"/> | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="007.png" width="200"/>  | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="008.png" width="200"/>
 
 
 ## FAQ
-[Faq](https://gitea.com/gitnex/GitNex/wiki/FAQ)
+[Faq](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
 
 ## Links
 [Website](https://gitnex.com)
 
-[Wiki](https://gitea.com/gitnex/GitNex/wiki/Home)
+[Wiki](https://codeberg.org/gitnex/GitNex/wiki/Home)
 
 [Website Repository](https://gitlab.com/mmarif4u/gitnex-website)
 
-[Troubleshoot Guide](https://gitea.com/gitnex/GitNex/wiki/Troubleshoot-Guide)
+[Troubleshoot Guide](https://codeberg.org/gitnex/GitNex/wiki/Troubleshoot-Guide)
 
 ## Thanks
 Thanks to all the open source libraries, contributors and donators.

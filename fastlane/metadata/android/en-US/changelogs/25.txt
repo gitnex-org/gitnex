@@ -5,4 +5,4 @@
 - Enhancement: Redesign Profile screen
 - Enhancement: Added edited status for single issue and comments
 
-Release notes: https://gitea.com/gitnex/GitNex/releases
+Release notes: https://codeberg.org/gitnex/GitNex/releases

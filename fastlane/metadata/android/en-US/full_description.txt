@@ -42,7 +42,7 @@ GitNex is a free, open-source Android client for Git repository management tool 
 - Closed issues list
 - Edit issues
 
-More features - https://gitea.com/gitnex/GitNex/wiki/Features
+More features - https://codeberg.org/gitnex/GitNex/wiki/Features
 
-Source code: https://gitea.com/gitnex/GitNex
+Source code: https://codeberg.org/gitnex/GitNex
 Developer: https://mastodon.social/@mmarif
