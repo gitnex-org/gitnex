@@ -4,10 +4,34 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spanned;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import org.mian.gitnex.R;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.models.UserRepositories;
+import org.mian.gitnex.util.AppUtil;
+import org.mian.gitnex.util.TinyDB;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Objects;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.core.CorePlugin;
@@ -26,30 +50,6 @@ import io.noties.markwon.image.svg.SvgMediaDecoder;
 import io.noties.markwon.linkify.LinkifyPlugin;
 import retrofit2.Call;
 import retrofit2.Callback;
-import android.text.Spanned;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import org.mian.gitnex.R;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.UserRepositories;
-import org.mian.gitnex.util.AppUtil;
-import org.mian.gitnex.util.TinyDB;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -57,405 +57,420 @@ import java.util.Objects;
 
 public class RepoInfoFragment extends Fragment {
 
-    private Context ctx;
-    private ProgressBar mProgressBar;
-    private LinearLayout pageContent;
-    private static String repoNameF = "param2";
-    private static String repoOwnerF = "param1";
+	private Context ctx;
+	private ProgressBar mProgressBar;
+	private LinearLayout pageContent;
+	private static String repoNameF = "param2";
+	private static String repoOwnerF = "param1";
 
-    private String repoName;
-    private String repoOwner;
-    private TextView repoMetaName;
-    private TextView repoMetaDescription;
-    private TextView repoMetaStars;
-    private TextView repoMetaPullRequests;
-    private LinearLayout repoMetaPullRequestsFrame;
-    private TextView repoMetaForks;
-    private TextView repoMetaSize;
-    private TextView repoMetaWatchers;
-    private TextView repoMetaCreatedAt;
-    private TextView repoMetaWebsite;
-    private Button repoAdditionalButton;
-    private TextView repoFileContents;
-    private LinearLayout repoMetaFrame;
-    private ImageView repoMetaDataExpandCollapse;
-    private ImageView repoFilenameExpandCollapse;
-    private LinearLayout fileContentsFrameHeader;
-    private LinearLayout fileContentsFrame;
+	private String repoName;
+	private String repoOwner;
+	private TextView repoMetaName;
+	private TextView repoMetaDescription;
+	private TextView repoMetaStars;
+	private TextView repoMetaPullRequests;
+	private LinearLayout repoMetaPullRequestsFrame;
+	private TextView repoMetaForks;
+	private TextView repoMetaSize;
+	private TextView repoMetaWatchers;
+	private TextView repoMetaCreatedAt;
+	private TextView repoMetaWebsite;
+	private Button repoAdditionalButton;
+	private TextView repoFileContents;
+	private LinearLayout repoMetaFrame;
+	private ImageView repoMetaDataExpandCollapse;
+	private ImageView repoFilenameExpandCollapse;
+	private LinearLayout fileContentsFrameHeader;
+	private LinearLayout fileContentsFrame;
 
-    private OnFragmentInteractionListener mListener;
+	private OnFragmentInteractionListener mListener;
 
-    public RepoInfoFragment() {
+	public RepoInfoFragment() {
 
-    }
+	}
 
-    public static RepoInfoFragment newInstance(String param1, String param2) {
-        RepoInfoFragment fragment = new RepoInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(repoOwnerF, param1);
-        args.putString(repoNameF, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+	public static RepoInfoFragment newInstance(String param1, String param2) {
+		RepoInfoFragment fragment = new RepoInfoFragment();
+		Bundle args = new Bundle();
+		args.putString(repoOwnerF, param1);
+		args.putString(repoNameF, param2);
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            repoName = getArguments().getString(repoNameF);
-            repoOwner = getArguments().getString(repoOwnerF);
-        }
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			repoName = getArguments().getString(repoNameF);
+			repoOwner = getArguments().getString(repoOwnerF);
+		}
+	}
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_repo_info, container, false);
+		View v = inflater.inflate(R.layout.fragment_repo_info, container, false);
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        final String locale = tinyDb.getString("locale");
-        final String timeFormat = tinyDb.getString("dateFormat");
+		TinyDB tinyDb = new TinyDB(getContext());
+		final String instanceUrl = tinyDb.getString("instanceUrl");
+		final String loginUid = tinyDb.getString("loginUid");
+		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		final String locale = tinyDb.getString("locale");
+		final String timeFormat = tinyDb.getString("dateFormat");
 
-        ctx = getActivity();
+		ctx = getActivity();
 
-        pageContent = v.findViewById(R.id.repoInfoLayout);
-        pageContent.setVisibility(View.GONE);
+		pageContent = v.findViewById(R.id.repoInfoLayout);
+		pageContent.setVisibility(View.GONE);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
-        repoMetaName = v.findViewById(R.id.repoMetaName);
-        repoMetaDescription = v.findViewById(R.id.repoMetaDescription);
-        repoMetaStars = v.findViewById(R.id.repoMetaStars);
-        repoMetaPullRequests = v.findViewById(R.id.repoMetaPullRequests);
-        repoMetaPullRequestsFrame = v.findViewById(R.id.repoMetaPullRequestsFrame);
-        repoMetaForks = v.findViewById(R.id.repoMetaForks);
-        repoMetaSize = v.findViewById(R.id.repoMetaSize);
-        repoMetaWatchers = v.findViewById(R.id.repoMetaWatchers);
-        repoMetaCreatedAt = v.findViewById(R.id.repoMetaCreatedAt);
-        repoMetaWebsite = v.findViewById(R.id.repoMetaWebsite);
-	    repoAdditionalButton = v.findViewById(R.id.repoAdditionalButton);
-        repoFileContents = v.findViewById(R.id.repoFileContents);
-        repoMetaFrame = v.findViewById(R.id.repoMetaFrame);
-        LinearLayout repoMetaFrameHeader = v.findViewById(R.id.repoMetaFrameHeader);
-        repoMetaDataExpandCollapse = v.findViewById(R.id.repoMetaDataExpandCollapse);
-        repoFilenameExpandCollapse = v.findViewById(R.id.repoFilenameExpandCollapse);
-        fileContentsFrameHeader = v.findViewById(R.id.fileContentsFrameHeader);
-        fileContentsFrame = v.findViewById(R.id.fileContentsFrame);
+		mProgressBar = v.findViewById(R.id.progress_bar);
+		repoMetaName = v.findViewById(R.id.repoMetaName);
+		repoMetaDescription = v.findViewById(R.id.repoMetaDescription);
+		repoMetaStars = v.findViewById(R.id.repoMetaStars);
+		repoMetaPullRequests = v.findViewById(R.id.repoMetaPullRequests);
+		repoMetaPullRequestsFrame = v.findViewById(R.id.repoMetaPullRequestsFrame);
+		repoMetaForks = v.findViewById(R.id.repoMetaForks);
+		repoMetaSize = v.findViewById(R.id.repoMetaSize);
+		repoMetaWatchers = v.findViewById(R.id.repoMetaWatchers);
+		repoMetaCreatedAt = v.findViewById(R.id.repoMetaCreatedAt);
+		repoMetaWebsite = v.findViewById(R.id.repoMetaWebsite);
+		repoAdditionalButton = v.findViewById(R.id.repoAdditionalButton);
+		repoFileContents = v.findViewById(R.id.repoFileContents);
+		repoMetaFrame = v.findViewById(R.id.repoMetaFrame);
+		LinearLayout repoMetaFrameHeader = v.findViewById(R.id.repoMetaFrameHeader);
+		repoMetaDataExpandCollapse = v.findViewById(R.id.repoMetaDataExpandCollapse);
+		repoFilenameExpandCollapse = v.findViewById(R.id.repoFilenameExpandCollapse);
+		fileContentsFrameHeader = v.findViewById(R.id.fileContentsFrameHeader);
+		fileContentsFrame = v.findViewById(R.id.fileContentsFrame);
 
-        repoMetaFrame.setVisibility(View.GONE);
+		repoMetaFrame.setVisibility(View.GONE);
 
-        getRepoInfo(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, locale, timeFormat);
-        getFileContents(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
+		getRepoInfo(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, locale, timeFormat);
+		getFileContents(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
 
-        if(isExpandViewVisible()) {
-        	toggleExpandView();
-        }
+		if(isExpandViewVisible()) {
+			toggleExpandView();
+		}
 
-        if(!isExpandViewMetaVisible()) {
-        	toggleExpandViewMeta();
-        }
+		if(!isExpandViewMetaVisible()) {
+			toggleExpandViewMeta();
+		}
 
-        fileContentsFrameHeader.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                toggleExpandView();
-            }
-        });
+		fileContentsFrameHeader.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				toggleExpandView();
+			}
+		});
 
-        repoMetaFrameHeader.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                toggleExpandViewMeta();
-            }
-        });
+		repoMetaFrameHeader.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				toggleExpandViewMeta();
+			}
+		});
 
-        return v;
-    }
+		return v;
+	}
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+	public void onButtonPressed(Uri uri) {
+		if (mListener != null) {
+			mListener.onFragmentInteraction(uri);
+		}
+	}
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mListener = null;
+	}
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
+	public interface OnFragmentInteractionListener {
+		void onFragmentInteraction(Uri uri);
+	}
 
-    private void toggleExpandView() {
+	private void toggleExpandView() {
 
-        if (repoFileContents.getVisibility() == View.GONE) {
-            repoFilenameExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
-            repoFileContents.setVisibility(View.VISIBLE);
-            //Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-            //fileContentsFrame.startAnimation(slide_down);
-        }
-        else {
-            repoFilenameExpandCollapse.setImageResource(R.drawable.ic_arrow_down);
-            repoFileContents.setVisibility(View.GONE);
-            //Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-            //fileContentsFrame.startAnimation(slide_up);
-        }
-    }
+		if (repoFileContents.getVisibility() == View.GONE) {
+			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
+			repoFileContents.setVisibility(View.VISIBLE);
+			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+			//fileContentsFrame.startAnimation(slide_down);
+		}
+		else {
+			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_arrow_down);
+			repoFileContents.setVisibility(View.GONE);
+			//Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+			//fileContentsFrame.startAnimation(slide_up);
+		}
+	}
 
-    private boolean isExpandViewVisible() {
-    	return repoFileContents.getVisibility() == View.VISIBLE;
-    }
+	private boolean isExpandViewVisible() {
+		return repoFileContents.getVisibility() == View.VISIBLE;
+	}
 
-    private void toggleExpandViewMeta() {
+	private void toggleExpandViewMeta() {
 
-        if (repoMetaFrame.getVisibility() == View.GONE) {
-            repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
-            repoMetaFrame.setVisibility(View.VISIBLE);
-            //Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-            //repoMetaFrame.startAnimation(slide_down);
-        }
-        else {
-            repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_arrow_down);
-            repoMetaFrame.setVisibility(View.GONE);
-            //Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-            //repoMetaFrame.startAnimation(slide_up);
-        }
-    }
+		if (repoMetaFrame.getVisibility() == View.GONE) {
+			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
+			repoMetaFrame.setVisibility(View.VISIBLE);
+			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+			//repoMetaFrame.startAnimation(slide_down);
+		}
+		else {
+			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_arrow_down);
+			repoMetaFrame.setVisibility(View.GONE);
+			//Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+			//repoMetaFrame.startAnimation(slide_up);
+		}
+	}
 
 	private boolean isExpandViewMetaVisible() {
 		return repoMetaFrame.getVisibility() == View.VISIBLE;
 	}
 
-    private void getRepoInfo(String instanceUrl, String token, final String owner, String repo, final String locale, final String timeFormat) {
+	private void getRepoInfo(String instanceUrl, String token, final String owner, String repo, final String locale, final String timeFormat) {
 
-        final TinyDB tinyDb = new TinyDB(getContext());
+		final TinyDB tinyDb = new TinyDB(getContext());
 
-        Call<UserRepositories> call = RetrofitClient
-                .getInstance(instanceUrl, getContext())
-                .getApiInterface()
-                .getUserRepository(token, owner, repo);
+		Call<UserRepositories> call = RetrofitClient
+				.getInstance(instanceUrl, getContext())
+				.getApiInterface()
+				.getUserRepository(token, owner, repo);
 
-        call.enqueue(new Callback<UserRepositories>() {
+		call.enqueue(new Callback<UserRepositories>() {
 
-            @Override
-            public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
+			@Override
+			public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
 
-                UserRepositories repoInfo = response.body();
+				UserRepositories repoInfo = response.body();
 
-                if (isAdded()) {
+				if (isAdded()) {
 
-                    if (response.isSuccessful()) {
+					if (response.isSuccessful()) {
 
-                        if (response.code() == 200) {
+						if (response.code() == 200) {
 
-                            assert repoInfo != null;
-                            repoMetaName.setText(repoInfo.getName());
-                            repoMetaDescription.setText(repoInfo.getDescription());
-                            repoMetaStars.setText(repoInfo.getStars_count());
+							assert repoInfo != null;
+							repoMetaName.setText(repoInfo.getName());
+							repoMetaDescription.setText(repoInfo.getDescription());
+							repoMetaStars.setText(repoInfo.getStars_count());
 
-                            if(repoInfo.getOpen_pull_count() != null) {
-                                repoMetaPullRequests.setText(repoInfo.getOpen_pull_count());
-                            }
-                            else {
-                                repoMetaPullRequestsFrame.setVisibility(View.GONE);
-                            }
+							if(repoInfo.getOpen_pull_count() != null) {
+								repoMetaPullRequests.setText(repoInfo.getOpen_pull_count());
+							}
+							else {
+								repoMetaPullRequestsFrame.setVisibility(View.GONE);
+							}
 
-                            repoMetaForks.setText(repoInfo.getForks_count());
-                            repoMetaWatchers.setText(repoInfo.getWatchers_count());
+							repoMetaForks.setText(repoInfo.getForks_count());
+							repoMetaWatchers.setText(repoInfo.getWatchers_count());
 
-                            if(repoInfo.getSize() != 0) {
-                                repoMetaSize.setText(AppUtil.formatFileSize(repoInfo.getSize()));
-                            }
-                            else {
-                                repoMetaSize.setText("0");
-                            }
+							if(repoInfo.getSize() != 0) {
+								repoMetaSize.setText(AppUtil.formatFileSize(repoInfo.getSize()));
+							}
+							else {
+								repoMetaSize.setText("0 B");
+							}
 
-                            repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
-                            if(timeFormat.equals("pretty")) {
-                                repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
-                            }
+							repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
+							if(timeFormat.equals("pretty")) {
+								repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
+							}
 
-                            String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdated_at(), new Locale(locale), timeFormat, ctx);
+							String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdated_at(), new Locale(locale), timeFormat, ctx);
 
-                            String website = (repoInfo.getWebsite().isEmpty()) ? getResources().getString(R.string.noDataWebsite) : repoInfo.getWebsite();
-                            repoMetaWebsite.setText(website);
+							String website = (repoInfo.getWebsite().isEmpty()) ? getResources().getString(R.string.noDataWebsite) : repoInfo.getWebsite();
+							repoMetaWebsite.setText(website);
 
-                            repoAdditionalButton.setOnClickListener(v -> {
+							repoAdditionalButton.setOnClickListener(v -> {
 
-                                StringBuilder message = new StringBuilder();
+								View view = LayoutInflater.from(ctx).inflate(R.layout.layout_repo_more_info, null);
 
-                                message.append(getResources().getString(R.string.infoTabRepoDefaultBranch))
-                                        .append(" :\n").append(repoInfo.getDefault_branch()).append("\n\n");
+								TextView defaultBranchHeader = view.findViewById(R.id.defaultBranchHeader);
+								TextView defaultBranchContent = view.findViewById(R.id.defaultBranchContent);
 
-                                message.append(getResources().getString(R.string.infoTabRepoUpdatedAt))
-                                        .append(" :\n").append(repoMetaUpdatedAt).append("\n\n");
+								TextView lastUpdatedHeader = view.findViewById(R.id.lastUpdatedHeader);
+								TextView lastUpdatedContent = view.findViewById(R.id.lastUpdatedContent);
 
-                                message.append(getResources().getString(R.string.infoTabRepoSshUrl))
-                                        .append(" :\n").append(repoInfo.getSsh_url()).append("\n\n");
+								TextView sshUrlHeader = view.findViewById(R.id.sshUrlHeader);
+								TextView sshUrlContent = view.findViewById(R.id.sshUrlContent);
 
-                                message.append(getResources().getString(R.string.infoTabRepoCloneUrl))
-                                        .append(" :\n").append(repoInfo.getClone_url()).append("\n\n");
+								TextView cloneUrlHeader = view.findViewById(R.id.cloneUrlHeader);
+								TextView cloneUrlContent = view.findViewById(R.id.cloneUrlContent);
 
-                                message.append(getResources().getString(R.string.infoTabRepoRepoUrl))
-                                        .append(" :\n").append(repoInfo.getHtml_url());
+								TextView repoUrlHeader = view.findViewById(R.id.repoUrlHeader);
+								TextView repoUrlContent = view.findViewById(R.id.repoUrlContent);
 
-                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+								defaultBranchHeader.setText(getString(R.string.infoTabRepoDefaultBranch));
+								defaultBranchContent.setText(repoInfo.getDefault_branch());
 
-                                alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
-                                alertDialog.setMessage(message);
-                                alertDialog.setPositiveButton(getResources().getString(R.string.close), (dialog, which) -> dialog.dismiss());
-                                alertDialog.create().show();
+								lastUpdatedHeader.setText(getString(R.string.infoTabRepoUpdatedAt));
+								lastUpdatedContent.setText(repoMetaUpdatedAt);
 
-                            });
+								sshUrlHeader.setText(getString(R.string.infoTabRepoSshUrl));
+								sshUrlContent.setText(repoInfo.getSsh_url());
 
-                            if(repoInfo.getHas_issues() != null) {
-                                tinyDb.putBoolean("hasIssues", repoInfo.getHas_issues());
-                            }
-                            else {
-                                tinyDb.putBoolean("hasIssues", true);
-                            }
+								cloneUrlHeader.setText(getString(R.string.infoTabRepoCloneUrl));
+								cloneUrlContent.setText(repoInfo.getClone_url());
 
-                            tinyDb.putString("repoHtmlUrl", repoInfo.getHtml_url());
+								repoUrlHeader.setText(getString(R.string.infoTabRepoRepoUrl));
+								repoUrlContent.setText(repoInfo.getHtml_url());
 
-                            mProgressBar.setVisibility(View.GONE);
-                            pageContent.setVisibility(View.VISIBLE);
+								AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
 
-                        }
+								alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
+								alertDialog.setView(view);
+								alertDialog.setPositiveButton(getResources().getString(R.string.close), (dialog, which) -> dialog.dismiss());
+								alertDialog.create().show();
 
-                    }
-                    else {
-                        Log.e("onFailure", String.valueOf(response.code()));
-                    }
+							});
 
-                }
+							if(repoInfo.getHas_issues() != null) {
+								tinyDb.putBoolean("hasIssues", repoInfo.getHas_issues());
+							}
+							else {
+								tinyDb.putBoolean("hasIssues", true);
+							}
 
-            }
+							tinyDb.putString("repoHtmlUrl", repoInfo.getHtml_url());
 
-            @Override
-            public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
-        });
+							mProgressBar.setVisibility(View.GONE);
+							pageContent.setVisibility(View.VISIBLE);
 
-    }
+						}
 
-    private void getFileContents(String instanceUrl, String token, final String owner, String repo, final String filename) {
+					}
+					else {
+						Log.e("onFailure", String.valueOf(response.code()));
+					}
 
-        final TinyDB tinyDb = new TinyDB(getContext());
+				}
 
-        Call<String> call = RetrofitClient
-                .getInstance(instanceUrl, getContext())
-                .getApiInterface()
-                .getFileContents(token, owner, repo, filename);
+			}
 
-        call.enqueue(new Callback<String>() {
+			@Override
+			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
+				Log.e("onFailure", t.toString());
+			}
+		});
 
-            @Override
-            public void onResponse(@NonNull Call<String> call, @NonNull retrofit2.Response<String> response) {
+	}
 
-                if (isAdded()) {
+	private void getFileContents(String instanceUrl, String token, final String owner, String repo, final String filename) {
 
-                    if (response.code() == 200) {
+		final TinyDB tinyDb = new TinyDB(getContext());
 
-                        final Markwon markwon = Markwon.builder(Objects.requireNonNull(getContext()))
-                            .usePlugin(CorePlugin.create())
-                            .usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-                                @Override
-                                public void configureImages(@NonNull ImagesPlugin plugin) {
-                                    plugin.addSchemeHandler(new SchemeHandler() {
-                                        @NonNull
-                                        @Override
-                                        public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
+		Call<String> call = RetrofitClient
+				.getInstance(instanceUrl, getContext())
+				.getApiInterface()
+				.getFileContents(token, owner, repo, filename);
 
-                                            final int resourceId = getContext().getResources().getIdentifier(
-                                                    raw.substring("drawable://".length()),
-                                                    "drawable",
-                                                    getContext().getPackageName());
+		call.enqueue(new Callback<String>() {
 
-                                            final Drawable drawable = getContext().getDrawable(resourceId);
+			@Override
+			public void onResponse(@NonNull Call<String> call, @NonNull retrofit2.Response<String> response) {
 
-                                            assert drawable != null;
-                                            return ImageItem.withResult(drawable);
-                                        }
+				if (isAdded()) {
 
-                                        @NonNull
-                                        @Override
-                                        public Collection<String> supportedSchemes() {
-                                            return Collections.singleton("drawable");
-                                        }
-                                    });
-                                    plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-                                        @Nullable
-                                        @Override
-                                        public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-                                            return null;
-                                        }
-                                    });
-                                    plugin.addMediaDecoder(GifMediaDecoder.create(false));
-                                    plugin.addMediaDecoder(SvgMediaDecoder.create(getContext().getResources()));
-                                    plugin.addMediaDecoder(SvgMediaDecoder.create());
-                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getContext().getResources()));
-                                    plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-                                }
-                            }))
-                            .usePlugin(new AbstractMarkwonPlugin() {
-                                @Override
-                                public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-                                    builder
-                                            .codeTextColor(tinyDb.getInt("codeBlockColor"))
-                                            .codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-                                            .linkColor(getResources().getColor(R.color.lightBlue));
-                                }
-                            })
-                            .usePlugin(TablePlugin.create(getContext()))
-                            .usePlugin(TaskListPlugin.create(getContext()))
-                            .usePlugin(HtmlPlugin.create())
-                            .usePlugin(StrikethroughPlugin.create())
-                            .usePlugin(LinkifyPlugin.create())
-                            .build();
+					if (response.code() == 200) {
 
-                        Spanned bodyWithMD = null;
+						final Markwon markwon = Markwon.builder(Objects.requireNonNull(getContext()))
+							.usePlugin(CorePlugin.create())
+							.usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
+								@Override
+								public void configureImages(@NonNull ImagesPlugin plugin) {
+									plugin.addSchemeHandler(new SchemeHandler() {
+										@NonNull
+										@Override
+										public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-                        if (response.body() != null) {
-                            bodyWithMD = markwon.toMarkdown(response.body());
-                        }
+											final int resourceId = getContext().getResources().getIdentifier(
+													raw.substring("drawable://".length()),
+													"drawable",
+													getContext().getPackageName());
 
-                        assert bodyWithMD != null;
-                        markwon.setParsedMarkdown(repoFileContents, bodyWithMD);
+											final Drawable drawable = getContext().getDrawable(resourceId);
 
-                    } else if (response.code() == 401) {
+											assert drawable != null;
+											return ImageItem.withResult(drawable);
+										}
 
-                        AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                                getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                                getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                                getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+										@NonNull
+										@Override
+										public Collection<String> supportedSchemes() {
+											return Collections.singleton("drawable");
+										}
+									});
+									plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
+										@Nullable
+										@Override
+										public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
+											return null;
+										}
+									});
+									plugin.addMediaDecoder(GifMediaDecoder.create(false));
+									plugin.addMediaDecoder(SvgMediaDecoder.create(getContext().getResources()));
+									plugin.addMediaDecoder(SvgMediaDecoder.create());
+									plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getContext().getResources()));
+									plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
+								}
+							}))
+							.usePlugin(new AbstractMarkwonPlugin() {
+								@Override
+								public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+									builder
+											.codeTextColor(tinyDb.getInt("codeBlockColor"))
+											.codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
+											.linkColor(getResources().getColor(R.color.lightBlue));
+								}
+							})
+							.usePlugin(TablePlugin.create(getContext()))
+							.usePlugin(TaskListPlugin.create(getContext()))
+							.usePlugin(HtmlPlugin.create())
+							.usePlugin(StrikethroughPlugin.create())
+							.usePlugin(LinkifyPlugin.create())
+							.build();
 
-                    } else if (response.code() == 403) {
+						Spanned bodyWithMD = null;
 
-                        Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+						if (response.body() != null) {
+							bodyWithMD = markwon.toMarkdown(response.body());
+						}
 
-                    } else if (response.code() == 404) {
+						assert bodyWithMD != null;
+						markwon.setParsedMarkdown(repoFileContents, bodyWithMD);
 
-                        fileContentsFrameHeader.setVisibility(View.GONE);
-                        fileContentsFrame.setVisibility(View.GONE);
+					} else if (response.code() == 401) {
 
-                    } else {
+						AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
+								getResources().getString(R.string.alertDialogTokenRevokedMessage),
+								getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 
-                        Toasty.info(getContext(), getString(R.string.genericError));
+					} else if (response.code() == 403) {
 
-                    }
-                }
+						Toasty.info(ctx, ctx.getString(R.string.authorizeError));
 
-            }
+					} else if (response.code() == 404) {
 
-            @Override
-            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
-        });
+						fileContentsFrameHeader.setVisibility(View.GONE);
+						fileContentsFrame.setVisibility(View.GONE);
 
-    }
+					} else {
+
+						Toasty.info(getContext(), getString(R.string.genericError));
+
+					}
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+				Log.e("onFailure", t.toString());
+			}
+		});
+
+	}
 
 }
