@@ -25,7 +25,6 @@
             android:id="@+id/userFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:text="@string/userName"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
@@ -34,10 +33,9 @@
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:text="@string/userName"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

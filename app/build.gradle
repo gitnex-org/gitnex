@@ -86,5 +86,6 @@ dependencies {
     implementation "ch.acra:acra-mail:$acra"
     implementation "ch.acra:acra-limiter:$acra"
     implementation "ch.acra:acra-notification:$acra"
+    implementation 'com.eightbitlab:blurview:1.6.3'
 
 }

@@ -406,7 +406,7 @@
     <string name="emailErrorInUse">Email address is already in use</string>
     <string name="emailTypeText">Primary</string>
     <string name="profileTabEmails">Emails</string>
-    <string name="usernameWithAt" translatable="false">\u0040\u0020%1$s</string>
+    <string name="usernameWithAt" translatable="false">\u0040%1$s</string>
     <!-- profile section -->
 
     <!-- single issue section -->

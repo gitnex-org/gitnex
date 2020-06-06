@@ -14,16 +14,18 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 
 /**
- * Author anonTree1417
+ * Author opyale
  */
 
 public class PicassoService {
 
 	private static PicassoService picassoService;
+	private static File cachePath;
 	private Picasso picasso;
 
 	private PicassoService(Context context) {
 
+		cachePath = new File(context.getCacheDir() + "/picasso_cache/");
 		Picasso.Builder builder = new Picasso.Builder(context);
 
 		try {
@@ -45,10 +47,6 @@ public class PicassoService {
 
 			});
 
-			File cachePath = new File(context.getCacheDir() + "/picasso_cache/");
-			//noinspection ResultOfMethodCallIgnored
-			cachePath.mkdirs();
-
 			picasso = builder.memoryCache(new PicassoCache(cachePath, context)).build();
 
 		}
@@ -61,7 +59,9 @@ public class PicassoService {
 
 	public Picasso get() {
 
+		cachePath.mkdirs();
 		return picasso;
+
 	}
 
 	public static synchronized PicassoService getInstance(Context context) {

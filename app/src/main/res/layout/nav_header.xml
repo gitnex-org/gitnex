@@ -1,62 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navHeaderFrame"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@drawable/nav_background"
-    android:gravity="bottom"
-    android:paddingTop="16dp">
+    android:layout_height="200dp">
 
     <ImageView
-        android:id="@+id/userAvatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_android"
-        android:maxHeight="24dp"
-        android:maxWidth="24dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="5dp"
-        android:contentDescription="@string/app_name"/>
-
-    <TextView
-        android:id="@+id/userFullname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="@string/app_name"
-        android:textSize="18sp"
-        android:textIsSelectable="true"
-        android:textColor="@color/white"
-        android:paddingStart="20dp"
-        android:paddingEnd="5dp" />
-
-    <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/userAvatarBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_height="match_parent"
+        android:contentDescription="@string/generalImgContentText"
+        android:scaleType="centerCrop" />
 
-        <TextView
-            android:id="@+id/userEmail"
-            android:layout_width="0dp"
-            android:layout_weight="0.85"
-            android:layout_height="wrap_content"
-            android:text="@string/appEmail"
-            android:textSize="14sp"
-            android:textIsSelectable="true"
-            android:textColor="@color/white"
-            android:gravity="start"
-            android:layout_gravity="center_vertical"
-            android:paddingStart="20dp"
-            android:paddingEnd="5dp" />
-
-    </LinearLayout>
-
-    <View
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurView"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/dividerColor" />
+        android:layout_height="match_parent"
+        app:blurOverlayColor="@color/blurColor">
 
-</LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingTop="16dp">
 
+            <ImageView
+                android:id="@+id/userAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_android"
+                android:maxHeight="24dp"
+                android:maxWidth="24dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="5dp"
+                android:contentDescription="@string/app_name"/>
+
+            <TextView
+                android:id="@+id/userFullname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="@string/app_name"
+                android:textSize="18sp"
+                android:textIsSelectable="true"
+                android:textColor="@color/white"
+                android:paddingStart="20dp"
+                android:paddingEnd="5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/userEmail"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.85"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appEmail"
+                    android:textSize="14sp"
+                    android:textIsSelectable="true"
+                    android:textColor="@color/white"
+                    android:gravity="start"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="5dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="?attr/dividerColor" />
+
+        </LinearLayout>
+
+    </eightbitlab.com.blurview.BlurView>
+
+</RelativeLayout>

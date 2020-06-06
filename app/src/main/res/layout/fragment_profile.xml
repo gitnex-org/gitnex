@@ -10,58 +10,89 @@
     <RelativeLayout
         android:id="@+id/aboutFrame"
         android:layout_width="match_parent"
-        android:layout_height="172dp"
-        android:orientation="vertical"
-        android:background="@drawable/nav_background"
-        android:gravity="top">
+        android:layout_height="200dp"
+        android:gravity="top"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/layoutFrameAccount"
+        <ImageView
+            android:id="@+id/userAvatarBackground"
             android:layout_width="match_parent"
-            android:layout_height="186dp"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:contentDescription="@string/generalImgContentText"
+            android:scaleType="centerCrop" />
 
-            <ImageView
-                android:id="@+id/userAvatar"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/generalImgContentText"
-                android:src="@mipmap/app_logo_round" />
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/blurView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:blurOverlayColor="@color/blurColor">
 
-            <TextView
-                android:id="@+id/userFullName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textIsSelectable="true"
-                android:layout_marginBottom="8dp"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_gravity="center" />
+            <LinearLayout
+                android:id="@+id/layoutFrameAccount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/userLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textIsSelectable="true"
-                android:layout_marginBottom="8dp"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_gravity="center" />
+                <ImageView
+                    android:id="@+id/userAvatar"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:src="@mipmap/app_logo_round" />
 
-            <TextView
-                android:id="@+id/userEmail"
-                android:textIsSelectable="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_gravity="center" />
+                <TextView
+                    android:id="@+id/userFullName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="true"
+                    android:textSize="18sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/userLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="true"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorWhite" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:layout_marginRight="2dp"
+                        android:contentDescription="@string/generalImgContentText"
+                        android:src="@drawable/ic_language"
+                        app:tint="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/userLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </eightbitlab.com.blurview.BlurView>
 
     </RelativeLayout>
 
