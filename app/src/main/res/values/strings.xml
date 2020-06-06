@@ -278,7 +278,7 @@
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
     <string name="settingsHomeScreenHeaderText">Home Screen</string>
     <string name="settingsHomeScreenSelectedText">My Repositories</string>
-    <string name="settingshomeScreenSelectorDialogTitle">Select Home Screen</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
     <string name="settingsCustomFontDefault" translatable="false">Manrope</string>
@@ -575,7 +575,7 @@
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
     <string name="versionSupportedLatest">Gitea version is up to date</string>
     <string name="versionDevelopment">Gitea development version</string>
-    <string name="versionUnknow">No Gitea detected!</string>
+    <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertTitle">Version Alert</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
 
@@ -629,7 +629,7 @@
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
+    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
     <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
     <string name="mtm_cert_details">Certificate details:</string>
@@ -639,10 +639,10 @@
 
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscribtionError">Subscription failed</string>
+    <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscribtionError">Un-Subscription failed</string>
+    <string name="unsubscriptionError">Un-Subscription failed</string>
 
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
@@ -656,9 +656,11 @@
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
 
-    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
+    <string name="appearanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+
+    <string name="archivedRepository">Archived</string>
 </resources>

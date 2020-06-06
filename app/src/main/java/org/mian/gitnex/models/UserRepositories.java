@@ -31,6 +31,7 @@ public class UserRepositories {
 	private String forks_count;
 	private Boolean has_issues;
 	private String avatar_url;
+	private boolean archived;
 
 	private permissionsObject permissions;
 
@@ -165,6 +166,26 @@ public class UserRepositories {
 	public String getAvatar_url() {
 
 		return avatar_url;
+	}
+
+	public boolean isPrivateFlag() {
+
+		return privateFlag;
+	}
+
+	public String getOpen_pr_counter() {
+
+		return open_pr_counter;
+	}
+
+	public String getRelease_counter() {
+
+		return release_counter;
+	}
+
+	public boolean isArchived() {
+
+		return archived;
 	}
 
 }

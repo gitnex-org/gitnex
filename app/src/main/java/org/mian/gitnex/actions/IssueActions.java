@@ -203,7 +203,7 @@ public class IssueActions {
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.subscribtionError));
+					Toasty.info(ctx, ctx.getString(R.string.subscriptionError));
 
 				}
 
@@ -263,7 +263,7 @@ public class IssueActions {
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.unsubscribtionError));
+					Toasty.info(ctx, ctx.getString(R.string.unsubscriptionError));
 
 				}
 
@@ -272,7 +272,7 @@ public class IssueActions {
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-				Toasty.info(ctx, ctx.getString(R.string.unsubscribtionError));
+				Toasty.info(ctx, ctx.getString(R.string.unsubscriptionError));
 			}
 		});
 	}

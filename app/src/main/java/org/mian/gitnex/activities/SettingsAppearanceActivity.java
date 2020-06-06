@@ -201,7 +201,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 			AlertDialog.Builder hsBuilder = new AlertDialog.Builder(SettingsAppearanceActivity.this);
 
-			hsBuilder.setTitle(R.string.settingshomeScreenSelectorDialogTitle);
+			hsBuilder.setTitle(R.string.settingsHomeScreenSelectorDialogTitle);
 			if(homeScreenSelectedChoice != -1) {
 				hsBuilder.setCancelable(true);
 			}

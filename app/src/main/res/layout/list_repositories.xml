@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor" >
+    android:background="?attr/primaryBackgroundColor">
 
     <TextView
         android:id="@+id/repoType"
@@ -14,7 +16,6 @@
         android:id="@+id/linearLayoutFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_margin="15dp"
         android:orientation="vertical">
 
@@ -37,23 +38,54 @@
                 android:id="@+id/frameRepoName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/repoName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
                     android:layout_weight=".95"
                     android:text="@string/repoName"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="18sp" />
 
+                <LinearLayout
+                    android:id="@+id/archiveRepoFrame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_archived"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:gravity="center_vertical"
+                        android:text="@string/archivedRepository"
+                        android:textColor="@color/colorWhite" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_weight="0"
+                        android:contentDescription="@string/generalImgContentText"
+                        app:srcCompat="@drawable/ic_archive"
+                        app:tint="@color/colorWhite" />
+                </LinearLayout>
+
                 <ImageView
                     android:id="@+id/imageRepoType"
                     android:layout_width="10dp"
                     android:layout_height="20dp"
-                    android:layout_gravity="end"
                     android:layout_weight=".05"
                     android:contentDescription="@string/privateAvatar"
                     android:src="@drawable/ic_lock_24dp" />

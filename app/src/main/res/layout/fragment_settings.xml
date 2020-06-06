@@ -42,7 +42,7 @@
                     android:layout_gravity="center_vertical"
                     android:paddingStart="60dp"
                     android:paddingEnd="12dp"
-                    android:text="@string/appreanceHintText"
+                    android:text="@string/appearanceHintText"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="12sp" />
 

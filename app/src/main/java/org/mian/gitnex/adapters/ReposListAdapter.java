@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +57,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		private TextView repoForks;
 		private TextView repoOpenIssuesCount;
 		private TextView repoType;
+		private LinearLayout archiveRepo;
 
 		private ReposViewHolder(View itemView) {
 
@@ -71,6 +73,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
 			ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
 			repoType = itemView.findViewById(R.id.repoType);
+			archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
 
 			itemView.setOnClickListener(v -> {
 
@@ -248,6 +251,13 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			holder.isRepoAdmin = new CheckBox(mCtx);
 		}
 		holder.isRepoAdmin.setChecked(currentItem.getPermissions().isAdmin());
+
+		if(currentItem.isArchived()) {
+			holder.archiveRepo.setVisibility(View.VISIBLE);
+		}
+		else {
+			holder.archiveRepo.setVisibility(View.GONE);
+		}
 
 	}
 
