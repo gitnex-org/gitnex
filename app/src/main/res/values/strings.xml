@@ -486,6 +486,8 @@
     <string name="noDataStargazers">No stars found</string>
     <string name="noDataWatchers">No watchers found</string>
     <string name="noDataWebsite">No website found</string>
+    <string name="noDataDescription">No description found</string>
+    <string name="noDataLocation">No location found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
 

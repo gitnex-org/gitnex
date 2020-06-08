@@ -62,9 +62,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
+                    android:layout_marginBottom="5dp"
                     android:textSize="22sp"
-                    android:textStyle="bold"
-                    tools:text="GitNex" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/repoMetaDescription"
@@ -75,12 +75,12 @@
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    tools:text="Android client for Gitea https://gitnex.com" />
+                    android:textColorLink="@color/lightBlue"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:baselineAligned="false"
                     android:orientation="horizontal">
@@ -88,7 +88,7 @@
                     <LinearLayout
                         android:id="@+id/repoMetaStarsFrame"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -110,7 +110,7 @@
                     <LinearLayout
                         android:id="@+id/repoMetaPullRequestsFrame"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -132,7 +132,7 @@
                     <LinearLayout
                         android:id="@+id/repoMetaForksFrame"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -154,7 +154,7 @@
                     <LinearLayout
                         android:id="@+id/repoMetaWatchersFrame"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -179,12 +179,11 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="25dp"
-                    android:alpha="0.2"
-                    android:background="@color/lightGray" />
+                    android:background="?attr/dividerColor" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"
@@ -224,7 +223,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"
@@ -264,7 +263,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"

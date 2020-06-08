@@ -87,5 +87,6 @@ Open source libraries
 - Droidsonroids.gif/android-gif-drawable
 - Barteksc/AndroidPdfViewer
 - Ge0rg/MemorizingTrustManager
+- Dimezis/BlurView
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)

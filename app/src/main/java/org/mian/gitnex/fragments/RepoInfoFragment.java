@@ -252,7 +252,14 @@ public class RepoInfoFragment extends Fragment {
 
 							assert repoInfo != null;
 							repoMetaName.setText(repoInfo.getName());
-							repoMetaDescription.setText(repoInfo.getDescription());
+
+							if(!repoInfo.getDescription().isEmpty()) {
+								repoMetaDescription.setText(repoInfo.getDescription());
+							}
+							else {
+								repoMetaDescription.setText(getString(R.string.noDataDescription));
+							}
+
 							repoMetaStars.setText(repoInfo.getStars_count());
 
 							if(repoInfo.getOpen_pull_count() != null) {
