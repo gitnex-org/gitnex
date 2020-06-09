@@ -267,6 +267,9 @@ public interface ApiInterface {
     @GET("repos/{owner}/{repo}/pulls") // get repository pull requests
     Call<List<PullRequests>> getPullRequests(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("state") String state, @Query("limit") int limit);
 
+    @GET("repos/{owner}/{repo}/pulls/{index}.diff") // get pull diff file contents
+    Call<ResponseBody> getPullDiffContent(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Path("index") String pullIndex);
+
     @POST("repos/{owner}/{repo}/pulls/{index}/merge") // merge a pull request
     Call<ResponseBody> mergePullRequest(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int index, @Body MergePullRequest jsonStr);
 

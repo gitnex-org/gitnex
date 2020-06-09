@@ -64,7 +64,10 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 				mergePullRequest.setVisibility(View.VISIBLE);
 			}
 
-			if(tinyDB.getString("repoType").equals("public")) {
+			if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.13.0")) {
+				openFilesDiff.setVisibility(View.VISIBLE);
+			}
+			else if(tinyDB.getString("repoType").equals("public")) {
 				openFilesDiff.setVisibility(View.VISIBLE);
 			}
 			else {
