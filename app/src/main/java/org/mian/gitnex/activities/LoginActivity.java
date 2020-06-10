@@ -442,7 +442,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 						SnackBar.error(ctx, layoutView, getResources().getString(R.string.versionUnknown));
 						enableProcessButton();
 					}
-					//(getString(R.string.versionLow), getString(), version.getVersion());
 
 					// UNSUPPORTED_OLD
 					if(gitea_version.less(getString(R.string.versionLow))) {
