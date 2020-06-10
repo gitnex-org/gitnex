@@ -216,6 +216,7 @@
     <string name="releaseTypeStable" translatable="false">Stable</string>
     <string name="noDataReleasesTab">No releases found</string>
     <string name="releaseTag">Tag: %1$s</string>
+    <string name="releasePublishedBy">Published by @%1$s</string>
 
     <string name="collaboratorsNameToast">Collaborator : %1$s</string>
     <string name="noDataCollaboratorTab">No collaborators found</string>
@@ -492,8 +493,8 @@
     <string name="watcherMember">Watcher</string>
 
     <string name="commitLinkBranchesTab">Commit</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
+    <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
+    <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
 
     <!-- new file -->
     <string name="newFileNameTintCopy">File Name</string>

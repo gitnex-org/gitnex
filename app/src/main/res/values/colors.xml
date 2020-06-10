@@ -17,8 +17,8 @@
     <color name="inputBackground">#1d1d1d</color>
     <color name="toastBackground">#1d1d1d</color>
     <color name="divider">#1d1d1d</color>
-    <color name="releasePre">#eb7121</color>
-    <color name="releaseStable">#219214</color>
+    <color name="releasePre">#f2711c</color>
+    <color name="releaseStable">@color/btnBackground</color>
     <color name="colorRed">#CC361C</color>
     <color name="colorLightGreen">#49da39</color>
     <color name="colorDarkGreen">#009486</color>

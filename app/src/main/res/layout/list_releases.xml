@@ -1,100 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor" >
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <LinearLayout
-        android:id="@+id/linearLayoutFrame"
+        android:id="@+id/headerFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        android:layout_margin="15dp" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/releaseTitle"
-                android:layout_width="0dp"
-                android:layout_weight=".70"
+                android:id="@+id/releaseName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/releaseTitle"
-                android:textIsSelectable="true"
+                android:layout_weight="1"
+                android:singleLine="true"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="3.0.0-rc1" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/releaseType"
-                android:layout_width="0dp"
-                android:layout_weight=".30"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:scaleType="fitEnd"
-                android:contentDescription="@string/releaseType"
-                android:src="@drawable/ic_android" />
+                android:layout_weight="0"
+                android:background="@drawable/shape_stable_release"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/releaseTag"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/releaseTag"
-            android:textIsSelectable="true"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="12sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/releaseDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/releaseDescription"
-            android:textIsSelectable="true"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
-        <TextView
-            android:id="@+id/releaseDownload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/releaseDownloadText"
-            android:textIsSelectable="true"
-            android:layout_marginTop="10dp"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+                <ImageView
+                    android:id="@+id/authorAvatar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    tools:srcCompat="@tools:sample/avatars[7]"
+                    android:contentDescription="@string/generalImgContentText" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:id="@+id/divider"
-            android:background="?attr/dividerColor" />
+                <TextView
+                    android:id="@+id/authorName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="14sp"
+                    tools:text="Published by @mmarif" />
 
-        <TextView
-            android:id="@+id/releaseZipDownload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/releaseZip"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            android:textColorLink="@color/lightBlue"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/releaseTarDownload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/releaseTar"
-            android:layout_marginTop="5dp"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            android:textColorLink="@color/lightBlue"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_label"
+                        android:contentDescription="@string/generalImgContentText" />
+
+                    <TextView
+                        android:id="@+id/releaseTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:singleLine="true"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="14sp"
+                        tools:text="3.0.0-rc1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_code"
+                        android:contentDescription="@string/generalImgContentText" />
+
+                    <TextView
+                        android:id="@+id/releaseCommitSha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:singleLine="true"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="14sp"
+                        tools:text="8b1c79c0c3" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_calendar"
+                        android:contentDescription="@string/generalImgContentText" />
+
+                    <TextView
+                        android:id="@+id/releaseDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:singleLine="true"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="14sp"
+                        tools:text="1 day ago" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/bodyFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/releaseBodyContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"
+            tools:text="Put your release body here" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/downloadFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/downloadDropdownIcon"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/generalImgContentText"
+                android:tint="?attr/primaryTextColor"
+                android:src="@drawable/ic_arrow_right"
+                app:srcCompat="@drawable/ic_arrow_right" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="14sp"
+                android:text="@string/releaseDownloadText"
+                tools:text="Downloads" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/downloads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/releaseZipDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:drawableStart="@drawable/ic_file_download_24dp"
+                android:drawablePadding="8dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="14sp"
+                tools:text="Source code (ZIP)" />
+
+            <TextView
+                android:id="@+id/releaseTarDownload"
+                android:layout_below="@+id/releaseZipDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:drawableStart="@drawable/ic_file_download_24dp"
+                android:drawablePadding="8dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="14sp"
+                tools:text="Source code (TAR)" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/downloadList"
+                android:layout_below="@+id/releaseTarDownload"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/primaryBackgroundColor"
+                android:scrollbars="vertical" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
