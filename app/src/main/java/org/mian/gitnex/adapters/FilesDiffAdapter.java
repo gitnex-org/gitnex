@@ -86,7 +86,7 @@ public class FilesDiffAdapter extends BaseAdapter {
 		FileDiffView data = (FileDiffView) getItem(position);
 		headerFileName.setText(data.getFileName());
 
-		if(data.isFileType()) {
+		if(data.isFileBinary()) {
 
 			diffStats.setVisibility(View.GONE);
 			diffLines.addView(getMessageView(context.getResources().getString(R.string.binaryFileError)));
@@ -97,7 +97,7 @@ public class FilesDiffAdapter extends BaseAdapter {
 			diffStats.setVisibility(View.VISIBLE);
 			headerFileInfo.setText(data.getFileInfo());
 
-			String[] codeLines = getLines(data.getFileContents());
+			String[] codeLines = getLines(data.toString());
 
 			if(MAXIMUM_LINES > codeLines.length) {
 

@@ -1,6 +1,6 @@
 package org.mian.gitnex.helpers;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -70,7 +70,7 @@ public class Version {
 	 * @param v
 	 * @return
 	 */
-	public boolean equal(@NotNull Version v) {
+	public boolean equal(@NonNull Version v) {
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
@@ -101,7 +101,7 @@ public class Version {
 	 * @param v
 	 * @return
 	 */
-	public boolean less(@NotNull Version v) {
+	public boolean less(@NonNull Version v) {
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
@@ -142,7 +142,7 @@ public class Version {
 	 * @param v
 	 * @return
 	 */
-	public boolean higher(@NotNull Version v) {
+	public boolean higher(@NonNull Version v) {
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
@@ -182,7 +182,7 @@ public class Version {
 	 * @param v
 	 * @return
 	 */
-	public boolean lessOrEqual(@NotNull Version v) {
+	public boolean lessOrEqual(@NonNull Version v) {
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
@@ -213,7 +213,7 @@ public class Version {
 	 * @param v
 	 * @return
 	 */
-	public boolean higherOrEqual(@NotNull Version v) {
+	public boolean higherOrEqual(@NonNull Version v) {
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
