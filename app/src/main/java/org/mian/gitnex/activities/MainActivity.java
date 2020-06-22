@@ -243,6 +243,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				userAvatar.setOnClickListener(v -> {
 
+					toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
 					drawer.closeDrawers();
 				});
