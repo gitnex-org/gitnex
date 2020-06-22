@@ -71,13 +71,14 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
             }
         });
 
-        addCollaborator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bmListener.onButtonClicked("addCollaborator");
-                dismiss();
-            }
-        });
+		if (tinyDb.getBoolean("isRepoAdmin")) {
+			addCollaborator.setOnClickListener(v1 -> {
+				bmListener.onButtonClicked("addCollaborator");
+				dismiss();
+			});
+		} else {
+			addCollaborator.setVisibility(View.GONE);
+		}
 
         createRelease.setOnClickListener(new View.OnClickListener() {
             @Override
