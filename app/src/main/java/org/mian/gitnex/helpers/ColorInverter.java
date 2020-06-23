@@ -33,7 +33,22 @@ public class ColorInverter {
     	if(imageView != null) {
 
 		    Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-		    return getContrastColor(bitmap.getPixel(bitmap.getWidth() / 2, bitmap.getHeight() / 2));
+
+		    int colorSum = 0;
+		    int divisionValue = 0;
+
+		    for(int height=0; height<bitmap.getHeight(); height += 10) {
+
+		    	for(int width=0; width<bitmap.getWidth(); width += 10) {
+
+		    		colorSum += bitmap.getPixel(width, height);
+		    		divisionValue++;
+
+			    }
+		    }
+
+		    // Calculate average color
+		    return getContrastColor(colorSum / divisionValue);
 
 	    }
     	else {

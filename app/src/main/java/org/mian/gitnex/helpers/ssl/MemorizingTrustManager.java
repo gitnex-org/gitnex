@@ -39,7 +39,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * Author Georg Lukas, modified by anonTree1417
+ * Author Georg Lukas, modified by opyale
  */
 
 public class MemorizingTrustManager implements X509TrustManager {

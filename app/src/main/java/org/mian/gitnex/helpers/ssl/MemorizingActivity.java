@@ -7,7 +7,7 @@ import android.os.Bundle;
 import org.mian.gitnex.R;
 
 /**
- * Author Georg Lukas, modified by anonTree1417
+ * Author Georg Lukas, modified by opyale
  */
 
 public class MemorizingActivity extends Activity {

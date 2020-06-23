@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Author anonTree1417
+ * Author opyale
  */
 
 public class PicassoCache implements Cache {
