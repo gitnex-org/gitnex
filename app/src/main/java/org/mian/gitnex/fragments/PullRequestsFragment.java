@@ -332,6 +332,9 @@ public class PullRequestsFragment extends Fragment {
 		List<PullRequests> arr = new ArrayList<>();
 
 		for(PullRequests d : prList) {
+			if(d == null || d.getTitle() == null || d.getBody() == null) {
+				continue;
+			}
 			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text)) {
 				arr.add(d);
 			}

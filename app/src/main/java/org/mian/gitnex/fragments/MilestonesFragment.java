@@ -318,6 +318,9 @@ public class MilestonesFragment extends Fragment {
         List<Milestones> arr = new ArrayList<>();
 
         for(Milestones d : dataList) {
+	        if(d == null || d.getTitle() == null || d.getDescription() == null) {
+		        continue;
+	        }
             if(d.getTitle().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
                 arr.add(d);
             }

@@ -325,6 +325,9 @@ public class IssuesFragment extends Fragment {
 		List<Issues> arr = new ArrayList<>();
 
 		for(Issues d : issuesList) {
+			if(d == null || d.getTitle() == null || d.getBody() == null) {
+				continue;
+			}
 			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text)) {
 				arr.add(d);
 			}
