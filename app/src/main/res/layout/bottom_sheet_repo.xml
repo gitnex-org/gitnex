@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="8dp"
-    android:background="?attr/primaryBackgroundColor"
-    android:paddingTop="8dp">
+    android:paddingTop="6dp"
+    android:paddingBottom="12dp"
+    android:background="?attr/primaryBackgroundColor">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/createNewIssue"
@@ -39,7 +39,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/createNewMilestone"
@@ -51,7 +51,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/createLabel"
@@ -63,7 +63,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/createRelease"
@@ -75,13 +75,13 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginStart="64dp"
                 android:background="?attr/dividerColor" />
 
@@ -95,7 +95,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/starRepository"
@@ -107,7 +107,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/unStarRepository"
@@ -119,7 +119,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/watchRepository"
@@ -131,7 +131,7 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/unWatchRepository"
@@ -143,13 +143,13 @@
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="12dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginStart="64dp"
                 android:background="?attr/dividerColor" />
 
@@ -160,10 +160,10 @@
                 android:layout_gravity="center_vertical"
                 android:drawableStart="@drawable/ic_share_24dp"
                 android:drawablePadding="24dp"
-                android:padding="16dp"
                 android:text="@string/shareRepository"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="12dp" />
 
             <TextView
                 android:id="@+id/openWebRepo"
@@ -172,10 +172,10 @@
                 android:layout_gravity="center_vertical"
                 android:drawableStart="@drawable/ic_open_in_browser"
                 android:drawablePadding="24dp"
-                android:padding="16dp"
                 android:text="@string/openWebRepo"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="12dp" />
 
         </LinearLayout>
 

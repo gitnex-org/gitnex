@@ -151,7 +151,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
                 TextView repoWatchers = view.findViewById(R.id.repoWatchers);
                 TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
-                bottomSheetHeader.setText(repoFullName.getText());
+                bottomSheetHeader.setText(String.format("%s / %s", repoFullName.getText().toString().split("/")[0], repoFullName.getText().toString().split("/")[1]));
                 BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(view);
                 dialog.show();
