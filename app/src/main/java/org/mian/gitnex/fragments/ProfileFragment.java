@@ -56,6 +56,7 @@ public class ProfileFragment extends Fragment {
 	    ImageView userAvatarBackground = v.findViewById(R.id.userAvatarBackground);
         ImageView userAvatar = v.findViewById(R.id.userAvatar);
         TextView userLogin = v.findViewById(R.id.userLogin);
+        View divider = v.findViewById(R.id.divider);
         TextView userLanguage = v.findViewById(R.id.userLanguage);
         ImageView userLanguageIcon = v.findViewById(R.id.userLanguageIcon);
 
@@ -82,13 +83,14 @@ public class ProfileFragment extends Fragment {
 			    @Override
 			    public void onSuccess() {
 
-				    int textColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
+				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
 
-				    userFullName.setTextColor(textColor);
-				    userLogin.setTextColor(textColor);
-				    userLanguage.setTextColor(textColor);
+				    userFullName.setTextColor(invertedColor);
+				    divider.setBackgroundColor(invertedColor);
+				    userLogin.setTextColor(invertedColor);
+				    userLanguage.setTextColor(invertedColor);
 
-				    ImageViewCompat.setImageTintList(userLanguageIcon, ColorStateList.valueOf(textColor));
+				    ImageViewCompat.setImageTintList(userLanguageIcon, ColorStateList.valueOf(invertedColor));
 
 				    blurView.setupWith(aboutFrame)
 					    .setBlurAlgorithm(new RenderScriptBlur(ctx))
