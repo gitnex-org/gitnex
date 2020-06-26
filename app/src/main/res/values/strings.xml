@@ -587,6 +587,7 @@
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Please enter the correct token</string>
 
+    <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">No pull requests found</string>
     <string name="prCreator">Creator :\u0020</string>
     <string name="editPrText">Edit Pull Request</string>

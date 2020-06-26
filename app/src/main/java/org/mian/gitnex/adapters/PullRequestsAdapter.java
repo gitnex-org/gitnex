@@ -190,8 +190,15 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			prMergeable.setText(String.valueOf(prModel.isMergeable()));
 			if(prModel.getHead() != null) {
 				prHeadBranch.setText(prModel.getHead().getRef());
-				prIsFork.setText(String.valueOf(prModel.getHead().getRepo().isFork()));
-				prForkFullName.setText(prModel.getHead().getRepo().getFull_name());
+				if(prModel.getHead().getRepo() != null) {
+					prIsFork.setText(String.valueOf(prModel.getHead().getRepo().isFork()));
+					prForkFullName.setText(prModel.getHead().getRepo().getFull_name());
+				}
+				else {
+					// pull was done from a deleted fork
+					prIsFork.setText("true");
+					prForkFullName.setText(context.getString(R.string.prDeletedFrok));
+				}
 			}
 			prCommentsCount.setText(String.valueOf(prModel.getComments()));
 
