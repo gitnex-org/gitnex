@@ -152,7 +152,7 @@ public class RepositoriesByOrgFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

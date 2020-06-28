@@ -78,7 +78,7 @@ public class StarredRepositoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_starred_repositories, container, false);
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
         setHasOptionsMenu(true);
 
         TinyDB tinyDb = new TinyDB(getContext());
@@ -186,7 +186,7 @@ public class StarredRepositoriesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

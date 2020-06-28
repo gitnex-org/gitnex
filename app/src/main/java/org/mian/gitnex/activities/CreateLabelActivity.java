@@ -73,7 +73,7 @@ public class CreateLabelActivity extends BaseActivity {
 
         }
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         ImageView closeActivity = findViewById(R.id.close);
         colorPicker = findViewById(R.id.colorPicker);
@@ -154,7 +154,7 @@ public class CreateLabelActivity extends BaseActivity {
     private void processUpdateLabel() {
 
         final TinyDB tinyDb = new TinyDB(appCtx);
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
@@ -202,7 +202,7 @@ public class CreateLabelActivity extends BaseActivity {
 
     private void processCreateLabel() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
         TinyDB tinyDb = new TinyDB(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");

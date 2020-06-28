@@ -47,7 +47,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         appCtx = getApplicationContext();
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -97,7 +97,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 
     private void processNewOrganization() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
         TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");

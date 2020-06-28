@@ -36,7 +36,7 @@ configurations {
 }
 
 dependencies {
-    def lifecycle_version = "2.2.0"
+    def lifecycle_version = "2.3.0-alpha05"
     def markwon_version = '4.3.1'
     def acra = "5.5.0"
 
@@ -77,7 +77,7 @@ dependencies {
     implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.19"
     implementation "com.hendraanggrian.appcompat:socialview:0.2"
     implementation "com.hendraanggrian.appcompat:socialview-commons:0.2"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0" // Deprecated (https://developer.android.com/jetpack/androidx/releases/lifecycle)
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "com.github.HamidrezaAmz:BreadcrumbsView:0.2.9"
     implementation "commons-io:commons-io:20030203.000550"

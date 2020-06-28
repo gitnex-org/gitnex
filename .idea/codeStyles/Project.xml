@@ -36,6 +36,7 @@
       <option name="SPACE_BEFORE_CATCH_PARENTHESES" value="false" />
       <option name="SPACE_BEFORE_SWITCH_PARENTHESES" value="false" />
       <option name="SPACE_BEFORE_SYNCHRONIZED_PARENTHESES" value="false" />
+      <option name="METHOD_CALL_CHAIN_WRAP" value="1" />
       <option name="IF_BRACE_FORCE" value="3" />
       <option name="WRAP_ON_TYPING" value="1" />
       <indentOptions>

@@ -38,5 +38,10 @@ public class UrlHelper {
 
     }
 
+    public static String fixScheme(String url, String scheme) {
+
+    	return !url.matches("^(http|https)://.+$") ? scheme + "://" + url : url;
+    }
+
 }
 

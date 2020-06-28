@@ -28,7 +28,6 @@ import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -132,7 +131,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
             public void run() {
                 if(searchFilter) {
 
-                    boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+                    boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
                     inflater.inflate(R.menu.search_menu, menu);
 

@@ -27,7 +27,7 @@ public class AppApiService {
 	public static <S> S createService(Class<S> serviceClass, String instanceURL, Context ctx) {
 
 		TinyDB tinyDb = new TinyDB(ctx);
-		final boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
+		final boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 		File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
 		int cacheSize = FilesData.returnOnlyNumber(tinyDb.getString("cacheSizeStr")) * 1024 * 1024;
 		Cache cache = new Cache(httpCacheDirectory, cacheSize);

@@ -62,7 +62,7 @@ public class MergePullRequestActivity extends BaseActivity {
 		View view = viewBinding.getRoot();
 		setContentView(view);
 
-		boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 		TinyDB tinyDb = new TinyDB(appCtx);
 
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -217,7 +217,7 @@ public class MergePullRequestActivity extends BaseActivity {
 		String mergePRTitle = viewBinding.mergeTitle.getText().toString();
 		boolean deleteBranch = viewBinding.deleteBranch.isChecked();
 
-		boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		if(!connToInternet) {
 

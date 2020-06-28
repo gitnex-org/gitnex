@@ -51,7 +51,7 @@ public class RepositoriesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         final View v = inflater.inflate(R.layout.fragment_repositories, container, false);
         setHasOptionsMenu(true);
@@ -161,7 +161,7 @@ public class RepositoriesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

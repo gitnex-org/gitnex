@@ -78,7 +78,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         appCtx = getApplicationContext();
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -256,7 +256,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         final String orgName = tinyDb.getString("orgName");;
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         String newTeamName = teamName.getText().toString();
         String newTeamDesc = teamDesc.getText().toString();
         String newTeamPermission = teamPermission.getText().toString().toLowerCase();

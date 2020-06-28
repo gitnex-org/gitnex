@@ -52,7 +52,7 @@ public class OrganizationsFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_organizations, container, false);
         setHasOptionsMenu(true);
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         TinyDB tinyDb = new TinyDB(getContext());
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -158,7 +158,7 @@ public class OrganizationsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

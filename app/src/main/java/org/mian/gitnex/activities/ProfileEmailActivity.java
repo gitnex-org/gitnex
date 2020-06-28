@@ -49,7 +49,7 @@ public class ProfileEmailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         appCtx = getApplicationContext();
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -84,7 +84,7 @@ public class ProfileEmailActivity extends BaseActivity {
 
     private void processAddNewEmail() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");

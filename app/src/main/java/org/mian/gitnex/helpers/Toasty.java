@@ -13,34 +13,34 @@ import org.mian.gitnex.R;
 
 public class Toasty {
 
-    public static void info(Context context, String message) {
+	public static void info(Context context, String message) {
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate( context.getResources().getLayout(R.layout.custom_toast), null );
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View view = inflater.inflate(context.getResources().getLayout(R.layout.custom_toast), null);
 
-        TextView text = view.findViewById(R.id.toastText);
-        text.setText(message);
+		TextView text = view.findViewById(R.id.toastText);
+		text.setText(message);
 
-        Toast toast = new Toast(context);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(view);
-        toast.show();
+		Toast toast = new Toast(context);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(view);
+		toast.show();
 
-    }
+	}
 
-    public static void error(Context context, String message) {
+	public static void error(Context context, String message) {
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate( context.getResources().getLayout(R.layout.custom_toast_error), null );
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View view = inflater.inflate(context.getResources().getLayout(R.layout.custom_toast_error), null);
 
-        TextView text = view.findViewById(R.id.toastText);
-        text.setText(message);
+		TextView text = view.findViewById(R.id.toastText);
+		text.setText(message);
 
-        Toast toast = new Toast(context);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(view);
-        toast.show();
+		Toast toast = new Toast(context);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(view);
+		toast.show();
 
-    }
+	}
 
 }

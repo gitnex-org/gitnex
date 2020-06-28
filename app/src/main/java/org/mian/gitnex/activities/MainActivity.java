@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			tinyDb.putInt("homeScreenId", 0);
 		}
 
-		boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		if(!tinyDb.getBoolean("loggedInMode")) {
 			logout(this, ctx);

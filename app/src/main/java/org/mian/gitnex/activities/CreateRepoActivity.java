@@ -64,7 +64,7 @@ public class CreateRepoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         appCtx = getApplicationContext();
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(ctx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 
         TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -124,7 +124,7 @@ public class CreateRepoActivity extends BaseActivity {
 
     private void processNewRepo() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
         TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");

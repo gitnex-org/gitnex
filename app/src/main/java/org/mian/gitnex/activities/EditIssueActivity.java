@@ -196,7 +196,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
     private void processEditIssue() {
 
-        boolean connToInternet = AppUtil.haveNetworkConnection(appCtx);
+        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         TinyDB tinyDb = new TinyDB(appCtx);
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
