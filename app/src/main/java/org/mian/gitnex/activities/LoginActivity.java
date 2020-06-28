@@ -273,11 +273,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 			String instanceUrlWithProtocol;
 			if(protocol.toLowerCase().equals("https")) {
 				instanceUrl = "https://" + instanceHost + "/api/v1/";
-				instanceUrlWithProtocol = "https://" + instanceHost;
+				instanceUrlWithProtocol = "https://" + instanceHost + "/";
 			}
 			else {
 				instanceUrl = "http://" + instanceHost + "/api/v1/";
-				instanceUrlWithProtocol = "http://" + instanceHost;
+				instanceUrlWithProtocol = "http://" + instanceHost + "/";
 			}
 
 			tinyDb.putString("instanceUrlRaw", instanceHost);

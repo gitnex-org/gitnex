@@ -203,7 +203,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
             markwon.setParsedMarkdown(holder.releaseBodyContent, bodyWithMD);
         }
         else {
-            holder.releaseBodyContent.setVisibility(View.GONE);
+	        holder.releaseBodyContent.setText(R.string.noReleaseBodyContent);
         }
 
 	    holder.downloadFrame.setOnClickListener(v -> {

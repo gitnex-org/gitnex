@@ -59,6 +59,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 		private TextView repoStars;
 		private TextView repoForks;
 		private TextView repoOpenIssuesCount;
+		private TextView repoType;
 		private LinearLayout archiveRepo;
 
 		private ReposSearchViewHolder(View itemView) {
@@ -75,6 +76,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 			repoForks = itemView.findViewById(R.id.repoForks);
 			repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
 			ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
+			repoType = itemView.findViewById(R.id.repoType);
 			archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
 
 			itemView.setOnClickListener(v -> {
@@ -233,9 +235,11 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 		holder.fullName.setText(currentItem.getFullname());
 		if(currentItem.getPrivateFlag()) {
 			holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock_bold);
+			holder.repoType.setText(R.string.strPrivate);
 		}
 		else {
 			holder.repoPrivatePublic.setImageResource(R.drawable.ic_public);
+			holder.repoType.setText(R.string.strPublic);
 		}
 		holder.repoStars.setText(currentItem.getStars_count());
 		holder.repoForks.setText(currentItem.getForks_count());

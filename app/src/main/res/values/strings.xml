@@ -217,6 +217,7 @@
     <string name="noDataReleasesTab">No releases found</string>
     <string name="releaseTag">Tag: %1$s</string>
     <string name="releasePublishedBy">Published by @%1$s</string>
+    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
 
     <string name="collaboratorsNameToast">Collaborator : %1$s</string>
     <string name="noDataCollaboratorTab">No collaborators found</string>
