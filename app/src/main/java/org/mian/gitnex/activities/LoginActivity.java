@@ -188,7 +188,7 @@ public class LoginActivity extends BaseActivity {
 
 			if(loginType == LoginType.BASIC) {
 
-				int loginOTP = Integer.parseInt(otpCode.getText().toString().trim());
+				int loginOTP = (otpCode.getText().toString().length() == 6) ? Integer.parseInt(otpCode.getText().toString().trim()) : 0;
 
 				if(rawInstanceUrl.getUserInfo() != null) {
 
