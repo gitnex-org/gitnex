@@ -64,7 +64,7 @@ public class ReplyToIssueActivity extends BaseActivity {
         addComment = findViewById(R.id.addComment);
         addComment.setShowSoftInputOnFocus(true);
 
-        defaultMentionAdapter = new MentionArrayAdapter<>(this);
+        defaultMentionAdapter = new MentionArrayAdapter<>(ctx);
         loadCollaboratorsList();
 
         addComment.setMentionAdapter(defaultMentionAdapter);

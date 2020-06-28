@@ -517,6 +517,7 @@
 
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
+    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
 
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
 
@@ -539,6 +540,8 @@
     <string name="menuContentDesc">Menu</string>
     <string name="menuEditText">Edit</string>
     <string name="menuDeleteText">Delete</string>
+    <string name="menuCopyText">Copy</string>
+    <string name="menuQuoteText">Quote and Reply</string>
     <string name="colorfulBulletSpan" translatable="false">\u0020\u0020\u0020\u25CF\u0020\u0020\u0020</string>
     <string name="modifiedText">edited</string>
     <string name="saveButton">Save</string>

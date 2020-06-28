@@ -42,6 +42,30 @@
                 android:padding="12dp" />
 
             <TextView
+                android:id="@+id/commentMenuQuote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/menuQuoteText"
+                android:drawableStart="@drawable/ic_comment"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/commentMenuCopy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/menuCopyText"
+                android:drawableStart="@drawable/ic_content_copy"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
+            <TextView
                 android:id="@+id/issueCommentShare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
