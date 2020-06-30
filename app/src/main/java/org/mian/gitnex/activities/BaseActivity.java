@@ -103,6 +103,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 			tinyDb.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
 		}
 
+		if(!tinyDb.getString("instanceUrlWithProtocol").endsWith("/")) {
+
+			tinyDb.putString("instanceUrlWithProtocol", tinyDb.getString("instanceUrlWithProtocol") + "/");
+		}
+
 		if (tinyDb.getBoolean("crashReportingEnabled")) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);
