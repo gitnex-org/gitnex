@@ -95,7 +95,7 @@ public class AppUtil {
 		return str.matches("^[\\w-]+$");
 	}
 
-	public Boolean checkIntegers(String str) {
+	public static Boolean checkIntegers(String str) {
 
 		return str.matches("\\d+");
 	}

@@ -3,26 +3,25 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.amulyakhare.textdrawable.TextDrawable;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.ImageViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.models.Labels;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author M M Arif
@@ -39,12 +38,17 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         private TextView labelTitle;
         private TextView labelId;
         private TextView labelColor;
-        private ImageView labelsView;
+
+        private CardView labelView;
+        private ImageView labelIcon;
+        private TextView labelName;
 
         private LabelsViewHolder(View itemView) {
             super(itemView);
 
-            labelsView = itemView.findViewById(R.id.labelsView);
+            labelView = itemView.findViewById(R.id.labelView);
+            labelIcon = itemView.findViewById(R.id.labelIcon);
+            labelName = itemView.findViewById(R.id.labelName);
             ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
             labelTitle = itemView.findViewById(R.id.labelTitle);
             labelId = itemView.findViewById(R.id.labelId);
@@ -119,19 +123,13 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         String labelName = currentItem.getName();
 
         int color = Color.parseColor("#" + labelColor);
+        int contrastColor = new ColorInverter().getContrastColor(color);
 
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .useFont(Typeface.DEFAULT)
-                .bold()
-                .textColor(new ColorInverter().getContrastColor(color))
-                .fontSize(35)
-                .width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, 40, 20))
-                .height(55)
-                .endConfig()
-                .buildRoundRect(labelName, color, 10);
+	    ImageViewCompat.setImageTintList(holder.labelIcon, ColorStateList.valueOf(contrastColor));
 
-        holder.labelsView.setImageDrawable(drawable);
+        holder.labelName.setTextColor(contrastColor);
+        holder.labelName.setText(labelName);
+        holder.labelView.setCardBackgroundColor(color);
 
     }
 

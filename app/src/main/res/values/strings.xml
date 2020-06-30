@@ -527,6 +527,8 @@
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="filesBreadcrumb">Root</string>
 
+    <string name="notSupported">Not supported</string>
+
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>

@@ -154,7 +154,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				commentMenuQuote.setOnClickListener(v1 -> {
 
 					StringBuilder stringBuilder = new StringBuilder();
-					stringBuilder.append("@").append(commenterUsername.getText().toString()).append("\n\n");
+					String commenterName = commenterUsername.getText().toString();
+
+					if(!commenterName.equals(tinyDb.getString("userLogin"))) {
+
+						stringBuilder.append("@").append(commenterName).append("\n\n");
+					}
 
 					String[] lines = commendBodyRaw.getText().toString().split("\\R");
 

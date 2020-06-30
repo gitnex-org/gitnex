@@ -63,11 +63,19 @@ public class ProfileFragment extends Fragment {
 	    ViewGroup aboutFrame = v.findViewById(R.id.aboutFrame);
 
 	    String[] userLanguageCodes = tinyDb.getString("userLang").split("-");
-	    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
+
+	    if(userLanguageCodes.length >= 2) {
+
+		    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
+		    userLanguage.setText(locale.getDisplayCountry());
+	    }
+	    else {
+
+	    	userLanguage.setText(R.string.notSupported);
+	    }
 
 	    userFullName.setText(tinyDb.getString("userFullname"));
 	    userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
-	    userLanguage.setText(locale.getDisplayCountry());
 
 	    PicassoService.getInstance(ctx).get()
 		    .load(tinyDb.getString("userAvatar"))

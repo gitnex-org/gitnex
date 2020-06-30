@@ -19,10 +19,14 @@ import org.mian.gitnex.activities.AddRemoveLabelsActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
+import org.mian.gitnex.helpers.PathsHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.util.TinyDB;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
+import io.mikael.urlbuilder.UrlBuilder;
 
 /**
  * Author M M Arif
@@ -138,53 +142,61 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		shareIssue.setOnClickListener(v1 -> {
 
-			// get url of repo
-			String repoFullName = tinyDB.getString("repoFullName");
-			String instanceUrlWithProtocol = "https://" + tinyDB.getString("instanceUrlRaw");
-			if(!tinyDB.getString("instanceUrlWithProtocol").isEmpty()) {
-				instanceUrlWithProtocol = tinyDB.getString("instanceUrlWithProtocol");
+			try {
+
+				URI instanceUrl = new URI(tinyDB.getString("instanceUrlWithProtocol"));
+
+				String issuePath = PathsHelper.join(instanceUrl.getPath(), tinyDB.getString("repoFullName"), "/issues/", tinyDB.getString("issueNumber"));
+
+				String issueUrl = UrlBuilder.fromUri(instanceUrl)
+					.withPath(issuePath)
+					.toString();
+
+				// share issue
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, issueUrl);
+				startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle")));
+
 			}
-
-			// get issue Url
-			String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
-
-			// share issue
-			Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-			sharingIntent.setType("text/plain");
-			sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle"));
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, issueUrl);
-			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle")));
-
-			dismiss();
+			catch(URISyntaxException e) {
+				Toasty.error(ctx, getString(R.string.genericError));
+			}
+			finally {
+				dismiss();
+			}
 
 		});
 
-		copyIssueUrl.setOnClickListener(new View.OnClickListener() {
+		copyIssueUrl.setOnClickListener(v12 -> {
 
-			@Override
-			public void onClick(View v) {
+			try {
 
-				// get url of repo
-				String repoFullName = tinyDB.getString("repoFullName");
-				String instanceUrlWithProtocol = "https://" + tinyDB.getString("instanceUrlRaw");
-				if(!tinyDB.getString("instanceUrlWithProtocol").isEmpty()) {
-					instanceUrlWithProtocol = tinyDB.getString("instanceUrlWithProtocol");
-				}
+				URI instanceUrl = new URI(tinyDB.getString("instanceUrlWithProtocol"));
 
-				// get issue Url
-				String issueUrl = instanceUrlWithProtocol + "/" + repoFullName + "/issues/" + tinyDB.getString("issueNumber");
+				String issuePath = PathsHelper.join(instanceUrl.getPath(), tinyDB.getString("repoFullName"), "/issues/", tinyDB.getString("issueNumber"));
+
+				String issueUrl = UrlBuilder.fromUri(instanceUrl)
+					.withPath(issuePath)
+					.toString();
 
 				// copy to clipboard
-				ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(android.content.Context.CLIPBOARD_SERVICE);
+				ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
 				ClipData clip = ClipData.newPlainText("issueUrl", issueUrl);
 				assert clipboard != null;
 				clipboard.setPrimaryClip(clip);
 
-				dismiss();
-
 				Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
 
 			}
+			catch(URISyntaxException e) {
+				Toasty.error(ctx, getString(R.string.genericError));
+			}
+			finally {
+				dismiss();
+			}
+
 		});
 
 		if(tinyDB.getString("issueType").equals("issue")) {
