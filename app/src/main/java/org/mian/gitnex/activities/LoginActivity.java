@@ -174,6 +174,7 @@ public class LoginActivity extends BaseActivity {
 				.toUri();
 
 			URI instanceUrlWithProtocol = UrlBuilder.fromUri(rawInstanceUrl)
+				.withPath(PathsHelper.join(rawInstanceUrl.getPath()))
 				.withScheme(protocol.name().toLowerCase())
 				.toUri();
 
