@@ -1,13 +1,5 @@
 package org.mian.gitnex.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,15 +11,20 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminGetUsersAdapter;
 import org.mian.gitnex.fragments.BottomSheetAdminUsersFragment;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
-import java.util.List;
 
 /**
  * Author M M Arif
@@ -78,18 +75,12 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                        AdminGetUsersViewModel.loadUsersList(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
-                    }
-                }, 500);
-            }
-        });
+        swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+
+            swipeRefresh.setRefreshing(false);
+            AdminGetUsersViewModel.loadUsersList(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
+
+        }, 500));
 
         fetchDataAsync(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
 
@@ -97,25 +88,24 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
 
     private void fetchDataAsync(Context ctx, String instanceUrl, String instanceToken) {
 
-        AdminGetUsersViewModel usersModel = ViewModelProviders.of(this).get(AdminGetUsersViewModel.class);
+        AdminGetUsersViewModel usersModel = new ViewModelProvider(this).get(AdminGetUsersViewModel.class);
 
-        usersModel.getUsersList(ctx, instanceUrl, instanceToken).observe(this, new Observer<List<UserInfo>>() {
-            @Override
-            public void onChanged(@Nullable List<UserInfo> usersListMain) {
-                adapter = new AdminGetUsersAdapter(ctx, usersListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mRecyclerView.setAdapter(adapter);
-                    noDataUsers.setVisibility(View.GONE);
-                    searchFilter = true;
-                }
-                else {
-                    //adapter.notifyDataSetChanged();
-                    //mRecyclerView.setAdapter(adapter);
-                    mRecyclerView.setVisibility(View.GONE);
-                    noDataUsers.setVisibility(View.VISIBLE);
-                }
+        usersModel.getUsersList(ctx, instanceUrl, instanceToken).observe(this, usersListMain -> {
+
+            adapter = new AdminGetUsersAdapter(ctx, usersListMain);
+            if(adapter.getItemCount() > 0) {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mRecyclerView.setAdapter(adapter);
+                noDataUsers.setVisibility(View.GONE);
+                searchFilter = true;
             }
+            else {
+                //adapter.notifyDataSetChanged();
+                //mRecyclerView.setAdapter(adapter);
+                mRecyclerView.setVisibility(View.GONE);
+                noDataUsers.setVisibility(View.VISIBLE);
+            }
+
         });
 
     }
@@ -126,37 +116,36 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
         final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(searchFilter) {
+        new Handler().postDelayed(() -> {
 
-                    boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+            if(searchFilter) {
 
-                    inflater.inflate(R.menu.search_menu, menu);
+                boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-                    MenuItem searchItem = menu.findItem(R.id.action_search);
-                    androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-                    searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                inflater.inflate(R.menu.search_menu, menu);
 
-                    if(!connToInternet) {
-                        return;
+                MenuItem searchItem = menu.findItem(R.id.action_search);
+                SearchView searchView = (SearchView) searchItem.getActionView();
+                searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+                if(!connToInternet) {
+                    return;
+                }
+
+                searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+
+                    @Override
+                    public boolean onQueryTextSubmit(String query) { return true; }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        adapter.getFilter().filter(newText);
+                        return false;
                     }
 
-                    searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit(String query) {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean onQueryTextChange(String newText) {
-                            adapter.getFilter().filter(newText);
-                            return false;
-                        }
-                    });
-                }
+                });
             }
+
         }, 500);
 
         return true;
@@ -193,12 +182,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+        onClickListener = view -> finish();
     }
 
 }
