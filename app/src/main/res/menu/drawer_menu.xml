@@ -20,6 +20,9 @@
         <item android:id="@+id/nav_explore"
             android:icon="@drawable/ic_search"
             android:title="@string/navExplore" />
+        <item android:id="@+id/nav_comments_draft"
+            android:icon="@drawable/ic_drafts_24dp"
+            android:title="@string/titleDrafts" />
         <item android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person_24dp"
             android:title="@string/navProfile" />

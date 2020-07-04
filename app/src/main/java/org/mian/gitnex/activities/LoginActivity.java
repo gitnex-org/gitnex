@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.tooltip.Tooltip;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.helpers.NetworkObserver;
 import org.mian.gitnex.helpers.PathsHelper;
 import org.mian.gitnex.helpers.SnackBar;
@@ -380,6 +381,15 @@ public class LoginActivity extends BaseActivity {
 						tinyDB.putString("loginUid", userDetails.getLogin());
 						tinyDB.putString("userLogin", userDetails.getUsername());
 
+						// insert new account to db if does not exist
+						String accountName = userDetails.getUsername() + "@" + instanceUrl;
+						UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
+						int checkAccount = userAccountsApi.getCount(accountName);
+
+						if(checkAccount == 0) {
+							userAccountsApi.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
+						}
+
 						enableProcessButton();
 						startActivity(new Intent(LoginActivity.this, MainActivity.class));
 						finish();
@@ -517,6 +527,15 @@ public class LoginActivity extends BaseActivity {
 														tinyDB.putString(loginUid + "-token", newToken.getSha1());
 														tinyDB.putString(loginUid + "-token-last-eight", appUtil.getLastCharactersOfWord(newToken.getSha1(), 8));
 
+														// insert new account to db if does not exist
+														String accountName = userDetails.getUsername() + "@" + instanceUrl;
+														UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
+														int checkAccount = userAccountsApi.getCount(accountName);
+
+														if(checkAccount == 0) {
+															userAccountsApi.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), newToken.getSha1(), "");
+														}
+
 														startActivity(new Intent(LoginActivity.this, MainActivity.class));
 														finish();
 														break;
@@ -581,6 +600,16 @@ public class LoginActivity extends BaseActivity {
 										assert userDetails != null;
 										tinyDB.putString("userLogin", userDetails.getUsername());
 										tinyDB.putBoolean("loggedInMode", true);
+
+										// insert new account to db if does not exist
+										String accountName = userDetails.getUsername() + "@" + instanceUrl;
+										UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
+										int checkAccount = userAccountsApi.getCount(accountName);
+
+										if(checkAccount == 0) {
+											userAccountsApi.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), instanceToken, "");
+										}
+
 										startActivity(new Intent(LoginActivity.this, MainActivity.class));
 										finish();
 										break;

@@ -41,6 +41,29 @@ public class AlertDialogs {
 
     }
 
+    public static void forceLogoutDialog(final Context context, String title, String message, String copyPositiveButton) {
+
+	    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
+		    .setTitle(title)
+		    .setMessage(message)
+		    .setCancelable(false)
+		    .setIcon(R.drawable.ic_info_outline_24dp)
+		    .setPositiveButton(copyPositiveButton, (dialog, which) -> {
+
+			    final TinyDB tinyDb = new TinyDB(context);
+			    tinyDb.putBoolean("loggedInMode", false);
+			    tinyDb.remove("basicAuthPassword");
+			    tinyDb.putBoolean("basicAuthFlag", false);
+
+			    Intent intent = new Intent(context, LoginActivity.class);
+			    context.startActivity(intent);
+			    dialog.dismiss();
+
+		    });
+
+	    alertDialogBuilder.create().show();
+    }
+
     public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton) {
 
         new AlertDialog.Builder(context)

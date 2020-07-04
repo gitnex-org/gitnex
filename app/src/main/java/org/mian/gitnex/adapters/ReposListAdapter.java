@@ -25,6 +25,8 @@ import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.models.Repository;
+import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.UserRepositories;
@@ -90,12 +92,33 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 				//tinyDb.putBoolean("resumeIssues", true);
 				tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
 
+				String[] parts = repoFullName.getText().toString().split("/");
+				final String repoOwner = parts[0];
+				final String repoName = parts[1];
+
+				int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+				RepositoriesApi repositoryData = new RepositoriesApi(context);
+
+				//RepositoriesRepository.deleteRepositoriesByAccount(currentActiveAccountId);
+				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
+
+				if(count == 0) {
+
+					long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
+					tinyDb.putLong("repositoryId", id);
+
+				}
+				else {
+
+					Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
+					tinyDb.putLong("repositoryId", data.getRepositoryId());
+
+				}
+
 				//store if user is watching this repo
 				{
+
 					final String instanceUrl = tinyDb.getString("instanceUrl");
-					String[] parts = repoFullName.getText().toString().split("/");
-					final String repoOwner = parts[0];
-					final String repoName = parts[1];
 					final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
 					WatchInfo watch = new WatchInfo();
@@ -136,6 +159,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 
 						}
 					});
+
 				}
 
 				context.startActivity(intent);

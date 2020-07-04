@@ -15,6 +15,11 @@ public interface StaticGlobalVariables {
 	String tagPullRequestsList = "PullRequestsListFragment";
 	String tagIssuesList = "IssuesListFragment";
 	String tagMilestonesAdapter = "MilestonesAdapter";
+	String draftsRepository = "DraftsRepository";
+	String repositoriesRepository = "RepositoriesRepository";
+	String replyToIssueActivity = "ReplyToIssueActivity";
+	String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
+	String userAccountsRepository = "UserAccountsRepository";
 
 	// issues variables
 	int issuesPageInit = 1;
@@ -25,5 +30,9 @@ public interface StaticGlobalVariables {
 
 	// milestone
 	int milestonesPageInit = 1;
+
+	// drafts
+	String draftTypeComment = "comment";
+	String draftTypeIssue = "issue";
 
 }

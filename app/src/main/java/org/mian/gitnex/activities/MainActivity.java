@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -26,7 +27,11 @@ import com.google.android.material.navigation.NavigationView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.fragments.AboutFragment;
+import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
+import org.mian.gitnex.fragments.DraftsFragment;
 import org.mian.gitnex.fragments.AdministrationFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
@@ -46,6 +51,7 @@ import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.util.AppUtil;
 import org.mian.gitnex.util.TinyDB;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 import retrofit2.Call;
@@ -55,7 +61,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetDraftsFragment.BottomSheetListener {
 
 	private DrawerLayout drawer;
 	private BlurView blurView;
@@ -85,6 +91,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		tinyDb.putBoolean("noConnection", false);
 		//userAvatar = findViewById(R.id.userAvatar);
 
+		Intent mainIntent = getIntent();
+		String launchFragment = mainIntent.getStringExtra("launchFragment");
+
 		final String instanceUrl = tinyDb.getString("instanceUrl");
 		final String loginUid = tinyDb.getString("loginUid");
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -111,6 +120,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		if(!tinyDb.getBoolean("loggedInMode")) {
 			logout(this, ctx);
 			return;
+		}
+
+		String accountName = loginUid + "@" + instanceUrl;
+		try {
+			getAccountData(accountName);
+		}
+		catch(ExecutionException | InterruptedException e) {
+			Log.e("getAccountData", e.toString());
 		}
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
@@ -158,6 +175,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 		else if(fragmentById instanceof AboutFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAbout));
+		}
+		else if(fragmentById instanceof DraftsFragment) {
+			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 		}
 		else if(fragmentById instanceof AdministrationFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
@@ -263,6 +283,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		toggle.syncState();
 
+		if(launchFragment != null) {
+
+			if(launchFragment.equals("drafts")) {
+
+				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
+				toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
+				navigationView.setCheckedItem(R.id.nav_comments_draft);
+				mainIntent.removeExtra("launchFragment");
+				return;
+			}
+		}
+
 		if(savedInstanceState == null) {
 
 			switch(tinyDb.getInt("homeScreenId")) {
@@ -336,9 +368,55 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 	}
 
-	public void setActionBarTitle(@NonNull String title) {
+	@Override
+	public void onButtonClicked(String text) {
 
-		Objects.requireNonNull(getSupportActionBar()).setTitle(title);
+		TinyDB tinyDb = new TinyDB(ctx);
+		int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+
+		if("deleteDrafts".equals(text)) {
+
+			if(currentActiveAccountId > 0) {
+
+				FragmentManager fm = getSupportFragmentManager();
+				DraftsFragment frag = (DraftsFragment) fm.findFragmentById(R.id.fragment_container);
+
+				if(frag != null) {
+
+					new AlertDialog.Builder(ctx).setTitle(R.string.deleteAllDrafts).setIcon(R.drawable.ic_delete).setCancelable(false).setMessage(R.string.deleteAllDraftsDialogMessage).setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
+
+						frag.deleteAllDrafts(currentActiveAccountId);
+						dialog.dismiss();
+
+					}).setNegativeButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss()).show();
+
+				}
+				else {
+					Toasty.error(ctx, getResources().getString(R.string.genericError));
+				}
+
+			}
+			else {
+				Toasty.error(ctx, getResources().getString(R.string.genericError));
+			}
+
+		}
+
+	}
+
+	public void getAccountData(String accountName) throws ExecutionException, InterruptedException {
+
+		UserAccountsApi accountData = new UserAccountsApi(ctx);
+		UserAccount data = accountData.getAccountData(accountName);
+
+		if(data != null) {
+			TinyDB tinyDb = new TinyDB(ctx.getApplicationContext());
+			tinyDb.putInt("currentActiveAccountId", data.getAccountId());
+		}
+		else {
+			AlertDialogs.forceLogoutDialog(ctx, getResources().getString(R.string.forceLogoutDialogHeader), getResources().getString(R.string.forceLogoutDialogDescription), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+		}
+
 	}
 
 	@Override
@@ -407,6 +485,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreRepositoriesFragment()).commit();
 				break;
 
+			case R.id.nav_comments_draft:
+				toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
+				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
+				break;
+
 			case R.id.nav_administration:
 				toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
 				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdministrationFragment()).commit();
@@ -437,6 +520,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		//tinyDb.clear();
 		activity.finish();
 		ctx.startActivity(new Intent(ctx, LoginActivity.class));
+
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		if(id == R.id.genericMenu) {
+			BottomSheetDraftsFragment bottomSheet = new BottomSheetDraftsFragment();
+			bottomSheet.show(getSupportFragmentManager(), "draftsBottomSheet");
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 
 	}
 

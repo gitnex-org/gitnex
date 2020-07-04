@@ -85,6 +85,8 @@ dependencies {
     implementation "ch.acra:acra-mail:$acra"
     implementation "ch.acra:acra-limiter:$acra"
     implementation "ch.acra:acra-notification:$acra"
+    implementation "androidx.room:room-runtime:2.2.5"
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
     implementation "com.eightbitlab:blurview:1.6.3"
     implementation "io.mikael:urlbuilder:2.0.9"
 
