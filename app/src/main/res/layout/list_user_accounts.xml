@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutUserAccountsFrame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:background="?attr/primaryBackgroundColor">
+
+    <LinearLayout
+        android:id="@+id/frameAccountsInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/userId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".95"
+            android:layout_gravity="start"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/activeAccount"
+            android:layout_weight=".05"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            android:contentDescription="@string/menuContentDesc" />
+
+        <ImageView
+            android:id="@+id/deleteAccount"
+            android:layout_weight=".05"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            android:contentDescription="@string/menuDeleteText" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/accountUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="14sp" />
+
+</LinearLayout>
+

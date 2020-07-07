@@ -58,6 +58,7 @@
     <string name="pageTitleNewFile">New File</string>
     <string name="pageTitleExplore">Explore</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
     <!-- page titles -->
 
     <string name="appVersion">Version\u0020:\u0020</string>
@@ -684,4 +685,6 @@
     <string name="reportsHintText">Crash reports</string>
 
     <string name="archivedRepository">Archived</string>
+
+    <string name="accountDeletedMessage">Account deleted successfully</string>
 </resources>

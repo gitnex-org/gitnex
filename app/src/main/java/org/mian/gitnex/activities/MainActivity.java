@@ -40,6 +40,7 @@ import org.mian.gitnex.fragments.ProfileFragment;
 import org.mian.gitnex.fragments.RepositoriesFragment;
 import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
+import org.mian.gitnex.fragments.UserAccountsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ChangeLog;
@@ -182,6 +183,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else if(fragmentById instanceof AdministrationFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
 		}
+		else if(fragmentById instanceof UserAccountsFragment) {
+			toolbarTitle.setText(getResources().getString(R.string.pageTitleUserAccounts));
+		}
 
 		drawer = findViewById(R.id.drawer_layout);
 		NavigationView navigationView = findViewById(R.id.nav_view);
@@ -279,6 +283,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			@Override
 			public void onDrawerStateChanged(int newState) {}
 
+		});
+
+		ImageView userAccounts = hView.findViewById(R.id.userAccounts);
+		userAccounts.setOnClickListener(v -> {
+
+			toolbarTitle.setText(getResources().getString(R.string.pageTitleUserAccounts));
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountsFragment()).commit();
+			drawer.closeDrawers();
 		});
 
 		toggle.syncState();
