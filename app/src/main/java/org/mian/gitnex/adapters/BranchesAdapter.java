@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CommitsActivity;
-import org.mian.gitnex.models.Branches;
-import org.mian.gitnex.util.TinyDB;
-import java.util.List;
-import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CommitsActivity;
+import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.models.Branches;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Author M M Arif

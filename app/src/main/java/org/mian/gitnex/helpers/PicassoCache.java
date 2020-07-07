@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.squareup.picasso.Cache;
-import org.mian.gitnex.util.TinyDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

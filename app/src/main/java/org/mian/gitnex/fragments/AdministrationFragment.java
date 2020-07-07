@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AdminGetUsersActivity;
-import org.mian.gitnex.util.TinyDB;
+import org.mian.gitnex.helpers.TinyDB;
 
 /**
  * Author M M Arif

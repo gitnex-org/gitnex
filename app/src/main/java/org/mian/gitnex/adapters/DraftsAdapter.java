@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
-import org.mian.gitnex.database.models.DraftWithRepository;
 import org.mian.gitnex.database.api.DraftsApi;
+import org.mian.gitnex.database.models.DraftWithRepository;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.util.TinyDB;
 import java.util.List;
 
 /**

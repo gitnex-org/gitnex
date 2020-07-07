@@ -16,7 +16,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.TeamMembersByOrgAdapter;
 import org.mian.gitnex.fragments.BottomSheetOrganizationTeamsFragment;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.util.TinyDB;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.TeamMembersByOrgViewModel;
 import java.util.Objects;
 

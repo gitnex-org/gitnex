@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.Commits;
-import org.mian.gitnex.util.TinyDB;
 import java.util.List;
 import java.util.Locale;
 

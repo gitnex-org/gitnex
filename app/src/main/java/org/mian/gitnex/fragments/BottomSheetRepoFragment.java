@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.RepositoryActions;
-import org.mian.gitnex.util.TinyDB;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import org.mian.gitnex.helpers.TinyDB;
 
 /**
  * Author M M Arif

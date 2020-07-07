@@ -3,19 +3,18 @@ package org.mian.gitnex.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreditsActivity;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.SponsorsActivity;
-import org.mian.gitnex.util.AppUtil;
-import org.mian.gitnex.util.TinyDB;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.TinyDB;
 import java.util.Objects;
 
 /**

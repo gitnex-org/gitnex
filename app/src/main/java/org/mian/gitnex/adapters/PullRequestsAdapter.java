@@ -18,8 +18,8 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.PullRequests;
-import org.mian.gitnex.util.TinyDB;
 import java.util.List;
 import java.util.Locale;
 

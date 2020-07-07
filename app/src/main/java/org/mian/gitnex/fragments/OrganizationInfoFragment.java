@@ -18,8 +18,8 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.Organization;
-import org.mian.gitnex.util.TinyDB;
 import retrofit2.Call;
 import retrofit2.Callback;
 

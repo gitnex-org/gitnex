@@ -10,10 +10,10 @@ import org.acra.config.LimiterConfigurationBuilder;
 import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 import org.mian.gitnex.R;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.util.AppUtil;
-import org.mian.gitnex.util.TinyDB;
+import org.mian.gitnex.helpers.TinyDB;
 
 /**
  * Author M M Arif

@@ -26,7 +26,7 @@ import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.util.TinyDB;
+import org.mian.gitnex.helpers.TinyDB;
 import java.util.Locale;
 import java.util.Objects;
 import eightbitlab.com.blurview.BlurView;

@@ -1,4 +1,4 @@
-package org.mian.gitnex.util;
+package org.mian.gitnex.helpers;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
