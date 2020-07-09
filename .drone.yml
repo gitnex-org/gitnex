@@ -94,7 +94,7 @@ steps:
       PLUGIN_FILE: 'signed.apk'
       PLUGIN_TIMEOUT: 180
       PLUGIN_ATTEMPTS: 5
-      PLUGIN_DESTINATION: 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/latest.apk'
+      PLUGIN_DESTINATION: 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/builds/latest.apk'
       PLUGIN_CUSTOM_ARGUMENTS: '--progress-bar'
 
 trigger:
