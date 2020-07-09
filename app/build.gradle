@@ -10,8 +10,8 @@ android {
         versionName "3.0.0-rc3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
     buildTypes {
         release {
@@ -89,5 +89,4 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     implementation "com.eightbitlab:blurview:1.6.3"
     implementation "io.mikael:urlbuilder:2.0.9"
-
 }

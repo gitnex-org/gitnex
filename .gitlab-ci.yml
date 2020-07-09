@@ -1,0 +1,62 @@
+stages:
+  - test
+  - build
+  - sign
+  - publish
+
+test:
+  image: nextcloudci/android:android-49
+  stage: test
+  script:
+    - ./gradlew test
+
+build:
+  image: nextcloudci/android:android-49
+  stage: build
+  only:
+    - master
+  script:
+    - ./gradlew build
+  artifacts:
+    paths:
+      - app/build/outputs/
+    expire_in: 15 minutes
+
+sign:
+  image: nextcloudci/android:android-49
+  stage: sign
+  only:
+    - master
+  variables:
+    OUTPUT: "signed.apk"
+    GITEA: "https://gitea.com"
+    KS_FILE: "ci_keystore.jks"
+  script:
+    - ./scripts/sign-build.sh
+  artifacts:
+    paths:
+      - signed.apk
+    expire_in: 30 minutes
+
+latest:
+  image: tutum/curl
+  stage: publish
+  only:
+    - master
+  variables:
+    WEBDAV_USERNAME: "GitNexBot"
+    PLUGIN_FILE: "signed.apk"
+    PLUGIN_DESTINATION: "https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/latest.apk"
+  script:
+    - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" "$PLUGIN_DESTINATION"
+
+release:
+  image: tutum/curl
+  stage: publish
+  only:
+    - tags
+  variables:
+    WEBDAV_USERNAME: "GitNexBot"
+    PLUGIN_FILE: "signed.apk"
+  script:
+    - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/releases/'"$CI_COMMIT_REF_NAME"'.apk'

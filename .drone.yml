@@ -26,6 +26,12 @@ steps:
   #    depends_on: [ clone ]
   #    commands:
   #      - /opt/intellij/bin/idea.sh inspect/format ...
+  #
+  #  - name: do-or-check-formatting
+  #    image: dlsniper/docker-intellij
+  #    depends_on: [ clone ]
+  #    commands:
+  #      - /opt/intellij/bin/idea.sh format -s .idea/codeStyles/Project.xml -m *.java app/src/main/java
 
 trigger:
   event:
@@ -65,7 +71,7 @@ steps:
   - name: sign
     image: nextcloudci/android:android-49
     environment:
-      TOKEN:
+      BOT_TOKEN:
         from_secret: BOT_TOKEN
       KS_PASS:
         from_secret: KS_PASS
