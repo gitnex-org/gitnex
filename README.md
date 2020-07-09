@@ -13,7 +13,7 @@ GitNex is licensed under GPLv3 License. See the LICENSE file for the full licens
 [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex)
 [<img alt='Download APK' src='https://gitnex.com/img/download-apk.png' height="80"/>](https://cloud.swatian.com/s/QoDFzMxmnf2FfYw)
 
-Download latest build from master: [https://cloud.swatian.com/s/Cq592xGEfnsGAAW](https://cloud.swatian.com/s/Cq592xGEfnsGAAW)
+Download the latest build from master and old releases [here](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE).
 
 ## Note about Gitea version
 Please make sure that you are on latest stable release or later for better app experience.

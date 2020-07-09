@@ -36,7 +36,7 @@ sign:
   artifacts:
     paths:
       - signed.apk
-    expire_in: 30 minutes
+    expire_in: 15 minutes
 
 latest:
   image: tutum/curl
@@ -46,7 +46,7 @@ latest:
   variables:
     WEBDAV_USERNAME: "GitNexBot"
     PLUGIN_FILE: "signed.apk"
-    PLUGIN_DESTINATION: "https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/latest.apk"
+    PLUGIN_DESTINATION: "https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/builds/latest.apk"
   script:
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" "$PLUGIN_DESTINATION"
 
@@ -59,4 +59,5 @@ release:
     WEBDAV_USERNAME: "GitNexBot"
     PLUGIN_FILE: "signed.apk"
   script:
-    - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/GitNex-Builds/releases/'"$CI_COMMIT_REF_NAME"'.apk'
+    - [[ $CI_COMMIT_REF_NAME == *"-rc"* ]] && echo "Upload blocked. Build seems to be a release candidate." && exit 0
+    - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/releases/'"$CI_COMMIT_REF_NAME"'.apk'
