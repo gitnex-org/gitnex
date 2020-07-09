@@ -55,6 +55,22 @@ public class DraftsApi {
 		return draftId;
 	}
 
+	public long getDraftIdAsync(int issueId, int draftRepositoryId) {
+
+		try {
+
+			Thread thread = new Thread(() -> draftId = draftsDao.getDraftId(issueId, draftRepositoryId));
+			thread.start();
+			thread.join();
+		}
+		catch(InterruptedException e) {
+
+			Log.e(StaticGlobalVariables.draftsRepository, e.toString());
+		}
+
+		return draftId;
+	}
+
 	public Integer checkDraft(int issueId, int draftRepositoryId) {
 
 		try {
@@ -81,7 +97,7 @@ public class DraftsApi {
 		return draftsDao.fetchDraftByIssueId(issueId);
 	}
 
-	public static void deleteSingleDraft(final int draftId) {
+	public void deleteSingleDraft(final int draftId) {
 
 		final LiveData<Draft> draft = draftsDao.fetchDraftById(draftId);
 

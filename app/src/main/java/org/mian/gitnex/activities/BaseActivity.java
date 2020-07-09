@@ -103,6 +103,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 			tinyDb.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
 		}
 
+		// enable comment drafts by default
+		if(tinyDb.getString("draftsCommentsDeletionEnabledInit").isEmpty()) {
+			tinyDb.putBoolean("draftsCommentsDeletionEnabled", true);
+			tinyDb.putString("draftsCommentsDeletionEnabledInit", "yes");
+		}
+
 		if(!tinyDb.getString("instanceUrlWithProtocol").endsWith("/")) {
 
 			tinyDb.putString("instanceUrlWithProtocol", tinyDb.getString("instanceUrlWithProtocol") + "/");

@@ -304,6 +304,10 @@
     <string name="clearCacheSelectionSelectedText" translatable="false">0 B</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
+    <string name="draftsHeader">Drafts</string>
+    <string name="draftsHintText">Comments draft</string>
+    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
+    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>

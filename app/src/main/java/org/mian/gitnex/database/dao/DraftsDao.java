@@ -44,6 +44,9 @@ public interface DraftsDao {
     @Query("UPDATE Drafts SET draftText= :draftText WHERE issueId = :issueId AND draftRepositoryId = :draftRepositoryId")
     void updateDraftByIssueId(String draftText, int issueId, int draftRepositoryId);
 
+	@Query("SELECT draftId FROM Drafts WHERE issueId = :issueId AND draftRepositoryId = :draftRepositoryId")
+	Integer getDraftId(int issueId, int draftRepositoryId);
+
     @Query("DELETE FROM Drafts WHERE draftId = :draftId")
     void deleteByDraftId(int draftId);
 

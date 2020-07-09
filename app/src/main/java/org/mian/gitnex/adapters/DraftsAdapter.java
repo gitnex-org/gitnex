@@ -56,7 +56,8 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
                 int getDraftId = Integer.parseInt(draftId.getText().toString());
                 deleteDraft(getAdapterPosition());
-                DraftsApi.deleteSingleDraft(getDraftId);
+	            DraftsApi draftsApi = new DraftsApi(mCtx);
+	            draftsApi.deleteSingleDraft(getDraftId);
 
             });
 

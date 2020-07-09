@@ -55,6 +55,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 	private ArrayAdapter<Mention> defaultMentionAdapter;
 	private Button replyButton;
 	private String TAG = StaticGlobalVariables.replyToIssueActivity;
+	private long draftId;
 
 	@Override
 	protected int getLayoutResourceId(){
@@ -193,12 +194,12 @@ public class ReplyToIssueActivity extends BaseActivity {
 		int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
 		int issueNumber = Integer.parseInt(tinyDb.getString("issueNumber"));
 
-		DraftsApi draftsApi = new DraftsApi(getApplicationContext());
+		DraftsApi draftsApi = new DraftsApi(appCtx);
 
 		int countDraft = draftsApi.checkDraft(issueNumber, repositoryId);
 
 		if(countDraft == 0) {
-			long draftId = draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, draftText, StaticGlobalVariables.draftTypeComment);
+			draftId = draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, draftText, StaticGlobalVariables.draftTypeComment);
 		}
 		else {
 			DraftsApi.updateDraftByIssueIdAsyncTask(draftText, issueNumber, repositoryId);
@@ -321,6 +322,18 @@ public class ReplyToIssueActivity extends BaseActivity {
 					tinyDb.putBoolean("commentPosted", true);
 					tinyDb.putBoolean("resumeIssues", true);
 					tinyDb.putBoolean("resumePullRequests", true);
+
+					// delete draft comment
+					if(tinyDb.getBoolean("draftsCommentsDeletionEnabled")) {
+
+						int repositoryId = (int) tinyDb.getLong("repositoryId", 0);
+						int issueNumber = Integer.parseInt(tinyDb.getString("issueNumber"));
+
+						DraftsApi draftsApi = new DraftsApi(appCtx);
+						draftId = draftsApi.getDraftIdAsync(issueNumber, repositoryId);
+						draftsApi.deleteSingleDraft((int) draftId);
+					}
+
 					finish();
 
 				}
