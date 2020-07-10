@@ -4,10 +4,8 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#7f7e7b</color>
-    <color name="backgroundColor">#212121</color>
     <color name="hintColor">#7f7e7b</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="navHeader">#212121</color>
     <color name="black">#000009</color>
     <color name="white">#ffffff</color>
     <color name="tooltipBackground">#1e88ce</color>
@@ -16,7 +14,6 @@
     <color name="btnTextColor">#ffffff</color>
     <color name="inputBackground">#1d1d1d</color>
     <color name="toastBackground">#1d1d1d</color>
-    <color name="divider">#1d1d1d</color>
     <color name="releasePre">#f2711c</color>
     <color name="releaseStable">@color/btnBackground</color>
     <color name="colorRed">#CC361C</color>
@@ -26,7 +23,6 @@
     <color name="lightBlue">#3faef7</color>
     <color name="lightGray">#b6bbbf</color>
     <color name="darkGreen">#368f73</color>
-    <color name="lightDimGreen">#63fdd9</color>
     <color name="diffRemovedColor">#574343</color>
     <color name="diffAddedColor">#485A4B</color>
     <color name="diffSelectedColor">#434343</color>
