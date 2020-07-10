@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/pageTitleCreateNewIssue"
-                android:drawableStart="@drawable/ic_issue_open_white"
+                android:drawableStart="@drawable/ic_issue"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"

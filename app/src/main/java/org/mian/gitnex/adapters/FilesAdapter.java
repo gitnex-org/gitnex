@@ -160,13 +160,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         holder.fileName.setText(currentItem.getName());
 
         if(currentItem.getType().equals("file")) {
-            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_file_new));
+            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_file));
             holder.fileInfo.setVisibility(View.VISIBLE);
             holder.fileInfo.setText(AppUtil.formatFileSizeInDetail(currentItem.getSize()));
         }
         else if(currentItem.getType().equals("dir")) {
 	        holder.fileInfo.setVisibility(View.GONE);
-            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_folder_24));
+            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_directory));
         }
         else {
             holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_question_mark_24));

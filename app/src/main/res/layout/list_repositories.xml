@@ -88,7 +88,7 @@
                     android:layout_height="20dp"
                     android:layout_weight=".05"
                     android:contentDescription="@string/privateAvatar"
-                    android:src="@drawable/ic_lock_24dp" />
+                    android:src="@drawable/ic_lock" />
 
             </LinearLayout>
 
@@ -128,10 +128,10 @@
                 <TextView
                     android:id="@+id/repoOpenIssuesCount"
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight=".25"
-                    android:drawableStart="@drawable/ic_issue_open"
+                    android:drawableStart="@drawable/ic_issue"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
                     android:text="@string/repoWatchers"
@@ -141,10 +141,10 @@
                 <TextView
                     android:id="@+id/repoStars"
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight=".25"
-                    android:drawableStart="@drawable/ic_star"
+                    android:drawableStart="@drawable/ic_star_border_24dp"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
                     android:text="@string/repoStars"
@@ -154,10 +154,10 @@
                 <TextView
                     android:id="@+id/repoForks"
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight=".25"
-                    android:drawableStart="@drawable/ic_forks_24"
+                    android:drawableStart="@drawable/ic_fork"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
                     android:text="@string/repoWatchers"

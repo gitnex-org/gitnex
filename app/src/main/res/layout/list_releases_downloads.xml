@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_file_download_24dp"
+        app:srcCompat="@drawable/ic_download"
         android:contentDescription="@string/generalImgContentText" />
 
     <TextView

@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/createRepository"
-                android:drawableStart="@drawable/ic_repos"
+                android:drawableStart="@drawable/ic_repo"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"

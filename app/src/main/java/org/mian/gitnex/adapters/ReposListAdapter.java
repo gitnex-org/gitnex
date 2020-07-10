@@ -261,7 +261,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		}
 		holder.fullName.setText(currentItem.getFullname());
 		if(currentItem.getPrivateFlag()) {
-			holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock_bold);
+			holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock);
 			holder.repoType.setText(R.string.strPrivate);
 		}
 		else {

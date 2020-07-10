@@ -97,7 +97,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/repoStargazersInMenu"
-                            app:srcCompat="@drawable/ic_star" />
+                            app:srcCompat="@drawable/ic_star_border_24dp" />
 
                         <TextView
                             android:id="@+id/repoMetaStars"
@@ -119,7 +119,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/tabPullRequests"
-                            app:srcCompat="@drawable/ic_merge" />
+                            app:srcCompat="@drawable/ic_pull_request" />
 
                         <TextView
                             android:id="@+id/repoMetaPullRequests"
@@ -141,7 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/infoTabRepoForksCount"
-                            app:srcCompat="@drawable/ic_forks_24" />
+                            app:srcCompat="@drawable/ic_fork" />
 
                         <TextView
                             android:id="@+id/repoMetaForks"
@@ -163,7 +163,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/repoWatchersInMenu"
-                            app:srcCompat="@drawable/ic_watchers" />
+                            app:srcCompat="@drawable/ic_unwatch" />
 
                         <TextView
                             android:id="@+id/repoMetaWatchers"
@@ -193,12 +193,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/repoWatchersInMenu"
-                        app:srcCompat="@drawable/ic_file_download_24dp" />
+                        app:srcCompat="@drawable/ic_download" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -238,7 +238,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -278,7 +278,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 

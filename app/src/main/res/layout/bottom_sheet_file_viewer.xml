@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/downloadFile"
-                android:drawableStart="@drawable/ic_file_download_24dp"
+                android:drawableStart="@drawable/ic_download"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"

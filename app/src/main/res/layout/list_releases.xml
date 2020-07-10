@@ -221,7 +221,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:drawableStart="@drawable/ic_file_download_24dp"
+                android:drawableStart="@drawable/ic_download"
                 android:drawablePadding="8dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="14sp" />
@@ -232,7 +232,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:drawableStart="@drawable/ic_file_download_24dp"
+                android:drawableStart="@drawable/ic_download"
                 android:drawablePadding="8dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="14sp" />

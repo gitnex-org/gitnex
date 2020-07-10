@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:drawablePadding="5dp"
-                        android:drawableStart="@drawable/ic_comment_20"
+                        android:drawableStart="@drawable/ic_comment"
                         android:layout_gravity="center_horizontal"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="14sp" />
