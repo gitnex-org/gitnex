@@ -15,7 +15,6 @@
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">À propos</string>
-    <string name="pageTitleHome">Accueil</string>
     <string name="pageTitleMyRepos">Mes dépôts</string>
     <string name="pageTitleRepositories">Dépôts</string>
     <string name="pageTitleProfile">Profil</string>
@@ -37,8 +36,6 @@
     <string name="pageTitleExplore">Explorer</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
-    <string name="appVersion">Version\u0020:\u0020</string>
-    <string name="appBuild">Build No.\u0020:\u0020</string>
     <string name="repoName">Dépôt de démonstration</string>
     <string name="repoFullname">Nom complet du dépôt</string>
     <string name="repoDescription">Description de démonstration</string>
@@ -64,7 +61,6 @@
     <string name="navigation_drawer_close">Fermer le volet de navigation</string>
     <string name="logo">Se connecter à Gitea</string>
     <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA</string>
-    <string name="loginFailed">Mauvais nom d’utilisateur/mot de passe</string>
     <string name="malformedUrl">Connexion impossible. Vérifiez que l’URL et le port sont corrects.</string>
     <string name="protocolError">Il n’est recommandé d’utiliser le protocole HTTP que pour des tests en réseau local.</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
@@ -91,7 +87,6 @@
     <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">Traitement en cours</string>
     <string name="search">Rechercher</string>
-    <string name="wip">En développement</string>
     <string name="close">Fermer</string>
     <string name="addNewContent">Ajouter</string>
     <string name="orgContentAvatar">Org</string>
@@ -102,19 +97,13 @@
     <string name="title_activity_repo_detail">Activité du dépôt</string>
     <string name="tab_text_info">Détails</string>
     <string name="tab_text_files">Fichiers</string>
-    <string name="tab_text_issues">Tickets ouverts</string>
-    <string name="tabItemCloseIssues">Tickets fermés</string>
     <string name="tab_text_ml">Jalons</string>
     <string name="tab_text_releases">Versions</string>
     <string name="tab_text_branches">Branches</string>
     <string name="tab_text_labels">Étiquettes</string>
-    <string name="action_settings">Configuration</string>
     <string name="tab_text_collaborators">Collaborateurs</string>
     <string name="tabPullRequests">Demandes de tirage</string>
     <string name="noDataIssueTab">Aucun ticket</string>
-    <string name="infoTabRepoName1">Dépôt</string>
-    <string name="infoTabRepoOwner1">Propriétaire</string>
-    <string name="infoTabRepoDesc">Description</string>
     <string name="infoTabRepoWebsite">Site Web</string>
     <string name="infoTabRepoSize">Taille</string>
     <string name="infoTabRepoDefaultBranch">Branche par défaut</string>
@@ -128,19 +117,10 @@
     <string name="infoMoreInformation">Plus d’informations</string>
     <string name="timeAtText">à</string>
     <string name="createdText">Ouvert\u0020</string>
-    <string name="dueDateText">Échéance</string>
-    <string name="issueStatusTextOpen">Statut : ouvert</string>
-    <string name="issueStatusOpen">ouvert</string>
-    <string name="issueStatusTextClosed">Statut : fermé</string>
-    <string name="issueStatusClosed">fermé</string>
     <string name="issueCreator">Créateur :\u0020</string>
-    <string name="issueAssigneesText">Assignés</string>
-    <string name="issueTypeIssue">Type : problème</string>
-    <string name="issueTypePullRequest">Type : demande d’ajout</string>
     <string name="issueCommenter">Commentateur :\u0020</string>
     <string name="issueMilestone">Jalon %1$s</string>
     <string name="dueDate">Échéance au %1$s</string>
-    <string name="createdTime">Ouvert %1$s</string>
     <string name="assignedTo">Assigné à : %1$s</string>
     <string name="commentButtonText">Publier</string>
     <string name="commentEmptyError">Veuillez saisir votre commentaire</string>
@@ -150,33 +130,19 @@
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">Aucun jalon</string>
     <string name="commitAuthor">Auteur de la révision : %1$s</string>
-    <string name="commitHash">Hash de la révision \n%1$s%2$s</string>
-    <string name="releaseTitle">Titre de la version</string>
-    <string name="releaseDescription">Description de la version</string>
     <string name="releaseDownloadText">Télécharger</string>
-    <string name="releaseType">Format</string>
-    <string name="releaseZip">Version zip</string>
-    <string name="releaseTar">Version tar</string>
     <string name="noDataReleasesTab">Aucune version</string>
-    <string name="releaseTag">Tag : %1$s</string>
-    <string name="collaboratorsNameToast">Collaborateur : %1$s</string>
     <string name="noDataCollaboratorTab">Aucun collaborateur</string>
-    <string name="editText">Modifier</string>
     <string name="newMilestoneTitle">Titre</string>
     <string name="newMilestoneDescription">Description</string>
     <string name="newMilestoneDueDate">Échéance</string>
     <string name="milestoneNameErrorEmpty">Titre du jalon requis</string>
-    <string name="milestoneNameErrorInvalid">Titre du jalon invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">La description du jalon dépasse la limite de 255 caractères</string>
     <string name="milestoneCreated">Jalon créé</string>
     <string name="milestoneCreatedError">Une erreur s’est produite, veuillez réessayer</string>
     <string name="milestoneDateEmpty">Veuillez choisir une échéance</string>
-    <string name="milestoneOpenIssues">Tickets ouverts : %1$d</string>
-    <string name="milestoneClosedIssues">Tickets fermés : %1$d</string>
     <string name="newIssueSelectAssigneesListTitle">Assignés</string>
     <string name="newIssueSelectLabelsListTitle">Sélectionner des étiquettes</string>
-    <string name="newIssueDialogDone">Terminé</string>
-    <string name="newIssueDialogCancel">Annuler</string>
     <string name="newIssueTitle">Titre</string>
     <string name="newIssueAssigneesListTitle">Assignés</string>
     <string name="newIssueDescriptionTitle">Description</string>
@@ -204,13 +170,11 @@
     <string name="settingsDateTimeHeaderDefault">Relatif</string>
     <string name="settingsLanguageSelectorDialogTitle">Langue</string>
     <string name="settingsTimeSelectorDialogTitle">Format de date</string>
-    <string name="settingsIssueBadgeHeaderText">Compteur de tickets ouverts</string>
     <string name="settingsHelpTranslateText">Aidez-nous à traduire GitNex dans votre langue</string>
     <string name="codeBlockHeaderText">Couleur du code</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Couleur du code</string>
     <string name="settingsHomeScreenHeaderText">Écran d’accueil</string>
     <string name="settingsHomeScreenSelectedText">Mes dépôts</string>
-    <string name="settingshomeScreenSelectorDialogTitle">Écran d’accueil</string>
     <string name="settingsCustomFontHeaderText">Police</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choisir la police</string>
     <string name="themeSelectorDialogTitle">Sélectionnez le thème de l’application</string>
@@ -245,7 +209,6 @@
     <string name="labelDeleteText">Étiquette supprimée</string>
     <string name="labelDeleteErrorText">Une erreur s’est produite, veuillez réessayer</string>
     <string name="noDataBranchesTab">Aucune branche</string>
-    <string name="creditsLogoDesign">Graphisme</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
     <string name="alertDialogTokenRevokedMessage">Vous n’avez pas l’autorisation de voir ce contenu OU votre jeton d’accès a été révoqué. Dans ce dernier cas, veuillez vous reconnecter.</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Annuler</string>
@@ -324,12 +287,10 @@
     <string name="singleIssueEditLabels">Ajouter/supprimer des étiquettes</string>
     <string name="labelsUpdated">Étiquettes mises à jour</string>
     <string name="closeIssue">Fermer le ticket</string>
-    <string name="replyToIssue">Ajouter un commentaire</string>
     <string name="editIssue">Modifier le ticket</string>
     <string name="reOpenIssue">Réouvrir le ticket</string>
     <string name="issueStateClosed">Ticket fermé</string>
     <string name="issueStateReopened">Ticket réouvert</string>
-    <string name="addRemoveAssignees2">Ajouter des assignés</string>
     <string name="addRemoveAssignees">Ajouter/supprimer des assignés</string>
     <string name="assigneesUpdated">Assignés mis à jour</string>
     <string name="singleIssueSubscribe">S’abonner</string>
@@ -337,13 +298,11 @@
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Sélection des entrées</string>
-    <string name="validation_text">Veuillez sélectionner au moins une option</string>
     <string name="please_select_atleast">Veuillez sélectionner au moins </string>
     <string name="you_can_only_select_upto">Vous ne pouvez sélectionner que </string>
     <string name="option"> option</string>
     <string name="options"> options</string>
     <string name="select_all">Tout sélectionner</string>
-    <string name="de_select_all">Tout désélectionner</string>
     <!-- multi select dialog -->
     <string name="repoMetaData">Informations sur le dépôt</string>
     <!-- admin -->
@@ -378,19 +337,15 @@
     <string name="titleErrorEmpty">Titre requis</string>
     <string name="releaseCreatedText">Nouvelle version créée</string>
     <!-- release -->
-    <string name="loginOTPError">Code OTP requis</string>
     <string name="loginOTPTypeError">Le code OTP est composé de chiffres</string>
     <string name="loginOTP">Code OTP (si nécessaire)</string>
     <string name="otpMessage">Entrez le code OTP si l’authentification à deux facteurs est activée</string>
     <string name="openWebRepo">Ouvrir dans le navigateur</string>
     <string name="repoStargazersInMenu">Fans</string>
     <string name="repoWatchersInMenu">Observateurs</string>
-    <string name="noDataStargazers">Aucun fan</string>
-    <string name="noDataWatchers">Aucun observateur</string>
     <string name="noDataWebsite">Aucun site trouvé</string>
     <string name="starMember">Ajouter aux favoris</string>
     <string name="watcherMember">Observateur</string>
-    <string name="commitLinkBranchesTab">Dernière révision</string>
     <string name="zipArchiveDownloadReleasesTab">Archive zip</string>
     <string name="tarArchiveDownloadReleasesTab">Archive tar</string>
     <!-- new file -->
@@ -414,9 +369,7 @@
     <string name="milestoneCompletion">%1$d\uFF05 terminé</string>
     <!-- files -->
     <string name="noDataFilesTab">Aucun fichier</string>
-    <string name="filesDirNotSupportedYet">L’explorateur de dossiers n’est pas disponible pour l’instant</string>
     <string name="filesGenericError">Ce fichier ne peut être affiché, l’API a retourné une erreur</string>
-    <string name="filesBreadcrumb">Racine</string>
     <!-- generic copy -->
     <string name="okButton">Confirmer</string>
     <string name="doneButton">Terminé</string>
@@ -432,8 +385,6 @@
     <string name="menuDeleteText">Supprimer</string>
     <string name="modifiedText">modifié</string>
     <string name="saveButton">Sauvegarder</string>
-    <string name="nameText">Nom</string>
-    <string name="descriptionText">Description</string>
     <string name="websiteText">Site Web</string>
     <string name="locationText">Localisation</string>
     <string name="characters255Limit">255 caractères maximum</string>
@@ -454,12 +405,7 @@
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
     <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
     <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous continuez, l’application peut ne pas fonctionner correctement.</string>
-    <string name="versionSupportedOld">Ancienne version de Gitea détectée, veuillez mettre à jour vers la dernière version stable</string>
     <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
-    <string name="versionSupportedLatest">Gitea est à jour</string>
-    <string name="versionDevelopment">Version de développement</string>
-    <string name="versionUnknow">Aucun serveur Gitea détecté !</string>
-    <string name="versionAlertTitle">Alerte de version</string>
     <string name="versionAlertDialogHeader">Version de Gitea non prise en charge</string>
     <string name="loginViaPassword">Nom d’utilisateur / mot de passe</string>
     <string name="loginMethodText">Choisissez une méthode de connexion pour accéder à votre compte. Le jeton est la plus sécurisée !</string>
@@ -493,7 +439,6 @@
     <string name="sharePr">Partager la demande de tirage</string>
     <string name="shareRepository">Partager le dépôt</string>
     <string name="createRepository">Créer un dépôt</string>
-    <string name="repositoryTabCommits">Révisions</string>
     <string name="commitTitle">Révisions de la branche</string>
     <string name="commitCommittedBy">Révision de %1$s</string>
     <string name="viewCommits">Voir révisions</string>
@@ -502,31 +447,24 @@
     <string name="mtm_accept_cert">Accepter le certificat inconnu ?</string>
     <string name="mtm_trust_anchor">Le certificat du serveur n’est pas signé par une autorité de certification connue.</string>
     <string name="mtm_cert_expired">Le certificat du serveur a expiré.</string>
-    <string name="mtm_accept_servername">Accepter le nom de serveur incohérent ?</string>
     <string name="mtm_hostname_mismatch">Le serveur ne peut s’authentifier comme « %s ». Le certificat est valide pour :</string>
     <string name="mtm_connect_anyway">Se connecter malgré tout ?</string>
     <string name="mtm_cert_details">Détails du certificat :</string>
     <string name="mtm_decision_always">Faire confiance</string>
-    <string name="mtm_decision_once">Une fois</string>
     <string name="mtm_decision_abort">Abandonner</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscribtionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Fermer le jalon</string>
     <string name="openMilestone">Ouvrir le jalon</string>
     <string name="milestoneStatusUpdate">Jalon mis à jour</string>
-    <string name="tabIssueOpen">Ouvert</string>
-    <string name="tabIssueClosed">Fermé</string>
     <string name="errorOnLogin">Impossible d’accéder au serveur, veuillez vérifier son statut</string>
     <string name="reportViewerHeader">Rapports de plantage</string>
     <string name="settingsEnableReportsText">Activer les rapports de plantage</string>
     <string name="crashTitle">GitNex s’est arrêté :(</string>
     <string name="setCrashReports">Rapports de plantage</string>
     <string name="crashMessage">Appuyez sur OK pour nous envoyer le rapport de plantage par e-mail. Cela nous aidera à corriger le problème :)\n\nVous pouvez également y ajouter vos propres remarques. Merci !</string>
-    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>

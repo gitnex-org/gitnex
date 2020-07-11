@@ -15,7 +15,6 @@
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Hakkında</string>
-    <string name="pageTitleHome">Ana Sayfa</string>
     <string name="pageTitleMyRepos">Depolarım</string>
     <string name="pageTitleRepositories">Depolar</string>
     <string name="pageTitleProfile">Profil</string>
@@ -37,8 +36,6 @@
     <string name="pageTitleExplore">Keşfet</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
-    <string name="appVersion">Sürüm\u0020:\u0020</string>
-    <string name="appBuild">Yapı No.\u0020:\u0020</string>
     <string name="repoName">Demo deposu</string>
     <string name="repoFullname">ORG ile Depo</string>
     <string name="repoDescription">Demo açıklaması</string>
@@ -64,7 +61,6 @@
     <string name="navigation_drawer_close">Gezinme Çekmecesini Kapat</string>
     <string name="logo">Gitea\'ya Giriş Yap</string>
     <string name="urlInfoTooltip">1- Doğru protokolü seçin (https veya http). \n2- Gitea url girin, örneğin: try.gitea.io. \n3- Hesabınız için 2FA\'yı etkinleştirdiyseniz, kodu OTP Kodu alanına girin. \n4- HTTP temel kimlik doğrulaması için, URL alanında KULLANICIADI@DOMAIN.COM adresini kullanın.</string>
-    <string name="loginFailed">Yanlış kullanıcı adı/parola</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">Yerel ağ üzerinde test yapmadığınız sürece HTTP protokolünü kullanmanız önerilmez.</string>
     <string name="malformedJson">Kötü biçimlendirilmiş JSON alındı. Sunucu yanıtı başarısız oldu.</string>
@@ -91,7 +87,6 @@
     <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">İşlem devam ediyor</string>
     <string name="search">Ara</string>
-    <string name="wip">Yapım aşamasında</string>
     <string name="close">Kapat</string>
     <string name="addNewContent">Ekle</string>
     <string name="orgContentAvatar">Organizasyon</string>
@@ -102,19 +97,13 @@
     <string name="title_activity_repo_detail">DepoDetayEtkinliği</string>
     <string name="tab_text_info">Ayrıntılar</string>
     <string name="tab_text_files">Dosyalar</string>
-    <string name="tab_text_issues">Açık Konular</string>
-    <string name="tabItemCloseIssues">Kapalı Konular</string>
     <string name="tab_text_ml">Kilometre Taşları</string>
     <string name="tab_text_releases">Sürümler</string>
     <string name="tab_text_branches">Dallar</string>
     <string name="tab_text_labels">Etiketler</string>
-    <string name="action_settings">Ayarlar</string>
     <string name="tab_text_collaborators">İşbirlikçiler</string>
     <string name="tabPullRequests">İstekleri Çek</string>
     <string name="noDataIssueTab">Konu bulunamadı</string>
-    <string name="infoTabRepoName1">Depo</string>
-    <string name="infoTabRepoOwner1">Sahibi</string>
-    <string name="infoTabRepoDesc">Açıklama</string>
     <string name="infoTabRepoWebsite">Website</string>
     <string name="infoTabRepoSize">Boyut</string>
     <string name="infoTabRepoDefaultBranch">Varsayılan Dal</string>
@@ -128,19 +117,10 @@
     <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">de</string>
     <string name="createdText">Açıldı\u0020</string>
-    <string name="dueDateText">Bitiş Tarihi</string>
-    <string name="issueStatusTextOpen">Durum: açık</string>
-    <string name="issueStatusOpen">açık</string>
-    <string name="issueStatusTextClosed">Durum: kapalı</string>
-    <string name="issueStatusClosed">kapalı</string>
     <string name="issueCreator">Oluşturan:\u0020</string>
-    <string name="issueAssigneesText">Atananlar</string>
-    <string name="issueTypeIssue">Tür: Konu</string>
-    <string name="issueTypePullRequest">Tür: Çekme İsteği</string>
     <string name="issueCommenter">Yorumlayıcı:\u0020</string>
     <string name="issueMilestone">Kilometre taşı %1$s</string>
     <string name="dueDate">Due on %1$s</string>
-    <string name="createdTime">%1$s Açık</string>
     <string name="assignedTo">Atanmış: %1$s</string>
     <string name="commentButtonText">Yorum Yap</string>
     <string name="commentEmptyError">Lütfen yorumunuzu yazın</string>
@@ -150,33 +130,19 @@
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">Kilometre taşı bulunamadı</string>
     <string name="commitAuthor">İşleme yazarı: %1$s</string>
-    <string name="commitHash">Karma taahhüt \n%1$s%2$s</string>
-    <string name="releaseTitle">Sürüm Başlığı</string>
-    <string name="releaseDescription">Sürüm Açıklaması</string>
     <string name="releaseDownloadText">İndirmeler</string>
-    <string name="releaseType">Sürüm Türü</string>
-    <string name="releaseZip">Zip yayınla</string>
-    <string name="releaseTar">Tar yayınla</string>
     <string name="noDataReleasesTab">Sürüm bulunamadı</string>
-    <string name="releaseTag">Etiket: %1$s</string>
-    <string name="collaboratorsNameToast">İşbirlikçi : %1$s</string>
     <string name="noDataCollaboratorTab">İşbirlikçi bulunamadı</string>
-    <string name="editText">Düzenle</string>
     <string name="newMilestoneTitle">Başlık</string>
     <string name="newMilestoneDescription">Açıklama</string>
     <string name="newMilestoneDueDate">Bitiş Tarihi</string>
     <string name="milestoneNameErrorEmpty">Kilometre taşı başlığı boş</string>
-    <string name="milestoneNameErrorInvalid">Kilometre taşı başlığı geçerli değil. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">Kilometre taşı açıklaması 255 karakter limitini aşıyor</string>
     <string name="milestoneCreated">Kilometre taşı başarıyla oluşturuldu</string>
     <string name="milestoneCreatedError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="milestoneDateEmpty">Lütfen bitiş tarihi seçin</string>
-    <string name="milestoneOpenIssues">Açık Konu: %1$d</string>
-    <string name="milestoneClosedIssues">Kapalı Konu: %1$d</string>
     <string name="newIssueSelectAssigneesListTitle">Atanan Seç</string>
     <string name="newIssueSelectLabelsListTitle">Etiket Seç</string>
-    <string name="newIssueDialogDone">Tamam</string>
-    <string name="newIssueDialogCancel">İptal Et</string>
     <string name="newIssueTitle">Başlık</string>
     <string name="newIssueAssigneesListTitle">Atananlar</string>
     <string name="newIssueDescriptionTitle">Açıklama</string>
@@ -204,13 +170,11 @@
     <string name="settingsDateTimeHeaderDefault">Güzel</string>
     <string name="settingsLanguageSelectorDialogTitle">Dil Seç</string>
     <string name="settingsTimeSelectorDialogTitle">Zaman Formatını Seç</string>
-    <string name="settingsIssueBadgeHeaderText">Rozet Sorunları</string>
     <string name="settingsHelpTranslateText">GitNex\'i kendi dilinize çevirmemize yardımcı olun</string>
     <string name="codeBlockHeaderText">Kod Bloğu Rengi</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Kod Bloğu Renk Seçici</string>
     <string name="settingsHomeScreenHeaderText">Ana Ekran</string>
     <string name="settingsHomeScreenSelectedText">Depolarım</string>
-    <string name="settingshomeScreenSelectorDialogTitle">Ana Ekranı Seç</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
@@ -245,7 +209,6 @@
     <string name="labelDeleteText">Etiket silindi</string>
     <string name="labelDeleteErrorText">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="noDataBranchesTab">Dal bulunamadı</string>
-    <string name="creditsLogoDesign">Tasarım</string>
     <string name="alertDialogTokenRevokedTitle">Yetkilendirme Hatası</string>
     <string name="alertDialogTokenRevokedMessage">Erişim Jetonu iptal edilmiş gibi görünüyor VEYA bu içerikleri görmenize izin verilmiyor. Jeton iptal edilmesi durumunda, lütfen çıkış yapın ve tekrar giriş yapın</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">İptal</string>
@@ -324,12 +287,10 @@
     <string name="singleIssueEditLabels">Etiket Ekle/Kaldır</string>
     <string name="labelsUpdated">Etiketler güncellendi</string>
     <string name="closeIssue">Konuyu Kapat</string>
-    <string name="replyToIssue">Yorum Yap</string>
     <string name="editIssue">Konuyu Düzenle</string>
     <string name="reOpenIssue">Konuyu Tekrar Aç</string>
     <string name="issueStateClosed">Konu kapatıldı</string>
     <string name="issueStateReopened">Konu tekrar açıldı</string>
-    <string name="addRemoveAssignees2">Atanan Ekle</string>
     <string name="addRemoveAssignees">Atanan Ekle/Kaldır</string>
     <string name="assigneesUpdated">Atanan güncellendi</string>
     <string name="singleIssueSubscribe">Subscribe</string>
@@ -337,13 +298,11 @@
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Öğeleri Seç</string>
-    <string name="validation_text">Lütfen en az bir seçenek seçin</string>
     <string name="please_select_atleast">Lütfen en azını seçin </string>
     <string name="you_can_only_select_upto">Sadece en fazla şunu yapabilirsiniz </string>
     <string name="option"> seçenek</string>
     <string name="options"> seçenekler</string>
     <string name="select_all">Tümünü seç</string>
-    <string name="de_select_all">Tüm seçimleri kaldır</string>
     <!-- multi select dialog -->
     <string name="repoMetaData">Depo Meta</string>
     <!-- admin -->
@@ -378,19 +337,15 @@
     <string name="titleErrorEmpty">Başlık boş</string>
     <string name="releaseCreatedText">Yeni sürüm oluşturuldu</string>
     <!-- release -->
-    <string name="loginOTPError">OTP kodunu girin</string>
     <string name="loginOTPTypeError">OTP kodu sayılardan oluşmalıdır.</string>
     <string name="loginOTP">OTP Kodu (İsteğe Bağlı)</string>
     <string name="otpMessage">2FA etkinleştirilmişse otp kodunu girin</string>
     <string name="openWebRepo">Tarayıcıda Aç</string>
     <string name="repoStargazersInMenu">Yıldızlayanlar</string>
     <string name="repoWatchersInMenu">İzleyiciler</string>
-    <string name="noDataStargazers">Yıldız bulunamadı</string>
-    <string name="noDataWatchers">İzleyici bulunamadı</string>
     <string name="noDataWebsite">No website found</string>
     <string name="starMember">Yıldız</string>
     <string name="watcherMember">İzleyici</string>
-    <string name="commitLinkBranchesTab">İşleme</string>
     <string name="zipArchiveDownloadReleasesTab">Zip Arşivi</string>
     <string name="tarArchiveDownloadReleasesTab">Tar Arşivi</string>
     <!-- new file -->
@@ -414,9 +369,7 @@
     <string name="milestoneCompletion">%1$d\uFF05 tamamlandı</string>
     <!-- files -->
     <string name="noDataFilesTab">Dosya bulunamadı</string>
-    <string name="filesDirNotSupportedYet">Dizin tarama henüz desteklenmiyor</string>
     <string name="filesGenericError">Üzgünüz, bu dosya API hata döndürdüğü için görüntülenemiyor</string>
-    <string name="filesBreadcrumb">Kök</string>
     <!-- generic copy -->
     <string name="okButton">Tamam</string>
     <string name="doneButton">Tamam</string>
@@ -432,8 +385,6 @@
     <string name="menuDeleteText">Sil</string>
     <string name="modifiedText">düzenlendi</string>
     <string name="saveButton">Kaydet</string>
-    <string name="nameText">Ad</string>
-    <string name="descriptionText">Açıklama</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Konum</string>
     <string name="characters255Limit">Maksimum 255 karakter</string>
@@ -454,12 +405,7 @@
     <string name="watchRepositorySuccess">Depo izleme listesine eklendi</string>
     <string name="unWatchRepositorySuccess">Depo izleme listesinden kaldırıldı</string>
     <string name="versionUnsupportedOld">Gitea\'nin desteklenmeyen eski sürümü (%1$s) tespit edildi. Lütfen en son kararlı sürüme güncelleyin. Devam ederseniz, uygulama düzgün çalışmayabilir.</string>
-    <string name="versionSupportedOld">Eski Gitea sürümü tespit edildi, lütfen son stabil sürüme güncelleyin</string>
     <string name="versionUnsupportedNew">Yeni Gitea versiyonu tespit edildi! Lütfen GitNex\'i GÜNCELLEYİN!</string>
-    <string name="versionSupportedLatest">Gitea versiyonunuz güncel</string>
-    <string name="versionDevelopment">Gitea geliştirme versiyonu</string>
-    <string name="versionUnknow">Gitea bulunamadı!</string>
-    <string name="versionAlertTitle">Versiyon Uyarısı</string>
     <string name="versionAlertDialogHeader">Desteklenmeyen Gitea Versiyonu</string>
     <string name="loginViaPassword">Kullanıcı Adı / Şifre</string>
     <string name="loginMethodText">Hesabınıza erişmek için tercih ettiğiniz giriş yöntemini seçin. Jeton daha güvenli!</string>
@@ -493,7 +439,6 @@
     <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
-    <string name="repositoryTabCommits">Commits</string>
     <string name="commitTitle">Branch Commits</string>
     <string name="commitCommittedBy">Committed by %1$s</string>
     <string name="viewCommits">View Commits</string>
@@ -502,31 +447,24 @@
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
     <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
     <string name="mtm_cert_details">Certificate details:</string>
     <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscribtionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="tabIssueOpen">Open</string>
-    <string name="tabIssueClosed">Closed</string>
     <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
-    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>

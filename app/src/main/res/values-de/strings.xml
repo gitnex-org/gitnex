@@ -15,7 +15,6 @@
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Über</string>
-    <string name="pageTitleHome">Startseite</string>
     <string name="pageTitleMyRepos">Meine Repositories</string>
     <string name="pageTitleRepositories">Repositories</string>
     <string name="pageTitleProfile">Profil</string>
@@ -37,8 +36,6 @@
     <string name="pageTitleExplore">Erkunden</string>
     <string name="pageTitleAdministration">Gitea-Administration</string>
     <!-- page titles -->
-    <string name="appVersion">Version\u0020:\u0020</string>
-    <string name="appBuild">Build Nr.\u0020:\u0020</string>
     <string name="repoName">Demo Repo</string>
     <string name="repoFullname">Repo mit ORG</string>
     <string name="repoDescription">Demo Beschreibung</string>
@@ -64,7 +61,6 @@
     <string name="navigation_drawer_close">Navigationsleiste schließen</string>
     <string name="logo">In Gitea anmelden</string>
     <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld</string>
-    <string name="loginFailed">Falscher Benutzername/Passwort </string>
     <string name="malformedUrl">Konnte keine Verbindung zum Host herstellen. Bitte überprüfe die URL oder Port auf irgendwelche Fehler.</string>
     <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, du testest in einem lokalen Netzwerk.</string>
     <string name="malformedJson">Fehlerhaftes JSON erhalten. Serveranfrage war nicht erfolgreich.</string>
@@ -91,7 +87,6 @@
     <string name="fileTooLarge">Diese Datei überschreitet die maximal möglichen Diff-Länge.</string>
     <string name="processingText">verarbeite</string>
     <string name="search">Suche</string>
-    <string name="wip">In Arbeit</string>
     <string name="close">Schließen</string>
     <string name="addNewContent">Hinzufügen</string>
     <string name="orgContentAvatar">Org</string>
@@ -102,19 +97,13 @@
     <string name="title_activity_repo_detail">Repo-Details Aktivität</string>
     <string name="tab_text_info">Details</string>
     <string name="tab_text_files">Dateien</string>
-    <string name="tab_text_issues">Offene Issues</string>
-    <string name="tabItemCloseIssues">Geschlossene Issues</string>
     <string name="tab_text_ml">Meilensteine</string>
     <string name="tab_text_releases">Releases</string>
     <string name="tab_text_branches">Branches</string>
     <string name="tab_text_labels">Labels</string>
-    <string name="action_settings">Einstellungen</string>
     <string name="tab_text_collaborators">Mitarbeiter</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Keine Issues gefunden!</string>
-    <string name="infoTabRepoName1">Repository</string>
-    <string name="infoTabRepoOwner1">Eigentümer</string>
-    <string name="infoTabRepoDesc">Beschreibung</string>
     <string name="infoTabRepoWebsite">Webseite</string>
     <string name="infoTabRepoSize">Größe</string>
     <string name="infoTabRepoDefaultBranch">Standard Branch</string>
@@ -128,19 +117,10 @@
     <string name="infoMoreInformation">Mehr Informationen</string>
     <string name="timeAtText">um</string>
     <string name="createdText">Erstellt\u0020</string>
-    <string name="dueDateText">Fälligkeitsdatum</string>
-    <string name="issueStatusTextOpen">Status: offen</string>
-    <string name="issueStatusOpen">öffnen</string>
-    <string name="issueStatusTextClosed">Status: geschlossen</string>
-    <string name="issueStatusClosed">geschlossen</string>
     <string name="issueCreator">Ersteller:\u0020</string>
-    <string name="issueAssigneesText">Zuständige</string>
-    <string name="issueTypeIssue">Typ: Issue</string>
-    <string name="issueTypePullRequest">Typ: Pull Request</string>
     <string name="issueCommenter">Kommentator:\u0020</string>
     <string name="issueMilestone">Meilenstein %1$s</string>
     <string name="dueDate">Fällig am %1$s</string>
-    <string name="createdTime">Erstellt %1$s</string>
     <string name="assignedTo">Zugewiesen an: %1$s</string>
     <string name="commentButtonText">Kommentar</string>
     <string name="commentEmptyError">Bitte schreibe deinen Kommentar!</string>
@@ -150,33 +130,19 @@
     <string name="generalImgContentText">Benutzerbild</string>
     <string name="noDataMilestonesTab">Kein Meilenstein gefunden!</string>
     <string name="commitAuthor">Commit Autor: %1$s</string>
-    <string name="commitHash">Commit Hash \n%1$s%2$s</string>
-    <string name="releaseTitle">Release Titel</string>
-    <string name="releaseDescription">Release Beschreibung</string>
     <string name="releaseDownloadText">Downloads</string>
-    <string name="releaseType">Release Typ</string>
-    <string name="releaseZip">Release Zip</string>
-    <string name="releaseTar">Release Tar</string>
     <string name="noDataReleasesTab">Kein Release gefunden!</string>
-    <string name="releaseTag">Tag: %1$s</string>
-    <string name="collaboratorsNameToast">Mitarbeiter : %1$s</string>
     <string name="noDataCollaboratorTab">Kein Zuständiger gefunden!</string>
-    <string name="editText">Bearbeiten</string>
     <string name="newMilestoneTitle">Titel</string>
     <string name="newMilestoneDescription">Beschreibung</string>
     <string name="newMilestoneDueDate">Fälligkeitsdatum</string>
     <string name="milestoneNameErrorEmpty">Titel des Meilensteins ist leer</string>
-    <string name="milestoneNameErrorInvalid">Titel des Meilensteins ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">Die Beschreibung des Meilensteins überschreitet die maximale Anzahl von 255 Zeichen</string>
     <string name="milestoneCreated">Meilenstein erfolgreich erstellt!</string>
     <string name="milestoneCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="milestoneDateEmpty">Bitte wählen Sie das Fälligkeitsdatum!</string>
-    <string name="milestoneOpenIssues">Offene Issues: %1$d</string>
-    <string name="milestoneClosedIssues">Geschlossene Issues: %1$d</string>
     <string name="newIssueSelectAssigneesListTitle">Wählen Sie Zuständige aus</string>
     <string name="newIssueSelectLabelsListTitle">Label auswählen</string>
-    <string name="newIssueDialogDone">Erledigt</string>
-    <string name="newIssueDialogCancel">Abbrechen</string>
     <string name="newIssueTitle">Titel</string>
     <string name="newIssueAssigneesListTitle">Zuständiger</string>
     <string name="newIssueDescriptionTitle">Beschreibung</string>
@@ -204,13 +170,11 @@
     <string name="settingsDateTimeHeaderDefault">Schön</string>
     <string name="settingsLanguageSelectorDialogTitle">Sprache auswählen</string>
     <string name="settingsTimeSelectorDialogTitle">Zeitformat auswählen</string>
-    <string name="settingsIssueBadgeHeaderText">Issues Badge</string>
     <string name="settingsHelpTranslateText">Hilf uns dabei, GitNex in deine Sprache zu übersetzen.</string>
     <string name="codeBlockHeaderText">Code Block Farbe</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code-Block-Farbauswahl</string>
     <string name="settingsHomeScreenHeaderText">Startseite</string>
     <string name="settingsHomeScreenSelectedText">Meine Repositories</string>
-    <string name="settingshomeScreenSelectorDialogTitle">Home Screen Auswählen</string>
     <string name="settingsCustomFontHeaderText">Schriftart</string>
     <string name="settingsCustomFontSelectorDialogTitle">Wähle eine Schriftart</string>
     <string name="themeSelectorDialogTitle">App-Design auswählen</string>
@@ -245,7 +209,6 @@
     <string name="labelDeleteText">Label gelöscht!</string>
     <string name="labelDeleteErrorText">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="noDataBranchesTab">Keine Branch gefunden!</string>
-    <string name="creditsLogoDesign">Design</string>
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
     <string name="alertDialogTokenRevokedMessage">Es scheint, dass das Access Token widerrufen wurde ODER du die Inhalte nicht sehen darfst. Im Falle von widerrufenen Token, bitte logge dich aus und wieder ein.</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Abbrechen</string>
@@ -324,12 +287,10 @@
     <string name="singleIssueEditLabels">Labels hinzufügen/entfernen</string>
     <string name="labelsUpdated">Labels aktualisiert</string>
     <string name="closeIssue">Issue schließen</string>
-    <string name="replyToIssue">Kommentar hinzufügen</string>
     <string name="editIssue">Issue bearbeiten</string>
     <string name="reOpenIssue">Issue neu öffnen</string>
     <string name="issueStateClosed">Issue geschlossen</string>
     <string name="issueStateReopened">Issue neu geöffnet</string>
-    <string name="addRemoveAssignees2">Füge Zuständige hinzu</string>
     <string name="addRemoveAssignees">Zuständige hinzufügen/entfernen</string>
     <string name="assigneesUpdated">Zuständige aktualisiert</string>
     <string name="singleIssueSubscribe">Abonnieren</string>
@@ -337,13 +298,11 @@
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Einträge auswählen</string>
-    <string name="validation_text">Bitte mindestens eine Option auswählen</string>
     <string name="please_select_atleast">Du musst mindestens so viele auswählen: </string>
     <string name="you_can_only_select_upto">Du kannst höchstens so viele auswählen: </string>
     <string name="option"> Option</string>
     <string name="options"> Optionen</string>
     <string name="select_all">Alle auswählen</string>
-    <string name="de_select_all">Die Auswahl aufheben</string>
     <!-- multi select dialog -->
     <string name="repoMetaData">Repository Informationen</string>
     <!-- admin -->
@@ -378,19 +337,15 @@
     <string name="titleErrorEmpty">Der Titel ist leer</string>
     <string name="releaseCreatedText">Neuer Release erstellt</string>
     <!-- release -->
-    <string name="loginOTPError">Bitte OTP-Code Eingeben</string>
     <string name="loginOTPTypeError">Der OTP-Code muss aus Zahlen bestehen.</string>
     <string name="loginOTP">OTP-Code (optional)</string>
     <string name="otpMessage">Gib den OTP-Code ein, wenn 2FA eingeschaltet ist</string>
     <string name="openWebRepo">Öffne mit Browser</string>
     <string name="repoStargazersInMenu">Favorisierer</string>
     <string name="repoWatchersInMenu">Beobachter</string>
-    <string name="noDataStargazers">Keine Favorisierer gefunden</string>
-    <string name="noDataWatchers">Keine Beobachter gefunden</string>
     <string name="noDataWebsite">Keine Webseite gefunden</string>
     <string name="starMember">Favorisierer</string>
     <string name="watcherMember">Beobachter</string>
-    <string name="commitLinkBranchesTab">Commit</string>
     <string name="zipArchiveDownloadReleasesTab">Zip Archiv</string>
     <string name="tarArchiveDownloadReleasesTab">Tar Archiv</string>
     <!-- new file -->
@@ -414,9 +369,7 @@
     <string name="milestoneCompletion">%1$d\uFF05 abgeschlossen</string>
     <!-- files -->
     <string name="noDataFilesTab">Keine Dateien gefunden</string>
-    <string name="filesDirNotSupportedYet">Ordner werden noch nicht unterstützt</string>
     <string name="filesGenericError">Leider kann diese Datei nicht angezeigt werden, da die API einen Fehler zurückgab</string>
-    <string name="filesBreadcrumb">Wurzel</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Fertig</string>
@@ -432,8 +385,6 @@
     <string name="menuDeleteText">Entfernen</string>
     <string name="modifiedText">Bearbeitet</string>
     <string name="saveButton">Speichern</string>
-    <string name="nameText">Name</string>
-    <string name="descriptionText">Beschreibung</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Standort</string>
     <string name="characters255Limit">maximal 255 Zeichen</string>
@@ -454,12 +405,7 @@
     <string name="watchRepositorySuccess">Repository zur Merkliste hinzugefügt</string>
     <string name="unWatchRepositorySuccess">Repository von der Merkliste entfernt</string>
     <string name="versionUnsupportedOld">Nicht unterstützte alte Version(%1$s) von Gitea erkannt. Bitte aktualisieren Sie auf die neueste stabile Version. Wenn Sie fortfahren, funktioniert die App möglicherweise nicht ordnungsgemäß.</string>
-    <string name="versionSupportedOld">Alte Gitea-Version erkannt, bitte aktualisiere auf die neueste stabile Version</string>
     <string name="versionUnsupportedNew">Neue Gitea-Version erkannt! Bitte UPDATE GitNex!</string>
-    <string name="versionSupportedLatest">Gitea ist aktuell</string>
-    <string name="versionDevelopment">Gitea Entwicklungsversion</string>
-    <string name="versionUnknow">Keine Gitea erkannt!</string>
-    <string name="versionAlertTitle">Versionswarnung</string>
     <string name="versionAlertDialogHeader">Nicht unterstützte Version von Gitea</string>
     <string name="loginViaPassword">Benutzername/Passwort</string>
     <string name="loginMethodText">Wählen deine bevorzugte Login-Methode, um auf deinen Account zuzugreifen. Token ist sicherer!</string>
@@ -493,7 +439,6 @@
     <string name="sharePr">Pull-Request teilen</string>
     <string name="shareRepository">Repository teilen</string>
     <string name="createRepository">Repository erstellen</string>
-    <string name="repositoryTabCommits">Commits</string>
     <string name="commitTitle">Branch-Commits</string>
     <string name="commitCommittedBy">Committed von %1$s</string>
     <string name="viewCommits">Commits anzeigen</string>
@@ -502,31 +447,24 @@
     <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
     <string name="mtm_trust_anchor">Das Server-Zertifikat ist nicht von einer bekannten Zertifizierungsstelle signiert.</string>
     <string name="mtm_cert_expired">Das Server-Zertifikat ist abgelaufen.</string>
-    <string name="mtm_accept_servername">Nicht übereinstimmender Hostname akzeptieren?</string>
     <string name="mtm_hostname_mismatch">Server konnte sich nicht als \&quot;%s\&quot; authentifizieren. Das Zertifikat ist nur gültig für:</string>
     <string name="mtm_connect_anyway">Möchtest du dich trotzdem verbinden?</string>
     <string name="mtm_cert_details">Zertifikats-Details:</string>
     <string name="mtm_decision_always">Vertrauen</string>
-    <string name="mtm_decision_once">Einmal</string>
     <string name="mtm_decision_abort">Abbrechen</string>
     <string name="subscribedSuccessfully">Erfolgreich abonniert</string>
     <string name="alreadySubscribed">Du hast bereits abonniert</string>
-    <string name="subscribtionError">Abonnieren fehlgeschlagen</string>
     <string name="unsubscribedSuccessfully">Erfolgreich de-abonniert</string>
     <string name="alreadyUnsubscribed">Du hast bereits de-abonniert</string>
-    <string name="unsubscribtionError">De-Abonnieren fehlgeschlagen</string>
     <string name="closeMilestone">Meilenstein schließen</string>
     <string name="openMilestone">Meilenstein wieder öffnen</string>
     <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>
-    <string name="tabIssueOpen">Offen</string>
-    <string name="tabIssueClosed">Geschlossen</string>
     <string name="errorOnLogin">Der Server kann nicht erreicht werden, bitte überprüfe deinen Serverstatus</string>
     <string name="reportViewerHeader">Absturzberichte</string>
     <string name="settingsEnableReportsText">Absturzberichte aktivieren</string>
     <string name="crashTitle">GitNex hat gestoppt :(</string>
     <string name="setCrashReports">Absturzberichte</string>
     <string name="crashMessage">Klicke auf OK, um den Absturzbericht per E-Mail zu senden. Es wird helfen, diesen zu beheben :)\n\nDu könntest auch zusätzliche Infos in der E-Mail angeben. Danke für deine Hilfe!</string>
-    <string name="appreanceHintText">Designs, Schriftarten, Plaketten, Code Block-Template</string>
     <string name="fileViewerHintText">PDF-Modus, Quellcode Theme</string>
     <string name="securityHintText">SSL-Zertifikate, Cache</string>
     <string name="languagesHintText">Sprachen</string>

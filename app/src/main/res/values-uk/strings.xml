@@ -15,7 +15,6 @@
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Про додаток</string>
-    <string name="pageTitleHome">Головна</string>
     <string name="pageTitleMyRepos">Мої репозиторії</string>
     <string name="pageTitleRepositories">Репозиторії</string>
     <string name="pageTitleProfile">Профіль</string>
@@ -37,8 +36,6 @@
     <string name="pageTitleExplore">Огляд</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
-    <string name="appVersion">Версія\u0020:\u0020</string>
-    <string name="appBuild">Збірка\u0020:\u0020</string>
     <string name="repoName">Демо-репозиторій</string>
     <string name="repoFullname">Репозиторій з організацією</string>
     <string name="repoDescription">Демо опис</string>
@@ -64,7 +61,6 @@
     <string name="navigation_drawer_close">Закрити панель навігації</string>
     <string name="logo">Увійти до Gitea</string>
     <string name="urlInfoTooltip">1. Оберіть правильний протокол (https або http). \n2. Введіть URL Gitea, наприклад: try.gitea.io. \n3. Якщо для вашого облікового запису увімкнено двофакторну аутентифікацію, введіть код OTP у відповідне поле. \n4. Для базової автентифікації HTTP використовуйте USERNAME@DOMAIN.COM в полі URL.</string>
-    <string name="loginFailed">Неправильне ім’я користувача або пароль</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">Не рекомендується використовувати протокол HTTP за винятком тестування в локальній мережі.</string>
     <string name="malformedJson">Було отримано некоректний JSON. Відповідь сервера не була успішною.</string>
@@ -91,7 +87,6 @@
     <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">Обробляється</string>
     <string name="search">Пошук</string>
-    <string name="wip">Робота в процесі</string>
     <string name="close">Закрити</string>
     <string name="addNewContent">Додати</string>
     <string name="orgContentAvatar">Орг.</string>
@@ -102,19 +97,13 @@
     <string name="title_activity_repo_detail">Активність</string>
     <string name="tab_text_info">Подробиці</string>
     <string name="tab_text_files">Файли</string>
-    <string name="tab_text_issues">Відкриті проблеми</string>
-    <string name="tabItemCloseIssues">Закриті проблеми</string>
     <string name="tab_text_ml">Етапи</string>
     <string name="tab_text_releases">Релізи</string>
     <string name="tab_text_branches">Гілки</string>
     <string name="tab_text_labels">Мітки</string>
-    <string name="action_settings">Налаштування</string>
     <string name="tab_text_collaborators">Співавтори</string>
     <string name="tabPullRequests">Запити на злиття</string>
     <string name="noDataIssueTab">Проблем не знайдено</string>
-    <string name="infoTabRepoName1">Репозиторій</string>
-    <string name="infoTabRepoOwner1">Власник</string>
-    <string name="infoTabRepoDesc">Опис</string>
     <string name="infoTabRepoWebsite">Веб-сайт</string>
     <string name="infoTabRepoSize">Розмір</string>
     <string name="infoTabRepoDefaultBranch">Головна гілка</string>
@@ -128,19 +117,10 @@
     <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">о</string>
     <string name="createdText">Відкрито\u0020</string>
-    <string name="dueDateText">Термін виконання</string>
-    <string name="issueStatusTextOpen">Статус: відкрита</string>
-    <string name="issueStatusOpen">відкрита</string>
-    <string name="issueStatusTextClosed">Статус: закрита</string>
-    <string name="issueStatusClosed">закрита</string>
     <string name="issueCreator">Автор :\u0020</string>
-    <string name="issueAssigneesText">Відповідальні</string>
-    <string name="issueTypeIssue">Тип: проблема</string>
-    <string name="issueTypePullRequest">Type: запит злиття</string>
     <string name="issueCommenter">Коментатор:\u0020</string>
     <string name="issueMilestone">Етап %1$s</string>
     <string name="dueDate">Due on %1$s</string>
-    <string name="createdTime">Створено %1$s</string>
     <string name="assignedTo">Відповідальний: %1$s</string>
     <string name="commentButtonText">Коментувати</string>
     <string name="commentEmptyError">Будь ласка, напишіть свій коментар</string>
@@ -150,33 +130,19 @@
     <string name="generalImgContentText">Аватар</string>
     <string name="noDataMilestonesTab">Етапів не знайдено</string>
     <string name="commitAuthor">Автор коміту: %1$s</string>
-    <string name="commitHash">Хеш коміту \n%1$s%2$s</string>
-    <string name="releaseTitle">Назва релізу</string>
-    <string name="releaseDescription">Опис релізу</string>
     <string name="releaseDownloadText">Завантажити</string>
-    <string name="releaseType">Тип релізу</string>
-    <string name="releaseZip">Реліз Zip</string>
-    <string name="releaseTar">Реліз Tar</string>
     <string name="noDataReleasesTab">Релізів не знайдено</string>
-    <string name="releaseTag">Тег: %1$s</string>
-    <string name="collaboratorsNameToast">Співавтор: %1$s</string>
     <string name="noDataCollaboratorTab">Співавторів не знайдено</string>
-    <string name="editText">Редагувати</string>
     <string name="newMilestoneTitle">Назва</string>
     <string name="newMilestoneDescription">Опис</string>
     <string name="newMilestoneDueDate">Термін виконання</string>
     <string name="milestoneNameErrorEmpty">Назва етапу порожня</string>
-    <string name="milestoneNameErrorInvalid">Назва етапу некоректна. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">Довжина опису етапу перевищує 255 символів</string>
     <string name="milestoneCreated">Етап створено успішно</string>
     <string name="milestoneCreatedError">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="milestoneDateEmpty">Будь ласка, оберіть термін виконання</string>
-    <string name="milestoneOpenIssues">Відкриті проблеми: %1$d</string>
-    <string name="milestoneClosedIssues">Закриті проблеми: %1$d</string>
     <string name="newIssueSelectAssigneesListTitle">Оберіть виконавців</string>
     <string name="newIssueSelectLabelsListTitle">Оберіть мітки</string>
-    <string name="newIssueDialogDone">Готово</string>
-    <string name="newIssueDialogCancel">Скасувати</string>
     <string name="newIssueTitle">Назва</string>
     <string name="newIssueAssigneesListTitle">Відповідальні</string>
     <string name="newIssueDescriptionTitle">Опис</string>
@@ -204,13 +170,11 @@
     <string name="settingsDateTimeHeaderDefault">Гарний</string>
     <string name="settingsLanguageSelectorDialogTitle">Оберіть мову</string>
     <string name="settingsTimeSelectorDialogTitle">Оберіть формат часу</string>
-    <string name="settingsIssueBadgeHeaderText">Значок проблем</string>
     <string name="settingsHelpTranslateText">Допоможіть нам перекласти GitNex вашою мовою</string>
     <string name="codeBlockHeaderText">Колір блока коду</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Вибір кольору блока коду</string>
     <string name="settingsHomeScreenHeaderText">Основний екран</string>
     <string name="settingsHomeScreenSelectedText">Мої репозиторії</string>
-    <string name="settingshomeScreenSelectorDialogTitle">Оберіть основний екран</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
@@ -245,7 +209,6 @@
     <string name="labelDeleteText">Мітку видалено</string>
     <string name="labelDeleteErrorText">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="noDataBranchesTab">Гілок не знайдено</string>
-    <string name="creditsLogoDesign">Оформлення</string>
     <string name="alertDialogTokenRevokedTitle">Помилка авторизації</string>
     <string name="alertDialogTokenRevokedMessage">Схоже, що токен доступу відкликаний АБО вам не дозволено бачити цей вміст. Якщо токен відкликано, будь ласка, вийдіть з системи та увійдіть знову</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Скасувати</string>
@@ -324,12 +287,10 @@
     <string name="singleIssueEditLabels">Додати / Видалити мітки</string>
     <string name="labelsUpdated">Мітки оновлено</string>
     <string name="closeIssue">Закрити проблему</string>
-    <string name="replyToIssue">Додати коментар</string>
     <string name="editIssue">Редагувати проблему</string>
     <string name="reOpenIssue">Повторно відкрити проблему</string>
     <string name="issueStateClosed">Проблему закрито</string>
     <string name="issueStateReopened">Проблему відкрито повторно</string>
-    <string name="addRemoveAssignees2">Додати виконавців</string>
     <string name="addRemoveAssignees">Додати / Видалити виконавців</string>
     <string name="assigneesUpdated">Виконавців оновлено</string>
     <string name="singleIssueSubscribe">Subscribe</string>
@@ -337,13 +298,11 @@
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Обрати записи</string>
-    <string name="validation_text">Будь ласка, оберіть хоча б один варіант</string>
     <string name="please_select_atleast">Будь ласка, оберіть принаймні </string>
     <string name="you_can_only_select_upto">Ви можете обрати до </string>
     <string name="option"> параметр</string>
     <string name="options"> параметри</string>
     <string name="select_all">Вибрати все</string>
-    <string name="de_select_all">Скинути обране</string>
     <!-- multi select dialog -->
     <string name="repoMetaData">Метаінформація репозиторія</string>
     <!-- admin -->
@@ -378,19 +337,15 @@
     <string name="titleErrorEmpty">Назва порожня</string>
     <string name="releaseCreatedText">Новий реліз створено</string>
     <!-- release -->
-    <string name="loginOTPError">Введіть код OTP</string>
     <string name="loginOTPTypeError">Код OTP повинен складатися з цифр.</string>
     <string name="loginOTP">Код OTP (Необов\'язково)</string>
     <string name="otpMessage">Введіть код otp, якщо 2FA увімкнено</string>
     <string name="openWebRepo">Відкрити в браузері</string>
     <string name="repoStargazersInMenu">Зацікавлені</string>
     <string name="repoWatchersInMenu">Спостерігачі</string>
-    <string name="noDataStargazers">Зацікавлених не знайдено</string>
-    <string name="noDataWatchers">Спостерігачів не знайдено</string>
     <string name="noDataWebsite">No website found</string>
     <string name="starMember">Зацікавлений</string>
     <string name="watcherMember">Спостерігач</string>
-    <string name="commitLinkBranchesTab">Коміт</string>
     <string name="zipArchiveDownloadReleasesTab">Архів Zip</string>
     <string name="tarArchiveDownloadReleasesTab">Архів Tar</string>
     <!-- new file -->
@@ -414,9 +369,7 @@
     <string name="milestoneCompletion">%1$d\uFF05 завершено</string>
     <!-- files -->
     <string name="noDataFilesTab">Файлів не знайдено</string>
-    <string name="filesDirNotSupportedYet">Перегляд каталогів поки що не підтримується</string>
     <string name="filesGenericError">Вибачте, цей файл неможливо переглянути, оскільки API повернув помилку</string>
-    <string name="filesBreadcrumb">Корінь</string>
     <!-- generic copy -->
     <string name="okButton">ОК</string>
     <string name="doneButton">Готово</string>
@@ -432,8 +385,6 @@
     <string name="menuDeleteText">Видалити</string>
     <string name="modifiedText">відредаговано</string>
     <string name="saveButton">Зберегти</string>
-    <string name="nameText">Назва</string>
-    <string name="descriptionText">Опис</string>
     <string name="websiteText">Веб-сайт</string>
     <string name="locationText">Місцезнаходження</string>
     <string name="characters255Limit">Максимум 255 символів</string>
@@ -454,12 +405,7 @@
     <string name="watchRepositorySuccess">Репозиторій додано до списку спостереження</string>
     <string name="unWatchRepositorySuccess">Репозиторій видалено зі списку спостереження</string>
     <string name="versionUnsupportedOld">Виявлено стару версію(%1$s) Gitea. Будь ласка, оновіть програму до останньої стабільної версії. Якщо ви продовжите, додаток може працювати некоректно.</string>
-    <string name="versionSupportedOld">Виявлено стару версію Gitea, будь ласка, оновіть до останньої стабільної версії</string>
     <string name="versionUnsupportedNew">Виявлено нову версію Gitea! Будь ласка, ОНОВІТЬ GitNex!</string>
-    <string name="versionSupportedLatest">Версія Gitea є актуальною</string>
-    <string name="versionDevelopment">Розробницька версія Gitea</string>
-    <string name="versionUnknow">Gitea не виявлено!</string>
-    <string name="versionAlertTitle">Оповіщення про версію</string>
     <string name="versionAlertDialogHeader">Непідтримувана версія Gitea</string>
     <string name="loginViaPassword">Ім\'я користувача / Пароль</string>
     <string name="loginMethodText">Оберіть бажаний метод входу для доступу до облікового запису. Токен є більш безпечним!</string>
@@ -493,7 +439,6 @@
     <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
-    <string name="repositoryTabCommits">Commits</string>
     <string name="commitTitle">Branch Commits</string>
     <string name="commitCommittedBy">Committed by %1$s</string>
     <string name="viewCommits">View Commits</string>
@@ -502,31 +447,24 @@
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
     <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
     <string name="mtm_cert_details">Certificate details:</string>
     <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscribtionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="tabIssueOpen">Open</string>
-    <string name="tabIssueClosed">Closed</string>
     <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
-    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>

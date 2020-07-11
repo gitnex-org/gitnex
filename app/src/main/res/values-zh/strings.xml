@@ -15,7 +15,6 @@
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">关于</string>
-    <string name="pageTitleHome">首页</string>
     <string name="pageTitleMyRepos">我的仓库</string>
     <string name="pageTitleRepositories">仓库列表</string>
     <string name="pageTitleProfile">个人信息</string>
@@ -37,8 +36,6 @@
     <string name="pageTitleExplore">探索</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
-    <string name="appVersion">版本 \u0020:\u0020</string>
-    <string name="appBuild">构建编号 \u0020:\u0020</string>
     <string name="repoName">演示仓库</string>
     <string name="repoFullname">有组织的存储库</string>
     <string name="repoDescription">演示描述</string>
@@ -64,7 +61,6 @@
     <string name="navigation_drawer_close">关闭导航栏</string>
     <string name="logo">登录到 Gitea</string>
     <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。 \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。</string>
-    <string name="loginFailed">用户名或密码错误</string>
     <string name="malformedUrl">无法连接到主机，请检查您的URL或端口是否有任何错误。</string>
     <string name="protocolError">非本地网络建议使用HTTPS安全协议进行访问。</string>
     <string name="malformedJson">JSON 格式错误。服务器响应不成功。</string>
@@ -91,7 +87,6 @@
     <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">处理中</string>
     <string name="search">搜索</string>
-    <string name="wip">正在进行的工作</string>
     <string name="close">关闭</string>
     <string name="addNewContent">新增</string>
     <string name="orgContentAvatar">组织</string>
@@ -102,19 +97,13 @@
     <string name="title_activity_repo_detail">仓库详细信息</string>
     <string name="tab_text_info">详情</string>
     <string name="tab_text_files">文件</string>
-    <string name="tab_text_issues">工单</string>
-    <string name="tabItemCloseIssues">已关闭工单</string>
     <string name="tab_text_ml">里程碑</string>
     <string name="tab_text_releases">版本发布</string>
     <string name="tab_text_branches">分支</string>
     <string name="tab_text_labels">标签</string>
-    <string name="action_settings">设置</string>
     <string name="tab_text_collaborators">协作者</string>
     <string name="tabPullRequests">拉取请求</string>
     <string name="noDataIssueTab">没有工单</string>
-    <string name="infoTabRepoName1">仓库</string>
-    <string name="infoTabRepoOwner1">所有者</string>
-    <string name="infoTabRepoDesc">说明</string>
     <string name="infoTabRepoWebsite">网站</string>
     <string name="infoTabRepoSize">尺寸</string>
     <string name="infoTabRepoDefaultBranch">默认分支</string>
@@ -128,19 +117,10 @@
     <string name="infoMoreInformation">更多信息</string>
     <string name="timeAtText">在</string>
     <string name="createdText">已打开\u0020</string>
-    <string name="dueDateText">截止日期</string>
-    <string name="issueStatusTextOpen">状态：打开</string>
-    <string name="issueStatusOpen">打开</string>
-    <string name="issueStatusTextClosed">状态：已关闭</string>
-    <string name="issueStatusClosed">已关闭</string>
     <string name="issueCreator">创建者:\u0020</string>
-    <string name="issueAssigneesText">受理人</string>
-    <string name="issueTypeIssue">类型：工单</string>
-    <string name="issueTypePullRequest">类型：拉取请求</string>
     <string name="issueCommenter">评论者: \u0020</string>
     <string name="issueMilestone">里程碑 %1$s</string>
     <string name="dueDate">截止日期为 %1$s</string>
-    <string name="createdTime">打开%1$s</string>
     <string name="assignedTo">分配给： %1$s</string>
     <string name="commentButtonText">评论</string>
     <string name="commentEmptyError">请输入您的评论</string>
@@ -150,33 +130,19 @@
     <string name="generalImgContentText">头像</string>
     <string name="noDataMilestonesTab">未发现里程碑</string>
     <string name="commitAuthor">提交作者： %1$s</string>
-    <string name="commitHash">提交哈希 \n%1$s%2$s</string>
-    <string name="releaseTitle">发布标题</string>
-    <string name="releaseDescription">发布描述</string>
     <string name="releaseDownloadText">下载</string>
-    <string name="releaseType">发布类型</string>
-    <string name="releaseZip">发布 Zip</string>
-    <string name="releaseTar">发布 Tar</string>
     <string name="noDataReleasesTab">未发布任何版本</string>
-    <string name="releaseTag">标签： %1$s</string>
-    <string name="collaboratorsNameToast">协作者： %1$s</string>
     <string name="noDataCollaboratorTab">没有协作者</string>
-    <string name="editText">编辑</string>
     <string name="newMilestoneTitle">标题</string>
     <string name="newMilestoneDescription">描述</string>
     <string name="newMilestoneDueDate">截止日期</string>
     <string name="milestoneNameErrorEmpty">里程碑标题为空</string>
-    <string name="milestoneNameErrorInvalid">里程碑标题无效。[a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">里程碑描述超过最大255个字符限制</string>
     <string name="milestoneCreated">里程碑创建成功</string>
     <string name="milestoneCreatedError">出了错，请重试</string>
     <string name="milestoneDateEmpty">请选择截止日期</string>
-    <string name="milestoneOpenIssues">已激活工单： %1$d</string>
-    <string name="milestoneClosedIssues">已关闭工单： %1$d</string>
     <string name="newIssueSelectAssigneesListTitle">选择受理人</string>
     <string name="newIssueSelectLabelsListTitle">选择标签</string>
-    <string name="newIssueDialogDone">完成</string>
-    <string name="newIssueDialogCancel">取消</string>
     <string name="newIssueTitle">标题</string>
     <string name="newIssueAssigneesListTitle">受理人</string>
     <string name="newIssueDescriptionTitle">说明</string>
@@ -204,13 +170,11 @@
     <string name="settingsDateTimeHeaderDefault">推算时间</string>
     <string name="settingsLanguageSelectorDialogTitle">选择语言</string>
     <string name="settingsTimeSelectorDialogTitle">选择日期格式</string>
-    <string name="settingsIssueBadgeHeaderText">工单计数</string>
     <string name="settingsHelpTranslateText">帮助我们翻译 GitNex 成您的语言</string>
     <string name="codeBlockHeaderText">代码块颜色</string>
     <string name="settingsCodeBlockSelectorDialogTitle">代码块颜色选择器</string>
     <string name="settingsHomeScreenHeaderText">主屏幕</string>
     <string name="settingsHomeScreenSelectedText">我的仓库</string>
-    <string name="settingshomeScreenSelectorDialogTitle">选择主屏幕</string>
     <string name="settingsCustomFontHeaderText">字体</string>
     <string name="settingsCustomFontSelectorDialogTitle">选择字体</string>
     <string name="themeSelectorDialogTitle">选择应用主题</string>
@@ -245,7 +209,6 @@
     <string name="labelDeleteText">标签已删除</string>
     <string name="labelDeleteErrorText">出了错，请重试</string>
     <string name="noDataBranchesTab">未找到分支</string>
-    <string name="creditsLogoDesign">设计</string>
     <string name="alertDialogTokenRevokedTitle">授权错误</string>
     <string name="alertDialogTokenRevokedMessage">看来访问令牌已被吊销，或者您不允许查看这些内容。 如果已吊销令牌，请注销并重新登录</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">取消</string>
@@ -324,12 +287,10 @@
     <string name="singleIssueEditLabels">添加/删除标签</string>
     <string name="labelsUpdated">标签已更新</string>
     <string name="closeIssue">关闭工单</string>
-    <string name="replyToIssue">添加评论</string>
     <string name="editIssue">编辑工单</string>
     <string name="reOpenIssue">重新打开工单</string>
     <string name="issueStateClosed">已关闭工单</string>
     <string name="issueStateReopened">重新开启工单</string>
-    <string name="addRemoveAssignees2">添加成员</string>
     <string name="addRemoveAssignees">添加/移除成员</string>
     <string name="assigneesUpdated">成员已更新</string>
     <string name="singleIssueSubscribe">订阅</string>
@@ -337,13 +298,11 @@
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">选择条目</string>
-    <string name="validation_text">请至少选择一个选项</string>
     <string name="please_select_atleast">请至少选择 </string>
     <string name="you_can_only_select_upto">您只能最多选择 </string>
     <string name="option"> 选项</string>
     <string name="options"> 选项</string>
     <string name="select_all">全选</string>
-    <string name="de_select_all">反选</string>
     <!-- multi select dialog -->
     <string name="repoMetaData">仓库元数据</string>
     <!-- admin -->
@@ -378,19 +337,15 @@
     <string name="titleErrorEmpty">标题为空</string>
     <string name="releaseCreatedText">已创建新版本</string>
     <!-- release -->
-    <string name="loginOTPError">输入 OTP 代码</string>
     <string name="loginOTPTypeError">OTP 代码应该是数字。</string>
     <string name="loginOTP">OTP 代码(可选)</string>
     <string name="otpMessage">如果启用了2FA，请输入otp代码</string>
     <string name="openWebRepo">在浏览器中打开</string>
     <string name="repoStargazersInMenu">已收藏</string>
     <string name="repoWatchersInMenu">已关注</string>
-    <string name="noDataStargazers">未被收藏</string>
-    <string name="noDataWatchers">没有关注者</string>
     <string name="noDataWebsite">未找到网站</string>
     <string name="starMember">收藏</string>
     <string name="watcherMember">关注</string>
-    <string name="commitLinkBranchesTab">提交</string>
     <string name="zipArchiveDownloadReleasesTab">Zip 压缩包</string>
     <string name="tarArchiveDownloadReleasesTab">Tar 压缩包</string>
     <!-- new file -->
@@ -414,9 +369,7 @@
     <string name="milestoneCompletion">%1$d\uFF05 已完成</string>
     <!-- files -->
     <string name="noDataFilesTab">找不到文件</string>
-    <string name="filesDirNotSupportedYet">目录浏览尚不受支持</string>
     <string name="filesGenericError">抱歉，此文件无法查看，因为API返回了错误</string>
-    <string name="filesBreadcrumb">根目录</string>
     <!-- generic copy -->
     <string name="okButton">确定</string>
     <string name="doneButton">完成</string>
@@ -432,8 +385,6 @@
     <string name="menuDeleteText">删除</string>
     <string name="modifiedText">已编辑</string>
     <string name="saveButton">保存</string>
-    <string name="nameText">名称</string>
-    <string name="descriptionText">描述</string>
     <string name="websiteText">网站</string>
     <string name="locationText">地理位置</string>
     <string name="characters255Limit">最大 255 字符</string>
@@ -454,12 +405,7 @@
     <string name="watchRepositorySuccess">仓库已添加到关注列表</string>
     <string name="unWatchRepositorySuccess">仓库已从关注列表中删除</string>
     <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本(%1$s)。请更新到最新稳定版本。如果您继续，应用程序可能无法正常运行。</string>
-    <string name="versionSupportedOld">检测到旧的Gitea版本，请更新到最新稳定版本</string>
     <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
-    <string name="versionSupportedLatest">Gitea版本是最新版本</string>
-    <string name="versionDevelopment">Gitea 开发版本</string>
-    <string name="versionUnknow">未检测到Gitea！</string>
-    <string name="versionAlertTitle">版本警报</string>
     <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
     <string name="loginViaPassword">用户名 / 密码</string>
     <string name="loginMethodText">建议您使用更安全的令牌方式进行登录。</string>
@@ -493,7 +439,6 @@
     <string name="sharePr">分享拉取请求</string>
     <string name="shareRepository">共享存储库</string>
     <string name="createRepository">创建仓库</string>
-    <string name="repositoryTabCommits">提交</string>
     <string name="commitTitle">分支提交</string>
     <string name="commitCommittedBy">由 %1$s提交</string>
     <string name="viewCommits">查看提交</string>
@@ -502,31 +447,24 @@
     <string name="mtm_accept_cert">接受未知证书？</string>
     <string name="mtm_trust_anchor">服务器证书未由已知的证书颁发机构签名。</string>
     <string name="mtm_cert_expired">服务器证书已过期。</string>
-    <string name="mtm_accept_servername">接受不匹配服务器名称？</string>
     <string name="mtm_hostname_mismatch">服务器无法认证为\&quot;%s\&quot;。证书仅有效于：</string>
     <string name="mtm_connect_anyway">您仍然想要连接吗？</string>
     <string name="mtm_cert_details">证书详情：</string>
     <string name="mtm_decision_always">信任</string>
-    <string name="mtm_decision_once">一次</string>
     <string name="mtm_decision_abort">中止</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscribtionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">关闭里程碑</string>
     <string name="openMilestone">打开里程碑</string>
     <string name="milestoneStatusUpdate">里程碑状态更新成功</string>
-    <string name="tabIssueOpen">打开</string>
-    <string name="tabIssueClosed">已关闭</string>
     <string name="errorOnLogin">我们无法连接到服务器，请检查您的服务器状态</string>
     <string name="reportViewerHeader">崩溃报告</string>
     <string name="settingsEnableReportsText">启用崩溃报告</string>
     <string name="crashTitle">GitNex 已停止 :(</string>
     <string name="setCrashReports">崩溃报告</string>
     <string name="crashMessage">您可以点击确定按钮通过电子邮件发送崩溃报告。 这将有助于修复它:)\n\n您也可以在电子邮件中添加额外的内容。谢谢！</string>
-    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>

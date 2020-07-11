@@ -15,7 +15,6 @@
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">در مورد ما</string>
-    <string name="pageTitleHome">خانه</string>
     <string name="pageTitleMyRepos">مخازن من</string>
     <string name="pageTitleRepositories">مخازن</string>
     <string name="pageTitleProfile">پروفایل</string>
@@ -37,8 +36,6 @@
     <string name="pageTitleExplore">گشت‌و‌گذار</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <!-- page titles -->
-    <string name="appVersion">نسخه\u0020:\u0020</string>
-    <string name="appBuild">شماره ساخت \u0020:\u0020</string>
     <string name="repoName">مخزن نمایشی</string>
     <string name="repoFullname">نخزن با ORG</string>
     <string name="repoDescription">توضیحات نمایشی</string>
@@ -67,7 +64,6 @@
 2. URL گیتی را وارد کنید. مثلا: try.gitea.io
 3. اگر احراز هویت دو مرحله‌ای را برای حساب خود فعال کرده‌اید، کد را در کادر OTP وارد کنید.
 4. برای احراز هویت عادی HTTP از نام‌کاربری@دامنه در کادر URL استفاده کنید.</string>
-    <string name="loginFailed">نام‌کاربری/گذر واژه اشتباه است</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
     <string name="protocolError">استفلده از پروتوکل HTTP توصیه نمی‌شود مگر اینکه در حال آزمایش در شبکه محلی باشید.</string>
     <string name="malformedJson">یک سند JSON ناقص دریافت شد. پاسخ سرور موفق نبود.</string>
@@ -94,7 +90,6 @@
     <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
     <string name="processingText">در حال پردازش</string>
     <string name="search">جستجو</string>
-    <string name="wip">در حال پیشرفت</string>
     <string name="close">بستن</string>
     <string name="addNewContent">افزودن</string>
     <string name="orgContentAvatar">سازمان</string>
@@ -105,19 +100,13 @@
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
     <string name="tab_text_info">جزئیات</string>
     <string name="tab_text_files">فایل ها</string>
-    <string name="tab_text_issues">مسائل باز</string>
-    <string name="tabItemCloseIssues">مسائل بسته</string>
     <string name="tab_text_ml">نقاط عطف</string>
     <string name="tab_text_releases">انتشارها</string>
     <string name="tab_text_branches">شاخه‌ها</string>
     <string name="tab_text_labels">Labels</string>
-    <string name="action_settings">تنظیمات</string>
     <string name="tab_text_collaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">No issues found</string>
-    <string name="infoTabRepoName1">Repository</string>
-    <string name="infoTabRepoOwner1">مالک</string>
-    <string name="infoTabRepoDesc">Description</string>
     <string name="infoTabRepoWebsite">Website</string>
     <string name="infoTabRepoSize">Size</string>
     <string name="infoTabRepoDefaultBranch">Default Branch</string>
@@ -131,19 +120,10 @@
     <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">at</string>
     <string name="createdText">Opened\u0020</string>
-    <string name="dueDateText">Due Date</string>
-    <string name="issueStatusTextOpen">Status: open</string>
-    <string name="issueStatusOpen">open</string>
-    <string name="issueStatusTextClosed">Status: closed</string>
-    <string name="issueStatusClosed">closed</string>
     <string name="issueCreator">Creator :\u0020</string>
-    <string name="issueAssigneesText">Assignees</string>
-    <string name="issueTypeIssue">Type: Issue</string>
-    <string name="issueTypePullRequest">Type: Pull Request</string>
     <string name="issueCommenter">Commenter:\u0020</string>
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due on %1$s</string>
-    <string name="createdTime">Opened %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
     <string name="commentButtonText">Comment</string>
     <string name="commentEmptyError">Please write your comment</string>
@@ -153,33 +133,19 @@
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">No milestones found</string>
     <string name="commitAuthor">Commit author: %1$s</string>
-    <string name="commitHash">Commit hash \n%1$s%2$s</string>
-    <string name="releaseTitle">Release Title</string>
-    <string name="releaseDescription">Release Description</string>
     <string name="releaseDownloadText">Downloads</string>
-    <string name="releaseType">Release Type</string>
-    <string name="releaseZip">Release Zip</string>
-    <string name="releaseTar">Release Tar</string>
     <string name="noDataReleasesTab">No releases found</string>
-    <string name="releaseTag">Tag: %1$s</string>
-    <string name="collaboratorsNameToast">مشارکت کننده : %1$s</string>
     <string name="noDataCollaboratorTab">مشارکت کننده‌ای پیدا نشد</string>
-    <string name="editText">ویرایش</string>
     <string name="newMilestoneTitle">عنوان</string>
     <string name="newMilestoneDescription">توضیحات</string>
     <string name="newMilestoneDueDate">تاریخ مقرر</string>
     <string name="milestoneNameErrorEmpty">عنوان نقطه عطف خالی است</string>
-    <string name="milestoneNameErrorInvalid">نام نقطه عطف اشتباه است. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="milestoneDescError">توضیحات نقطه عطف از سقف 255 کاراکتر بیشتر است</string>
     <string name="milestoneCreated">نقطه عطف با موفقیت ساخته شد</string>
     <string name="milestoneCreatedError">مشکلی پیش آمده. لطفا دوباره تلاش کنید</string>
     <string name="milestoneDateEmpty">لطفا تاریخ مقرر را انتخاب کنید</string>
-    <string name="milestoneOpenIssues">مسائل باز : %1$d</string>
-    <string name="milestoneClosedIssues">مسائل بسته : %1$d</string>
     <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
     <string name="newIssueSelectLabelsListTitle">برچسب‌ها را انتخاب کنید</string>
-    <string name="newIssueDialogDone">انجام شد</string>
-    <string name="newIssueDialogCancel">لغو</string>
     <string name="newIssueTitle">عنوان</string>
     <string name="newIssueAssigneesListTitle">نمایندگان</string>
     <string name="newIssueDescriptionTitle">توضیحات</string>
@@ -207,13 +173,11 @@
     <string name="settingsDateTimeHeaderDefault">زیبا</string>
     <string name="settingsLanguageSelectorDialogTitle">انتخاب زبان</string>
     <string name="settingsTimeSelectorDialogTitle">فرمت ساعت را انتخاب کنید</string>
-    <string name="settingsIssueBadgeHeaderText">Issues Badge</string>
     <string name="settingsHelpTranslateText">برای ترجمه ی GitNex به زبان خود کمک کنید</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
     <string name="settingsHomeScreenHeaderText">صفحه خانگی</string>
     <string name="settingsHomeScreenSelectedText">مخازن من</string>
-    <string name="settingshomeScreenSelectorDialogTitle">صفحه خانگی را انتخاب کنید</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
@@ -248,7 +212,6 @@
     <string name="labelDeleteText">Label deleted</string>
     <string name="labelDeleteErrorText">Something went wrong, please try again</string>
     <string name="noDataBranchesTab">No branches found</string>
-    <string name="creditsLogoDesign">Design</string>
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents. In case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Cancel</string>
@@ -327,12 +290,10 @@
     <string name="singleIssueEditLabels">Add / Remove Labels</string>
     <string name="labelsUpdated">Labels updated</string>
     <string name="closeIssue">Close Issue</string>
-    <string name="replyToIssue">Add Comment</string>
     <string name="editIssue">Edit Issue</string>
     <string name="reOpenIssue">Reopen Issue</string>
     <string name="issueStateClosed">Issue closed</string>
     <string name="issueStateReopened">Issue reopened</string>
-    <string name="addRemoveAssignees2">Add Assignees</string>
     <string name="addRemoveAssignees">Add / Remove Assignees</string>
     <string name="assigneesUpdated">Assignees updated</string>
     <string name="singleIssueSubscribe">Subscribe</string>
@@ -340,13 +301,11 @@
     <!-- single issue section -->
     <!-- multi select dialog -->
     <string name="select_entry">Select Entries</string>
-    <string name="validation_text">Please select at least one option</string>
     <string name="please_select_atleast">Please select at least </string>
     <string name="you_can_only_select_upto">You can only select up to </string>
     <string name="option"> option</string>
     <string name="options"> options</string>
     <string name="select_all">Select all</string>
-    <string name="de_select_all">Deselect all</string>
     <!-- multi select dialog -->
     <string name="repoMetaData">Repository Meta</string>
     <!-- admin -->
@@ -381,19 +340,15 @@
     <string name="titleErrorEmpty">Title is empty</string>
     <string name="releaseCreatedText">New release created</string>
     <!-- release -->
-    <string name="loginOTPError">Enter OTP code</string>
     <string name="loginOTPTypeError">OTP code should be numbers.</string>
     <string name="loginOTP">OTP Code (Optional)</string>
     <string name="otpMessage">Enter the otp code if 2FA is enabled</string>
     <string name="openWebRepo">Open in Browser</string>
     <string name="repoStargazersInMenu">Stargazers</string>
     <string name="repoWatchersInMenu">Watchers</string>
-    <string name="noDataStargazers">No stars found</string>
-    <string name="noDataWatchers">No watchers found</string>
     <string name="noDataWebsite">No website found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
-    <string name="commitLinkBranchesTab">Commit</string>
     <string name="zipArchiveDownloadReleasesTab">Zip Archive</string>
     <string name="tarArchiveDownloadReleasesTab">Tar Archive</string>
     <!-- new file -->
@@ -417,9 +372,7 @@
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
     <!-- files -->
     <string name="noDataFilesTab">No files found</string>
-    <string name="filesDirNotSupportedYet">Directory browsing is not supported yet</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
-    <string name="filesBreadcrumb">Root</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>
@@ -435,8 +388,6 @@
     <string name="menuDeleteText">Delete</string>
     <string name="modifiedText">edited</string>
     <string name="saveButton">Save</string>
-    <string name="nameText">Name</string>
-    <string name="descriptionText">Description</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Location</string>
     <string name="characters255Limit">حداکثر 255 کاراکتر</string>
@@ -457,12 +408,7 @@
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly.</string>
-    <string name="versionSupportedOld">Old Gitea version detected, please update to latest stable version</string>
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
-    <string name="versionSupportedLatest">Gitea version is up to date</string>
-    <string name="versionDevelopment">Gitea development version</string>
-    <string name="versionUnknow">No Gitea detected!</string>
-    <string name="versionAlertTitle">Version Alert</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
     <string name="loginViaPassword">Username / Password</string>
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
@@ -496,7 +442,6 @@
     <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
-    <string name="repositoryTabCommits">Commits</string>
     <string name="commitTitle">Branch Commits</string>
     <string name="commitCommittedBy">Committed by %1$s</string>
     <string name="viewCommits">View Commits</string>
@@ -505,31 +450,24 @@
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
     <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
     <string name="mtm_cert_details">Certificate details:</string>
     <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_once">Once</string>
     <string name="mtm_decision_abort">Abort</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscribtionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscribtionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="tabIssueOpen">Open</string>
-    <string name="tabIssueClosed">Closed</string>
     <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
-    <string name="appreanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
