@@ -271,7 +271,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
             holder.repoType.setText(R.string.strPrivate);
         }
         else {
-            holder.repoPrivatePublic.setImageResource(R.drawable.ic_public);
+            holder.repoPrivatePublic.setImageResource(R.drawable.ic_unlock);
             holder.repoType.setText(R.string.strPublic);
         }
         holder.repoStars.setText(currentItem.getStars_count());

@@ -166,7 +166,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
             holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_directory));
         }
         else {
-            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_question_mark_24));
+            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_question));
         }
 
     }

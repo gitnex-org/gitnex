@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/adminUsers"
-                android:drawableStart="@drawable/ic_users"
+                android:drawableStart="@drawable/ic_people"
                 android:drawablePadding="32dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"

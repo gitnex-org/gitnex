@@ -47,7 +47,7 @@
                     android:layout_weight="0.1"
                     android:layout_gravity="center_vertical|end"
                     android:contentDescription="@string/issueDescriptionEmpty"
-                    app:srcCompat="@drawable/ic_arrow_down"/>
+                    app:srcCompat="@drawable/ic_chevron_down"/>
 
             </LinearLayout>
 
@@ -273,7 +273,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/infoTabRepoWebsite"
-                        app:srcCompat="@drawable/ic_link_24dp" />
+                        app:srcCompat="@drawable/ic_link" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -347,7 +347,7 @@
                     android:layout_weight="0.1"
                     android:layout_gravity="center_vertical|end"
                     android:contentDescription="@string/issueDescriptionEmpty"
-                    app:srcCompat="@drawable/ic_arrow_up"/>
+                    app:srcCompat="@drawable/ic_chevron_up"/>
 
             </LinearLayout>
 

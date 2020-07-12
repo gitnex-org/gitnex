@@ -45,7 +45,7 @@ public class AlertDialogs {
 		    .setTitle(title)
 		    .setMessage(message)
 		    .setCancelable(false)
-		    .setIcon(R.drawable.ic_info_outline_24dp)
+		    .setIcon(R.drawable.ic_info)
 		    .setPositiveButton(copyPositiveButton, (dialog, which) -> {
 
 			    final TinyDB tinyDb = new TinyDB(context);

@@ -191,13 +191,13 @@ public class RepoInfoFragment extends Fragment {
 	private void toggleExpandView() {
 
 		if (repoFileContents.getVisibility() == View.GONE) {
-			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
+			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
 			repoFileContents.setVisibility(View.VISIBLE);
 			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
 			//fileContentsFrame.startAnimation(slide_down);
 		}
 		else {
-			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_arrow_down);
+			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
 			repoFileContents.setVisibility(View.GONE);
 			//Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
 			//fileContentsFrame.startAnimation(slide_up);
@@ -211,13 +211,13 @@ public class RepoInfoFragment extends Fragment {
 	private void toggleExpandViewMeta() {
 
 		if (repoMetaFrame.getVisibility() == View.GONE) {
-			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_arrow_up);
+			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
 			repoMetaFrame.setVisibility(View.VISIBLE);
 			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
 			//repoMetaFrame.startAnimation(slide_down);
 		}
 		else {
-			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_arrow_down);
+			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
 			repoMetaFrame.setVisibility(View.GONE);
 			//Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
 			//repoMetaFrame.startAnimation(slide_up);

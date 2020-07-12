@@ -73,7 +73,7 @@
             android:layout_height="40dp"
             android:layout_gravity="end"
             android:contentDescription="@string/addNewContent"
-            android:background="@drawable/circle"
+            android:background="@drawable/shape_circle"
             android:src="@drawable/ic_add"
             android:padding="8dp"
             android:visibility="gone"/>
@@ -84,7 +84,7 @@
             android:layout_height="40dp"
             android:layout_gravity="end"
             android:contentDescription="@string/removeContent"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/shape_circle_red"
             android:src="@drawable/ic_remove"
             android:padding="8dp"
             android:visibility="gone"/>

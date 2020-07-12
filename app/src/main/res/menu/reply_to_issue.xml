@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/replyToIssueMenu"
-        android:icon="@drawable/ic_drafts_24dp"
+        android:icon="@drawable/ic_drafts"
         android:title="@string/titleDrafts"
         android:orderInCategory="1"
         app:showAsAction="ifRoom" />

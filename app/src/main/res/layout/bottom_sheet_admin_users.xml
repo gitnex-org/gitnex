@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/adminCreateNewUser"
-                android:drawableStart="@drawable/ic_add_person"
+                android:drawableStart="@drawable/ic_person_add"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"

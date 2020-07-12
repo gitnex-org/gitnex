@@ -19,7 +19,7 @@
         <item name="selectedTextColor">@color/darkGreen</item>
         <item name="alertDialogTheme">@style/AppThemeConfirmDialog</item>
         <item name="popupMenuStyle">@style/AppThemePopupMenuStyle</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_24dp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
         <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
         <item name="hintColor">@color/hintColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
@@ -46,7 +46,7 @@
         <item name="selectedTextColor">@color/darkGreen</item>
         <item name="alertDialogTheme">@style/AppThemeLightConfirmDialog</item>
         <item name="popupMenuStyle">@style/AppThemeLightPopupMenuStyle</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_24dp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
         <item name="autoCompleteTextViewStyle">@style/AppThemeLightSearchAutoCompleteTextView</item>
         <item name="hintColor">@color/hintColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
@@ -64,7 +64,7 @@
     </style>
 
     <style name="AppBottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bottom_sheet_top_corners</item>
+        <item name="android:background">@drawable/shape_bottom_sheet_top_corners</item>
     </style>
 
     <style name="AppThemeLightSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
@@ -83,7 +83,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlActivated">@color/darkGreen</item>
-        <item name="android:windowBackground">@drawable/round_corners</item>
+        <item name="android:windowBackground">@drawable/shape_round_corners</item>
     </style>
 
     <style name="AppThemeLightConfirmDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -92,7 +92,7 @@
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="colorControlNormal">@color/lightThemeTextColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
-        <item name="android:windowBackground">@drawable/round_corners</item>
+        <item name="android:windowBackground">@drawable/shape_round_corners</item>
     </style>
 
     <style name="AppThemePopupMenuStyle" parent="Widget.AppCompat.PopupMenu">

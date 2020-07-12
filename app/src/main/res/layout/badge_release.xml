@@ -21,7 +21,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="1dp"
         android:layout_toEndOf="@id/counterBadgeReleaseText"
-        android:background="@drawable/badge_background"
+        android:background="@drawable/shape_badge_background"
         android:gravity="center"
         android:text="@string/infoTabRepoZero"
         android:textColor="@color/white"

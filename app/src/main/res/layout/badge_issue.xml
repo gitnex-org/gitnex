@@ -23,7 +23,7 @@
         android:layout_marginTop="1dp"
         android:layout_marginStart="8dp"
         android:layout_toEndOf="@+id/counterBadgeIssueText"
-        android:background="@drawable/badge_background"
+        android:background="@drawable/shape_badge_background"
         android:text="@string/infoTabRepoZero"
         android:textColor="@color/white" />
 

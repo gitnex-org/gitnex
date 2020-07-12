@@ -210,13 +210,13 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 		    if(holder.downloads.getVisibility() == View.GONE) {
 
-			    holder.downloadDropdownIcon.setImageResource(R.drawable.ic_arrow_down);
+			    holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_down);
 			    holder.downloads.setVisibility(View.VISIBLE);
 
 		    }
 		    else {
 
-			    holder.downloadDropdownIcon.setImageResource(R.drawable.ic_arrow_right);
+			    holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_right);
 			    holder.downloads.setVisibility(View.GONE);
 
 		    }

@@ -34,7 +34,7 @@
         android:layout_margin="15dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/circle"
+        android:background="@drawable/shape_circle"
         android:padding="@dimen/fab_padding"
         android:contentDescription="@string/addNewContent" />
 

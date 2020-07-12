@@ -194,8 +194,8 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/generalImgContentText"
                 android:tint="?attr/primaryTextColor"
-                android:src="@drawable/ic_arrow_right"
-                app:srcCompat="@drawable/ic_arrow_right" />
+                android:src="@drawable/ic_chevron_right"
+                app:srcCompat="@drawable/ic_chevron_right" />
 
             <TextView
                 android:layout_width="match_parent"

@@ -193,7 +193,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		final View hView = navigationView.getHeaderView(0);
 
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-		toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.darkGreen));
 
 		drawer.addDrawerListener(toggle);
 		drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -294,6 +293,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		});
 
 		toggle.syncState();
+		toolbar.setNavigationIcon(R.drawable.ic_menu);
 
 		if(launchFragment != null) {
 
