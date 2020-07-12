@@ -51,23 +51,20 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
             //ImageView filesDropdownMenu = itemView.findViewById(R.id.filesDropdownMenu);
 
-            fileName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            fileName.setOnClickListener(v -> {
 
-                    Context context = v.getContext();
+                Context context = v.getContext();
 
-                    if(fileType.getText().toString().equals("file")) {
-                        filesListener.onClickFile(fileName.getText().toString());
-                    }
-                    else if(fileType.getText().toString().equals("dir")) {
-                        filesListener.onClickDir(fileName.getText().toString());
-                    }
-                    else {
-                        Toasty.info(context, context.getString(R.string.filesGenericError));
-                    }
-
+                if(fileType.getText().toString().equals("file")) {
+                    filesListener.onClickFile(fileName.getText().toString());
                 }
+                else if(fileType.getText().toString().equals("dir")) {
+                    filesListener.onClickDir(fileName.getText().toString());
+                }
+                else {
+                    Toasty.info(context, context.getString(R.string.filesGenericError));
+                }
+
             });
 
 

@@ -83,6 +83,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 		final TinyDB tinyDb = new TinyDB(appCtx);
 		String repoFullName = tinyDb.getString("repoFullName");
+		String repoBranch = tinyDb.getString("repoBranch");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
 		final String repoName = parts[1];
@@ -125,15 +126,15 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 		toolbar_title.setText(singleFileName);
 
-		getSingleFileContents(instanceUrl, instanceToken, repoOwner, repoName, singleFileName);
+		getSingleFileContents(instanceUrl, instanceToken, repoOwner, repoName, singleFileName, repoBranch);
 
 	}
 
-	private void getSingleFileContents(String instanceUrl, String token, final String owner, String repo, final String filename) {
+	private void getSingleFileContents(String instanceUrl, String token, final String owner, String repo, final String filename, String ref) {
 
 		final TinyDB tinyDb = new TinyDB(appCtx);
 
-		Call<Files> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getSingleFileContents(token, owner, repo, filename);
+		Call<Files> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getSingleFileContents(token, owner, repo, filename, ref);
 
 		call.enqueue(new Callback<Files>() {
 

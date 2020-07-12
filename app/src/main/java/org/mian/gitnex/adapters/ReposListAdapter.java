@@ -60,6 +60,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		private TextView repoOpenIssuesCount;
 		private TextView repoType;
 		private LinearLayout archiveRepo;
+		private TextView repoBranch;
 
 		private ReposViewHolder(View itemView) {
 
@@ -76,6 +77,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
 			repoType = itemView.findViewById(R.id.repoType);
 			archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
+			repoBranch = itemView.findViewById(R.id.repoBranch);
 
 			itemView.setOnClickListener(v -> {
 
@@ -91,6 +93,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 				tinyDb.putString("repoType", repoType_.getText().toString());
 				//tinyDb.putBoolean("resumeIssues", true);
 				tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
+				tinyDb.putString("repoBranch", repoBranch.getText().toString());
 
 				String[] parts = repoFullName.getText().toString().split("/");
 				final String repoOwner = parts[0];
@@ -235,6 +238,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 
 		UserRepositories currentItem = reposList.get(position);
 		holder.repoDescription.setVisibility(View.GONE);
+		holder.repoBranch.setText(currentItem.getDefault_branch());
 
 		ColorGenerator generator = ColorGenerator.MATERIAL;
 		int color = generator.getColor(currentItem.getName());

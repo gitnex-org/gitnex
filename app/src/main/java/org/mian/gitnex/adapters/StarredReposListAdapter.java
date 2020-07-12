@@ -60,6 +60,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
         private TextView repoOpenIssuesCount;
         private TextView repoType;
 	    private LinearLayout archiveRepo;
+	    private TextView repoBranch;
 
         private StarredReposViewHolder(View itemView) {
             super(itemView);
@@ -75,6 +76,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
             ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
             repoType = itemView.findViewById(R.id.repoType);
 	        archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
+	        repoBranch = itemView.findViewById(R.id.repoBranch);
 
             itemView.setOnClickListener(v -> {
 
@@ -88,6 +90,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
                 tinyDb.putString("repoType", repoType.getText().toString());
                 //tinyDb.putBoolean("resumeIssues", true);
                 tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
+	            tinyDb.putString("repoBranch", repoBranch.getText().toString());
 
                 String[] parts = fullName.getText().toString().split("/");
                 final String repoOwner = parts[0];
@@ -231,6 +234,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
 
         UserRepositories currentItem = reposList.get(position);
         holder.repoDescription.setVisibility(View.GONE);
+	    holder.repoBranch.setText(currentItem.getDefault_branch());
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getColor(currentItem.getName());

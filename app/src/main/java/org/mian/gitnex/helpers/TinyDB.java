@@ -269,6 +269,10 @@ public class TinyDB {
         return preferences.getString(key, "");
     }
 
+    public String getString(String key, String defaultValue) {
+        return preferences.getString(key, defaultValue);
+    }
+
     /**
      * Get parsed ArrayList of String from SharedPreferences at 'key'
      * @param key SharedPreferences key

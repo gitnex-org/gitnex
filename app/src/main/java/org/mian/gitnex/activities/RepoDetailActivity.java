@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,11 +43,15 @@ import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.models.Branches;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.models.WatchInfo;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Author M M Arif
@@ -61,6 +67,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListenerPr fragmentRefreshListenerPr;
 	private FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone;
+	private FragmentRefreshListenerFiles fragmentRefreshListenerFiles;
 
 	private final Context ctx = this;
 	private Context appCtx;
@@ -285,6 +292,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 				filterMilestoneBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
 				return true;
 
+			case R.id.switchBranches:
+				chooseBranch();
+				return true;
+
 			default:
 				return super.onOptionsItemSelected(item);
 
@@ -311,6 +322,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 			case "addCollaborator":
 				startActivity(new Intent(RepoDetailActivity.this, AddCollaboratorToRepositoryActivity.class));
+				break;
+
+			case "chooseBranch":
+				chooseBranch();
 				break;
 
 			case "createRelease":
@@ -374,6 +389,65 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 	}
 
+	private void chooseBranch() {
+
+		Call<List<Branches>> call = RetrofitClient.getInstance(instanceUrl, ctx)
+			.getApiInterface()
+			.getBranches(instanceToken, repositoryOwner, repositoryName);
+
+		call.enqueue(new Callback<List<Branches>>() {
+
+			@Override
+			public void onResponse(@NonNull Call<List<Branches>> call, @NonNull Response<List<Branches>> response) {
+
+				if(response.code() == 200) {
+
+					List<String> branchesList = new ArrayList<>();
+					int selectedBranch = 0;
+					assert response.body() != null;
+
+					for(int i = 0; i < response.body().size(); i++) {
+
+						Branches branches = response.body().get(i);
+						branchesList.add(branches.getName());
+
+						if(tinyDB.getString("repoBranch").equals(branches.getName())) {
+
+							selectedBranch = i;
+						}
+					}
+
+					AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
+					pBuilder.setTitle(R.string.pageTitleChooseBranch);
+
+					pBuilder.setSingleChoiceItems(branchesList.toArray(new String[0]), selectedBranch, new  DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+
+							tinyDB.putString("repoBranch", branchesList.get(i));
+							if(getFragmentRefreshListenerFiles() != null) {
+								getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
+							}
+							dialogInterface.dismiss();
+						}
+					});
+
+					pBuilder.create().show();
+
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<List<Branches>> call, @NonNull Throwable t) {
+
+				Log.e("onFailure", t.toString());
+			}
+		});
+
+	}
+
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		SectionsPagerAdapter(FragmentManager fm) {
@@ -393,7 +467,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 					return RepoInfoFragment.newInstance(repositoryOwner, repositoryName);
 
 				case 1: // Files
-					return FilesFragment.newInstance(repositoryOwner, repositoryName);
+					return FilesFragment.newInstance(repositoryOwner, repositoryName, tinyDB.getString("repoBranch"));
 
 				case 2: // Issues
 					fragment = new IssuesFragment();
@@ -444,32 +518,28 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 				UserRepositories repoInfo = response.body();
 
-				if(response.isSuccessful()) {
+				if(response.code() == 200) {
 
-					if(response.code() == 200) {
+					if(tinyDB.getBoolean("enableCounterBadges")) {
+						assert repoInfo != null;
 
-						if(tinyDB.getBoolean("enableCounterBadges")) {
-							assert repoInfo != null;
+						if(repoInfo.getOpen_issues_count() != null) {
 
-							if(repoInfo.getOpen_issues_count() != null) {
-
-								textViewBadgeIssue.setVisibility(View.VISIBLE);
-								textViewBadgeIssue.setText(repoInfo.getOpen_issues_count());
-							}
-
-							if(repoInfo.getOpen_pull_count() != null) {
-
-								textViewBadgePull.setVisibility(View.VISIBLE);
-								textViewBadgePull.setText(repoInfo.getOpen_pull_count());
-							}
-
-							if(repoInfo.getRelease_count() != null) {
-
-								textViewBadgeRelease.setVisibility(View.VISIBLE);
-								textViewBadgeRelease.setText(repoInfo.getRelease_count());
-							}
+							textViewBadgeIssue.setVisibility(View.VISIBLE);
+							textViewBadgeIssue.setText(repoInfo.getOpen_issues_count());
 						}
 
+						if(repoInfo.getOpen_pull_count() != null) {
+
+							textViewBadgePull.setVisibility(View.VISIBLE);
+							textViewBadgePull.setText(repoInfo.getOpen_pull_count());
+						}
+
+						if(repoInfo.getRelease_count() != null) {
+
+							textViewBadgeRelease.setVisibility(View.VISIBLE);
+							textViewBadgeRelease.setText(repoInfo.getRelease_count());
+						}
 					}
 
 				}
@@ -566,5 +636,12 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	public void setFragmentRefreshListenerMilestone(FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone) { this.fragmentRefreshListenerMilestone = fragmentRefreshListenerMilestone; }
 
 	public interface FragmentRefreshListenerMilestone { void onRefresh(String text); }
+
+	// Files interface
+	public FragmentRefreshListenerFiles getFragmentRefreshListenerFiles() { return fragmentRefreshListenerFiles; }
+
+	public void setFragmentRefreshListenerFiles(FragmentRefreshListenerFiles fragmentRefreshListenerFiles) { this.fragmentRefreshListenerFiles = fragmentRefreshListenerFiles; }
+
+	public interface FragmentRefreshListenerFiles { void onRefresh(String text); }
 
 }

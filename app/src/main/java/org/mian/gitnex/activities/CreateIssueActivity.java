@@ -444,7 +444,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
                                 .multiSelectList(listOfAssignees)
                                 .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
                                     @Override
-                                    public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
+                                    public void onSelected(List<Integer> selectedIds, List<String> selectedNames, String dataString) {
 
                                         assigneesList.setText(dataString);
 
@@ -507,7 +507,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
                                 .multiSelectList(listOfLabels)
                                 .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
                                     @Override
-                                    public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
+                                    public void onSelected(List<Integer> selectedIds, List<String> selectedNames, String dataString) {
 
                                         newIssueLabels.setText(dataString.trim());
                                         labelsIdHolder.setText(selectedIds.toString());

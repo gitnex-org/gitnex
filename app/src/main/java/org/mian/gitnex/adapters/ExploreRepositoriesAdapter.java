@@ -63,6 +63,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 		private TextView repoOpenIssuesCount;
 		private TextView repoType;
 		private LinearLayout archiveRepo;
+		private TextView repoBranch;
 
 		private ReposSearchViewHolder(View itemView) {
 
@@ -80,6 +81,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 			ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
 			repoType = itemView.findViewById(R.id.repoType);
 			archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
+			repoBranch = itemView.findViewById(R.id.repoBranch);
 
 			itemView.setOnClickListener(v -> {
 
@@ -93,6 +95,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 				tinyDb.putString("repoFullName", repoFullName.getText().toString());
 				tinyDb.putBoolean("resumeIssues", true);
 				tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
+				tinyDb.putString("repoBranch", repoBranch.getText().toString());
 
 				String[] parts = fullName.getText().toString().split("/");
 				final String repoOwner = parts[0];
@@ -228,10 +231,9 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 	@Override
 	public void onBindViewHolder(@NonNull final ExploreRepositoriesAdapter.ReposSearchViewHolder holder, int position) {
 
-		final UserRepositories currentItem = searchedReposList.get(position);
-
-
+		UserRepositories currentItem = searchedReposList.get(position);
 		holder.repoDescription.setVisibility(View.GONE);
+		holder.repoBranch.setText(currentItem.getDefault_branch());
 
 		ColorGenerator generator = ColorGenerator.MATERIAL;
 		int color = generator.getColor(currentItem.getName());

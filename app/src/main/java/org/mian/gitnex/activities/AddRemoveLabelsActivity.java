@@ -128,7 +128,7 @@ public class AddRemoveLabelsActivity extends BaseActivity {
                                                 .multiSelectList(listOfLabels)
                                                 .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
                                                     @Override
-                                                    public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
+                                                    public void onSelected(List<Integer> selectedIds, List<String> selectedNames, String dataString) {
 
                                                         String labelIds = selectedIds.toString();
                                                         int[] integers;
@@ -169,7 +169,7 @@ public class AddRemoveLabelsActivity extends BaseActivity {
                                                 .multiSelectList(listOfLabels)
                                                 .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
                                                     @Override
-                                                    public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
+                                                    public void onSelected(List<Integer> selectedIds, List<String> selectedNames, String dataString) {
 
                                                         String labelIds = selectedIds.toString();
                                                         int[] integers;

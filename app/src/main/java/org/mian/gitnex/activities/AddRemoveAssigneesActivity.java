@@ -139,7 +139,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
                                                 .multiSelectList(listOfCollaborators)
                                                 .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
                                                     @Override
-                                                    public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
+                                                    public void onSelected(List<Integer> selectedIds, List<String> selectedNames, String dataString) {
 
                                                         Log.i("selectedNames", String.valueOf(selectedNames));
 
@@ -167,7 +167,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
                                                 .multiSelectList(listOfCollaborators)
                                                 .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
                                                     @Override
-                                                    public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
+                                                    public void onSelected(List<Integer> selectedIds, List<String> selectedNames, String dataString) {
 
                                                         updateIssueAssignees(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, loginUid, issueIndex, selectedNames);
                                                         tinyDb.putBoolean("singleIssueUpdate", true);

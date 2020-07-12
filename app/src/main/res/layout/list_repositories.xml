@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/repoBranch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
     <RelativeLayout
         android:id="@+id/linearLayoutFrame"
         android:layout_width="match_parent"

@@ -10,9 +10,6 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:text="@string/select_entry"
         android:textColor="?attr/primaryTextColor"
         android:textSize="24sp" />
@@ -92,28 +89,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <TextView
+        <Button
             android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textColor="?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="@string/cancelButton"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:text="@string/cancelButton" />
 
-        <TextView
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
             android:id="@+id/done"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textColor="?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:gravity="end"
-            android:text="@string/doneButton"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:text="@string/doneButton" />
     </LinearLayout>
 
 </LinearLayout>

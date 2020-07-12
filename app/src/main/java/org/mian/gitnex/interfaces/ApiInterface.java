@@ -3,29 +3,29 @@ package org.mian.gitnex.interfaces;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.models.AddEmail;
 import org.mian.gitnex.models.Branches;
-import org.mian.gitnex.models.Commits;
-import org.mian.gitnex.models.ExploreRepositories;
-import org.mian.gitnex.models.Files;
-import org.mian.gitnex.models.MergePullRequest;
-import org.mian.gitnex.models.NewFile;
-import org.mian.gitnex.models.PullRequests;
-import org.mian.gitnex.models.UpdateIssueAssignees;
-import org.mian.gitnex.models.UpdateIssueState;
 import org.mian.gitnex.models.Collaborators;
+import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.CreateLabel;
 import org.mian.gitnex.models.Emails;
+import org.mian.gitnex.models.ExploreRepositories;
+import org.mian.gitnex.models.Files;
 import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.IssueComments;
 import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.models.Labels;
+import org.mian.gitnex.models.MergePullRequest;
 import org.mian.gitnex.models.Milestones;
+import org.mian.gitnex.models.NewFile;
 import org.mian.gitnex.models.OrgOwner;
 import org.mian.gitnex.models.Organization;
 import org.mian.gitnex.models.OrganizationRepository;
 import org.mian.gitnex.models.Permission;
+import org.mian.gitnex.models.PullRequests;
 import org.mian.gitnex.models.Releases;
 import org.mian.gitnex.models.Teams;
+import org.mian.gitnex.models.UpdateIssueAssignees;
+import org.mian.gitnex.models.UpdateIssueState;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserOrganizations;
 import org.mian.gitnex.models.UserRepositories;
@@ -229,13 +229,13 @@ public interface ApiInterface {
     Call<JsonElement> createNewFile(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String fileName, @Body NewFile jsonStr);
 
     @GET("repos/{owner}/{repo}/contents") // get all the files and dirs of a repository
-    Call<List<Files>> getFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+    Call<List<Files>> getFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Query("ref") String ref);
 
     @GET("repos/{owner}/{repo}/contents/{file}") // get single file contents
-    Call<Files> getSingleFileContents(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String file);
+    Call<Files> getSingleFileContents(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("file") String file, @Query("ref") String ref);
 
     @GET("repos/{owner}/{repo}/contents/{fileDir}") // get all the sub files and dirs of a repository
-    Call<List<Files>> getDirFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("fileDir") String fileDir);
+    Call<List<Files>> getDirFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("fileDir") String fileDir, @Query("ref") String ref);
 
     @GET("user/starred/{owner}/{repo}") // check star status of a repository
     Call<JsonElement> checkRepoStarStatus(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);

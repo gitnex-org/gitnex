@@ -45,6 +45,7 @@
     <string name="pageTitleCreateNewIssue">New Issue</string>
     <string name="pageTitleCreateLabel">New Label</string>
     <string name="pageTitleCredits">Credits</string>
+    <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Update Label</string>
     <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Starred Repositories</string>
@@ -463,6 +464,7 @@
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
 
     <string name="strFilter">Filter</string>
+    <string name="strSwitchBranches">Branches</string>
 
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
@@ -473,6 +475,7 @@
     <!-- files -->
     <string name="noDataFilesTab">No files found</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
+    <string name="colonDivider" translatable="false">\u0020:\u0020</string>
 
     <string name="notSupported">Not supported</string>
 

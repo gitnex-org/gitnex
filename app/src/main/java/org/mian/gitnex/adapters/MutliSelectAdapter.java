@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.MultiSelectDialog;
-import org.mian.gitnex.models.MultiSelectModel;
-import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import org.mian.gitnex.R;
+import org.mian.gitnex.helpers.MultiSelectDialog;
+import org.mian.gitnex.models.MultiSelectModel;
+import java.util.List;
 
 /**
  * Author com.github.abumoallim, modified by M M Arif
@@ -26,11 +26,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MutliSelectAdapter extends RecyclerView.Adapter<MutliSelectAdapter.MultiSelectDialogViewHolder> {
 
-    private ArrayList<MultiSelectModel> mDataSet;
+    private List<MultiSelectModel> mDataSet;
     private String mSearchQuery = "";
     private Context mContext;
 
-    public MutliSelectAdapter(ArrayList<MultiSelectModel> dataSet, Context context) {
+    public MutliSelectAdapter(List<MultiSelectModel> dataSet, Context context) {
         this.mDataSet = dataSet;
         this.mContext = context;
     }
@@ -163,7 +163,7 @@ public class MutliSelectAdapter extends RecyclerView.Adapter<MutliSelectAdapter.
         return mDataSet.size();
     }
 
-    public void setData(ArrayList<MultiSelectModel> data, String query, MutliSelectAdapter mutliSelectAdapter) {
+    public void setData(List<MultiSelectModel> data, String query, MutliSelectAdapter mutliSelectAdapter) {
 
         this.mDataSet = data;
         this.mSearchQuery = query;
