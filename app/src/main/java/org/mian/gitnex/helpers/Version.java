@@ -103,23 +103,7 @@ public class Version {
 	 */
 	public boolean less(@NonNull Version v) {
 
-		int rounds = Math.min(this.values.size(), v.values.size());
-		for(int i = 0; i < rounds; i++) {
-			if(i + 1 == rounds) {
-				if(this.values.get(i) >= v.values.get(i)) {
-					return false;
-				}
-			}
-			else {
-				if(this.values.get(i) > v.values.get(i)) {
-					return false;
-				}
-				else if(this.values.get(i) < v.values.get(i)) {
-					return true;
-				}
-			}
-		}
-		return true;
+		return v.higher(this);
 
 	}
 
@@ -184,13 +168,7 @@ public class Version {
 	 */
 	public boolean lessOrEqual(@NonNull Version v) {
 
-		int rounds = Math.min(this.values.size(), v.values.size());
-		for(int i = 0; i < rounds; i++) {
-			if(this.values.get(i) > v.values.get(i)) {
-				return false;
-			}
-		}
-		return true;
+		return v.higherOrEqual(this);
 
 	}
 
@@ -217,9 +195,13 @@ public class Version {
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
-			if(this.values.get(i) < v.values.get(i)) {
+			if(this.values.get(i) > v.values.get(i)) {
+				return true;
+			}
+			else if(this.values.get(i) < v.values.get(i)) {
 				return false;
 			}
+
 		}
 		return true;
 

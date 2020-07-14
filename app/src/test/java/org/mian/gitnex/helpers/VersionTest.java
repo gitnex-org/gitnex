@@ -28,6 +28,7 @@ public class VersionTest {
 		assertFalse(new Version("2").equal("1"));
 		assertFalse(new Version("1.2").equal("2.1"));
 		assertFalse(new Version("2.2").equal("2.1.120"));
+		assertFalse(new Version("1.12.3").equal("1.13.0+dev-307-g633f52c22"));
 
 	}
 
@@ -41,6 +42,7 @@ public class VersionTest {
 		assertTrue(new Version("1.2.3").less("1.2.4"));
 		assertTrue(new Version("1.2.4").less("1.3.1"));
 		assertTrue(new Version("1.2").less("2.1"));
+		assertTrue(new Version("1.12.3").less("1.13.0+dev-307-g633f52c22"));
 
 		assertFalse(new Version("1").less("1.1.10"));
 		assertFalse(new Version("1.12.1").less("1.12.0+dev-211-g316db0fe7"));
@@ -62,12 +64,13 @@ public class VersionTest {
 		assertTrue(new Version("1.2.3").lessOrEqual("1.2.4"));
 		assertTrue(new Version("1").lessOrEqual("1.1.10"));
 		assertTrue(new Version("1.12.0").lessOrEqual("1.12.0"));
+		assertTrue(new Version("1.12.3").lessOrEqual("1.13.0+dev-307-g633f52c22"));
 
 		assertFalse(new Version("1.12.1").lessOrEqual("1.12.0+dev-211-g316db0fe7"));
 		assertFalse(new Version("v1.12.0").lessOrEqual("1.10.0"));
 		assertFalse(new Version("2.12.0").lessOrEqual("v1.12"));
 		assertFalse(new Version("2").lessOrEqual("1"));
-		assertFalse(new Version("1.2").lessOrEqual("2.1"));
+		assertFalse(new Version("2.1").lessOrEqual("1.2"));
 		assertFalse(new Version("2.2").lessOrEqual("2.1.120"));
 
 	}
@@ -83,6 +86,7 @@ public class VersionTest {
 		assertTrue(new Version("1.2.4").higher("1.2.3"));
 		assertTrue(new Version("1.13.0+dev-30-gb02d2c377").higher("1.11.4"));
 		assertTrue(new Version("2.1").higher("1.2"));
+		assertTrue(new Version("1.13.0+dev-307-g633f52c22").higher("1.12.3"));
 
 		assertFalse(new Version("1").higher("1.1.10"));
 		assertFalse(new Version("1.12.0+dev-211-g316db0fe7").higher("1.12.1"));
@@ -104,12 +108,13 @@ public class VersionTest {
 		assertTrue(new Version("1.2.4").higherOrEqual("1.2.3"));
 		assertTrue(new Version("1").higherOrEqual("1.1.10"));
 		assertTrue(new Version("1.12.0").higherOrEqual("1.12.0"));
+		assertTrue(new Version("1.13.0+dev-307-g633f52c22").higherOrEqual("1.12.3"));
 
 		assertFalse(new Version("1.12.0+dev-211-g316db0fe7").higherOrEqual("1.12.1"));
 		assertFalse(new Version("1.10.0").higherOrEqual("v1.12.0"));
 		assertFalse(new Version("v1.12").higherOrEqual("2.12.0"));
 		assertFalse(new Version("1").higherOrEqual("2"));
-		assertFalse(new Version("2.1").higherOrEqual("1.2"));
+		assertFalse(new Version("1.2").higherOrEqual("2.1"));
 		assertFalse(new Version("2.1.120").higherOrEqual("2.2"));
 
 	}
