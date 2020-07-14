@@ -27,6 +27,7 @@
     <string name="pageTitleCreateNewIssue">Yeni Konu</string>
     <string name="pageTitleCreateLabel">Yeni Etiket</string>
     <string name="pageTitleCredits">Katkılar</string>
+    <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Etiketi Güncelle</string>
     <string name="pageTitleSponsors">Bağışçılar</string>
     <string name="pageTitleStarredRepos">Yıldızlı Depolar</string>
@@ -35,6 +36,7 @@
     <string name="pageTitleNewFile">Yeni Dosya</string>
     <string name="pageTitleExplore">Keşfet</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
     <!-- page titles -->
     <string name="repoName">Demo deposu</string>
     <string name="repoFullname">ORG ile Depo</string>
@@ -132,6 +134,8 @@
     <string name="commitAuthor">İşleme yazarı: %1$s</string>
     <string name="releaseDownloadText">İndirmeler</string>
     <string name="noDataReleasesTab">Sürüm bulunamadı</string>
+    <string name="releasePublishedBy">Published by @%1$s</string>
+    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
     <string name="noDataCollaboratorTab">İşbirlikçi bulunamadı</string>
     <string name="newMilestoneTitle">Başlık</string>
     <string name="newMilestoneDescription">Açıklama</string>
@@ -141,6 +145,10 @@
     <string name="milestoneCreated">Kilometre taşı başarıyla oluşturuldu</string>
     <string name="milestoneCreatedError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="milestoneDateEmpty">Lütfen bitiş tarihi seçin</string>
+    <string name="milestoneNoDueDate">No due date</string>
+    <string name="milestoneNoDescription">No description</string>
+    <string name="milestoneIssueStatusOpen">%1$d Open</string>
+    <string name="milestoneIssueStatusClosed">%1$d Closed</string>
     <string name="newIssueSelectAssigneesListTitle">Atanan Seç</string>
     <string name="newIssueSelectLabelsListTitle">Etiket Seç</string>
     <string name="newIssueTitle">Başlık</string>
@@ -175,6 +183,7 @@
     <string name="settingsCodeBlockSelectorDialogTitle">Kod Bloğu Renk Seçici</string>
     <string name="settingsHomeScreenHeaderText">Ana Ekran</string>
     <string name="settingsHomeScreenSelectedText">Depolarım</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
@@ -191,6 +200,10 @@
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
+    <string name="draftsHeader">Drafts</string>
+    <string name="draftsHintText">Comments draft</string>
+    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
+    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <!-- settings -->
     <string name="noMoreData">Daha fazla veri yok</string>
     <string name="createLabel">Yeni Etiket</string>
@@ -344,10 +357,12 @@
     <string name="repoStargazersInMenu">Yıldızlayanlar</string>
     <string name="repoWatchersInMenu">İzleyiciler</string>
     <string name="noDataWebsite">No website found</string>
+    <string name="noDataDescription">No description found</string>
+    <string name="noDataLocation">No location found</string>
     <string name="starMember">Yıldız</string>
     <string name="watcherMember">İzleyici</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip Arşivi</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar Arşivi</string>
+    <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
+    <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">Dosya Adı</string>
     <string name="newFileBranchTintCopy">Yeni Dal Adı</string>
@@ -364,12 +379,15 @@
     <string name="newFileNewBranchMessage">ör: yeni-dal</string>
     <string name="newFileRequiredFieldNewBranchName">Geçerli dal seçilmemişse yeni dal adı boş bırakılamaz</string>
     <string name="strFilter">Filtre</string>
+    <string name="strSwitchBranches">Branches</string>
     <string name="copyIssueUrl">Konu Adresini Kopyala</string>
     <string name="copyIssueUrlToastMsg">URL panoya kopyalandı</string>
+    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 tamamlandı</string>
     <!-- files -->
     <string name="noDataFilesTab">Dosya bulunamadı</string>
     <string name="filesGenericError">Üzgünüz, bu dosya API hata döndürdüğü için görüntülenemiyor</string>
+    <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">Tamam</string>
     <string name="doneButton">Tamam</string>
@@ -383,6 +401,8 @@
     <string name="menuContentDesc">Menü</string>
     <string name="menuEditText">Düzenle</string>
     <string name="menuDeleteText">Sil</string>
+    <string name="menuCopyText">Copy</string>
+    <string name="menuQuoteText">Quote and Reply</string>
     <string name="modifiedText">düzenlendi</string>
     <string name="saveButton">Kaydet</string>
     <string name="websiteText">Website</string>
@@ -392,6 +412,8 @@
     <string name="textContinue">Devam et</string>
     <string name="copyToken">Jeton</string>
     <string name="viewInBrowser">View in Browser</string>
+    <string name="isOpen">Open</string>
+    <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Crowdin\'de GitNex için Çeviri Yap</string>
@@ -404,13 +426,16 @@
     <string name="unWatchRepository">Depoyu İzlemeyi Bırak</string>
     <string name="watchRepositorySuccess">Depo izleme listesine eklendi</string>
     <string name="unWatchRepositorySuccess">Depo izleme listesinden kaldırıldı</string>
+    <string name="titleDrafts">Drafts</string>
     <string name="versionUnsupportedOld">Gitea\'nin desteklenmeyen eski sürümü (%1$s) tespit edildi. Lütfen en son kararlı sürüme güncelleyin. Devam ederseniz, uygulama düzgün çalışmayabilir.</string>
     <string name="versionUnsupportedNew">Yeni Gitea versiyonu tespit edildi! Lütfen GitNex\'i GÜNCELLEYİN!</string>
+    <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Desteklenmeyen Gitea Versiyonu</string>
     <string name="loginViaPassword">Kullanıcı Adı / Şifre</string>
     <string name="loginMethodText">Hesabınıza erişmek için tercih ettiğiniz giriş yöntemini seçin. Jeton daha güvenli!</string>
     <string name="unauthorizedApiError">Örnek bir hata döndürdü - Yetkisiz. Kimlik bilgilerinizi kontrol edin ve tekrar deneyin</string>
     <string name="loginTokenError">Lütfen doğru jetonu girin</string>
+    <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">Çekme isteği bulunamadı</string>
     <string name="prCreator">Yaratıcı :\u0020</string>
     <string name="editPrText">Çekme İsteğini Düzenle</string>
@@ -422,7 +447,10 @@
     <string name="openFileDiffText">Dosya Değiştirildi</string>
     <string name="mergePullRequestText">Değişiklik İsteğini Birleştir</string>
     <string name="mergePullRequestButtonText">Birleştir</string>
+    <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Bu Çekme İsteğini birleştirme yetkiniz yoksa, birleştirme başarısız olabilir.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge.</string>
+    <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
     <string name="mergeCommentText">Yorumu birleştir</string>
     <string name="mergePRSuccessMsg">Çekme İsteği başarıyla birleştirildi</string>
     <string name="mergePR404ErrorMsg">Çekme İsteği birleştirme için uygun değil</string>
@@ -447,6 +475,7 @@
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_cert_expired">The server certificate is expired.</string>
+    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
     <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
     <string name="mtm_cert_details">Certificate details:</string>
@@ -454,8 +483,10 @@
     <string name="mtm_decision_abort">Abort</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscriptionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
@@ -465,8 +496,19 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="forceLogoutDialogHeader">Please sign in again</string>
+    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
+    <string name="deleteAllDrafts">Delete All Drafts</string>
+    <string name="draftsListEmpty">No drafts found</string>
+    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
+    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
+    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
+    <string name="draftSaved">Draft saved</string>
+    <string name="appearanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+    <string name="archivedRepository">Archived</string>
+    <string name="accountDeletedMessage">Account deleted successfully</string>
 </resources>

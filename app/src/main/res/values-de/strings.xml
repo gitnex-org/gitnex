@@ -27,6 +27,7 @@
     <string name="pageTitleCreateNewIssue">Issue erstellen</string>
     <string name="pageTitleCreateLabel">Label erstellen</string>
     <string name="pageTitleCredits">Mitwirkende</string>
+    <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Label aktualisieren</string>
     <string name="pageTitleSponsors">Spender</string>
     <string name="pageTitleStarredRepos">Favoriten</string>
@@ -35,6 +36,7 @@
     <string name="pageTitleNewFile">Neue Datei</string>
     <string name="pageTitleExplore">Erkunden</string>
     <string name="pageTitleAdministration">Gitea-Administration</string>
+    <string name="pageTitleUserAccounts">Konten verwalten (Beta)</string>
     <!-- page titles -->
     <string name="repoName">Demo Repo</string>
     <string name="repoFullname">Repo mit ORG</string>
@@ -132,6 +134,8 @@
     <string name="commitAuthor">Commit Autor: %1$s</string>
     <string name="releaseDownloadText">Downloads</string>
     <string name="noDataReleasesTab">Kein Release gefunden!</string>
+    <string name="releasePublishedBy">Veröffentlicht von @%1$s</string>
+    <string name="noReleaseBodyContent">Veröffentlichungshinweise werden vom Herausgeber nicht zur Verfügung gestellt.</string>
     <string name="noDataCollaboratorTab">Kein Zuständiger gefunden!</string>
     <string name="newMilestoneTitle">Titel</string>
     <string name="newMilestoneDescription">Beschreibung</string>
@@ -141,6 +145,10 @@
     <string name="milestoneCreated">Meilenstein erfolgreich erstellt!</string>
     <string name="milestoneCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="milestoneDateEmpty">Bitte wählen Sie das Fälligkeitsdatum!</string>
+    <string name="milestoneNoDueDate">Kein Datum</string>
+    <string name="milestoneNoDescription">Keine Beschreibung</string>
+    <string name="milestoneIssueStatusOpen">%1$d offen</string>
+    <string name="milestoneIssueStatusClosed">%1$d geschlossen</string>
     <string name="newIssueSelectAssigneesListTitle">Wählen Sie Zuständige aus</string>
     <string name="newIssueSelectLabelsListTitle">Label auswählen</string>
     <string name="newIssueTitle">Titel</string>
@@ -175,6 +183,7 @@
     <string name="settingsCodeBlockSelectorDialogTitle">Code-Block-Farbauswahl</string>
     <string name="settingsHomeScreenHeaderText">Startseite</string>
     <string name="settingsHomeScreenSelectedText">Meine Repositories</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">Home Screen Auswählen</string>
     <string name="settingsCustomFontHeaderText">Schriftart</string>
     <string name="settingsCustomFontSelectorDialogTitle">Wähle eine Schriftart</string>
     <string name="themeSelectorDialogTitle">App-Design auswählen</string>
@@ -191,6 +200,10 @@
     <string name="clearCacheSelectionHeaderText">Cache löschen</string>
     <string name="clearCacheDialogHeader">Cache löschen?</string>
     <string name="clearCacheDialogMessage">Dadurch werden alle Cache-Daten einschließlich Dateien und Bilder gelöscht.\n\nMit dem Löschen fortfahren?</string>
+    <string name="draftsHeader">Entwürfe</string>
+    <string name="draftsHintText">Kommentarentwürfe</string>
+    <string name="settingsEnableCommentsDeletionText">Entwürfe löschen aktivieren</string>
+    <string name="settingsEnableCommentsDeletionHintText">Kommentar-Entwurf löschen, wenn Kommentar veröffentlicht wird</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -344,10 +357,12 @@
     <string name="repoStargazersInMenu">Favorisierer</string>
     <string name="repoWatchersInMenu">Beobachter</string>
     <string name="noDataWebsite">Keine Webseite gefunden</string>
+    <string name="noDataDescription">Keine Beschreibung gefunden</string>
+    <string name="noDataLocation">Kein Ort gefunden</string>
     <string name="starMember">Favorisierer</string>
     <string name="watcherMember">Beobachter</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip Archiv</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar Archiv</string>
+    <string name="zipArchiveDownloadReleasesTab">Quellcode (ZIP Archiv)</string>
+    <string name="tarArchiveDownloadReleasesTab">Quellcode (TAR.GZ Archiv)</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">Dateiname</string>
     <string name="newFileBranchTintCopy">neuer Branch-Name</string>
@@ -364,12 +379,15 @@
     <string name="newFileNewBranchMessage">z.B.: neuer-branch</string>
     <string name="newFileRequiredFieldNewBranchName">Neuer Branch-Name kann nicht leer sein, wenn der derzeitige Branch nicht ausgewählt ist</string>
     <string name="strFilter">Filter</string>
+    <string name="strSwitchBranches">Branches</string>
     <string name="copyIssueUrl">Issue Link kopieren</string>
     <string name="copyIssueUrlToastMsg">URL in Zwischenablage kopiert</string>
+    <string name="copyIssueCommentToastMsg">Mein Kommentar in die Zwischenablage kopieren</string>
     <string name="milestoneCompletion">%1$d\uFF05 abgeschlossen</string>
     <!-- files -->
     <string name="noDataFilesTab">Keine Dateien gefunden</string>
     <string name="filesGenericError">Leider kann diese Datei nicht angezeigt werden, da die API einen Fehler zurückgab</string>
+    <string name="notSupported">Nicht unterstützt</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Fertig</string>
@@ -383,6 +401,8 @@
     <string name="menuContentDesc">Menü</string>
     <string name="menuEditText">Bearbeiten</string>
     <string name="menuDeleteText">Entfernen</string>
+    <string name="menuCopyText">Kopieren</string>
+    <string name="menuQuoteText">Zitierte und Antworte</string>
     <string name="modifiedText">Bearbeitet</string>
     <string name="saveButton">Speichern</string>
     <string name="websiteText">Website</string>
@@ -392,6 +412,8 @@
     <string name="textContinue">Fortfahren</string>
     <string name="copyToken">Token</string>
     <string name="viewInBrowser">In Browser betrachten</string>
+    <string name="isOpen">Offen</string>
+    <string name="isClosed">Geschlossen</string>
     <string name="genericServerResponseError">Wir können den Server im Moment nicht erreichen. Bitte überprüfen Sie Ihren Serverstatus und versuchen Sie es erneut</string>
     <!-- generic copy -->
     <string name="translateText">GitNex mit Crowdin übersetzen</string>
@@ -404,13 +426,16 @@
     <string name="unWatchRepository">Repository nicht mehr beobachten</string>
     <string name="watchRepositorySuccess">Repository zur Merkliste hinzugefügt</string>
     <string name="unWatchRepositorySuccess">Repository von der Merkliste entfernt</string>
+    <string name="titleDrafts">Entwürfe</string>
     <string name="versionUnsupportedOld">Nicht unterstützte alte Version(%1$s) von Gitea erkannt. Bitte aktualisieren Sie auf die neueste stabile Version. Wenn Sie fortfahren, funktioniert die App möglicherweise nicht ordnungsgemäß.</string>
     <string name="versionUnsupportedNew">Neue Gitea-Version erkannt! Bitte UPDATE GitNex!</string>
+    <string name="versionUnknown">Keine Gitea erkannt!</string>
     <string name="versionAlertDialogHeader">Nicht unterstützte Version von Gitea</string>
     <string name="loginViaPassword">Benutzername/Passwort</string>
     <string name="loginMethodText">Wählen deine bevorzugte Login-Methode, um auf deinen Account zuzugreifen. Token ist sicherer!</string>
     <string name="unauthorizedApiError">Gitea hat einen Fehler zurückgegeben - Nicht autorisiert. Überprüfen Sie Ihre Anmeldeinformationen und versuchen Sie es erneut</string>
     <string name="loginTokenError">Bitte gib einen richtigen Token ein</string>
+    <string name="prDeletedFrok">Gelöschter Fork</string>
     <string name="noDataPullRequests">Keine Pull-Requests gefunden</string>
     <string name="prCreator">Ersteller:\u0020</string>
     <string name="editPrText">Bearbeite Pull-Request</string>
@@ -422,7 +447,10 @@
     <string name="openFileDiffText">Diff Anzeigen</string>
     <string name="mergePullRequestText">Pull-Request zusammenführen</string>
     <string name="mergePullRequestButtonText">Zusammenführen</string>
+    <string name="deleteBranchAfterMerge">Branch nach dem Zusammenführen löschen</string>
     <string name="mergeNoteText">Zusammenführen kann fehlschlagen, wenn du dafür nicht die Berechtigungen besitzt.</string>
+    <string name="mergeInfoDisabledMessage">Deaktivierte Merge Schaltfläche bedeutet, dass es Konflikte oder andere Dinge gibt, die vor dem Zusammenführen behoben werden müssen.</string>
+    <string name="deleteBranchForkInfo">Dieser Branch gehört zu einem geforkten Repository</string>
     <string name="mergeCommentText">Zusammenführ-Kommentar</string>
     <string name="mergePRSuccessMsg">Dieser Pull-Request wurde erfolgreich zusammengeführt</string>
     <string name="mergePR404ErrorMsg">Pull-Request kann nicht zusammengeführt werden</string>
@@ -447,6 +475,7 @@
     <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
     <string name="mtm_trust_anchor">Das Server-Zertifikat ist nicht von einer bekannten Zertifizierungsstelle signiert.</string>
     <string name="mtm_cert_expired">Das Server-Zertifikat ist abgelaufen.</string>
+    <string name="mtm_accept_server_name">Nicht übereinstimmender Hostname akzeptieren?</string>
     <string name="mtm_hostname_mismatch">Server konnte sich nicht als \&quot;%s\&quot; authentifizieren. Das Zertifikat ist nur gültig für:</string>
     <string name="mtm_connect_anyway">Möchtest du dich trotzdem verbinden?</string>
     <string name="mtm_cert_details">Zertifikats-Details:</string>
@@ -454,8 +483,10 @@
     <string name="mtm_decision_abort">Abbrechen</string>
     <string name="subscribedSuccessfully">Erfolgreich abonniert</string>
     <string name="alreadySubscribed">Du hast bereits abonniert</string>
+    <string name="subscriptionError">Abonnieren fehlgeschlagen</string>
     <string name="unsubscribedSuccessfully">Erfolgreich de-abonniert</string>
     <string name="alreadyUnsubscribed">Du hast bereits de-abonniert</string>
+    <string name="unsubscriptionError">De-Abonnieren fehlgeschlagen</string>
     <string name="closeMilestone">Meilenstein schließen</string>
     <string name="openMilestone">Meilenstein wieder öffnen</string>
     <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>
@@ -465,8 +496,19 @@
     <string name="crashTitle">GitNex hat gestoppt :(</string>
     <string name="setCrashReports">Absturzberichte</string>
     <string name="crashMessage">Klicke auf OK, um den Absturzbericht per E-Mail zu senden. Es wird helfen, diesen zu beheben :)\n\nDu könntest auch zusätzliche Infos in der E-Mail angeben. Danke für deine Hilfe!</string>
+    <string name="forceLogoutDialogHeader">Bitte melden Sie sich erneut an</string>
+    <string name="forceLogoutDialogDescription">Aufgrund einiger wichtiger Änderungen in Bezug auf das interne Funktionieren der App müssen Sie sich erneut anmelden. Diese Änderungen ermöglichen es uns, die App in Zukunft flexibler zu gestalten.\n\nVielen Dank für Ihre Geduld und Entschuldigung für die Unannehmlichkeiten.</string>
+    <string name="deleteAllDrafts">Alle Entwürfe löschen</string>
+    <string name="draftsListEmpty">Keine Entwürfe gefunden</string>
+    <string name="draftsDeleteSuccess">Entwürfe erfolgreich gelöscht</string>
+    <string name="draftsSingleDeleteSuccess">Entwurf erfolgreich gelöscht</string>
+    <string name="deleteAllDraftsDialogMessage">Dadurch werden alle Entwürfe für dieses Konto gelöscht. \n\nMit dem Löschen fortfahren?</string>
+    <string name="draftSaved">Entwurf gespeichert</string>
+    <string name="appearanceHintText">Designs, Schriftarten, Plaketten, Code Block-Template</string>
     <string name="fileViewerHintText">PDF-Modus, Quellcode Theme</string>
     <string name="securityHintText">SSL-Zertifikate, Cache</string>
     <string name="languagesHintText">Sprachen</string>
     <string name="reportsHintText">Absturzberichte</string>
+    <string name="archivedRepository">Archiviert</string>
+    <string name="accountDeletedMessage">Konto erfolgreich gelöscht</string>
 </resources>

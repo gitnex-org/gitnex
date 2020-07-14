@@ -27,6 +27,7 @@
     <string name="pageTitleCreateNewIssue">Нови тикет</string>
     <string name="pageTitleCreateLabel">Нова ознака</string>
     <string name="pageTitleCredits">Заслуге</string>
+    <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Ажурирај ознаку</string>
     <string name="pageTitleSponsors">Донатори</string>
     <string name="pageTitleStarredRepos">Омиљени репозиторијуми</string>
@@ -35,6 +36,7 @@
     <string name="pageTitleNewFile">Нови фајл</string>
     <string name="pageTitleExplore">Претражи репозиторијуме</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторијум</string>
     <string name="repoFullname">Репозиторијум са ORG</string>
@@ -132,6 +134,8 @@
     <string name="commitAuthor">Аутор комита: %1$s</string>
     <string name="releaseDownloadText">Преузимања</string>
     <string name="noDataReleasesTab">Ниједно издање није пронађено</string>
+    <string name="releasePublishedBy">Published by @%1$s</string>
+    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
     <string name="noDataCollaboratorTab">Ниједан сарадник није пронађен</string>
     <string name="newMilestoneTitle">Наслов</string>
     <string name="newMilestoneDescription">Опис</string>
@@ -141,6 +145,10 @@
     <string name="milestoneCreated">Фаза је успешно креирана</string>
     <string name="milestoneCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="milestoneDateEmpty">Унеси рок</string>
+    <string name="milestoneNoDueDate">No due date</string>
+    <string name="milestoneNoDescription">No description</string>
+    <string name="milestoneIssueStatusOpen">%1$d Open</string>
+    <string name="milestoneIssueStatusClosed">%1$d Closed</string>
     <string name="newIssueSelectAssigneesListTitle">Додели задатак</string>
     <string name="newIssueSelectLabelsListTitle">Одабери ознаке</string>
     <string name="newIssueTitle">Наслов</string>
@@ -175,6 +183,7 @@
     <string name="settingsCodeBlockSelectorDialogTitle">Одабери формат кода</string>
     <string name="settingsHomeScreenHeaderText">Почетни екран</string>
     <string name="settingsHomeScreenSelectedText">Моји репозиторијуми</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Фонт</string>
     <string name="settingsCustomFontSelectorDialogTitle">Одабери фонт</string>
     <string name="themeSelectorDialogTitle">Одабери тему</string>
@@ -191,6 +200,10 @@
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
+    <string name="draftsHeader">Drafts</string>
+    <string name="draftsHintText">Comments draft</string>
+    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
+    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <!-- settings -->
     <string name="noMoreData">Нема више података</string>
     <string name="createLabel">Нова ознака</string>
@@ -344,10 +357,12 @@
     <string name="repoStargazersInMenu">Фанови</string>
     <string name="repoWatchersInMenu">Пратиоци</string>
     <string name="noDataWebsite">Ниједан веб-сајт није пронађен</string>
+    <string name="noDataDescription">No description found</string>
+    <string name="noDataLocation">No location found</string>
     <string name="starMember">Фан</string>
     <string name="watcherMember">Пратилац</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip архива</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar архива</string>
+    <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
+    <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">Назив фајла</string>
     <string name="newFileBranchTintCopy">Назив нове гране</string>
@@ -364,12 +379,15 @@
     <string name="newFileNewBranchMessage">нпр. nova-grana</string>
     <string name="newFileRequiredFieldNewBranchName">Назив нове гране је обавезан ако тренутна грана није одабрана</string>
     <string name="strFilter">Филтер</string>
+    <string name="strSwitchBranches">Branches</string>
     <string name="copyIssueUrl">Копирај URL проблема</string>
     <string name="copyIssueUrlToastMsg">URL је копиран</string>
+    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 завршен</string>
     <!-- files -->
     <string name="noDataFilesTab">Ниједан фајл није пронађен</string>
     <string name="filesGenericError">Нешто је пошло наопако, покушај поново</string>
+    <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">У реду</string>
     <string name="doneButton">Урађено</string>
@@ -383,6 +401,8 @@
     <string name="menuContentDesc">Мени</string>
     <string name="menuEditText">Уреди</string>
     <string name="menuDeleteText">Избриши</string>
+    <string name="menuCopyText">Copy</string>
+    <string name="menuQuoteText">Quote and Reply</string>
     <string name="modifiedText">ажурирано</string>
     <string name="saveButton">Сачувај</string>
     <string name="websiteText">Веб-сајт</string>
@@ -392,6 +412,8 @@
     <string name="textContinue">Настави</string>
     <string name="copyToken">Токен</string>
     <string name="viewInBrowser">Отвори у претраживачу</string>
+    <string name="isOpen">Open</string>
+    <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Преведи GitNex на платформи Crowdin</string>
@@ -404,13 +426,16 @@
     <string name="unWatchRepository">Престани да пратиш репозиторијум</string>
     <string name="watchRepositorySuccess">Сад пратиш овај репозиторијум</string>
     <string name="unWatchRepositorySuccess">Више не пратиш овај репозиторијум</string>
+    <string name="titleDrafts">Drafts</string>
     <string name="versionUnsupportedOld">Тренутно користиш стару верзију (%1$s) програма Gitea. Ако наставиш, могуће је да GitNex неће функционисати.</string>
     <string name="versionUnsupportedNew">Нова верзија програма Gitea је детектована! Ажурирај GitNex!</string>
+    <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Верзија програма Gitea коју тренутно користиш није подржана</string>
     <string name="loginViaPassword">Корисничко име и лозинка</string>
     <string name="loginMethodText">Одабери начин за пријављивање. Имај у виду да је токен безбеднији него корисничко име и лозинка.</string>
     <string name="unauthorizedApiError">Грешка. Провери креденцијале и покушај поново.</string>
     <string name="loginTokenError">Унеси исправан токен</string>
+    <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">Ниједан пул захтев није пронађен</string>
     <string name="prCreator">Аутор: \u0020</string>
     <string name="editPrText">Уреди пул захтев</string>
@@ -422,7 +447,10 @@
     <string name="openFileDiffText">Фајлови су измењени</string>
     <string name="mergePullRequestText">Обједини пул захтев</string>
     <string name="mergePullRequestButtonText">Обједини</string>
+    <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Спајање може бити неуспешно уколико немаш ауторизацију</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge.</string>
+    <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
     <string name="mergeCommentText">Обједини коментар</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
@@ -447,6 +475,7 @@
     <string name="mtm_accept_cert">Да ли желиш да прихватиш непознате сертификате?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_cert_expired">Сертификат је истекао.</string>
+    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
     <string name="mtm_connect_anyway">Да ли ипак желиш да се повежеш?</string>
     <string name="mtm_cert_details">Детаљи о сертификату:</string>
@@ -454,8 +483,10 @@
     <string name="mtm_decision_abort">Abort</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscriptionError">Un-Subscription failed</string>
     <string name="closeMilestone">Затвори фазу</string>
     <string name="openMilestone">Отвори фазу</string>
     <string name="milestoneStatusUpdate">Фаза је ажурирана</string>
@@ -465,8 +496,19 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="forceLogoutDialogHeader">Please sign in again</string>
+    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
+    <string name="deleteAllDrafts">Delete All Drafts</string>
+    <string name="draftsListEmpty">No drafts found</string>
+    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
+    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
+    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
+    <string name="draftSaved">Draft saved</string>
+    <string name="appearanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+    <string name="archivedRepository">Archived</string>
+    <string name="accountDeletedMessage">Account deleted successfully</string>
 </resources>

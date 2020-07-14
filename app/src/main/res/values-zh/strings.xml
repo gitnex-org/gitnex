@@ -11,7 +11,7 @@
     <string name="navRate">五星好评！</string>
     <string name="navLogout">退出</string>
     <string name="navExplore">探索</string>
-    <string name="navAdministration">Administration</string>
+    <string name="navAdministration">管理</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">关于</string>
@@ -27,6 +27,7 @@
     <string name="pageTitleCreateNewIssue">创建工单</string>
     <string name="pageTitleCreateLabel">创建标签</string>
     <string name="pageTitleCredits">鸣谢</string>
+    <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">更新标签</string>
     <string name="pageTitleSponsors">赞助商</string>
     <string name="pageTitleStarredRepos">已点赞</string>
@@ -34,7 +35,8 @@
     <string name="pageTitleAddEmail">添加电子邮件地址</string>
     <string name="pageTitleNewFile">新建文件</string>
     <string name="pageTitleExplore">探索</string>
-    <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleAdministration">Gitea 管理</string>
+    <string name="pageTitleUserAccounts">管理帐户 (测试中)</string>
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
     <string name="repoFullname">有组织的存储库</string>
@@ -83,8 +85,8 @@
     <string name="orgCreated">组织创建成功</string>
     <string name="orgCreatedError">出错了，请重试</string>
     <string name="orgExistsError">组织已存在</string>
-    <string name="binaryFileError">Binary files are not supported yet.</string>
-    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
+    <string name="binaryFileError">尚不支持二进制文件。</string>
+    <string name="fileTooLarge">该文件超过了可能的差异行数的最大值</string>
     <string name="processingText">处理中</string>
     <string name="search">搜索</string>
     <string name="close">关闭</string>
@@ -126,12 +128,14 @@
     <string name="commentEmptyError">请输入您的评论</string>
     <string name="commentSuccess">评论已发表</string>
     <string name="commentError">出错了，请重试</string>
-    <string name="featureDeprecated">This function will be removed in the future.</string>
+    <string name="featureDeprecated">该功能今后将被移除</string>
     <string name="generalImgContentText">头像</string>
     <string name="noDataMilestonesTab">未发现里程碑</string>
     <string name="commitAuthor">提交作者： %1$s</string>
     <string name="releaseDownloadText">下载</string>
     <string name="noDataReleasesTab">未发布任何版本</string>
+    <string name="releasePublishedBy">由 @%1$s 发布</string>
+    <string name="noReleaseBodyContent">发布者没有提供发行日志</string>
     <string name="noDataCollaboratorTab">没有协作者</string>
     <string name="newMilestoneTitle">标题</string>
     <string name="newMilestoneDescription">描述</string>
@@ -141,6 +145,10 @@
     <string name="milestoneCreated">里程碑创建成功</string>
     <string name="milestoneCreatedError">出了错，请重试</string>
     <string name="milestoneDateEmpty">请选择截止日期</string>
+    <string name="milestoneNoDueDate">没有到期日</string>
+    <string name="milestoneNoDescription">无描述</string>
+    <string name="milestoneIssueStatusOpen">%1$d开启</string>
+    <string name="milestoneIssueStatusClosed">%1$d 已关闭</string>
     <string name="newIssueSelectAssigneesListTitle">选择受理人</string>
     <string name="newIssueSelectLabelsListTitle">选择标签</string>
     <string name="newIssueTitle">标题</string>
@@ -175,6 +183,7 @@
     <string name="settingsCodeBlockSelectorDialogTitle">代码块颜色选择器</string>
     <string name="settingsHomeScreenHeaderText">主屏幕</string>
     <string name="settingsHomeScreenSelectedText">我的仓库</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">选择主屏幕</string>
     <string name="settingsCustomFontHeaderText">字体</string>
     <string name="settingsCustomFontSelectorDialogTitle">选择字体</string>
     <string name="themeSelectorDialogTitle">选择应用主题</string>
@@ -184,13 +193,17 @@
     <string name="settingsCounterBadges">计数徽章</string>
     <string name="settingsFileviewerSourceCodeHeaderText">源代码主题</string>
     <string name="fileviewerSourceCodeThemeSelectorDialogTitle">选择源代码主题</string>
-    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
-    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
-    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
-    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
-    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
-    <string name="clearCacheDialogHeader">Clear Cache?</string>
-    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
+    <string name="cacheSizeDataDialogHeader">数据缓存大小</string>
+    <string name="cacheSizeDataSelectionHeaderText">数据缓存大小</string>
+    <string name="cacheSizeImagesDialogHeader">图像缓存大小</string>
+    <string name="cacheSizeImagesSelectionHeaderText">图像缓存大小</string>
+    <string name="clearCacheSelectionHeaderText">清除缓存</string>
+    <string name="clearCacheDialogHeader">清除缓存?</string>
+    <string name="clearCacheDialogMessage">这将删除所有缓存数据，包括文件和图像。\n\n继续删除？</string>
+    <string name="draftsHeader">草稿</string>
+    <string name="draftsHintText">评论草稿</string>
+    <string name="settingsEnableCommentsDeletionText">启用草稿删除</string>
+    <string name="settingsEnableCommentsDeletionHintText">发表评论时删除评论草稿</string>
     <!-- settings -->
     <string name="noMoreData">没有更多可用数据</string>
     <string name="createLabel">创建标签</string>
@@ -230,13 +243,13 @@
     <string name="noDataMembers">未找到成员</string>
     <string name="orgMember">组织成员</string>
     <string name="orgTeamMembers">组织团队成员</string>
-    <string name="addNewMember">Add / Remove New Member</string>
-    <string name="removeTeamMemberTitle">Remove\u0020</string>
-    <string name="addTeamMemberTitle">Add\u0020</string>
-    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
-    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
-    <string name="memberAddedMessage">Member added to the team successfully</string>
-    <string name="memberRemovedMessage">Member removed from the team successfully</string>
+    <string name="addNewMember">添加/删除新成员</string>
+    <string name="removeTeamMemberTitle">删除\u0020</string>
+    <string name="addTeamMemberTitle">添加\u0020</string>
+    <string name="addTeamMemberMessage">您想要将此用户添加到团队吗？</string>
+    <string name="removeTeamMemberMessage">您想要从团队中删除此用户吗？</string>
+    <string name="memberAddedMessage">成功添加成员到团队</string>
+    <string name="memberRemovedMessage">成功从团队中移除成员</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">团队名称</string>
@@ -259,7 +272,7 @@
     <string name="editCommentButtonText">编辑</string>
     <string name="editCommentUpdatedText">评论已更新</string>
     <string name="issueCommentShare">分享评论</string>
-    <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <string name="deleteCommentSuccess">已成功删除注释</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">添加/删除协作者</string>
@@ -307,7 +320,7 @@
     <string name="repoMetaData">仓库元数据</string>
     <!-- admin -->
     <string name="adminCreateNewUser">添加新用户</string>
-    <string name="adminUsers">System Users</string>
+    <string name="adminUsers">系统用户</string>
     <string name="userRoleAdmin">管理员</string>
     <!-- admin -->
     <!-- create user -->
@@ -344,10 +357,12 @@
     <string name="repoStargazersInMenu">已收藏</string>
     <string name="repoWatchersInMenu">已关注</string>
     <string name="noDataWebsite">未找到网站</string>
+    <string name="noDataDescription">未找到描述</string>
+    <string name="noDataLocation">未找到位置</string>
     <string name="starMember">收藏</string>
     <string name="watcherMember">关注</string>
-    <string name="zipArchiveDownloadReleasesTab">Zip 压缩包</string>
-    <string name="tarArchiveDownloadReleasesTab">Tar 压缩包</string>
+    <string name="zipArchiveDownloadReleasesTab">源代码 (ZIP)</string>
+    <string name="tarArchiveDownloadReleasesTab">源代码 (TAR.GZ)</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">文件名</string>
     <string name="newFileBranchTintCopy">新分支名称</string>
@@ -364,12 +379,15 @@
     <string name="newFileNewBranchMessage">例如：新分支</string>
     <string name="newFileRequiredFieldNewBranchName">如果未选择当前分支，新分支名称不能为空</string>
     <string name="strFilter">筛选器</string>
+    <string name="strSwitchBranches">Branches</string>
     <string name="copyIssueUrl">复制问题 URL</string>
     <string name="copyIssueUrlToastMsg">已复制链接</string>
+    <string name="copyIssueCommentToastMsg">已复制评论到剪贴板</string>
     <string name="milestoneCompletion">%1$d\uFF05 已完成</string>
     <!-- files -->
     <string name="noDataFilesTab">找不到文件</string>
     <string name="filesGenericError">抱歉，此文件无法查看，因为API返回了错误</string>
+    <string name="notSupported">不受支持</string>
     <!-- generic copy -->
     <string name="okButton">确定</string>
     <string name="doneButton">完成</string>
@@ -383,6 +401,8 @@
     <string name="menuContentDesc">菜单</string>
     <string name="menuEditText">编辑</string>
     <string name="menuDeleteText">删除</string>
+    <string name="menuCopyText">复制</string>
+    <string name="menuQuoteText">引用和回复</string>
     <string name="modifiedText">已编辑</string>
     <string name="saveButton">保存</string>
     <string name="websiteText">网站</string>
@@ -392,7 +412,9 @@
     <string name="textContinue">继续</string>
     <string name="copyToken">令牌</string>
     <string name="viewInBrowser">在浏览器中查看</string>
-    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
+    <string name="isOpen">开启</string>
+    <string name="isClosed">已关闭</string>
+    <string name="genericServerResponseError">目前我们无法访问服务器，请检查您的服务器状态，然后重试</string>
     <!-- generic copy -->
     <string name="translateText">使用 Crowdin 翻译 GitNex</string>
     <string name="exploreTextBoxHint">探索仓库</string>
@@ -404,13 +426,16 @@
     <string name="unWatchRepository">取消关注仓库</string>
     <string name="watchRepositorySuccess">仓库已添加到关注列表</string>
     <string name="unWatchRepositorySuccess">仓库已从关注列表中删除</string>
+    <string name="titleDrafts">草稿</string>
     <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本(%1$s)。请更新到最新稳定版本。如果您继续，应用程序可能无法正常运行。</string>
     <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
+    <string name="versionUnknown">未检测到Gitea！</string>
     <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
     <string name="loginViaPassword">用户名 / 密码</string>
     <string name="loginMethodText">建议您使用更安全的令牌方式进行登录。</string>
     <string name="unauthorizedApiError">令牌可能已失效，请检查后重试</string>
     <string name="loginTokenError">请输入正确的令牌</string>
+    <string name="prDeletedFrok">已删除分叉</string>
     <string name="noDataPullRequests">未找到拉取请求</string>
     <string name="prCreator">创建者:\u0020</string>
     <string name="editPrText">编辑拉取请求</string>
@@ -422,7 +447,10 @@
     <string name="openFileDiffText">文件已更改</string>
     <string name="mergePullRequestText">合并拉取请求</string>
     <string name="mergePullRequestButtonText">合并</string>
+    <string name="deleteBranchAfterMerge">合并后删除分支</string>
     <string name="mergeNoteText">如果您没有被授权合并此拉取请求，合并可能失败。</string>
+    <string name="mergeInfoDisabledMessage">禁止合并按钮意味着有冲突或合并前有其他东西需要修复。</string>
+    <string name="deleteBranchForkInfo">该分支属于一个分叉存储库</string>
     <string name="mergeCommentText">合并评论</string>
     <string name="mergePRSuccessMsg">拉取请求已成功合并</string>
     <string name="mergePR404ErrorMsg">拉取请求不可用于合并</string>
@@ -432,7 +460,7 @@
     <string name="mergeOptionSquash">压缩提交并合并</string>
     <string name="downloadFile">下载此文件</string>
     <string name="waitLoadingDownloadFile">请等待文件加载到内存</string>
-    <string name="downloadFileSaved">File saved successfully</string>
+    <string name="downloadFileSaved">文件保存成功</string>
     <string name="excludeFilesInFileviewer">这个文件类型在文件查看器中不支持。从三个虚线菜单下载吗？</string>
     <string name="sizeCopy">大小</string>
     <string name="shareIssue">分享问题</string>
@@ -447,15 +475,18 @@
     <string name="mtm_accept_cert">接受未知证书？</string>
     <string name="mtm_trust_anchor">服务器证书未由已知的证书颁发机构签名。</string>
     <string name="mtm_cert_expired">服务器证书已过期。</string>
+    <string name="mtm_accept_server_name">接受不匹配的服务器名称？</string>
     <string name="mtm_hostname_mismatch">服务器无法认证为\&quot;%s\&quot;。证书仅有效于：</string>
     <string name="mtm_connect_anyway">您仍然想要连接吗？</string>
     <string name="mtm_cert_details">证书详情：</string>
     <string name="mtm_decision_always">信任</string>
     <string name="mtm_decision_abort">中止</string>
-    <string name="subscribedSuccessfully">Subscribed successfully</string>
-    <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
-    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="subscribedSuccessfully">订阅成功</string>
+    <string name="alreadySubscribed">您已经订阅</string>
+    <string name="subscriptionError">订阅失败</string>
+    <string name="unsubscribedSuccessfully">取消订阅成功</string>
+    <string name="alreadyUnsubscribed">您已取消订阅</string>
+    <string name="unsubscriptionError">取消订阅失败</string>
     <string name="closeMilestone">关闭里程碑</string>
     <string name="openMilestone">打开里程碑</string>
     <string name="milestoneStatusUpdate">里程碑状态更新成功</string>
@@ -465,8 +496,19 @@
     <string name="crashTitle">GitNex 已停止 :(</string>
     <string name="setCrashReports">崩溃报告</string>
     <string name="crashMessage">您可以点击确定按钮通过电子邮件发送崩溃报告。 这将有助于修复它:)\n\n您也可以在电子邮件中添加额外的内容。谢谢！</string>
-    <string name="fileViewerHintText">PDF mode, source code theme</string>
-    <string name="securityHintText">SSL certificates, cache</string>
-    <string name="languagesHintText">Languages</string>
-    <string name="reportsHintText">Crash reports</string>
+    <string name="forceLogoutDialogHeader">请重新登录</string>
+    <string name="forceLogoutDialogDescription">由于应用内部功能发生了一些重大变化，我们要求您重新登录。这些变化使我们能够使应用程序在未来更具灵活性。\n\n感谢您的耐心，对给您带来的不便我们深表歉意</string>
+    <string name="deleteAllDrafts">删除所有草稿</string>
+    <string name="draftsListEmpty">未找到草稿</string>
+    <string name="draftsDeleteSuccess">已成功删除草稿</string>
+    <string name="draftsSingleDeleteSuccess">草稿已成功删除</string>
+    <string name="deleteAllDraftsDialogMessage">这将删除此帐户的所有草稿。 \n\n继续删除？</string>
+    <string name="draftSaved">草稿已保存</string>
+    <string name="appearanceHintText">主题、 字体、 徽章、 代码块主题</string>
+    <string name="fileViewerHintText">PDF 模式，源代码主题</string>
+    <string name="securityHintText">SSL 证书、缓存</string>
+    <string name="languagesHintText">语言</string>
+    <string name="reportsHintText">崩溃报告</string>
+    <string name="archivedRepository">已存档</string>
+    <string name="accountDeletedMessage">帐户删除成功</string>
 </resources>

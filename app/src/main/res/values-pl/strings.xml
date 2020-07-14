@@ -27,6 +27,7 @@
     <string name="pageTitleCreateNewIssue">Nowy problem</string>
     <string name="pageTitleCreateLabel">Nowa etykieta</string>
     <string name="pageTitleCredits">Podziękowania</string>
+    <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Aktualizuj etykietę</string>
     <string name="pageTitleSponsors">Dawcy</string>
     <string name="pageTitleStarredRepos">Ulubione repozytoria</string>
@@ -35,6 +36,7 @@
     <string name="pageTitleNewFile">Nowy plik</string>
     <string name="pageTitleExplore">Przeglądaj</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
     <!-- page titles -->
     <string name="repoName">Repozytorium demo</string>
     <string name="repoFullname">Repozytorium z ORG</string>
@@ -132,6 +134,8 @@
     <string name="commitAuthor">Autor commitu: %1$s</string>
     <string name="releaseDownloadText">Pobrania</string>
     <string name="noDataReleasesTab">Nie znaleziono wydań</string>
+    <string name="releasePublishedBy">Published by @%1$s</string>
+    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
     <string name="noDataCollaboratorTab">Nie znaleziono współpracowników</string>
     <string name="newMilestoneTitle">Tytuł</string>
     <string name="newMilestoneDescription">Opis</string>
@@ -141,6 +145,10 @@
     <string name="milestoneCreated">Etap został utworzony pomyślnie</string>
     <string name="milestoneCreatedError">Coś poszło nie tak, spróbuj ponownie</string>
     <string name="milestoneDateEmpty">Proszę wybrać termin</string>
+    <string name="milestoneNoDueDate">No due date</string>
+    <string name="milestoneNoDescription">No description</string>
+    <string name="milestoneIssueStatusOpen">%1$d Open</string>
+    <string name="milestoneIssueStatusClosed">%1$d Closed</string>
     <string name="newIssueSelectAssigneesListTitle">Wybierz przypisane osoby</string>
     <string name="newIssueSelectLabelsListTitle">Wybierz etykiety</string>
     <string name="newIssueTitle">Tytuł</string>
@@ -175,6 +183,7 @@
     <string name="settingsCodeBlockSelectorDialogTitle">Wybór koloru bloku kodu</string>
     <string name="settingsHomeScreenHeaderText">Ekran główny</string>
     <string name="settingsHomeScreenSelectedText">Moje repozytoria</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Czcionka</string>
     <string name="settingsCustomFontSelectorDialogTitle">Wybierz czcionkę</string>
     <string name="themeSelectorDialogTitle">Wybierz motyw aplikacji</string>
@@ -191,6 +200,10 @@
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
+    <string name="draftsHeader">Drafts</string>
+    <string name="draftsHintText">Comments draft</string>
+    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
+    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <!-- settings -->
     <string name="noMoreData">Brak dostępnych danych</string>
     <string name="createLabel">Nowa etykieta</string>
@@ -344,10 +357,12 @@
     <string name="repoStargazersInMenu">Polubienia</string>
     <string name="repoWatchersInMenu">Obserwatorzy</string>
     <string name="noDataWebsite">Nie znaleziono strony internetowej</string>
+    <string name="noDataDescription">No description found</string>
+    <string name="noDataLocation">No location found</string>
     <string name="starMember">Gwiazdka</string>
     <string name="watcherMember">Obserwujący</string>
-    <string name="zipArchiveDownloadReleasesTab">Archiwum Zip</string>
-    <string name="tarArchiveDownloadReleasesTab">Archiwum Tar</string>
+    <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
+    <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">Nazwa pliku</string>
     <string name="newFileBranchTintCopy">Nazwa nowego oddziału</string>
@@ -364,12 +379,15 @@
     <string name="newFileNewBranchMessage">np. nowa-gałąź</string>
     <string name="newFileRequiredFieldNewBranchName">Nazwa nowej gałęzi nie może być pusta, jeśli nie wybrano bieżącej gałęzi</string>
     <string name="strFilter">Filtr</string>
+    <string name="strSwitchBranches">Branches</string>
     <string name="copyIssueUrl">Skopiuj adres URL zgłoszenia</string>
     <string name="copyIssueUrlToastMsg">Adres URL skopiowany do schowka</string>
+    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 zakończony</string>
     <!-- files -->
     <string name="noDataFilesTab">Nie znaleziono plików</string>
     <string name="filesGenericError">Przepraszamy, ten plik nie może być otworzony, ponieważ API zwrócił błąd</string>
+    <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Gotowe</string>
@@ -383,6 +401,8 @@
     <string name="menuContentDesc">Menu</string>
     <string name="menuEditText">Edytuj</string>
     <string name="menuDeleteText">Usuń</string>
+    <string name="menuCopyText">Copy</string>
+    <string name="menuQuoteText">Quote and Reply</string>
     <string name="modifiedText">edytowano</string>
     <string name="saveButton">Zapisz</string>
     <string name="websiteText">Strona internetowa</string>
@@ -392,6 +412,8 @@
     <string name="textContinue">Kontynuuj</string>
     <string name="copyToken">Token</string>
     <string name="viewInBrowser">Zobacz w przeglądarce</string>
+    <string name="isOpen">Open</string>
+    <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Przetłumacz GitNex z Crowdin</string>
@@ -404,13 +426,16 @@
     <string name="unWatchRepository">Przestań obserwować repozytorium</string>
     <string name="watchRepositorySuccess">Repozytorium dodane do listy obserwowanych</string>
     <string name="unWatchRepositorySuccess">Repozytorium usunięte z listy obserwacyjnej</string>
+    <string name="titleDrafts">Drafts</string>
     <string name="versionUnsupportedOld">Wykryto nieobsługiwaną starą wersję(%1$s) Gitea. Proszę zaktualizować do najnowszej stabilnej wersji. Jeśli kontynuujesz, aplikacja może nie działać poprawnie.</string>
     <string name="versionUnsupportedNew">Wykryto nową wersję Gitea! Proszę ZAKTUALIZOWAĆ GitNex!</string>
+    <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Nieobsługiwana wersja Gitea</string>
     <string name="loginViaPassword">Nazwa użytkownika / Hasło</string>
     <string name="loginMethodText">Wybierz preferowaną metodę logowania, aby uzyskać dostęp do swojego konta. Token jest bezpieczniejszy!</string>
     <string name="unauthorizedApiError">Instancja zwróciła błąd - nieautoryzowana. Sprawdź swoje dane i spróbuj ponownie</string>
     <string name="loginTokenError">Wprowadź poprawny token</string>
+    <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">Nie znaleziono pull requestów</string>
     <string name="prCreator">Twórca:\u0020</string>
     <string name="editPrText">Edytuj Pull Request</string>
@@ -422,7 +447,10 @@
     <string name="openFileDiffText">Pliki zmienione</string>
     <string name="mergePullRequestText">Scal Pull Request</string>
     <string name="mergePullRequestButtonText">Połącz</string>
+    <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Scalanie może się nie powieść, jeśli nie masz uprawnień do scalania Pull Request.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge.</string>
+    <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
     <string name="mergeCommentText">Scal komentarz</string>
     <string name="mergePRSuccessMsg">Pull Request został pomyślnie scalony</string>
     <string name="mergePR404ErrorMsg">Pull Request nie jest dostępny do scalenia</string>
@@ -447,6 +475,7 @@
     <string name="mtm_accept_cert">Zaakceptować nieznany certyfikat?</string>
     <string name="mtm_trust_anchor">Certyfikat serwera nie jest podpisany przez znany organ certyfikacji.</string>
     <string name="mtm_cert_expired">Certyfikat serwera wygasł.</string>
+    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Serwer nie mógł uwierzytelnić jako \&quot;%s\&quot;. Certyfikat jest ważny tylko dla:</string>
     <string name="mtm_connect_anyway">Czy mimo to chcesz się połączyć?</string>
     <string name="mtm_cert_details">Szczegóły certyfikatu:</string>
@@ -454,8 +483,10 @@
     <string name="mtm_decision_abort">Przerwij</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscriptionError">Un-Subscription failed</string>
     <string name="closeMilestone">Zamknij etap</string>
     <string name="openMilestone">Otwórz etap</string>
     <string name="milestoneStatusUpdate">Status etapu zaktualizowany pomyślnie</string>
@@ -465,8 +496,19 @@
     <string name="crashTitle">GitNex zatrzymał się :(</string>
     <string name="setCrashReports">Raporty awarii</string>
     <string name="crashMessage">Możesz nacisnąć przycisk OK, aby wysłać raport o awarii pocztą elektroniczną. Pomoże to naprawić to :)\n\nMożesz również dodać dodatkowe treści w wiadomości e-mail. Dziękujemy!</string>
+    <string name="forceLogoutDialogHeader">Please sign in again</string>
+    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
+    <string name="deleteAllDrafts">Delete All Drafts</string>
+    <string name="draftsListEmpty">No drafts found</string>
+    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
+    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
+    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
+    <string name="draftSaved">Draft saved</string>
+    <string name="appearanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+    <string name="archivedRepository">Archived</string>
+    <string name="accountDeletedMessage">Account deleted successfully</string>
 </resources>

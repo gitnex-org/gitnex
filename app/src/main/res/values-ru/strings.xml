@@ -27,6 +27,7 @@
     <string name="pageTitleCreateNewIssue">Создать задачу</string>
     <string name="pageTitleCreateLabel">Создать метку</string>
     <string name="pageTitleCredits">Авторские права</string>
+    <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Обновить метку</string>
     <string name="pageTitleSponsors">Спонсоры</string>
     <string name="pageTitleStarredRepos">Избранные репозитории</string>
@@ -35,6 +36,7 @@
     <string name="pageTitleNewFile">Новый файл</string>
     <string name="pageTitleExplore">Обзор</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторий</string>
     <string name="repoFullname">Репозиторий с организацией</string>
@@ -132,6 +134,8 @@
     <string name="commitAuthor">Автор коммита: %1$s</string>
     <string name="releaseDownloadText">Скачать</string>
     <string name="noDataReleasesTab">Релизов не обнаружено</string>
+    <string name="releasePublishedBy">Published by @%1$s</string>
+    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
     <string name="noDataCollaboratorTab">Сотрудников не обнаружено</string>
     <string name="newMilestoneTitle">Заголовок</string>
     <string name="newMilestoneDescription">Описание</string>
@@ -141,6 +145,10 @@
     <string name="milestoneCreated">Веха создана успешно!</string>
     <string name="milestoneCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="milestoneDateEmpty">Надо задать дату вехи.</string>
+    <string name="milestoneNoDueDate">No due date</string>
+    <string name="milestoneNoDescription">No description</string>
+    <string name="milestoneIssueStatusOpen">%1$d Open</string>
+    <string name="milestoneIssueStatusClosed">%1$d Closed</string>
     <string name="newIssueSelectAssigneesListTitle">Выбрать сотрудников</string>
     <string name="newIssueSelectLabelsListTitle">Выбрать метки</string>
     <string name="newIssueTitle">Заголовок</string>
@@ -175,6 +183,7 @@
     <string name="settingsCodeBlockSelectorDialogTitle">Выбор цвета блока кода</string>
     <string name="settingsHomeScreenHeaderText">Главный экран</string>
     <string name="settingsHomeScreenSelectedText">Мои репозитории</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Шрифт</string>
     <string name="settingsCustomFontSelectorDialogTitle">Выберите шрифт</string>
     <string name="themeSelectorDialogTitle">Выбрать тему приложения</string>
@@ -191,6 +200,10 @@
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
+    <string name="draftsHeader">Drafts</string>
+    <string name="draftsHintText">Comments draft</string>
+    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
+    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -344,10 +357,12 @@
     <string name="repoStargazersInMenu">Звездочеты</string>
     <string name="repoWatchersInMenu">Наблюдатели</string>
     <string name="noDataWebsite">No website found</string>
+    <string name="noDataDescription">No description found</string>
+    <string name="noDataLocation">No location found</string>
     <string name="starMember">В избранное</string>
     <string name="watcherMember">Наблюдатель</string>
-    <string name="zipArchiveDownloadReleasesTab">Архив Zip</string>
-    <string name="tarArchiveDownloadReleasesTab">Архив Tar</string>
+    <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
+    <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <!-- new file -->
     <string name="newFileNameTintCopy">Имя файла</string>
     <string name="newFileBranchTintCopy">Имя новой ветки</string>
@@ -364,12 +379,15 @@
     <string name="newFileNewBranchMessage">например: новая-ветка</string>
     <string name="newFileRequiredFieldNewBranchName">Имя новой ветки не может быть пустым, если текущая ветка не выбрана</string>
     <string name="strFilter">Фильтр</string>
+    <string name="strSwitchBranches">Branches</string>
     <string name="copyIssueUrl">Копировать URL задачи</string>
     <string name="copyIssueUrlToastMsg">URL скопирован в буфер обмена</string>
+    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 выполненный</string>
     <!-- files -->
     <string name="noDataFilesTab">Файлов не найдено</string>
     <string name="filesGenericError">Извините, невозможно просмотреть файл, поскольку API вернул ошибку</string>
+    <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">ОК</string>
     <string name="doneButton">Готово</string>
@@ -383,6 +401,8 @@
     <string name="menuContentDesc">Меню</string>
     <string name="menuEditText">Редактировать</string>
     <string name="menuDeleteText">Удалить</string>
+    <string name="menuCopyText">Copy</string>
+    <string name="menuQuoteText">Quote and Reply</string>
     <string name="modifiedText">обновлено</string>
     <string name="saveButton">Сохранить</string>
     <string name="websiteText">Веб-сайт</string>
@@ -392,6 +412,8 @@
     <string name="textContinue">Продолжить</string>
     <string name="copyToken">Токен</string>
     <string name="viewInBrowser">Просмотреть в браузере</string>
+    <string name="isOpen">Open</string>
+    <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <!-- generic copy -->
     <string name="translateText">Перевести GitNex на Crowdin</string>
@@ -404,13 +426,16 @@
     <string name="unWatchRepository">Не следить за репозиторием</string>
     <string name="watchRepositorySuccess">Репозиторий добавлен в список наблюдения</string>
     <string name="unWatchRepositorySuccess">Репозиторий удален из списка наблюдения</string>
+    <string name="titleDrafts">Drafts</string>
     <string name="versionUnsupportedOld">Обнаружена неподдерживаемая старая версия (%1$s) Gitea. Пожалуйста, обновите до последней стабильной версии. Если вы продолжите, приложение может работать неправильно.</string>
     <string name="versionUnsupportedNew">Обнаружена новая версия Gitea! Пожалуйста, ОБНОВИТЕ GitNex!</string>
+    <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Неподдерживаемая версия Gitea</string>
     <string name="loginViaPassword">Имя пользователя / Пароль</string>
     <string name="loginMethodText">Выберите предпочтительный метод входа для доступа к вашей учетной записи. Токен более безопасный!</string>
     <string name="unauthorizedApiError">Экземпляр вернул ошибку - не авторизовано. Проверьте ваши учетные данные и повторите попытку</string>
     <string name="loginTokenError">Пожалуйста, введите правильный токен</string>
+    <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">Запросов на слияние не найдено</string>
     <string name="prCreator">Автор:\u0020</string>
     <string name="editPrText">Редактировать запрос на слияние</string>
@@ -422,7 +447,10 @@
     <string name="openFileDiffText">Измененные файлы</string>
     <string name="mergePullRequestText">Принять Pull Request</string>
     <string name="mergePullRequestButtonText">Слить</string>
+    <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Слияние может завершиться неудачей, если у вас нет прав на выполнение этого запроса на объединение.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge.</string>
+    <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
     <string name="mergeCommentText">Комментарий для слияния</string>
     <string name="mergePRSuccessMsg">Запрос на слияние был успешно выполнен</string>
     <string name="mergePR404ErrorMsg">Запрос на слияние не доступен для слияния</string>
@@ -447,6 +475,7 @@
     <string name="mtm_accept_cert">Принять неизвестный сертификат?</string>
     <string name="mtm_trust_anchor">Сертификат сервера не подписан известным центром сертификации.</string>
     <string name="mtm_cert_expired">Срок действия сертификата сервера истек.</string>
+    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Сервер не может быть опознан как \&quot;%s\&quot;. Сертификат действителен только для:</string>
     <string name="mtm_connect_anyway">Вы все равно хотите продолжить?</string>
     <string name="mtm_cert_details">Детали о сертификате:</string>
@@ -454,8 +483,10 @@
     <string name="mtm_decision_abort">Прервать</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
+    <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
+    <string name="unsubscriptionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
@@ -465,8 +496,19 @@
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="forceLogoutDialogHeader">Please sign in again</string>
+    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
+    <string name="deleteAllDrafts">Delete All Drafts</string>
+    <string name="draftsListEmpty">No drafts found</string>
+    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
+    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
+    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
+    <string name="draftSaved">Draft saved</string>
+    <string name="appearanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+    <string name="archivedRepository">Archived</string>
+    <string name="accountDeletedMessage">Account deleted successfully</string>
 </resources>
