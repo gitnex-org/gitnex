@@ -71,7 +71,7 @@
             <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
                 android:id="@+id/addComment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="240dp"
                 android:padding="10dp"
                 android:completionThreshold="1"
                 android:background="@drawable/shape_inputs"

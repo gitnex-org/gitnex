@@ -3,6 +3,7 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,10 +65,10 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 	        itemView.setOnClickListener(itemEdit -> {
 
                 Intent intent = new Intent(mCtx, ReplyToIssueActivity.class);
-                intent.putExtra("commentBody", draftText.getText());
-                intent.putExtra("issueNumber", issueNumber.getText());
-                intent.putExtra("repositoryId", repoId.getText());
-                intent.putExtra("draftTitle", repoInfo.getText());
+                intent.putExtra("commentBody", draftText.getText().toString());
+                intent.putExtra("issueNumber", issueNumber.getText().toString());
+                intent.putExtra("repositoryId", repoId.getText().toString());
+                intent.putExtra("draftTitle", repoInfo.getText().toString());
 
                 TinyDB tinyDb = new TinyDB(mCtx);
                 tinyDb.putString("issueNumber", issueNumber.getText().toString());
@@ -116,7 +117,9 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
         holder.repoOwner.setText(currentItem.getRepositoryOwner());
         holder.repoName.setText(currentItem.getRepositoryName());
         holder.draftText.setText(currentItem.getDraftText());
-	    holder.repoInfo.setText(String.format("%s%d %s / %s", mCtx.getResources().getString(R.string.hash), currentItem.getIssueId(), currentItem.getRepositoryOwner(), currentItem.getRepositoryName()));
+
+	    String issueNumber = "<font color='" + mCtx.getResources().getColor(R.color.lightGray) + "'>" + mCtx.getResources().getString(R.string.hash) + currentItem.getIssueId() + "</font>";
+	    holder.repoInfo.setText(Html.fromHtml(issueNumber + " " + currentItem.getRepositoryOwner() + " / " + currentItem.getRepositoryName()));
 
     }
 
