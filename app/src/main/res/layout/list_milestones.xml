@@ -75,7 +75,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="15dp"
+                    android:layout_width="18dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:contentDescription="@string/generalImgContentText"
@@ -98,7 +98,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="15dp"
+                    android:layout_width="18dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:contentDescription="@string/generalImgContentText"
@@ -120,7 +120,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="15dp"
+                    android:layout_width="18dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:contentDescription="@string/generalImgContentText"

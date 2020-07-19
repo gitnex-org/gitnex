@@ -27,7 +27,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	private static String[] codeBlockList = {"Green - Black", "White - Black", "Grey - Black", "White - Grey", "Dark - White"};
 	private static int codeBlockSelectedChoice = 0;
 
-	private static String[] homeScreenList = {"My Repositories", "Starred Repositories", "Organizations", "Repositories", "Profile"};
+	private static String[] homeScreenList = {"My Repositories", "Starred Repositories", "Organizations", "Repositories", "Profile", "Explore", "Drafts"};
 	private static int homeScreenSelectedChoice = 0;
 
 	private static String[] customFontList = {"Roboto", "Manrope", "Source Code Pro"};

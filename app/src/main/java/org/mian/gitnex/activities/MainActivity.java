@@ -335,6 +335,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					navigationView.setCheckedItem(R.id.nav_profile);
 					break;
 
+				case 5:
+					toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreRepositoriesFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_explore);
+					break;
+
+				case 6:
+					toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_comments_draft);
+					break;
+
 				default:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleMyRepos));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyRepositoriesFragment()).commit();
