@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
@@ -32,6 +34,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 		private TextView userId;
 		private ImageView activeAccount;
 		private ImageView deleteAccount;
+		private ImageView repoAvatar;
 
 		private UserAccountsViewHolder(View itemView) {
 
@@ -41,6 +44,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 			userId = itemView.findViewById(R.id.userId);
 			activeAccount = itemView.findViewById(R.id.activeAccount);
 			deleteAccount = itemView.findViewById(R.id.deleteAccount);
+			repoAvatar = itemView.findViewById(R.id.repoAvatar);
 
 			deleteAccount.setOnClickListener(itemDelete -> {
 				// use later to delete an account
@@ -92,6 +96,8 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 
 		holder.userId.setText(String.format("@%s", currentItem.getUserName()));
 		holder.accountUrl.setText(url);
+
+		PicassoService.getInstance(mCtx).get().load(url + "img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.repoAvatar);
 
 		if(tinyDB.getInt("currentActiveAccountId") == currentItem.getAccountId()) {
 			holder.activeAccount.setVisibility(View.VISIBLE);
