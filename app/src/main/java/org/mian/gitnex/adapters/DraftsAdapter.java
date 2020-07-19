@@ -125,4 +125,11 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
         return draftsList.size();
     }
 
+	public void updateList(List<DraftWithRepository> list) {
+
+		draftsList = list;
+		notifyDataSetChanged();
+	}
+
+
 }
