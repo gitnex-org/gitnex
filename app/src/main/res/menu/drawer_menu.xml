@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_repo"
             android:title="@string/navMyRepos" />
         <item android:id="@+id/nav_starred_repos"
-            android:icon="@drawable/ic_star_border_24dp"
+            android:icon="@drawable/ic_star_unfilled"
             android:title="@string/navStarredRepos" />
         <item android:id="@+id/nav_organizations"
             android:icon="@drawable/ic_organization"

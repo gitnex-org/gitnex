@@ -25,6 +25,7 @@
         <item name="colorControlActivated">@color/darkGreen</item>
         <item name="dividerColor">@color/lightThemeDividerColor</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
     </style>
 
 </resources>

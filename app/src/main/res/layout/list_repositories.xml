@@ -150,7 +150,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight=".25"
-                    android:drawableStart="@drawable/ic_star_border_24dp"
+                    android:drawableStart="@drawable/ic_star_unfilled"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
                     android:text="@string/repoStars"

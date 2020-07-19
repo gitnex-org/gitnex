@@ -25,6 +25,7 @@
         <item name="colorControlActivated">@color/darkGreen</item>
         <item name="dividerColor">@color/dividerColorDark</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
     </style>
     <!-- Dark theme - default -->
 
@@ -52,8 +53,15 @@
         <item name="colorControlActivated">@color/darkGreen</item>
         <item name="dividerColor">@color/lightThemeDividerColor</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
     </style>
     <!-- Light theme -->
+
+    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchHintIcon">@drawable/ic_search</item>
+        <item name="searchIcon">@null</item>
+        <item name="closeIcon">@drawable/ic_close</item>
+    </style>
 
     <style name="AppThemeDarkBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
