@@ -27,7 +27,7 @@
     <string name="pageTitleCreateNewIssue">Issue erstellen</string>
     <string name="pageTitleCreateLabel">Label erstellen</string>
     <string name="pageTitleCredits">Mitwirkende</string>
-    <string name="pageTitleChooseBranch">Select Branch</string>
+    <string name="pageTitleChooseBranch">Branch auswählen</string>
     <string name="pageTitleLabelUpdate">Label aktualisieren</string>
     <string name="pageTitleSponsors">Spender</string>
     <string name="pageTitleStarredRepos">Favoriten</string>

@@ -27,7 +27,7 @@
     <string name="pageTitleCreateNewIssue">Nouveau ticket</string>
     <string name="pageTitleCreateLabel">Nouvelle étiquette</string>
     <string name="pageTitleCredits">Crédits</string>
-    <string name="pageTitleChooseBranch">Select Branch</string>
+    <string name="pageTitleChooseBranch">Branche</string>
     <string name="pageTitleLabelUpdate">Modifier l’étiquette</string>
     <string name="pageTitleSponsors">Donateurs</string>
     <string name="pageTitleStarredRepos">Dépôts favoris</string>
@@ -36,7 +36,7 @@
     <string name="pageTitleNewFile">Nouveau fichier</string>
     <string name="pageTitleExplore">Explorer</string>
     <string name="pageTitleAdministration">Administration de Gitea</string>
-    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
+    <string name="pageTitleUserAccounts">Gérer les comptes (bêta)</string>
     <!-- page titles -->
     <string name="repoName">Dépôt de démonstration</string>
     <string name="repoFullname">Nom complet du dépôt</string>
@@ -135,7 +135,7 @@
     <string name="releaseDownloadText">Télécharger</string>
     <string name="noDataReleasesTab">Aucune version</string>
     <string name="releasePublishedBy">Publié par @%1$s</string>
-    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
+    <string name="noReleaseBodyContent">Les notes de version ne sont pas fournies.</string>
     <string name="noDataCollaboratorTab">Aucun collaborateur</string>
     <string name="newMilestoneTitle">Titre</string>
     <string name="newMilestoneDescription">Description</string>
@@ -200,10 +200,10 @@
     <string name="clearCacheSelectionHeaderText">Vider le cache</string>
     <string name="clearCacheDialogHeader">Vider le cache ?</string>
     <string name="clearCacheDialogMessage">Toutes les données du cache seront supprimées, y compris les fichiers et les images.\n\nContinuer ?</string>
-    <string name="draftsHeader">Drafts</string>
-    <string name="draftsHintText">Comments draft</string>
-    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
-    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
+    <string name="draftsHeader">Brouillons</string>
+    <string name="draftsHintText">Brouillon de commentaires</string>
+    <string name="settingsEnableCommentsDeletionText">Suppression des brouillons</string>
+    <string name="settingsEnableCommentsDeletionHintText">Supprimer le brouillon d’un commentaire publié</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -382,12 +382,12 @@
     <string name="strSwitchBranches">Branches</string>
     <string name="copyIssueUrl">Copier l’URL du ticket</string>
     <string name="copyIssueUrlToastMsg">URL copiée dans le presse-papier</string>
-    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
+    <string name="copyIssueCommentToastMsg">Commentaire copié dans le presse-papier</string>
     <string name="milestoneCompletion">%1$d\uFF05 terminé</string>
     <!-- files -->
     <string name="noDataFilesTab">Aucun fichier</string>
     <string name="filesGenericError">Ce fichier ne peut être affiché, l’API a retourné une erreur</string>
-    <string name="notSupported">Not supported</string>
+    <string name="notSupported">Non pris en charge</string>
     <!-- generic copy -->
     <string name="okButton">Confirmer</string>
     <string name="doneButton">Terminé</string>
@@ -401,8 +401,8 @@
     <string name="menuContentDesc">Menu</string>
     <string name="menuEditText">Modifier</string>
     <string name="menuDeleteText">Supprimer</string>
-    <string name="menuCopyText">Copy</string>
-    <string name="menuQuoteText">Quote and Reply</string>
+    <string name="menuCopyText">Copier</string>
+    <string name="menuQuoteText">Citer et répondre</string>
     <string name="modifiedText">modifié</string>
     <string name="saveButton">Sauvegarder</string>
     <string name="websiteText">Site Web</string>
@@ -426,7 +426,7 @@
     <string name="unWatchRepository">Ne plus suivre le dépôt</string>
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
     <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
-    <string name="titleDrafts">Drafts</string>
+    <string name="titleDrafts">Brouillons</string>
     <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous continuez, l’application peut ne pas fonctionner correctement.</string>
     <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
     <string name="versionUnknown">Aucun serveur Gitea détecté !</string>
@@ -496,19 +496,19 @@
     <string name="crashTitle">GitNex a planté :(</string>
     <string name="setCrashReports">Rapports de plantage</string>
     <string name="crashMessage">Cliquez sur OK pour nous envoyer un courriel avec le rapport de plantage. Cela nous aidera à corriger le problème. :)\n\nVous pouvez aussi ajouter vos propres observations. Merci !</string>
-    <string name="forceLogoutDialogHeader">Please sign in again</string>
-    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-    <string name="deleteAllDrafts">Delete All Drafts</string>
-    <string name="draftsListEmpty">No drafts found</string>
-    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
-    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
-    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
-    <string name="draftSaved">Draft saved</string>
+    <string name="forceLogoutDialogHeader">Veuillez vous reconnecter</string>
+    <string name="forceLogoutDialogDescription">Une reconnexion est nécessaire en raison de changements majeurs du fonctionnement interne pour améliorer la souplesse de l\'application.\n\nMerci pour votre patience et toutes nos excuses pour la gêne occasionnée.</string>
+    <string name="deleteAllDrafts">Supprimer tous les brouillons</string>
+    <string name="draftsListEmpty">Aucun brouillon</string>
+    <string name="draftsDeleteSuccess">Brouillons supprimés</string>
+    <string name="draftsSingleDeleteSuccess">Brouillon supprimé</string>
+    <string name="deleteAllDraftsDialogMessage">Tous les brouillons du compte seront supprimés.\n\nContinuer ?</string>
+    <string name="draftSaved">Brouillon enregistré</string>
     <string name="appearanceHintText">Thèmes, polices, badges, couleur du code</string>
     <string name="fileViewerHintText">Mode PDF, thème du code source</string>
     <string name="securityHintText">Certificats SSL, cache</string>
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="archivedRepository">Archivé</string>
-    <string name="accountDeletedMessage">Account deleted successfully</string>
+    <string name="accountDeletedMessage">Compte supprimé</string>
 </resources>

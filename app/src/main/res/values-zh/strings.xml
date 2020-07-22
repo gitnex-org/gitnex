@@ -27,7 +27,7 @@
     <string name="pageTitleCreateNewIssue">创建工单</string>
     <string name="pageTitleCreateLabel">创建标签</string>
     <string name="pageTitleCredits">鸣谢</string>
-    <string name="pageTitleChooseBranch">Select Branch</string>
+    <string name="pageTitleChooseBranch">选择分支</string>
     <string name="pageTitleLabelUpdate">更新标签</string>
     <string name="pageTitleSponsors">赞助商</string>
     <string name="pageTitleStarredRepos">已点赞</string>
@@ -379,7 +379,7 @@
     <string name="newFileNewBranchMessage">例如：新分支</string>
     <string name="newFileRequiredFieldNewBranchName">如果未选择当前分支，新分支名称不能为空</string>
     <string name="strFilter">筛选器</string>
-    <string name="strSwitchBranches">Branches</string>
+    <string name="strSwitchBranches">分支</string>
     <string name="copyIssueUrl">复制问题 URL</string>
     <string name="copyIssueUrlToastMsg">已复制链接</string>
     <string name="copyIssueCommentToastMsg">已复制评论到剪贴板</string>
