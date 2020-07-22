@@ -5,41 +5,59 @@
 
     <group android:checkableBehavior="single"
         android:id="@+id/nav_main">
+
         <item android:id="@+id/nav_home"
             android:icon="@drawable/ic_repo"
             android:title="@string/navMyRepos" />
+
         <item android:id="@+id/nav_starred_repos"
             android:icon="@drawable/ic_star_unfilled"
             android:title="@string/navStarredRepos" />
+
         <item android:id="@+id/nav_organizations"
             android:icon="@drawable/ic_organization"
             android:title="@string/navOrgs" />
+
         <item android:id="@+id/nav_repositories"
             android:icon="@drawable/ic_repo"
             android:title="@string/navRepos" />
+
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/pageTitleNotifications"
+            android:visible="false" />
+
         <item android:id="@+id/nav_explore"
             android:icon="@drawable/ic_search"
             android:title="@string/navExplore" />
+
         <item android:id="@+id/nav_comments_draft"
             android:icon="@drawable/ic_drafts"
             android:title="@string/titleDrafts" />
+
         <item android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person"
             android:title="@string/navProfile" />
+
         <item android:id="@+id/nav_administration"
             android:icon="@drawable/ic_tool"
             android:title="@string/navAdministration"
             android:visible="false" />
+
     </group>
 
     <group android:checkableBehavior="single"
         android:id="@+id/nav_menu_settings">
+
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/navSettings" />
+
         <item android:id="@+id/nav_about"
             android:icon="@drawable/ic_info"
             android:title="@string/navAbout" />
+
     </group>
 
     <item android:id="@+id/nav_rate_app"
@@ -48,9 +66,11 @@
 
     <group android:checkableBehavior="single"
         android:id="@+id/nav_extra">
+
         <item android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/navLogout" />
+
     </group>
 
 </menu>

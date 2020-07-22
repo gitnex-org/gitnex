@@ -125,7 +125,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 				TinyDB tinyDb = new TinyDB(context);
 				tinyDb.putString("issueNumber", issueNumber.getText().toString());
-				tinyDb.putString("issueType", "issue");
+				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
 
 			});
@@ -138,7 +138,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 				TinyDB tinyDb = new TinyDB(context);
 				tinyDb.putString("issueNumber", issueNumber.getText().toString());
-				tinyDb.putString("issueType", "issue");
+				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
 
 			});

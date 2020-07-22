@@ -17,6 +17,7 @@ import org.mian.gitnex.models.Labels;
 import org.mian.gitnex.models.MergePullRequest;
 import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.models.NewFile;
+import org.mian.gitnex.models.NotificationThread;
 import org.mian.gitnex.models.OrgOwner;
 import org.mian.gitnex.models.Organization;
 import org.mian.gitnex.models.OrganizationRepository;
@@ -74,6 +75,27 @@ public interface ApiInterface {
 
     @POST("users/{username}/tokens") // create new token with 2fa otp
     Call<UserTokens> createNewTokenWithOTP(@Header("Authorization") String authorization, @Header("X-Gitea-OTP") int loginOTP, @Path("username") String loginUid, @Body UserTokens jsonStr);
+
+    @GET("notifications") // List users's notification threads
+    Call<List<NotificationThread>> getNotificationThreads(@Header("Authorization") String token, @Query("all") Boolean all, @Query("status-types") String[] statusTypes, @Query("since") String since, @Query("before") String before, @Query("page") Integer page, @Query("limit") Integer limit);
+
+    @PUT("notifications") // Mark notification threads as read, pinned or unread
+    Call<ResponseBody> markNotificationThreadsAsRead(@Header("Authorization") String token, @Query("last_read_at") String last_read_at, @Query("all") Boolean all, @Query("status-types") String[] statusTypes, @Query("to-status") String toStatus);
+
+    @GET("notifications/new") // Check if unread notifications exist
+    Call<JsonElement> checkUnreadNotifications(@Header("Authorization") String token);
+
+    @GET("notifications/threads/{id}") // Get notification thread by ID
+    Call<NotificationThread> getNotificationThread(@Header("Authorization") String token, @Path("id") Integer id);
+
+    @PATCH("notifications/threads/{id}") // Mark notification thread as read by ID
+    Call<ResponseBody> markNotificationThreadAsRead(@Header("Authorization") String token, @Path("id") Integer id, @Query("to-status") String toStatus);
+
+    @GET("repos/{owner}/{repo}/notifications") // List users's notification threads on a specific repo
+    Call<List<NotificationThread>> getRepoNotificationThreads(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("all") String all,  @Query("status-types") String[] statusTypes, @Query("since") String since, @Query("before") String before, @Query("page") String page, @Query("limit") String limit);
+
+    @PUT("repos/{owner}/{repo}/notifications") // Mark notification threads as read, pinned or unread on a specific repo
+    Call<ResponseBody> markRepoNotificationThreadsAsRead(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("all") Boolean all, @Query("status-types") String[] statusTypes, @Query("to-status") String toStatus, @Query("last_read_at") String last_read_at);
 
     @GET("user/orgs") // get user organizations
     Call<List<UserOrganizations>> getUserOrgs(@Header("Authorization") String token);

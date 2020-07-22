@@ -291,7 +291,7 @@ public class LoginActivity extends BaseActivity {
 					try {
 						gitea_version = new Version(version.getVersion());
 					}
-					catch(Error e) {
+					catch(Exception e) {
 
 						SnackBar.error(ctx, layoutView, getResources().getString(R.string.versionUnknown));
 						enableProcessButton();

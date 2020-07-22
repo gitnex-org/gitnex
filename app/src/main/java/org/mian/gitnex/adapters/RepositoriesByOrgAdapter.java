@@ -121,8 +121,6 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                     final String instanceUrl = tinyDb.getString("instanceUrl");
                     final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
-                    WatchInfo watch = new WatchInfo();
-
                     Call<WatchInfo> call;
 
                     call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface().checkRepoWatchStatus(token, repoOwner, repoName);

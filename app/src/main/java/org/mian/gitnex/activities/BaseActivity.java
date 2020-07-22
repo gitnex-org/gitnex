@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import org.acra.ACRA;
@@ -14,6 +15,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.notifications.NotificationsMaster;
 
 /**
  * Author M M Arif
@@ -26,10 +28,13 @@ import org.mian.gitnex.helpers.TinyDB;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+	private Context appCtx;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		final TinyDB tinyDb = new TinyDB(getApplicationContext());
+		appCtx = getApplicationContext();
+		final TinyDB tinyDb = new TinyDB(appCtx);
 
 		switch(tinyDb.getInt("themeId")) {
 
@@ -83,11 +88,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 		}
 
-		// enabling counter badges by default
-		if(tinyDb.getString("enableCounterBadgesInit").isEmpty()) {
-			tinyDb.putBoolean("enableCounterBadges", true);
-			tinyDb.putString("enableCounterBadgesInit", "yes");
-		}
+        if(tinyDb.getInt("pollingDelayMinutes") == 0) {
+            tinyDb.putInt("pollingDelayMinutes", 15);
+        }
+
+        NotificationsMaster.hireWorker(appCtx);
+
+        // enabling counter badges by default
+        if(tinyDb.getString("enableCounterBadgesInit").isEmpty()) {
+            tinyDb.putBoolean("enableCounterBadges", true);
+            tinyDb.putString("enableCounterBadgesInit", "yes");
+        }
 
 		// enable crash reports by default
 		if(tinyDb.getString("crashReportingEnabledInit").isEmpty()) {

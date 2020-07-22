@@ -37,7 +37,8 @@ configurations {
 
 dependencies {
     def lifecycle_version = "2.3.0-alpha05"
-    def markwon_version = '4.4.0'
+    def markwon_version = "4.4.0"
+    def work_version = "2.3.4"
     def acra = "5.5.0"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -80,6 +81,7 @@ dependencies {
     implementation "com.hendraanggrian.appcompat:socialview-commons:0.2"
     implementation "com.github.HamidrezaAmz:BreadcrumbsView:0.2.9"
     implementation "commons-io:commons-io:20030203.000550"
+    implementation "org.apache.commons:commons-lang3:3.10"
     implementation "com.github.chrisbanes:PhotoView:2.3.0"
     implementation "com.github.barteksc:android-pdf-viewer:3.2.0-beta.1"
     implementation "ch.acra:acra-mail:$acra"
@@ -87,6 +89,8 @@ dependencies {
     implementation "ch.acra:acra-notification:$acra"
     implementation "androidx.room:room-runtime:2.2.5"
     annotationProcessor "androidx.room:room-compiler:2.2.5"
+    implementation "androidx.work:work-runtime:$work_version"
     implementation "com.eightbitlab:blurview:1.6.3"
     implementation "io.mikael:urlbuilder:2.0.9"
+
 }

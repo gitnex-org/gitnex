@@ -55,7 +55,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		TextView subscribeIssue = v.findViewById(R.id.subscribeIssue);
 		TextView unsubscribeIssue = v.findViewById(R.id.unsubscribeIssue);
 
-		if(tinyDB.getString("issueType").equals("pr")) {
+		if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
 
 			editIssue.setText(R.string.editPrText);
 			copyIssueUrl.setText(R.string.copyPrUrlText);
@@ -199,7 +199,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		});
 
-		if(tinyDB.getString("issueType").equals("issue")) {
+		if(tinyDB.getString("issueType").equalsIgnoreCase("Issue")) {
 
 			if(tinyDB.getString("issueState").equals("open")) { // close issue
 

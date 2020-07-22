@@ -35,6 +35,7 @@ import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
 import org.mian.gitnex.fragments.DraftsFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
+import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.fragments.ProfileFragment;
 import org.mian.gitnex.fragments.RepositoriesFragment;
@@ -49,10 +50,10 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.UserInfo;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 import retrofit2.Call;
@@ -90,7 +91,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		final TinyDB tinyDb = new TinyDB(appCtx);
 		tinyDb.putBoolean("noConnection", false);
-		//userAvatar = findViewById(R.id.userAvatar);
 
 		Intent mainIntent = getIntent();
 		String launchFragment = mainIntent.getStringExtra("launchFragment");
@@ -124,12 +124,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 
 		String accountName = loginUid + "@" + instanceUrl;
-		try {
-			getAccountData(accountName);
-		}
-		catch(ExecutionException | InterruptedException e) {
-			Log.e("getAccountData", e.toString());
-		}
+		getAccountData(accountName);
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
@@ -170,6 +165,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 		else if(fragmentById instanceof ExploreRepositoriesFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
+		}
+		else if(fragmentById instanceof NotificationsFragment) {
+			toolbarTitle.setText(R.string.pageTitleNotifications);
 		}
 		else if(fragmentById instanceof ProfileFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
@@ -219,7 +217,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				userEmail.setTypeface(myTypeface);
 				userFullName.setTypeface(myTypeface);
 
+				String currentVersion = tinyDb.getString("giteaVersion");
+
 				navigationView.getMenu().findItem(R.id.nav_administration).setVisible(tinyDb.getBoolean("userIsAdmin"));
+				navigationView.getMenu().findItem(R.id.nav_notifications).setVisible(new Version(currentVersion).higherOrEqual("1.12.3"));
 
 				if(!userEmailNav.equals("")) {
 					userEmail.setText(userEmailNav);
@@ -297,13 +298,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		if(launchFragment != null) {
 
-			if(launchFragment.equals("drafts")) {
+			mainIntent.removeExtra("launchFragment");
 
-				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
-				toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
-				navigationView.setCheckedItem(R.id.nav_comments_draft);
-				mainIntent.removeExtra("launchFragment");
-				return;
+			switch(launchFragment) {
+
+				case "drafts":
+					toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_comments_draft);
+					return;
+
+				case "notifications":
+					toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_notifications);
+					return;
+
 			}
 		}
 
@@ -354,7 +364,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					break;
 
 			}
-
 		}
 
 		if(!connToInternet) {
@@ -376,17 +385,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		// Changelog popup
 		int versionCode = 0;
+
 		try {
+
 			PackageInfo packageInfo = appCtx.getPackageManager().getPackageInfo(appCtx.getPackageName(), 0);
 			versionCode = packageInfo.versionCode;
 		}
 		catch(PackageManager.NameNotFoundException e) {
+
 			Log.e("changelogDialog", Objects.requireNonNull(e.getMessage()));
 		}
 
 		if(versionCode > tinyDb.getInt("versionCode")) {
+
 			tinyDb.putInt("versionCode", versionCode);
 			tinyDb.putBoolean("versionFlag", true);
+
 			ChangeLog changelogDialog = new ChangeLog(this);
 			changelogDialog.showDialog();
 		}
@@ -428,7 +442,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 	}
 
-	public void getAccountData(String accountName) throws ExecutionException, InterruptedException {
+	public void getAccountData(String accountName) {
 
 		UserAccountsApi accountData = new UserAccountsApi(ctx);
 		UserAccount data = accountData.getAccountData(accountName);
@@ -440,7 +454,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else {
 			AlertDialogs.forceLogoutDialog(ctx, getResources().getString(R.string.forceLogoutDialogHeader), getResources().getString(R.string.forceLogoutDialogDescription), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 		}
-
 	}
 
 	@Override
@@ -507,6 +520,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			case R.id.nav_explore:
 				toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
 				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreRepositoriesFragment()).commit();
+				break;
+
+			case R.id.nav_notifications:
+				toolbarTitle.setText(R.string.pageTitleNotifications);
+				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
 				break;
 
 			case R.id.nav_comments_draft:
@@ -583,14 +601,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					tinyDb.putString("giteaVersion", version.getVersion());
 
 				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NonNull Throwable t) {
 
 				Log.e("onFailure-version", t.toString());
-
 			}
 
 		});

@@ -136,7 +136,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				tinyDb.putString("prHeadBranch", prHeadBranch.getText().toString());
 				tinyDb.putString("prIsFork", prIsFork.getText().toString());
 				tinyDb.putString("prForkFullName", prForkFullName.getText().toString());
-				tinyDb.putString("issueType", "pr");
+				tinyDb.putString("issueType", "Pull");
 				context.startActivity(intent);
 
 			});
@@ -155,7 +155,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				tinyDb.putString("prHeadBranch", prHeadBranch.getText().toString());
 				tinyDb.putString("prIsFork", prIsFork.getText().toString());
 				tinyDb.putString("prForkFullName", prForkFullName.getText().toString());
-				tinyDb.putString("issueType", "pr");
+				tinyDb.putString("issueType", "Pull");
 				context.startActivity(intent);
 
 			});

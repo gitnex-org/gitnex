@@ -618,11 +618,31 @@
 
     <string name="appearanceHintText">Themes, fonts, badges, code block theme</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
-    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="securityHintText">SSL certificates, cache, polling delay</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
 
     <string name="archivedRepository">Archived</string>
 
     <string name="accountDeletedMessage">Account deleted successfully</string>
+
+    <!-- Notifications -->
+    <string name="pageTitleNotifications">Notifications</string>
+    <string name="noDataNotifications">No notifications found</string>
+
+    <string name="notificationBody">You have received a new notification. (%s)</string>
+
+    <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
+    <string name="pollingDelaySelectedText">%d Minutes</string>
+    <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
+    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications.</string>
+
+    <string name="markAsRead">Mark as Read</string>
+    <string name="markAsUnread">Mark as Unread</string>
+    <string name="pinNotification">Pin Notification</string>
+    <string name="markedNotificationsAsRead">Successfully marked all notifications as read.</string>
+
+    <string name="isRead">Read</string>
+    <string name="isUnread">Unread</string>
+
 </resources>

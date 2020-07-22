@@ -121,7 +121,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         if(!tinyDb.getString("issueNumber").isEmpty()) {
 
-            if(tinyDb.getString("issueType").equals("pr")) {
+            if(tinyDb.getString("issueType").equalsIgnoreCase("Pull")) {
                 toolbar_title.setText(getString(R.string.editPrNavHeader, String.valueOf(issueIndex)));
             }
             else {
@@ -266,7 +266,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
                 if(response.code() == 201) {
 
-                    if(tinyDb.getString("issueType").equals("pr")) {
+                    if(tinyDb.getString("issueType").equalsIgnoreCase("Pull")) {
                         Toasty.info(ctx, getString(R.string.editPrSuccessMessage));
                     }
                     else {

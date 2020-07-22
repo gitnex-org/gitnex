@@ -211,6 +211,10 @@ public class TinyDB {
         return preferences.getFloat(key, 0);
     }
 
+    public float getFloat(String key, float defaultValue) {
+        return preferences.getFloat(key, defaultValue);
+    }
+
     /**
      * Get double value from SharedPreferences at 'key'. If exception thrown, return 'defaultValue'
      * @param key SharedPreferences key
@@ -292,6 +296,10 @@ public class TinyDB {
         return preferences.getBoolean(key, false);
     }
 
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return preferences.getBoolean(key, defaultValue);
+    }
+
     /**
      * Get parsed ArrayList of Boolean from SharedPreferences at 'key'
      * @param key SharedPreferences key
@@ -357,7 +365,7 @@ public class TinyDB {
      */
     public void putListInt(String key, ArrayList<Integer> intList) {
         checkForNullKey(key);
-        Integer[] myIntList = intList.toArray(new Integer[intList.size()]);
+        Integer[] myIntList = intList.toArray(new Integer[0]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myIntList)).apply();
     }
 
@@ -378,7 +386,7 @@ public class TinyDB {
      */
     public void putListLong(String key, ArrayList<Long> longList) {
         checkForNullKey(key);
-        Long[] myLongList = longList.toArray(new Long[longList.size()]);
+        Long[] myLongList = longList.toArray(new Long[0]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myLongList)).apply();
     }
 

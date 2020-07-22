@@ -1,38 +1,48 @@
 package org.mian.gitnex.helpers;
 
+import android.content.Context;
+
 /**
  * Author M M Arif
  */
 
-public interface StaticGlobalVariables {
+public abstract class StaticGlobalVariables {
 
 	// generic values
-	int resultLimitNewGiteaInstances = 25; // Gitea 1.12 and above
-	int resultLimitOldGiteaInstances = 10; // Gitea 1.11 and below
+	public static int resultLimitNewGiteaInstances = 25; // Gitea 1.12 and above
+	public static int resultLimitOldGiteaInstances = 10; // Gitea 1.11 and below
+	public static String defaultOldestTimestamp = "1970-01-01T00:00:00+00:00";
+
+	public static int getCurrentResultLimit(Context context) {
+
+		Version version = new Version(new TinyDB(context).getString("giteaVersion"));
+		return version.higherOrEqual("1.12") ? resultLimitNewGiteaInstances : resultLimitOldGiteaInstances;
+
+	}
 
 	// tags
-	String tagMilestonesFragment = "MilestonesFragment";
-	String tagPullRequestsList = "PullRequestsListFragment";
-	String tagIssuesList = "IssuesListFragment";
-	String tagMilestonesAdapter = "MilestonesAdapter";
-	String draftsRepository = "DraftsRepository";
-	String repositoriesRepository = "RepositoriesRepository";
-	String replyToIssueActivity = "ReplyToIssueActivity";
-	String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
-	String userAccountsRepository = "UserAccountsRepository";
+	public static String tagMilestonesFragment = "MilestonesFragment";
+	public static String tagPullRequestsList = "PullRequestsListFragment";
+	public static String tagIssuesList = "IssuesListFragment";
+	public static String tagMilestonesAdapter = "MilestonesAdapter";
+	public static String draftsRepository = "DraftsRepository";
+	public static String repositoriesRepository = "RepositoriesRepository";
+	public static String replyToIssueActivity = "ReplyToIssueActivity";
+	public static String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
+	public static String userAccountsRepository = "UserAccountsRepository";
 
 	// issues variables
-	int issuesPageInit = 1;
-	String issuesRequestType = "issues";
+	public static int issuesPageInit = 1;
+	public static String issuesRequestType = "issues";
 
 	// pull request
-	int prPageInit = 1;
+	public static int prPageInit = 1;
 
 	// milestone
-	int milestonesPageInit = 1;
+	public static int milestonesPageInit = 1;
 
 	// drafts
-	String draftTypeComment = "comment";
-	String draftTypeIssue = "issue";
+	public static String draftTypeComment = "comment";
+	public static String draftTypeIssue = "issue";
 
 }

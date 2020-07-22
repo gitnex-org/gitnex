@@ -14,8 +14,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -141,6 +143,15 @@ public class AppUtil {
 		}
 
 		return repoSize;
+
+	}
+
+	public static String getTimestampFromDate(Context context, Date date) {
+
+		TinyDB tinyDB = new TinyDB(context);
+		Locale locale = new Locale(tinyDB.getString("locale"));
+
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
 
 	}
 
@@ -297,6 +308,16 @@ public class AppUtil {
 
 			view.setVisibility(visibility);
 		}
+	}
+
+	public static int getPixelsFromDensity(Context context, int dp) {
+
+		return (int) (context.getResources().getDisplayMetrics().density * dp);
+	}
+
+	public static int getPixelsFromScaledDensity(Context context, int sp) {
+
+		return (int) (context.getResources().getDisplayMetrics().scaledDensity * sp);
 	}
 
 }
