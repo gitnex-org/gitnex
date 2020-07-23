@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.0.0" versioncode="300">
-        <change>New: Notifications</change>
-        <change>New: Delete comments</change>
-        <change>New: New file downloader (no permission required)</change>
-        <change>New: Drafts for comments</change>
-        <change>New: New icons set</change>
-        <change>New: Switch branches in File Browser</change>
-        <change>New: Close/open filter Milestones</change>
-        <change>New: New settings screen</change>
-        <change>New: New diff view for PR files</change>
-        <change>New: Cite code in PR diff and comment on it by long press</change>
-        <change>New: Clear cache, configure cache size (settings)</change>
-        <change>New: Delete branch after merge</change>
-        <change>New: Redesigned milestones screen</change>
-        <change>New: Redesigned releases screen</change>
-        <change>New: Quote and reply on issue comment or copy it to clipboard</change>
-        <change>New: Delete draft when comment is posted (enable/disable in settings)</change>
-        <change>New: Change tabs of issues to filters(closed/open)</change>
-        <change>New: Add/remove member from a team</change>
+    <release version="3.1.0-dev" versioncode="307">
+        <change>Under development</change>
     </release>
 
 </changelog>
