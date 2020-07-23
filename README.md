@@ -24,12 +24,15 @@ Option 1 - Download the source code, open it in Android Studio and build it ther
 Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`.
 
 ## Features
+- Repositories / issues/ org list
 - File and directory browser
+- File viewer
 - Create files
 - Explore repositories
-- Issues list
 - Pull requests
-- Merge pull request
+- Files diff for PRs
+- Notifications
+- Drafts
 - [MANY MORE](https://codeberg.org/gitnex/GitNex/wiki/Features)
 
 ## Contributing
