@@ -506,9 +506,23 @@
     <string name="draftSaved">Entwurf gespeichert</string>
     <string name="appearanceHintText">Designs, Schriftarten, Plaketten, Code Block-Template</string>
     <string name="fileViewerHintText">PDF-Modus, Quellcode Theme</string>
-    <string name="securityHintText">SSL-Zertifikate, Cache</string>
+    <string name="securityHintText">SSL-Zertifikate, Cache, Abfrageverzögerung</string>
     <string name="languagesHintText">Sprachen</string>
     <string name="reportsHintText">Absturzberichte</string>
     <string name="archivedRepository">Archiviert</string>
     <string name="accountDeletedMessage">Konto erfolgreich gelöscht</string>
+    <!-- Notifications -->
+    <string name="pageTitleNotifications">Benachrichtigungen</string>
+    <string name="noDataNotifications">Keine Benachrichtigungen gefunden</string>
+    <string name="notificationBody">Sie haben eine neue Benachrichtigung erhalten. (%s)</string>
+    <string name="notificationsPollingHeaderText">Benachrichtigungsverzögerung</string>
+    <string name="pollingDelaySelectedText">%d Minuten</string>
+    <string name="pollingDelayDialogHeaderText">Abfrageverzögerung auswählen</string>
+    <string name="pollingDelayDialogDescriptionText">Wählen Sie eine minütige Verzögerung, die GitNex wartet, bevor erneut nach neuen Benachrichtigungen abgefragt wird.</string>
+    <string name="markAsRead">Als gelesen markieren</string>
+    <string name="markAsUnread">Als ungelesen markieren</string>
+    <string name="pinNotification">Nachricht Anpinnen</string>
+    <string name="markedNotificationsAsRead">Alle Benachrichtigungen erfolgreich als gelesen markiert.</string>
+    <string name="isRead">Gelesen</string>
+    <string name="isUnread">Ungelesen</string>
 </resources>

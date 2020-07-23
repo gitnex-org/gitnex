@@ -506,9 +506,23 @@
     <string name="draftSaved">草稿已保存</string>
     <string name="appearanceHintText">主题、 字体、 徽章、 代码块主题</string>
     <string name="fileViewerHintText">PDF 模式，源代码主题</string>
-    <string name="securityHintText">SSL 证书、缓存</string>
+    <string name="securityHintText">SSL 证书、缓存、轮询延迟</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
     <string name="archivedRepository">已存档</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
+    <!-- Notifications -->
+    <string name="pageTitleNotifications">通知</string>
+    <string name="noDataNotifications">没有找到通知</string>
+    <string name="notificationBody">您收到了一个新的通知。(%s)</string>
+    <string name="notificationsPollingHeaderText">通知轮询延迟</string>
+    <string name="pollingDelaySelectedText">%d 分钟</string>
+    <string name="pollingDelayDialogHeaderText">选择轮询延迟</string>
+    <string name="pollingDelayDialogDescriptionText">选择GitNex尝试轮询新通知的分钟延迟。</string>
+    <string name="markAsRead">标记为已读</string>
+    <string name="markAsUnread">标记为未读</string>
+    <string name="pinNotification">固定通知</string>
+    <string name="markedNotificationsAsRead">成功将所有通知标记为已读。</string>
+    <string name="isRead">已读</string>
+    <string name="isUnread">未读</string>
 </resources>
