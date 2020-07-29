@@ -1,0 +1,6 @@
+- Bugfix: Fix draft creation when coming from notification
+- Bugfix: Fix logout loop with email logins (drop email support for now, please use login id)
+- Bugfix: Fix token creation bug in some cases
+- Bugfix: Fix stargazers/watchers layout
+
+https://codeberg.org/gitnex/GitNex/releases
