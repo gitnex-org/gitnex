@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,9 +19,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
-import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -33,7 +31,6 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.models.WatchInfo;
-import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,13 +39,75 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.ReposViewHolder> implements Filterable {
+public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private List<UserRepositories> reposList;
-	private Context mCtx;
-	private List<UserRepositories> reposListFull;
+	private Context ctx;
+	private final int TYPE_LOAD = 0;
+	private List<UserRepositories> forksList;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false;
+	private boolean isMoreDataAvailable = true;
 
-	static class ReposViewHolder extends RecyclerView.ViewHolder {
+	public RepoForksAdapter(Context ctx, List<UserRepositories> forksListMain) {
+
+		this.ctx = ctx;
+		this.forksList = forksListMain;
+
+	}
+
+	@NonNull
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+		LayoutInflater inflater = LayoutInflater.from(ctx);
+
+		if(viewType == TYPE_LOAD) {
+			return new RepoForksAdapter.ForksHolder(inflater.inflate(R.layout.list_repositories, parent, false));
+		}
+		else {
+			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+		}
+
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+
+		}
+
+		if(getItemViewType(position) == TYPE_LOAD) {
+
+			((RepoForksAdapter.ForksHolder) holder).bindData(forksList.get(position));
+
+		}
+
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+
+		if(forksList.get(position).getName() != null) {
+			return TYPE_LOAD;
+		}
+		else {
+			return 1;
+		}
+
+	}
+
+	@Override
+	public int getItemCount() {
+
+		return forksList.size();
+
+	}
+
+	class ForksHolder extends RecyclerView.ViewHolder {
 
 		private ImageView image;
 		private TextView repoName;
@@ -62,10 +121,12 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		private TextView repoType;
 		private LinearLayout archiveRepo;
 		private TextView repoBranch;
+		private ImageView reposDropdownMenu;
 
-		private ReposViewHolder(View itemView) {
+		ForksHolder(View itemView) {
 
 			super(itemView);
+
 			repoName = itemView.findViewById(R.id.repoName);
 			repoDescription = itemView.findViewById(R.id.repoDescription);
 			isRepoAdmin = itemView.findViewById(R.id.repoIsAdmin);
@@ -75,10 +136,71 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			repoStars = itemView.findViewById(R.id.repoStars);
 			repoForks = itemView.findViewById(R.id.repoForks);
 			repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
-			ImageView reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
+			reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
 			repoType = itemView.findViewById(R.id.repoType);
 			archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
 			repoBranch = itemView.findViewById(R.id.repoBranch);
+
+		}
+
+		@SuppressLint("SetTextI18n")
+		void bindData(UserRepositories forksModel) {
+
+			repoDescription.setVisibility(View.GONE);
+			repoBranch.setText(forksModel.getDefault_branch());
+
+			ColorGenerator generator = ColorGenerator.MATERIAL;
+			int color = generator.getColor(forksModel.getName());
+			String firstCharacter = String.valueOf(forksModel.getName().charAt(0));
+
+			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28)
+				.endConfig().buildRoundRect(firstCharacter, color, 3);
+
+			if(forksModel.getAvatar_url() != null) {
+				if(!forksModel.getAvatar_url().equals("")) {
+					PicassoService.getInstance(ctx).get().load(forksModel.getAvatar_url()).placeholder(R.drawable.loader_animated)
+						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(image);
+				}
+				else {
+					image.setImageDrawable(drawable);
+				}
+			}
+			else {
+				image.setImageDrawable(drawable);
+			}
+
+			repoName.setText(forksModel.getName());
+
+			if(!forksModel.getDescription().equals("")) {
+				repoDescription.setVisibility(View.VISIBLE);
+				repoDescription.setText(forksModel.getDescription());
+			}
+			fullName.setText(forksModel.getFullname());
+
+			if(forksModel.getPrivateFlag()) {
+				repoPrivatePublic.setImageResource(R.drawable.ic_lock);
+				repoType.setText(R.string.strPrivate);
+			}
+			else {
+				repoPrivatePublic.setVisibility(View.GONE);
+				repoType.setText(R.string.strPublic);
+			}
+
+			repoStars.setText(forksModel.getStars_count());
+			repoForks.setText(forksModel.getForks_count());
+			repoOpenIssuesCount.setText(forksModel.getOpen_issues_count());
+
+			if(isRepoAdmin == null) {
+				isRepoAdmin = new CheckBox(ctx);
+			}
+			isRepoAdmin.setChecked(forksModel.getPermissions().isAdmin());
+
+			if(forksModel.isArchived()) {
+				archiveRepo.setVisibility(View.VISIBLE);
+			}
+			else {
+				archiveRepo.setVisibility(View.GONE);
+			}
 
 			itemView.setOnClickListener(v -> {
 
@@ -141,7 +263,8 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 								assert response.body() != null;
 								tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
 
-							} else {
+							}
+							else {
 
 								tinyDb.putBoolean("repoWatch", false);
 
@@ -182,7 +305,8 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 				TextView repoForksList = view.findViewById(R.id.repoForksList);
 				TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
-				bottomSheetHeader.setText(String.format("%s / %s", fullName.getText().toString().split("/")[0], fullName.getText().toString().split("/")[1]));
+				bottomSheetHeader
+					.setText(String.format("%s / %s", fullName.getText().toString().split("/")[0], fullName.getText().toString().split("/")[1]));
 				BottomSheetDialog dialog = new BottomSheetDialog(context);
 				dialog.setContentView(view);
 				dialog.show();
@@ -214,7 +338,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 
 				});
 
-				repoForksList.setOnClickListener(forks -> {
+				repoForksList.setOnClickListener(watchers -> {
 
 					Intent intentW = new Intent(context, RepoForksActivity.class);
 					intentW.putExtra("repoFullNameForForks", fullName.getText());
@@ -229,122 +353,44 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 
 	}
 
-	public ReposListAdapter(Context mCtx, List<UserRepositories> reposListMain) {
+	static class LoadHolder extends RecyclerView.ViewHolder {
 
-		this.mCtx = mCtx;
-		this.reposList = reposListMain;
-		reposListFull = new ArrayList<>(reposList);
-	}
+		LoadHolder(View itemView) {
 
-	@NonNull
-	@Override
-	public ReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories, parent, false);
-		return new ReposViewHolder(v);
-	}
-
-	@Override
-	public void onBindViewHolder(@NonNull ReposViewHolder holder, int position) {
-
-		UserRepositories currentItem = reposList.get(position);
-		holder.repoDescription.setVisibility(View.GONE);
-		holder.repoBranch.setText(currentItem.getDefault_branch());
-
-		ColorGenerator generator = ColorGenerator.MATERIAL;
-		int color = generator.getColor(currentItem.getName());
-		String firstCharacter = String.valueOf(currentItem.getName().charAt(0));
-
-		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
-
-		if(currentItem.getAvatar_url() != null) {
-			if(!currentItem.getAvatar_url().equals("")) {
-				PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
-			}
-			else {
-				holder.image.setImageDrawable(drawable);
-			}
-		}
-		else {
-			holder.image.setImageDrawable(drawable);
-		}
-
-		holder.repoName.setText(currentItem.getName());
-		if(!currentItem.getDescription().equals("")) {
-			holder.repoDescription.setVisibility(View.VISIBLE);
-			holder.repoDescription.setText(currentItem.getDescription());
-		}
-		holder.fullName.setText(currentItem.getFullname());
-		if(currentItem.getPrivateFlag()) {
-			holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock);
-			holder.repoType.setText(R.string.strPrivate);
-		}
-		else {
-			holder.repoPrivatePublic.setVisibility(View.GONE);
-			holder.repoType.setText(R.string.strPublic);
-		}
-		holder.repoStars.setText(currentItem.getStars_count());
-		holder.repoForks.setText(currentItem.getForks_count());
-		holder.repoOpenIssuesCount.setText(currentItem.getOpen_issues_count());
-		if(holder.isRepoAdmin == null) {
-			holder.isRepoAdmin = new CheckBox(mCtx);
-		}
-		holder.isRepoAdmin.setChecked(currentItem.getPermissions().isAdmin());
-
-		if(currentItem.isArchived()) {
-			holder.archiveRepo.setVisibility(View.VISIBLE);
-		}
-		else {
-			holder.archiveRepo.setVisibility(View.GONE);
+			super(itemView);
 		}
 
 	}
 
-	@Override
-	public int getItemCount() {
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
 
-		return reposList.size();
+		isMoreDataAvailable = moreDataAvailable;
+
 	}
 
-	@Override
-	public Filter getFilter() {
+	public void notifyDataChanged() {
 
-		return reposFilter;
+		notifyDataSetChanged();
+		isLoading = false;
+
 	}
 
-	private Filter reposFilter = new Filter() {
+	public interface OnLoadMoreListener {
 
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
+		void onLoadMore();
 
-			List<UserRepositories> filteredList = new ArrayList<>();
+	}
 
-			if(constraint == null || constraint.length() == 0) {
-				filteredList.addAll(reposListFull);
-			}
-			else {
-				String filterPattern = constraint.toString().toLowerCase().trim();
+	public void setLoadMoreListener(RepoForksAdapter.OnLoadMoreListener loadMoreListener) {
 
-				for(UserRepositories item : reposListFull) {
-					if(item.getFullname().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
-						filteredList.add(item);
-					}
-				}
-			}
+		this.loadMoreListener = loadMoreListener;
 
-			FilterResults results = new FilterResults();
-			results.values = filteredList;
+	}
 
-			return results;
-		}
+	public void updateList(List<UserRepositories> list) {
 
-		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
-
-			reposList.clear();
-			reposList.addAll((List) results.values);
-			notifyDataSetChanged();
-		}
-	};
+		forksList = list;
+		notifyDataSetChanged();
+	}
 
 }

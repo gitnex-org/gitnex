@@ -33,9 +33,13 @@ public class UserRepositories {
 	private String avatar_url;
 	private boolean archived;
 
+	public UserRepositories(String body) {
+		this.name = name;
+	}
+
 	private permissionsObject permissions;
 
-	public class permissionsObject {
+	public static class permissionsObject {
 
 		private boolean admin;
 		private boolean push;

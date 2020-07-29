@@ -23,6 +23,7 @@ import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
+import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -173,6 +174,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                 TextView repoOpenInBrowser = view.findViewById(R.id.repoOpenInBrowser);
                 TextView repoStargazers = view.findViewById(R.id.repoStargazers);
                 TextView repoWatchers = view.findViewById(R.id.repoWatchers);
+	            TextView repoForksList = view.findViewById(R.id.repoForksList);
                 TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
 	            bottomSheetHeader.setText(String.format("%s / %s", fullName.getText().toString().split("/")[0], fullName.getText().toString().split("/")[1]));
@@ -189,7 +191,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 
                 });
 
-                repoStargazers.setOnClickListener(openInBrowser -> {
+                repoStargazers.setOnClickListener(stargazers -> {
 
                     Intent intent = new Intent(context, RepoStargazersActivity.class);
                     intent.putExtra("repoFullNameForStars", fullName.getText());
@@ -198,7 +200,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 
                 });
 
-                repoWatchers.setOnClickListener(openInBrowser -> {
+                repoWatchers.setOnClickListener(watchers -> {
 
                     Intent intentW = new Intent(context, RepoWatchersActivity.class);
                     intentW.putExtra("repoFullNameForWatchers", fullName.getText());
@@ -206,6 +208,15 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                     dialog.dismiss();
 
                 });
+
+	            repoForksList.setOnClickListener(forks -> {
+
+		            Intent intentW = new Intent(context, RepoForksActivity.class);
+		            intentW.putExtra("repoFullNameForForks", fullName.getText());
+		            context.startActivity(intentW);
+		            dialog.dismiss();
+
+	            });
 
             });
 

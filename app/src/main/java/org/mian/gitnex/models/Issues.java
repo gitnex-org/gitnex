@@ -31,7 +31,7 @@ public class Issues {
         this.body = body;
     }
 
-    public class userObject {
+    public static class userObject {
 
         private int id;
         private String login;
@@ -71,7 +71,7 @@ public class Issues {
 
     }
 
-    public class labelsObject {
+    public static class labelsObject {
 
         private int id;
         private String name;
@@ -95,7 +95,7 @@ public class Issues {
         }
     }
 
-    public class pullRequestObject {
+    public static class pullRequestObject {
 
         private boolean merged;
         private String merged_at;
@@ -109,7 +109,7 @@ public class Issues {
         }
     }
 
-    public class milestoneObject {
+    public static class milestoneObject {
 
         private int id;
         private String title;
@@ -153,7 +153,7 @@ public class Issues {
         }
     }
 
-    public class assigneesObject {
+    public static class assigneesObject {
 
         private int id;
         private String login;

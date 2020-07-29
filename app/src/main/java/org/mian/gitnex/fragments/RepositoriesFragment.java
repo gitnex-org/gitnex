@@ -75,14 +75,10 @@ public class RepositoriesFragment extends Fragment {
 
         createNewRepo = v.findViewById(R.id.addNewRepo);
 
-        createNewRepo.setOnClickListener(new View.OnClickListener() {
+        createNewRepo.setOnClickListener(view -> {
 
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-                startActivity(intent);
-            }
-
+            Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
+            startActivity(intent);
         });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -102,18 +98,11 @@ public class RepositoriesFragment extends Fragment {
             }
         });
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                        RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
-                    }
-                }, 50);
-            }
-        });
+        swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+
+            swipeRefresh.setRefreshing(false);
+            RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+        }, 50));
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), pageSize, resultLimit);
 

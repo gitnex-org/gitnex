@@ -321,4 +321,7 @@ public interface ApiInterface {
 
     @DELETE("repos/{owner}/{repo}/branches/{branch}") // delete branch
     Call<JsonElement> deleteBranch(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("branch") String branchName);
+
+	@GET("repos/{owner}/{repo}/forks") // get all repo forks
+	Call<List<UserRepositories>> getRepositoryForks(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Query("page") int page, @Query("limit") int limit);
 }
