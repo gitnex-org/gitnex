@@ -76,6 +76,12 @@ public interface ApiInterface {
     @POST("users/{username}/tokens") // create new token with 2fa otp
     Call<UserTokens> createNewTokenWithOTP(@Header("Authorization") String authorization, @Header("X-Gitea-OTP") int loginOTP, @Path("username") String loginUid, @Body UserTokens jsonStr);
 
+	@DELETE("users/{username}/tokens/{token}") // delete token by ID
+	Call<Void> deleteToken(@Header("Authorization") String authorization, @Path("username") String loginUid, @Path("token") int tokenID);
+
+	@DELETE("users/{username}/tokens/{token}") // delete token by ID with 2fa otp
+	Call<Void> deleteTokenWithOTP(@Header("Authorization") String authorization, @Header("X-Gitea-OTP") int loginOTP, @Path("username") String loginUid, @Path("token") int tokenID);
+
     @GET("notifications") // List users's notification threads
     Call<List<NotificationThread>> getNotificationThreads(@Header("Authorization") String token, @Query("all") Boolean all, @Query("status-types") String[] statusTypes, @Query("since") String since, @Query("before") String before, @Query("page") Integer page, @Query("limit") Integer limit);
 
