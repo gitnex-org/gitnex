@@ -215,6 +215,14 @@ public class LoginActivity extends BaseActivity {
 
 				}
 
+				if(loginUid.contains("@")) {
+
+					SnackBar.warning(ctx, layoutView, getResources().getString(R.string.userInvalidUserName));
+					enableProcessButton();
+					return;
+
+				}
+
 				if(loginPass.equals("")) {
 
 					SnackBar.warning(ctx, layoutView, getResources().getString(R.string.emptyFieldPassword));
