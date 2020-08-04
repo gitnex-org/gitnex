@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AddNewAccountActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
@@ -29,6 +32,7 @@ public class UserAccountsFragment extends Fragment {
 	private RecyclerView mRecyclerView;
 	private UserAccountsApi userAccountsApi;
 	private List<UserAccount> userAccountsList;
+	private ExtendedFloatingActionButton addNewAccount;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +64,13 @@ public class UserAccountsFragment extends Fragment {
 			fetchDataAsync();
 
 		}, 250));
+
+		addNewAccount = v.findViewById(R.id.addNewAccount);
+		addNewAccount.setOnClickListener(view -> {
+
+			Intent intent = new Intent(view.getContext(), AddNewAccountActivity.class);
+			startActivity(intent);
+		});
 
 		fetchDataAsync();
 

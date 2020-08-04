@@ -85,6 +85,7 @@
         <activity android:name=".activities.AddNewTeamMemberActivity" />
         <activity android:name=".activities.SettingsDraftsActivity" />
         <activity android:name=".activities.RepoForksActivity" />
+        <activity android:name=".activities.AddNewAccountActivity" />
 
         <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
         <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>

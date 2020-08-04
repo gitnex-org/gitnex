@@ -1,7 +1,7 @@
 <resources>
 
     <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/white</item>
+        <item name="color">@color/colorWhite</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -19,8 +19,8 @@
     </style>
 
     <style name="radioButtonsInDarkTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/colorWhite</item>
     </style>
 
 </resources>

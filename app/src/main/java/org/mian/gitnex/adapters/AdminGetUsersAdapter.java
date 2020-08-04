@@ -86,7 +86,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
             holder.userRole.setVisibility(View.VISIBLE);
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
-                    .textColor(mCtx.getResources().getColor(R.color.white))
+                    .textColor(mCtx.getResources().getColor(R.color.colorWhite))
                     .fontSize(44)
                     .width(180)
                     .height(60)

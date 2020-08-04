@@ -25,6 +25,6 @@
         android:layout_toEndOf="@+id/counterBadgeIssueText"
         android:background="@drawable/shape_badge_background"
         android:text="@string/infoTabRepoZero"
-        android:textColor="@color/white" />
+        android:textColor="@color/colorWhite" />
 
 </RelativeLayout>

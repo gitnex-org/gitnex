@@ -54,7 +54,7 @@
     <string name="pageTitleNewFile">New File</string>
     <string name="pageTitleExplore">Explore</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
+    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <!-- page titles -->
 
     <string name="repoName">Demo repo</string>
@@ -535,7 +535,7 @@
     <string name="loginViaPassword">Username / Password</string>
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
-    <string name="loginTokenError">Please enter the correct token</string>
+    <string name="loginTokenError">Token is required</string>
 
     <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">No pull requests found</string>
@@ -626,6 +626,13 @@
     <string name="archivedRepository">Archived</string>
 
     <string name="accountDeletedMessage">Account deleted successfully</string>
+    <string name="removeAccountPopupTitle">Remove Account</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\nThis will remove all the data related to this account on the app only.</string>
+    <string name="addNewAccount">New Account</string>
+    <string name="addNewAccountText">Add New Account</string>
+    <string name="accountAlreadyExistsError">Account already exists in the app</string>
+    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
 
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>

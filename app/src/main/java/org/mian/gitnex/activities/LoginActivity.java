@@ -112,7 +112,7 @@ public class LoginActivity extends BaseActivity {
 		});
 
 		info_button.setOnClickListener(
-			view -> new Tooltip.Builder(view).setText(R.string.urlInfoTooltip).setTextColor(getResources().getColor(R.color.white))
+			view -> new Tooltip.Builder(view).setText(R.string.urlInfoTooltip).setTextColor(getResources().getColor(R.color.colorWhite))
 				.setBackgroundColor(getResources().getColor(R.color.tooltipBackground)).setCancelable(true).setDismissOnClick(true).setPadding(30)
 				.setCornerRadius(R.dimen.tooltipCornor).setGravity(Gravity.BOTTOM).show());
 
@@ -137,7 +137,6 @@ public class LoginActivity extends BaseActivity {
 			if(isAvailable) {
 
 				enableProcessButton();
-				SnackBar.success(ctx, layoutView, getResources().getString(R.string.netConnectionIsBack));
 			}
 			else {
 
@@ -392,6 +391,9 @@ public class LoginActivity extends BaseActivity {
 						if(checkAccount == 0) {
 							userAccountsApi.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
 						}
+						else {
+							userAccountsApi.updateTokenByAccountName(accountName, loginToken);
+						}
 
 						enableProcessButton();
 						startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -573,6 +575,9 @@ public class LoginActivity extends BaseActivity {
 										if(checkAccount == 0) {
 											userAccountsApi
 												.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), newToken.getSha1(), "");
+										}
+										else {
+											userAccountsApi.updateTokenByAccountName(accountName, newToken.getSha1());
 										}
 
 										startActivity(new Intent(LoginActivity.this, MainActivity.class));

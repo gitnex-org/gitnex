@@ -24,7 +24,7 @@
         android:background="@drawable/shape_badge_background"
         android:gravity="center"
         android:text="@string/infoTabRepoZero"
-        android:textColor="@color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="12sp" />
 
 </RelativeLayout>

@@ -58,7 +58,7 @@ public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdap
         if(currentItem.getPrimary()) {
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
-                    .textColor(mCtx.getResources().getColor(R.color.white))
+                    .textColor(mCtx.getResources().getColor(R.color.colorWhite))
                     .fontSize(36)
                     .width(220)
                     .height(60)

@@ -30,7 +30,7 @@ public class SnackBar {
 
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		textView.setTextColor(context.getResources().getColor(R.color.white));
+		textView.setTextColor(context.getResources().getColor(R.color.colorWhite));
 
 		snackBar.show();
 

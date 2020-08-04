@@ -38,6 +38,9 @@ public interface UserAccountsDao {
     @Query("UPDATE UserAccounts SET token = :token WHERE accountId = :accountId")
     void updateAccountToken(int accountId, String token);
 
+	@Query("UPDATE UserAccounts SET token = :token WHERE accountName = :accountName")
+	void updateAccountTokenByAccountName(String accountName, String token);
+
     @Query("UPDATE UserAccounts SET instanceUrl = :instanceUrl, token = :token WHERE accountId = :accountId")
     void updateHostInfo(String instanceUrl, String token, int accountId);
 

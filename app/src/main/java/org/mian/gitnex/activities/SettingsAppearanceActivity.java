@@ -248,7 +248,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 				switch(codeBlockList[i]) {
 					case "White - Black":
-						tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.white));
+						tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorWhite));
 						tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
 						break;
 					case "Grey - Black":
@@ -256,12 +256,12 @@ public class SettingsAppearanceActivity extends BaseActivity {
 						tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.black));
 						break;
 					case "White - Grey":
-						tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.white));
+						tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorWhite));
 						tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.colorAccent));
 						break;
 					case "Dark - White":
 						tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorPrimary));
-						tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.white));
+						tinyDb.putInt("codeBlockBackground", getResources().getColor(R.color.colorWhite));
 						break;
 					default:
 						tinyDb.putInt("codeBlockColor", getResources().getColor(R.color.colorLightGreen));

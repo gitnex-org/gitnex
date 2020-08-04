@@ -7,7 +7,6 @@
     <color name="hintColor">#7f7e7b</color>
     <color name="colorWhite">#ffffff</color>
     <color name="black">#000009</color>
-    <color name="white">#ffffff</color>
     <color name="tooltipBackground">#1e88ce</color>
     <color name="blurColor">#41818181</color>
     <color name="btnBackground">#009486</color>
@@ -28,6 +27,8 @@
     <color name="diffSelectedColor">#434343</color>
     <color name="dividerColorDark">#1d1d1d</color>
     <color name="lightYellow">#efd34a</color>
+    <color name="warningColor">#dbb109</color>
+    <color name="successColor">#1e9c37</color>
 
     <color name="lightThemeDiffRemovedColor">#FCEDED</color>
     <color name="lightThemeDiffAddedColor">#EAF8ED</color>

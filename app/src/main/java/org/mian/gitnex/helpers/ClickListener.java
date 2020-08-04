@@ -27,7 +27,7 @@ public class ClickListener implements View.OnClickListener {
     {
 
         LayoutInflater inflater1 = LayoutInflater.from(mCtx);
-        View layout = inflater1.inflate(R.layout.custom_toast,
+        View layout = inflater1.inflate(R.layout.custom_toast_success,
                 (ViewGroup) v.findViewById(R.id.custom_toast_container));
 
         TextView text = layout.findViewById(R.id.toastText);

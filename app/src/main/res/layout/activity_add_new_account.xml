@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutNewAccount"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Widget.AppCompat.SearchView"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="@dimen/close_button_size"
+                android:layout_height="@dimen/close_button_size"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_arrow_back" />
+
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/addNewAccount"
+                android:textColor="?attr/primaryTextColor"
+                android:ellipsize="none"
+                android:scrollbars="horizontal"
+                android:singleLine="true"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_dropdown">
+
+            <Spinner
+                android:id="@+id/protocolSpinner"
+                android:layout_width="120dp"
+                android:layout_height="44dp"
+                android:padding="10dp"
+                android:spinnerMode="dropdown" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/instanceUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_inputs"
+            android:drawableStart="@drawable/ic_link"
+            android:drawablePadding="10dp"
+            android:hint="@string/instanceUrl"
+            android:inputType="textUri"
+            android:padding="10dp"
+            android:textColor="?attr/inputTextColor"
+            android:textColorHighlight="?attr/hintColor"
+            android:textColorHint="?attr/hintColor"
+            android:textSize="14sp"
+            android:autofillHints="@string/instanceUrl" />
+
+        <EditText
+            android:id="@+id/loginToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_inputs"
+            android:drawableStart="@drawable/ic_lock"
+            android:drawablePadding="10dp"
+            android:hint="@string/copyToken"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="?attr/inputTextColor"
+            android:textColorHighlight="?attr/hintColor"
+            android:textColorHint="?attr/hintColor"
+            android:textSize="14sp"
+            android:visibility="visible"
+            android:autofillHints="@string/copyToken" />
+
+        <Button
+            android:id="@+id/addNewAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/shape_buttons"
+            android:text="@string/addNewAccountText"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

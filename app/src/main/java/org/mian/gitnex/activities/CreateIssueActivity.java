@@ -127,7 +127,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         newIssueDueDate.setOnClickListener(this);
 
         newIssueMilestoneSpinner = findViewById(R.id.newIssueMilestoneSpinner);
-        newIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        newIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
         getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid, resultLimit);
 
         getLabels(instanceUrl, instanceToken, repoOwner, repoName, loginUid);

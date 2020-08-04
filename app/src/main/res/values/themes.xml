@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Dark theme - default -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -31,7 +31,7 @@
     <!-- Dark theme - default -->
 
     <!-- Light theme -->
-    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -89,15 +89,15 @@
 
     <style name="AppThemeConfirmDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
         <item name="colorControlActivated">@color/darkGreen</item>
         <item name="android:windowBackground">@drawable/shape_round_corners</item>
     </style>
 
     <style name="AppThemeLightConfirmDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="colorControlNormal">@color/lightThemeTextColor</item>
@@ -107,13 +107,13 @@
 
     <style name="AppThemePopupMenuStyle" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@color/colorPrimary</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/colorWhite</item>
         <item name="android:layout_marginStart">3dp</item>
         <item name="android:layout_marginEnd">3dp</item>
     </style>
 
     <style name="AppThemeLightPopupMenuStyle" parent="Widget.AppCompat.Light.PopupMenu">
-        <item name="android:popupBackground">@color/white</item>
+        <item name="android:popupBackground">@color/colorWhite</item>
         <item name="android:itemBackground">@color/lightThemeBackground</item>
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="android:layout_marginStart">3dp</item>

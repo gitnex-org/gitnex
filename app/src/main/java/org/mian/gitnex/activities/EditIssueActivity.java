@@ -109,7 +109,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         loadCollaboratorsList();
 
         editIssueMilestoneSpinner = findViewById(R.id.editIssueMilestoneSpinner);
-        editIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        editIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
 
         editIssueDescription.setMentionAdapter(defaultMentionAdapter);
 

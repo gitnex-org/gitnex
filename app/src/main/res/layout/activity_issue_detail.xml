@@ -228,7 +228,7 @@
         <ImageView
             android:id="@+id/addNewComment"
             android:src="@drawable/ic_reply"
-            android:tint="@color/white"
+            android:tint="@color/colorWhite"
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:layout_margin="15dp"

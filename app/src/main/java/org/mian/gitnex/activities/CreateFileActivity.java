@@ -95,7 +95,7 @@ public class CreateFileActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         newFileBranchesSpinner = findViewById(R.id.newFileBranchesSpinner);
-        newFileBranchesSpinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        newFileBranchesSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
         getBranches(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
 
         newFileBranchesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
