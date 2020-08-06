@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.activities.RepoForksActivity;
+import org.mian.gitnex.activities.RepoStargazersActivity;
+import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -143,6 +148,9 @@ public class RepoInfoFragment extends Fragment {
 		repoFilenameExpandCollapse = v.findViewById(R.id.repoFilenameExpandCollapse);
 		fileContentsFrameHeader = v.findViewById(R.id.fileContentsFrameHeader);
 		fileContentsFrame = v.findViewById(R.id.fileContentsFrame);
+		LinearLayout repoMetaStarsFrame = v.findViewById(R.id.repoMetaStarsFrame);
+		LinearLayout repoMetaForksFrame = v.findViewById(R.id.repoMetaForksFrame);
+		LinearLayout repoMetaWatchersFrame = v.findViewById(R.id.repoMetaWatchersFrame);
 
 		repoMetaFrame.setVisibility(View.GONE);
 
@@ -168,6 +176,29 @@ public class RepoInfoFragment extends Fragment {
 				toggleExpandViewMeta();
 			}
 		});
+
+		repoMetaStarsFrame.setOnClickListener(metaStars -> {
+
+			Intent intent = new Intent(ctx, RepoStargazersActivity.class);
+			intent.putExtra("repoFullNameForStars", repoOwner + "/" + repoName);
+			ctx.startActivity(intent);
+		});
+
+		repoMetaForksFrame.setOnClickListener(metaForks -> {
+
+			Intent intent = new Intent(ctx, RepoForksActivity.class);
+			intent.putExtra("repoFullNameForForks", repoOwner + "/" + repoName);
+			ctx.startActivity(intent);
+		});
+
+		repoMetaWatchersFrame.setOnClickListener(metaWatchers -> {
+
+			Intent intent = new Intent(ctx, RepoWatchersActivity.class);
+			intent.putExtra("repoFullNameForWatchers", repoOwner + "/" + repoName);
+			ctx.startActivity(intent);
+		});
+
+		repoMetaPullRequestsFrame.setOnClickListener(metaPR -> RepoDetailActivity.mViewPager.setCurrentItem(3));
 
 		return v;
 	}

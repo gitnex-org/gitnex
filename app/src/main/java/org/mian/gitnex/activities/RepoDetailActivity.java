@@ -84,6 +84,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	private String repositoryOwner;
 	private String repositoryName;
 
+	public static ViewPager mViewPager;
 	private int tabsCount;
 
 	@Override
@@ -175,7 +176,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 		}
 
-		ViewPager mViewPager = findViewById(R.id.container);
+		mViewPager = findViewById(R.id.container);
 
 		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
