@@ -1,6 +1,8 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +44,7 @@ import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.Branches;
 import org.mian.gitnex.models.UserRepositories;
@@ -343,6 +346,14 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, tinyDB.getString("repoHtmlUrl"));
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tinyDB.getString("repoHtmlUrl"));
 				startActivity(Intent.createChooser(sharingIntent, tinyDB.getString("repoHtmlUrl")));
+				break;
+
+			case "copyRepoUrl":
+				ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipData clip = ClipData.newPlainText("repoUrl", tinyDB.getString("repoHtmlUrl"));
+				assert clipboard != null;
+				clipboard.setPrimaryClip(clip);
+				Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
 				break;
 
 			case "newFile":

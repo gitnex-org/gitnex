@@ -27,6 +27,7 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 
         TextView createTeam = v.findViewById(R.id.createTeam);
         TextView createRepository = v.findViewById(R.id.createRepository);
+        TextView copyOrgUrl = v.findViewById(R.id.copyOrgUrl);
 
         createTeam.setOnClickListener(v1 -> {
 
@@ -39,6 +40,12 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
             bmListener.onButtonClicked("repository");
             dismiss();
         });
+
+	    copyOrgUrl.setOnClickListener(v1 -> {
+
+		    bmListener.onButtonClicked("copyOrgUrl");
+		    dismiss();
+	    });
 
         return v;
     }

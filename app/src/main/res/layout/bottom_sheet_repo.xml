@@ -154,6 +154,18 @@
                 android:background="?attr/dividerColor" />
 
             <TextView
+                android:id="@+id/copyRepoUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableStart="@drawable/ic_copy"
+                android:drawablePadding="24dp"
+                android:text="@string/genericCopyUrl"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
+            <TextView
                 android:id="@+id/shareRepository"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

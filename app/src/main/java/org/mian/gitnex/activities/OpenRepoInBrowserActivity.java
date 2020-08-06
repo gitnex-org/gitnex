@@ -30,7 +30,9 @@ public class OpenRepoInBrowserActivity extends AppCompatActivity {
 
 	    try {
 
-		    URI instanceUrl = new URI(tinyDb.getString("instanceUrlWithProtocol"));
+		    URI instanceUrl = new URI(UrlBuilder.fromString(tinyDb.getString("instanceUrl"))
+			    .withPath("/")
+			    .toString());
 
 		    String browserPath = PathsHelper.join(instanceUrl.getPath(), getIntent().getStringExtra("repoFullNameBrowser"));
 

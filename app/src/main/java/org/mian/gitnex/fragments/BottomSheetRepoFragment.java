@@ -40,6 +40,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
         TextView watchRepository = v.findViewById(R.id.watchRepository);
         TextView unWatchRepository = v.findViewById(R.id.unWatchRepository);
         TextView shareRepository = v.findViewById(R.id.shareRepository);
+	    TextView copyRepoUrl = v.findViewById(R.id.copyRepoUrl);
 
         createLabel.setOnClickListener(v112 -> {
 
@@ -92,6 +93,12 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
             bmListener.onButtonClicked("openWebRepo");
             dismiss();
         });
+
+	    copyRepoUrl.setOnClickListener(copyUrl -> {
+
+		    bmListener.onButtonClicked("copyRepoUrl");
+		    dismiss();
+	    });
 
         newFile.setOnClickListener(v17 -> {
 

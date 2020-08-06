@@ -41,6 +41,18 @@
                 android:textSize="16sp"
                 android:padding="12dp" />
 
+            <TextView
+                android:id="@+id/copyOrgUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/genericCopyUrl"
+                android:drawableStart="@drawable/ic_copy"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

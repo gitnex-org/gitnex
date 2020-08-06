@@ -1,6 +1,8 @@
 package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -35,6 +37,7 @@ import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.models.WatchInfo;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -62,6 +65,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
         private TextView repoType;
 	    private LinearLayout archiveRepo;
 	    private TextView repoBranch;
+	    private TextView htmlUrl;
 
         private OrgReposViewHolder(View itemView) {
             super(itemView);
@@ -78,6 +82,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
             repoType = itemView.findViewById(R.id.repoType);
 	        archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
 	        repoBranch = itemView.findViewById(R.id.repoBranch);
+	        htmlUrl = itemView.findViewById(R.id.htmlUrl);
 
             itemView.setOnClickListener(v -> {
 
@@ -175,12 +180,24 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                 TextView repoStargazers = view.findViewById(R.id.repoStargazers);
                 TextView repoWatchers = view.findViewById(R.id.repoWatchers);
 	            TextView repoForksList = view.findViewById(R.id.repoForksList);
+	            TextView repoCopyUrl = view.findViewById(R.id.repoCopyUrl);
                 TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
 	            bottomSheetHeader.setText(String.format("%s / %s", fullName.getText().toString().split("/")[0], fullName.getText().toString().split("/")[1]));
                 BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(view);
                 dialog.show();
+
+	            repoCopyUrl.setOnClickListener(openInBrowser -> {
+
+		            ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(context).getSystemService(Context.CLIPBOARD_SERVICE);
+		            ClipData clip = ClipData.newPlainText("repoUrl", htmlUrl.getText().toString());
+		            assert clipboard != null;
+		            clipboard.setPrimaryClip(clip);
+
+		            Toasty.info(context, context.getString(R.string.copyIssueUrlToastMsg));
+		            dialog.dismiss();
+	            });
 
                 repoOpenInBrowser.setOnClickListener(openInBrowser -> {
 
@@ -243,6 +260,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
         UserRepositories currentItem = reposList.get(position);
         holder.repoDescription.setVisibility(View.GONE);
 	    holder.repoBranch.setText(currentItem.getDefault_branch());
+	    holder.htmlUrl.setText(currentItem.getHtml_url());
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getColor(currentItem.getName());

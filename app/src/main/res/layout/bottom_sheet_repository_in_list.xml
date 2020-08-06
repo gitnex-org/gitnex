@@ -36,18 +36,6 @@
                 android:background="?attr/dividerColor" />
 
             <TextView
-                android:id="@+id/repoOpenInBrowser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/openWebRepo"
-                android:drawableStart="@drawable/ic_browser"
-                android:drawablePadding="24dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="12dp" />
-
-            <TextView
                 android:id="@+id/repoStargazers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,6 +66,30 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/infoTabRepoForksCount"
                 android:drawableStart="@drawable/ic_fork"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/repoCopyUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/genericCopyUrl"
+                android:drawableStart="@drawable/ic_copy"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/repoOpenInBrowser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/openWebRepo"
+                android:drawableStart="@drawable/ic_browser"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
