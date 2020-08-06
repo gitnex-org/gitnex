@@ -85,59 +85,39 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		}
 
-		mergePullRequest.setOnClickListener(new View.OnClickListener() {
+		mergePullRequest.setOnClickListener(v13 -> {
 
-			@Override
-			public void onClick(View v) {
+			startActivity(new Intent(ctx, MergePullRequestActivity.class));
+			dismiss();
 
-				startActivity(new Intent(ctx, MergePullRequestActivity.class));
-				dismiss();
-
-			}
 		});
 
-		openFilesDiff.setOnClickListener(new View.OnClickListener() {
+		openFilesDiff.setOnClickListener(v14 -> {
 
-			@Override
-			public void onClick(View v) {
+			startActivity(new Intent(ctx, FileDiffActivity.class));
+			dismiss();
 
-				startActivity(new Intent(ctx, FileDiffActivity.class));
-				dismiss();
-
-			}
 		});
 
-		editIssue.setOnClickListener(new View.OnClickListener() {
+		editIssue.setOnClickListener(v15 -> {
 
-			@Override
-			public void onClick(View v) {
+			startActivity(new Intent(ctx, EditIssueActivity.class));
+			dismiss();
 
-				startActivity(new Intent(ctx, EditIssueActivity.class));
-				dismiss();
-
-			}
 		});
 
-		editLabels.setOnClickListener(new View.OnClickListener() {
+		editLabels.setOnClickListener(v16 -> {
 
-			@Override
-			public void onClick(View v) {
+			startActivity(new Intent(ctx, AddRemoveLabelsActivity.class));
+			dismiss();
 
-				startActivity(new Intent(ctx, AddRemoveLabelsActivity.class));
-				dismiss();
-
-			}
 		});
 
-		addRemoveAssignees.setOnClickListener(new View.OnClickListener() {
+		addRemoveAssignees.setOnClickListener(v17 -> {
 
-			@Override
-			public void onClick(View v) {
+			startActivity(new Intent(ctx, AddRemoveAssigneesActivity.class));
+			dismiss();
 
-				startActivity(new Intent(ctx, AddRemoveAssigneesActivity.class));
-				dismiss();
-
-			}
 		});
 
 		shareIssue.setOnClickListener(v1 -> {

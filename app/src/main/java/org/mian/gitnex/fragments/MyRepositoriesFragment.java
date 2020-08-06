@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -23,6 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.adapters.MyReposListAdapter;
@@ -45,7 +45,7 @@ public class MyRepositoriesFragment extends Fragment {
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private MyReposListAdapter adapter;
-    private ImageView createNewRepo;
+    private ExtendedFloatingActionButton createNewRepo;
     private TextView noDataMyRepo;
 
     private int pageSize = 1;
@@ -105,15 +105,10 @@ public class MyRepositoriesFragment extends Fragment {
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         createNewRepo = v.findViewById(R.id.addNewRepo);
-        createNewRepo.setOnClickListener(new View.OnClickListener() {
+        createNewRepo.setOnClickListener(view -> {
 
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-                startActivity(intent);
-
-            }
+            Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
+            startActivity(intent);
 
         });
 
@@ -135,18 +130,11 @@ public class MyRepositoriesFragment extends Fragment {
             }
         });
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                        MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
-                    }
-                }, 50);
-            }
-        });
+        swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+
+            swipeRefresh.setRefreshing(false);
+            MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
+        }, 50));
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, pageSize, resultLimit);
 

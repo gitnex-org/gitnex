@@ -253,7 +253,7 @@ public class IssuesFragment extends Fragment {
 					}
 					else {
 
-						Toasty.info(context, getString(R.string.noMoreData));
+						Toasty.warning(context, getString(R.string.noMoreData));
 						adapter.setMoreDataAvailable(false);
 
 					}

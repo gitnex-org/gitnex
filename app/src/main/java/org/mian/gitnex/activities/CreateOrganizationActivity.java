@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,15 +66,10 @@ public class CreateOrganizationActivity extends BaseActivity {
         if(!connToInternet) {
 
             createOrganizationButton.setEnabled(false);
-            GradientDrawable shape =  new GradientDrawable();
-            shape.setCornerRadius( 8 );
-            shape.setColor(getResources().getColor(R.color.hintColor));
-            createOrganizationButton.setBackground(shape);
-
-        } else {
+        }
+        else {
 
             createOrganizationButton.setOnClickListener(createOrgListener);
-
         }
 
     }
@@ -109,7 +103,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
@@ -117,7 +111,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         if(!newOrgDesc.equals("")) {
             if (appUtil.charactersLength(newOrgDesc) > 255) {
 
-                Toasty.info(ctx, getString(R.string.orgDescError));
+                Toasty.warning(ctx, getString(R.string.orgDescError));
                 return;
 
             }
@@ -125,12 +119,12 @@ public class CreateOrganizationActivity extends BaseActivity {
 
         if(newOrgName.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.orgNameErrorEmpty));
+            Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
 
         }
         else if(!appUtil.checkStrings(newOrgName)) {
 
-            Toasty.info(ctx, getString(R.string.orgNameErrorInvalid));
+            Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
 
         }
         else {
@@ -161,7 +155,7 @@ public class CreateOrganizationActivity extends BaseActivity {
                     TinyDB tinyDb = new TinyDB(appCtx);
                     tinyDb.putBoolean("orgCreated", true);
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.orgCreated));
+                    Toasty.success(ctx, getString(R.string.orgCreated));
                     finish();
 
                 }
@@ -177,24 +171,24 @@ public class CreateOrganizationActivity extends BaseActivity {
                 else if(response.code() == 409) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.orgExistsError));
+                    Toasty.warning(ctx, getString(R.string.orgExistsError));
 
                 }
                 else if(response.code() == 422) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.orgExistsError));
+                    Toasty.warning(ctx, getString(R.string.orgExistsError));
 
                 }
                 else {
 
                     if(response.code() == 404) {
                         enableProcessButton();
-                        Toasty.info(ctx, getString(R.string.apiNotFound));
+                        Toasty.warning(ctx, getString(R.string.apiNotFound));
                     }
                     else {
                         enableProcessButton();
-                        Toasty.info(ctx, getString(R.string.orgCreatedError));
+                        Toasty.error(ctx, getString(R.string.orgCreatedError));
                     }
 
                 }
@@ -213,21 +207,11 @@ public class CreateOrganizationActivity extends BaseActivity {
     private void disableProcessButton() {
 
         createOrganizationButton.setEnabled(false);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.hintColor));
-        createOrganizationButton.setBackground(shape);
-
     }
 
     private void enableProcessButton() {
 
         createOrganizationButton.setEnabled(true);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.btnBackground));
-        createOrganizationButton.setBackground(shape);
-
     }
 
 }

@@ -93,12 +93,8 @@ public class RepoStargazersActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
 }

@@ -51,11 +51,11 @@ public class SettingsDraftsActivity extends BaseActivity {
 
 			if(isChecked) {
 				tinyDb.putBoolean("draftsCommentsDeletionEnabled", true);
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			}
 			else {
 				tinyDb.putBoolean("draftsCommentsDeletionEnabled", false);
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			}
 
 		});

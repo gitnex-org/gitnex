@@ -162,9 +162,9 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
         try {
             bmListener = (BottomSheetListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement BottomSheetListener");
+        }
+        catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement BottomSheetListener");
         }
     }
 

@@ -111,7 +111,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 		userAccountsList.remove(position);
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, userAccountsList.size());
-		Toasty.info(mCtx, mCtx.getResources().getString(R.string.accountDeletedMessage));
+		Toasty.success(mCtx, mCtx.getResources().getString(R.string.accountDeletedMessage));
 
 	}
 

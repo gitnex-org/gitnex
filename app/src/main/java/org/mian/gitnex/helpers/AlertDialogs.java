@@ -22,7 +22,7 @@ public class AlertDialogs {
             .setMessage(message)
             .setCancelable(true)
             .setIcon(R.drawable.ic_warning)
-            .setNegativeButton(copyNegativeButton, (dialog, which) -> dialog.dismiss())
+            .setNeutralButton(copyNegativeButton, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(copyPositiveButton, (dialog, which) -> {
 
                 final TinyDB tinyDb = new TinyDB(context);
@@ -76,7 +76,7 @@ public class AlertDialogs {
                 context.startActivity(intent);
 
             })
-            .setNegativeButton(negativeButton, null).show();
+            .setNeutralButton(negativeButton, null).show();
 
     }
 
@@ -86,7 +86,7 @@ public class AlertDialogs {
                 .setTitle(title + userNameMain)
                 .setMessage(message)
                 .setPositiveButton(positiveButton, (dialog, whichButton) -> CollaboratorActions.deleteCollaborator(context,  searchKeyword, userNameMain))
-                .setNegativeButton(negativeButton, null).show();
+                .setNeutralButton(negativeButton, null).show();
 
     }
 
@@ -96,7 +96,7 @@ public class AlertDialogs {
                 .setTitle(title + userNameMain)
                 .setMessage(message)
                 .setPositiveButton(positiveButton, (dialog, whichButton) -> TeamActions.addTeamMember(context, userNameMain, teamId))
-                .setNegativeButton(negativeButton, null).show();
+                .setNeutralButton(negativeButton, null).show();
 
     }
 
@@ -106,7 +106,7 @@ public class AlertDialogs {
                 .setTitle(title + userNameMain)
                 .setMessage(message)
                 .setPositiveButton(positiveButton, (dialog, whichButton) -> TeamActions.removeTeamMember(context, userNameMain, teamId))
-                .setNegativeButton(negativeButton, null).show();
+                .setNeutralButton(negativeButton, null).show();
 
     }
 

@@ -53,7 +53,7 @@ public class FilesViewModel extends ViewModel {
 
                 } else {
 
-                    Toasty.info(ctx, ctx.getString(R.string.noDataFilesTab));
+                    Toasty.warning(ctx, ctx.getString(R.string.noDataFilesTab));
                     Log.i("onResponse", String.valueOf(response.code()));
                 }
 
@@ -95,7 +95,7 @@ public class FilesViewModel extends ViewModel {
 
                 } else {
 
-                    Toasty.info(ctx, ctx.getString(R.string.noDataFilesTab));
+                    Toasty.warning(ctx, ctx.getString(R.string.noDataFilesTab));
                     Log.i("onResponse", String.valueOf(response.code()));
                 }
 

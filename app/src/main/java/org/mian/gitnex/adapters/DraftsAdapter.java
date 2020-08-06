@@ -93,7 +93,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
         draftsList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, draftsList.size());
-        Toasty.info(mCtx, mCtx.getResources().getString(R.string.draftsSingleDeleteSuccess));
+        Toasty.success(mCtx, mCtx.getResources().getString(R.string.draftsSingleDeleteSuccess));
 
     }
 

@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -67,11 +66,9 @@ public class ProfileEmailActivity extends BaseActivity {
         if(!connToInternet) {
 
             disableProcessButton();
-
         } else {
 
             addEmailButton.setOnClickListener(addEmailListener);
-
         }
 
     }
@@ -94,20 +91,20 @@ public class ProfileEmailActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newUserEmail.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.emailErrorEmpty));
+            Toasty.error(ctx, getString(R.string.emailErrorEmpty));
             return;
 
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
-            Toasty.info(ctx, getString(R.string.emailErrorInvalid));
+            Toasty.warning(ctx, getString(R.string.emailErrorInvalid));
             return;
 
         }
@@ -138,7 +135,7 @@ public class ProfileEmailActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    Toasty.info(ctx, getString(R.string.emailAddedText));
+                    Toasty.success(ctx, getString(R.string.emailAddedText));
                     tinyDb.putBoolean("emailsRefresh", true);
                     enableProcessButton();
                     finish();
@@ -156,25 +153,25 @@ public class ProfileEmailActivity extends BaseActivity {
                 else if(response.code() == 403) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+                    Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
                 }
                 else if(response.code() == 404) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+                    Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
                 }
                 else if(response.code() == 422) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.emailErrorInUse));
+                    Toasty.warning(ctx, ctx.getString(R.string.emailErrorInUse));
 
                 }
                 else {
 
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.labelGeneralError));
+                    Toasty.error(ctx, getString(R.string.labelGeneralError));
 
                 }
 
@@ -190,32 +187,18 @@ public class ProfileEmailActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
     private void disableProcessButton() {
 
         addEmailButton.setEnabled(false);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.hintColor));
-        addEmailButton.setBackground(shape);
-
     }
 
     private void enableProcessButton() {
 
         addEmailButton.setEnabled(true);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.btnBackground));
-        addEmailButton.setBackground(shape);
-
     }
 
 }

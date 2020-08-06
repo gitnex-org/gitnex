@@ -177,7 +177,7 @@ public class AddNewAccountActivity extends BaseActivity {
 					}
 					else {
 
-						Toasty.info(ctx, getResources().getString(R.string.versionUnsupportedNew));
+						Toasty.warning(ctx, getResources().getString(R.string.versionUnsupportedNew));
 						login(instanceUrl, loginToken);
 
 					}

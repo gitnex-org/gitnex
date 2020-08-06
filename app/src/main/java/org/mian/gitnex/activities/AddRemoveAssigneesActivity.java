@@ -207,17 +207,17 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
                     }
                     else if(response.code() == 403) {
 
-                        Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+                        Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
                     }
                     else if(response.code() == 404) {
 
-                        Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+                        Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
                     }
                     else {
 
-                        Toasty.info(ctx, getString(R.string.genericError));
+                        Toasty.error(ctx, getString(R.string.genericError));
 
                     }
                 }
@@ -254,7 +254,7 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
 
                 if(response2.code() == 201) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.assigneesUpdated));
+                    Toasty.success(ctx, ctx.getString(R.string.assigneesUpdated));
 
                 }
                 else if(response2.code() == 401) {
@@ -267,17 +267,17 @@ public class AddRemoveAssigneesActivity extends BaseActivity {
                 }
                 else if(response2.code() == 403) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+                    Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
                 }
                 else if(response2.code() == 404) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+                    Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
                 }
                 else {
 
-                    Toasty.info(ctx, getString(R.string.genericError));
+                    Toasty.error(ctx, getString(R.string.genericError));
 
                 }
 

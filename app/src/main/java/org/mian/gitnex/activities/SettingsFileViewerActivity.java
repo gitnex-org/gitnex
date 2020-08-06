@@ -85,7 +85,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 				tinyDb.putInt("fileviewerSourceCodeThemeId", i);
 
 				dialogInterfaceTheme.dismiss();
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -100,12 +100,12 @@ public class SettingsFileViewerActivity extends BaseActivity {
 			if(isChecked) {
 				tinyDb.putBoolean("enablePdfMode", true);
 				tinyDb.putString("enablePdfModeInit", "yes");
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			}
 			else {
 				tinyDb.putBoolean("enablePdfMode", false);
 				tinyDb.putString("enablePdfModeInit", "yes");
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			}
 
 		});

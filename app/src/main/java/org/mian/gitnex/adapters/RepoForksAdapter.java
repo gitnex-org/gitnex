@@ -270,7 +270,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 								if(response.code() != 404) {
 
-									Toasty.info(context, context.getString(R.string.genericApiStatusError));
+									Toasty.error(context, context.getString(R.string.genericApiStatusError));
 
 								}
 
@@ -282,7 +282,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 						public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
 
 							tinyDb.putBoolean("repoWatch", false);
-							Toasty.info(context, context.getString(R.string.genericApiStatusError));
+							Toasty.error(context, context.getString(R.string.genericApiStatusError));
 
 						}
 					});

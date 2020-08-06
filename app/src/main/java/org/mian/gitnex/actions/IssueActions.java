@@ -47,7 +47,7 @@ public class IssueActions {
 					if(response.code() == 200) {
 
 						tinyDb.putBoolean("commentEdited", true);
-						Toasty.info(ctx, ctx.getString(R.string.editCommentUpdatedText));
+						Toasty.success(ctx, ctx.getString(R.string.editCommentUpdatedText));
 						((ReplyToIssueActivity) ctx).finish();
 
 					}
@@ -59,17 +59,17 @@ public class IssueActions {
 				}
 				else if(response.code() == 403) {
 
-					Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
 				}
 				else if(response.code() == 404) {
 
-					Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.genericError));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 
 				}
 
@@ -113,13 +113,13 @@ public class IssueActions {
 
 						if(issueState.equals("closed")) {
 
-							Toasty.info(ctx, ctx.getString(R.string.issueStateClosed));
+							Toasty.success(ctx, ctx.getString(R.string.issueStateClosed));
 							tinyDb.putString("issueState", "closed");
 
 						}
 						else if(issueState.equals("open")) {
 
-							Toasty.info(ctx, ctx.getString(R.string.issueStateReopened));
+							Toasty.success(ctx, ctx.getString(R.string.issueStateReopened));
 							tinyDb.putString("issueState", "open");
 
 						}
@@ -133,17 +133,17 @@ public class IssueActions {
 				}
 				else if(response.code() == 403) {
 
-					Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
 				}
 				else if(response.code() == 404) {
 
-					Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.genericError));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 
 				}
 
@@ -184,14 +184,14 @@ public class IssueActions {
 
 					if(response.code() == 201) {
 
-						Toasty.info(ctx, ctx.getString(R.string.subscribedSuccessfully));
+						Toasty.success(ctx, ctx.getString(R.string.subscribedSuccessfully));
 						tinyDB.putBoolean("issueSubscribed", true);
 
 					}
 					else if(response.code() == 200) {
 
 						tinyDB.putBoolean("issueSubscribed", true);
-						Toasty.info(ctx, ctx.getString(R.string.alreadySubscribed));
+						Toasty.success(ctx, ctx.getString(R.string.alreadySubscribed));
 
 					}
 
@@ -203,7 +203,7 @@ public class IssueActions {
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.subscriptionError));
+					Toasty.error(ctx, ctx.getString(R.string.subscriptionError));
 
 				}
 
@@ -212,7 +212,7 @@ public class IssueActions {
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-				Toasty.info(ctx, ctx.getString(R.string.unsubscribedSuccessfully));
+				Toasty.success(ctx, ctx.getString(R.string.unsubscribedSuccessfully));
 			}
 		});
 
@@ -244,14 +244,14 @@ public class IssueActions {
 
 					if(response.code() == 201) {
 
-						Toasty.info(ctx, ctx.getString(R.string.unsubscribedSuccessfully));
+						Toasty.success(ctx, ctx.getString(R.string.unsubscribedSuccessfully));
 						tinyDB.putBoolean("issueSubscribed", false);
 
 					}
 					else if(response.code() == 200) {
 
 						tinyDB.putBoolean("issueSubscribed", false);
-						Toasty.info(ctx, ctx.getString(R.string.alreadyUnsubscribed));
+						Toasty.success(ctx, ctx.getString(R.string.alreadyUnsubscribed));
 
 					}
 
@@ -263,7 +263,7 @@ public class IssueActions {
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.unsubscriptionError));
+					Toasty.error(ctx, ctx.getString(R.string.unsubscriptionError));
 
 				}
 
@@ -272,7 +272,7 @@ public class IssueActions {
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-				Toasty.info(ctx, ctx.getString(R.string.unsubscriptionError));
+				Toasty.error(ctx, ctx.getString(R.string.unsubscriptionError));
 			}
 		});
 	}

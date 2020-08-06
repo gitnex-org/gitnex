@@ -146,7 +146,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 
 								if(response.code() != 404) {
 
-									Toasty.info(context, context.getString(R.string.genericApiStatusError));
+									Toasty.error(context, context.getString(R.string.genericApiStatusError));
 
 								}
 
@@ -158,7 +158,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 						public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
 
 							tinyDb.putBoolean("repoWatch", false);
-							Toasty.info(context, context.getString(R.string.genericApiStatusError));
+							Toasty.error(context, context.getString(R.string.genericApiStatusError));
 
 						}
 					});

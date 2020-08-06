@@ -456,7 +456,7 @@ public class RepoInfoFragment extends Fragment {
 
 					} else if (response.code() == 403) {
 
-						Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
 					} else if (response.code() == 404) {
 
@@ -465,7 +465,7 @@ public class RepoInfoFragment extends Fragment {
 
 					} else {
 
-						Toasty.info(getContext(), getString(R.string.genericError));
+						Toasty.error(getContext(), getString(R.string.genericError));
 
 					}
 				}

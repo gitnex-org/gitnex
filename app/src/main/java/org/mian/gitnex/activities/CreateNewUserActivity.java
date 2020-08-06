@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -69,11 +68,10 @@ public class CreateNewUserActivity extends BaseActivity {
         if(!connToInternet) {
 
             disableProcessButton();
-
-        } else {
+        }
+        else {
 
             createUserButton.setOnClickListener(createNewUserListener);
-
         }
 
     }
@@ -94,35 +92,35 @@ public class CreateNewUserActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newFullName.equals("") || newUserName.equals("") | newUserEmail.equals("") || newUserPassword.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.emptyFields));
+            Toasty.error(ctx, getString(R.string.emptyFields));
             return;
 
         }
 
         if(!appUtil.checkStrings(newFullName)) {
 
-            Toasty.info(ctx, getString(R.string.userInvalidFullName));
+            Toasty.error(ctx, getString(R.string.userInvalidFullName));
             return;
 
         }
 
         if(!appUtil.checkStringsWithAlphaNumeric(newUserName)) {
 
-            Toasty.info(ctx, getString(R.string.userInvalidUserName));
+            Toasty.error(ctx, getString(R.string.userInvalidUserName));
             return;
 
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
-            Toasty.info(ctx, getString(R.string.userInvalidEmail));
+            Toasty.error(ctx, getString(R.string.userInvalidEmail));
             return;
 
         }
@@ -150,7 +148,7 @@ public class CreateNewUserActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    Toasty.info(ctx, getString(R.string.userCreatedText));
+                    Toasty.success(ctx, getString(R.string.userCreatedText));
                     enableProcessButton();
                     finish();
 
@@ -167,25 +165,25 @@ public class CreateNewUserActivity extends BaseActivity {
                 else if(response.code() == 403) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+                    Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
                 }
                 else if(response.code() == 404) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+                    Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
                 }
                 else if(response.code() == 422) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.userExistsError));
+                    Toasty.warning(ctx, ctx.getString(R.string.userExistsError));
 
                 }
                 else {
 
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.genericError));
+                    Toasty.error(ctx, getString(R.string.genericError));
 
                 }
 
@@ -193,6 +191,7 @@ public class CreateNewUserActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }
@@ -200,39 +199,21 @@ public class CreateNewUserActivity extends BaseActivity {
 
     }
 
-    private View.OnClickListener createNewUserListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processCreateNewUser();
-        }
-    };
+    private View.OnClickListener createNewUserListener = v -> processCreateNewUser();
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
     private void disableProcessButton() {
 
         createUserButton.setEnabled(false);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.hintColor));
-        createUserButton.setBackground(shape);
-
     }
 
     private void enableProcessButton() {
 
         createUserButton.setEnabled(true);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.btnBackground));
-        createUserButton.setBackground(shape);
-
     }
 
 }

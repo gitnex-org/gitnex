@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
@@ -96,7 +97,7 @@ public class IssueDetailActivity extends BaseActivity {
 	private HorizontalScrollView assigneesScrollView;
 	private ScrollView scrollViewComments;
 	private TextView issueModified;
-	private ImageView createNewComment;
+	private ExtendedFloatingActionButton createNewComment;
 	final Context ctx = this;
 	private Context appCtx;
 	private LinearLayout labelsLayout;

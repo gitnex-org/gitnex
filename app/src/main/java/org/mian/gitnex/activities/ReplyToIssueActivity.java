@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -272,14 +271,14 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 		if(!connToInternet) {
 
-			Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 			return;
 
 		}
 
 		if(newReplyDT.equals("")) {
 
-			Toasty.info(ctx, getString(R.string.commentEmptyError));
+			Toasty.error(ctx, getString(R.string.commentEmptyError));
 
 		}
 		else {
@@ -318,7 +317,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 				if(response.code() == 201) {
 
-					Toasty.info(ctx, getString(R.string.commentSuccess));
+					Toasty.success(ctx, getString(R.string.commentSuccess));
 					tinyDb.putBoolean("commentPosted", true);
 					tinyDb.putBoolean("resumeIssues", true);
 					tinyDb.putBoolean("resumePullRequests", true);
@@ -349,7 +348,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 				else {
 
 					enableProcessButton();
-					Toasty.info(ctx, getString(R.string.commentError));
+					Toasty.error(ctx, getString(R.string.commentError));
 
 				}
 
@@ -397,21 +396,11 @@ public class ReplyToIssueActivity extends BaseActivity {
 	private void disableProcessButton() {
 
 		replyButton.setEnabled(false);
-		GradientDrawable shape = new GradientDrawable();
-		shape.setCornerRadius(8);
-		shape.setColor(getResources().getColor(R.color.hintColor));
-		replyButton.setBackground(shape);
-
 	}
 
 	private void enableProcessButton() {
 
 		replyButton.setEnabled(true);
-		GradientDrawable shape = new GradientDrawable();
-		shape.setCornerRadius(8);
-		shape.setColor(getResources().getColor(R.color.btnBackground));
-		replyButton.setBackground(shape);
-
 	}
 
 }

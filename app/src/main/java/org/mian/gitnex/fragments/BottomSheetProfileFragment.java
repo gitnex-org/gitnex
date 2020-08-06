@@ -25,12 +25,10 @@ public class BottomSheetProfileFragment extends BottomSheetDialogFragment {
 
         TextView addNewEmailAddress = v.findViewById(R.id.addNewEmailAddress);
 
-        addNewEmailAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), ProfileEmailActivity.class));
-                dismiss();
-            }
+        addNewEmailAddress.setOnClickListener(v1 -> {
+
+            startActivity(new Intent(getContext(), ProfileEmailActivity.class));
+            dismiss();
         });
 
         return v;

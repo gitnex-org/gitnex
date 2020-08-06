@@ -48,7 +48,7 @@ public class MilestoneActions {
 
 				if(response.isSuccessful()) {
 
-					Toasty.info(ctx, ctx.getString(R.string.milestoneStatusUpdate));
+					Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
 
 				}
 				else if(response.code() == 401) {
@@ -61,7 +61,7 @@ public class MilestoneActions {
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.genericError));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 
 				}
 
@@ -106,7 +106,7 @@ public class MilestoneActions {
 
 				if(response.isSuccessful()) {
 
-					Toasty.info(ctx, ctx.getString(R.string.milestoneStatusUpdate));
+					Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
 
 				}
 				else if(response.code() == 401) {
@@ -119,7 +119,7 @@ public class MilestoneActions {
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.genericError));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 
 				}
 

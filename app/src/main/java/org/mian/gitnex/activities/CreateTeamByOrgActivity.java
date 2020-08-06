@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,134 +97,120 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        teamPermission.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        teamPermission.setOnClickListener(view -> {
 
-                AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
 
-                pBuilder.setTitle(R.string.newTeamPermission);
-                if(permissionSelectedChoice != -1) {
-                    pBuilder.setCancelable(true);
-                }
-                else {
-                    pBuilder.setCancelable(false);
-                }
-                pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        permissionSelectedChoice = i;
-                        teamPermission.setText(permissionList[i]);
-
-                        if(permissionList[i].equals("Read")) {
-                            teamPermissionDetail.setVisibility(View.VISIBLE);
-                            teamPermissionDetail.setText(R.string.newTeamPermissionRead);
-                        }
-                        else if(permissionList[i].equals("Write")) {
-                            teamPermissionDetail.setVisibility(View.VISIBLE);
-                            teamPermissionDetail.setText(R.string.newTeamPermissionWrite);
-                        }
-                        else if(permissionList[i].equals("Admin")) {
-                            teamPermissionDetail.setVisibility(View.VISIBLE);
-                            teamPermissionDetail.setText(R.string.newTeamPermissionAdmin);
-                        }
-                        else {
-                            teamPermissionDetail.setVisibility(View.GONE);
-                        }
-
-                        dialogInterface.dismiss();
-
-                    }
-                });
-
-                AlertDialog pDialog = pBuilder.create();
-                pDialog.show();
-
+            pBuilder.setTitle(R.string.newTeamPermission);
+            if(permissionSelectedChoice != -1) {
+                pBuilder.setCancelable(true);
             }
+            else {
+                pBuilder.setCancelable(false);
+            }
+            pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
+
+                permissionSelectedChoice = i;
+                teamPermission.setText(permissionList[i]);
+
+	            switch(permissionList[i]) {
+		            case "Read":
+
+			            teamPermissionDetail.setVisibility(View.VISIBLE);
+			            teamPermissionDetail.setText(R.string.newTeamPermissionRead);
+			            break;
+		            case "Write":
+
+			            teamPermissionDetail.setVisibility(View.VISIBLE);
+			            teamPermissionDetail.setText(R.string.newTeamPermissionWrite);
+			            break;
+		            case "Admin":
+
+			            teamPermissionDetail.setVisibility(View.VISIBLE);
+			            teamPermissionDetail.setText(R.string.newTeamPermissionAdmin);
+			            break;
+		            default:
+
+			            teamPermissionDetail.setVisibility(View.GONE);
+			            break;
+	            }
+
+                dialogInterface.dismiss();
+
+            });
+
+            AlertDialog pDialog = pBuilder.create();
+            pDialog.show();
+
         });
 
 
-        teamAccessControls.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        teamAccessControls.setOnClickListener(v -> {
 
-                teamAccessControls.setText("");
-                teamAccessControlsArray.setText("");
-                pushAccessList = Arrays.asList(accessControlsList);
+            teamAccessControls.setText("");
+            teamAccessControlsArray.setText("");
+            pushAccessList = Arrays.asList(accessControlsList);
 
-                AlertDialog.Builder aDialogBuilder = new AlertDialog.Builder(ctx);
+            AlertDialog.Builder aDialogBuilder = new AlertDialog.Builder(ctx);
 
-                aDialogBuilder.setMultiChoiceItems(accessControlsList, selectedAccessControlsTrueFalse, new DialogInterface.OnMultiChoiceClickListener() {
+            aDialogBuilder.setMultiChoiceItems(accessControlsList, selectedAccessControlsTrueFalse, (dialog, which, isChecked) -> {
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+            })
+                .setCancelable(false)
+                .setTitle(R.string.newTeamAccessControls)
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
 
+                    int selectedVal = 0;
+                    while(selectedVal < selectedAccessControlsTrueFalse.length)
+                    {
+                        boolean value = selectedAccessControlsTrueFalse[selectedVal];
+
+                        String repoCode = "";
+                        if(selectedVal == 0) {
+                            repoCode = "repo.code";
+                        }
+                        if(selectedVal == 1) {
+                            repoCode = "repo.issues";
+                        }
+                        if(selectedVal == 2) {
+                            repoCode = "repo.pulls";
+                        }
+                        if(selectedVal == 3) {
+                            repoCode = "repo.releases";
+                        }
+                        if(selectedVal == 4) {
+                            repoCode = "repo.wiki";
+                        }
+                        if(selectedVal == 5) {
+                            repoCode = "repo.ext_wiki";
+                        }
+                        if(selectedVal == 6) {
+                            repoCode = "repo.ext_issues";
                         }
 
-                    })
-                    .setCancelable(false)
-                    .setTitle(R.string.newTeamAccessControls)
-                    .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            int selectedVal = 0;
-                            while(selectedVal < selectedAccessControlsTrueFalse.length)
-                            {
-                                boolean value = selectedAccessControlsTrueFalse[selectedVal];
-
-                                String repoCode = "";
-                                if(selectedVal == 0) {
-                                    repoCode = "repo.code";
-                                }
-                                if(selectedVal == 1) {
-                                    repoCode = "repo.issues";
-                                }
-                                if(selectedVal == 2) {
-                                    repoCode = "repo.pulls";
-                                }
-                                if(selectedVal == 3) {
-                                    repoCode = "repo.releases";
-                                }
-                                if(selectedVal == 4) {
-                                    repoCode = "repo.wiki";
-                                }
-                                if(selectedVal == 5) {
-                                    repoCode = "repo.ext_wiki";
-                                }
-                                if(selectedVal == 6) {
-                                    repoCode = "repo.ext_issues";
-                                }
-
-                                if(value){
-                                    teamAccessControls.setText(getString(R.string.newTeamPermissionValues, teamAccessControls.getText(), pushAccessList.get(selectedVal)));
-                                    teamAccessControlsArray.setText(getString(R.string.newTeamPermissionValuesFinal, teamAccessControlsArray.getText(), repoCode));
-                                }
-
-                                selectedVal++;
-                            }
-
-                            String data = String.valueOf(teamAccessControls.getText());
-                            if(!data.equals("")) {
-                                teamAccessControls.setText(data.substring(0, data.length() - 2));
-                            }
-
-                            String dataArray = String.valueOf(teamAccessControlsArray.getText());
-                            if(!dataArray.equals("")) {
-                                teamAccessControlsArray.setText(dataArray.substring(0, dataArray.length() - 2));
-                            }
-                            //Log.i("orgName", String.valueOf(teamAccessControlsArray.getText()));
-
+                        if(value){
+                            teamAccessControls.setText(getString(R.string.newTeamPermissionValues, teamAccessControls.getText(), pushAccessList.get(selectedVal)));
+                            teamAccessControlsArray.setText(getString(R.string.newTeamPermissionValuesFinal, teamAccessControlsArray.getText(), repoCode));
                         }
 
+                        selectedVal++;
+                    }
 
-                    });
+                    String data = String.valueOf(teamAccessControls.getText());
+                    if(!data.equals("")) {
+                        teamAccessControls.setText(data.substring(0, data.length() - 2));
+                    }
 
-                AlertDialog aDialog = aDialogBuilder.create();
-                aDialog.show();
-            }
+                    String dataArray = String.valueOf(teamAccessControlsArray.getText());
+                    if(!dataArray.equals("")) {
+                        teamAccessControlsArray.setText(dataArray.substring(0, dataArray.length() - 2));
+                    }
+                    //Log.i("orgName", String.valueOf(teamAccessControlsArray.getText()));
+
+                });
+
+            AlertDialog aDialog = aDialogBuilder.create();
+            aDialog.show();
         });
 
         createTeamButton.setEnabled(false);
@@ -264,21 +249,21 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if (newTeamName.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.teamNameEmpty));
+            Toasty.error(ctx, getString(R.string.teamNameEmpty));
             return;
 
         }
 
         if(!appUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
 
-            Toasty.info(ctx, getString(R.string.teamNameError));
+            Toasty.warning(ctx, getString(R.string.teamNameError));
             return;
 
         }
@@ -286,12 +271,12 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
         if(!newTeamDesc.equals("")) {
 
             if(!appUtil.checkStrings(newTeamDesc)) {
-                Toasty.info(ctx, getString(R.string.teamDescError));
+                Toasty.warning(ctx, getString(R.string.teamDescError));
                 return;
             }
 
             if(newTeamDesc.length() > 100) {
-                Toasty.info(ctx, getString(R.string.teamDescLimit));
+                Toasty.warning(ctx, getString(R.string.teamDescLimit));
                 return;
             }
 
@@ -299,7 +284,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
         if (newTeamPermission.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.teamPermissionEmpty));
+            Toasty.error(ctx, getString(R.string.teamPermissionEmpty));
             return;
 
         }
@@ -336,16 +321,14 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
                         TinyDB tinyDb = new TinyDB(appCtx);
                         tinyDb.putBoolean("resumeTeams", true);
 
-                        Toasty.info(ctx, getString(R.string.teamCreated));
+                        Toasty.success(ctx, getString(R.string.teamCreated));
                         finish();
-
                     }
 
                 }
                 else if(response2.code() == 404) {
 
-                    Toasty.info(ctx, getString(R.string.apiNotFound));
-
+                    Toasty.warning(ctx, getString(R.string.apiNotFound));
                 }
                 else if(response2.code() == 401) {
 
@@ -353,12 +336,10 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else {
 
-                    Toasty.info(ctx, getString(R.string.teamCreatedError));
-
+                    Toasty.error(ctx, getString(R.string.teamCreatedError));
                 }
 
             }
@@ -373,19 +354,15 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+
         if(v == createTeamButton) {
             processCreateTeam();
         }
-
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
 }

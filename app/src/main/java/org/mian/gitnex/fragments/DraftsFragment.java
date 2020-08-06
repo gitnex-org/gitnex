@@ -122,11 +122,11 @@ public class DraftsFragment extends Fragment {
 		    DraftsApi.deleteAllDrafts(accountId);
 		    draftsList_.clear();
 		    adapter.notifyDataSetChanged();
-		    Toasty.info(ctx, getResources().getString(R.string.draftsDeleteSuccess));
+		    Toasty.success(ctx, getResources().getString(R.string.draftsDeleteSuccess));
 
 	    }
     	else {
-		    Toasty.error(ctx, getResources().getString(R.string.draftsListEmpty));
+		    Toasty.warning(ctx, getResources().getString(R.string.draftsListEmpty));
 	    }
 
 	}

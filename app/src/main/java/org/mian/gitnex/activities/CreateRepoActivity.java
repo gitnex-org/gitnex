@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -89,6 +88,7 @@ public class CreateRepoActivity extends BaseActivity {
         spinner = findViewById(R.id.ownerSpinner);
         spinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
         getOrganizations(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), userLogin);
+        
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -107,12 +107,10 @@ public class CreateRepoActivity extends BaseActivity {
         if(!connToInternet) {
 
             disableProcessButton();
-
         }
         else {
 
             createRepo.setOnClickListener(createRepoListener);
-
         }
     }
 
@@ -138,45 +136,38 @@ public class CreateRepoActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if(!newRepoDesc.equals("")) {
             if (appUtil.charactersLength(newRepoDesc) > 255) {
 
-                Toasty.info(ctx, getString(R.string.repoDescError));
+                Toasty.warning(ctx, getString(R.string.repoDescError));
                 return;
-
             }
         }
 
         if(newRepoName.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.repoNameErrorEmpty));
-
+            Toasty.error(ctx, getString(R.string.repoNameErrorEmpty));
         }
         else if(!appUtil.checkStrings(newRepoName)) {
 
-            Toasty.info(ctx, getString(R.string.repoNameErrorInvalid));
-
+            Toasty.warning(ctx, getString(R.string.repoNameErrorInvalid));
         }
         else if (reservedRepoNames.contains(newRepoName)) {
 
-            Toasty.info(ctx, getString(R.string.repoNameErrorReservedName));
-
+            Toasty.warning(ctx, getString(R.string.repoNameErrorReservedName));
         }
         else if (reservedRepoPatterns.matcher(newRepoName).find()) {
 
-            Toasty.info(ctx, getString(R.string.repoNameErrorReservedPatterns));
-
+            Toasty.warning(ctx, getString(R.string.repoNameErrorReservedPatterns));
         }
         else {
 
             disableProcessButton();
             createNewRepository(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), loginUid, newRepoName, newRepoDesc, repoOwner, newRepoAccess);
-
         }
     }
 
@@ -191,7 +182,6 @@ public class CreateRepoActivity extends BaseActivity {
                     .getInstance(instanceUrl, ctx)
                     .getApiInterface()
                     .createNewUserRepository(token, createRepository);
-
         }
         else {
 
@@ -199,7 +189,6 @@ public class CreateRepoActivity extends BaseActivity {
                     .getInstance(instanceUrl, ctx)
                     .getApiInterface()
                     .createNewUserOrgRepository(token, repoOwner, createRepository);
-
         }
 
         call.enqueue(new Callback<OrganizationRepository>() {
@@ -211,7 +200,7 @@ public class CreateRepoActivity extends BaseActivity {
 
                     TinyDB tinyDb = new TinyDB(appCtx);
                     tinyDb.putBoolean("repoCreated", true);
-                    Toasty.info(ctx, getString(R.string.repoCreated));
+                    Toasty.success(ctx, getString(R.string.repoCreated));
                     enableProcessButton();
                     finish();
                 }
@@ -222,25 +211,23 @@ public class CreateRepoActivity extends BaseActivity {
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else if(response.code() == 409) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.repoExistsError));
-
+                    Toasty.warning(ctx, getString(R.string.repoExistsError));
                 }
                 else {
 
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.repoCreatedError));
-
+                    Toasty.error(ctx, getString(R.string.repoCreatedError));
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<OrganizationRepository> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }
@@ -271,13 +258,16 @@ public class CreateRepoActivity extends BaseActivity {
                         organizationsList.add(new OrgOwner(userLogin));
                         assert organizationsList_ != null;
                         if(organizationsList_.size() > 0) {
+
                             for (int i = 0; i < organizationsList_.size(); i++) {
 
                                 if(!tinyDb.getString("organizationId").isEmpty()) {
+
                                     if (Integer.parseInt(tinyDb.getString("organizationId")) == organizationsList_.get(i).getId()) {
                                         organizationId = i + 1;
                                     }
                                 }
+
                                 OrgOwner data = new OrgOwner(
                                         organizationsList_.get(i).getUsername()
                                 );
@@ -293,6 +283,7 @@ public class CreateRepoActivity extends BaseActivity {
                         spinner.setAdapter(adapter);
 
                         if (tinyDb.getBoolean("organizationAction") & organizationId != 0) {
+
                             spinner.setSelection(organizationId);
                             tinyDb.putBoolean("organizationAction", false);
                         }
@@ -308,13 +299,13 @@ public class CreateRepoActivity extends BaseActivity {
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<List<OrgOwner>> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }
@@ -322,32 +313,18 @@ public class CreateRepoActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
     private void disableProcessButton() {
 
         createRepo.setEnabled(false);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.hintColor));
-        createRepo.setBackground(shape);
-
     }
 
     private void enableProcessButton() {
 
         createRepo.setEnabled(true);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.btnBackground));
-        createRepo.setBackground(shape);
-
     }
 
 }

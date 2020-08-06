@@ -139,17 +139,17 @@ public class FileDiffActivity extends BaseActivity {
 				}
 				else if(response.code() == 403) {
 
-					Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
 				}
 				else if(response.code() == 404) {
 
-					Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
 				}
 				else {
 
-					Toasty.info(ctx, getString(R.string.labelGeneralError));
+					Toasty.error(ctx, getString(R.string.labelGeneralError));
 
 				}
 
@@ -166,14 +166,10 @@ public class FileDiffActivity extends BaseActivity {
 
 	private void initCloseListener() {
 
-		onClickListener = new View.OnClickListener() {
+		onClickListener = view -> {
 
-			@Override
-			public void onClick(View view) {
-
-				getIntent().removeExtra("singleFileName");
-				finish();
-			}
+			getIntent().removeExtra("singleFileName");
+			finish();
 		};
 	}
 

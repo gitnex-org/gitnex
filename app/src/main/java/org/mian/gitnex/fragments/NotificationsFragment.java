@@ -11,9 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.NotificationsActions;
@@ -29,9 +28,9 @@ import org.mian.gitnex.adapters.NotificationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.InfiniteScrollListener;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.NotificationThread;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,9 +51,8 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	private NotificationsAdapter notificationsAdapter;
 	private NotificationsActions notificationsActions;
 
-	private ImageView markAllAsRead;
+	private ExtendedFloatingActionButton markAllAsRead;
 	private ProgressBar progressBar;
-	private RelativeLayout mainLayout;
 	private ProgressBar loadingMoreView;
 	private TextView noDataNotifications;
 	private SwipeRefreshLayout pullToRefresh;
@@ -88,7 +86,6 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		pageResultLimit = StaticGlobalVariables.getCurrentResultLimit(context);
 		tinyDB.putString("notificationsFilterState", currentFilterMode);
 
-		mainLayout = v.findViewById(R.id.mainLayout);
 		markAllAsRead = v.findViewById(R.id.markAllAsRead);
 		noDataNotifications = v.findViewById(R.id.noDataNotifications);
 		loadingMoreView = v.findViewById(R.id.loadingMoreView);
@@ -150,7 +147,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 						activity.runOnUiThread(() -> {
 
-							SnackBar.info(context, mainLayout, getString(R.string.markedNotificationsAsRead));
+							Toasty.success(context, getString(R.string.markedNotificationsAsRead));
 							loadNotifications(true);
 
 						});
@@ -158,7 +155,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 				}
 				catch(IOException e) {
 
-					activity.runOnUiThread(() -> SnackBar.error(context, mainLayout, getString(R.string.genericError)));
+					activity.runOnUiThread(() -> Toasty.error(context, getString(R.string.genericError)));
 					Log.e("onError", e.toString());
 
 				}

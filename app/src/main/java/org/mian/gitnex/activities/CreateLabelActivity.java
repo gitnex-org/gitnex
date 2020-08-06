@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -118,38 +117,23 @@ public class CreateLabelActivity extends BaseActivity {
             createLabelButton.setText(getResources().getString(R.string.newUpdateButtonCopy));
 
             createLabelButton.setOnClickListener(updateLabelListener);
-
             return;
-
         }
 
         if(!connToInternet) {
 
             createLabelButton.setEnabled(false);
-            GradientDrawable shape =  new GradientDrawable();
-            shape.setCornerRadius( 8 );
-            shape.setColor(getResources().getColor(R.color.hintColor));
-            createLabelButton.setBackground(shape);
-
-        } else {
+        }
+        else {
 
             createLabelButton.setOnClickListener(createLabelListener);
-
         }
 
     }
 
-    private View.OnClickListener createLabelListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processCreateLabel();
-        }
-    };
+    private View.OnClickListener createLabelListener = v -> processCreateLabel();
 
-    private View.OnClickListener updateLabelListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processUpdateLabel();
-        }
-    };
+    private View.OnClickListener updateLabelListener = v -> processUpdateLabel();
 
     private void processUpdateLabel() {
 
@@ -176,27 +160,28 @@ public class CreateLabelActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(updateLabelName.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.labelEmptyError));
+            Toasty.error(ctx, getString(R.string.labelEmptyError));
             return;
 
         }
 
         if(!appUtil.checkStrings(updateLabelName)) {
 
-            Toasty.info(ctx, getString(R.string.labelNameError));
+            Toasty.error(ctx, getString(R.string.labelNameError));
             return;
 
         }
 
         disableProcessButton();
-        patchLabel(instanceUrl, instanceToken, repoOwner, repoName, updateLabelName, updateLabelColor, Integer.valueOf(getIntent().getStringExtra("labelId")), loginUid);
+        patchLabel(instanceUrl, instanceToken, repoOwner, repoName, updateLabelName, updateLabelColor, Integer.parseInt(
+	        Objects.requireNonNull(getIntent().getStringExtra("labelId"))), loginUid);
 
     }
 
@@ -224,21 +209,21 @@ public class CreateLabelActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newLabelName.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.labelEmptyError));
+            Toasty.error(ctx, getString(R.string.labelEmptyError));
             return;
 
         }
 
         if(!appUtil.checkStrings(newLabelName)) {
 
-            Toasty.info(ctx, getString(R.string.labelNameError));
+            Toasty.error(ctx, getString(R.string.labelNameError));
             return;
 
         }
@@ -267,7 +252,7 @@ public class CreateLabelActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    Toasty.info(ctx, getString(R.string.labelCreated));
+                    Toasty.success(ctx, getString(R.string.labelCreated));
                     tinyDb.putString("labelColor", "");
                     tinyDb.putBoolean("labelsRefresh", true);
                     finish();
@@ -286,7 +271,7 @@ public class CreateLabelActivity extends BaseActivity {
 
                     enableProcessButton();
                     tinyDb.putString("labelColor", "");
-                    Toasty.info(ctx, getString(R.string.labelGeneralError));
+                    Toasty.error(ctx, getString(R.string.labelGeneralError));
 
                 }
 
@@ -294,6 +279,7 @@ public class CreateLabelActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<CreateLabel> call, @NonNull Throwable t) {
+
                 tinyDb.putString("labelColor", "");
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
@@ -322,7 +308,7 @@ public class CreateLabelActivity extends BaseActivity {
                 if(response.isSuccessful()) {
                     if(response.code() == 200) {
 
-                        Toasty.info(ctx, getString(R.string.labelUpdated));
+                        Toasty.success(ctx, getString(R.string.labelUpdated));
                         tinyDb.putString("labelColor", "");
                         tinyDb.putBoolean("labelsRefresh", true);
                         tinyDb.putString("labelColorDefault", "");
@@ -348,7 +334,7 @@ public class CreateLabelActivity extends BaseActivity {
                     enableProcessButton();
                     tinyDb.putString("labelColor", "");
                     tinyDb.putString("labelColorDefault", "");
-                    Toasty.info(ctx, getString(R.string.labelGeneralError));
+                    Toasty.error(ctx, getString(R.string.labelGeneralError));
 
                 }
 
@@ -356,6 +342,7 @@ public class CreateLabelActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<CreateLabel> call, @NonNull Throwable t) {
+
                 tinyDb.putString("labelColor", "");
                 tinyDb.putString("labelColorDefault", "");
                 Log.e("onFailure", t.toString());
@@ -395,7 +382,7 @@ public class CreateLabelActivity extends BaseActivity {
                 if(response.isSuccessful()) {
                     if(response.code() == 204) {
 
-                        Toasty.info(ctx, getString(R.string.labelDeleteText));
+                        Toasty.success(ctx, getString(R.string.labelDeleteText));
                         LabelsViewModel.loadLabelsList(instanceUrl, instanceToken, repoOwner, repoName, ctx);
                         getIntent().removeExtra("labelAction");
                         getIntent().removeExtra("labelId");
@@ -412,7 +399,7 @@ public class CreateLabelActivity extends BaseActivity {
                 }
                 else {
 
-                    Toasty.info(ctx, getString(R.string.labelDeleteErrorText));
+                    Toasty.error(ctx, getString(R.string.labelDeleteErrorText));
 
                 }
 
@@ -429,21 +416,11 @@ public class CreateLabelActivity extends BaseActivity {
     private void disableProcessButton() {
 
         createLabelButton.setEnabled(false);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.hintColor));
-        createLabelButton.setBackground(shape);
-
     }
 
     private void enableProcessButton() {
 
         createLabelButton.setEnabled(true);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.btnBackground));
-        createLabelButton.setBackground(shape);
-
     }
 
 }

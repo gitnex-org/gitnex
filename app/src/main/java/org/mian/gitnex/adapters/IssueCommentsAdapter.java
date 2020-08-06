@@ -242,7 +242,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				if(response.code() == 204) {
 
 					updateAdapter(position);
-					Toasty.info(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
+					Toasty.success(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
 
 				}
 				else if(response.code() == 401) {
@@ -255,17 +255,17 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				}
 				else if(response.code() == 403) {
 
-					Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
 				}
 				else if(response.code() == 404) {
 
-					Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
 				}
 				else {
 
-					Toasty.info(ctx, ctx.getString(R.string.genericError));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 
 				}
 

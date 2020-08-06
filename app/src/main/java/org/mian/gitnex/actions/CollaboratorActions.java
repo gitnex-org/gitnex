@@ -47,7 +47,7 @@ public class CollaboratorActions {
                 if(response.isSuccessful()) {
                     if(response.code() == 204) {
 
-                        Toasty.info(context, context.getString(R.string.removeCollaboratorToastText));
+                        Toasty.success(context, context.getString(R.string.removeCollaboratorToastText));
                         ((AddCollaboratorToRepositoryActivity)context).finish();
                         //Log.i("addCollaboratorSearch", addCollaboratorSearch.getText().toString());
                         //tinyDb.putBoolean("updateDataSet", true);
@@ -66,17 +66,17 @@ public class CollaboratorActions {
                 }
                 else if(response.code() == 403) {
 
-                    Toasty.info(context, context.getString(R.string.authorizeError));
+                    Toasty.error(context, context.getString(R.string.authorizeError));
 
                 }
                 else if(response.code() == 404) {
 
-                    Toasty.info(context, context.getString(R.string.apiNotFound));
+                    Toasty.warning(context, context.getString(R.string.apiNotFound));
 
                 }
                 else {
 
-                    Toasty.info(context, context.getString(R.string.genericError));
+                    Toasty.error(context, context.getString(R.string.genericError));
 
                 }
 
@@ -117,7 +117,7 @@ public class CollaboratorActions {
                 if(response.isSuccessful()) {
                     if(response.code() == 204) {
 
-                        Toasty.info(context, context.getString(R.string.addCollaboratorToastText));
+                        Toasty.success(context, context.getString(R.string.addCollaboratorToastText));
                         ((AddCollaboratorToRepositoryActivity)context).finish();
                         //AddCollaboratorToRepositoryActivity usersSearchData = new AddCollaboratorToRepositoryActivity();
                         //usersSearchData.loadUserSearchList(instanceUrl, instanceToken, searchKeyword, context);
@@ -134,17 +134,17 @@ public class CollaboratorActions {
                 }
                 else if(response.code() == 403) {
 
-                    Toasty.info(context, context.getString(R.string.authorizeError));
+                    Toasty.error(context, context.getString(R.string.authorizeError));
 
                 }
                 else if(response.code() == 404) {
 
-                    Toasty.info(context, context.getString(R.string.apiNotFound));
+                    Toasty.warning(context, context.getString(R.string.apiNotFound));
 
                 }
                 else {
 
-                    Toasty.info(context, context.getString(R.string.genericError));
+                    Toasty.error(context, context.getString(R.string.genericError));
 
                 }
 

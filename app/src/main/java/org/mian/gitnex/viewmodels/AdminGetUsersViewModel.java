@@ -58,17 +58,17 @@ public class AdminGetUsersViewModel extends ViewModel {
                 }
                 else if(response.code() == 403) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+                    Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
                 }
                 else if(response.code() == 404) {
 
-                    Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+                    Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
                 }
                 else {
 
-                    Toasty.info(ctx, ctx.getString(R.string.genericError));
+                    Toasty.error(ctx, ctx.getString(R.string.genericError));
                     Log.i("onResponse", String.valueOf(response.code()));
 
                 }

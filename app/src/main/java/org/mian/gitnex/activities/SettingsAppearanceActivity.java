@@ -121,11 +121,11 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 			if (isChecked) {
 				tinyDb.putBoolean("enableCounterBadges", true);
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			}
 			else {
 				tinyDb.putBoolean("enableCounterBadges", false);
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			}
 
 		});
@@ -154,7 +154,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterfaceTheme.dismiss();
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -187,7 +187,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterfaceCustomFont.dismiss();
-				Toasty.info(appCtx, appCtx.getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, appCtx.getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -217,7 +217,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				tinyDb.putInt("homeScreenId", i);
 
 				dialogInterfaceHomeScreen.dismiss();
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -270,7 +270,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				}
 
 				dialogInterfaceCodeBlock.dismiss();
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -307,7 +307,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				}
 
 				dialogInterfaceTime.dismiss();
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
@@ -320,9 +320,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	}
 
 	private void initCloseListener() {
-		onClickListener = view -> {
-			finish();
-		};
+		onClickListener = view -> finish();
 	}
 
 }

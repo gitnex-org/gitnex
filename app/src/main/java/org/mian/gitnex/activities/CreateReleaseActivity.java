@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -108,20 +107,15 @@ public class CreateReleaseActivity extends BaseActivity {
         if(!connToInternet) {
 
             disableProcessButton();
-
-        } else {
+        }
+        else {
 
             createNewRelease.setOnClickListener(createReleaseListener);
-
         }
 
     }
 
-    private View.OnClickListener createReleaseListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processNewRelease();
-        }
-    };
+    private View.OnClickListener createReleaseListener = v -> processNewRelease();
 
     private void processNewRelease() {
 
@@ -145,21 +139,21 @@ public class CreateReleaseActivity extends BaseActivity {
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newReleaseTagName.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.tagNameErrorEmpty));
+            Toasty.error(ctx, getString(R.string.tagNameErrorEmpty));
             return;
 
         }
 
         if(newReleaseTitle.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.titleErrorEmpty));
+            Toasty.error(ctx, getString(R.string.titleErrorEmpty));
             return;
 
         }
@@ -189,7 +183,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
                     TinyDB tinyDb = new TinyDB(appCtx);
                     tinyDb.putBoolean("updateReleases", true);
-                    Toasty.info(ctx, getString(R.string.releaseCreatedText));
+                    Toasty.success(ctx, getString(R.string.releaseCreatedText));
                     enableProcessButton();
                     finish();
 
@@ -206,19 +200,19 @@ public class CreateReleaseActivity extends BaseActivity {
                 else if(response.code() == 403) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.authorizeError));
+                    Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 
                 }
                 else if(response.code() == 404) {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.apiNotFound));
+                    Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 
                 }
                 else {
 
                     enableProcessButton();
-                    Toasty.info(ctx, ctx.getString(R.string.genericError));
+                    Toasty.error(ctx, ctx.getString(R.string.genericError));
 
                 }
 
@@ -302,21 +296,11 @@ public class CreateReleaseActivity extends BaseActivity {
     private void disableProcessButton() {
 
         createNewRelease.setEnabled(false);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.hintColor));
-        createNewRelease.setBackground(shape);
-
     }
 
     private void enableProcessButton() {
 
         createNewRelease.setEnabled(true);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.btnBackground));
-        createNewRelease.setBackground(shape);
-
     }
 
 }

@@ -143,11 +143,11 @@ public class SettingsTranslationActivity extends BaseActivity {
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterface.dismiss();
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 			});
 
-			lBuilder.setNegativeButton(getString(R.string.cancelButton), (dialog, which) -> dialog.dismiss());
+			lBuilder.setNeutralButton(getString(R.string.cancelButton), null);
 
 			AlertDialog lDialog = lBuilder.create();
 			lDialog.show();
@@ -157,9 +157,7 @@ public class SettingsTranslationActivity extends BaseActivity {
 	}
 
 	private void initCloseListener() {
-		onClickListener = view -> {
-			finish();
-		};
+		onClickListener = view -> finish();
 	}
 
 }

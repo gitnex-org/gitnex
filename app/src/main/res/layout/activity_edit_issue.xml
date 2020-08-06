@@ -164,9 +164,8 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:text="@string/saveButton"
-                android:background="@drawable/shape_buttons"
                 android:textColor="@color/btnTextColor" />
 
         </LinearLayout>

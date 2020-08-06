@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -71,24 +70,15 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         if(!connToInternet) {
 
             createNewMilestoneButton.setEnabled(false);
-            GradientDrawable shape =  new GradientDrawable();
-            shape.setCornerRadius( 8 );
-            shape.setColor(getResources().getColor(R.color.hintColor));
-            createNewMilestoneButton.setBackground(shape);
-
-        } else {
+        }
+        else {
 
             createNewMilestoneButton.setOnClickListener(createMilestoneListener);
-
         }
 
     }
 
-    private View.OnClickListener createMilestoneListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processNewMilestone();
-        }
-    };
+    private View.OnClickListener createMilestoneListener = v -> processNewMilestone();
 
     private void processNewMilestone() {
 
@@ -110,14 +100,14 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         if(!connToInternet) {
 
-            Toasty.info(ctx, getResources().getString(R.string.checkNetConnection));
+            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
 
         }
 
         if(newMilestoneTitle.equals("")) {
 
-            Toasty.info(ctx, getString(R.string.milestoneNameErrorEmpty));
+            Toasty.error(ctx, getString(R.string.milestoneNameErrorEmpty));
             return;
 
         }
@@ -125,7 +115,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         if(!newMilestoneDescription.equals("")) {
             if (appUtil.charactersLength(newMilestoneDescription) > 255) {
 
-                Toasty.info(ctx, getString(R.string.milestoneDescError));
+                Toasty.warning(ctx, getString(R.string.milestoneDescError));
                 return;
 
             }
@@ -133,10 +123,13 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         String finalMilestoneDueDate = null;
         if(!newMilestoneDueDate.isEmpty()) {
+
             finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
-        } else if (new Version(tinyDb.getString("giteaVersion")).less("1.10.0")) {
+        }
+        else if (new Version(tinyDb.getString("giteaVersion")).less("1.10.0")) {
+
             // if Gitea version is less than 1.10.0 DueDate is required
-            Toasty.info(ctx, getString(R.string.milestoneDateEmpty));
+            Toasty.warning(ctx, getString(R.string.milestoneDateEmpty));
             return;
         }
 
@@ -166,7 +159,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
                         TinyDB tinyDb = new TinyDB(appCtx);
                         tinyDb.putBoolean("milestoneCreated", true);
-                        Toasty.info(ctx, getString(R.string.milestoneCreated));
+                        Toasty.success(ctx, getString(R.string.milestoneCreated));
                         enableProcessButton();
                         finish();
 
@@ -184,7 +177,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
                 else {
 
                     enableProcessButton();
-                    Toasty.info(ctx, getString(R.string.milestoneCreatedError));
+                    Toasty.error(ctx, getString(R.string.milestoneCreatedError));
 
                 }
 
@@ -226,32 +219,18 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
     private void disableProcessButton() {
 
         createNewMilestoneButton.setEnabled(false);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.hintColor));
-        createNewMilestoneButton.setBackground(shape);
-
     }
 
     private void enableProcessButton() {
 
         createNewMilestoneButton.setEnabled(true);
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius( 8 );
-        shape.setColor(getResources().getColor(R.color.btnBackground));
-        createNewMilestoneButton.setBackground(shape);
-
     }
 
 }

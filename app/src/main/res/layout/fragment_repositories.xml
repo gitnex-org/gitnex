@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.MainActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -39,16 +41,18 @@
         android:indeterminate="true"
         android:visibility="visible" />
 
-    <ImageView
-        android:src="@drawable/ic_add"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addNewRepo"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_margin="15dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/shape_circle"
-        android:padding="@dimen/fab_padding"
-        android:contentDescription="@string/addNewContent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:text="@string/pageTitleNewRepo"
+        android:contentDescription="@string/pageTitleNewRepo"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/darkGreen"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:iconTint="@color/colorWhite"
+        app:icon="@drawable/ic_add" />
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

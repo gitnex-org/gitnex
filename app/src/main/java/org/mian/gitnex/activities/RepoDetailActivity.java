@@ -432,6 +432,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 							dialogInterface.dismiss();
 						}
 					});
+					pBuilder.setNeutralButton(R.string.cancelButton, null);
 
 					pBuilder.create().show();
 

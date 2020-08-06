@@ -62,7 +62,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
                     filesListener.onClickDir(fileName.getText().toString());
                 }
                 else {
-                    Toasty.info(context, context.getString(R.string.filesGenericError));
+                    Toasty.warning(context, context.getString(R.string.filesGenericError));
                 }
 
             });
