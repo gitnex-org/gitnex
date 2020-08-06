@@ -3,7 +3,6 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,8 +74,6 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 				String accountNameSwitch = accountName.getText().toString();
 				UserAccountsApi userAccountsApi = new UserAccountsApi(mCtx);
 				UserAccount userAccount = userAccountsApi.getAccountData(accountNameSwitch);
-
-				Log.e("userAccount", userAccount.getInstanceUrl());
 
 				if(tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
 

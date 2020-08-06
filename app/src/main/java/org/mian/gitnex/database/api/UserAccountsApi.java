@@ -18,6 +18,7 @@ public class UserAccountsApi {
 	private static UserAccountsDao userAccountsDao;
 	private static UserAccount userAccount;
 	private static Integer checkAccount;
+	private static long accountId;
 
 	public UserAccountsApi(Context context) {
 
@@ -26,7 +27,7 @@ public class UserAccountsApi {
 		userAccountsDao = db.userAccountsDao();
 	}
 
-	public void insertNewAccount(String accountName, String instanceUrl, String userName, String token, String serverVersion) {
+	public long insertNewAccount(String accountName, String instanceUrl, String userName, String token, String serverVersion) {
 
 		UserAccount userAccount = new UserAccount();
 		userAccount.setAccountName(accountName);
@@ -35,12 +36,23 @@ public class UserAccountsApi {
 		userAccount.setToken(token);
 		userAccount.setServerVersion(serverVersion);
 
-		insertNewAccountAsync(userAccount);
+		return insertNewAccountAsync(userAccount);
 	}
 
-	private static void insertNewAccountAsync(final UserAccount userAccount) {
+	private static long insertNewAccountAsync(final UserAccount userAccount) {
 
-		new Thread(() -> userAccountsDao.newAccount(userAccount)).start();
+		try {
+
+			Thread thread = new Thread(() -> accountId = userAccountsDao.newAccount(userAccount));
+			thread.start();
+			thread.join();
+		}
+		catch(InterruptedException e) {
+
+			Log.e(StaticGlobalVariables.userAccountsRepository, e.toString());
+		}
+
+		return accountId;
 	}
 
 	public static void updateServerVersion(final String serverVersion, final int accountId) {

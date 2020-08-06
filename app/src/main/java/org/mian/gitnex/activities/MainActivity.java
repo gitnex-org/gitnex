@@ -27,8 +27,6 @@ import com.google.android.material.navigation.NavigationView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.database.api.UserAccountsApi;
-import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.fragments.AboutFragment;
 import org.mian.gitnex.fragments.AdministrationFragment;
 import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
@@ -123,8 +121,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			return;
 		}
 
-		String accountName = loginUid + "@" + instanceUrl;
-		getAccountData(accountName);
+		if(tinyDb.getInt("currentActiveAccountId") <= 0) {
+			AlertDialogs.forceLogoutDialog(ctx, getResources().getString(R.string.forceLogoutDialogHeader), getResources().getString(R.string.forceLogoutDialogDescription), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+		}
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
@@ -446,20 +445,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		}
 
-	}
-
-	public void getAccountData(String accountName) {
-
-		UserAccountsApi accountData = new UserAccountsApi(ctx);
-		UserAccount data = accountData.getAccountData(accountName);
-
-		if(data != null) {
-			TinyDB tinyDb = new TinyDB(ctx.getApplicationContext());
-			tinyDb.putInt("currentActiveAccountId", data.getAccountId());
-		}
-		else {
-			AlertDialogs.forceLogoutDialog(ctx, getResources().getString(R.string.forceLogoutDialogHeader), getResources().getString(R.string.forceLogoutDialogDescription), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-		}
 	}
 
 	@Override

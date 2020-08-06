@@ -15,7 +15,7 @@ import java.util.List;
 public interface UserAccountsDao {
 
     @Insert
-    void newAccount(UserAccount userAccounts);
+    long newAccount(UserAccount userAccounts);
 
     @Query("SELECT * FROM UserAccounts ORDER BY accountId ASC")
     LiveData<List<UserAccount>> fetchAllAccounts();
