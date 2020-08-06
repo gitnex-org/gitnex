@@ -327,7 +327,7 @@ public class RepoInfoFragment extends Fragment {
 
 								alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
 								alertDialog.setView(view);
-								alertDialog.setPositiveButton(getResources().getString(R.string.close), (dialog, which) -> dialog.dismiss());
+								alertDialog.setNeutralButton(getResources().getString(R.string.close), null);
 								alertDialog.create().show();
 
 							});
