@@ -93,8 +93,8 @@
 
         <Button
             android:id="@+id/cancel"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="?attr/primaryTextColor"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/darkGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancelButton" />
@@ -106,8 +106,8 @@
 
         <Button
             android:id="@+id/done"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="?attr/primaryTextColor"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/darkRed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/doneButton" />
