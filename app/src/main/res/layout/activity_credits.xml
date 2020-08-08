@@ -2,7 +2,6 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/primaryBackgroundColor">
@@ -13,12 +12,11 @@
         android:layout_height="wrap_content"
         android:theme="@style/Widget.AppCompat.SearchView">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/primaryBackgroundColor"
-            tools:ignore="UnusedAttribute">
+            android:background="?attr/primaryBackgroundColor">
 
             <ImageView
                 android:id="@+id/close"
@@ -40,7 +38,7 @@
                 android:maxLines="1"
                 android:textSize="20sp" />
 
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -55,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/primaryBackgroundColor"
-            android:padding="4dp"
             android:scrollbars="vertical" />
 
     </LinearLayout>

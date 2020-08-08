@@ -15,13 +15,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/primaryBackgroundColor"
             android:id="@+id/toolbar"
             app:titleTextColor="?attr/primaryTextColor"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:theme="@style/Widget.AppCompat.SearchView"
             android:elevation="4dp">
 
@@ -34,7 +33,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:id="@+id/toolbar_title" />
 
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <FrameLayout
             android:id="@+id/fragment_container"

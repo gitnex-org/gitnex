@@ -68,7 +68,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 		ImageView closeActivity = findViewById(R.id.close);
-		addNewTeamMember = findViewById(R.id.addNewTeamMeber);
+		addNewTeamMember = findViewById(R.id.addNewTeamMember);
 		mRecyclerView = findViewById(R.id.recyclerViewUserSearch);
 		mProgressBar = findViewById(R.id.progress_bar);
 		noData = findViewById(R.id.noData);

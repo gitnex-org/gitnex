@@ -15,15 +15,13 @@
         android:layout_height="wrap_content"
         android:theme="@style/Widget.AppCompat.SearchView">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/primaryBackgroundColor"
-            app:layout_scrollFlags="enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+            app:layout_scrollFlags="enterAlways">
 
             <TextView
                 android:layout_width="match_parent"
@@ -34,7 +32,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:id="@+id/toolbar_title" />
 
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

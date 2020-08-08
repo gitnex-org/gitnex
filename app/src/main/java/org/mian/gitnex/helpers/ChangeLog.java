@@ -21,9 +21,9 @@ public class ChangeLog {
 
     static final private String TAG = "ChangeLog";
     static final private String CHANGELOG_XML_NODE = "changelog";
-	
+
     private Activity changelogActivity;
-    
+
 	public ChangeLog(Activity context) {
 		changelogActivity = context;
     }
@@ -93,7 +93,7 @@ public class ChangeLog {
 		androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(changelogActivity);
 		builder.setTitle(R.string.changelogTitle);
 		builder.setMessage(Html.fromHtml("<small>" + changelogMessage + "</small>"));
-		builder.setNegativeButton(R.string.close, (dialog, which) -> dialog.cancel());
+		builder.setNeutralButton(R.string.close, null);
 		builder.setCancelable(false);
 		builder.create();
 		builder.show();

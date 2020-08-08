@@ -13,12 +13,11 @@
         android:layout_height="wrap_content"
         android:theme="@style/Widget.AppCompat.SearchView">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/primaryBackgroundColor"
-            tools:ignore="UnusedAttribute">
+            android:background="?attr/primaryBackgroundColor">
 
             <ImageView
                 android:id="@+id/close"
@@ -40,7 +39,7 @@
                 android:maxLines="1"
                 android:textSize="20sp" />
 
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -52,7 +51,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:padding="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -75,7 +74,7 @@
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                android:textColorHighlight="?attr/primaryTextColor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -90,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_dropdown"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" >
+                android:layout_marginBottom="10dp">
 
                 <Spinner
                     android:id="@+id/releaseBranch"
@@ -126,7 +125,7 @@
                 android:background="@drawable/shape_inputs"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                android:textColorHighlight="?attr/primaryTextColor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -184,10 +183,6 @@
                 android:layout_height="60dp"
                 android:text="@string/newCreateButtonCopy"
                 android:textColor="@color/btnTextColor" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="35dp"/>
 
         </LinearLayout>
 

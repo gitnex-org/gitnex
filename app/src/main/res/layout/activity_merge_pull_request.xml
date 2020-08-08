@@ -12,13 +12,12 @@
         android:layout_height="wrap_content"
         android:theme="@style/Widget.AppCompat.SearchView">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/primaryBackgroundColor"
-            tools:ignore="UnusedAttribute">
+            android:background="?attr/primaryBackgroundColor">
 
             <ImageView
                 android:id="@+id/close"
@@ -51,7 +50,7 @@
 
             </HorizontalScrollView>
 
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -64,8 +63,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:paddingBottom="30dp"
+            android:padding="16dp"
             android:orientation="vertical">
 
             <EditText
