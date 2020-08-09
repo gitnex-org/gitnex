@@ -197,6 +197,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			@Override
 			public void onDrawerOpened(@NonNull View drawerView) {
 
+			}
+
+			@Override
+			public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
 				if(tinyDb.getBoolean("noConnection")) {
 					Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 					tinyDb.putBoolean("noConnection", false);
@@ -215,11 +220,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				userEmail.setTypeface(myTypeface);
 				userFullName.setTypeface(myTypeface);
-
-				String currentVersion = tinyDb.getString("giteaVersion");
-
-				navigationView.getMenu().findItem(R.id.nav_administration).setVisible(tinyDb.getBoolean("userIsAdmin"));
-				navigationView.getMenu().findItem(R.id.nav_notifications).setVisible(new Version(currentVersion).higherOrEqual("1.12.3"));
 
 				if(!userEmailNav.equals("")) {
 					userEmail.setText(userEmailNav);
@@ -271,10 +271,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					drawer.closeDrawers();
 				});
 
-			}
+				String currentVersion = tinyDb.getString("giteaVersion");
 
-			@Override
-			public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {}
+				navigationView.getMenu().findItem(R.id.nav_administration).setVisible(tinyDb.getBoolean("userIsAdmin"));
+				navigationView.getMenu().findItem(R.id.nav_notifications).setVisible(new Version(currentVersion).higherOrEqual("1.12.3"));
+			}
 
 			@Override
 			public void onDrawerClosed(@NonNull View drawerView) {}
