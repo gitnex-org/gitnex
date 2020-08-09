@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:background="?attr/primaryBackgroundColor"
             app:tabTextColor="?attr/primaryTextColor"
+            app:tabIndicatorColor="@color/darkGreen"
             android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem

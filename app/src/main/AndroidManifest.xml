@@ -48,8 +48,6 @@
             android:name=".activities.OrganizationDetailActivity"
             android:label="@string/title_activity_org_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.SponsorsActivity" />
-        <activity android:name=".activities.CreditsActivity" />
         <activity android:name=".activities.CreateLabelActivity" />
         <activity android:name=".activities.CreateIssueActivity" />
         <activity android:name=".activities.CreateMilestoneActivity" />

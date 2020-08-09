@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="?attr/primaryBackgroundColor">
 
@@ -43,6 +44,13 @@
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -104,13 +112,5 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_gravity="center"
-        android:visibility="visible" />
 
 </LinearLayout>

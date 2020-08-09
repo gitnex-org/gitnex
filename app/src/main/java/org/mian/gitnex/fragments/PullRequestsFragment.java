@@ -55,6 +55,7 @@ public class PullRequestsFragment extends Fragment {
 	private int pageSize = StaticGlobalVariables.prPageInit;
 	private TextView noData;
 	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+	private ProgressBar progressLoadMore;
 
 	@Nullable
 	@Override
@@ -83,6 +84,7 @@ public class PullRequestsFragment extends Fragment {
 		recyclerView = v.findViewById(R.id.recyclerView);
 		prList = new ArrayList<>();
 
+		progressLoadMore = v.findViewById(R.id.progressLoadMore);
 		mProgressBar = v.findViewById(R.id.progress_bar);
 		noData = v.findViewById(R.id.noData);
 
@@ -233,9 +235,7 @@ public class PullRequestsFragment extends Fragment {
 
 	private void loadMore(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
 
-		//add loading progress view
-		prList.add(new PullRequests("load"));
-		adapter.notifyItemInserted((prList.size() - 1));
+		progressLoadMore.setVisibility(View.VISIBLE);
 
 		Call<List<PullRequests>> call = apiPR.getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
 
@@ -266,6 +266,7 @@ public class PullRequestsFragment extends Fragment {
 					}
 
 					adapter.notifyDataChanged();
+					progressLoadMore.setVisibility(View.GONE);
 
 				}
 				else {

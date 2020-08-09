@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +40,7 @@ public class MembersByOrgFragment extends Fragment {
     private String orgName;
     private MembersByOrgAdapter adapter;
     private GridView mGridView;
+    private ProgressBar progressBar;
 
     public MembersByOrgFragment() {
     }
@@ -72,6 +74,7 @@ public class MembersByOrgFragment extends Fragment {
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         noDataMembers = v.findViewById(R.id.noDataMembers);
 
+	    progressBar = v.findViewById(R.id.progressBar);
         mGridView = v.findViewById(R.id.gridView);
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
@@ -96,6 +99,8 @@ public class MembersByOrgFragment extends Fragment {
                     mGridView.setAdapter(adapter);
                     noDataMembers.setVisibility(View.VISIBLE);
                 }
+
+	            progressBar.setVisibility(View.GONE);
             }
         });
 

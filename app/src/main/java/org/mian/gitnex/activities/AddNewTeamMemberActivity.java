@@ -125,6 +125,8 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 		Call<UserSearch> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getUserBySearch(Authorization.returnAuthentication(ctx, loginUid, token), searchKeyword, 10);
 
+		mProgressBar.setVisibility(View.VISIBLE);
+
 		call.enqueue(new Callback<UserSearch>() {
 
 			@Override

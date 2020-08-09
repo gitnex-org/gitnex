@@ -77,7 +77,7 @@
                         android:id="@+id/userLanguageIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
                         android:contentDescription="@string/generalImgContentText"
                         android:src="@drawable/ic_language"
                         app:tint="@color/colorWhite" />
@@ -111,6 +111,7 @@
             android:layout_width="match_parent"
             app:tabTextColor="?attr/primaryTextColor"
             android:background="?attr/primaryBackgroundColor"
+            app:tabIndicatorColor="@color/darkGreen"
             android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem

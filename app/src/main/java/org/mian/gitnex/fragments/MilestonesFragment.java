@@ -219,9 +219,7 @@ public class MilestonesFragment extends Fragment {
 
     private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String milestoneState) {
 
-        //add loading progress view
-        dataList.add(new Milestones("load"));
-        adapter.notifyItemInserted((dataList.size() - 1));
+    	viewBinding.progressLoadMore.setVisibility(View.VISIBLE);
 
         Call<List<Milestones>> call = api.getMilestones(token, repoOwner, repoName, page, resultLimit, milestoneState);
 
@@ -251,6 +249,7 @@ public class MilestonesFragment extends Fragment {
                     }
 
                     adapter.notifyDataChanged();
+		            viewBinding.progressLoadMore.setVisibility(View.GONE);
 
                 }
                 else {

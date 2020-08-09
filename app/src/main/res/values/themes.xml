@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/colorWhite</item>
+        <item name="colorPrimary">@color/darkGreen</item>
+        <item name="colorSecondary">@color/colorWhite</item>
 
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
@@ -27,6 +29,7 @@
         <item name="dividerColor">@color/dividerColorDark</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="progressIndicatorColor">@color/darkGreen</item>
     </style>
     <!-- Dark theme - default -->
 
@@ -37,6 +40,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
+        <item name="colorPrimary">@color/darkGreen</item>
+        <item name="colorSecondary">@color/lightThemeTextColor</item>
 
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
@@ -56,6 +61,7 @@
         <item name="dividerColor">@color/lightThemeDividerColor</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="progressIndicatorColor">@color/darkGreen</item>
     </style>
     <!-- Light theme -->
 

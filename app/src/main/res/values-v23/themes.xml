@@ -7,6 +7,8 @@
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
+        <item name="colorPrimary">@color/darkGreen</item>
+        <item name="colorSecondary">@color/lightThemeTextColor</item>
 
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
@@ -26,6 +28,7 @@
         <item name="dividerColor">@color/lightThemeDividerColor</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="progressIndicatorColor">@color/darkGreen</item>
     </style>
 
 </resources>

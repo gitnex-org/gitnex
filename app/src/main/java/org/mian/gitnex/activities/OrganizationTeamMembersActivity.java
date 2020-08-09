@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -30,6 +31,7 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
     private View.OnClickListener onClickListener;
     private TeamMembersByOrgAdapter adapter;
     private GridView mGridView;
+	private ProgressBar progressBar;
 
     final Context ctx = this;
     private Context appCtx;
@@ -58,6 +60,7 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         noDataMembers = findViewById(R.id.noDataMembers);
         mGridView = findViewById(R.id.gridView);
+	    progressBar = findViewById(R.id.progressBar);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
@@ -114,6 +117,7 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
                 noDataMembers.setVisibility(View.VISIBLE);
             }
 
+	        progressBar.setVisibility(View.GONE);
         });
 
     }

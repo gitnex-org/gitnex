@@ -16,8 +16,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:background="?attr/primaryBackgroundColor">
 
             <TextView
@@ -33,10 +32,32 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        app:indicatorColor="?attr/progressIndicatorColor" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/addNewComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/commentButtonText"
+            android:contentDescription="@string/commentButtonText"
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/darkGreen"
+            android:layout_gravity="bottom|end"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+            app:iconTint="@color/colorWhite"
+            app:icon="@drawable/ic_reply" />
+
     <RelativeLayout
         android:id="@+id/relativeMainLayoutFrame"
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="56dp"
         android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -224,28 +245,6 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@style/Base.Widget.AppCompat.ProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:layout_centerInParent="true" />
-
     </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addNewComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:text="@string/commentButtonText"
-        android:contentDescription="@string/commentButtonText"
-        android:textColor="@color/colorWhite"
-        android:backgroundTint="@color/darkGreen"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:iconTint="@color/colorWhite"
-        app:icon="@drawable/ic_reply" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

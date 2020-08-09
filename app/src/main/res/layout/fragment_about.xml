@@ -130,32 +130,6 @@
                 android:background="?attr/primaryBackgroundColor">
 
                 <TextView
-                    android:id="@+id/sponsorsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pageTitleSponsors"
-                    android:textColor="@color/lightBlue"
-                    android:textSize="16sp"
-                    android:gravity="start"
-                    android:autoLink="web"
-                    android:visibility="visible"
-                    android:layout_marginBottom="10dp"
-                    android:textColorLink="@color/lightBlue" />
-
-                <TextView
-                    android:id="@+id/creditsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pageTitleCredits"
-                    android:textColor="@color/lightBlue"
-                    android:textSize="16sp"
-                    android:gravity="start"
-                    android:autoLink="web"
-                    android:visibility="gone"
-                    android:layout_marginBottom="10dp"
-                    android:textColorLink="@color/lightBlue" />
-
-                <TextView
                     android:id="@+id/appWebsite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -181,7 +155,7 @@
                     android:textColorLink="@color/lightBlue" />
 
             </LinearLayout>
-            
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="25dp" />

@@ -11,4 +11,5 @@
     <attr name="selectedTextColor" format="reference" />
     <attr name="alertDialogTheme" format="reference" />
     <attr name="dividerColor" format="reference" />
+    <attr name="progressIndicatorColor" format="reference" />
 </resources>

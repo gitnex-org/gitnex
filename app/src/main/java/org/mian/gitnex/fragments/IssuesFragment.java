@@ -55,6 +55,7 @@ public class IssuesFragment extends Fragment {
 	private TextView noDataIssues;
 	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
 	private String requestType = StaticGlobalVariables.issuesRequestType;
+	private ProgressBar progressLoadMore;
 
 	@Nullable
 	@Override
@@ -83,6 +84,7 @@ public class IssuesFragment extends Fragment {
 		recyclerView = v.findViewById(R.id.recyclerView);
 		issuesList = new ArrayList<>();
 
+		progressLoadMore = v.findViewById(R.id.progressLoadMore);
 		mProgressBar = v.findViewById(R.id.progress_bar);
 		noDataIssues = v.findViewById(R.id.noDataIssues);
 
@@ -226,9 +228,7 @@ public class IssuesFragment extends Fragment {
 
 	private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState) {
 
-		//add loading progress view
-		issuesList.add(new Issues("load"));
-		adapter.notifyItemInserted((issuesList.size() - 1));
+		progressLoadMore.setVisibility(View.VISIBLE);
 
 		Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState);
 
@@ -238,9 +238,6 @@ public class IssuesFragment extends Fragment {
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
 				if(response.code() == 200) {
-
-					//remove loading view
-					issuesList.remove(issuesList.size() - 1);
 
 					List<Issues> result = response.body();
 
@@ -259,6 +256,7 @@ public class IssuesFragment extends Fragment {
 					}
 
 					adapter.notifyDataChanged();
+					progressLoadMore.setVisibility(View.GONE);
 
 				}
 				else {

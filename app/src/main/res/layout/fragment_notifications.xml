@@ -8,23 +8,8 @@
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
-    <ProgressBar
-        android:id="@+id/loadingMoreView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        android:padding="5dp" />
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
-        android:layout_above="@id/loadingMoreView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -34,6 +19,21 @@
             android:layout_height="match_parent" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/loadingMoreView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        app:indicatorColor="?attr/progressIndicatorColor" />
+
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
     <TextView
         android:id="@+id/noDataNotifications"
