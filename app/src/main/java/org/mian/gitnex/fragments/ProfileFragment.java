@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
 	    if(userLanguageCodes.length >= 2) {
 
 		    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
-		    userLanguage.setText(locale.getDisplayCountry());
+		    userLanguage.setText(locale.getDisplayLanguage());
 	    }
 	    else {
 
