@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.Version;
 
 /**
  * Author M M Arif
@@ -28,6 +29,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	private static int codeBlockSelectedChoice = 0;
 
 	private static String[] homeScreenList = {"My Repositories", "Starred Repositories", "Organizations", "Repositories", "Profile", "Explore", "Drafts"};
+	private static String[] homeScreenListNew = {"My Repositories", "Starred Repositories", "Organizations", "Repositories", "Profile", "Explore", "Drafts",  "Notifications"};
 	private static int homeScreenSelectedChoice = 0;
 
 	private static String[] customFontList = {"Roboto", "Manrope", "Source Code Pro"};
@@ -68,6 +70,11 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
+
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.3")) {
+
+			homeScreenList = homeScreenListNew;
+		}
 
 		if(!tinyDb.getString("timeStr").isEmpty()) {
 			tvDateTimeSelected.setText(tinyDb.getString("timeStr"));

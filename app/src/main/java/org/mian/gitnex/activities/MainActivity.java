@@ -319,6 +319,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		if(savedInstanceState == null) {
 
+			if(!new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.3")) {
+
+				if(tinyDb.getInt("homeScreenId") == 7) {
+
+					tinyDb.putInt("homeScreenId", 0);
+				}
+			}
+
 			switch(tinyDb.getInt("homeScreenId")) {
 
 				case 1:
@@ -355,6 +363,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_comments_draft);
+					break;
+
+				case 7:
+					toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_notifications);
 					break;
 
 				default:
