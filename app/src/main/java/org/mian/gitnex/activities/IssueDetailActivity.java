@@ -398,6 +398,7 @@ public class IssueDetailActivity extends BaseActivity {
 					final String timeFormat = tinyDb.getString("dateFormat");
 					tinyDb.putString("issueState", singleIssue.getState());
 					tinyDb.putString("issueTitle", singleIssue.getTitle());
+					tinyDb.putString("singleIssueHtmlUrl", singleIssue.getHtml_url());
 
 					PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated)
 						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);

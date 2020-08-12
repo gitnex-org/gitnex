@@ -82,8 +82,9 @@ public class FileDiffActivity extends BaseActivity {
 
 		// fallback for old gitea instances
 		if(new Version(tinyDb.getString("giteaVersion")).less("1.13.0")) {
+
 			apiCall = false;
-			instanceUrl = tinyDb.getString("instanceUrlWithProtocol");
+			instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
 		}
 
 		getPullDiffContent(instanceUrl, repoOwner, repoName, pullIndex, instanceToken, apiCall);
