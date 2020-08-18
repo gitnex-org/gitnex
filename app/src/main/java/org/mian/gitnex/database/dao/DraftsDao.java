@@ -35,14 +35,14 @@ public interface DraftsDao {
     @Query("SELECT * FROM Drafts WHERE issueId = :issueId")
     LiveData<Draft> fetchDraftByIssueId(int issueId);
 
-    @Query("SELECT count(draftId) FROM Drafts WHERE issueId = :issueId AND draftRepositoryId = :draftRepositoryId")
-    Integer checkDraftDao(int issueId, int draftRepositoryId);
+    @Query("SELECT count(draftId) FROM Drafts WHERE issueId = :issueId AND draftRepositoryId = :draftRepositoryId AND commentId = :commentId")
+    Integer checkDraftDao(int issueId, int draftRepositoryId, String commentId);
 
-    @Query("UPDATE Drafts SET draftText= :draftText WHERE draftId = :draftId")
-    void updateDraft(String draftText, int draftId);
+    @Query("UPDATE Drafts SET draftText = :draftText, commentId = :commentId WHERE draftId = :draftId")
+    void updateDraft(String draftText, int draftId, String commentId);
 
-    @Query("UPDATE Drafts SET draftText= :draftText WHERE issueId = :issueId AND draftRepositoryId = :draftRepositoryId")
-    void updateDraftByIssueId(String draftText, int issueId, int draftRepositoryId);
+    @Query("UPDATE Drafts SET draftText = :draftText WHERE issueId = :issueId AND draftRepositoryId = :draftRepositoryId AND commentId = :commentId")
+    void updateDraftByIssueId(String draftText, int issueId, int draftRepositoryId, String commentId);
 
 	@Query("SELECT draftId FROM Drafts WHERE issueId = :issueId AND draftRepositoryId = :draftRepositoryId")
 	Integer getDraftId(int issueId, int draftRepositoryId);

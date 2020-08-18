@@ -27,7 +27,7 @@ public class DraftsApi {
 		draftsDao = db.draftsDao();
 	}
 
-	public long insertDraft(int repositoryId, int draftAccountId, int issueId, String draftText, String draftType) {
+	public long insertDraft(int repositoryId, int draftAccountId, int issueId, String draftText, String draftType, String commentId) {
 
 		Draft draft = new Draft();
 		draft.setDraftRepositoryId(repositoryId);
@@ -35,6 +35,7 @@ public class DraftsApi {
 		draft.setIssueId(issueId);
 		draft.setDraftText(draftText);
 		draft.setDraftType(draftType);
+		draft.setCommentId(draftType);
 
 		return insertDraftAsyncTask(draft);
 	}
@@ -71,11 +72,11 @@ public class DraftsApi {
 		return draftId;
 	}
 
-	public Integer checkDraft(int issueId, int draftRepositoryId) {
+	public Integer checkDraft(int issueId, int draftRepositoryId, String commentId) {
 
 		try {
 
-			Thread thread = new Thread(() -> checkDraftFlag = draftsDao.checkDraftDao(issueId, draftRepositoryId));
+			Thread thread = new Thread(() -> checkDraftFlag = draftsDao.checkDraftDao(issueId, draftRepositoryId, commentId));
 			thread.start();
 			thread.join();
 		}
@@ -112,14 +113,14 @@ public class DraftsApi {
 		new Thread(() -> draftsDao.deleteAllDrafts(accountId)).start();
 	}
 
-	public static void updateDraft(final String draftText, final int draftId) {
+	public static void updateDraft(final String draftText, final int draftId, final String commentId) {
 
-		new Thread(() -> draftsDao.updateDraft(draftText, draftId)).start();
+		new Thread(() -> draftsDao.updateDraft(draftText, draftId, commentId)).start();
 	}
 
-	public static void updateDraftByIssueIdAsyncTask(final String draftText, final int issueId, final int draftRepositoryId) {
+	public static void updateDraftByIssueIdAsyncTask(final String draftText, final int issueId, final int draftRepositoryId, final String commentId) {
 
-		new Thread(() -> draftsDao.updateDraftByIssueId(draftText, issueId, draftRepositoryId)).start();
+		new Thread(() -> draftsDao.updateDraftByIssueId(draftText, issueId, draftRepositoryId, commentId)).start();
 	}
 
 }

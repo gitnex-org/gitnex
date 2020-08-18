@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,8 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
         private TextView issueType;
         private TextView repoOwner;
         private TextView repoName;
+	    private TextView commentId;
+	    private ImageView editCommentStatus;
 
         private DraftsViewHolder(View itemView) {
 
@@ -51,7 +54,9 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
             issueType = itemView.findViewById(R.id.issueType);
             repoOwner = itemView.findViewById(R.id.repoOwner);
             repoName = itemView.findViewById(R.id.repoName);
+	        commentId = itemView.findViewById(R.id.commentId);
             ImageView deleteDraft = itemView.findViewById(R.id.deleteDraft);
+	        editCommentStatus = itemView.findViewById(R.id.editCommentStatus);
 
             deleteDraft.setOnClickListener(itemDelete -> {
 
@@ -69,6 +74,12 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
                 intent.putExtra("issueNumber", issueNumber.getText().toString());
                 intent.putExtra("repositoryId", repoId.getText().toString());
                 intent.putExtra("draftTitle", repoInfo.getText().toString());
+		        intent.putExtra("commentId", commentId.getText().toString());
+		        intent.putExtra("draftId", draftId.getText().toString());
+
+                if(!commentId.getText().toString().equalsIgnoreCase("")) {
+	                intent.putExtra("commentAction", "edit");
+                }
 
                 TinyDB tinyDb = new TinyDB(mCtx);
                 tinyDb.putString("issueNumber", issueNumber.getText().toString());
@@ -117,9 +128,18 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
         holder.repoOwner.setText(currentItem.getRepositoryOwner());
         holder.repoName.setText(currentItem.getRepositoryName());
         holder.draftText.setText(currentItem.getDraftText());
+	    holder.commentId.setText(currentItem.getCommentId());
 
 	    String issueNumber = "<font color='" + mCtx.getResources().getColor(R.color.lightGray) + "'>" + mCtx.getResources().getString(R.string.hash) + currentItem.getIssueId() + "</font>";
-	    holder.repoInfo.setText(Html.fromHtml(issueNumber + " " + currentItem.getRepositoryOwner() + " / " + currentItem.getRepositoryName()));
+	    Spanned headTitle = Html.fromHtml(issueNumber + " " + currentItem.getRepositoryOwner() + " / " + currentItem.getRepositoryName());
+	    holder.repoInfo.setText(headTitle);
+
+	    if(!currentItem.getCommentId().equalsIgnoreCase("new")) {
+		    holder.editCommentStatus.setVisibility(View.VISIBLE);
+	    }
+	    else {
+	    	holder.editCommentStatus.setVisibility(View.GONE);
+	    }
 
     }
 

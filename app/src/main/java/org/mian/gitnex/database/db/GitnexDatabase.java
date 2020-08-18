@@ -19,7 +19,7 @@ import org.mian.gitnex.database.models.UserAccount;
  */
 
 @Database(entities = {Draft.class, Repository.class, UserAccount.class},
-        version = 1, exportSchema = false)
+        version = 2, exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
     private static GitnexDatabase gitnexDatabase;
@@ -30,7 +30,7 @@ public abstract class GitnexDatabase extends RoomDatabase {
             String DB_NAME = "gitnex";
             gitnexDatabase = Room.databaseBuilder(context, GitnexDatabase.class, DB_NAME)
                     //.fallbackToDestructiveMigration()
-                    //.addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2)
                     .build();
         }
 
@@ -48,7 +48,7 @@ public abstract class GitnexDatabase extends RoomDatabase {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
             //database.execSQL("DROP TABLE Drafts");
-	        //database.execSQL("ALTER TABLE 'Drafts' ADD COLUMN 'draftType' TEXT");
+	        database.execSQL("ALTER TABLE 'Drafts' ADD COLUMN 'commentId' TEXT");
 
         }
     };

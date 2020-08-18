@@ -33,6 +33,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Issues;
 import java.util.List;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,7 +55,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 	private ArrayAdapter<Mention> defaultMentionAdapter;
 	private Button replyButton;
 	private String TAG = StaticGlobalVariables.replyToIssueActivity;
-	private long draftId;
+	private long draftIdOnCreate;
 
 	@Override
 	protected int getLayoutResourceId(){
@@ -97,6 +98,15 @@ public class ReplyToIssueActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
+		if(getIntent().getStringExtra("draftId") != null) {
+
+			draftIdOnCreate = Long.parseLong(Objects.requireNonNull(getIntent().getStringExtra("draftId")));
+		}
+		else {
+
+			draftIdOnCreate = returnDraftId();
+		}
+
 		replyButton = findViewById(R.id.replyButton);
 
 		if(getIntent().getStringExtra("commentBody") != null) {
@@ -115,7 +125,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 		}
 
-		if(getIntent().getStringExtra("commentAction") != null && getIntent().getStringExtra("commentAction").equals("edit")) {
+		if(getIntent().getStringExtra("commentAction") != null && Objects.equals(getIntent().getStringExtra("commentAction"), "edit") && !Objects.equals(getIntent().getStringExtra("commentId"), "new")) {
 
 			final String commentId = getIntent().getStringExtra("commentId");
 
@@ -134,7 +144,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-					saveDraft(addComment.getText().toString());
+					saveDraft(addComment.getText().toString(), commentId, draftIdOnCreate);
 					draftSaved.setVisibility(View.VISIBLE);
 
 				}
@@ -145,7 +155,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 				disableProcessButton();
 				assert commentId != null;
-				IssueActions.editIssueComment(ctx, Integer.parseInt(commentId), addComment.getText().toString());
+				IssueActions.editIssueComment(ctx, Integer.parseInt(commentId), addComment.getText().toString(), draftIdOnCreate);
 
 			});
 
@@ -165,7 +175,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-				saveDraft(addComment.getText().toString());
+				saveDraft(addComment.getText().toString(), "new", draftIdOnCreate);
 				draftSaved.setVisibility(View.VISIBLE);
 
 			}
@@ -185,7 +195,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 	}
 
-	private void saveDraft(String draftText) {
+	private void saveDraft(String draftText, String commentId, long draftIdOnCreate) {
 
 		TinyDB tinyDb = new TinyDB(getApplicationContext());
 
@@ -195,14 +205,28 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 		DraftsApi draftsApi = new DraftsApi(appCtx);
 
-		int countDraft = draftsApi.checkDraft(issueNumber, repositoryId);
+		if(draftIdOnCreate == 0) {
 
-		if(countDraft == 0) {
-			draftId = draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, draftText, StaticGlobalVariables.draftTypeComment);
+			draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, draftText, StaticGlobalVariables.draftTypeComment, commentId);
 		}
 		else {
-			DraftsApi.updateDraftByIssueIdAsyncTask(draftText, issueNumber, repositoryId);
+
+			DraftsApi.updateDraft(draftText, (int) draftIdOnCreate, commentId); //updateDraftByIssueIdAsyncTask(draftText, issueNumber, repositoryId, commentId);
 		}
+
+	}
+
+	private long returnDraftId() {
+
+		TinyDB tinyDb = new TinyDB(getApplicationContext());
+
+		int repositoryId = (int) tinyDb.getLong("repositoryId", 0);
+		int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+		int issueNumber = Integer.parseInt(tinyDb.getString("issueNumber"));
+
+		DraftsApi draftsApi = new DraftsApi(appCtx);
+
+		return draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, "", StaticGlobalVariables.draftTypeComment, "");
 
 	}
 
@@ -325,12 +349,8 @@ public class ReplyToIssueActivity extends BaseActivity {
 					// delete draft comment
 					if(tinyDb.getBoolean("draftsCommentsDeletionEnabled")) {
 
-						int repositoryId = (int) tinyDb.getLong("repositoryId", 0);
-						int issueNumber = Integer.parseInt(tinyDb.getString("issueNumber"));
-
 						DraftsApi draftsApi = new DraftsApi(appCtx);
-						draftId = draftsApi.getDraftIdAsync(issueNumber, repositoryId);
-						draftsApi.deleteSingleDraft((int) draftId);
+						draftsApi.deleteSingleDraft((int) draftIdOnCreate);
 					}
 
 					finish();

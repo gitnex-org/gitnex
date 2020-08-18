@@ -48,12 +48,19 @@
         android:layout_width="wrap_content"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/commentId"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/frameDraftInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        tools:ignore="UseCompoundDrawables">
 
         <TextView
             android:id="@+id/repoInfo"
@@ -65,24 +72,41 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/deleteDraft"
-            android:layout_weight=".05"
-            android:layout_width="10dp"
-            android:layout_height="20dp"
+            android:id="@+id/editCommentStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
             android:layout_gravity="end"
+            android:contentDescription="@string/menuDeleteText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/frameDraftInfo1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:id="@+id/draftText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".95"
+            android:layout_marginBottom="0dp"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="12sp"
+            android:text="@string/noDataFound" />
+
+        <ImageView
+            android:id="@+id/deleteDraft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
             android:src="@drawable/ic_delete"
             android:contentDescription="@string/menuDeleteText" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/draftText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="12sp"
-        android:text="@string/noDataFound" />
-
 </LinearLayout>
-

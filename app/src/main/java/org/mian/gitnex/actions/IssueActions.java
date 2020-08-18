@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
@@ -22,7 +23,7 @@ import retrofit2.Callback;
 
 public class IssueActions {
 
-	public static void editIssueComment(final Context ctx, final int commentId, final String commentBody) {
+	public static void editIssueComment(final Context ctx, final int commentId, final String commentBody, long draftIdOnCreate) {
 
 		final TinyDB tinyDb = new TinyDB(ctx);
 		final String instanceUrl = tinyDb.getString("instanceUrl");
@@ -47,7 +48,11 @@ public class IssueActions {
 					if(response.code() == 200) {
 
 						tinyDb.putBoolean("commentEdited", true);
-						Toasty.success(ctx, ctx.getString(R.string.editCommentUpdatedText));
+						Toasty.info(ctx, ctx.getString(R.string.editCommentUpdatedText));
+
+						DraftsApi draftsApi = new DraftsApi(ctx);
+						draftsApi.deleteSingleDraft((int) draftIdOnCreate);
+
 						((ReplyToIssueActivity) ctx).finish();
 
 					}
