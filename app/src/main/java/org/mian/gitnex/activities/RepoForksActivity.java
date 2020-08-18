@@ -53,6 +53,7 @@ public class RepoForksActivity extends BaseActivity {
 	private RecyclerView recyclerView;
 	private List<UserRepositories> forksList;
 	private RepoForksAdapter adapter;
+	private ProgressBar progressLoadMore;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -86,6 +87,7 @@ public class RepoForksActivity extends BaseActivity {
 
 		ImageView closeActivity = findViewById(R.id.close);
 		noData = findViewById(R.id.noData);
+		progressLoadMore = findViewById(R.id.progressLoadMore);
 		progressBar = findViewById(R.id.progress_bar);
 		SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
 
@@ -184,9 +186,7 @@ public class RepoForksActivity extends BaseActivity {
 
 	private void loadMore(String instanceUrl, String instanceToken, String repoOwner, String repoName, int page, int resultLimit) {
 
-		//add loading progress view
-		forksList.add(new UserRepositories("load"));
-		adapter.notifyItemInserted((forksList.size() - 1));
+		progressLoadMore.setVisibility(View.VISIBLE);
 
 		Call<List<UserRepositories>> call = RetrofitClient
 			.getInstance(instanceUrl, ctx)
@@ -219,6 +219,7 @@ public class RepoForksActivity extends BaseActivity {
 					}
 
 					adapter.notifyDataChanged();
+					progressLoadMore.setVisibility(View.GONE);
 
 				}
 				else {

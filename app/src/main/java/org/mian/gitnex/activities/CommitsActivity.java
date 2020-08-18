@@ -52,6 +52,7 @@ public class CommitsActivity extends BaseActivity {
 	private List<Commits> commitsList;
 	private CommitsAdapter adapter;
 	private ApiInterface api;
+	private ProgressBar progressLoadMore;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -84,6 +85,7 @@ public class CommitsActivity extends BaseActivity {
 
 		ImageView closeActivity = findViewById(R.id.close);
 		noData = findViewById(R.id.noDataCommits);
+		progressLoadMore = findViewById(R.id.progressLoadMore);
 		progressBar = findViewById(R.id.progress_bar);
 		SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
 
@@ -176,9 +178,7 @@ public class CommitsActivity extends BaseActivity {
 
 	private void loadMore(String token, String repoOwner, String repoName, final int page, String branchName, int resultLimit) {
 
-		//add loading progress view
-		commitsList.add(new Commits("load"));
-		adapter.notifyItemInserted((commitsList.size() - 1));
+		progressLoadMore.setVisibility(View.VISIBLE);
 
 		Call<List<Commits>> call = api.getRepositoryCommits(token, repoOwner, repoName, page, branchName, resultLimit);
 
@@ -188,9 +188,6 @@ public class CommitsActivity extends BaseActivity {
 			public void onResponse(@NonNull Call<List<Commits>> call, @NonNull Response<List<Commits>> response) {
 
 				if(response.isSuccessful()) {
-
-					//remove loading view
-					commitsList.remove(commitsList.size() - 1);
 
 					List<Commits> result = response.body();
 
@@ -208,6 +205,7 @@ public class CommitsActivity extends BaseActivity {
 					}
 
 					adapter.notifyDataChanged();
+					progressLoadMore.setVisibility(View.GONE);
 
 				}
 				else {
