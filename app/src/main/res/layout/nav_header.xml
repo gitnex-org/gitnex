@@ -25,15 +25,41 @@
             android:gravity="bottom"
             android:paddingTop="16dp">
 
-            <ImageView
-                android:id="@+id/userAvatar"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="24dp"
-                android:maxWidth="24dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="5dp"
-                android:contentDescription="@string/generalImgContentText"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/userAvatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="24dp"
+                    android:maxWidth="24dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="5dp"
+                    android:contentDescription="@string/generalImgContentText"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingEnd="25dp"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/navRecyclerViewUserAccounts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:reverseLayout="true"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,23 +97,6 @@
                         android:layout_gravity="center_vertical"
                         android:paddingStart="20dp"
                         android:paddingEnd="5dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".18"
-                    android:orientation="vertical"
-                    android:layout_marginTop="15dp">
-
-                    <ImageView
-                        android:id="@+id/userAccounts"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_circle_white"
-                        android:src="@drawable/ic_account_circle"
-                        android:contentDescription="@string/generalImgContentText"/>
 
                 </LinearLayout>
 
