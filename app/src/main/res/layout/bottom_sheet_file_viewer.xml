@@ -18,6 +18,30 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/editFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/editFile"
+                android:drawableStart="@drawable/ic_edit"
+                android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/deleteFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/deleteFile"
+                android:drawableStart="@drawable/ic_delete"
+                android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/downloadFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

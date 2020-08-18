@@ -26,14 +26,26 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
         View v = inflater.inflate(R.layout.bottom_sheet_file_viewer, container, false);
 
         TextView downloadFile = v.findViewById(R.id.downloadFile);
+	    TextView deleteFile = v.findViewById(R.id.deleteFile);
+	    TextView editFile = v.findViewById(R.id.editFile);
 
-        downloadFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bmListener.onButtonClicked("downloadFile");
-                dismiss();
-            }
+        downloadFile.setOnClickListener(v1 -> {
+
+            bmListener.onButtonClicked("downloadFile");
+            dismiss();
         });
+
+	    deleteFile.setOnClickListener(v1 -> {
+
+		    bmListener.onButtonClicked("deleteFile");
+		    dismiss();
+	    });
+
+	    editFile.setOnClickListener(v1 -> {
+
+		    bmListener.onButtonClicked("editFile");
+		    dismiss();
+	    });
 
         return v;
     }
@@ -47,9 +59,11 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
         super.onAttach(context);
 
         try {
+
             bmListener = (BottomSheetFileViewerFragment.BottomSheetListener) context;
         }
         catch (ClassCastException e) {
+
             throw new ClassCastException(context.toString() + " must implement BottomSheetListener");
         }
     }

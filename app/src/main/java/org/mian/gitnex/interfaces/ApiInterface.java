@@ -7,6 +7,8 @@ import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.CreateLabel;
+import org.mian.gitnex.models.DeleteFile;
+import org.mian.gitnex.models.EditFile;
 import org.mian.gitnex.models.Emails;
 import org.mian.gitnex.models.ExploreRepositories;
 import org.mian.gitnex.models.Files;
@@ -39,6 +41,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -264,6 +267,12 @@ public interface ApiInterface {
 
     @GET("repos/{owner}/{repo}/contents/{fileDir}") // get all the sub files and dirs of a repository
     Call<List<Files>> getDirFiles(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("fileDir") String fileDir, @Query("ref") String ref);
+
+	@HTTP(method = "DELETE", path = "repos/{owner}/{repo}/contents/{filepath}", hasBody = true) // delete a file
+	Call<JsonElement> deleteFile(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("filepath") String filepath, @Body DeleteFile jsonStr);
+
+	@PUT("repos/{owner}/{repo}/contents/{filepath}") // edit/update a file
+	Call<JsonElement> editFile(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("filepath") String filepath, @Body EditFile jsonStr);
 
     @GET("user/starred/{owner}/{repo}") // check star status of a repository
     Call<JsonElement> checkRepoStarStatus(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);

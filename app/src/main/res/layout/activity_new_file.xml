@@ -30,7 +30,7 @@
                 android:src="@drawable/ic_close" />
 
             <TextView
-                android:id="@+id/toolbar_title"
+                android:id="@+id/toolbarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -78,6 +78,7 @@
                 android:inputType="textCapSentences|text" />
 
             <TextView
+                android:id="@+id/fileNameHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/newFileNameHintMessage"
@@ -214,7 +215,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/characters255Limit"
-                android:textColor="?attr/primaryTextColor"
+                android:textColor="?attr/hintColor"
                 android:textSize="12sp"
                 android:paddingStart="10dp"
                 android:paddingEnd="5dp"

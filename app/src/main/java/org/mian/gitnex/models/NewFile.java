@@ -46,7 +46,7 @@ public class NewFile {
         this.new_branch = new_branch;
     }
 
-    public class authorObject {
+	public static class authorObject {
 
         private String email;
         private String name;
@@ -68,7 +68,7 @@ public class NewFile {
         }
     }
 
-    public class committerObject {
+    public static class committerObject {
 
         private String email;
         private String name;
