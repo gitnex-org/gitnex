@@ -44,7 +44,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 		private LinearLayout frame;
 		private TextView subject;
 		private TextView repository;
-		private ImageView type;
+		private ImageView typePr;
+		private ImageView typeIssue;
+		private ImageView typeUnknown;
 		private ImageView pinned;
 		private ImageView more;
 
@@ -55,7 +57,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 			frame = itemView.findViewById(R.id.frame);
 			subject = itemView.findViewById(R.id.subject);
 			repository = itemView.findViewById(R.id.repository);
-			type = itemView.findViewById(R.id.type);
+			typePr = itemView.findViewById(R.id.typePr);
+			typeIssue = itemView.findViewById(R.id.typeIssue);
+			typeUnknown = itemView.findViewById(R.id.typeUnknown);
 			pinned = itemView.findViewById(R.id.pinned);
 			more = itemView.findViewById(R.id.more);
 
@@ -93,15 +97,21 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 		switch(notificationThread.getSubject().getType()) {
 
 			case "Pull":
-				holder.type.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_pull_request, null));
+				holder.typePr.setVisibility(View.VISIBLE);
+				holder.typeIssue.setVisibility(View.GONE);
+				holder.typeUnknown.setVisibility(View.GONE);
 				break;
 
 			case "Issue":
-				holder.type.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_issue, null));
+				holder.typePr.setVisibility(View.GONE);
+				holder.typeIssue.setVisibility(View.VISIBLE);
+				holder.typeUnknown.setVisibility(View.GONE);
 				break;
 
 			default:
-				holder.type.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_question, null));
+				holder.typePr.setVisibility(View.GONE);
+				holder.typeIssue.setVisibility(View.GONE);
+				holder.typeUnknown.setVisibility(View.VISIBLE);
 				break;
 
 		}

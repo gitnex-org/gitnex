@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -108,7 +107,6 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         loadCollaboratorsList();
 
         editIssueMilestoneSpinner = findViewById(R.id.editIssueMilestoneSpinner);
-        editIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
 
         editIssueDescription.setMentionAdapter(defaultMentionAdapter);
 

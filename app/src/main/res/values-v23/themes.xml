@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -29,6 +30,46 @@
         <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@color/darkGreen</item>
+        <item name="fabColor">@color/darkGreen</item>
+        <item name="iconsColor">@color/darkGreen</item>
+        <item name="pagerTabIndicatorColor">@color/darkGreen</item>
     </style>
+    <!-- Light theme -->
+
+    <!-- Retro theme -->
+    <style name="AppThemeRetro" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/retroThemeBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/retroThemeTextColor</item>
+        <item name="android:textColorPrimary">@color/retroThemeTextColor</item>
+        <item name="colorPrimary">@color/retroThemeColorPrimary</item>
+        <item name="colorSecondary">@color/retroThemeColorSecondary</item>
+
+        <item name="diffAddedColor">@color/retroThemeDiffAddedColor</item>
+        <item name="diffRemovedColor">@color/retroThemeDiffRemovedColor</item>
+        <item name="diffSelectedColor">@color/retroThemeDiffSelectedColor</item>
+        <item name="primaryTextColor">@color/retroThemeTextColor</item>
+        <item name="primaryBackgroundColor">@color/retroThemeBackground</item>
+        <item name="inputBackgroundColor">@color/retroThemeInputBackground</item>
+        <item name="inputTextColor">@color/retroThemeInputTextColor</item>
+        <item name="checkboxStyle">@style/AppThemeRetroCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/retroThemeColorPrimary</item>
+        <item name="alertDialogTheme">@style/AppThemeRetroConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemeRetroPopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeRetroSearchAutoCompleteTextView</item>
+        <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/retroThemeColorPrimary</item>
+        <item name="dividerColor">@color/retroThemeDividerColor</item>
+        <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="progressIndicatorColor">@color/retroThemeColorPrimary</item>
+        <item name="fabColor">@color/retroThemeColorPrimary</item>
+        <item name="iconsColor">@color/retroThemeColorPrimary</item>
+        <item name="pagerTabIndicatorColor">@color/retroThemeColorPrimary</item>
+    </style>
+    <!-- Retro theme -->
 
 </resources>

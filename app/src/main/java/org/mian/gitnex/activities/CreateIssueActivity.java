@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -126,7 +125,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         newIssueDueDate.setOnClickListener(this);
 
         newIssueMilestoneSpinner = findViewById(R.id.newIssueMilestoneSpinner);
-        newIssueMilestoneSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
         getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid, resultLimit);
 
         getLabels(instanceUrl, instanceToken, repoOwner, repoName, loginUid);

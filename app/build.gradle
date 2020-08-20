@@ -28,6 +28,9 @@ android {
         targetCompatibility = "8"
         sourceCompatibility = "8"
     }
+    defaultConfig{
+        vectorDrawables.useSupportLibrary = true
+    }
 }
 
 configurations {

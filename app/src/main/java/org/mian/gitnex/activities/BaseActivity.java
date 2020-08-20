@@ -51,6 +51,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 				}
 				break;
 
+			case 3:
+				setTheme(R.style.AppThemeRetro);
+				break;
+
+			case 4:
+				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
+					setTheme(R.style.AppTheme);
+				}
+				else {
+					setTheme(R.style.AppThemeRetro);
+				}
+				break;
+
 			default:
 				setTheme(R.style.AppTheme);
 				break;

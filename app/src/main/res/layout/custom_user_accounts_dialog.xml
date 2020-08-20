@@ -34,7 +34,7 @@
         android:paddingEnd="4dp"
         android:text="@string/pageTitleUserAccounts"
         android:textColor="@color/colorWhite"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
 </LinearLayout>
 

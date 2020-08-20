@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -142,7 +141,6 @@ public class CreateFileActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         newFileBranchesSpinner = findViewById(R.id.newFileBranchesSpinner);
-        newFileBranchesSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
         getBranches(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
 
         newFileBranchesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()

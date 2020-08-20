@@ -30,7 +30,7 @@
         android:text="@string/addNewAccount"
         android:contentDescription="@string/addNewAccount"
         android:textColor="@color/colorWhite"
-        android:backgroundTint="@color/darkGreen"
+        android:backgroundTint="?attr/fabColor"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:iconTint="@color/colorWhite"
         app:icon="@drawable/ic_add" />

@@ -48,7 +48,7 @@
             android:text="@string/commentButtonText"
             android:contentDescription="@string/commentButtonText"
             android:textColor="@color/colorWhite"
-            android:backgroundTint="@color/darkGreen"
+            android:backgroundTint="?attr/fabColor"
             android:layout_gravity="bottom|end"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             app:iconTint="@color/colorWhite"

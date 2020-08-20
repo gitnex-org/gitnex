@@ -13,19 +13,45 @@
         android:layout_height="wrap_content"
         android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/fileImage"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginEnd="15dp"
-        android:contentDescription="@string/repoContentAvatar"
-        android:src="@drawable/ic_file" />
+    <RelativeLayout
+        android:id="@+id/imageTypes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/fileImage"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="@string/generalImgContentText"
+            android:visibility="gone"
+            android:src="@drawable/ic_file" />
+
+        <ImageView
+            android:id="@+id/dirImage"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="@string/generalImgContentText"
+            android:visibility="gone"
+            android:src="@drawable/ic_directory" />
+
+        <ImageView
+            android:id="@+id/unknownImage"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="@string/generalImgContentText"
+            android:visibility="gone"
+            android:src="@drawable/ic_question" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/infoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/fileImage"
+        android:layout_toEndOf="@+id/imageTypes"
         android:orientation="horizontal">
 
         <TextView

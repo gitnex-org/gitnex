@@ -35,8 +35,19 @@
     <color name="lightThemeDiffSelectedColor">#e0e0e0</color>
     <color name="lightThemeTextColor">#646565</color>
     <color name="lightThemeBackground">#f9f9f9</color>
-    <color name="lightThemeInputBackground">#b6bbbf</color>
+    <color name="lightThemeInputBackground">#f2f2f2</color>
     <color name="lightThemeInputTextColor">#212121</color>
     <color name="lightThemeDividerColor">#dbdbdb</color>
+
+    <color name="retroThemeDiffRemovedColor">#fad6d6</color>
+    <color name="retroThemeDiffAddedColor">#d0f7d9</color>
+    <color name="retroThemeDiffSelectedColor">#d8d8d8</color>
+    <color name="retroThemeTextColor">#212f3c</color>
+    <color name="retroThemeBackground">#fcfcfc</color>
+    <color name="retroThemeInputBackground">#f2f2f2</color>
+    <color name="retroThemeInputTextColor">#6200EE</color>
+    <color name="retroThemeDividerColor">#dbdbdb</color>
+    <color name="retroThemeColorPrimary">#6200EE</color>
+    <color name="retroThemeColorSecondary">#03DAC6</color>
 
 </resources>

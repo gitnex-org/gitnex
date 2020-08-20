@@ -37,6 +37,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     class FilesViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView fileTypeImage;
+	    private ImageView dirTypeImage;
+	    private ImageView unknownTypeImage;
         private TextView fileName;
         private TextView fileType;
         private TextView fileInfo;
@@ -46,6 +48,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
             super(itemView);
             fileName = itemView.findViewById(R.id.fileName);
             fileTypeImage = itemView.findViewById(R.id.fileImage);
+	        dirTypeImage = itemView.findViewById(R.id.dirImage);
+	        unknownTypeImage = itemView.findViewById(R.id.unknownImage);
             fileType = itemView.findViewById(R.id.fileType);
             fileInfo = itemView.findViewById(R.id.fileInfo);
 
@@ -157,16 +161,22 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         holder.fileName.setText(currentItem.getName());
 
         if(currentItem.getType().equals("file")) {
-            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_file));
+            holder.fileTypeImage.setVisibility(View.VISIBLE);
+	        holder.dirTypeImage.setVisibility(View.GONE);
+	        holder.unknownTypeImage.setVisibility(View.GONE);
             holder.fileInfo.setVisibility(View.VISIBLE);
             holder.fileInfo.setText(AppUtil.formatFileSizeInDetail(currentItem.getSize()));
         }
         else if(currentItem.getType().equals("dir")) {
+	        holder.dirTypeImage.setVisibility(View.VISIBLE);
+	        holder.unknownTypeImage.setVisibility(View.GONE);
+	        holder.fileTypeImage.setVisibility(View.GONE);
 	        holder.fileInfo.setVisibility(View.GONE);
-            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_directory));
         }
         else {
-            holder.fileTypeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_question));
+	        holder.unknownTypeImage.setVisibility(View.VISIBLE);
+	        holder.dirTypeImage.setVisibility(View.GONE);
+	        holder.fileTypeImage.setVisibility(View.GONE);
         }
 
     }
