@@ -36,7 +36,7 @@
     <string name="pageTitleNewFile">Нови фајл</string>
     <string name="pageTitleExplore">Претражи репозиторијуме</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
+    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторијум</string>
     <string name="repoFullname">Репозиторијум са ORG</string>
@@ -63,9 +63,9 @@
     <string name="navigation_drawer_close">Затвори навигацију</string>
     <string name="logo">Пријави ме</string>
     <string name="urlInfoTooltip">1. Одабери одговарајући протокол (HTTPS или HTTP).\n2. Унеси URL инстанце, нпр. try.gitea.io.\n3. Ако користиш 2FA, унеси OTP код.\n4. Ако користиш HTTP протокол, унеси URL инстанце у формату korisnickoime@domen.com.</string>
-    <string name="malformedUrl">Повезивање није успело. Провери конфигурацију.</string>
-    <string name="protocolError">Употреба HTTP протокола није препоручена уколико не тестираш на локалној мрежи</string>
-    <string name="malformedJson">Сервер је послао неисправан JSON</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
+    <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
+    <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">URL инстанце је обавезан</string>
     <string name="emptyFieldUsername">Корисничко име је обавезно</string>
     <string name="emptyFieldPassword">Лозинка је обавезна</string>
@@ -86,7 +86,7 @@
     <string name="orgCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="orgExistsError">Организација већ постоји</string>
     <string name="binaryFileError">Binary files are not supported yet.</string>
-    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
     <string name="processingText">Пријављивање у току</string>
     <string name="search">Претражи</string>
     <string name="close">Затвори</string>
@@ -128,7 +128,7 @@
     <string name="commentEmptyError">Унеси коментар</string>
     <string name="commentSuccess">Коментар је послат</string>
     <string name="commentError">Нешто је пошло наопако, покушај поново</string>
-    <string name="featureDeprecated">This function will be removed in the future.</string>
+    <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="generalImgContentText">Аватар</string>
     <string name="noDataMilestonesTab">Ниједна фаза није пронађена</string>
     <string name="commitAuthor">Аутор комита: %1$s</string>
@@ -223,7 +223,7 @@
     <string name="labelDeleteErrorText">Нешто је пошло наопако, покушај поново</string>
     <string name="noDataBranchesTab">Ниједна грана није пронађена</string>
     <string name="alertDialogTokenRevokedTitle">Грешка приликом ауторизације</string>
-    <string name="alertDialogTokenRevokedMessage">Токен је истекао (у том случају покушај да се одјавиш и пријавиш поново) или немаш приступ овом садржају</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Откажи</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Одјави ме</string>
     <string name="labelDeleteTitle">Избриши\u0020</string>
@@ -273,6 +273,7 @@
     <string name="editCommentUpdatedText">Коментар је ажуриран</string>
     <string name="issueCommentShare">Подели коментар</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Додај или уклони сарадника</string>
@@ -289,8 +290,8 @@
     <string name="profileCreateNewEmailAddress">Додај имејл-адресу</string>
     <string name="profileEmailButton">Сачувај</string>
     <string name="profileEmailTitle">Имејл-адреса</string>
-    <string name="emailAddedText">Имејл-адреса је успешно додата</string>
-    <string name="emailErrorEmpty">Имејл-адреса је обавезна</string>
+    <string name="emailAddedText">New email added successfully</string>
+    <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">Имејл-адреса није валидна</string>
     <string name="emailErrorInUse">Неко већ користи ову имејл-адресу</string>
     <string name="emailTypeText">Главна адреса</string>
@@ -350,9 +351,9 @@
     <string name="titleErrorEmpty">Наслов је обавезан</string>
     <string name="releaseCreatedText">Ново издање је креирано</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP код није валидан</string>
+    <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">OTP код (опционо)</string>
-    <string name="otpMessage">Унеси OTP код ако користиш 2FA</string>
+    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
     <string name="openWebRepo">Отвори у претраживачу</string>
     <string name="repoStargazersInMenu">Фанови</string>
     <string name="repoWatchersInMenu">Пратиоци</string>
@@ -380,6 +381,7 @@
     <string name="newFileRequiredFieldNewBranchName">Назив нове гране је обавезан ако тренутна грана није одабрана</string>
     <string name="strFilter">Филтер</string>
     <string name="strSwitchBranches">Branches</string>
+    <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Копирај URL проблема</string>
     <string name="copyIssueUrlToastMsg">URL је копиран</string>
     <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
@@ -415,6 +417,7 @@
     <string name="isOpen">Open</string>
     <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
+    <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
     <string name="translateText">Преведи GitNex на платформи Crowdin</string>
     <string name="exploreTextBoxHint">Претражи репозиторијуме</string>
@@ -427,14 +430,14 @@
     <string name="watchRepositorySuccess">Сад пратиш овај репозиторијум</string>
     <string name="unWatchRepositorySuccess">Више не пратиш овај репозиторијум</string>
     <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Тренутно користиш стару верзију (%1$s) програма Gitea. Ако наставиш, могуће је да GitNex неће функционисати.</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
     <string name="versionUnsupportedNew">Нова верзија програма Gitea је детектована! Ажурирај GitNex!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Верзија програма Gitea коју тренутно користиш није подржана</string>
     <string name="loginViaPassword">Корисничко име и лозинка</string>
     <string name="loginMethodText">Одабери начин за пријављивање. Имај у виду да је токен безбеднији него корисничко име и лозинка.</string>
     <string name="unauthorizedApiError">Грешка. Провери креденцијале и покушај поново.</string>
-    <string name="loginTokenError">Унеси исправан токен</string>
+    <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">Ниједан пул захтев није пронађен</string>
     <string name="prCreator">Аутор: \u0020</string>
@@ -449,7 +452,7 @@
     <string name="mergePullRequestButtonText">Обједини</string>
     <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Спајање може бити неуспешно уколико немаш ауторизацију</string>
-    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
     <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
     <string name="mergeCommentText">Обједини коментар</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
@@ -462,6 +465,12 @@
     <string name="waitLoadingDownloadFile">Сачекај да се фајл учита у меморију</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">Прегледач фајлова не подржава овај тип. Да ли желиш да преузмеш фајл?</string>
+    <string name="deleteFile">Delete This File</string>
+    <string name="editFile">Edit This File</string>
+    <string name="deleteFileText">Delete %1$s</string>
+    <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
+    <string name="editFileText">Edit %1$s</string>
+    <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Величина</string>
     <string name="shareIssue">Подели проблем</string>
     <string name="sharePr">Подели пул захтев</string>
@@ -473,7 +482,7 @@
     <!-- Memorizing Trust Manager -->
     <string name="mtm_notification">Провера сертификата</string>
     <string name="mtm_accept_cert">Да ли желиш да прихватиш непознате сертификате?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
     <string name="mtm_cert_expired">Сертификат је истекао.</string>
     <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
@@ -511,6 +520,13 @@
     <string name="reportsHintText">Crash reports</string>
     <string name="archivedRepository">Archived</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
+    <string name="removeAccountPopupTitle">Remove Account</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
+    <string name="addNewAccount">New Account</string>
+    <string name="addNewAccountText">Add New Account</string>
+    <string name="accountAlreadyExistsError">Account already exists in the app</string>
+    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">No notifications found</string>
@@ -518,11 +534,11 @@
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
-    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications.</string>
+    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">Mark as Read</string>
     <string name="markAsUnread">Mark as Unread</string>
     <string name="pinNotification">Pin Notification</string>
-    <string name="markedNotificationsAsRead">Successfully marked all notifications as read.</string>
+    <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
 </resources>

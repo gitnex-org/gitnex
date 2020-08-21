@@ -36,7 +36,7 @@
     <string name="pageTitleNewFile">Новий файл</string>
     <string name="pageTitleExplore">Огляд</string>
     <string name="pageTitleAdministration">Адміністрування Gitea</string>
-    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
+    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <!-- page titles -->
     <string name="repoName">Демо-репозиторій</string>
     <string name="repoFullname">Репозиторій з організацією</string>
@@ -63,9 +63,9 @@
     <string name="navigation_drawer_close">Закрити панель навігації</string>
     <string name="logo">Увійти до Gitea</string>
     <string name="urlInfoTooltip">1. Оберіть правильний протокол (https або http). \n2. Введіть URL Gitea, наприклад: try.gitea.io. \n3. Якщо для вашого облікового запису увімкнено двофакторну аутентифікацію, введіть код OTP у відповідне поле. \n4. Для базової автентифікації HTTP використовуйте USERNAME@DOMAIN.COM в полі URL.</string>
-    <string name="malformedUrl">Неможливо з\'єднатись з сервером. Будь ласка, перевірте правильність введеного URL або порта.</string>
-    <string name="protocolError">Не рекомендується використовувати протокол HTTP за винятком тестування в локальній мережі.</string>
-    <string name="malformedJson">Було отримано некоректний JSON. Відповідь сервера не була успішною.</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
+    <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
+    <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">Потрібен URL екземпляра</string>
     <string name="emptyFieldUsername">Ім\'я користувача є обов\'язковим</string>
     <string name="emptyFieldPassword">Пароль є обов\'язковим</string>
@@ -86,7 +86,7 @@
     <string name="orgCreatedError">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="orgExistsError">Організація вже існує</string>
     <string name="binaryFileError">Бінарні файли ще не підтримуються.</string>
-    <string name="fileTooLarge">Цей файл перевищує максимально можливу різницю рядків.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
     <string name="processingText">Обробляється</string>
     <string name="search">Пошук</string>
     <string name="close">Закрити</string>
@@ -128,7 +128,7 @@
     <string name="commentEmptyError">Будь ласка, напишіть свій коментар</string>
     <string name="commentSuccess">Коментар опубліковано</string>
     <string name="commentError">Щось пішло не так. Будь ласка, спробуйте знову</string>
-    <string name="featureDeprecated">Цю функцію буде видалено у майбутньому.</string>
+    <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="generalImgContentText">Аватар</string>
     <string name="noDataMilestonesTab">Етапів не знайдено</string>
     <string name="commitAuthor">Автор коміту: %1$s</string>
@@ -223,7 +223,7 @@
     <string name="labelDeleteErrorText">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="noDataBranchesTab">Гілок не знайдено</string>
     <string name="alertDialogTokenRevokedTitle">Помилка авторизації</string>
-    <string name="alertDialogTokenRevokedMessage">Схоже, що токен доступу відкликаний АБО вам не дозволено бачити цей вміст. Якщо токен відкликано, будь ласка, вийдіть з системи та увійдіть знову</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Скасувати</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Вийти</string>
     <string name="labelDeleteTitle">Видалити\u0020</string>
@@ -273,6 +273,7 @@
     <string name="editCommentUpdatedText">Коментар змінено</string>
     <string name="issueCommentShare">Поділитися коментарем</string>
     <string name="deleteCommentSuccess">Коментар успішно видалено</string>
+    <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Додати / Вилучити співавтора</string>
@@ -289,8 +290,8 @@
     <string name="profileCreateNewEmailAddress">Додати адресу Email</string>
     <string name="profileEmailButton">Зберегти</string>
     <string name="profileEmailTitle">Адреса Email</string>
-    <string name="emailAddedText">Нову адресу Email успішно додано.</string>
-    <string name="emailErrorEmpty">Адреса Email порожня.</string>
+    <string name="emailAddedText">New email added successfully</string>
+    <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">Адреса Email некоректна</string>
     <string name="emailErrorInUse">Адреса Email вже використовується</string>
     <string name="emailTypeText">Основна</string>
@@ -350,9 +351,9 @@
     <string name="titleErrorEmpty">Назва порожня</string>
     <string name="releaseCreatedText">Новий реліз створено</string>
     <!-- release -->
-    <string name="loginOTPTypeError">Код OTP повинен складатися з цифр.</string>
+    <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">Код OTP (Необов\'язково)</string>
-    <string name="otpMessage">Введіть код otp, якщо 2FA увімкнено</string>
+    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
     <string name="openWebRepo">Відкрити в браузері</string>
     <string name="repoStargazersInMenu">Зацікавлені</string>
     <string name="repoWatchersInMenu">Спостерігачі</string>
@@ -380,6 +381,7 @@
     <string name="newFileRequiredFieldNewBranchName">Назва нової гілки не може бути пустою, якщо не обрано поточну гілку</string>
     <string name="strFilter">Фільтр</string>
     <string name="strSwitchBranches">Branches</string>
+    <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Скопіювати URL проблеми</string>
     <string name="copyIssueUrlToastMsg">URL скопійовано до буфера обміну</string>
     <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
@@ -415,6 +417,7 @@
     <string name="isOpen">Відкриті</string>
     <string name="isClosed">Закриті</string>
     <string name="genericServerResponseError">На даний момент ми не можемо зв\'язатися з сервером, будь ласка, перевірте статус вашого сервера і спробуйте ще раз</string>
+    <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
     <string name="translateText">Перекласти GitNex на Crowdin</string>
     <string name="exploreTextBoxHint">Переглянути репозиторії</string>
@@ -427,14 +430,14 @@
     <string name="watchRepositorySuccess">Репозиторій додано до списку спостереження</string>
     <string name="unWatchRepositorySuccess">Репозиторій видалено зі списку спостереження</string>
     <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Виявлено стару версію(%1$s) Gitea. Будь ласка, оновіть програму до останньої стабільної версії. Якщо ви продовжите, додаток може працювати некоректно.</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
     <string name="versionUnsupportedNew">Виявлено нову версію Gitea! Будь ласка, ОНОВІТЬ GitNex!</string>
     <string name="versionUnknown">Gitea не виявлено!</string>
     <string name="versionAlertDialogHeader">Непідтримувана версія Gitea</string>
     <string name="loginViaPassword">Ім\'я користувача / Пароль</string>
     <string name="loginMethodText">Оберіть бажаний метод входу для доступу до облікового запису. Токен є більш безпечним!</string>
     <string name="unauthorizedApiError">Екземпляр повернув помилку - не авторизовано. Перевірте облікові дані та спробуйте знову</string>
-    <string name="loginTokenError">Будь ласка, введіть правильний токен</string>
+    <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">Запитів на злиття не знайдено</string>
     <string name="prCreator">Автор :\u0020</string>
@@ -449,7 +452,7 @@
     <string name="mergePullRequestButtonText">Об\'єднати</string>
     <string name="deleteBranchAfterMerge">Видалити гілку після злиття</string>
     <string name="mergeNoteText">Об\'єднання не відбудеться, якщо ви не маєте дозволу приймати цей запит на злиття.</string>
-    <string name="mergeInfoDisabledMessage">Вимкнена кнопка Об’єднання означає, що існують конфлікти АБО інші речі для виправлення перед Merge.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
     <string name="deleteBranchForkInfo">Ця гілка належить до відгалуженого репозиторію</string>
     <string name="mergeCommentText">Коментар до об\'єднання</string>
     <string name="mergePRSuccessMsg">Запит на злиття було успішно об\'єднано</string>
@@ -462,6 +465,12 @@
     <string name="waitLoadingDownloadFile">Зачекайте, поки файл завантажиться</string>
     <string name="downloadFileSaved">Файл успішно збережений</string>
     <string name="excludeFilesInFileviewer">Цей тип файлу не підтримується у переглядачі файлів. Завантажити його з меню?</string>
+    <string name="deleteFile">Delete This File</string>
+    <string name="editFile">Edit This File</string>
+    <string name="deleteFileText">Delete %1$s</string>
+    <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
+    <string name="editFileText">Edit %1$s</string>
+    <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Розмір</string>
     <string name="shareIssue">Поділитися питанням</string>
     <string name="sharePr">Поділітись запитом на злиття</string>
@@ -473,7 +482,7 @@
     <!-- Memorizing Trust Manager -->
     <string name="mtm_notification">Перевірка сертифіката</string>
     <string name="mtm_accept_cert">Прийняти незнайомий сертифікат?</string>
-    <string name="mtm_trust_anchor">Сертифікат сервера не підписано відомим центром сертифікації.</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
     <string name="mtm_cert_expired">Термін дії сертифіката сервера закінчився.</string>
     <string name="mtm_accept_server_name">Ім\'я сервера не збігається, прийняти?</string>
     <string name="mtm_hostname_mismatch">Сервер не може автентифікуватись як \&quot;%s\&quot;. Сертифікат дійсний тільки для:</string>
@@ -511,6 +520,13 @@
     <string name="reportsHintText">Звіти про падіння</string>
     <string name="archivedRepository">Архівовано</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
+    <string name="removeAccountPopupTitle">Remove Account</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
+    <string name="addNewAccount">New Account</string>
+    <string name="addNewAccountText">Add New Account</string>
+    <string name="accountAlreadyExistsError">Account already exists in the app</string>
+    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">No notifications found</string>
@@ -518,11 +534,11 @@
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
-    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications.</string>
+    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">Mark as Read</string>
     <string name="markAsUnread">Mark as Unread</string>
     <string name="pinNotification">Pin Notification</string>
-    <string name="markedNotificationsAsRead">Successfully marked all notifications as read.</string>
+    <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
 </resources>

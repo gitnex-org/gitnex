@@ -36,7 +36,7 @@
     <string name="pageTitleNewFile">Nouveau fichier</string>
     <string name="pageTitleExplore">Explorer</string>
     <string name="pageTitleAdministration">Administration de Gitea</string>
-    <string name="pageTitleUserAccounts">Gérer les comptes (bêta)</string>
+    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <!-- page titles -->
     <string name="repoName">Dépôt de démonstration</string>
     <string name="repoFullname">Nom complet du dépôt</string>
@@ -63,9 +63,9 @@
     <string name="navigation_drawer_close">Fermer le volet de navigation</string>
     <string name="logo">Se connecter à Gitea</string>
     <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA</string>
-    <string name="malformedUrl">Connexion impossible. Vérifiez que l’URL et le port sont corrects.</string>
-    <string name="protocolError">Il n’est recommandé d’utiliser le protocole HTTP que pour des tests en réseau local.</string>
-    <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
+    <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
+    <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">URL de l’instance requise</string>
     <string name="emptyFieldUsername">Nom d’utilisateur requis</string>
     <string name="emptyFieldPassword">Mot de passe requis</string>
@@ -86,7 +86,7 @@
     <string name="orgCreatedError">Une erreur s’est produite, veuillez réessayer</string>
     <string name="orgExistsError">Ce nom d’organisation est déjà pris</string>
     <string name="binaryFileError">Les fichiers binaires ne sont pas encore pris en charge.</string>
-    <string name="fileTooLarge">Ce fichier dépasse le maximum de lignes de diff possibles.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
     <string name="processingText">Traitement en cours</string>
     <string name="search">Rechercher</string>
     <string name="close">Fermer</string>
@@ -128,7 +128,7 @@
     <string name="commentEmptyError">Veuillez saisir votre commentaire</string>
     <string name="commentSuccess">Commentaire publié</string>
     <string name="commentError">Une erreur s’est produite, veuillez réessayer</string>
-    <string name="featureDeprecated">Cette fonction sera prochainement supprimée.</string>
+    <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">Aucun jalon</string>
     <string name="commitAuthor">Auteur de la révision : %1$s</string>
@@ -223,7 +223,7 @@
     <string name="labelDeleteErrorText">Une erreur s’est produite, veuillez réessayer</string>
     <string name="noDataBranchesTab">Aucune branche</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
-    <string name="alertDialogTokenRevokedMessage">Vous n’avez pas l’autorisation de voir ce contenu OU votre jeton d’accès a été révoqué. Dans ce dernier cas, veuillez vous reconnecter.</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Annuler</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Déconnexion</string>
     <string name="labelDeleteTitle">Supprimer\u0020</string>
@@ -273,6 +273,7 @@
     <string name="editCommentUpdatedText">Commentaire modifié</string>
     <string name="issueCommentShare">Partager le commentaire</string>
     <string name="deleteCommentSuccess">Commentaire supprimé avec succès</string>
+    <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Gérer les collaborateurs</string>
@@ -289,8 +290,8 @@
     <string name="profileCreateNewEmailAddress">Ajouter une adresse e-mail</string>
     <string name="profileEmailButton">Sauvegarder</string>
     <string name="profileEmailTitle">Adresse e-mail</string>
-    <string name="emailAddedText">Nouvelle adresse e-mail ajoutée</string>
-    <string name="emailErrorEmpty">Aucune adresse e-mail saisie</string>
+    <string name="emailAddedText">New email added successfully</string>
+    <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">Adresse e-mail invalide</string>
     <string name="emailErrorInUse">Adresse e-mail déjà utilisée</string>
     <string name="emailTypeText">Principale</string>
@@ -350,9 +351,9 @@
     <string name="titleErrorEmpty">Titre requis</string>
     <string name="releaseCreatedText">Nouvelle version créée</string>
     <!-- release -->
-    <string name="loginOTPTypeError">Le code OTP est composé de chiffres</string>
+    <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">Code OTP (si nécessaire)</string>
-    <string name="otpMessage">Entrez le code OTP si l’authentification à deux facteurs est activée</string>
+    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
     <string name="openWebRepo">Ouvrir dans le navigateur</string>
     <string name="repoStargazersInMenu">Fans</string>
     <string name="repoWatchersInMenu">Observateurs</string>
@@ -380,6 +381,7 @@
     <string name="newFileRequiredFieldNewBranchName">Nom de la nouvelle branche requis si aucune branche n’est sélectionnée</string>
     <string name="strFilter">Filtrer</string>
     <string name="strSwitchBranches">Branches</string>
+    <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copier l’URL du ticket</string>
     <string name="copyIssueUrlToastMsg">URL copiée dans le presse-papier</string>
     <string name="copyIssueCommentToastMsg">Commentaire copié dans le presse-papier</string>
@@ -415,6 +417,7 @@
     <string name="isOpen">Ouvert</string>
     <string name="isClosed">Fermé</string>
     <string name="genericServerResponseError">Impossible de se connecter au serveur pour le moment, veuillez vérifier son statut puis réessayer</string>
+    <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
     <string name="translateText">Traduire GitNex avec Crowdin</string>
     <string name="exploreTextBoxHint">Explorer les dépôts</string>
@@ -427,14 +430,14 @@
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
     <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
     <string name="titleDrafts">Brouillons</string>
-    <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous continuez, l’application peut ne pas fonctionner correctement.</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
     <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
     <string name="versionUnknown">Aucun serveur Gitea détecté !</string>
     <string name="versionAlertDialogHeader">Version de Gitea non prise en charge</string>
     <string name="loginViaPassword">Nom d’utilisateur / mot de passe</string>
     <string name="loginMethodText">Choisissez une méthode de connexion pour accéder à votre compte. Le jeton est la plus sécurisée !</string>
     <string name="unauthorizedApiError">L\'instance a renvoyé une erreur « Autorisation refusée ». Vérifiez vos identifiants et réessayez.</string>
-    <string name="loginTokenError">Veuillez saisir le bon jeton</string>
+    <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFrok">Fourche supprimée</string>
     <string name="noDataPullRequests">Aucune demande de tirage</string>
     <string name="prCreator">Auteur :\u0020</string>
@@ -449,7 +452,7 @@
     <string name="mergePullRequestButtonText">Fusionner</string>
     <string name="deleteBranchAfterMerge">Supprimer la branche après la fusion</string>
     <string name="mergeNoteText">La fusion peut échouer si vous n’êtes pas autorisé à fusionner cette demande de tirage.</string>
-    <string name="mergeInfoDisabledMessage">Désactivé le bouton Fusionner signifie qu\'il y a des conflits OU d\'autres choses à corriger avant Fusion.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
     <string name="deleteBranchForkInfo">Cette branche appartient à un dépôt forké</string>
     <string name="mergeCommentText">Commentaire de la fusion</string>
     <string name="mergePRSuccessMsg">La demande de tirage a été fusionnée</string>
@@ -462,6 +465,12 @@
     <string name="waitLoadingDownloadFile">Chargement du fichier dans la mémoire</string>
     <string name="downloadFileSaved">Fichier sauvegardé avec succès</string>
     <string name="excludeFilesInFileviewer">La visionneuse ne prend pas en charge ce type de fichier. Télécharger ce fichier ?</string>
+    <string name="deleteFile">Delete This File</string>
+    <string name="editFile">Edit This File</string>
+    <string name="deleteFileText">Delete %1$s</string>
+    <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
+    <string name="editFileText">Edit %1$s</string>
+    <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Taille</string>
     <string name="shareIssue">Partager le ticket</string>
     <string name="sharePr">Partager la demande de tirage</string>
@@ -473,7 +482,7 @@
     <!-- Memorizing Trust Manager -->
     <string name="mtm_notification">Vérification du certificat</string>
     <string name="mtm_accept_cert">Accepter le certificat inconnu ?</string>
-    <string name="mtm_trust_anchor">Le certificat du serveur n’est pas signé par une autorité de certification connue.</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
     <string name="mtm_cert_expired">Le certificat du serveur a expiré.</string>
     <string name="mtm_accept_server_name">Accepter le nom de serveur incohérent ?</string>
     <string name="mtm_hostname_mismatch">Le serveur ne peut s’authentifier comme « %s ». Le certificat est valide pour :</string>
@@ -506,23 +515,30 @@
     <string name="draftSaved">Brouillon enregistré</string>
     <string name="appearanceHintText">Thèmes, polices, badges, couleur du code</string>
     <string name="fileViewerHintText">Mode PDF, thème du code source</string>
-    <string name="securityHintText">SSL certificates, cache, polling delay</string>
+    <string name="securityHintText">Certificats SSL, cache, scrutation des notifications</string>
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="archivedRepository">Archivé</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
+    <string name="removeAccountPopupTitle">Remove Account</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
+    <string name="addNewAccount">New Account</string>
+    <string name="addNewAccountText">Add New Account</string>
+    <string name="accountAlreadyExistsError">Account already exists in the app</string>
+    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
-    <string name="noDataNotifications">No notifications found</string>
-    <string name="notificationBody">You have received a new notification. (%s)</string>
-    <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
-    <string name="pollingDelaySelectedText">%d Minutes</string>
-    <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
-    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications.</string>
-    <string name="markAsRead">Mark as Read</string>
-    <string name="markAsUnread">Mark as Unread</string>
-    <string name="pinNotification">Pin Notification</string>
-    <string name="markedNotificationsAsRead">Successfully marked all notifications as read.</string>
-    <string name="isRead">Read</string>
-    <string name="isUnread">Unread</string>
+    <string name="noDataNotifications">Aucune notification</string>
+    <string name="notificationBody">Vous avez reçu une nouvelle notification. (%s)</string>
+    <string name="notificationsPollingHeaderText">Délai de scrutation des notifications</string>
+    <string name="pollingDelaySelectedText">%d minutes</string>
+    <string name="pollingDelayDialogHeaderText">Délai de scrutation</string>
+    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
+    <string name="markAsRead">Marquer comme lu</string>
+    <string name="markAsUnread">Marquer comme non lu</string>
+    <string name="pinNotification">Épingler la notification</string>
+    <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
+    <string name="isRead">Lu</string>
+    <string name="isUnread">Non lu</string>
 </resources>

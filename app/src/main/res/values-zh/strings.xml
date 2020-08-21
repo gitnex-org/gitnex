@@ -36,7 +36,7 @@
     <string name="pageTitleNewFile">新建文件</string>
     <string name="pageTitleExplore">探索</string>
     <string name="pageTitleAdministration">Gitea 管理</string>
-    <string name="pageTitleUserAccounts">管理帐户 (测试中)</string>
+    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
     <string name="repoFullname">有组织的存储库</string>
@@ -63,9 +63,9 @@
     <string name="navigation_drawer_close">关闭导航栏</string>
     <string name="logo">登录到 Gitea</string>
     <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。 \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。</string>
-    <string name="malformedUrl">无法连接到主机，请检查您的URL或端口是否有任何错误。</string>
-    <string name="protocolError">非本地网络建议使用HTTPS安全协议进行访问。</string>
-    <string name="malformedJson">JSON 格式错误。服务器响应不成功。</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
+    <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
+    <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">未填写 Gitea访问地址</string>
     <string name="emptyFieldUsername">未填写 用户名</string>
     <string name="emptyFieldPassword">未填写 密码</string>
@@ -86,7 +86,7 @@
     <string name="orgCreatedError">出错了，请重试</string>
     <string name="orgExistsError">组织已存在</string>
     <string name="binaryFileError">尚不支持二进制文件。</string>
-    <string name="fileTooLarge">该文件超过了可能的差异行数的最大值</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
     <string name="processingText">处理中</string>
     <string name="search">搜索</string>
     <string name="close">关闭</string>
@@ -128,7 +128,7 @@
     <string name="commentEmptyError">请输入您的评论</string>
     <string name="commentSuccess">评论已发表</string>
     <string name="commentError">出错了，请重试</string>
-    <string name="featureDeprecated">该功能今后将被移除</string>
+    <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="generalImgContentText">头像</string>
     <string name="noDataMilestonesTab">未发现里程碑</string>
     <string name="commitAuthor">提交作者： %1$s</string>
@@ -223,7 +223,7 @@
     <string name="labelDeleteErrorText">出了错，请重试</string>
     <string name="noDataBranchesTab">未找到分支</string>
     <string name="alertDialogTokenRevokedTitle">授权错误</string>
-    <string name="alertDialogTokenRevokedMessage">看来访问令牌已被吊销，或者您不允许查看这些内容。 如果已吊销令牌，请注销并重新登录</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">取消</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">退出</string>
     <string name="labelDeleteTitle">删除\u0020</string>
@@ -273,6 +273,7 @@
     <string name="editCommentUpdatedText">评论已更新</string>
     <string name="issueCommentShare">分享评论</string>
     <string name="deleteCommentSuccess">已成功删除注释</string>
+    <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">添加/删除协作者</string>
@@ -289,8 +290,8 @@
     <string name="profileCreateNewEmailAddress">添加电子邮件地址</string>
     <string name="profileEmailButton">保存</string>
     <string name="profileEmailTitle">電子郵件地址</string>
-    <string name="emailAddedText">已成功添加新电子邮件。</string>
-    <string name="emailErrorEmpty">电子邮件地址是空的。</string>
+    <string name="emailAddedText">New email added successfully</string>
+    <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">电子邮件地址无效</string>
     <string name="emailErrorInUse">电子邮件地址已被使用</string>
     <string name="emailTypeText">主要</string>
@@ -350,9 +351,9 @@
     <string name="titleErrorEmpty">标题为空</string>
     <string name="releaseCreatedText">已创建新版本</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP 代码应该是数字。</string>
+    <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">OTP 代码(可选)</string>
-    <string name="otpMessage">如果启用了2FA，请输入otp代码</string>
+    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
     <string name="openWebRepo">在浏览器中打开</string>
     <string name="repoStargazersInMenu">已收藏</string>
     <string name="repoWatchersInMenu">已关注</string>
@@ -380,6 +381,7 @@
     <string name="newFileRequiredFieldNewBranchName">如果未选择当前分支，新分支名称不能为空</string>
     <string name="strFilter">筛选器</string>
     <string name="strSwitchBranches">分支</string>
+    <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">复制问题 URL</string>
     <string name="copyIssueUrlToastMsg">已复制链接</string>
     <string name="copyIssueCommentToastMsg">已复制评论到剪贴板</string>
@@ -415,6 +417,7 @@
     <string name="isOpen">开启</string>
     <string name="isClosed">已关闭</string>
     <string name="genericServerResponseError">目前我们无法访问服务器，请检查您的服务器状态，然后重试</string>
+    <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
     <string name="translateText">使用 Crowdin 翻译 GitNex</string>
     <string name="exploreTextBoxHint">探索仓库</string>
@@ -427,14 +430,14 @@
     <string name="watchRepositorySuccess">仓库已添加到关注列表</string>
     <string name="unWatchRepositorySuccess">仓库已从关注列表中删除</string>
     <string name="titleDrafts">草稿</string>
-    <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本(%1$s)。请更新到最新稳定版本。如果您继续，应用程序可能无法正常运行。</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
     <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
     <string name="versionUnknown">未检测到Gitea！</string>
     <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
     <string name="loginViaPassword">用户名 / 密码</string>
     <string name="loginMethodText">建议您使用更安全的令牌方式进行登录。</string>
     <string name="unauthorizedApiError">令牌可能已失效，请检查后重试</string>
-    <string name="loginTokenError">请输入正确的令牌</string>
+    <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFrok">已删除分叉</string>
     <string name="noDataPullRequests">未找到拉取请求</string>
     <string name="prCreator">创建者:\u0020</string>
@@ -449,7 +452,7 @@
     <string name="mergePullRequestButtonText">合并</string>
     <string name="deleteBranchAfterMerge">合并后删除分支</string>
     <string name="mergeNoteText">如果您没有被授权合并此拉取请求，合并可能失败。</string>
-    <string name="mergeInfoDisabledMessage">禁止合并按钮意味着有冲突或合并前有其他东西需要修复。</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
     <string name="deleteBranchForkInfo">该分支属于一个分叉存储库</string>
     <string name="mergeCommentText">合并评论</string>
     <string name="mergePRSuccessMsg">拉取请求已成功合并</string>
@@ -462,6 +465,12 @@
     <string name="waitLoadingDownloadFile">请等待文件加载到内存</string>
     <string name="downloadFileSaved">文件保存成功</string>
     <string name="excludeFilesInFileviewer">这个文件类型在文件查看器中不支持。从三个虚线菜单下载吗？</string>
+    <string name="deleteFile">Delete This File</string>
+    <string name="editFile">Edit This File</string>
+    <string name="deleteFileText">Delete %1$s</string>
+    <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
+    <string name="editFileText">Edit %1$s</string>
+    <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">大小</string>
     <string name="shareIssue">分享问题</string>
     <string name="sharePr">分享拉取请求</string>
@@ -473,7 +482,7 @@
     <!-- Memorizing Trust Manager -->
     <string name="mtm_notification">证书验证</string>
     <string name="mtm_accept_cert">接受未知证书？</string>
-    <string name="mtm_trust_anchor">服务器证书未由已知的证书颁发机构签名。</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
     <string name="mtm_cert_expired">服务器证书已过期。</string>
     <string name="mtm_accept_server_name">接受不匹配的服务器名称？</string>
     <string name="mtm_hostname_mismatch">服务器无法认证为\&quot;%s\&quot;。证书仅有效于：</string>
@@ -511,6 +520,13 @@
     <string name="reportsHintText">崩溃报告</string>
     <string name="archivedRepository">已存档</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
+    <string name="removeAccountPopupTitle">Remove Account</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
+    <string name="addNewAccount">New Account</string>
+    <string name="addNewAccountText">Add New Account</string>
+    <string name="accountAlreadyExistsError">Account already exists in the app</string>
+    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">通知</string>
     <string name="noDataNotifications">没有找到通知</string>
@@ -518,11 +534,11 @@
     <string name="notificationsPollingHeaderText">通知轮询延迟</string>
     <string name="pollingDelaySelectedText">%d 分钟</string>
     <string name="pollingDelayDialogHeaderText">选择轮询延迟</string>
-    <string name="pollingDelayDialogDescriptionText">选择GitNex尝试轮询新通知的分钟延迟。</string>
+    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">标记为已读</string>
     <string name="markAsUnread">标记为未读</string>
     <string name="pinNotification">固定通知</string>
-    <string name="markedNotificationsAsRead">成功将所有通知标记为已读。</string>
+    <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="isRead">已读</string>
     <string name="isUnread">未读</string>
 </resources>

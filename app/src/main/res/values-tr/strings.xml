@@ -36,7 +36,7 @@
     <string name="pageTitleNewFile">Yeni Dosya</string>
     <string name="pageTitleExplore">Keşfet</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleUserAccounts">Manage Accounts (beta)</string>
+    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <!-- page titles -->
     <string name="repoName">Demo deposu</string>
     <string name="repoFullname">ORG ile Depo</string>
@@ -63,9 +63,9 @@
     <string name="navigation_drawer_close">Gezinme Çekmecesini Kapat</string>
     <string name="logo">Gitea\'ya Giriş Yap</string>
     <string name="urlInfoTooltip">1- Doğru protokolü seçin (https veya http). \n2- Gitea url girin, örneğin: try.gitea.io. \n3- Hesabınız için 2FA\'yı etkinleştirdiyseniz, kodu OTP Kodu alanına girin. \n4- HTTP temel kimlik doğrulaması için, URL alanında KULLANICIADI@DOMAIN.COM adresini kullanın.</string>
-    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors.</string>
-    <string name="protocolError">Yerel ağ üzerinde test yapmadığınız sürece HTTP protokolünü kullanmanız önerilmez.</string>
-    <string name="malformedJson">Kötü biçimlendirilmiş JSON alındı. Sunucu yanıtı başarısız oldu.</string>
+    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
+    <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
+    <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">Örnek URL gerekli</string>
     <string name="emptyFieldUsername">Kullanıcı adı gerekli</string>
     <string name="emptyFieldPassword">Parola gerekli</string>
@@ -86,7 +86,7 @@
     <string name="orgCreatedError">Bir şeyler ters gitti lütfen tekrar deneyin</string>
     <string name="orgExistsError">Organizasyon zaten var</string>
     <string name="binaryFileError">Binary files are not supported yet.</string>
-    <string name="fileTooLarge">This file exceeds the maximum possible diff lines.</string>
+    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
     <string name="processingText">İşlem devam ediyor</string>
     <string name="search">Ara</string>
     <string name="close">Kapat</string>
@@ -128,7 +128,7 @@
     <string name="commentEmptyError">Lütfen yorumunuzu yazın</string>
     <string name="commentSuccess">Yorum gönderildi</string>
     <string name="commentError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
-    <string name="featureDeprecated">This function will be removed in the future.</string>
+    <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="generalImgContentText">Avatar</string>
     <string name="noDataMilestonesTab">Kilometre taşı bulunamadı</string>
     <string name="commitAuthor">İşleme yazarı: %1$s</string>
@@ -223,7 +223,7 @@
     <string name="labelDeleteErrorText">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="noDataBranchesTab">Dal bulunamadı</string>
     <string name="alertDialogTokenRevokedTitle">Yetkilendirme Hatası</string>
-    <string name="alertDialogTokenRevokedMessage">Erişim Jetonu iptal edilmiş gibi görünüyor VEYA bu içerikleri görmenize izin verilmiyor. Jeton iptal edilmesi durumunda, lütfen çıkış yapın ve tekrar giriş yapın</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">İptal</string>
     <string name="alertDialogTokenRevokedCopyPositiveButton">Çıkış Yap</string>
     <string name="labelDeleteTitle">Sil\u0020</string>
@@ -273,6 +273,7 @@
     <string name="editCommentUpdatedText">Yorum güncellendi</string>
     <string name="issueCommentShare">Share Comment</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">İşbirlikçi Ekle / Kaldır</string>
@@ -289,8 +290,8 @@
     <string name="profileCreateNewEmailAddress">E-posta Adresi Ekle</string>
     <string name="profileEmailButton">Kaydet</string>
     <string name="profileEmailTitle">E-posta Adresi</string>
-    <string name="emailAddedText">Yeni e-posta başarıyla eklendi.</string>
-    <string name="emailErrorEmpty">E-posta adresi boş.</string>
+    <string name="emailAddedText">New email added successfully</string>
+    <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">E-posta adresi geçerli değil</string>
     <string name="emailErrorInUse">E-posta adresi zaten kullanılıyor</string>
     <string name="emailTypeText">Birincil</string>
@@ -350,9 +351,9 @@
     <string name="titleErrorEmpty">Başlık boş</string>
     <string name="releaseCreatedText">Yeni sürüm oluşturuldu</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP kodu sayılardan oluşmalıdır.</string>
+    <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">OTP Kodu (İsteğe Bağlı)</string>
-    <string name="otpMessage">2FA etkinleştirilmişse otp kodunu girin</string>
+    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
     <string name="openWebRepo">Tarayıcıda Aç</string>
     <string name="repoStargazersInMenu">Yıldızlayanlar</string>
     <string name="repoWatchersInMenu">İzleyiciler</string>
@@ -380,6 +381,7 @@
     <string name="newFileRequiredFieldNewBranchName">Geçerli dal seçilmemişse yeni dal adı boş bırakılamaz</string>
     <string name="strFilter">Filtre</string>
     <string name="strSwitchBranches">Branches</string>
+    <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Konu Adresini Kopyala</string>
     <string name="copyIssueUrlToastMsg">URL panoya kopyalandı</string>
     <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
@@ -415,6 +417,7 @@
     <string name="isOpen">Open</string>
     <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
+    <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
     <string name="translateText">Crowdin\'de GitNex için Çeviri Yap</string>
     <string name="exploreTextBoxHint">Depoları keşfet</string>
@@ -427,14 +430,14 @@
     <string name="watchRepositorySuccess">Depo izleme listesine eklendi</string>
     <string name="unWatchRepositorySuccess">Depo izleme listesinden kaldırıldı</string>
     <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Gitea\'nin desteklenmeyen eski sürümü (%1$s) tespit edildi. Lütfen en son kararlı sürüme güncelleyin. Devam ederseniz, uygulama düzgün çalışmayabilir.</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
     <string name="versionUnsupportedNew">Yeni Gitea versiyonu tespit edildi! Lütfen GitNex\'i GÜNCELLEYİN!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Desteklenmeyen Gitea Versiyonu</string>
     <string name="loginViaPassword">Kullanıcı Adı / Şifre</string>
     <string name="loginMethodText">Hesabınıza erişmek için tercih ettiğiniz giriş yöntemini seçin. Jeton daha güvenli!</string>
     <string name="unauthorizedApiError">Örnek bir hata döndürdü - Yetkisiz. Kimlik bilgilerinizi kontrol edin ve tekrar deneyin</string>
-    <string name="loginTokenError">Lütfen doğru jetonu girin</string>
+    <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFrok">Deleted Fork</string>
     <string name="noDataPullRequests">Çekme isteği bulunamadı</string>
     <string name="prCreator">Yaratıcı :\u0020</string>
@@ -449,7 +452,7 @@
     <string name="mergePullRequestButtonText">Birleştir</string>
     <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Bu Çekme İsteğini birleştirme yetkiniz yoksa, birleştirme başarısız olabilir.</string>
-    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge.</string>
+    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
     <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
     <string name="mergeCommentText">Yorumu birleştir</string>
     <string name="mergePRSuccessMsg">Çekme İsteği başarıyla birleştirildi</string>
@@ -462,6 +465,12 @@
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="deleteFile">Delete This File</string>
+    <string name="editFile">Edit This File</string>
+    <string name="deleteFileText">Delete %1$s</string>
+    <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
+    <string name="editFileText">Edit %1$s</string>
+    <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
     <string name="sharePr">Share Pull Request</string>
@@ -473,7 +482,7 @@
     <!-- Memorizing Trust Manager -->
     <string name="mtm_notification">Certificate Verification</string>
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
+    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
     <string name="mtm_cert_expired">The server certificate is expired.</string>
     <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
     <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
@@ -511,6 +520,13 @@
     <string name="reportsHintText">Crash reports</string>
     <string name="archivedRepository">Archived</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
+    <string name="removeAccountPopupTitle">Remove Account</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
+    <string name="addNewAccount">New Account</string>
+    <string name="addNewAccountText">Add New Account</string>
+    <string name="accountAlreadyExistsError">Account already exists in the app</string>
+    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">No notifications found</string>
@@ -518,11 +534,11 @@
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
-    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications.</string>
+    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">Mark as Read</string>
     <string name="markAsUnread">Mark as Unread</string>
     <string name="pinNotification">Pin Notification</string>
-    <string name="markedNotificationsAsRead">Successfully marked all notifications as read.</string>
+    <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
 </resources>
