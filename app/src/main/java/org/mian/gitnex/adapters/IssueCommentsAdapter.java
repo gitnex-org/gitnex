@@ -109,6 +109,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				TextView commentMenuQuote = view.findViewById(R.id.commentMenuQuote);
 				TextView commentMenuCopy = view.findViewById(R.id.commentMenuCopy);
 				TextView commentMenuDelete = view.findViewById(R.id.commentMenuDelete);
+				TextView issueCommentCopyUrl = view.findViewById(R.id.issueCommentCopyUrl);
 
 				if(!loginUid.contentEquals(commenterUsername.getText())) {
 					commentMenuEdit.setVisibility(View.GONE);
@@ -151,6 +152,22 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				});
 
+				issueCommentCopyUrl.setOnClickListener(ediComment -> {
+
+					// comment Url
+					CharSequence commentUrl = htmlUrl.getText();
+
+					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
+					assert clipboard != null;
+
+					ClipData clip = ClipData.newPlainText(commentUrl, commentUrl);
+					clipboard.setPrimaryClip(clip);
+
+					dialog.dismiss();
+					Toasty.success(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
+
+				});
+
 				commentMenuQuote.setOnClickListener(v1 -> {
 
 					StringBuilder stringBuilder = new StringBuilder();
@@ -189,7 +206,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					clipboard.setPrimaryClip(clip);
 
 					dialog.dismiss();
-					Toasty.info(ctx, ctx.getString(R.string.copyIssueCommentToastMsg));
+					Toasty.success(ctx, ctx.getString(R.string.copyIssueCommentToastMsg));
 
 				});
 

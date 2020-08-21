@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/menuCopyText"
+                android:text="@string/copyCommentText"
                 android:drawableStart="@drawable/ic_copy"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
@@ -72,6 +72,18 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/issueCommentShare"
                 android:drawableStart="@drawable/ic_share"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/issueCommentCopyUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/genericCopyUrl"
+                android:drawableStart="@drawable/ic_link"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"

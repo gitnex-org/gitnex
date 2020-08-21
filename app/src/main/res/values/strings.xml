@@ -342,6 +342,7 @@
     <string name="editCommentUpdatedText">Comment updated</string>
     <string name="issueCommentShare">Share Comment</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
+    <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
 
     <!-- add collaborator -->
