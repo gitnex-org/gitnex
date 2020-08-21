@@ -18,9 +18,4 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="radioButtonsInDarkTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="colorControlNormal">@color/colorWhite</item>
-        <item name="colorControlActivated">@color/colorWhite</item>
-    </style>
-
 </resources>
