@@ -24,6 +24,7 @@ Option 1 - Download the source code, open it in Android Studio and build it ther
 Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`.
 
 ## Features
+- Multiple accounts support
 - Repositories / issues/ org list
 - File and directory browser
 - File viewer
@@ -86,9 +87,9 @@ Thanks to all the open source libraries, contributors and donators.
 - Apache/commons-io
 - Caverock/androidsvg
 - Droidsonroids.gif/android-gif-drawable
-- Barteksc/AndroidPdfViewer
-- Ge0rg/MemorizingTrustManager
-- Dimezis/BlurView
-- mikaelhg/urlbuilder
+- Barteksc/androidPdfViewer
+- Ge0rg/memorizingTrustManager
+- Dimezis/blurView
+- Mikaelhg/urlbuilder
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)

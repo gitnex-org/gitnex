@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.1.0-rc2" versioncode="308">
-        <change>Under development</change>
+    <release version="3.1.0" versioncode="310">
+        <change>Multiple accounts support</change>
+        <change>New Retro theme</change>
+        <change>Delete OR Edit a file</change>
+        <change>Repository forks</change>
+        <change>Markdown support in file viewer</change>
+        <change>New Progress indicators</change>
+        <change>Create drafts per edit and improve it's UI</change>
+        <change>Enhance App UI across all screens</change>
+        <change>Copy repo / org / issue comment url to clipboard</change>
     </release>
 
 </changelog>
