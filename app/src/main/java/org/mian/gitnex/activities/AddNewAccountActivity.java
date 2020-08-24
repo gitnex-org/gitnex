@@ -141,6 +141,8 @@ public class AddNewAccountActivity extends BaseActivity {
 
 					assert version != null;
 
+					tinyDB.putString("giteaVersion", version.getVersion());
+
 					try {
 						giteaVersion = new Version(version.getVersion());
 					}
