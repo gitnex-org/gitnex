@@ -280,6 +280,8 @@ public class LoginActivity extends BaseActivity {
 
 					assert version != null;
 
+					tinyDB.putString("giteaVersion", version.getVersion());
+
 					try {
 						gitea_version = new Version(version.getVersion());
 					}
