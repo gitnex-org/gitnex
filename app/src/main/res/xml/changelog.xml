@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.1.0" versioncode="310">
-        <change>Multiple accounts support</change>
-        <change>New Retro theme</change>
-        <change>Delete OR Edit a file</change>
-        <change>Repository forks</change>
-        <change>Markdown support in file viewer</change>
-        <change>New Progress indicators</change>
-        <change>Create drafts per edit and improve it's UI</change>
-        <change>Enhance App UI across all screens</change>
-        <change>Copy repo / org / issue comment url to clipboard</change>
+    <release version="3.1.1" versioncode="311">
+        <change>Bugfix: Fix crash on new login</change>
+        <change>Bugfix: Fix new drafts for issue comments</change>
     </release>
 
 </changelog>
