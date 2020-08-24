@@ -104,7 +104,12 @@ public class ReplyToIssueActivity extends BaseActivity {
 		}
 		else {
 
-			draftIdOnCreate = returnDraftId();
+			if(getIntent().getStringExtra("commentBody") != null) {
+				draftIdOnCreate = returnDraftId(getIntent().getStringExtra("commentBody"));
+			}
+			else {
+				draftIdOnCreate = returnDraftId("");
+			}
 		}
 
 		replyButton = findViewById(R.id.replyButton);
@@ -216,7 +221,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 	}
 
-	private long returnDraftId() {
+	private long returnDraftId(String draftText) {
 
 		TinyDB tinyDb = new TinyDB(getApplicationContext());
 
@@ -226,7 +231,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 		DraftsApi draftsApi = new DraftsApi(appCtx);
 
-		return draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, "", StaticGlobalVariables.draftTypeComment, "");
+		return draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, draftText, StaticGlobalVariables.draftTypeComment, "");
 
 	}
 
