@@ -127,7 +127,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		Call<GiteaVersion> callVersion;
 
-		callVersion = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithToken(loginToken);
+		callVersion = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithToken("token " + loginToken);
 
 		callVersion.enqueue(new Callback<GiteaVersion>() {
 
