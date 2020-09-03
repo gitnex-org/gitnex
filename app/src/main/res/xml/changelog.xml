@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.1.1" versioncode="311">
-        <change>Bugfix: Fix crash on new login</change>
-        <change>Bugfix: Fix new drafts for issue comments</change>
+    <release version="3.1.2" versioncode="312">
+        <change>Bugfix: Fix crash on token login</change>
+        <change>Security: Remove all data from log file except stack trace</change>
+        <change>Translation: Update translation strings</change>
     </release>
 
 </changelog>

@@ -1,0 +1,7 @@
+3.1.2
+
+Bugfix: Fix crash on token login
+Security: Remove all data from log file except stack trace
+Translation: Update translation strings
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
