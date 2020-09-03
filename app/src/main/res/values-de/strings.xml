@@ -468,7 +468,7 @@
     <string name="deleteFile">Diese Datei löschen</string>
     <string name="editFile">Diese Datei bearbeiten</string>
     <string name="deleteFileText">Lösche %1$s</string>
-    <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
+    <string name="deleteFileMessage">Datei zum Löschen durch Branch %1$s gesetzt</string>
     <string name="editFileText">Bearbeite %1$s</string>
     <string name="editFileMessage">Datei wurde von Branch %1$s geändert</string>
     <string name="sizeCopy">Größe</string>
@@ -482,7 +482,7 @@
     <!-- Memorizing Trust Manager -->
     <string name="mtm_notification">Zertifikatsüberprüfung</string>
     <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
+    <string name="mtm_trust_anchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert</string>
     <string name="mtm_cert_expired">Das Server-Zertifikat ist abgelaufen.</string>
     <string name="mtm_accept_server_name">Nicht übereinstimmender Hostname akzeptieren?</string>
     <string name="mtm_hostname_mismatch">Server konnte sich nicht als \&quot;%s\&quot; authentifizieren. Das Zertifikat ist nur gültig für:</string>
