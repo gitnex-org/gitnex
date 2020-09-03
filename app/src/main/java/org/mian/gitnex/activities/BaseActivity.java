@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import org.acra.ACRA;
 import org.acra.BuildConfig;
+import org.acra.annotation.AcraCore;
 import org.acra.annotation.AcraNotification;
 import org.acra.config.CoreConfigurationBuilder;
 import org.acra.config.LimiterConfigurationBuilder;
@@ -16,6 +17,7 @@ import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.notifications.NotificationsMaster;
+import static org.acra.ReportField.*;
 
 /**
  * Author M M Arif
@@ -25,6 +27,7 @@ import org.mian.gitnex.notifications.NotificationsMaster;
 		resTitle = R.string.crashTitle,
 		resChannelName = R.string.setCrashReports,
 		resText = R.string.crashMessage)
+@AcraCore(reportContent = { ANDROID_VERSION, PHONE_MODEL, STACK_TRACE })
 
 public abstract class BaseActivity extends AppCompatActivity {
 
