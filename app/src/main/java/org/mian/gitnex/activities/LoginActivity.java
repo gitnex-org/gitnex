@@ -256,7 +256,7 @@ public class LoginActivity extends BaseActivity {
 
 		if(!loginToken.equals("")) {
 
-			callVersion = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithToken(loginToken);
+			callVersion = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithToken("token " + loginToken);
 		}
 		else {
 
