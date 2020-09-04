@@ -42,7 +42,8 @@ public class AddNewAccountActivity extends BaseActivity {
 	private enum Protocol {HTTPS, HTTP}
 
 	@Override
-	protected int getLayoutResourceId(){
+	protected int getLayoutResourceId() {
+
 		return R.layout.activity_add_new_account;
 	}
 
@@ -62,12 +63,13 @@ public class AddNewAccountActivity extends BaseActivity {
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);
 
-		ArrayAdapter<AddNewAccountActivity.Protocol> adapterProtocols = new ArrayAdapter<>(AddNewAccountActivity.this, R.layout.spinner_item, AddNewAccountActivity.Protocol.values());
+		ArrayAdapter<AddNewAccountActivity.Protocol> adapterProtocols = new ArrayAdapter<>(AddNewAccountActivity.this, R.layout.spinner_item,
+			AddNewAccountActivity.Protocol.values());
 		adapterProtocols.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
 		viewBinding.protocolSpinner.setAdapter(adapterProtocols);
 
-		viewBinding.addNewAccount.setOnClickListener(login  -> {
+		viewBinding.addNewAccount.setOnClickListener(login -> {
 
 			boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -80,7 +82,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 				processLogin();
 			}
-		 });
+		});
 
 	}
 
@@ -137,20 +139,15 @@ public class AddNewAccountActivity extends BaseActivity {
 				if(responseVersion.code() == 200) {
 
 					GiteaVersion version = responseVersion.body();
-					Version giteaVersion;
 
 					assert version != null;
-
-					tinyDB.putString("giteaVersion", version.getVersion());
-
-					try {
-						giteaVersion = new Version(version.getVersion());
-					}
-					catch(Exception e) {
-
+					if(!Version.valid(version.getVersion())) {
 						Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
 						return;
 					}
+
+					tinyDB.putString("giteaVersion", version.getVersion());
+					Version giteaVersion = new Version(version.getVersion());
 
 					if(giteaVersion.less(getString(R.string.versionLow))) {
 
@@ -161,7 +158,6 @@ public class AddNewAccountActivity extends BaseActivity {
 						alertDialogBuilder.setNegativeButton(getString(R.string.cancelButton), (dialog, which) -> {
 
 							dialog.dismiss();
-							//enableProcessButton();
 						});
 
 						alertDialogBuilder.setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
@@ -241,12 +237,12 @@ public class AddNewAccountActivity extends BaseActivity {
 
 					case 401:
 
-						Toasty.error(ctx,getResources().getString(R.string.unauthorizedApiError));
+						Toasty.error(ctx, getResources().getString(R.string.unauthorizedApiError));
 						break;
 
 					default:
 
-						Toasty.error(ctx,getResources().getString(R.string.genericApiStatusError) + response.code());
+						Toasty.error(ctx, getResources().getString(R.string.genericApiStatusError) + response.code());
 				}
 
 			}
@@ -255,7 +251,7 @@ public class AddNewAccountActivity extends BaseActivity {
 			public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
 
 				Log.e("onFailure", t.toString());
-				Toasty.error(ctx,getResources().getString(R.string.genericError));
+				Toasty.error(ctx, getResources().getString(R.string.genericError));
 			}
 		});
 

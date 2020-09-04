@@ -25,6 +25,21 @@ public class Version {
 	}
 
 	/**
+	 * valid return true if string is a valid version
+	 *
+	 * @param value
+	 * @return
+	 */
+	public static boolean valid(String value) {
+
+		if(value == null) {
+			return false;
+		}
+		final Pattern pattern_valid = Pattern.compile("^[v,V]?(\\d+)+(\\.(\\d+))*([_,\\-,+][\\w,\\d,_,\\-,+]*)?$");
+		return pattern_valid.matcher(value).find();
+	}
+
+	/**
 	 * init parse and store values for other functions of an Version instance
 	 * it use the raw variable as base
 	 *
@@ -32,10 +47,9 @@ public class Version {
 	 */
 	private void init() {
 
-		final Pattern pattern_valid = Pattern.compile("^[v,V]?(\\d+)+(\\.(\\d+))*([_,\\-,+][\\w,\\d,_,\\-,+]*)?$");
 		final Pattern pattern_number_dot_number = Pattern.compile("^\\d+(\\.(\\d)+)*");
 
-		if(!pattern_valid.matcher(raw).find()) {
+		if(!valid(raw)) {
 			throw new IllegalArgumentException("Invalid version format");
 		}
 

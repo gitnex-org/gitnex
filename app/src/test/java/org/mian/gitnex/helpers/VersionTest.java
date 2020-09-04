@@ -119,4 +119,25 @@ public class VersionTest {
 
 	}
 
+	@Test
+	public void valid() {
+
+		assertTrue(Version.valid("1.12"));
+		assertTrue(Version.valid("1.12.0+dev-211-g316db0fe7"));
+		assertTrue(Version.valid("v2"));
+		assertTrue(Version.valid("1.12.1-wowowow"));
+		assertTrue(Version.valid("0.2.4"));
+		assertTrue(Version.valid("1"));
+		assertTrue(Version.valid("1.12.0"));
+
+		assertFalse(Version.valid("fdsa21.22.-"));
+		assertFalse(Version.valid("weo2.2.2"));
+		assertFalse(Version.valid(""));
+		assertFalse(Version.valid(" "));
+		assertFalse(Version.valid("\t"));
+		assertFalse(Version.valid("abc"));
+		assertFalse(Version.valid("version1"));
+		assertFalse(Version.valid(null));
+	}
+
 }

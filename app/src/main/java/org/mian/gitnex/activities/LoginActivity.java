@@ -276,21 +276,16 @@ public class LoginActivity extends BaseActivity {
 				if(responseVersion.code() == 200) {
 
 					GiteaVersion version = responseVersion.body();
-					Version gitea_version;
 
 					assert version != null;
-
-					tinyDB.putString("giteaVersion", version.getVersion());
-
-					try {
-						gitea_version = new Version(version.getVersion());
-					}
-					catch(Exception e) {
-
+					if(!Version.valid(version.getVersion())) {
 						Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
 						enableProcessButton();
 						return;
 					}
+
+					tinyDB.putString("giteaVersion", version.getVersion());
+					Version gitea_version = new Version(version.getVersion());
 
 					if(gitea_version.less(getString(R.string.versionLow))) {
 
@@ -572,7 +567,8 @@ public class LoginActivity extends BaseActivity {
 
 										if(checkAccount == 0) {
 
-											accountId = userAccountsApi.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), newToken.getSha1(), "");
+											accountId = userAccountsApi
+												.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), newToken.getSha1(), "");
 											tinyDB.putInt("currentActiveAccountId", (int) accountId);
 										}
 										else {
