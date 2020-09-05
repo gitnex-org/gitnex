@@ -579,7 +579,7 @@
     <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
-    <string name="commitTitle">Branch Commits</string>
+    <string name="commitTitle">Commits</string>
     <string name="commitCommittedBy">Committed by %1$s</string>
     <string name="viewCommits">View Commits</string>
     <string name="changelogTitle" translatable="false">Changelog</string>

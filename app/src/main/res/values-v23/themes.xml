@@ -33,6 +33,8 @@
         <item name="fabColor">@color/darkGreen</item>
         <item name="iconsColor">@color/darkGreen</item>
         <item name="pagerTabIndicatorColor">@color/darkGreen</item>
+        <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
+        <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
     </style>
     <!-- Light theme -->
 
@@ -69,6 +71,8 @@
         <item name="fabColor">@color/retroThemeColorPrimary</item>
         <item name="iconsColor">@color/retroThemeColorPrimary</item>
         <item name="pagerTabIndicatorColor">@color/retroThemeColorPrimary</item>
+        <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
+        <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
     </style>
     <!-- Retro theme -->
 

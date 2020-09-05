@@ -30,7 +30,6 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 import moe.feng.common.view.breadcrumbs.BreadcrumbsView;
 import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
@@ -111,7 +110,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		mBreadcrumbsView = v.findViewById(R.id.breadcrumbs_view);
 		mBreadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
 
-		((RepoDetailActivity) Objects.requireNonNull(getActivity())).setFragmentRefreshListenerFiles(repoBranch -> {
+		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerFiles(repoBranch -> {
 
 			fileStructure.setText("");
 			ref = repoBranch;
@@ -198,7 +197,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 			intent.putExtra("singleFileName", fileName);
 		}
 
-		Objects.requireNonNull(getContext()).startActivity(intent);
+		requireContext().startActivity(intent);
 	}
 
 	private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo, String ref) {
@@ -263,6 +262,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 	@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
+		menu.clear();
 		inflater.inflate(R.menu.search_menu, menu);
 		inflater.inflate(R.menu.files_switch_branches_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);

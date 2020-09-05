@@ -33,7 +33,6 @@ import org.mian.gitnex.fragments.BottomSheetIssuesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetMilestonesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetPullRequestFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetRepoFragment;
-import org.mian.gitnex.fragments.BranchesFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
@@ -163,7 +162,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 		}
 
 		// Only show collaborators tab, if you have permission to
-		View collaboratorTab = viewGroup.getChildAt(8);
+		View collaboratorTab = viewGroup.getChildAt(7);
 
 		if(tinyDB.getBoolean("isRepoAdmin") || new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
@@ -229,8 +228,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 				if(textViewBadgeRelease.getText() != "") { // only show if API returned a number
 
-					Objects.requireNonNull(tabLayout.getTabAt(5)).setCustomView(tabHeader6);
-					TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(5);
+					Objects.requireNonNull(tabLayout.getTabAt(4)).setCustomView(tabHeader6);
+					TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(4);
 					assert tabOpenRelease != null; // FIXME This should be cleaned up
 					TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
 					openReleaseTabView.setTextColor(textColor);
@@ -298,6 +297,12 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 			case R.id.switchBranches:
 				chooseBranch();
+				return true;
+
+			case R.id.branchCommits:
+				Intent intent = new Intent(ctx, CommitsActivity.class);
+				intent.putExtra("branchName", tinyDB.getString("repoBranch"));
+				ctx.startActivity(intent);
 				return true;
 
 			default:
@@ -490,20 +495,17 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 					fragment = new PullRequestsFragment();
 					break;
 
-				case 4: // Branches
-					return BranchesFragment.newInstance(repositoryOwner, repositoryName);
-
-				case 5: // Releases
+				case 4: // Releases
 					return ReleasesFragment.newInstance(repositoryOwner, repositoryName);
 
-				case 6: // Milestones
+				case 5: // Milestones
 					fragment = new MilestonesFragment();
 					break;
 
-				case 7: // Labels
+				case 6: // Labels
 					return LabelsFragment.newInstance(repositoryOwner, repositoryName);
 
-				case 8: // Collaborators
+				case 7: // Collaborators
 					return CollaboratorsFragment.newInstance(repositoryOwner, repositoryName);
 
 			}
