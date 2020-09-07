@@ -1,6 +1,5 @@
 package org.mian.gitnex.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,32 +24,33 @@ import io.mikael.urlbuilder.UrlBuilder;
 public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 
 	private final Context mCtx;
-	private final List<UserAccount> userAccountsList;
+	private final TinyDB tinyDB;
+	private final List<UserAccount> userAccounts;
 
-	public UserAccountsListDialogAdapter(@NonNull Context mCtx, int resource, @NonNull List<UserAccount> objects) {
+	public UserAccountsListDialogAdapter(@NonNull Context mCtx, int resource, @NonNull List<UserAccount> userAccounts) {
 
-		super(mCtx, resource, objects);
-		userAccountsList = objects;
+		super(mCtx, resource, userAccounts);
+
+		tinyDB = new TinyDB(mCtx);
+		this.userAccounts = userAccounts;
 		this.mCtx = mCtx;
+
 	}
 
-	@SuppressLint("ViewHolder")
 	@NonNull
 	@Override
 	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-		LayoutInflater inflater = (LayoutInflater) mCtx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		assert inflater != null;
-		View rowView = inflater.inflate(R.layout.custom_user_accounts_list, parent, false);
+		if(convertView == null) {
+			convertView = LayoutInflater.from(mCtx).inflate(R.layout.custom_user_accounts_list, parent, false);
+		}
 
-		TinyDB tinyDB = new TinyDB(mCtx);
+		ImageView profileImage = convertView.findViewById(R.id.profileImage);
+		TextView userName = convertView.findViewById(R.id.userName);
+		TextView accountUrl = convertView.findViewById(R.id.accountUrl);
+		ImageView activeAccount = convertView.findViewById(R.id.activeAccount);
 
-		ImageView profileImage = rowView.findViewById(R.id.profileImage);
-		TextView userName = rowView.findViewById(R.id.userName);
-		TextView accountUrl = rowView.findViewById(R.id.accountUrl);
-		ImageView activeAccount = rowView.findViewById(R.id.activeAccount);
-
-		UserAccount currentItem = userAccountsList.get(position);
+		UserAccount currentItem = userAccounts.get(position);
 
 		String url = UrlBuilder.fromString(currentItem.getInstanceUrl())
 			.withPath("/")
@@ -66,7 +66,8 @@ public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 		PicassoService
 			.getInstance(mCtx).get().load(url + "img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(profileImage);
 
-		return rowView;
+		return convertView;
+
 	}
 
 }
