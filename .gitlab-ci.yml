@@ -7,6 +7,9 @@ stages:
 test:
   image: nextcloudci/android:android-49
   stage: test
+  only:
+    - master
+    - tags
   script:
     - ./gradlew test
 
@@ -15,6 +18,7 @@ build:
   stage: build
   only:
     - master
+    - tags
   script:
     - ./gradlew build
   artifacts:
@@ -27,6 +31,7 @@ sign:
   stage: sign
   only:
     - master
+    - tags
   variables:
     OUTPUT: "signed.apk"
     GITEA: "https://gitea.com"
