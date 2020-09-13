@@ -199,9 +199,9 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         }
 
         int[] integers;
-        if (!newIssueLabelsIdHolderForm.equals("")) {
+        if (!newIssueLabelsIdHolderForm.equals("") && !newIssueLabelsIdHolderForm.equals("[]")) {
 
-            String[] items = newIssueLabelsIdHolderForm.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
+            String[] items = newIssueLabelsIdHolderForm.replaceAll("\\[", "").replaceAll("]", "").replaceAll("\\s", "").split(",");
             integers = new int[items.length];
             for (int i = 0; i < integers.length; i++) {
                 integers[i] = Integer.parseInt(items[i]);
