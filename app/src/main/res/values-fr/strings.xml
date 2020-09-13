@@ -476,7 +476,7 @@
     <string name="sharePr">Partager la demande de tirage</string>
     <string name="shareRepository">Partager le dépôt</string>
     <string name="createRepository">Créer un dépôt</string>
-    <string name="commitTitle">Révisions de la branche</string>
+    <string name="commitTitle">Révisions</string>
     <string name="commitCommittedBy">Révision de %1$s</string>
     <string name="viewCommits">Voir révisions</string>
     <!-- Memorizing Trust Manager -->
@@ -541,4 +541,23 @@
     <string name="markedNotificationsAsRead">Les notifications ont été marquées comme lues</string>
     <string name="isRead">Lu</string>
     <string name="isUnread">Non lu</string>
+    <string name="repoSettingsTitle">Paramètres du dépôt</string>
+    <string name="repoSettingsEditProperties">Modifier les propriétés</string>
+    <string name="repoSettingsDelete">Supprimer le dépôt</string>
+    <string name="repoSettingsDeleteHint">Attention, cette opération est IRRÉVERSIBLE !</string>
+    <string name="repoPropertiesTemplate">Définir comme modèle</string>
+    <string name="repoPropertiesEnableIssues">Autoriser les tickets</string>
+    <string name="repoPropertiesExternalIssuesUrl">URL externe des tickets</string>
+    <string name="repoPropertiesEnableWiki">Activer le Wiki</string>
+    <string name="repoPropertiesExternalWikiUrl">URL externe du Wiki</string>
+    <string name="repoPropertiesEnablePr">Autoriser les requêtes de tirage</string>
+    <string name="repoPropertiesEnableTimeTracker">Autoriser l’horodatage</string>
+    <string name="repoPropertiesEnableMergeCommits">Autoriser la fusion des révisions</string>
+    <string name="repoPropertiesEnableRebase">Autoriser le rebasage</string>
+    <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
+    <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
+    <string name="repoPropertiesSaveSuccess">Propriétés du dépôt mises à jour</string>
+    <string name="repoSettingsDeleteDescription">Cette opération est IRRÉVERSIBLE.\nSoyez conscient que le dépôt et son contenu (code, tickets, commentaires, wiki, contributions…) seront définitivement supprimés.\n\nEntrez le nom du dépôt afin de confirmer cette opération.</string>
+    <string name="repoSettingsDeleteError">Nom du dépôt incorrect</string>
+    <string name="repoDeletionSuccess">Dépôt supprimé</string>
 </resources>

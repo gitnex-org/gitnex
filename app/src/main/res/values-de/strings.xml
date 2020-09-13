@@ -476,7 +476,7 @@
     <string name="sharePr">Pull-Request teilen</string>
     <string name="shareRepository">Repository teilen</string>
     <string name="createRepository">Repository erstellen</string>
-    <string name="commitTitle">Branch-Commits</string>
+    <string name="commitTitle">Commits</string>
     <string name="commitCommittedBy">Committed von %1$s</string>
     <string name="viewCommits">Commits anzeigen</string>
     <!-- Memorizing Trust Manager -->
@@ -541,4 +541,23 @@
     <string name="markedNotificationsAsRead">Alle Benachrichtigungen erfolgreich als gelesen markiert</string>
     <string name="isRead">Gelesen</string>
     <string name="isUnread">Ungelesen</string>
+    <string name="repoSettingsTitle">Repository Einstellungen</string>
+    <string name="repoSettingsEditProperties">Eigenschaften bearbeiten</string>
+    <string name="repoSettingsDelete">Repository löschen</string>
+    <string name="repoSettingsDeleteHint">Sei vorsichtig, diese Operation kann NICHT rückgängig gemacht werden!</string>
+    <string name="repoPropertiesTemplate">Als Vorlage speichern</string>
+    <string name="repoPropertiesEnableIssues">Issues aktivieren</string>
+    <string name="repoPropertiesExternalIssuesUrl">Url für externes Ticket Systems</string>
+    <string name="repoPropertiesEnableWiki">Wiki aktivieren</string>
+    <string name="repoPropertiesExternalWikiUrl">Externe Wiki Url</string>
+    <string name="repoPropertiesEnablePr">Pull Requests aktivieren</string>
+    <string name="repoPropertiesEnableTimeTracker">Time Tracker aktivieren</string>
+    <string name="repoPropertiesEnableMergeCommits">Merge Commits aktivieren</string>
+    <string name="repoPropertiesEnableRebase">Rebase aktivieren</string>
+    <string name="repoPropertiesEnableSquash">Squash und Merge aktivieren</string>
+    <string name="repoPropertiesEnableForceMerge">Rebase mit Merge Commits aktivieren (&#8212;&#8212;no-ff)</string>
+    <string name="repoPropertiesSaveSuccess">Repository-Eigenschaften erfolgreich aktualisiert</string>
+    <string name="repoSettingsDeleteDescription">Vor dem Löschen zu erfahrende Dinge:\n\n- Dieser Vorgang kann NICHT rückgängig gemacht werden.\n- Dieser Vorgang wird das Projektarchiv dauerhaft löschen, einschließlich Code, Issues, Kommentare, Wiki-Daten und Einstellungen.\n\nGib den Repository-Namen als Bestätigung ein</string>
+    <string name="repoSettingsDeleteError">Repository-Name stimmt nicht überein</string>
+    <string name="repoDeletionSuccess">Repository erfolgreich gelöscht</string>
 </resources>

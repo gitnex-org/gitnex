@@ -22,8 +22,8 @@ public class SettingsTranslationActivity extends BaseActivity {
 	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
-	private static String[] langList = {"English", "Arabic", "Chinese", "Finnish", "French", "German", "Italian", "Latvian", "Persian", "Polish", "Portuguese/Brazilian", "Russian", "Serbian", "Spanish", "Turkish",
-			"Ukrainian"};
+	private static String[] langList = {"English", "Arabic", "Chinese", "Czech", "Finnish", "French", "German", "Italian", "Latvian", "Persian",
+		"Polish", "Portuguese/Brazilian", "Russian", "Serbian", "Spanish", "Turkish", "Ukrainian"};
 	private static int langSelectedChoice = 0;
 
 	@Override
@@ -95,6 +95,9 @@ public class SettingsTranslationActivity extends BaseActivity {
 					case "Chinese":
 						tinyDb.putString("locale", "zh");
 						break;
+					case "Czech":
+						tinyDb.putString("locale", "cs");
+						break;
 					case "Finnish":
 						tinyDb.putString("locale", "fi");
 						break;
@@ -157,6 +160,7 @@ public class SettingsTranslationActivity extends BaseActivity {
 	}
 
 	private void initCloseListener() {
+
 		onClickListener = view -> finish();
 	}
 

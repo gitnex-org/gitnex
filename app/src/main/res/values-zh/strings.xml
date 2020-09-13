@@ -476,7 +476,7 @@
     <string name="sharePr">分享拉取请求</string>
     <string name="shareRepository">共享存储库</string>
     <string name="createRepository">创建仓库</string>
-    <string name="commitTitle">分支提交</string>
+    <string name="commitTitle">Commits</string>
     <string name="commitCommittedBy">由 %1$s提交</string>
     <string name="viewCommits">查看提交</string>
     <!-- Memorizing Trust Manager -->
@@ -541,4 +541,23 @@
     <string name="markedNotificationsAsRead">成功将所有通知标记为已读</string>
     <string name="isRead">已读</string>
     <string name="isUnread">未读</string>
+    <string name="repoSettingsTitle">Repository Settings</string>
+    <string name="repoSettingsEditProperties">Edit Properties</string>
+    <string name="repoSettingsDelete">Delete Repository</string>
+    <string name="repoSettingsDeleteHint">Be careful, this operation CANNOT be undone!</string>
+    <string name="repoPropertiesTemplate">Set as Template</string>
+    <string name="repoPropertiesEnableIssues">Enable Issues</string>
+    <string name="repoPropertiesExternalIssuesUrl">External Issue Tracker Url</string>
+    <string name="repoPropertiesEnableWiki">Enable Wiki</string>
+    <string name="repoPropertiesExternalWikiUrl">External Wiki Url</string>
+    <string name="repoPropertiesEnablePr">Enable Pull Requests</string>
+    <string name="repoPropertiesEnableTimeTracker">Enable Time Tracker</string>
+    <string name="repoPropertiesEnableMergeCommits">Enable Merge Commits</string>
+    <string name="repoPropertiesEnableRebase">Enable Rebase</string>
+    <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
+    <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
+    <string name="repoPropertiesSaveSuccess">Repository properties updated successfully</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
+    <string name="repoSettingsDeleteError">Repository name does not match</string>
+    <string name="repoDeletionSuccess">Repository deleted successfully</string>
 </resources>
