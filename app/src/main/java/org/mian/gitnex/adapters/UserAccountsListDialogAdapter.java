@@ -62,6 +62,9 @@ public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 		if(tinyDB.getInt("currentActiveAccountId") == currentItem.getAccountId()) {
 			activeAccount.setVisibility(View.VISIBLE);
 		}
+		else {
+			activeAccount.setVisibility(View.GONE);
+		}
 
 		PicassoService
 			.getInstance(mCtx).get().load(url + "img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(profileImage);
