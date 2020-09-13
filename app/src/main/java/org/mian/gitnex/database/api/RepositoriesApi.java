@@ -127,6 +127,11 @@ public class RepositoriesApi {
 		return repository;
 	}
 
+	public static void updateRepositoryOwnerAndName(String repositoryOwner, String repositoryName, int repositoryId) {
+
+		new Thread(() -> repositoriesDao.updateRepositoryOwnerAndName(repositoryOwner, repositoryName, repositoryId)).start();
+	}
+
 	public static void deleteRepositoriesByAccount(final int repoAccountId) {
 
 		new Thread(() -> repositoriesDao.deleteRepositoriesByAccount(repoAccountId)).start();

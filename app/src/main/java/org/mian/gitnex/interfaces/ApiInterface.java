@@ -127,6 +127,12 @@ public interface ApiInterface {
     @GET("repos/{owner}/{repo}") // get repo information
     Call<UserRepositories> getUserRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
+	@PATCH("repos/{owner}/{repo}") // patch/update repository properties
+	Call<UserRepositories> updateRepositoryProperties(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body UserRepositories jsonStr);
+
+	@DELETE("repos/{owner}/{repo}") // delete repository
+	Call<JsonElement> deleteRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
     @GET("repos/{owner}/{repo}/issues") // get issues by repo
     Call<List<Issues>> getIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("limit") int limit, @Query("type") String requestType, @Query("state") String issueState);
 

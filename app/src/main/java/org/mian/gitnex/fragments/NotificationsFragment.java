@@ -337,7 +337,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 			tinyDB.putString("issueNumber", issueUrl.substring(issueUrl.lastIndexOf("/") + 1));
 			tinyDB.putString("issueType", notificationThread.getSubject().getType());
-			tinyDB.putString("repoFullName", notificationThread.getRepository().getFullname());
+			tinyDB.putString("repoFullName", notificationThread.getRepository().getFullName());
 
 			startActivity(intent);
 

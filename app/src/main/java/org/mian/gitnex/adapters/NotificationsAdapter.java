@@ -85,7 +85,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 			.getString(R.string.hash) + url.substring(url.lastIndexOf("/") + 1) + "</font>";
 
 		holder.subject.setText(Html.fromHtml(subjectId + " " + notificationThread.getSubject().getTitle()));
-		holder.repository.setText(notificationThread.getRepository().getFullname());
+		holder.repository.setText(notificationThread.getRepository().getFullName());
 
 		if(notificationThread.isPinned()) {
 			holder.pinned.setVisibility(View.VISIBLE);
@@ -120,7 +120,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
 			onNotificationClickedListener.onNotificationClicked(notificationThread);
 
-			String[] parts = notificationThread.getRepository().getFullname().split("/");
+			String[] parts = notificationThread.getRepository().getFullName().split("/");
 			final String repoOwner = parts[0];
 			final String repoName = parts[1];
 

@@ -286,7 +286,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 			holder.repoDescription.setVisibility(View.VISIBLE);
 			holder.repoDescription.setText(currentItem.getDescription());
 		}
-		holder.fullName.setText(currentItem.getFullname());
+		holder.fullName.setText(currentItem.getFullName());
 		if(currentItem.getPrivateFlag()) {
 			holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock);
 			holder.repoType.setText(R.string.strPrivate);

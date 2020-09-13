@@ -402,6 +402,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 				}
 				break;
 
+			case "repoSettings":
+				startActivity(new Intent(RepoDetailActivity.this, RepositorySettingsActivity.class));
+				break;
+
 		}
 
 	}

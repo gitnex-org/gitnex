@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
@@ -35,7 +34,6 @@ import org.mian.gitnex.models.UserRepositories;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.core.CorePlugin;
@@ -44,7 +42,6 @@ import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.ext.tables.TablePlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
 import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.AsyncDrawable;
 import io.noties.markwon.image.DefaultMediaDecoder;
 import io.noties.markwon.image.ImageItem;
 import io.noties.markwon.image.ImagesPlugin;
@@ -164,17 +161,9 @@ public class RepoInfoFragment extends Fragment {
 			toggleExpandViewMeta();
 		}
 
-		fileContentsFrameHeader.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				toggleExpandView();
-			}
-		});
+		fileContentsFrameHeader.setOnClickListener(v1 -> toggleExpandView());
 
-		repoMetaFrameHeader.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				toggleExpandViewMeta();
-			}
-		});
+		repoMetaFrameHeader.setOnClickListener(v12 -> toggleExpandViewMeta());
 
 		repoMetaStarsFrame.setOnClickListener(metaStars -> {
 
@@ -404,46 +393,37 @@ public class RepoInfoFragment extends Fragment {
 
 					if (response.code() == 200) {
 
-						final Markwon markwon = Markwon.builder(Objects.requireNonNull(getContext()))
+						final Markwon markwon = Markwon.builder(requireContext())
 							.usePlugin(CorePlugin.create())
-							.usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-								@Override
-								public void configureImages(@NonNull ImagesPlugin plugin) {
-									plugin.addSchemeHandler(new SchemeHandler() {
-										@NonNull
-										@Override
-										public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
+							.usePlugin(ImagesPlugin.create(plugin -> {
+								plugin.addSchemeHandler(new SchemeHandler() {
+									@NonNull
+									@Override
+									public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
 
-											final int resourceId = getContext().getResources().getIdentifier(
-													raw.substring("drawable://".length()),
-													"drawable",
-													getContext().getPackageName());
+										final int resourceId = requireContext().getResources().getIdentifier(
+												raw.substring("drawable://".length()),
+												"drawable",
+												requireContext().getPackageName());
 
-											final Drawable drawable = getContext().getDrawable(resourceId);
+										final Drawable drawable = requireContext().getDrawable(resourceId);
 
-											assert drawable != null;
-											return ImageItem.withResult(drawable);
-										}
+										assert drawable != null;
+										return ImageItem.withResult(drawable);
+									}
 
-										@NonNull
-										@Override
-										public Collection<String> supportedSchemes() {
-											return Collections.singleton("drawable");
-										}
-									});
-									plugin.placeholderProvider(new ImagesPlugin.PlaceholderProvider() {
-										@Nullable
-										@Override
-										public Drawable providePlaceholder(@NonNull AsyncDrawable drawable) {
-											return null;
-										}
-									});
-									plugin.addMediaDecoder(GifMediaDecoder.create(false));
-									plugin.addMediaDecoder(SvgMediaDecoder.create(getContext().getResources()));
-									plugin.addMediaDecoder(SvgMediaDecoder.create());
-									plugin.defaultMediaDecoder(DefaultMediaDecoder.create(getContext().getResources()));
-									plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-								}
+									@NonNull
+									@Override
+									public Collection<String> supportedSchemes() {
+										return Collections.singleton("drawable");
+									}
+								});
+								plugin.placeholderProvider(drawable -> null);
+								plugin.addMediaDecoder(GifMediaDecoder.create(false));
+								plugin.addMediaDecoder(SvgMediaDecoder.create(requireContext().getResources()));
+								plugin.addMediaDecoder(SvgMediaDecoder.create());
+								plugin.defaultMediaDecoder(DefaultMediaDecoder.create(requireContext().getResources()));
+								plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
 							}))
 							.usePlugin(new AbstractMarkwonPlugin() {
 								@Override
@@ -454,8 +434,8 @@ public class RepoInfoFragment extends Fragment {
 											.linkColor(getResources().getColor(R.color.lightBlue));
 								}
 							})
-							.usePlugin(TablePlugin.create(getContext()))
-							.usePlugin(TaskListPlugin.create(getContext()))
+							.usePlugin(TablePlugin.create(requireContext()))
+							.usePlugin(TaskListPlugin.create(requireContext()))
 							.usePlugin(HtmlPlugin.create())
 							.usePlugin(StrikethroughPlugin.create())
 							.usePlugin(LinkifyPlugin.create())

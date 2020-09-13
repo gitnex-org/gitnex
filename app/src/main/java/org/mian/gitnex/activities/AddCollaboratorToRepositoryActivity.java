@@ -144,5 +144,4 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
         onClickListener = view -> finish();
     }
 
-
 }

@@ -41,6 +41,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
         TextView unWatchRepository = v.findViewById(R.id.unWatchRepository);
         TextView shareRepository = v.findViewById(R.id.shareRepository);
 	    TextView copyRepoUrl = v.findViewById(R.id.copyRepoUrl);
+	    View repoSettingsDivider = v.findViewById(R.id.repoSettingsDivider);
+	    TextView repoSettings = v.findViewById(R.id.repoSettings);
 
         createLabel.setOnClickListener(v112 -> {
 
@@ -49,6 +51,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
         });
 
         if(tinyDb.getBoolean("hasIssues")) {
+
             createIssue.setVisibility(View.VISIBLE);
             createIssue.setOnClickListener(v12 -> {
 
@@ -57,6 +60,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
             });
         }
         else {
+
             createIssue.setVisibility(View.GONE);
         }
 
@@ -67,13 +71,24 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
         });
 
 		if (tinyDb.getBoolean("isRepoAdmin")) {
+
+			repoSettings.setOnClickListener(repoSettingsView -> {
+
+				bmListener.onButtonClicked("repoSettings");
+				dismiss();
+			});
+
 			addCollaborator.setOnClickListener(v1 -> {
 
 				bmListener.onButtonClicked("addCollaborator");
 				dismiss();
 			});
-		} else {
+		}
+		else {
+
 			addCollaborator.setVisibility(View.GONE);
+			repoSettingsDivider.setVisibility(View.GONE);
+			repoSettings.setVisibility(View.GONE);
 		}
 
         createRelease.setOnClickListener(v14 -> {

@@ -175,7 +175,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				repoDescription.setVisibility(View.VISIBLE);
 				repoDescription.setText(forksModel.getDescription());
 			}
-			fullName.setText(forksModel.getFullname());
+			fullName.setText(forksModel.getFullName());
 
 			if(forksModel.getPrivateFlag()) {
 				repoPrivatePublic.setImageResource(R.drawable.ic_lock);

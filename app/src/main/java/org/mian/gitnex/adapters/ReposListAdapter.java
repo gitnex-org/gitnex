@@ -292,7 +292,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			holder.repoDescription.setVisibility(View.VISIBLE);
 			holder.repoDescription.setText(currentItem.getDescription());
 		}
-		holder.fullName.setText(currentItem.getFullname());
+		holder.fullName.setText(currentItem.getFullName());
 		if(currentItem.getPrivateFlag()) {
 			holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock);
 			holder.repoType.setText(R.string.strPrivate);
@@ -344,7 +344,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 				String filterPattern = constraint.toString().toLowerCase().trim();
 
 				for(UserRepositories item : reposListFull) {
-					if(item.getFullname().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
+					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
 						filteredList.add(item);
 					}
 				}

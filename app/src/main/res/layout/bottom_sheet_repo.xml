@@ -189,6 +189,27 @@
                 android:textSize="16sp"
                 android:padding="12dp" />
 
+            <View
+                android:id="@+id/repoSettingsDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="64dp"
+                android:background="?attr/dividerColor" />
+
+            <TextView
+                android:id="@+id/repoSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableStart="@drawable/ic_settings"
+                android:drawablePadding="24dp"
+                android:text="@string/navSettings"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
