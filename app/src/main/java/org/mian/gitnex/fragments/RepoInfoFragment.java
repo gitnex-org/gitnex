@@ -21,7 +21,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -181,13 +180,6 @@ public class RepoInfoFragment extends Fragment {
 
 			Intent intent = new Intent(ctx, RepoStargazersActivity.class);
 			intent.putExtra("repoFullNameForStars", repoOwner + "/" + repoName);
-			ctx.startActivity(intent);
-		});
-
-		repoMetaForksFrame.setOnClickListener(metaForks -> {
-
-			Intent intent = new Intent(ctx, RepoForksActivity.class);
-			intent.putExtra("repoFullNameForForks", repoOwner + "/" + repoName);
 			ctx.startActivity(intent);
 		});
 
