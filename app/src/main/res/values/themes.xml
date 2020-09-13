@@ -35,6 +35,7 @@
         <item name="pagerTabIndicatorColor">@color/darkGreen</item>
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
+        <item name="colorSurface">@color/inputBackground</item>
     </style>
     <!-- Dark theme - default -->
 
@@ -72,6 +73,7 @@
         <item name="pagerTabIndicatorColor">@color/darkGreen</item>
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
+        <item name="colorSurface">@color/lightThemeInputBackground</item>
     </style>
     <!-- Light theme -->
 
@@ -109,6 +111,7 @@
         <item name="pagerTabIndicatorColor">@color/retroThemeColorPrimary</item>
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
+        <item name="colorSurface">@color/retroThemeInputBackground</item>
     </style>
     <!-- Retro theme -->
 

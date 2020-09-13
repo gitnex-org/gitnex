@@ -86,6 +86,7 @@
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="logo">Login to Gitea</string>
+    <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
@@ -93,6 +94,7 @@
     <string name="emptyFieldURL">Instance URL is required</string>
     <string name="emptyFieldUsername">Username is required</string>
     <string name="emptyFieldPassword">Password is required</string>
+    <string name="protocolEmptyError">Protocol is required</string>
 
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
     <string name="netConnectionIsBack">Yay, We have Internet connection!</string>

@@ -40,6 +40,7 @@ public class AddNewAccountActivity extends BaseActivity {
 	private ActivityAddNewAccountBinding viewBinding;
 
 	private enum Protocol {HTTPS, HTTP}
+	private String spinnerSelectedValue;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -63,11 +64,10 @@ public class AddNewAccountActivity extends BaseActivity {
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);
 
-		ArrayAdapter<AddNewAccountActivity.Protocol> adapterProtocols = new ArrayAdapter<>(AddNewAccountActivity.this, R.layout.spinner_item,
-			AddNewAccountActivity.Protocol.values());
-		adapterProtocols.setDropDownViewResource(R.layout.spinner_dropdown_item);
-
+		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
 		viewBinding.protocolSpinner.setAdapter(adapterProtocols);
+
+		viewBinding.protocolSpinner.setOnItemClickListener((parent, view1, position, id) -> spinnerSelectedValue = String.valueOf(parent.getItemAtPosition(position)));
 
 		viewBinding.addNewAccount.setOnClickListener(login -> {
 
@@ -90,9 +90,15 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		try {
 
-			String instanceUrlET = viewBinding.instanceUrl.getText().toString();
-			String loginToken = viewBinding.loginToken.getText().toString();
-			Protocol protocol = (Protocol) viewBinding.protocolSpinner.getSelectedItem();
+			String instanceUrlET = String.valueOf(viewBinding.instanceUrl.getText());
+			String loginToken = String.valueOf(viewBinding.loginToken.getText());
+			String protocol = spinnerSelectedValue;
+
+			if(protocol == null) {
+
+				Toasty.error(ctx, getResources().getString(R.string.protocolEmptyError));
+				return;
+			}
 
 			if(instanceUrlET.equals("")) {
 
@@ -109,7 +115,7 @@ public class AddNewAccountActivity extends BaseActivity {
 			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET, "http")).toUri();
 
 			URI instanceUrlWithProtocol = UrlBuilder.fromUri(rawInstanceUrl).withPath(PathsHelper.join(rawInstanceUrl.getPath()))
-				.withScheme(protocol.name().toLowerCase()).toUri();
+				.withScheme(protocol.toLowerCase()).toUri();
 
 			URI instanceUrl = UrlBuilder.fromUri(instanceUrlWithProtocol).withPath(PathsHelper.join(instanceUrlWithProtocol.getPath(), "/api/v1/"))
 				.toUri();
