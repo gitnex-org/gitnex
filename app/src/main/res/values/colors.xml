@@ -50,4 +50,7 @@
     <color name="retroThemeColorPrimary">#6200EE</color>
     <color name="retroThemeColorSecondary">#03DAC6</color>
 
+    <color name="iconPrMergedColor">#a333c8</color>
+    <color name="iconIssuePrClosedColor">#db2828</color>
+
 </resources>

@@ -104,6 +104,7 @@ public class IssueDetailActivity extends BaseActivity {
 	private LinearLayout assigneesLayout;
 	private View divider;
 	private ProgressBar progressBar;
+	private ImageView issuePrState;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -145,6 +146,7 @@ public class IssueDetailActivity extends BaseActivity {
 		assigneesLayout = findViewById(R.id.frameAssignees);
 		divider = findViewById(R.id.divider);
 		progressBar = findViewById(R.id.progressBar);
+		issuePrState = findViewById(R.id.issuePrState);
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
@@ -350,6 +352,27 @@ public class IssueDetailActivity extends BaseActivity {
 
 					Issues singleIssue = response.body();
 					assert singleIssue != null;
+
+					issuePrState.setVisibility(View.VISIBLE);
+					if(singleIssue.getPull_request() != null) {
+
+						if(singleIssue.getPull_request().isMerged()) { // merged
+
+							issuePrState.setImageResource(R.drawable.ic_pull_request_merged);
+						}
+						else if(!singleIssue.getPull_request().isMerged() && singleIssue.getState().equals("closed")) { // closed
+
+							issuePrState.setImageResource(R.drawable.ic_pull_request_closed);
+						}
+						else { // open
+
+							issuePrState.setImageResource(R.drawable.ic_pull_request);
+						}
+					}
+					else if(singleIssue.getState().equals("closed")) { // issue closed
+
+						issuePrState.setImageResource(R.drawable.ic_issue_closed_red);
+					}
 
 					final Markwon markwon = Markwon.builder(Objects.requireNonNull(ctx)).usePlugin(CorePlugin.create())
 						.usePlugin(ImagesPlugin.create(plugin -> {
