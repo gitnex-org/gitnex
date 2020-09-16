@@ -69,6 +69,46 @@
                 android:background="?attr/dividerColor" />
 
             <LinearLayout
+                android:id="@+id/transferOwnerFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/transferRepositoryOwnership"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/repoSettingsTransferOwnership"
+                    android:drawableStart="@drawable/ic_arrow_up"
+                    android:drawablePadding="32dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:paddingTop="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/transferRepositoryOwnershipHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/repoSettingsTransferOwnershipHint"
+                    android:textColor="?attr/hintColor"
+                    android:textSize="12sp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="72dp"
+                    android:paddingEnd="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/dividerColor" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="wrap_content"

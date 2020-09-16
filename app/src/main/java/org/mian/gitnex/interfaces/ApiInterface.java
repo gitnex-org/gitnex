@@ -26,6 +26,7 @@ import org.mian.gitnex.models.OrganizationRepository;
 import org.mian.gitnex.models.Permission;
 import org.mian.gitnex.models.PullRequests;
 import org.mian.gitnex.models.Releases;
+import org.mian.gitnex.models.RepositoryTransfer;
 import org.mian.gitnex.models.Teams;
 import org.mian.gitnex.models.UpdateIssueAssignees;
 import org.mian.gitnex.models.UpdateIssueState;
@@ -132,6 +133,9 @@ public interface ApiInterface {
 
 	@DELETE("repos/{owner}/{repo}") // delete repository
 	Call<JsonElement> deleteRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+	@POST("repos/{owner}/{repo}/transfer") // transfer repository
+	Call<JsonElement> transferRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body RepositoryTransfer jsonStr);
 
     @GET("repos/{owner}/{repo}/issues") // get issues by repo
     Call<List<Issues>> getIssues(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("limit") int limit, @Query("type") String requestType, @Query("state") String issueState);

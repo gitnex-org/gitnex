@@ -94,8 +94,9 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         final String repoName = parts[1];
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        // if gitea is 1.12 or higher use the new limit
+        // require gitea 1.12 or higher
         if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+
             resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
         }
 

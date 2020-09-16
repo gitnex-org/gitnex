@@ -17,8 +17,11 @@ import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.databinding.ActivityRepositorySettingsBinding;
 import org.mian.gitnex.databinding.CustomRepositoryDeleteDialogBinding;
 import org.mian.gitnex.databinding.CustomRepositoryEditPropertiesDialogBinding;
+import org.mian.gitnex.databinding.CustomRepositoryTransferDialogBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.models.RepositoryTransfer;
 import org.mian.gitnex.models.UserRepositories;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,8 +35,10 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private ActivityRepositorySettingsBinding viewBinding;
 	private CustomRepositoryEditPropertiesDialogBinding propBinding;
 	private CustomRepositoryDeleteDialogBinding deleteRepoBinding;
+	private CustomRepositoryTransferDialogBinding transferRepoBinding;
 	private Dialog dialogProp;
 	private Dialog dialogDeleteRepository;
+	private Dialog dialogTransferRepository;
 	private View.OnClickListener onClickListener;
 	private Context ctx = this;
 	private Context appCtx;
@@ -75,14 +80,116 @@ public class RepositorySettingsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
+		// require gitea 1.12 or higher
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+			
+			viewBinding.transferOwnerFrame.setVisibility(View.VISIBLE);
+		}
+
 		viewBinding.editProperties.setOnClickListener(editProperties -> {
 			showRepositoryProperties();
 		});
 
-		viewBinding.deleteRepository.setOnClickListener(editProperties -> {
+		viewBinding.deleteRepository.setOnClickListener(deleteRepository -> {
 			showDeleteRepository();
 		});
 
+		viewBinding.transferOwnerFrame.setOnClickListener(transferRepositoryOwnership -> {
+			showTransferRepository();
+		});
+
+	}
+
+	private void showTransferRepository() {
+
+		dialogTransferRepository = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+
+		if (dialogTransferRepository.getWindow() != null) {
+
+			dialogTransferRepository.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		}
+
+		transferRepoBinding = CustomRepositoryTransferDialogBinding.inflate(LayoutInflater.from(ctx));
+
+		View view = transferRepoBinding.getRoot();
+		dialogTransferRepository.setContentView(view);
+
+		transferRepoBinding.cancel.setOnClickListener(editProperties -> {
+			dialogTransferRepository.dismiss();
+		});
+
+		transferRepoBinding.transfer.setOnClickListener(deleteRepo -> {
+
+			String newOwner = String.valueOf(transferRepoBinding.ownerNameForTransfer.getText());
+			String repoName = String.valueOf(transferRepoBinding.repoNameForTransfer.getText());
+
+			if(!repositoryName.equals(repoName)) {
+
+				Toasty.error(ctx, getString(R.string.repoSettingsDeleteError));
+			}
+			else if(newOwner.matches("")) {
+
+				Toasty.error(ctx, getString(R.string.repoTransferOwnerError));
+			}
+			else {
+
+				transferRepository(newOwner);
+			}
+		});
+
+		dialogTransferRepository.show();
+	}
+
+	private void transferRepository(String newOwner) {
+
+		RepositoryTransfer repositoryTransfer = new RepositoryTransfer(newOwner);
+
+		Call<JsonElement> transferCall = RetrofitClient
+			.getInstance(instanceUrl, ctx)
+			.getApiInterface()
+			.transferRepository(instanceToken, repositoryOwner, repositoryName, repositoryTransfer);
+
+		transferCall.enqueue(new Callback<JsonElement>() {
+
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+
+				transferRepoBinding.transfer.setVisibility(View.GONE);
+				transferRepoBinding.processingRequest.setVisibility(View.VISIBLE);
+
+				if (response.code() == 202) {
+
+					dialogTransferRepository.dismiss();
+					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
+
+					finish();
+					RepositoriesApi.deleteRepository((int) tinyDb.getLong("repositoryId", 0));
+					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
+					RepositorySettingsActivity.this.startActivity(intent);
+				}
+				else if (response.code() == 404) {
+
+					transferRepoBinding.transfer.setVisibility(View.VISIBLE);
+					transferRepoBinding.processingRequest.setVisibility(View.GONE);
+					Toasty.error(ctx, getString(R.string.repoTransferError));
+				}
+				else {
+
+					transferRepoBinding.transfer.setVisibility(View.VISIBLE);
+					transferRepoBinding.processingRequest.setVisibility(View.GONE);
+					Toasty.error(ctx, getString(R.string.genericError));
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+
+				transferRepoBinding.transfer.setVisibility(View.VISIBLE);
+				transferRepoBinding.processingRequest.setVisibility(View.GONE);
+				Toasty.error(ctx, getString(R.string.genericServerResponseError));
+			}
+		});
 	}
 
 	private void showDeleteRepository() {
@@ -144,6 +251,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 				}
 				else {
 
+					deleteRepoBinding.delete.setVisibility(View.VISIBLE);
+					deleteRepoBinding.processingRequest.setVisibility(View.GONE);
 					Toasty.error(ctx, getString(R.string.genericError));
 				}
 
@@ -152,6 +261,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 			@Override
 			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
+				deleteRepoBinding.delete.setVisibility(View.VISIBLE);
+				deleteRepoBinding.processingRequest.setVisibility(View.GONE);
 				Toasty.error(ctx, getString(R.string.genericServerResponseError));
 			}
 		});
@@ -297,6 +408,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 				}
 				else {
 
+					propBinding.save.setVisibility(View.VISIBLE);
+					propBinding.processingRequest.setVisibility(View.GONE);
 					Toasty.error(ctx, getString(R.string.genericError));
 				}
 
@@ -305,6 +418,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 			@Override
 			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
 
+				propBinding.save.setVisibility(View.VISIBLE);
+				propBinding.processingRequest.setVisibility(View.GONE);
 				Toasty.error(ctx, getString(R.string.genericServerResponseError));
 			}
 		});
