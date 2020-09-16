@@ -691,4 +691,6 @@
     <string name="repoTransferOwnerError">New owner is required</string>
     <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
 
+    <string name="assignTeamTitle">Assign Team</string>
+
 </resources>
