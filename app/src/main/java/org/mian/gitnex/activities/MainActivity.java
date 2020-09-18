@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.GiteaVersion;
+import org.mian.gitnex.models.NotificationCount;
 import org.mian.gitnex.models.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	private Context appCtx;
 	private Typeface myTypeface;
 
+	private String instanceUrl;
+	private String loginUid;
+	private String instanceToken;
+
+	private View hView;
+	private MenuItem navNotifications;
+	private TextView notificationCounter;
+
 	@Override
 	protected int getLayoutResourceId() {
 
@@ -100,9 +110,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		Intent mainIntent = getIntent();
 		String launchFragment = mainIntent.getStringExtra("launchFragment");
 
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		instanceUrl = tinyDb.getString("instanceUrl");
+		loginUid = tinyDb.getString("loginUid");
+		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 		if(tinyDb.getString("dateFormat").isEmpty()) {
 			tinyDb.putString("dateFormat", "pretty");
@@ -191,10 +201,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleUserAccounts));
 		}
 
+		getNotificationsCount(instanceUrl, instanceToken);
+
 		drawer = findViewById(R.id.drawer_layout);
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
-		final View hView = navigationView.getHeaderView(0);
+		hView = navigationView.getHeaderView(0);
+
+		Menu menu = navigationView.getMenu();
+		navNotifications = menu.findItem(R.id.nav_notifications);
 
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -204,6 +219,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			@Override
 			public void onDrawerOpened(@NonNull View drawerView) {
 
+				getNotificationsCount(instanceUrl, instanceToken);
 			}
 
 			@Override
@@ -703,6 +719,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			}
 		});
 
+	}
+
+	private void getNotificationsCount(String instanceUrl, String token) {
+
+		Call<NotificationCount> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().checkUnreadNotifications(token);
+
+		call.enqueue(new Callback<NotificationCount>() {
+
+			@Override
+			public void onResponse(@NonNull Call<NotificationCount> call, @NonNull retrofit2.Response<NotificationCount> response) {
+
+				NotificationCount notificationCount = response.body();
+
+				if(response.code() == 200) {
+
+					assert notificationCount != null;
+					notificationCounter = navNotifications.getActionView().findViewById(R.id.counterBadgeNotification);
+					notificationCounter.setText(String.valueOf(notificationCount.getCounter()));
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<NotificationCount> call, @NonNull Throwable t) {
+
+				Log.e("onFailure-notification", t.toString());
+			}
+		});
 	}
 
 }

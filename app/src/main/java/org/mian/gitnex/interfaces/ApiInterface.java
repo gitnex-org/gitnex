@@ -19,6 +19,7 @@ import org.mian.gitnex.models.Labels;
 import org.mian.gitnex.models.MergePullRequest;
 import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.models.NewFile;
+import org.mian.gitnex.models.NotificationCount;
 import org.mian.gitnex.models.NotificationThread;
 import org.mian.gitnex.models.OrgOwner;
 import org.mian.gitnex.models.Organization;
@@ -93,7 +94,7 @@ public interface ApiInterface {
     Call<ResponseBody> markNotificationThreadsAsRead(@Header("Authorization") String token, @Query("last_read_at") String last_read_at, @Query("all") Boolean all, @Query("status-types") String[] statusTypes, @Query("to-status") String toStatus);
 
     @GET("notifications/new") // Check if unread notifications exist
-    Call<JsonElement> checkUnreadNotifications(@Header("Authorization") String token);
+    Call<NotificationCount> checkUnreadNotifications(@Header("Authorization") String token);
 
     @GET("notifications/threads/{id}") // Get notification thread by ID
     Call<NotificationThread> getNotificationThread(@Header("Authorization") String token, @Path("id") Integer id);

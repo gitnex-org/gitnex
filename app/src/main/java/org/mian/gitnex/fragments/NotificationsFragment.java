@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,7 +78,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		View v = inflater.inflate(R.layout.fragment_notifications, container, false);
 		setHasOptionsMenu(true);
 
-		activity = Objects.requireNonNull(getActivity());
+		activity = requireActivity();
 		context = getContext();
 		tinyDB = new TinyDB(context);
 
