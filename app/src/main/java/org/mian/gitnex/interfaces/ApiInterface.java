@@ -7,6 +7,7 @@ import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.CreateLabel;
+import org.mian.gitnex.models.CreatePullRequest;
 import org.mian.gitnex.models.DeleteFile;
 import org.mian.gitnex.models.EditFile;
 import org.mian.gitnex.models.Emails;
@@ -320,6 +321,9 @@ public interface ApiInterface {
 
     @POST("repos/{owner}/{repo}/pulls/{index}/merge") // merge a pull request
     Call<ResponseBody> mergePullRequest(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int index, @Body MergePullRequest jsonStr);
+
+	@POST("repos/{owner}/{repo}/pulls") // create a pull request
+	Call<ResponseBody> createPullRequest(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body CreatePullRequest jsonStr);
 
     @GET("repos/{owner}/{repo}/commits") // get all commits
     Call<List<Commits>> getRepositoryCommits(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("sha") String branchName, @Query("limit") int limit);

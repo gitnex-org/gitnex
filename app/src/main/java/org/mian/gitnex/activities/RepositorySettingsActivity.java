@@ -394,6 +394,9 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 				if (response.code() == 200) {
 
+					tinyDb.putBoolean("hasIssues", repoEnableIssues);
+					tinyDb.putBoolean("hasPullRequests", repoEnablePr);
+
 					dialogProp.dismiss();
 					Toasty.success(ctx, getString(R.string.repoPropertiesSaveSuccess));
 

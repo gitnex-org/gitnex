@@ -43,6 +43,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 	    TextView copyRepoUrl = v.findViewById(R.id.copyRepoUrl);
 	    View repoSettingsDivider = v.findViewById(R.id.repoSettingsDivider);
 	    TextView repoSettings = v.findViewById(R.id.repoSettings);
+	    TextView createPullRequest = v.findViewById(R.id.createPullRequest);
 
         createLabel.setOnClickListener(v112 -> {
 
@@ -63,6 +64,20 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
             createIssue.setVisibility(View.GONE);
         }
+
+	    if(tinyDb.getBoolean("hasPullRequests")) {
+
+		    createPullRequest.setVisibility(View.VISIBLE);
+		    createPullRequest.setOnClickListener(vPr -> {
+
+			    bmListener.onButtonClicked("newPullRequest");
+			    dismiss();
+		    });
+	    }
+	    else {
+
+		    createPullRequest.setVisibility(View.GONE);
+	    }
 
         createMilestone.setOnClickListener(v13 -> {
 

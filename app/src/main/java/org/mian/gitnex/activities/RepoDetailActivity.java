@@ -406,6 +406,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 				startActivity(new Intent(RepoDetailActivity.this, RepositorySettingsActivity.class));
 				break;
 
+			case "newPullRequest":
+				startActivity(new Intent(RepoDetailActivity.this, CreatePullRequestActivity.class));
+				break;
+
 		}
 
 	}

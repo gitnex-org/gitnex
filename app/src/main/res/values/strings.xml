@@ -55,6 +55,7 @@
     <string name="pageTitleExplore">Explore</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <string name="pageTitleUserAccounts">Manage Accounts</string>
+    <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
 
     <string name="repoName">Demo repo</string>
@@ -690,5 +691,14 @@
     <string name="repoTransferSuccess">Repository transferred successfully</string>
     <string name="repoTransferOwnerError">New owner is required</string>
     <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
+
+    <string name="mergeIntoBranch">Merge Into</string>
+    <string name="pullFromBranch">Pull From</string>
+    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
+    <string name="mergeIntoError">Merge into branch is required</string>
+    <string name="pullFromError">Pull from branch is required</string>
+    <string name="titleError">Title is required</string>
+    <string name="prCreateSuccess">Pull Request created successfully</string>
+    <string name="prAlreadyExists">A pull request between these branches already exists</string>
 
 </resources>

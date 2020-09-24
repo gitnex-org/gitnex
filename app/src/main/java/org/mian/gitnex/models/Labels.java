@@ -21,6 +21,11 @@ public class Labels {
         this.labels = labels;
     }
 
+	public Labels(int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
     public int getId() {
         return id;
     }
