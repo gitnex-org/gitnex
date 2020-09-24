@@ -114,10 +114,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET, "http")).toUri();
 
-			URI instanceUrlWithProtocol = UrlBuilder.fromUri(rawInstanceUrl).withPath(PathsHelper.join(rawInstanceUrl.getPath()))
-				.withScheme(protocol.toLowerCase()).toUri();
-
-			URI instanceUrl = UrlBuilder.fromUri(instanceUrlWithProtocol).withPath(PathsHelper.join(instanceUrlWithProtocol.getPath(), "/api/v1/"))
+			URI instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(protocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
 				.toUri();
 
 			versionCheck(instanceUrl.toString(), loginToken);
