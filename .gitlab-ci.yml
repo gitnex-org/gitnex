@@ -48,6 +48,7 @@ latest:
   stage: publish
   only:
     - master
+    - tags
   variables:
     WEBDAV_USERNAME: "GitNexBot"
     PLUGIN_FILE: "signed.apk"
