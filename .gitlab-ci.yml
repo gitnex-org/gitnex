@@ -20,7 +20,7 @@ build:
     - master
     - tags
   script:
-    - ./gradlew build
+    - ./gradlew assembleFreeRelease
   artifacts:
     paths:
       - app/build/outputs/
@@ -34,7 +34,7 @@ sign:
     - tags
   variables:
     OUTPUT: "signed.apk"
-    GITEA: "https://gitea.com"
+    INSTANCE: "https://codeberg.org"
     KS_FILE: "ci_keystore.jks"
   script:
     - ./scripts/sign-build.sh

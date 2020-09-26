@@ -66,7 +66,7 @@ steps:
   - name: build
     image: nextcloudci/android:android-49
     commands:
-      - ./gradlew build
+      - ./gradlew assembleFreeRelease
 
   - name: sign
     image: nextcloudci/android:android-49
@@ -78,7 +78,7 @@ steps:
       KEY_PASS:
         from_secret: KEY_PASS
       OUTPUT: signed.apk
-      GITEA: https://gitea.com
+      INSTANCE: https://codeberg.org
       KS_FILE: ci_keystore.jks
       KS_REPO:
         from_secret: KS_REPO
