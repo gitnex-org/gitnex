@@ -21,11 +21,10 @@ Check the versions [compatibility page](https://codeberg.org/gitnex/GitNex/wiki/
 ## Build from source
 Option 1 - Download the source code, open it in Android Studio and build it there.
 
-Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`.
+Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew assembleFree`.
 
 ## Features
 - Multiple accounts support
-- Repositories / issues/ org list
 - File and directory browser
 - File viewer
 - Create files
@@ -34,6 +33,7 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`
 - Files diff for PRs
 - Notifications
 - Drafts
+- Repositories / issues / org list
 - [MANY MORE](https://codeberg.org/gitnex/GitNex/wiki/Features)
 
 ## Contributing

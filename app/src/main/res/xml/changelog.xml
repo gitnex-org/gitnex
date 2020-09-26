@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.2.0-dev" versioncode="317">
-        <change>Under development</change>
+    <release version="3.2.0-rc1" versioncode="317">
+        <change>3.2.0 RC1 release brings create pr, repository settings for admins and many more new features</change>
     </release>
 
 </changelog>
