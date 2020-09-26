@@ -37,6 +37,7 @@
     <string name="pageTitleExplore">Erkunden</string>
     <string name="pageTitleAdministration">Gitea-Administration</string>
     <string name="pageTitleUserAccounts">Konten verwalten</string>
+    <string name="pageTitleNewPullRequest">Neuer Pull-Request</string>
     <!-- page titles -->
     <string name="repoName">Demo Repo</string>
     <string name="repoFullname">Repo mit ORG</string>
@@ -62,6 +63,7 @@
     <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
     <string name="navigation_drawer_close">Navigationsleiste schließen</string>
     <string name="logo">In Gitea anmelden</string>
+    <string name="protocol">Protokoll</string>
     <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld</string>
     <string name="malformedUrl">Konnte keine Verbindung zum Host herstellen. Bitte überprüfe die URL oder Port auf irgendwelche Fehler</string>
     <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, du testest in einem lokalen Netzwerk</string>
@@ -69,6 +71,7 @@
     <string name="emptyFieldURL">Instanzen-URL ist erforderlich</string>
     <string name="emptyFieldUsername">Benutzername ist erforderlich</string>
     <string name="emptyFieldPassword">Passwort ist erforderlich</string>
+    <string name="protocolEmptyError">Protokoll ist erforderlich</string>
     <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen. Bitte überprüfe die Internetverbindung</string>
     <string name="netConnectionIsBack">Juhu, wir haben eine Internetverbindung!</string>
     <string name="repoNameErrorEmpty">Der Repository Name ist leer.</string>
@@ -106,7 +109,6 @@
     <string name="tab_text_collaborators">Mitarbeiter</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Keine Issues gefunden!</string>
-    <string name="infoTabRepoWebsite">Webseite</string>
     <string name="infoTabRepoSize">Größe</string>
     <string name="infoTabRepoDefaultBranch">Standard Branch</string>
     <string name="infoTabRepoSshUrl">SSH Link</string>
@@ -419,7 +421,6 @@
     <string name="genericServerResponseError">Wir können den Server im Moment nicht erreichen. Bitte überprüfen Sie Ihren Serverstatus und versuchen Sie es erneut</string>
     <string name="genericCopyUrl">Link kopieren</string>
     <!-- generic copy -->
-    <string name="translateText">GitNex mit Crowdin übersetzen</string>
     <string name="exploreTextBoxHint">Repositories entdecken</string>
     <string name="starRepository">Repository favorisieren</string>
     <string name="unStarRepository">Repository nicht mehr favorisieren</string>
@@ -504,7 +505,7 @@
     <string name="settingsEnableReportsText">Absturzberichte aktivieren</string>
     <string name="crashTitle">GitNex hat gestoppt :(</string>
     <string name="setCrashReports">Absturzberichte</string>
-    <string name="crashMessage">Klicke auf OK, um den Absturzbericht per E-Mail zu senden. Es wird helfen, diesen zu beheben :)\n\nDu könntest auch zusätzliche Infos in der E-Mail angeben. Danke für deine Hilfe!</string>
+    <string name="crashMessage">Es wird empfohlen, ein Issue im Projekt zu öffnen, wie man diesen Fehler reproduzieren kann. Es ist einfacher, das Problem so zu debuggen und zu beheben.\n\nTippen Sie auf OK, um stattdessen den Absturzbericht per E-Mail zu senden. Zusätzliche Inhalte konnten in der E-Mail hinzugefügt werden.\nVielen Dank!</string>
     <string name="forceLogoutDialogHeader">Bitte melden Sie sich erneut an</string>
     <string name="forceLogoutDialogDescription">Aufgrund einiger wichtiger Änderungen in Bezug auf das interne Funktionieren der App müssen Sie sich erneut anmelden. Diese Änderungen ermöglichen es uns, die App in Zukunft flexibler zu gestalten.\n\nVielen Dank für Ihre Geduld und Entschuldigung für die Unannehmlichkeiten.</string>
     <string name="deleteAllDrafts">Alle Entwürfe löschen</string>
@@ -560,4 +561,20 @@
     <string name="repoSettingsDeleteDescription">Vor dem Löschen zu erfahrende Dinge:\n\n- Dieser Vorgang kann NICHT rückgängig gemacht werden.\n- Dieser Vorgang wird das Projektarchiv dauerhaft löschen, einschließlich Code, Issues, Kommentare, Wiki-Daten und Einstellungen.\n\nGib den Repository-Namen als Bestätigung ein</string>
     <string name="repoSettingsDeleteError">Repository-Name stimmt nicht überein</string>
     <string name="repoDeletionSuccess">Repository erfolgreich gelöscht</string>
+    <string name="repoSettingsTransferOwnership">Besitz übertragen</string>
+    <string name="repoSettingsTransferOwnershipHint">Dieses Repository an einen Benutzer oder eine Organisation übertragen, für die Sie Admin Rechte haben</string>
+    <string name="repoSettingsTransferOwnershipDescription">Dinge, die vor der Übertragung bekannt sind:\n\n- Du verlierst den Zugriff auf das Projekt, wenn es an einen Benutzer übertragen wird.\n- Du behälst den Zugriff auf das Projekt, wenn es an eine Organisation übertragen wird, die du (mit-)besitzt.\n\nGeben den Repository-Namen als Bestätigung ein</string>
+    <string name="repoTransferText">Übertragung durchführen</string>
+    <string name="repoTransferOwnerText">Neuer Besitzer</string>
+    <string name="repoTransferSuccess">Repository erfolgreich übertragen</string>
+    <string name="repoTransferOwnerError">Neuer Besitzer ist erforderlich</string>
+    <string name="repoTransferError">Es gibt ein Problem mit dem Besitzer Namen. Stelle sicher, dass der neue Besitzer existiert</string>
+    <string name="mergeIntoBranch">Zusammenführen in</string>
+    <string name="pullFromBranch">Pull-Request von</string>
+    <string name="sameBranchesError">Diese Branches sind gleich. Es besteht keine Notwendigkeit, einen Pull-Request zu erstellen</string>
+    <string name="mergeIntoError">Merge in Branch ist erforderlich</string>
+    <string name="pullFromError">Pull-Request von Branch ist erforderlich</string>
+    <string name="titleError">Titel wird benötigt</string>
+    <string name="prCreateSuccess">Pull-Request erfolgreich erstellt</string>
+    <string name="prAlreadyExists">Zwischen diesen Branches existiert bereits ein Pull-Request</string>
 </resources>

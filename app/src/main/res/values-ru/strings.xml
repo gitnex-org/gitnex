@@ -37,6 +37,7 @@
     <string name="pageTitleExplore">Обзор</string>
     <string name="pageTitleAdministration">Администрирование Gitea</string>
     <string name="pageTitleUserAccounts">Управление аккаунтами</string>
+    <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторий</string>
     <string name="repoFullname">Репозиторий с организацией</string>
@@ -62,6 +63,7 @@
     <string name="navigation_drawer_open">Открыть навигацию</string>
     <string name="navigation_drawer_close">Закрыть навигацию</string>
     <string name="logo">Войти в Gitea</string>
+    <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1. Выберите протокол (https или http) \n2. Укажите URL Gitea, например: try.gitea.io \n3. Если для учетной записи включена 2FA, введите код OTP в соответствующее поле. \n4. Для базовой аутентификации HTTP укажите USERNAME@DOMAIN.COM в поле URL.</string>
     <string name="malformedUrl">Не удалось подключиться к хосту. Пожалуйста, проверьте URL-адрес или порт на наличие ошибок</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете в локальной сети</string>
@@ -69,6 +71,7 @@
     <string name="emptyFieldURL">Требуется URL экземпляра</string>
     <string name="emptyFieldUsername">Требуется имя пользователя</string>
     <string name="emptyFieldPassword">Требуется пароль</string>
+    <string name="protocolEmptyError">Protocol is required</string>
     <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
     <string name="netConnectionIsBack">Ура, у нас есть интернет!</string>
     <string name="repoNameErrorEmpty">Название репозитория пустое.</string>
@@ -106,7 +109,6 @@
     <string name="tab_text_collaborators">Сотрудники</string>
     <string name="tabPullRequests">Запросы на слияние</string>
     <string name="noDataIssueTab">Задач не обнаружено</string>
-    <string name="infoTabRepoWebsite">Сайт</string>
     <string name="infoTabRepoSize">Размер</string>
     <string name="infoTabRepoDefaultBranch">Ветка по умолчанию</string>
     <string name="infoTabRepoSshUrl">SSH/URL</string>
@@ -419,7 +421,6 @@
     <string name="genericServerResponseError">На данный момент мы не можем подключиться к серверу, пожалуйста, проверьте статус вашего сервера и повторите попытку</string>
     <string name="genericCopyUrl">Копировать URL</string>
     <!-- generic copy -->
-    <string name="translateText">Перевести GitNex на Crowdin</string>
     <string name="exploreTextBoxHint">Просмотреть репозитории</string>
     <string name="starRepository">Репозиторий в избранное</string>
     <string name="unStarRepository">Убрать из избранного</string>
@@ -504,7 +505,7 @@
     <string name="settingsEnableReportsText">Включить отчёты об ошибках</string>
     <string name="crashTitle">GitNex остановлен :(</string>
     <string name="setCrashReports">Отчёты об ошибках</string>
-    <string name="crashMessage">Вы можете нажать на кнопку ОК, чтобы отправить отчёт об ошибке по электронной почте. Это поможет исправить это :)\n\nВы также можете добавить дополнительный контент в электронную почту. Спасибо!</string>
+    <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Пожалуйста, войдите снова</string>
     <string name="forceLogoutDialogDescription">В связи с некоторыми существенными изменениями, касающимися внутренней работы приложения, мы просим вас снова войти в систему. Эти изменения позволяют сделать приложение более гибким в будущем.\n\nБлагодарим вас за терпение и приносим извинения за неудобства.</string>
     <string name="deleteAllDrafts">Удалить все черновики</string>
@@ -560,4 +561,20 @@
     <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">Repository deleted successfully</string>
+    <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
+    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
+    <string name="repoTransferText">Perform Transfer</string>
+    <string name="repoTransferOwnerText">New Owner</string>
+    <string name="repoTransferSuccess">Repository transferred successfully</string>
+    <string name="repoTransferOwnerError">New owner is required</string>
+    <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
+    <string name="mergeIntoBranch">Merge Into</string>
+    <string name="pullFromBranch">Pull From</string>
+    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
+    <string name="mergeIntoError">Merge into branch is required</string>
+    <string name="pullFromError">Pull from branch is required</string>
+    <string name="titleError">Title is required</string>
+    <string name="prCreateSuccess">Pull Request created successfully</string>
+    <string name="prAlreadyExists">A pull request between these branches already exists</string>
 </resources>
