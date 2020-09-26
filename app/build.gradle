@@ -8,7 +8,20 @@ android {
         targetSdkVersion 30
         versionCode 317
         versionName "3.2.0-dev"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    flavorDimensions "default"
+    productFlavors {
+        free {
+            applicationId "org.mian.gitnex"
+        }
+        pro {
+            applicationId "org.mian.gitnex.pro"
+        }
     }
     buildFeatures {
         viewBinding = true

@@ -65,6 +65,14 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         });
 
+		if(AppUtil.isPro(requireContext())) {
+
+			viewBinding.supportHeader.setVisibility(View.GONE);
+			viewBinding.dividerSupport.setVisibility(View.GONE);
+			viewBinding.donationLinkLiberapay.setVisibility(View.GONE);
+			viewBinding.donationLinkPatreon.setVisibility(View.GONE);
+		}
+
 	    return viewBinding.getRoot();
     }
 

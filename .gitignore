@@ -11,6 +11,9 @@
 # Release dir
 app/release/*
 
+# Pro dir
+app/pro/*
+
 # Files for the ART/Dalvik VM
 *.dex
 
