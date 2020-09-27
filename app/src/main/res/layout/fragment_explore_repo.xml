@@ -13,24 +13,44 @@
         style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
-    <EditText
-        android:id="@+id/searchKeyword"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="14sp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:inputType="text"
-        android:background="@drawable/shape_inputs"
-        android:textColor="?attr/inputTextColor"
-        android:textColorHint="?attr/hintColor"
-        android:hint="@string/exploreTextBoxHint"
-        android:textColorHighlight="?attr/primaryTextColor"
-        android:imeOptions="actionSend"
-        android:autofillHints="@string/exploreTextBoxHint" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchKeywordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
+            android:textColorHint="?attr/hintColor"
+            app:hintTextColor="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_search"
+            app:startIconTint="?attr/iconsColor"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            android:hint="@string/exploreTextBoxHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchKeyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/hintColor"
+                android:textColorHint="?attr/hintColor"
+                android:imeOptions="actionSend"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/noData"

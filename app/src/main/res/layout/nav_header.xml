@@ -46,7 +46,7 @@
                     android:gravity="end"
                     android:paddingEnd="25dp"
                     android:paddingStart="15dp"
-                    android:paddingTop="10dp"
+                    android:paddingTop="6dp"
                     android:orientation="horizontal">
 
                     <androidx.recyclerview.widget.RecyclerView
