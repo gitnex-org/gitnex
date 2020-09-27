@@ -56,19 +56,6 @@
             android:icon="@drawable/ic_settings"
             android:title="@string/navSettings" />
 
-        <item android:id="@+id/nav_about"
-            android:icon="@drawable/ic_info"
-            android:title="@string/navAbout" />
-
-    </group>
-
-    <item android:id="@+id/nav_rate_app"
-        android:icon="@drawable/ic_like"
-        android:title="@string/navRate" />
-
-    <group android:checkableBehavior="single"
-        android:id="@+id/nav_extra">
-
         <item android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/navLogout" />

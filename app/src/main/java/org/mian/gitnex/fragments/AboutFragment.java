@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.databinding.FragmentAboutBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
@@ -28,6 +29,8 @@ public class AboutFragment extends Fragment {
 	    viewBinding.appVersion.setText(AppUtil.getAppVersion(requireContext()));
 	    viewBinding.userServerVersion.setText(tinyDb.getString("giteaVersion"));
 	    viewBinding.appBuild.setText(String.valueOf(AppUtil.getAppBuildNo(requireContext())));
+
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleAbout));
 
 		viewBinding.donationLinkLiberapay.setOnClickListener(v1 -> {
 
