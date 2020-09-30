@@ -12,6 +12,7 @@
     <string name="navLogout">Ausloggen</string>
     <string name="navExplore">Erkunden</string>
     <string name="navAdministration">Administration</string>
+    <string name="navSearchIssuesPulls">Issues Suche</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Über</string>
@@ -519,6 +520,8 @@
     <string name="securityHintText">SSL-Zertifikate, Cache, Abfrageverzögerung</string>
     <string name="languagesHintText">Sprachen</string>
     <string name="reportsHintText">Absturzberichte</string>
+    <string name="rateAppHintText">Wenn dir GitNex gefällt, hinterlassen Feedback</string>
+    <string name="aboutAppHintText">App-Version, Build, Gitea Version</string>
     <string name="archivedRepository">Archiviert</string>
     <string name="accountDeletedMessage">Konto erfolgreich gelöscht</string>
     <string name="removeAccountPopupTitle">Konto entfernen</string>
@@ -569,6 +572,12 @@
     <string name="repoTransferSuccess">Repository erfolgreich übertragen</string>
     <string name="repoTransferOwnerError">Neuer Besitzer ist erforderlich</string>
     <string name="repoTransferError">Es gibt ein Problem mit dem Besitzer Namen. Stelle sicher, dass der neue Besitzer existiert</string>
+    <string name="exploreFilterDialogTitle">Repositories filtern</string>
+    <string name="exploreFilterIncludeTopic">NUR in Themen suchen</string>
+    <string name="exploreFilterIncludeDesc">In Beschreibung suchen</string>
+    <string name="exploreFilterIncludeArchive">Nur archivierte Repositories</string>
+    <string name="exploreFilterIncludePrivate">Nur private Repositories</string>
+    <string name="exploreFilterIncludeTemplateRepos">Zeige auch Template-Repositories</string>
     <string name="mergeIntoBranch">Zusammenführen in</string>
     <string name="pullFromBranch">Pull-Request von</string>
     <string name="sameBranchesError">Diese Branches sind gleich. Es besteht keine Notwendigkeit, einen Pull-Request zu erstellen</string>

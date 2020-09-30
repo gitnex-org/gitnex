@@ -12,6 +12,7 @@
     <string name="navLogout">Déconnexion</string>
     <string name="navExplore">Explorer</string>
     <string name="navAdministration">Administration</string>
+    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">À propos</string>
@@ -37,7 +38,7 @@
     <string name="pageTitleExplore">Explorer</string>
     <string name="pageTitleAdministration">Administration de Gitea</string>
     <string name="pageTitleUserAccounts">Gestion des comptes</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleNewPullRequest">Nouvelle demande de tirage</string>
     <!-- page titles -->
     <string name="repoName">Dépôt de démonstration</string>
     <string name="repoFullname">Nom complet du dépôt</string>
@@ -519,6 +520,8 @@
     <string name="securityHintText">Certificats SSL, cache, scrutation des notifications</string>
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
+    <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
+    <string name="aboutAppHintText">app, build, gitea</string>
     <string name="archivedRepository">Archivé</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
     <string name="removeAccountPopupTitle">Supprimer le compte</string>
@@ -569,12 +572,18 @@
     <string name="repoTransferSuccess">Dépôt transféré</string>
     <string name="repoTransferOwnerError">Un nouveau propriétaire est requis</string>
     <string name="repoTransferError">Erreur avec le nom du propriétaire. Assurez-vous que le nouveau propriétaire existe</string>
-    <string name="mergeIntoBranch">Merge Into</string>
-    <string name="pullFromBranch">Pull From</string>
-    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
-    <string name="mergeIntoError">Merge into branch is required</string>
-    <string name="pullFromError">Pull from branch is required</string>
-    <string name="titleError">Title is required</string>
-    <string name="prCreateSuccess">Pull Request created successfully</string>
-    <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="exploreFilterDialogTitle">Filtrer les dépôts</string>
+    <string name="exploreFilterIncludeTopic">Rechercher uniquement dans le sujet</string>
+    <string name="exploreFilterIncludeDesc">Rechercher dans la description</string>
+    <string name="exploreFilterIncludeArchive">Dépôts archivés seulement</string>
+    <string name="exploreFilterIncludePrivate">Dépôts privés seulement</string>
+    <string name="exploreFilterIncludeTemplateRepos">Rechercher dans les dépôts modèles</string>
+    <string name="mergeIntoBranch">Fusionner dans</string>
+    <string name="pullFromBranch">Tirer depuis</string>
+    <string name="sameBranchesError">Ces branches sont identiques. La requête de tirage est inutile.</string>
+    <string name="mergeIntoError">Fusion de branche requise</string>
+    <string name="pullFromError">Tirage de branche requis</string>
+    <string name="titleError">Titre requis</string>
+    <string name="prCreateSuccess">Requête de tirage créé</string>
+    <string name="prAlreadyExists">Une requête de tirage existe déjà entre ces branches</string>
 </resources>

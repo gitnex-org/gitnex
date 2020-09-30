@@ -12,6 +12,7 @@
     <string name="navLogout">退出</string>
     <string name="navExplore">探索</string>
     <string name="navAdministration">管理</string>
+    <string name="navSearchIssuesPulls">搜索问题</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">关于</string>
@@ -37,7 +38,7 @@
     <string name="pageTitleExplore">探索</string>
     <string name="pageTitleAdministration">Gitea 管理</string>
     <string name="pageTitleUserAccounts">管理账户</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleNewPullRequest">新拉取请求</string>
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
     <string name="repoFullname">有组织的存储库</string>
@@ -519,6 +520,8 @@
     <string name="securityHintText">SSL 证书、缓存、轮询延迟</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
+    <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
+    <string name="aboutAppHintText">应用程序版本、构建、用户gitea版本</string>
     <string name="archivedRepository">已存档</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
     <string name="removeAccountPopupTitle">删除账户</string>
@@ -569,12 +572,18 @@
     <string name="repoTransferSuccess">成功移交存储库</string>
     <string name="repoTransferOwnerError">需要新的所有者</string>
     <string name="repoTransferError">所有者名称有问题。确保新所有者存在</string>
-    <string name="mergeIntoBranch">Merge Into</string>
-    <string name="pullFromBranch">Pull From</string>
-    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
-    <string name="mergeIntoError">Merge into branch is required</string>
-    <string name="pullFromError">Pull from branch is required</string>
-    <string name="titleError">Title is required</string>
-    <string name="prCreateSuccess">Pull Request created successfully</string>
-    <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="exploreFilterDialogTitle">过滤仓库</string>
+    <string name="exploreFilterIncludeTopic">仅在话题中搜索</string>
+    <string name="exploreFilterIncludeDesc">在描述中搜索</string>
+    <string name="exploreFilterIncludeArchive">仅存档仓库</string>
+    <string name="exploreFilterIncludePrivate">仅私有仓库</string>
+    <string name="exploreFilterIncludeTemplateRepos">在模板仓库中搜索</string>
+    <string name="mergeIntoBranch">合并到</string>
+    <string name="pullFromBranch">拉取自</string>
+    <string name="sameBranchesError">这些分支是相等的。 无需创建拉取请求</string>
+    <string name="mergeIntoError">必须合并到分支</string>
+    <string name="pullFromError">需要从分支下拉</string>
+    <string name="titleError">标题不可为空</string>
+    <string name="prCreateSuccess">拉取请求创建成功</string>
+    <string name="prAlreadyExists">这些分支之间的拉取请求已存在</string>
 </resources>
