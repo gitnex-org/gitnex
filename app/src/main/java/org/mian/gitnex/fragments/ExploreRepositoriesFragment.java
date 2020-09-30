@@ -191,8 +191,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 					limit = response.body().getSearchedData().size();
 
-					Log.e("exploreRepos", String.valueOf(limit));
-
 					if(!append) {
 
 						dataList.clear();
