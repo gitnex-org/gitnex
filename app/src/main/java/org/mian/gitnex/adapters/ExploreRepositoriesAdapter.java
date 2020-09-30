@@ -318,4 +318,9 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 		return searchedReposList.size();
 	}
 
+	public void notifyDataChanged() {
+
+		notifyDataSetChanged();
+	}
+
 }

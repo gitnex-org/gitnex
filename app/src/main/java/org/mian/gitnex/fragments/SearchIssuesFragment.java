@@ -146,8 +146,6 @@ public class SearchIssuesFragment extends Fragment {
 					assert response.body() != null;
 					apiCallCurrentValue = response.body().size();
 
-					Log.e("searchIssues", String.valueOf(apiCallCurrentValue));
-
 					if(!append) {
 
 						dataList.clear();

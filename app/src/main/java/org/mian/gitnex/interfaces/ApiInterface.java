@@ -266,7 +266,7 @@ public interface ApiInterface {
     Call<List<UserInfo>> getRepoWatchers(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
     @GET("repos/search") // get all the repos which match the query string
-    Call<ExploreRepositories> queryRepos(@Header("Authorization") String token, @Query("q") String searchKeyword, @Query("private") Boolean repoTypeInclude, @Query("sort") String sort, @Query("order") String order, @Query("topic") boolean topic, @Query("includeDesc") boolean includeDesc, @Query("template") boolean template, @Query("archived") boolean archived, @Query("is_private") boolean is_private, @Query("limit") int limit);
+    Call<ExploreRepositories> queryRepos(@Header("Authorization") String token, @Query("q") String searchKeyword, @Query("private") Boolean repoTypeInclude, @Query("sort") String sort, @Query("order") String order, @Query("topic") boolean topic, @Query("includeDesc") boolean includeDesc, @Query("template") boolean template, @Query("archived") boolean archived, @Query("limit") int limit, @Query("page") int page);
 
 	@GET("repos/issues/search") // get all the issues which match the query string
 	Call<List<Issues>> queryIssues(@Header("Authorization") String token, @Query("q") String searchKeyword, @Query("type") String type, @Query("state") String state, @Query("page") int page);

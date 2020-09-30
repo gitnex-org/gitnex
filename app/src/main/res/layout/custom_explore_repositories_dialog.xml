@@ -81,15 +81,6 @@
                 android:text="@string/exploreFilterIncludeArchive"
                 android:textSize="16sp" />
 
-            <CheckBox
-                android:id="@+id/onlyPrivate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/exploreFilterIncludePrivate"
-                android:textSize="16sp" />
-
         </LinearLayout>
 
     </LinearLayout>
