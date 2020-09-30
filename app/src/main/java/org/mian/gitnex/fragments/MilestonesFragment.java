@@ -27,7 +27,6 @@ import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.Milestones;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,7 +103,7 @@ public class MilestonesFragment extends Fragment {
 
         }, 50));
 
-        ((RepoDetailActivity) Objects.requireNonNull(getActivity())).setFragmentRefreshListenerMilestone(milestoneState -> {
+        ((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerMilestone(milestoneState -> {
 
             if(milestoneState.equals("closed")) {
                 menu.getItem(1).setIcon(R.drawable.ic_filter_closed);

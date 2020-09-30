@@ -34,7 +34,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.fragments.AdministrationFragment;
 import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
 import org.mian.gitnex.fragments.DraftsFragment;
-import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
+import org.mian.gitnex.fragments.ExploreFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else if(fragmentById instanceof OrganizationsFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleOrganizations));
 		}
-		else if(fragmentById instanceof ExploreRepositoriesFragment) {
+		else if(fragmentById instanceof ExploreFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
 		}
 		else if(fragmentById instanceof NotificationsFragment) {
@@ -305,6 +305,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_profile);
 					drawer.closeDrawers();
 				});
 
@@ -384,7 +385,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				case 5:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreRepositoriesFragment()).commit();
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_explore);
 					break;
 
@@ -550,7 +551,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			case R.id.nav_explore:
 				toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
-				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreRepositoriesFragment()).commit();
+				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 				break;
 
 			case R.id.nav_notifications:

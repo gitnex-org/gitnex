@@ -27,6 +27,7 @@ public class Issues {
     private pullRequestObject pull_request;
     private milestoneObject milestone;
     private List<assigneesObject> assignees;
+	private repositoryObject repository;
 
     public Issues(String body) {
         this.body = body;
@@ -193,6 +194,35 @@ public class Issues {
         }
     }
 
+	public static class repositoryObject {
+
+		private int id;
+		private String full_name;
+		private String name;
+		private String owner;
+
+		public int getId() {
+
+			return id;
+		}
+
+		public String getFull_name() {
+
+			return full_name;
+		}
+
+		public String getName() {
+
+			return name;
+		}
+
+		public String getOwner() {
+
+			return owner;
+		}
+
+	}
+
     public int getId() {
         return id;
     }
@@ -266,5 +296,10 @@ public class Issues {
 
         this.html_url = html_url;
     }
+
+	public repositoryObject getRepository() {
+
+		return repository;
+	}
 
 }
