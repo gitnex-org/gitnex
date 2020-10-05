@@ -210,7 +210,7 @@
     </style>
 
     <style name="AppThemeCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
-        <item name="buttonTint">@color/colorWhite</item>
+        <item name="buttonTint">?attr/iconsColor</item>
     </style>
 
     <!-- Retro theme styles -->

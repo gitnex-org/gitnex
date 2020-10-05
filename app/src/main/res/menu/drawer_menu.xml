@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single"
@@ -26,6 +27,7 @@
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notifications"
             android:title="@string/pageTitleNotifications"
+            app:actionLayout="@layout/badge_notification"
             android:visible="false" />
 
         <item android:id="@+id/nav_explore"
@@ -53,19 +55,6 @@
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/navSettings" />
-
-        <item android:id="@+id/nav_about"
-            android:icon="@drawable/ic_info"
-            android:title="@string/navAbout" />
-
-    </group>
-
-    <item android:id="@+id/nav_rate_app"
-        android:icon="@drawable/ic_like"
-        android:title="@string/navRate" />
-
-    <group android:checkableBehavior="single"
-        android:id="@+id/nav_extra">
 
         <item android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"

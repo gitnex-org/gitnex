@@ -167,16 +167,12 @@ public class LoginActivity extends BaseActivity {
 
 			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET.getText().toString(), "http")).toUri();
 
-			URI instanceUrlWithProtocol = UrlBuilder.fromUri(rawInstanceUrl).withPath(PathsHelper.join(rawInstanceUrl.getPath()))
-				.withScheme(protocol.name().toLowerCase()).toUri();
-
-			URI instanceUrl = UrlBuilder.fromUri(instanceUrlWithProtocol).withPath(PathsHelper.join(instanceUrlWithProtocol.getPath(), "/api/v1/"))
+			URI instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(protocol.name().toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
 				.toUri();
 
 			tinyDB.putString("loginType", loginType.name().toLowerCase());
 			tinyDB.putString("instanceUrlRaw", instanceUrlET.getText().toString());
 			tinyDB.putString("instanceUrl", instanceUrl.toString());
-			tinyDB.putString("instanceUrlWithProtocol", instanceUrlWithProtocol.toString());
 
 			if(instanceUrlET.getText().toString().equals("")) {
 

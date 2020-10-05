@@ -12,6 +12,7 @@
     <string name="navLogout">Déconnexion</string>
     <string name="navExplore">Explorer</string>
     <string name="navAdministration">Administration</string>
+    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">À propos</string>
@@ -37,6 +38,7 @@
     <string name="pageTitleExplore">Explorer</string>
     <string name="pageTitleAdministration">Administration de Gitea</string>
     <string name="pageTitleUserAccounts">Gestion des comptes</string>
+    <string name="pageTitleNewPullRequest">Nouvelle demande de tirage</string>
     <!-- page titles -->
     <string name="repoName">Dépôt de démonstration</string>
     <string name="repoFullname">Nom complet du dépôt</string>
@@ -62,6 +64,7 @@
     <string name="navigation_drawer_open">Ouvrir le volet de navigation</string>
     <string name="navigation_drawer_close">Fermer le volet de navigation</string>
     <string name="logo">Se connecter à Gitea</string>
+    <string name="protocol">Protocole</string>
     <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA</string>
     <string name="malformedUrl">Connexion impossible. Veuillez vérifier l’URL et le port</string>
     <string name="protocolError">Le protocole HTTP est déconseillé en dehors de tests sur un réseau local</string>
@@ -69,6 +72,7 @@
     <string name="emptyFieldURL">URL de l’instance requise</string>
     <string name="emptyFieldUsername">Nom d’utilisateur requis</string>
     <string name="emptyFieldPassword">Mot de passe requis</string>
+    <string name="protocolEmptyError">Le protocole est requis</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
     <string name="netConnectionIsBack">On a Internet, youpi !</string>
     <string name="repoNameErrorEmpty">Nom manquant</string>
@@ -106,7 +110,6 @@
     <string name="tab_text_collaborators">Collaborateurs</string>
     <string name="tabPullRequests">Demandes de tirage</string>
     <string name="noDataIssueTab">Aucun ticket</string>
-    <string name="infoTabRepoWebsite">Site Web</string>
     <string name="infoTabRepoSize">Taille</string>
     <string name="infoTabRepoDefaultBranch">Branche par défaut</string>
     <string name="infoTabRepoSshUrl">URL SSH</string>
@@ -419,7 +422,6 @@
     <string name="genericServerResponseError">Impossible de se connecter au serveur pour le moment, veuillez vérifier son statut puis réessayer</string>
     <string name="genericCopyUrl">Copier l’URL</string>
     <!-- generic copy -->
-    <string name="translateText">Traduire GitNex avec Crowdin</string>
     <string name="exploreTextBoxHint">Explorer les dépôts</string>
     <string name="starRepository">Ajouter aux favoris</string>
     <string name="unStarRepository">Retirer des favoris</string>
@@ -504,7 +506,7 @@
     <string name="settingsEnableReportsText">Rapports de plantage</string>
     <string name="crashTitle">GitNex a planté :(</string>
     <string name="setCrashReports">Rapports de plantage</string>
-    <string name="crashMessage">Cliquez sur OK pour nous envoyer un courriel avec le rapport de plantage. Cela nous aidera à corriger le problème. :)\n\nVous pouvez aussi ajouter vos propres observations. Merci !</string>
+    <string name="crashMessage">Il est conseillé de créer un ticket expliquant comment reproduire ce bogue pour faciliter la correction du problème.\n\nAppuyez sur OK si vous préférez envoyer le rapport de plantage par courriel. Libre à vous d’y ajouter du contenu supplémentaire.\nMerci!</string>
     <string name="forceLogoutDialogHeader">Veuillez vous reconnecter</string>
     <string name="forceLogoutDialogDescription">Une reconnexion est nécessaire en raison de changements majeurs du fonctionnement interne pour améliorer la souplesse de l\'application.\n\nMerci pour votre patience et toutes nos excuses pour la gêne occasionnée.</string>
     <string name="deleteAllDrafts">Supprimer tous les brouillons</string>
@@ -518,6 +520,8 @@
     <string name="securityHintText">Certificats SSL, cache, scrutation des notifications</string>
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
+    <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
+    <string name="aboutAppHintText">app, build, gitea</string>
     <string name="archivedRepository">Archivé</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
     <string name="removeAccountPopupTitle">Supprimer le compte</string>
@@ -546,18 +550,40 @@
     <string name="repoSettingsDelete">Supprimer le dépôt</string>
     <string name="repoSettingsDeleteHint">Attention, cette opération est IRRÉVERSIBLE !</string>
     <string name="repoPropertiesTemplate">Définir comme modèle</string>
-    <string name="repoPropertiesEnableIssues">Autoriser les tickets</string>
+    <string name="repoPropertiesEnableIssues">Activer les tickets</string>
     <string name="repoPropertiesExternalIssuesUrl">URL externe des tickets</string>
-    <string name="repoPropertiesEnableWiki">Activer le Wiki</string>
-    <string name="repoPropertiesExternalWikiUrl">URL externe du Wiki</string>
-    <string name="repoPropertiesEnablePr">Autoriser les requêtes de tirage</string>
-    <string name="repoPropertiesEnableTimeTracker">Autoriser l’horodatage</string>
-    <string name="repoPropertiesEnableMergeCommits">Autoriser la fusion des révisions</string>
-    <string name="repoPropertiesEnableRebase">Autoriser le rebasage</string>
-    <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
-    <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
+    <string name="repoPropertiesEnableWiki">Activer le wiki</string>
+    <string name="repoPropertiesExternalWikiUrl">URL externe du wiki</string>
+    <string name="repoPropertiesEnablePr">Activer les requêtes de tirage</string>
+    <string name="repoPropertiesEnableTimeTracker">Activer l’horodatage</string>
+    <string name="repoPropertiesEnableMergeCommits">Activer la fusion des révisions</string>
+    <string name="repoPropertiesEnableRebase">Activer le rebasage</string>
+    <string name="repoPropertiesEnableSquash">Activer squash et fusion</string>
+    <string name="repoPropertiesEnableForceMerge">Activer resbasage avec révision de fusion (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Propriétés du dépôt mises à jour</string>
     <string name="repoSettingsDeleteDescription">Cette opération est IRRÉVERSIBLE.\nSoyez conscient que le dépôt et son contenu (code, tickets, commentaires, wiki, contributions…) seront définitivement supprimés.\n\nEntrez le nom du dépôt afin de confirmer cette opération.</string>
     <string name="repoSettingsDeleteError">Nom du dépôt incorrect</string>
     <string name="repoDeletionSuccess">Dépôt supprimé</string>
+    <string name="repoSettingsTransferOwnership">Changer de propriétaire</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfère le dépôt à un autre utilisateur ou une autre organisation dont vous possédez les droits d\'administrateur</string>
+    <string name="repoSettingsTransferOwnershipDescription">Choses à savoir avant le transfert :\n\n- Vous perdez l’accès au dépôt si vous le transférez à un autre utilisateur.\n- Vous conservez l’accès au dépôt si vous le transférez à une organisation que vous (co-)gérez.\n\nEntrez le nom du dépôt pour confirmer</string>
+    <string name="repoTransferText">Transférer</string>
+    <string name="repoTransferOwnerText">Nouveau propriétaire</string>
+    <string name="repoTransferSuccess">Dépôt transféré</string>
+    <string name="repoTransferOwnerError">Un nouveau propriétaire est requis</string>
+    <string name="repoTransferError">Erreur avec le nom du propriétaire. Assurez-vous que le nouveau propriétaire existe</string>
+    <string name="exploreFilterDialogTitle">Filtrer les dépôts</string>
+    <string name="exploreFilterIncludeTopic">Rechercher uniquement dans le sujet</string>
+    <string name="exploreFilterIncludeDesc">Rechercher dans la description</string>
+    <string name="exploreFilterIncludeArchive">Dépôts archivés seulement</string>
+    <string name="exploreFilterIncludePrivate">Dépôts privés seulement</string>
+    <string name="exploreFilterIncludeTemplateRepos">Rechercher dans les dépôts modèles</string>
+    <string name="mergeIntoBranch">Fusionner dans</string>
+    <string name="pullFromBranch">Tirer depuis</string>
+    <string name="sameBranchesError">Ces branches sont identiques. La requête de tirage est inutile.</string>
+    <string name="mergeIntoError">Fusion de branche requise</string>
+    <string name="pullFromError">Tirage de branche requis</string>
+    <string name="titleError">Titre requis</string>
+    <string name="prCreateSuccess">Requête de tirage créé</string>
+    <string name="prAlreadyExists">Une requête de tirage existe déjà entre ces branches</string>
 </resources>

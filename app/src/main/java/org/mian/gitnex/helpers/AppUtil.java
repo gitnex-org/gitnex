@@ -76,6 +76,10 @@ public class AppUtil {
 		}
 	}
 
+	public static boolean isPro(Context context) {
+		return context.getPackageName().equals("org.mian.gitnex.pro");
+	}
+
 	public int charactersLength(String str) {
 
 		return str.length();

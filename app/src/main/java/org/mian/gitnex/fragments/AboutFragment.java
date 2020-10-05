@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.databinding.FragmentAboutBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -21,30 +20,19 @@ import java.util.Objects;
 
 public class AboutFragment extends Fragment {
 
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_about, container, false);
-
+		FragmentAboutBinding viewBinding = FragmentAboutBinding.inflate(inflater, container, false);
         TinyDB tinyDb = new TinyDB(getContext());
 
-        final TextView appVerBuild;
-        final TextView donationLink;
-        final TextView donationLinkPatreon;
-        final TextView translateLink;
-        final TextView appWebsite;
-        final TextView appRepo;
+	    viewBinding.appVersion.setText(AppUtil.getAppVersion(requireContext()));
+	    viewBinding.userServerVersion.setText(tinyDb.getString("giteaVersion"));
+	    viewBinding.appBuild.setText(String.valueOf(AppUtil.getAppBuildNo(requireContext())));
 
-        appVerBuild = v.findViewById(R.id.appVerBuild);
-        TextView viewTextGiteaVersion = v.findViewById(R.id.giteaVersion);
-        donationLink = v.findViewById(R.id.donationLink);
-        donationLinkPatreon = v.findViewById(R.id.donationLinkPatreon);
-        translateLink = v.findViewById(R.id.translateLink);
-        appWebsite = v.findViewById(R.id.appWebsite);
-        appRepo = v.findViewById(R.id.appRepo);
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleAbout));
 
-        appVerBuild.setText(getString(R.string.appVerBuild, AppUtil.getAppVersion(Objects.requireNonNull(getContext())), AppUtil.getAppBuildNo(getContext())));
-
-        donationLink.setOnClickListener(v1 -> {
+		viewBinding.donationLinkLiberapay.setOnClickListener(v1 -> {
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
@@ -53,7 +41,7 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         });
 
-        donationLinkPatreon.setOnClickListener(v12 -> {
+		viewBinding.donationLinkPatreon.setOnClickListener(v12 -> {
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
@@ -62,7 +50,7 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         });
 
-        translateLink.setOnClickListener(v13 -> {
+		viewBinding.translateLink.setOnClickListener(v13 -> {
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
@@ -71,7 +59,7 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         });
 
-        appWebsite.setOnClickListener(v14 -> {
+		viewBinding.appWebsite.setOnClickListener(v14 -> {
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
@@ -80,19 +68,15 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         });
 
-        appRepo.setOnClickListener(v15 -> {
+		if(AppUtil.isPro(requireContext())) {
 
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse(getResources().getString(R.string.appRepoLink)));
-            startActivity(intent);
-        });
+			viewBinding.supportHeader.setVisibility(View.GONE);
+			viewBinding.dividerSupport.setVisibility(View.GONE);
+			viewBinding.donationLinkLiberapay.setVisibility(View.GONE);
+			viewBinding.donationLinkPatreon.setVisibility(View.GONE);
+		}
 
-        String commit = getResources().getString(R.string.commitPage) + tinyDb.getString("giteaVersion");
-        viewTextGiteaVersion.setText(commit);
-
-        return v;
+	    return viewBinding.getRoot();
     }
 
 }

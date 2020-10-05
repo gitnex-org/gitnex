@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ScrollView android:layout_width="match_parent"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor">
 
@@ -23,7 +24,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:baselineAligned="false"
-                android:contentDescription="@string/logo"
+                android:contentDescription="@string/app_name"
                 android:src="@mipmap/app_logo" />
 
             <TextView
@@ -34,134 +35,200 @@
                 android:textIsSelectable="true"
                 android:layout_marginTop="5dp"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 android:textColor="?attr/primaryTextColor"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal" />
 
+            <!-- version -->
             <TextView
-                android:id="@+id/appVerBuild"
-                android:text="@string/appVerBuild"
-                android:layout_width="wrap_content"
+                android:id="@+id/appVersionHeader"
+                android:text="@string/appVersion"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textIsSelectable="true"
+                android:layout_marginTop="40dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primaryTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/dividerVersion"
+                android:background="?attr/dividerColor"
                 android:layout_marginTop="5dp"
-                android:textSize="16sp"
-                android:textColor="?attr/primaryTextColor"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_marginBottom="5dp" />
 
             <TextView
-                android:id="@+id/appDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/appDesc"
-                android:textIsSelectable="true"
-                android:layout_marginTop="25dp"
-                android:textSize="16sp"
-                android:textColor="?attr/primaryTextColor"
-                android:padding="5dp"
-                android:background="?attr/primaryBackgroundColor"
-                android:layout_gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/giteaVersion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/commitPage"
-                android:layout_marginTop="15dp"
-                android:textSize="16sp"
-                android:textColor="?attr/primaryTextColor"
-                android:padding="5dp"
-                android:background="?attr/primaryBackgroundColor"
-                android:autoLink="web" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:background="?attr/primaryBackgroundColor">
-
-                <TextView
-                    android:id="@+id/donationLink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/supportText"
-                    android:textColor="@color/lightBlue"
-                    android:textSize="16sp"
-                    android:gravity="start"
-                    android:autoLink="web"
-                    android:visibility="visible"
-                    android:layout_marginBottom="10dp"
-                    android:textColorLink="@color/lightBlue" />
-
-                <TextView
-                    android:id="@+id/donationLinkPatreon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/supportTextPatreon"
-                    android:textColor="@color/lightBlue"
-                    android:textSize="16sp"
-                    android:gravity="start"
-                    android:autoLink="web"
-                    android:visibility="visible"
-                    android:layout_marginBottom="10dp"
-                    android:textColorLink="@color/lightBlue" />
-
-                <TextView
-                    android:id="@+id/translateLink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:gravity="start"
-                    android:text="@string/translateText"
-                    android:textColor="@color/lightBlue"
-                    android:textColorLink="@color/lightBlue"
-                    android:textSize="16sp"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:background="?attr/primaryBackgroundColor">
-
-                <TextView
-                    android:id="@+id/appWebsite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/appWebsite"
-                    android:textColor="@color/lightBlue"
-                    android:textSize="16sp"
-                    android:gravity="start"
-                    android:autoLink="web"
-                    android:visibility="visible"
-                    android:layout_marginBottom="10dp"
-                    android:textColorLink="@color/lightBlue" />
-
-                <TextView
-                    android:id="@+id/appRepo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/appRepo"
-                    android:textColor="@color/lightBlue"
-                    android:textSize="16sp"
-                    android:gravity="start"
-                    android:autoLink="web"
-                    android:visibility="visible"
-                    android:textColorLink="@color/lightBlue" />
-
-            </LinearLayout>
-
-            <TextView
+                android:id="@+id/appVersion"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp" />
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                android:textSize="14sp"
+                android:textColor="?attr/primaryTextColor" />
+            <!-- version -->
+
+            <!-- build -->
+            <TextView
+                android:id="@+id/appBuildHeader"
+                android:text="@string/appBuild"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primaryTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/dividerBuild"
+                android:background="?attr/dividerColor"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/appBuild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                android:textSize="14sp"
+                android:textColor="?attr/primaryTextColor" />
+            <!-- build -->
+
+            <!-- user server version -->
+            <TextView
+                android:id="@+id/userServerVersionHeader"
+                android:text="@string/commitPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primaryTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/dividerUserServerVersion"
+                android:background="?attr/dividerColor"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/userServerVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                android:textSize="14sp"
+                android:textColor="?attr/primaryTextColor" />
+            <!-- user server version -->
+
+            <!-- support -->
+            <TextView
+                android:id="@+id/supportHeader"
+                android:text="@string/supportText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primaryTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/dividerSupport"
+                android:background="?attr/dividerColor"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/donationLinkLiberapay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/supportTextLiberapay"
+                android:textColor="@color/lightBlue"
+                android:textSize="14sp"
+                android:autoLink="web"
+                android:layout_marginBottom="10dp"
+                android:textColorLink="@color/lightBlue" />
+
+            <TextView
+                android:id="@+id/donationLinkPatreon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/supportTextPatreon"
+                android:textColor="@color/lightBlue"
+                android:textSize="14sp"
+                android:autoLink="web"
+                android:textColorLink="@color/lightBlue" />
+            <!-- support -->
+
+            <!-- translate -->
+            <TextView
+                android:id="@+id/translateHeader"
+                android:text="@string/translateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primaryTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/dividerTranslate"
+                android:background="?attr/dividerColor"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/translateLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="start"
+                android:text="@string/translateWithCrowdin"
+                android:textColor="@color/lightBlue"
+                android:textColorLink="@color/lightBlue"
+                android:textSize="14sp"
+                android:visibility="visible" />
+            <!-- translate -->
+
+            <!-- website -->
+            <TextView
+                android:id="@+id/websiteHeader"
+                android:text="@string/websiteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primaryTextColor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/dividerWebsite"
+                android:background="?attr/dividerColor"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/appWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/appWebsiteLink"
+                android:textColor="@color/lightBlue"
+                android:textSize="14sp"
+                android:autoLink="web"
+                android:layout_marginBottom="24dp"
+                android:textColorLink="@color/lightBlue" />
+            <!-- website -->
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

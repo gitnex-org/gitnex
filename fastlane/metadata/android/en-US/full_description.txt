@@ -1,7 +1,8 @@
-GitNex is a free, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
+GitNex is a free/paid, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
 
 # Features
 
+- Multiple accounts support
 - File and directory browser
 - File viewer
 - Create files

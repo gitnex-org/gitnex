@@ -1,15 +1,14 @@
 package org.mian.gitnex.activities;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +31,10 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
-import org.mian.gitnex.fragments.AboutFragment;
 import org.mian.gitnex.fragments.AdministrationFragment;
 import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
 import org.mian.gitnex.fragments.DraftsFragment;
-import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
+import org.mian.gitnex.fragments.ExploreFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
@@ -55,6 +53,7 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.GiteaVersion;
+import org.mian.gitnex.models.NotificationCount;
 import org.mian.gitnex.models.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +81,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	private Context appCtx;
 	private Typeface myTypeface;
 
+	private String instanceUrl;
+	private String loginUid;
+	private String instanceToken;
+
+	private View hView;
+	private MenuItem navNotifications;
+	private TextView notificationCounter;
+
 	@Override
 	protected int getLayoutResourceId() {
 
@@ -100,9 +107,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		Intent mainIntent = getIntent();
 		String launchFragment = mainIntent.getStringExtra("launchFragment");
 
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		instanceUrl = tinyDb.getString("instanceUrl");
+		loginUid = tinyDb.getString("loginUid");
+		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 		if(tinyDb.getString("dateFormat").isEmpty()) {
 			tinyDb.putString("dateFormat", "pretty");
@@ -169,7 +176,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else if(fragmentById instanceof OrganizationsFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleOrganizations));
 		}
-		else if(fragmentById instanceof ExploreRepositoriesFragment) {
+		else if(fragmentById instanceof ExploreFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
 		}
 		else if(fragmentById instanceof NotificationsFragment) {
@@ -177,9 +184,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 		else if(fragmentById instanceof ProfileFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
-		}
-		else if(fragmentById instanceof AboutFragment) {
-			toolbarTitle.setText(getResources().getString(R.string.pageTitleAbout));
 		}
 		else if(fragmentById instanceof DraftsFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
@@ -191,10 +195,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleUserAccounts));
 		}
 
+		getNotificationsCount(instanceUrl, instanceToken);
+
 		drawer = findViewById(R.id.drawer_layout);
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
-		final View hView = navigationView.getHeaderView(0);
+		hView = navigationView.getHeaderView(0);
+
+		Menu menu = navigationView.getMenu();
+		navNotifications = menu.findItem(R.id.nav_notifications);
 
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -204,6 +213,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			@Override
 			public void onDrawerOpened(@NonNull View drawerView) {
 
+				getNotificationsCount(instanceUrl, instanceToken);
 			}
 
 			@Override
@@ -295,6 +305,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_profile);
 					drawer.closeDrawers();
 				});
 
@@ -374,7 +385,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				case 5:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreRepositoriesFragment()).commit();
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_explore);
 					break;
 
@@ -437,6 +448,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			ChangeLog changelogDialog = new ChangeLog(this);
 			changelogDialog.showDialog();
 		}
+	}
+
+	public void setActionBarTitle(String title) {
+
+		toolbarTitle.setText(title);
 	}
 
 	@Override
@@ -528,15 +544,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 
-			case R.id.nav_about:
-				toolbarTitle.setText(getResources().getString(R.string.pageTitleAbout));
-				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
-				break;
-
-			case R.id.nav_rate_app:
-				rateThisApp();
-				break;
-
 			case R.id.nav_starred_repos:
 				toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));
 				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StarredRepositoriesFragment()).commit();
@@ -544,7 +551,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			case R.id.nav_explore:
 				toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
-				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreRepositoriesFragment()).commit();
+				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 				break;
 
 			case R.id.nav_notifications:
@@ -566,16 +573,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		drawer.closeDrawer(GravityCompat.START);
 		return true;
-	}
-
-	public void rateThisApp() {
-
-		try {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-		}
-		catch(ActivityNotFoundException e) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-		}
 	}
 
 	public static void logout(Activity activity, Context ctx) {
@@ -703,6 +700,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			}
 		});
 
+	}
+
+	private void getNotificationsCount(String instanceUrl, String token) {
+
+		Call<NotificationCount> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().checkUnreadNotifications(token);
+
+		call.enqueue(new Callback<NotificationCount>() {
+
+			@Override
+			public void onResponse(@NonNull Call<NotificationCount> call, @NonNull retrofit2.Response<NotificationCount> response) {
+
+				NotificationCount notificationCount = response.body();
+
+				if(response.code() == 200) {
+
+					assert notificationCount != null;
+					notificationCounter = navNotifications.getActionView().findViewById(R.id.counterBadgeNotification);
+					notificationCounter.setText(String.valueOf(notificationCount.getCounter()));
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<NotificationCount> call, @NonNull Throwable t) {
+
+				Log.e("onFailure-notification", t.toString());
+			}
+		});
 	}
 
 }

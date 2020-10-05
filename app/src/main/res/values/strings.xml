@@ -4,18 +4,21 @@
     <string name="appEmail" translatable="false">gitnex@swatian.com</string>
     <string name="appRepo" translatable="false">Source code</string>
     <string name="appRepoLink" translatable="false">https://codeberg.org/gitnex/GitNex</string>
-    <string name="appWebsite" translatable="false">Website</string>
     <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
-    <string name="commitPage" translatable="false">Your Gitea version\n</string>
+    <string name="commitPage" translatable="false">Your Gitea Version</string>
     <string name="supportLink" translatable="false">https://liberapay.com/mmarif/donate</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
-    <string name="appVerBuild" translatable="false">%1$s / build %2$d</string>
+    <string name="appVersion" translatable="false">Version</string>
+    <string name="appBuild" translatable="false">Build</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tool Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
     <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
     <string name="crashReportEmailSubject" translatable="false">[GitNex] - Crash Report #%1$d</string>
+    <string name="translateWithCrowdin" translatable="false">Crowdin</string>
+    <string name="translateText" translatable="false">Translate</string>
+    <string name="supportText" translatable="false">Support</string>
 
-    <string name="supportText" translatable="false">Support the App on Liberapay</string>
-    <string name="supportTextPatreon" translatable="false">Become a Patreon</string>
+    <string name="supportTextLiberapay" translatable="false">Liberapay</string>
+    <string name="supportTextPatreon" translatable="false">Patreon</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
@@ -29,6 +32,7 @@
     <string name="navLogout">Logout</string>
     <string name="navExplore">Explore</string>
     <string name="navAdministration">Administration</string>
+    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
 
     <!-- page titles -->
@@ -55,6 +59,7 @@
     <string name="pageTitleExplore">Explore</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <string name="pageTitleUserAccounts">Manage Accounts</string>
+    <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
 
     <string name="repoName">Demo repo</string>
@@ -143,7 +148,6 @@
 
     <string name="noDataIssueTab">No issues found</string>
 
-    <string name="infoTabRepoWebsite">Website</string>
     <string name="infoTabRepoSize">Size</string>
     <string name="infoTabRepoDefaultBranch">Default Branch</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -518,7 +522,6 @@
     <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
 
-    <string name="translateText">Translate GitNex with Crowdin</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
     <string name="starRepository">Star Repository</string>
     <string name="unStarRepository">Unstar Repository</string>
@@ -632,6 +635,8 @@
     <string name="securityHintText">SSL certificates, cache, polling delay</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+    <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
+    <string name="aboutAppHintText">App version, build, user gitea version</string>
 
     <string name="archivedRepository">Archived</string>
 
@@ -692,5 +697,21 @@
     <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
 
     <string name="assignTeamTitle">Assign Team</string>
+
+    <string name="exploreFilterDialogTitle">Filter Repositories</string>
+    <string name="exploreFilterIncludeTopic">Search ONLY in Topic</string>
+    <string name="exploreFilterIncludeDesc">Search in Description</string>
+    <string name="exploreFilterIncludeArchive">Only Archived Repositories</string>
+    <string name="exploreFilterIncludePrivate">Only Private Repositories</string>
+    <string name="exploreFilterIncludeTemplateRepos">Search in Template Repositories</string>
+
+    <string name="mergeIntoBranch">Merge Into</string>
+    <string name="pullFromBranch">Pull From</string>
+    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
+    <string name="mergeIntoError">Merge into branch is required</string>
+    <string name="pullFromError">Pull from branch is required</string>
+    <string name="titleError">Title is required</string>
+    <string name="prCreateSuccess">Pull Request created successfully</string>
+    <string name="prAlreadyExists">A pull request between these branches already exists</string>
 
 </resources>

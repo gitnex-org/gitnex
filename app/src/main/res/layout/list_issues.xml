@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/repoFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
     <RelativeLayout
         android:id="@+id/mainFrame"
         android:layout_width="match_parent"

@@ -351,6 +351,13 @@ public class RepoInfoFragment extends Fragment {
 								tinyDb.putBoolean("hasIssues", true);
 							}
 
+							if(repoInfo.isHas_pull_requests()) {
+								tinyDb.putBoolean("hasPullRequests", repoInfo.isHas_pull_requests());
+							}
+							else {
+								tinyDb.putBoolean("hasPullRequests", false);
+							}
+
 							tinyDb.putString("repoHtmlUrl", repoInfo.getHtml_url());
 
 							mProgressBar.setVisibility(View.GONE);

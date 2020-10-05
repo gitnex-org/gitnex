@@ -12,6 +12,7 @@
     <string name="navLogout">خروج از حساب کاربری</string>
     <string name="navExplore">جست و جو</string>
     <string name="navAdministration">Administration</string>
+    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">در مورد ما</string>
@@ -37,6 +38,7 @@
     <string name="pageTitleExplore">گشت‌و‌گذار</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
     <string name="pageTitleUserAccounts">Manage Accounts</string>
+    <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">مخزن نمایشی</string>
     <string name="repoFullname">نخزن با ORG</string>
@@ -62,6 +64,7 @@
     <string name="navigation_drawer_open">باز کردن کشو ی ناوبری</string>
     <string name="navigation_drawer_close">بستن کشوی ناوبری</string>
     <string name="logo">ورود به گیتی</string>
+    <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1. پروتوکل صحیح را انتخاب کنید (http یا https)
 2. URL گیتی را وارد کنید. مثلا: try.gitea.io
 3. اگر احراز هویت دو مرحله‌ای را برای حساب خود فعال کرده‌اید، کد را در کادر OTP وارد کنید.
@@ -72,6 +75,7 @@
     <string name="emptyFieldURL">URL نمونه مورد نیاز است</string>
     <string name="emptyFieldUsername">نام کاربری اجباری است</string>
     <string name="emptyFieldPassword">گذر واژه اجباری است</string>
+    <string name="protocolEmptyError">Protocol is required</string>
     <string name="checkNetConnection">عدم دسترسی به شبکه، لطفا از برقراری ارتباط با اینترنت مطمئن شوید</string>
     <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
     <string name="repoNameErrorEmpty">نام مخزن خالی است</string>
@@ -109,7 +113,6 @@
     <string name="tab_text_collaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">No issues found</string>
-    <string name="infoTabRepoWebsite">Website</string>
     <string name="infoTabRepoSize">Size</string>
     <string name="infoTabRepoDefaultBranch">Default Branch</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -422,7 +425,6 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
-    <string name="translateText">Translate GitNex with Crowdin</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
     <string name="starRepository">Star Repository</string>
     <string name="unStarRepository">Unstar Repository</string>
@@ -507,7 +509,7 @@
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
-    <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Please sign in again</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
     <string name="deleteAllDrafts">Delete All Drafts</string>
@@ -521,6 +523,8 @@
     <string name="securityHintText">SSL certificates, cache, polling delay</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+    <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
+    <string name="aboutAppHintText">App version, build, user gitea version</string>
     <string name="archivedRepository">Archived</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
@@ -563,4 +567,26 @@
     <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">Repository deleted successfully</string>
+    <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
+    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
+    <string name="repoTransferText">Perform Transfer</string>
+    <string name="repoTransferOwnerText">New Owner</string>
+    <string name="repoTransferSuccess">Repository transferred successfully</string>
+    <string name="repoTransferOwnerError">New owner is required</string>
+    <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
+    <string name="exploreFilterDialogTitle">Filter Repositories</string>
+    <string name="exploreFilterIncludeTopic">Search ONLY in Topic</string>
+    <string name="exploreFilterIncludeDesc">Search in Description</string>
+    <string name="exploreFilterIncludeArchive">Only Archived Repositories</string>
+    <string name="exploreFilterIncludePrivate">Only Private Repositories</string>
+    <string name="exploreFilterIncludeTemplateRepos">Search in Template Repositories</string>
+    <string name="mergeIntoBranch">Merge Into</string>
+    <string name="pullFromBranch">Pull From</string>
+    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
+    <string name="mergeIntoError">Merge into branch is required</string>
+    <string name="pullFromError">Pull from branch is required</string>
+    <string name="titleError">Title is required</string>
+    <string name="prCreateSuccess">Pull Request created successfully</string>
+    <string name="prAlreadyExists">A pull request between these branches already exists</string>
 </resources>

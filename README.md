@@ -4,13 +4,13 @@
 
 # GitNex - Android client for Gitea
 
-GitNex is a free, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
+GitNex is a free/paid, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
 
 GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. No trackers are used and source code is available here for anyone to audit.
 
 ## Downloads
 [<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
-[<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex)
+[<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
 [<img alt='Download builds and releases' src='assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE)
 
 ## Note about Gitea version
@@ -21,11 +21,10 @@ Check the versions [compatibility page](https://codeberg.org/gitnex/GitNex/wiki/
 ## Build from source
 Option 1 - Download the source code, open it in Android Studio and build it there.
 
-Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`.
+Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew assembleFree`.
 
 ## Features
 - Multiple accounts support
-- Repositories / issues/ org list
 - File and directory browser
 - File viewer
 - Create files
@@ -34,6 +33,7 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew build`
 - Files diff for PRs
 - Notifications
 - Drafts
+- Repositories / issues / org list
 - [MANY MORE](https://codeberg.org/gitnex/GitNex/wiki/Features)
 
 ## Contributing

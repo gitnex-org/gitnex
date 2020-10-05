@@ -12,6 +12,7 @@
     <string name="navLogout">退出</string>
     <string name="navExplore">探索</string>
     <string name="navAdministration">管理</string>
+    <string name="navSearchIssuesPulls">搜索问题</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">关于</string>
@@ -37,6 +38,7 @@
     <string name="pageTitleExplore">探索</string>
     <string name="pageTitleAdministration">Gitea 管理</string>
     <string name="pageTitleUserAccounts">管理账户</string>
+    <string name="pageTitleNewPullRequest">新拉取请求</string>
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
     <string name="repoFullname">有组织的存储库</string>
@@ -62,6 +64,7 @@
     <string name="navigation_drawer_open">打开导航栏</string>
     <string name="navigation_drawer_close">关闭导航栏</string>
     <string name="logo">登录到 Gitea</string>
+    <string name="protocol">协议</string>
     <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。 \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。</string>
     <string name="malformedUrl">无法连接到主机。请检查您的 URL 或端口是否有任何错误</string>
     <string name="protocolError">除非您正在本地网络上测试，否则不建议使用 HTTP 协议</string>
@@ -69,6 +72,7 @@
     <string name="emptyFieldURL">未填写 Gitea访问地址</string>
     <string name="emptyFieldUsername">未填写 用户名</string>
     <string name="emptyFieldPassword">未填写 密码</string>
+    <string name="protocolEmptyError">协议是必需的</string>
     <string name="checkNetConnection">无法连接，请检查您的网络情况</string>
     <string name="netConnectionIsBack">有网了，奥力给！</string>
     <string name="repoNameErrorEmpty">仓库名称为空</string>
@@ -106,7 +110,6 @@
     <string name="tab_text_collaborators">协作者</string>
     <string name="tabPullRequests">拉取请求</string>
     <string name="noDataIssueTab">没有工单</string>
-    <string name="infoTabRepoWebsite">网站</string>
     <string name="infoTabRepoSize">尺寸</string>
     <string name="infoTabRepoDefaultBranch">默认分支</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -258,7 +261,7 @@
     <string name="newTeamAccessControls">访问控制</string>
     <string name="newTeamPermissionRead">成员可以查看并克隆团队仓库</string>
     <string name="newTeamPermissionWrite">会员可以读取并推送到团队仓库</string>
-    <string name="newTeamPermissionAdmin">会员可以拉取和推送到团队仓库并添加合作者</string>
+    <string name="newTeamPermissionAdmin">成员可以拉取和推送到团队仓库并添加合作者</string>
     <string name="teamNameEmpty">请输入团队名称</string>
     <string name="teamNameError">团队名称只能包含字母数字、 破折号 (-), 下划线 (_) 和 dot (.) 字符</string>
     <string name="teamPermissionEmpty">请选择权限</string>
@@ -419,7 +422,6 @@
     <string name="genericServerResponseError">目前我们无法访问服务器，请检查您的服务器状态，然后重试</string>
     <string name="genericCopyUrl">复制 URL</string>
     <!-- generic copy -->
-    <string name="translateText">使用 Crowdin 翻译 GitNex</string>
     <string name="exploreTextBoxHint">探索仓库</string>
     <string name="starRepository">星级仓库</string>
     <string name="unStarRepository">从仓库中删除星星</string>
@@ -456,8 +458,8 @@
     <string name="deleteBranchForkInfo">该分支属于一个分叉存储库</string>
     <string name="mergeCommentText">合并评论</string>
     <string name="mergePRSuccessMsg">拉取请求已成功合并</string>
-    <string name="mergePR404ErrorMsg">拉取请求不可用于合并</string>
-    <string name="mergeOptionMerge">合并请求</string>
+    <string name="mergePR404ErrorMsg">用于合并的拉取请求不可用</string>
+    <string name="mergeOptionMerge">合并拉取请求</string>
     <string name="mergeOptionRebase">重建并合并</string>
     <string name="mergeOptionRebaseCommit">重建合并 (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">压缩提交并合并</string>
@@ -476,7 +478,7 @@
     <string name="sharePr">分享拉取请求</string>
     <string name="shareRepository">共享存储库</string>
     <string name="createRepository">创建仓库</string>
-    <string name="commitTitle">Commits</string>
+    <string name="commitTitle">提交</string>
     <string name="commitCommittedBy">由 %1$s提交</string>
     <string name="viewCommits">查看提交</string>
     <!-- Memorizing Trust Manager -->
@@ -504,7 +506,7 @@
     <string name="settingsEnableReportsText">启用崩溃报告</string>
     <string name="crashTitle">GitNex 已停止 :(</string>
     <string name="setCrashReports">崩溃报告</string>
-    <string name="crashMessage">您可以点击确定按钮通过电子邮件发送崩溃报告。 这将有助于修复它:)\n\n您也可以在电子邮件中添加额外的内容。谢谢！</string>
+    <string name="crashMessage">鼓励在项目存储库中提出一个问题，并说明如何重现这个bug。这样更容易调试和修复问题。\n\n点击OK按钮，通过电子邮件发送崩溃报告。可以在电子邮件中添加其他内容，\n谢谢！</string>
     <string name="forceLogoutDialogHeader">请重新登录</string>
     <string name="forceLogoutDialogDescription">由于应用内部功能发生了一些重大变化，我们要求您重新登录。这些变化使我们能够使应用程序在未来更具灵活性。\n\n感谢您的耐心，对给您带来的不便我们深表歉意</string>
     <string name="deleteAllDrafts">删除所有草稿</string>
@@ -518,6 +520,8 @@
     <string name="securityHintText">SSL 证书、缓存、轮询延迟</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
+    <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
+    <string name="aboutAppHintText">应用程序版本、构建、用户gitea版本</string>
     <string name="archivedRepository">已存档</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
     <string name="removeAccountPopupTitle">删除账户</string>
@@ -541,23 +545,45 @@
     <string name="markedNotificationsAsRead">成功将所有通知标记为已读</string>
     <string name="isRead">已读</string>
     <string name="isUnread">未读</string>
-    <string name="repoSettingsTitle">Repository Settings</string>
-    <string name="repoSettingsEditProperties">Edit Properties</string>
-    <string name="repoSettingsDelete">Delete Repository</string>
-    <string name="repoSettingsDeleteHint">Be careful, this operation CANNOT be undone!</string>
-    <string name="repoPropertiesTemplate">Set as Template</string>
-    <string name="repoPropertiesEnableIssues">Enable Issues</string>
-    <string name="repoPropertiesExternalIssuesUrl">External Issue Tracker Url</string>
-    <string name="repoPropertiesEnableWiki">Enable Wiki</string>
-    <string name="repoPropertiesExternalWikiUrl">External Wiki Url</string>
-    <string name="repoPropertiesEnablePr">Enable Pull Requests</string>
-    <string name="repoPropertiesEnableTimeTracker">Enable Time Tracker</string>
-    <string name="repoPropertiesEnableMergeCommits">Enable Merge Commits</string>
-    <string name="repoPropertiesEnableRebase">Enable Rebase</string>
-    <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
-    <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
-    <string name="repoPropertiesSaveSuccess">Repository properties updated successfully</string>
-    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
-    <string name="repoSettingsDeleteError">Repository name does not match</string>
-    <string name="repoDeletionSuccess">Repository deleted successfully</string>
+    <string name="repoSettingsTitle">存储库设置</string>
+    <string name="repoSettingsEditProperties">编辑属性</string>
+    <string name="repoSettingsDelete">删除存储库</string>
+    <string name="repoSettingsDeleteHint">小心，这个操作无法撤销！</string>
+    <string name="repoPropertiesTemplate">设置为模板</string>
+    <string name="repoPropertiesEnableIssues">启用问题</string>
+    <string name="repoPropertiesExternalIssuesUrl">外部问题跟踪网址</string>
+    <string name="repoPropertiesEnableWiki">启用 Wiki</string>
+    <string name="repoPropertiesExternalWikiUrl">外部 Wiki 网址</string>
+    <string name="repoPropertiesEnablePr">允许拉取请求</string>
+    <string name="repoPropertiesEnableTimeTracker">启用时间追踪器</string>
+    <string name="repoPropertiesEnableMergeCommits">启用合并提交</string>
+    <string name="repoPropertiesEnableRebase">启用代码变基</string>
+    <string name="repoPropertiesEnableSquash">启用压扁和合并</string>
+    <string name="repoPropertiesEnableForceMerge">用合并提交(&#8212;&#8212;no-ff)启用代码变基</string>
+    <string name="repoPropertiesSaveSuccess">成功更新存储库属性</string>
+    <string name="repoSettingsDeleteDescription">删除前要知道的事:\n\n-此操作无法撤消。\n-此操作将永久删除存储库，包括代码、问题、注释、Wiki数据和协作者设置。\n\n输入存储库名称作为确认</string>
+    <string name="repoSettingsDeleteError">存储库名称不匹配</string>
+    <string name="repoDeletionSuccess">成功删除存储库</string>
+    <string name="repoSettingsTransferOwnership">转移所有权</string>
+    <string name="repoSettingsTransferOwnershipHint">将此存储库传输给您具有管理员权限的用户或组织</string>
+    <string name="repoSettingsTransferOwnershipDescription">转移所有权之前需要注意的事项:\n\n- 如果将存储库移交给单个用户，您将失去对该存储库的访问权。\n- 如果您将存储库转移到您和他人(共同)拥有的组织，那么您将保留对该存储库的访问权。\n\n输入存储库名称作为确认</string>
+    <string name="repoTransferText">执行移交</string>
+    <string name="repoTransferOwnerText">新所有者</string>
+    <string name="repoTransferSuccess">成功移交存储库</string>
+    <string name="repoTransferOwnerError">需要新的所有者</string>
+    <string name="repoTransferError">所有者名称有问题。确保新所有者存在</string>
+    <string name="exploreFilterDialogTitle">过滤仓库</string>
+    <string name="exploreFilterIncludeTopic">仅在话题中搜索</string>
+    <string name="exploreFilterIncludeDesc">在描述中搜索</string>
+    <string name="exploreFilterIncludeArchive">仅存档仓库</string>
+    <string name="exploreFilterIncludePrivate">仅私有仓库</string>
+    <string name="exploreFilterIncludeTemplateRepos">在模板仓库中搜索</string>
+    <string name="mergeIntoBranch">合并到</string>
+    <string name="pullFromBranch">拉取自</string>
+    <string name="sameBranchesError">这些分支是相等的。 无需创建拉取请求</string>
+    <string name="mergeIntoError">必须合并到分支</string>
+    <string name="pullFromError">需要从分支下拉</string>
+    <string name="titleError">标题不可为空</string>
+    <string name="prCreateSuccess">拉取请求创建成功</string>
+    <string name="prAlreadyExists">这些分支之间的拉取请求已存在</string>
 </resources>

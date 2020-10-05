@@ -32,7 +32,6 @@ import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.Issues;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -112,7 +111,7 @@ public class IssuesFragment extends Fragment {
 		recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		recyclerView.setAdapter(adapter);
 
-		((RepoDetailActivity) Objects.requireNonNull(getActivity())).setFragmentRefreshListener(issueState -> {
+		((RepoDetailActivity) requireActivity()).setFragmentRefreshListener(issueState -> {
 
 			if(issueState.equals("closed")) {
 				menu.getItem(1).setIcon(R.drawable.ic_filter_closed);

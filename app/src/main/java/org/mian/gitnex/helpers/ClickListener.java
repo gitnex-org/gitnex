@@ -3,7 +3,6 @@ package org.mian.gitnex.helpers;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.mian.gitnex.R;
@@ -18,17 +17,16 @@ public class ClickListener implements View.OnClickListener {
     private Context mCtx;
 
     public ClickListener(String infoText, Context mCtx) {
+
         this.infoText = infoText;
         this.mCtx = mCtx;
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
 
         LayoutInflater inflater1 = LayoutInflater.from(mCtx);
-        View layout = inflater1.inflate(R.layout.custom_toast_success,
-                (ViewGroup) v.findViewById(R.id.custom_toast_container));
+        View layout = inflater1.inflate(R.layout.custom_toast_info, v.findViewById(R.id.custom_toast_container));
 
         TextView text = layout.findViewById(R.id.toastText);
         text.setText(infoText);

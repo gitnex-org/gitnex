@@ -12,6 +12,7 @@
     <string name="navLogout">Odhlásit se</string>
     <string name="navExplore">Prozkoumat</string>
     <string name="navAdministration">Administrace</string>
+    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">O aplikaci</string>
@@ -37,6 +38,7 @@
     <string name="pageTitleExplore">Prozkoumat</string>
     <string name="pageTitleAdministration">Administrace Gitea</string>
     <string name="pageTitleUserAccounts">Správa účtů</string>
+    <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Demo repozitář</string>
     <string name="repoFullname">Repo with ORG</string>
@@ -62,6 +64,7 @@
     <string name="navigation_drawer_open">Otevřít navigační menu</string>
     <string name="navigation_drawer_close">Zavřít navigační menu</string>
     <string name="logo">Přihlásit se do Gitea</string>
+    <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1- Vyberte správný protokol (https nebo http). \n2- zadejte URL Gitea např.: try.gitea.io. \n3- Pokud jste pro svůj účet povolili 2FA, zadejte kód do pole OTP kód. \n4- Pro základní ověření HTTP použijte USERNAME@DOMAIN.COM v poli URL.</string>
     <string name="malformedUrl">Nelze se připojit k serveru. Zkontrolujte prosím URL nebo port pro případné chyby</string>
     <string name="protocolError">Není doporučeno používat HTTP protokol, pokud netestujete na místní síti</string>
@@ -69,6 +72,7 @@
     <string name="emptyFieldURL">Je vyžadována URL instance</string>
     <string name="emptyFieldUsername">Uživatelské jméno je vyžadováno</string>
     <string name="emptyFieldPassword">Heslo je vyžadováno</string>
+    <string name="protocolEmptyError">Protocol is required</string>
     <string name="checkNetConnection">Nelze se přihlásit, zkontrolujte prosím vaše připojení k internetu</string>
     <string name="netConnectionIsBack">Ano, máme připojení k internetu!</string>
     <string name="repoNameErrorEmpty">Název repozitáře není vyplněn</string>
@@ -106,7 +110,6 @@
     <string name="tab_text_collaborators">Spolupracovníci</string>
     <string name="tabPullRequests">Pull Requesty</string>
     <string name="noDataIssueTab">Nebyla nalezena žádná issue</string>
-    <string name="infoTabRepoWebsite">Webová stránka</string>
     <string name="infoTabRepoSize">Velikost</string>
     <string name="infoTabRepoDefaultBranch">Výchozí větev</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -419,7 +422,6 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
     <!-- generic copy -->
-    <string name="translateText">Translate GitNex with Crowdin</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
     <string name="starRepository">Star Repository</string>
     <string name="unStarRepository">Unstar Repository</string>
@@ -504,7 +506,7 @@
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
-    <string name="crashMessage">You can tap the OK button to send the crash report by email. It will help to fix it :)\n\nYou can also add additional content in the email. Thank you!</string>
+    <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Please sign in again</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
     <string name="deleteAllDrafts">Delete All Drafts</string>
@@ -518,6 +520,8 @@
     <string name="securityHintText">SSL certificates, cache, polling delay</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
+    <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
+    <string name="aboutAppHintText">App version, build, user gitea version</string>
     <string name="archivedRepository">Archived</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
@@ -560,4 +564,26 @@
     <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">Repository deleted successfully</string>
+    <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
+    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
+    <string name="repoTransferText">Perform Transfer</string>
+    <string name="repoTransferOwnerText">New Owner</string>
+    <string name="repoTransferSuccess">Repository transferred successfully</string>
+    <string name="repoTransferOwnerError">New owner is required</string>
+    <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
+    <string name="exploreFilterDialogTitle">Filter Repositories</string>
+    <string name="exploreFilterIncludeTopic">Search ONLY in Topic</string>
+    <string name="exploreFilterIncludeDesc">Search in Description</string>
+    <string name="exploreFilterIncludeArchive">Only Archived Repositories</string>
+    <string name="exploreFilterIncludePrivate">Only Private Repositories</string>
+    <string name="exploreFilterIncludeTemplateRepos">Search in Template Repositories</string>
+    <string name="mergeIntoBranch">Merge Into</string>
+    <string name="pullFromBranch">Pull From</string>
+    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
+    <string name="mergeIntoError">Merge into branch is required</string>
+    <string name="pullFromError">Pull from branch is required</string>
+    <string name="titleError">Title is required</string>
+    <string name="prCreateSuccess">Pull Request created successfully</string>
+    <string name="prAlreadyExists">A pull request between these branches already exists</string>
 </resources>

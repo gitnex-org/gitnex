@@ -1,6 +1,8 @@
 package org.mian.gitnex.fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,6 @@ import org.mian.gitnex.activities.SettingsReportsActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
 import org.mian.gitnex.activities.SettingsTranslationActivity;
 import org.mian.gitnex.helpers.TinyDB;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -37,6 +38,8 @@ public class SettingsFragment extends Fragment {
 		LinearLayout securityFrame = v.findViewById(R.id.securityFrame);
 		LinearLayout languagesFrame = v.findViewById(R.id.languagesFrame);
 		LinearLayout reportsFrame = v.findViewById(R.id.reportsFrame);
+		LinearLayout rateAppFrame = v.findViewById(R.id.rateAppFrame);
+		LinearLayout aboutAppFrame = v.findViewById(R.id.aboutAppFrame);
 
 		appearanceFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsAppearanceActivity.class)));
 
@@ -50,8 +53,22 @@ public class SettingsFragment extends Fragment {
 
 		reportsFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsReportsActivity.class)));
 
+		rateAppFrame.setOnClickListener(aboutApp -> rateThisApp());
+
+		aboutAppFrame.setOnClickListener(aboutApp -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit());
+
 		return v;
 
+	}
+
+	public void rateThisApp() {
+
+		try {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + requireActivity().getPackageName())));
+		}
+		catch(ActivityNotFoundException e) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + requireActivity().getPackageName())));
+		}
 	}
 
 	@Override
@@ -62,8 +79,8 @@ public class SettingsFragment extends Fragment {
 		TinyDB tinyDb = new TinyDB(getContext());
 
 		if(tinyDb.getBoolean("refreshParent")) {
-			Objects.requireNonNull(getActivity()).recreate();
-			getActivity().overridePendingTransition(0, 0);
+			requireActivity().recreate();
+			requireActivity().overridePendingTransition(0, 0);
 			tinyDb.putBoolean("refreshParent", false);
 		}
 
