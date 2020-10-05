@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.2.0" versioncode="320">
-        <change>New: Create pull request</change>
-        <change>New: Edit repository properties (Admins only)</change>
-        <change>New: Delete repository (Admins only)</change>
-        <change>New: Transfer repository ownership (Admins only)</change>
-        <change>New: Notification badge in navigation menu</change>
-        <change>New: Search issues across all repositories</change>
-        <change>New: Show issues/pr states in single view mode</change>
-        <change>New: Explore repositories filter</change>
-        <change>New: Android 11 support</change>
-        <change>New: Commits under Files branches</change>
-        <change>Bugfix: Fix crash when create issue with labels removed</change>
-        <change>Bugfix: Fix active account selector</change>
+    <release version="3.3.0-dev" versioncode="327">
+        <change>Under development</change>
     </release>
 
 </changelog>
