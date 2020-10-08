@@ -36,18 +36,18 @@
             android:background="?attr/primaryBackgroundColor"
             android:scrollbars="vertical" />
 
-        <TextView
-            android:id="@+id/noDataFiles"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:gravity="center"
-            android:text="@string/noDataFilesTab"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="20sp"
-            android:visibility="gone" />
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/noDataFiles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:text="@string/noDataFilesTab"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
     <com.google.android.material.progressindicator.ProgressIndicator
         android:id="@+id/progress_bar"

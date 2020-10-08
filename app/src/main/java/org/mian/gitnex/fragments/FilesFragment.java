@@ -207,17 +207,19 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel.getFilesList(instanceUrl, instanceToken, owner, repo, ref, getContext()).observe(getViewLifecycleOwner(), filesListMain -> {
+		filesModel.getFilesList(instanceUrl, instanceToken, owner, repo, ref, getContext(), mProgressBar, noDataFiles).observe(getViewLifecycleOwner(), filesListMain -> {
 
 			adapter = new FilesAdapter(getContext(), filesListMain, FilesFragment.this);
 			mBreadcrumbsView.removeItemAfter(1);
 
 			if(adapter.getItemCount() > 0) {
+
 				mRecyclerView.setAdapter(adapter);
 				AppUtil.setMultiVisibility(View.VISIBLE, mRecyclerView, filesFrame);
 				noDataFiles.setVisibility(View.GONE);
 			}
 			else {
+
 				adapter.notifyDataSetChanged();
 				mRecyclerView.setAdapter(adapter);
 				AppUtil.setMultiVisibility(View.VISIBLE, mRecyclerView, filesFrame, noDataFiles);
@@ -225,7 +227,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			filesFrame.setVisibility(View.VISIBLE);
 			mProgressBar.setVisibility(View.GONE);
-
 		});
 
 	}
@@ -237,7 +238,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		FilesViewModel filesModel2 = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel2.getFilesList2(instanceUrl, instanceToken, owner, repo, filesDir, ref, getContext()).observe(this, filesListMain2 -> {
+		filesModel2.getFilesList2(instanceUrl, instanceToken, owner, repo, filesDir, ref, getContext(), mProgressBar, noDataFiles).observe(this, filesListMain2 -> {
 
 			adapter = new FilesAdapter(getContext(), filesListMain2, FilesFragment.this);
 
