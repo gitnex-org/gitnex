@@ -81,22 +81,6 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/info"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_info"
-                android:layout_marginStart="120dp"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/urlInfoTooltip" />
-
-        </LinearLayout>
-
         <EditText
             android:id="@+id/instance_url"
             android:layout_width="match_parent"

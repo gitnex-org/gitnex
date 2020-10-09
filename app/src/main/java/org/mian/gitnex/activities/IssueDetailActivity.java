@@ -1,43 +1,48 @@
 package org.mian.gitnex.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.AssigneesActions;
+import org.mian.gitnex.actions.LabelsActions;
+import org.mian.gitnex.adapters.AssigneesListAdapter;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
+import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityIssueDetailBinding;
+import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
+import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -48,15 +53,22 @@ import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Issues;
+import org.mian.gitnex.models.Labels;
+import org.mian.gitnex.models.UpdateIssueAssignees;
 import org.mian.gitnex.models.WatchInfo;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import io.noties.markwon.AbstractMarkwonPlugin;
@@ -82,29 +94,36 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class IssueDetailActivity extends BaseActivity {
+public class IssueDetailActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener, BottomSheetSingleIssueFragment.BottomSheetListener {
 
-	public ImageView closeActivity;
 	private IssueCommentsAdapter adapter;
-	private RecyclerView mRecyclerView;
-	private ImageView assigneeAvatar;
-	private TextView issueTitle;
-	private TextView issueDescription;
-	private TextView issueMilestone;
-	private TextView issueDueDate;
-	private TextView issueCreatedTime;
-	private HorizontalScrollView labelsScrollView;
-	private HorizontalScrollView assigneesScrollView;
-	private ScrollView scrollViewComments;
-	private TextView issueModified;
-	private ExtendedFloatingActionButton createNewComment;
 	final Context ctx = this;
 	private Context appCtx;
-	private LinearLayout labelsLayout;
-	private LinearLayout assigneesLayout;
-	private View divider;
-	private ProgressBar progressBar;
-	private ImageView issuePrState;
+	private TinyDB tinyDb;
+
+	private String instanceUrl;
+	private String loginUid;
+	private String instanceToken;
+	private String repoOwner;
+	private String repoName;
+	private int issueIndex;
+
+	private LabelsListAdapter labelsAdapter;
+	private AssigneesListAdapter assigneesAdapter;
+
+	private List<Integer> currentLabelsIds = new ArrayList<>();
+	private List<Integer> labelsIds = new ArrayList<>();
+	private List<Labels> labelsList = new ArrayList<>();
+	private List<Collaborators> assigneesList = new ArrayList<>();
+	private List<String> assigneesListData = new ArrayList<>();
+	private List<String> currentAssignees = new ArrayList<>();
+
+	private Dialog dialogLabels;
+	private Dialog dialogAssignees;
+
+	private CustomLabelsSelectionDialogBinding labelsBinding;
+	private CustomAssigneesSelectionDialogBinding assigneesBinding;
+	private ActivityIssueDetailBinding viewBinding;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -117,80 +136,65 @@ public class IssueDetailActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 		appCtx = getApplicationContext();
+		tinyDb = new TinyDB(appCtx);
 
-		final TinyDB tinyDb = new TinyDB(appCtx);
+		viewBinding = ActivityIssueDetailBinding.inflate(getLayoutInflater());
+		View view = viewBinding.getRoot();
+		setContentView(view);
 
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		instanceUrl = tinyDb.getString("instanceUrl");
+		loginUid = tinyDb.getString("loginUid");
+		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 		String repoFullName = tinyDb.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
-		final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
+		repoOwner = parts[0];
+		repoName = parts[1];
+		issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
 
-		final SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
-
-		assigneeAvatar = findViewById(R.id.assigneeAvatar);
-		issueTitle = findViewById(R.id.issueTitle);
-		issueDescription = findViewById(R.id.issueDescription);
-		issueMilestone = findViewById(R.id.issueMilestone);
-		issueDueDate = findViewById(R.id.issueDueDate);
-		issueCreatedTime = findViewById(R.id.issueCreatedTime);
-		labelsScrollView = findViewById(R.id.labelsScrollView);
-		assigneesScrollView = findViewById(R.id.assigneesScrollView);
-		scrollViewComments = findViewById(R.id.scrollViewComments);
-		issueModified = findViewById(R.id.issueModified);
-		createNewComment = findViewById(R.id.addNewComment);
-		labelsLayout = findViewById(R.id.frameLabels);
-		assigneesLayout = findViewById(R.id.frameAssignees);
-		divider = findViewById(R.id.divider);
-		progressBar = findViewById(R.id.progressBar);
-		issuePrState = findViewById(R.id.issuePrState);
-
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
-
-		setSupportActionBar(toolbar);
+		setSupportActionBar(viewBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		mRecyclerView = findViewById(R.id.recyclerView);
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setNestedScrollingEnabled(false);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+		viewBinding.recyclerView.setHasFixedSize(true);
+		viewBinding.recyclerView.setNestedScrollingEnabled(false);
+		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		mRecyclerView.addItemDecoration(dividerItemDecoration);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-		createNewComment.setOnClickListener(v -> startActivity(new Intent(ctx, ReplyToIssueActivity.class)));
+		viewBinding.addNewComment.setOnClickListener(v -> startActivity(new Intent(ctx, ReplyToIssueActivity.class)));
+
+		labelsAdapter = new LabelsListAdapter(labelsList, IssueDetailActivity.this, currentLabelsIds);
+		assigneesAdapter = new AssigneesListAdapter(ctx, assigneesList, IssueDetailActivity.this, currentAssignees);
+		LabelsActions.getCurrentIssueLabels(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentLabelsIds);
+		AssigneesActions.getCurrentIssueAssignees(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentAssignees);
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-			scrollViewComments.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+			viewBinding.scrollViewComments.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
-				if((scrollY - oldScrollY) > 0 && createNewComment.isShown()) {
-					createNewComment.setVisibility(View.GONE);
+				if((scrollY - oldScrollY) > 0 && viewBinding.addNewComment.isShown()) {
+					viewBinding.addNewComment.setVisibility(View.GONE);
 				}
 				else if((scrollY - oldScrollY) < 0) {
-					createNewComment.setVisibility(View.VISIBLE);
+					viewBinding.addNewComment.setVisibility(View.VISIBLE);
 				}
 
-				if(!scrollViewComments.canScrollVertically(1)) { // bottom
-					createNewComment.setVisibility(View.GONE);
+				if(!viewBinding.scrollViewComments.canScrollVertically(1)) { // bottom
+					viewBinding.addNewComment.setVisibility(View.GONE);
 				}
 
-				if(!scrollViewComments.canScrollVertically(-1)) { // top
-					createNewComment.setVisibility(View.VISIBLE);
+				if(!viewBinding.scrollViewComments.canScrollVertically(-1)) { // top
+					viewBinding.addNewComment.setVisibility(View.VISIBLE);
 				}
 
 			});
 
 		}
 
-		swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-			swipeRefresh.setRefreshing(false);
+			viewBinding.pullToRefresh.setRefreshing(false);
 			IssueCommentsViewModel
 				.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex,
 					ctx);
@@ -215,11 +219,228 @@ public class IssueDetailActivity extends BaseActivity {
 
 		}
 
-		toolbarTitle.setTypeface(myTypeface);
-		toolbarTitle.setText(repoName);
+		viewBinding.toolbarTitle.setTypeface(myTypeface);
+		viewBinding.toolbarTitle.setText(repoName);
 
 		getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
 		fetchDataAsync(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+
+	}
+
+	@Override
+	public void onButtonClicked(String text) {
+
+		switch(text) {
+
+			case "showLabels":
+				showLabels();
+				break;
+
+			case "showAssignees":
+				showAssignees();
+				break;
+		}
+
+	}
+
+	@Override
+	public void labelsInterface(List<String> data) {
+	}
+
+	@Override
+	public void labelsIdsInterface(List<Integer> data) {
+
+		labelsIds = data;
+	}
+
+	@Override
+	public void assigneesInterface(List<String> data) {
+
+		assigneesListData = data;
+	}
+
+	private void showAssignees() {
+
+		assigneesAdapter.updateList(currentAssignees);
+		dialogAssignees = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+		dialogAssignees.setCancelable(false);
+
+		if (dialogAssignees.getWindow() != null) {
+
+			dialogAssignees.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		}
+
+		assigneesBinding = CustomAssigneesSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
+
+		View view = assigneesBinding.getRoot();
+		dialogAssignees.setContentView(view);
+
+		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ -> {
+
+			currentAssignees = new ArrayList<>(new LinkedHashSet<>(currentAssignees));
+			assigneesListData = new ArrayList<>(new LinkedHashSet<>(assigneesListData));
+			Collections.sort(assigneesListData);
+			Collections.sort(currentAssignees);
+
+			if(!assigneesListData.equals(currentAssignees)) {
+
+				updateIssueAssignees();
+			}
+			else {
+
+				dialogAssignees.dismiss();
+			}
+		});
+
+		AssigneesActions.getRepositoryAssignees(ctx, instanceUrl, instanceToken, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
+	}
+
+	public void showLabels() {
+
+		labelsAdapter.updateList(currentLabelsIds);
+		dialogLabels = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+		dialogLabels.setCancelable(false);
+
+		if (dialogLabels.getWindow() != null) {
+
+			dialogLabels.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		}
+
+		labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
+
+		View view = labelsBinding.getRoot();
+		dialogLabels.setContentView(view);
+
+		labelsBinding.cancel.setOnClickListener(labelsBinding_ -> {
+
+			currentLabelsIds = new ArrayList<>(new LinkedHashSet<>(currentLabelsIds));
+			labelsIds = new ArrayList<>(new LinkedHashSet<>(labelsIds));
+			Collections.sort(labelsIds);
+			Collections.sort(currentLabelsIds);
+
+			if(!labelsIds.equals(currentLabelsIds)) {
+
+				updateIssueLabels();
+			}
+			else {
+
+				dialogLabels.dismiss();
+			}
+		});
+
+		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+	}
+
+	private void updateIssueAssignees() {
+
+		UpdateIssueAssignees updateAssigneeJson = new UpdateIssueAssignees(assigneesListData);
+
+		Call<JsonElement> call3;
+
+		call3 = RetrofitClient
+			.getInstance(instanceUrl, ctx)
+			.getApiInterface()
+			.patchIssueAssignees(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, updateAssigneeJson);
+
+		call3.enqueue(new Callback<JsonElement>() {
+
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response2) {
+
+				if(response2.code() == 201) {
+
+					Toasty.success(ctx, ctx.getString(R.string.assigneesUpdated));
+
+					dialogAssignees.dismiss();
+
+					viewBinding.frameAssignees.removeAllViews();
+					viewBinding.frameLabels.removeAllViews();
+					getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+					currentAssignees.clear();
+					new Handler(Looper.getMainLooper()).postDelayed(() -> AssigneesActions.getCurrentIssueAssignees(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentAssignees), 1000);
+				}
+				else if(response2.code() == 401) {
+
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
+						getResources().getString(R.string.alertDialogTokenRevokedMessage),
+						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+				}
+				else if(response2.code() == 403) {
+
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+				}
+				else if(response2.code() == 404) {
+
+					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+				}
+				else {
+
+					Toasty.error(ctx, getString(R.string.genericError));
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+				Log.e("onFailure", t.toString());
+			}
+		});
+
+	}
+
+	private void updateIssueLabels() {
+
+		Labels patchIssueLabels = new Labels(labelsIds);
+
+		Call<JsonElement> call = RetrofitClient
+			.getInstance(instanceUrl, ctx)
+			.getApiInterface()
+			.updateIssueLabels(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, patchIssueLabels);
+
+		call.enqueue(new Callback<JsonElement>() {
+
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+
+				if(response.code() == 200) {
+
+					Toasty.success(ctx, ctx.getString(R.string.labelsUpdated));
+					dialogLabels.dismiss();
+
+					viewBinding.frameAssignees.removeAllViews();
+					viewBinding.frameLabels.removeAllViews();
+					getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+					currentLabelsIds.clear();
+					new Handler(Looper.getMainLooper()).postDelayed(() -> LabelsActions.getCurrentIssueLabels(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentLabelsIds), 1000);
+				}
+				else if(response.code() == 401) {
+
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
+						getResources().getString(R.string.alertDialogTokenRevokedMessage),
+						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+				}
+				else if(response.code() == 403) {
+
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+				}
+				else if(response.code() == 404) {
+
+					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+				}
+				else {
+
+					Toasty.error(ctx, getString(R.string.genericError));
+				}
+
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+				Log.e("onFailure", t.toString());
+			}
+		});
 
 	}
 
@@ -254,24 +475,15 @@ public class IssueDetailActivity extends BaseActivity {
 	public void onResume() {
 
 		super.onResume();
-		final TinyDB tinyDb = new TinyDB(appCtx);
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		String repoFullName = tinyDb.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-		final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
 
 		if(tinyDb.getBoolean("commentPosted")) {
-			scrollViewComments.post(() -> {
+			viewBinding.scrollViewComments.post(() -> {
 
 				IssueCommentsViewModel
 					.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex,
 						ctx);
 
-				new Handler().postDelayed(() -> scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN), 1000);
+				new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN), 1000);
 
 				tinyDb.putBoolean("commentPosted", false);
 
@@ -279,7 +491,7 @@ public class IssueDetailActivity extends BaseActivity {
 		}
 
 		if(tinyDb.getBoolean("commentEdited")) {
-			scrollViewComments.post(() -> {
+			viewBinding.scrollViewComments.post(() -> {
 
 				IssueCommentsViewModel
 					.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex,
@@ -291,10 +503,10 @@ public class IssueDetailActivity extends BaseActivity {
 
 		if(tinyDb.getBoolean("singleIssueUpdate")) {
 
-			new Handler().postDelayed(() -> {
+			new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-				assigneesLayout.removeAllViews();
-				labelsLayout.removeAllViews();
+				viewBinding.frameAssignees.removeAllViews();
+				viewBinding.frameLabels.removeAllViews();
 				getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
 				tinyDb.putBoolean("singleIssueUpdate", false);
 
@@ -304,10 +516,10 @@ public class IssueDetailActivity extends BaseActivity {
 
 		if(tinyDb.getBoolean("issueEdited")) {
 
-			new Handler().postDelayed(() -> {
+			new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-				assigneesLayout.removeAllViews();
-				labelsLayout.removeAllViews();
+				viewBinding.frameAssignees.removeAllViews();
+				viewBinding.frameLabels.removeAllViews();
 				getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
 				tinyDb.putBoolean("issueEdited", false);
 
@@ -327,11 +539,11 @@ public class IssueDetailActivity extends BaseActivity {
 				assert issueCommentsMain != null;
 
 				if(issueCommentsMain.size() > 0) {
-					divider.setVisibility(View.VISIBLE);
+					viewBinding.divider.setVisibility(View.VISIBLE);
 				}
 
 				adapter = new IssueCommentsAdapter(ctx, issueCommentsMain);
-				mRecyclerView.setAdapter(adapter);
+				viewBinding.recyclerView.setAdapter(adapter);
 
 			});
 
@@ -353,25 +565,25 @@ public class IssueDetailActivity extends BaseActivity {
 					Issues singleIssue = response.body();
 					assert singleIssue != null;
 
-					issuePrState.setVisibility(View.VISIBLE);
+					viewBinding.issuePrState.setVisibility(View.VISIBLE);
 					if(singleIssue.getPull_request() != null) {
 
 						if(singleIssue.getPull_request().isMerged()) { // merged
 
-							issuePrState.setImageResource(R.drawable.ic_pull_request_merged);
+							viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request_merged);
 						}
 						else if(!singleIssue.getPull_request().isMerged() && singleIssue.getState().equals("closed")) { // closed
 
-							issuePrState.setImageResource(R.drawable.ic_pull_request_closed);
+							viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request_closed);
 						}
 						else { // open
 
-							issuePrState.setImageResource(R.drawable.ic_pull_request);
+							viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
 						}
 					}
 					else if(singleIssue.getState().equals("closed")) { // issue closed
 
-						issuePrState.setImageResource(R.drawable.ic_issue_closed_red);
+						viewBinding.issuePrState.setImageResource(R.drawable.ic_issue_closed_red);
 					}
 
 					final Markwon markwon = Markwon.builder(Objects.requireNonNull(ctx)).usePlugin(CorePlugin.create())
@@ -424,21 +636,21 @@ public class IssueDetailActivity extends BaseActivity {
 					tinyDb.putString("singleIssueHtmlUrl", singleIssue.getHtml_url());
 
 					PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated)
-						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
+						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(viewBinding.assigneeAvatar);
 					String issueNumber_ = "<font color='" + appCtx.getResources().getColor(R.color.lightGray) + "'>" + appCtx.getResources()
 						.getString(R.string.hash) + singleIssue.getNumber() + "</font>";
-					issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
+					viewBinding.issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
 					String cleanIssueDescription = singleIssue.getBody().trim();
 					Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
-					markwon.setParsedMarkdown(issueDescription, UserMentions.UserMentionsFunc(ctx, bodyWithMD, cleanIssueDescription));
+					markwon.setParsedMarkdown(viewBinding.issueDescription, UserMentions.UserMentionsFunc(ctx, bodyWithMD, cleanIssueDescription));
 
-					RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams) issueDescription.getLayoutParams();
+					RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams) viewBinding.issueDescription.getLayoutParams();
 
 					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(80, 80);
 					params1.setMargins(15, 0, 0, 0);
 
 					if(singleIssue.getAssignees() != null) {
-						assigneesScrollView.setVisibility(View.VISIBLE);
+						viewBinding.assigneesScrollView.setVisibility(View.VISIBLE);
 						for(int i = 0; i < singleIssue.getAssignees().size(); i++) {
 
 							ImageView assigneesView = new ImageView(ctx);
@@ -447,7 +659,7 @@ public class IssueDetailActivity extends BaseActivity {
 								.placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop()
 								.into(assigneesView);
 
-							assigneesLayout.addView(assigneesView);
+							viewBinding.frameAssignees.addView(assigneesView);
 							assigneesView.setLayoutParams(params1);
 							if(!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
 								assigneesView.setOnClickListener(
@@ -461,7 +673,7 @@ public class IssueDetailActivity extends BaseActivity {
 						}
 					}
 					else {
-						assigneesScrollView.setVisibility(View.GONE);
+						viewBinding.assigneesScrollView.setVisibility(View.GONE);
 					}
 
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -469,7 +681,7 @@ public class IssueDetailActivity extends BaseActivity {
 					params.setMargins(0, 0, 15, 0);
 
 					if(singleIssue.getLabels() != null) {
-						labelsScrollView.setVisibility(View.VISIBLE);
+						viewBinding.labelsScrollView.setVisibility(View.VISIBLE);
 
 						for(int i = 0; i < singleIssue.getLabels().size(); i++) {
 
@@ -478,8 +690,8 @@ public class IssueDetailActivity extends BaseActivity {
 							int color = Color.parseColor("#" + labelColor);
 
 							ImageView labelsView = new ImageView(ctx);
-							labelsLayout.setOrientation(LinearLayout.HORIZONTAL);
-							labelsLayout.setGravity(Gravity.START | Gravity.TOP);
+							viewBinding.frameLabels.setOrientation(LinearLayout.HORIZONTAL);
+							viewBinding.frameLabels.setGravity(Gravity.START | Gravity.TOP);
 							labelsView.setLayoutParams(params);
 
 							int height = AppUtil.getPixelsFromDensity(ctx, 25);
@@ -491,12 +703,12 @@ public class IssueDetailActivity extends BaseActivity {
 								.height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(ctx, 5));
 
 							labelsView.setImageDrawable(drawable);
-							labelsLayout.addView(labelsView);
+							viewBinding.frameLabels.addView(labelsView);
 
 						}
 					}
 					else {
-						labelsScrollView.setVisibility(View.GONE);
+						viewBinding.labelsScrollView.setVisibility(View.GONE);
 					}
 
 					if(singleIssue.getDue_date() != null) {
@@ -504,77 +716,77 @@ public class IssueDetailActivity extends BaseActivity {
 						if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
 							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
 							String dueDate = formatter.format(singleIssue.getDue_date());
-							issueDueDate.setText(dueDate);
-							issueDueDate
+							viewBinding.issueDueDate.setText(dueDate);
+							viewBinding.issueDueDate
 								.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), ctx));
 						}
 						else if(timeFormat.equals("normal1")) {
 							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
 							String dueDate = formatter.format(singleIssue.getDue_date());
-							issueDueDate.setText(dueDate);
+							viewBinding.issueDueDate.setText(dueDate);
 						}
 
 					}
 					else {
 
-						issueDueDate.setVisibility(View.GONE);
+						viewBinding.issueDueDate.setVisibility(View.GONE);
 					}
 
 					String edited;
 
 					if(!singleIssue.getUpdated_at().equals(singleIssue.getCreated_at())) {
 						edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
-						issueModified.setVisibility(View.VISIBLE);
-						issueModified.setText(edited);
-						issueModified
+						viewBinding.issueModified.setVisibility(View.VISIBLE);
+						viewBinding.issueModified.setText(edited);
+						viewBinding.issueModified
 							.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getUpdated_at()), ctx));
 					}
 					else {
-						issueModified.setVisibility(View.INVISIBLE);
+						viewBinding.issueModified.setVisibility(View.INVISIBLE);
 					}
 
 					if((singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) && singleIssue.getAssignees() != null) {
 						paramsDesc.setMargins(0, 35, 0, 0);
-						issueDescription.setLayoutParams(paramsDesc);
+						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else if(singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) {
 						paramsDesc.setMargins(0, 55, 0, 0);
-						issueDescription.setLayoutParams(paramsDesc);
+						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else if(singleIssue.getAssignees() == null) {
 						paramsDesc.setMargins(0, 35, 0, 0);
-						issueDescription.setLayoutParams(paramsDesc);
+						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else {
 						paramsDesc.setMargins(0, 15, 0, 0);
-						issueDescription.setLayoutParams(paramsDesc);
+						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 
-					issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), new Locale(locale), timeFormat, ctx));
-					issueCreatedTime.setVisibility(View.VISIBLE);
+					viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), new Locale(locale), timeFormat, ctx));
+					viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
 
 					if(timeFormat.equals("pretty")) {
-						issueCreatedTime
+						viewBinding.issueCreatedTime
 							.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), ctx));
 					}
 
 					if(singleIssue.getMilestone() != null) {
-						issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
+						viewBinding.issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
 					}
 					else {
-						issueMilestone.setVisibility(View.GONE);
+						viewBinding.issueMilestone.setVisibility(View.GONE);
 					}
 
 					if(!singleIssue.getUser().getFull_name().equals("")) {
-						assigneeAvatar.setOnClickListener(
+						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), ctx));
 					}
 					else {
-						assigneeAvatar.setOnClickListener(
+						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), ctx));
 					}
 
-					progressBar.setVisibility(View.GONE);
+					viewBinding.progressBar.setVisibility(View.GONE);
 
 				}
 

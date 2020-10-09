@@ -163,6 +163,9 @@ public interface ApiInterface {
     @GET("repos/{owner}/{repo}/collaborators") // get collaborators list
     Call<List<Collaborators>> getCollaborators(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
 
+    @GET("orgs/{org}/members") // get organization members
+    Call<List<Collaborators>> getOrgMembers(@Header("Authorization") String token, @Path("org") String ownerName);
+
     @POST("repos/{owner}/{repo}/milestones") // create new milestone
     Call<Milestones> createMilestone(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body Milestones jsonStr);
 

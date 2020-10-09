@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <CheckBox
-        android:id="@+id/labelSelection"
+        android:id="@+id/assigneesSelection"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:checked="false"
@@ -25,15 +25,15 @@
         app:cardCornerRadius="4dp">
 
         <ImageView
-            android:id="@+id/labelColor"
+            android:id="@+id/assigneesAvatar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/generalImgContentText" />
 
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/labelText"
+        android:id="@+id/assigneesName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
