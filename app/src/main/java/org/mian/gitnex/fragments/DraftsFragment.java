@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,11 +67,9 @@ public class DraftsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-	    adapter = new DraftsAdapter(getContext(), draftsList_);
-
+	    adapter = new DraftsAdapter(getContext(), getChildFragmentManager(), draftsList_);
 	    currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-
-        swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 	        draftsList_.clear();
             fetchDataAsync(currentActiveAccountId);

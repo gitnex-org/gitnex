@@ -133,15 +133,22 @@
     </style>
 
     <style name="AppThemeDarkBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppThemeLightBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppBottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/shape_bottom_sheet_top_corners</item>
+        <item name="behavior_peekHeight">420dp</item>
     </style>
 
     <style name="AppThemeLightSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">

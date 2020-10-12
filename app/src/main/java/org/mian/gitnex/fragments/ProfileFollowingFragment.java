@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,18 +89,12 @@ public class ProfileFollowingFragment extends Fragment {
 
         mProgressBar = v.findViewById(R.id.progress_bar);
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                        ProfileFollowingViewModel.loadFollowingList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
-                    }
-                }, 200);
-            }
-        });
+        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+            swipeRefresh.setRefreshing(false);
+            ProfileFollowingViewModel.loadFollowingList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+
+        }, 200));
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
 

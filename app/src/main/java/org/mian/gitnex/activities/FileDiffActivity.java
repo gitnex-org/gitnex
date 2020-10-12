@@ -122,7 +122,7 @@ public class FileDiffActivity extends BaseActivity {
 							toolbarTitle.setText(getResources().getString(R.string.fileDiffViewHeaderSingle, Integer.toString(filesCount)));
 						}
 
-						FilesDiffAdapter adapter = new FilesDiffAdapter(ctx, fileContentsArray);
+						FilesDiffAdapter adapter = new FilesDiffAdapter(ctx, getSupportFragmentManager(), fileContentsArray);
 						mListView.setAdapter(adapter);
 
 						mProgressBar.setVisibility(View.GONE);

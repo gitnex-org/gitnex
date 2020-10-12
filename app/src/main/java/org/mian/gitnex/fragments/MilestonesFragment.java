@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -94,7 +95,7 @@ public class MilestonesFragment extends Fragment {
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         viewBinding.recyclerView.setAdapter(adapter);
 
-        viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+        viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             dataList.clear();
             viewBinding.pullToRefresh.setRefreshing(false);

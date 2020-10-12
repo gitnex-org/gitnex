@@ -17,7 +17,9 @@ import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.notifications.NotificationsMaster;
-import static org.acra.ReportField.*;
+import static org.acra.ReportField.ANDROID_VERSION;
+import static org.acra.ReportField.PHONE_MODEL;
+import static org.acra.ReportField.STACK_TRACE;
 
 /**
  * Author M M Arif
@@ -145,7 +147,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 			ACRA.init(getApplication(), ACRABuilder);
 
 		}
-
 	}
 
 	protected abstract int getLayoutResourceId();

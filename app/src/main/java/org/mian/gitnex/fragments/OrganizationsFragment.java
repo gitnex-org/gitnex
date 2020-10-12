@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -99,18 +100,12 @@ public class OrganizationsFragment extends Fragment {
             }
         });
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                        OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
-                    }
-                }, 50);
-            }
-        });
+        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+            swipeRefresh.setRefreshing(false);
+            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+
+        }, 50));
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
 

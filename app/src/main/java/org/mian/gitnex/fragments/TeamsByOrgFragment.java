@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,18 +91,12 @@ public class TeamsByOrgFragment extends Fragment {
 
         mProgressBar = v.findViewById(R.id.progress_bar);
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                        TeamsByOrgViewModel.loadTeamsByOrgList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
-                    }
-                }, 200);
-            }
-        });
+        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+            swipeRefresh.setRefreshing(false);
+            TeamsByOrgViewModel.loadTeamsByOrgList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName, getContext());
+
+        }, 200));
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
 

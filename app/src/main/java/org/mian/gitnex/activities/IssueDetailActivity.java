@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -43,6 +42,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityIssueDetailBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
+import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -162,7 +162,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-		viewBinding.addNewComment.setOnClickListener(v -> startActivity(new Intent(ctx, ReplyToIssueActivity.class)));
+		viewBinding.addNewComment.setOnClickListener(v -> BottomSheetReplyFragment.newInstance(new Bundle()).show(getSupportFragmentManager(), "replyBottomSheet"));
 
 		labelsAdapter = new LabelsListAdapter(labelsList, IssueDetailActivity.this, currentLabelsIds);
 		assigneesAdapter = new AssigneesListAdapter(ctx, assigneesList, IssueDetailActivity.this, currentAssignees);
@@ -542,7 +542,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.divider.setVisibility(View.VISIBLE);
 				}
 
-				adapter = new IssueCommentsAdapter(ctx, issueCommentsMain);
+				adapter = new IssueCommentsAdapter(ctx, getSupportFragmentManager(), issueCommentsMain);
 				viewBinding.recyclerView.setAdapter(adapter);
 
 			});

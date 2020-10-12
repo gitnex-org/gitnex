@@ -218,7 +218,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 			DraftsApi.updateDraft(draftText, (int) draftIdOnCreate, commentId); //updateDraftByIssueIdAsyncTask(draftText, issueNumber, repositoryId, commentId);
 		}
-
 	}
 
 	private long returnDraftId(String draftText) {
