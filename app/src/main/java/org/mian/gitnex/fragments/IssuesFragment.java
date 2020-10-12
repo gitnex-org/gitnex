@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -87,7 +88,7 @@ public class IssuesFragment extends Fragment {
 		mProgressBar = v.findViewById(R.id.progress_bar);
 		noDataIssues = v.findViewById(R.id.noDataIssues);
 
-		swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
 			loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));

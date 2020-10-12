@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -88,7 +89,7 @@ public class PullRequestsFragment extends Fragment {
 		mProgressBar = v.findViewById(R.id.progress_bar);
 		noData = v.findViewById(R.id.noData);
 
-		swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
 			loadInitial(instanceToken, repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);

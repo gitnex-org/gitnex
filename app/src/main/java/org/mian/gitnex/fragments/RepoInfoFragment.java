@@ -18,13 +18,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -283,13 +283,7 @@ public class RepoInfoFragment extends Fragment {
 
 							repoMetaForks.setText(repoInfo.getForks_count());
 							repoMetaWatchers.setText(repoInfo.getWatchers_count());
-
-							if(repoInfo.getSize() != 0) {
-								repoMetaSize.setText(AppUtil.formatFileSize(repoInfo.getSize()));
-							}
-							else {
-								repoMetaSize.setText("0 B");
-							}
+							repoMetaSize.setText(FileUtils.byteCountToDisplaySize((int) repoInfo.getSize()));
 
 							repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
 							if(timeFormat.equals("pretty")) {

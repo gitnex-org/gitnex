@@ -12,8 +12,10 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Permission;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Author M M Arif
@@ -154,8 +156,55 @@ public class CollaboratorActions {
             public void onFailure(@NonNull Call<Permission> call, @NonNull Throwable t) {
                 Log.e("onFailure", t.toString());
             }
+
         });
 
     }
+
+	public static ActionResult<List<Collaborators>> getCollaborators(Context context) {
+
+		ActionResult<List<Collaborators>> actionResult = new ActionResult<>();
+		TinyDB tinyDb = new TinyDB(context);
+
+		String instanceUrl = tinyDb.getString("instanceUrl");
+		String loginUid = tinyDb.getString("loginUid");
+		String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+
+		String repoFullName = tinyDb.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+		String repoOwner = parts[0];
+		String repoName = parts[1];
+
+		Call<List<Collaborators>> call = RetrofitClient
+			.getInstance(instanceUrl, context)
+			.getApiInterface()
+			.getCollaborators(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
+
+		call.enqueue(new Callback<List<Collaborators>>() {
+
+			@Override
+			public void onResponse(@NonNull Call<List<Collaborators>> call, @NonNull Response<List<Collaborators>> response) {
+
+				if (response.isSuccessful()) {
+
+					assert response.body() != null;
+					actionResult.finish(ActionResult.Status.SUCCESS, response.body());
+				}
+				else {
+
+					actionResult.finish(ActionResult.Status.FAILED);
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<List<Collaborators>> call, @NonNull Throwable t) {
+
+				actionResult.finish(ActionResult.Status.FAILED);
+			}
+		});
+
+		return actionResult;
+
+	}
 
 }

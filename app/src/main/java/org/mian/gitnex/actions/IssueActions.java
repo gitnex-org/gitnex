@@ -1,11 +1,9 @@
 package org.mian.gitnex.actions;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -13,6 +11,7 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.IssueComments;
+import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.models.UpdateIssueState;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,8 +52,6 @@ public class IssueActions {
 						DraftsApi draftsApi = new DraftsApi(ctx);
 						draftsApi.deleteSingleDraft((int) draftIdOnCreate);
 
-						((ReplyToIssueActivity) ctx).finish();
-
 					}
 				}
 				else if(response.code() == 401) {
@@ -83,7 +80,7 @@ public class IssueActions {
 			@Override
 			public void onFailure(@NonNull Call<IssueComments> call, @NonNull Throwable t) {
 
-				Log.e("onFailure", t.toString());
+				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});
 
@@ -157,7 +154,7 @@ public class IssueActions {
 			@Override
 			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
-				Log.e("onFailure", t.toString());
+				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});
 
@@ -217,7 +214,7 @@ public class IssueActions {
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-				Toasty.success(ctx, ctx.getString(R.string.unsubscribedSuccessfully));
+				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});
 
@@ -277,9 +274,69 @@ public class IssueActions {
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.unsubscriptionError));
+				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});
+	}
+
+	public static ActionResult<ActionResult.None> reply(Context context, String comment, int issueIndex) {
+
+		ActionResult<ActionResult.None> actionResult = new ActionResult<>();
+		TinyDB tinyDb = new TinyDB(context);
+
+		String instanceUrl = tinyDb.getString("instanceUrl");
+		String loginUid = tinyDb.getString("loginUid");
+		String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+
+		String repoFullName = tinyDb.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+		String repoOwner = parts[0];
+		String repoName = parts[1];
+
+		Issues issueComment = new Issues(comment);
+
+		Call<Issues> call = RetrofitClient
+			.getInstance(instanceUrl, context)
+			.getApiInterface()
+			.replyCommentToIssue(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, issueIndex, issueComment);
+
+		call.enqueue(new Callback<Issues>() {
+
+			@Override
+			public void onResponse(@NonNull Call<Issues> call, @NonNull retrofit2.Response<Issues> response) {
+
+				if(response.code() == 201) {
+
+					actionResult.finish(ActionResult.Status.SUCCESS);
+
+					tinyDb.putBoolean("commentPosted", true);
+					tinyDb.putBoolean("resumeIssues", true);
+					tinyDb.putBoolean("resumePullRequests", true);
+
+				}
+				else if(response.code() == 401) {
+
+					AlertDialogs.authorizationTokenRevokedDialog(context, context.getString(R.string.alertDialogTokenRevokedTitle),
+						context.getString(R.string.alertDialogTokenRevokedMessage),
+						context.getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+						context.getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+
+				}
+				else {
+
+					actionResult.finish(ActionResult.Status.FAILED);
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Issues> call, @NonNull Throwable t) {
+
+				Toasty.error(context, context.getResources().getString(R.string.genericServerResponseError));
+			}
+		});
+
+		return actionResult;
+
 	}
 
 }

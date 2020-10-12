@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -60,11 +62,13 @@ import retrofit2.Callback;
 public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdapter.IssueCommentViewHolder> {
 
 	private List<IssueComments> issuesComments;
+	private FragmentManager fragmentManager;
 	private Context mCtx;
 
-	public IssueCommentsAdapter(Context mCtx, List<IssueComments> issuesCommentsMain) {
+	public IssueCommentsAdapter(Context mCtx, FragmentManager fragmentManager, List<IssueComments> issuesCommentsMain) {
 
 		this.mCtx = mCtx;
+		this.fragmentManager = fragmentManager;
 		this.issuesComments = issuesCommentsMain;
 
 	}
@@ -126,11 +130,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				commentMenuEdit.setOnClickListener(ediComment -> {
 
-					Intent intent = new Intent(ctx, ReplyToIssueActivity.class);
-					intent.putExtra("commentId", commendId.getText());
-					intent.putExtra("commentAction", "edit");
-					intent.putExtra("commentBody", commendBodyRaw.getText());
-					ctx.startActivity(intent);
+					Bundle bundle = new Bundle();
+					bundle.putString("commentId", commendId.getText().toString());
+					bundle.putString("commentAction", "edit");
+					bundle.putString("commentBody", commendBodyRaw.getText().toString());
+
+					BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
 					dialog.dismiss();
 
 				});
@@ -187,13 +192,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 					stringBuilder.append("\n");
 
-					Intent intent = new Intent(ctx, ReplyToIssueActivity.class);
-					intent.putExtra("commentBody", stringBuilder.toString());
-					intent.putExtra("cursorToEnd", true);
-					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					Bundle bundle = new Bundle();
+					bundle.putString("commentBody", stringBuilder.toString());
+					bundle.putBoolean("cursorToEnd", true);
 
 					dialog.dismiss();
-					ctx.startActivity(intent);
+					BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
 
 				});
 

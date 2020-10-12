@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Widget.AppCompat.SearchView">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
+            app:contentInsetEnd="15dp"
+            app:contentInsetStart="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <ImageButton
+                    android:id="@+id/close"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_weight="0"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/close"
+                    android:src="@drawable/ic_close" />
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="@string/commentButtonText"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/drafts"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="0"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/close"
+                    android:src="@drawable/ic_drafts" />
+
+                <ImageButton
+                    android:id="@+id/send"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="0"
+                    android:alpha=".5"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/close"
+                    android:enabled="false"
+                    android:src="@drawable/ic_send" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/primaryBackgroundColor"
+        android:isScrollContainer="true"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_inputs"
+                android:inputType="textMultiLine|textImeMultiLine"
+                android:maxLines="5"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/primaryTextColor"
+                android:textColorHint="?attr/primaryBackgroundColor"
+                android:textSize="16sp"
+                android:labelFor="@+id/comment"
+                android:autofillHints="@string/commentButtonText" />
+
+            <TextView
+                android:id="@+id/drafts_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/draftSaved"
+                android:textColor="?attr/hintColor"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

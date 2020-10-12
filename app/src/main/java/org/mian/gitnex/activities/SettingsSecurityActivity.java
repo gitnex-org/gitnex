@@ -12,8 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.FilesData;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
@@ -21,7 +19,6 @@ import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import org.mian.gitnex.notifications.NotificationsMaster;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 
 /**
  * Author M M Arif
@@ -99,10 +96,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 		// clear cache setter
 		File cacheDir = appCtx.getCacheDir();
-		long size__ = FilesData.getFileSizeRecursively(new HashSet<>(), cacheDir);
-		if(size__ > 0) {
-			clearCacheSelected.setText(String.valueOf(AppUtil.formatFileSizeInDetail(size__)));
-		}
+		clearCacheSelected.setText(FileUtils.byteCountToDisplaySize((int) FileUtils.sizeOfDirectory(cacheDir)));
 
 		// clear cache
 		clearCacheFrame.setOnClickListener(v1 -> {

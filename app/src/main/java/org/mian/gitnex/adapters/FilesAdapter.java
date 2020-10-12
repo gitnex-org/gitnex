@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Files;
 import java.util.ArrayList;
@@ -165,7 +165,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 	        holder.dirTypeImage.setVisibility(View.GONE);
 	        holder.unknownTypeImage.setVisibility(View.GONE);
             holder.fileInfo.setVisibility(View.VISIBLE);
-            holder.fileInfo.setText(AppUtil.formatFileSizeInDetail(currentItem.getSize()));
+            holder.fileInfo.setText(FileUtils.byteCountToDisplaySize(currentItem.getSize()));
         }
         else if(currentItem.getType().equals("dir")) {
 	        holder.dirTypeImage.setVisibility(View.VISIBLE);

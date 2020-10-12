@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,7 +76,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        swipeRefresh.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
             AdminGetUsersViewModel.loadUsersList(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
@@ -116,7 +117,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
         final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
-        new Handler().postDelayed(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             if(searchFilter) {
 

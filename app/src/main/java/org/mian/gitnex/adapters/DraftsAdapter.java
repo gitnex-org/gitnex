@@ -2,7 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.ReplyToIssueActivity;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.database.models.DraftWithRepository;
+import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
 public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsViewHolder> {
 
     private List<DraftWithRepository> draftsList;
+    private FragmentManager fragmentManager;
     private Context mCtx;
 
     class DraftsViewHolder extends RecyclerView.ViewHolder {
@@ -69,16 +71,17 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
 	        itemView.setOnClickListener(itemEdit -> {
 
-                Intent intent = new Intent(mCtx, ReplyToIssueActivity.class);
-                intent.putExtra("commentBody", draftText.getText().toString());
-                intent.putExtra("issueNumber", issueNumber.getText().toString());
-                intent.putExtra("repositoryId", repoId.getText().toString());
-                intent.putExtra("draftTitle", repoInfo.getText().toString());
-		        intent.putExtra("commentId", commentId.getText().toString());
-		        intent.putExtra("draftId", draftId.getText().toString());
+		        Bundle bundle = new Bundle();
 
-                if(!commentId.getText().toString().equalsIgnoreCase("")) {
-	                intent.putExtra("commentAction", "edit");
+                bundle.putString("commentBody", draftText.getText().toString());
+                bundle.putString("issueNumber", issueNumber.getText().toString());
+                bundle.putString("repositoryId", repoId.getText().toString());
+                bundle.putString("draftTitle", repoInfo.getText().toString());
+		        bundle.putString("commentId", commentId.getText().toString());
+		        bundle.putString("draftId", draftId.getText().toString());
+
+                if(!commentId.getText().toString().isEmpty()) {
+	                bundle.putString("commentAction", "edit");
                 }
 
                 TinyDB tinyDb = new TinyDB(mCtx);
@@ -86,7 +89,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
                 tinyDb.putLong("repositoryId", Long.parseLong(repoId.getText().toString()));
                 //tinyDb.putString("issueType", issueType.getText().toString());
 
-                mCtx.startActivity(intent);
+		        BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
 
             });
 
@@ -94,8 +97,9 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
     }
 
-    public DraftsAdapter(Context mCtx, List<DraftWithRepository> draftsListMain) {
+    public DraftsAdapter(Context mCtx, FragmentManager fragmentManager, List<DraftWithRepository> draftsListMain) {
         this.mCtx = mCtx;
+        this.fragmentManager = fragmentManager;
         this.draftsList = draftsListMain;
     }
 
