@@ -15,9 +15,9 @@ public class CreateIssue {
     private String title;
 
     private List<String> assignees;
-    private int[] labels;
+	private List<Integer> labels;
 
-    public CreateIssue(String assignee, String body, boolean closed, String due_date, int milestone, String title, List<String> assignees, int[] labels) {
+    public CreateIssue(String assignee, String body, boolean closed, String due_date, int milestone, String title, List<String> assignees, List<Integer> labels) {
         this.body = body;
         this.closed = closed;
         this.due_date = due_date;

@@ -24,6 +24,7 @@ import org.mian.gitnex.clients.AppApiService;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.Commits;
@@ -115,7 +116,6 @@ public class CommitsActivity extends BaseActivity {
 
 				int page = (commitsList.size() + resultLimit) / resultLimit;
 				loadMore(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, page, branchName, resultLimit);
-
 			}
 
 		}));
@@ -138,7 +138,7 @@ public class CommitsActivity extends BaseActivity {
 			@Override
 			public void onResponse(@NonNull Call<List<Commits>> call, @NonNull Response<List<Commits>> response) {
 
-				if(response.isSuccessful()) {
+				if(response.code() == 200) {
 
 					assert response.body() != null;
 					if(response.body().size() > 0) {
@@ -150,13 +150,15 @@ public class CommitsActivity extends BaseActivity {
 
 					}
 					else {
+
 						commitsList.clear();
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.VISIBLE);
 					}
+				}
+				if(response.code() == 409) {
 
-					progressBar.setVisibility(View.GONE);
-
+					noData.setVisibility(View.VISIBLE);
 				}
 				else {
 
@@ -164,12 +166,13 @@ public class CommitsActivity extends BaseActivity {
 
 				}
 
+				progressBar.setVisibility(View.GONE);
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Commits>> call, @NonNull Throwable t) {
 
-				Log.e(TAG, t.toString());
+				Toasty.error(ctx, getResources().getString(R.string.errorOnLogin));
 			}
 
 		});
@@ -190,23 +193,19 @@ public class CommitsActivity extends BaseActivity {
 				if(response.isSuccessful()) {
 
 					List<Commits> result = response.body();
-
 					assert result != null;
+
 					if(result.size() > 0) {
 
 						pageSize = result.size();
 						commitsList.addAll(result);
-
 					}
 					else {
 
 						adapter.setMoreDataAvailable(false);
-
 					}
 
 					adapter.notifyDataChanged();
-					progressLoadMore.setVisibility(View.GONE);
-
 				}
 				else {
 
@@ -214,13 +213,13 @@ public class CommitsActivity extends BaseActivity {
 
 				}
 
+				progressLoadMore.setVisibility(View.GONE);
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Commits>> call, @NonNull Throwable t) {
 
-				Log.e(TAG, t.toString());
-
+				Toasty.error(ctx, getResources().getString(R.string.errorOnLogin));
 			}
 
 		});

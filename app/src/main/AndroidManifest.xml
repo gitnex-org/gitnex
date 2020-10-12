@@ -17,49 +17,79 @@
         android:supportsRtl="true"
         tools:targetApi="n">
 
-        <activity android:name=".activities.MergePullRequestActivity" />
+        <activity
+            android:name=".activities.MergePullRequestActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.FileViewActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CreateFileActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RepoWatchersActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RepoStargazersActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.AdminGetUsersActivity" />
         <activity
-            android:name=".activities.AddRemoveAssigneesActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".activities.CreateReleaseActivity" />
-        <activity android:name=".activities.EditIssueActivity" />
-        <activity android:name=".activities.CreateNewUserActivity" />
+            android:name=".activities.AdminGetUsersActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
-            android:name=".activities.AddRemoveLabelsActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".activities.ProfileEmailActivity" />
-        <activity android:name=".activities.AddCollaboratorToRepositoryActivity" />
-        <activity android:name=".activities.CreateTeamByOrgActivity" />
-        <activity android:name=".activities.OrganizationTeamMembersActivity" />
+            android:name=".activities.CreateReleaseActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.EditIssueActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.CreateNewUserActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.ProfileEmailActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.AddCollaboratorToRepositoryActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.CreateTeamByOrgActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.OrganizationTeamMembersActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.OrganizationDetailActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:label="@string/title_activity_org_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.CreateLabelActivity" />
-        <activity android:name=".activities.CreateIssueActivity" />
-        <activity android:name=".activities.CreateMilestoneActivity" />
-        <activity android:name=".activities.ReplyToIssueActivity" />
+        <activity
+            android:name=".activities.CreateLabelActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.CreateIssueActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.CreateMilestoneActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.ReplyToIssueActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.IssueDetailActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activities.RepoDetailActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:label="@string/title_activity_repo_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.MainActivity" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation">
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,24 +98,61 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
-            android:launchMode="singleTask" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name=".activities.CreateRepoActivity" />
-        <activity android:name=".activities.CreateOrganizationActivity" />
-        <activity android:name=".activities.OpenRepoInBrowserActivity" />
-        <activity android:name=".activities.FileDiffActivity" />
-        <activity android:name=".activities.CommitsActivity" />
-        <activity android:name=".helpers.ssl.MemorizingActivity" android:theme="@android:style/Theme.Material.Dialog" />
-        <activity android:name=".activities.SettingsAppearanceActivity" />
-        <activity android:name=".activities.SettingsFileViewerActivity" />
-        <activity android:name=".activities.SettingsSecurityActivity" />
-        <activity android:name=".activities.SettingsTranslationActivity" />
-        <activity android:name=".activities.SettingsReportsActivity" />
-        <activity android:name=".activities.AddNewTeamMemberActivity" />
-        <activity android:name=".activities.SettingsDraftsActivity" />
-        <activity android:name=".activities.RepoForksActivity" />
-        <activity android:name=".activities.AddNewAccountActivity" />
-        <activity android:name=".activities.RepositorySettingsActivity" />
-        <activity android:name=".activities.CreatePullRequestActivity" />
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity
+            android:name=".activities.CreateRepoActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.CreateOrganizationActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.OpenRepoInBrowserActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.FileDiffActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.CommitsActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".helpers.ssl.MemorizingActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
+            android:theme="@android:style/Theme.Material.Dialog" />
+        <activity
+            android:name=".activities.SettingsAppearanceActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.SettingsFileViewerActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.SettingsSecurityActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.SettingsTranslationActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.SettingsReportsActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.AddNewTeamMemberActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.SettingsDraftsActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.RepoForksActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.AddNewAccountActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.RepositorySettingsActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.CreatePullRequestActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
 
         <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
         <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>

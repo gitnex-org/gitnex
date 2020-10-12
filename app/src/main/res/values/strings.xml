@@ -219,7 +219,7 @@
     <string name="issueCreated">New issue created successfully</string>
     <string name="issueCreatedError">Something went wrong, please try again</string>
     <string name="issueCreatedNoMilestone">No milestone</string>
-    <string name="noAssigneesFound">No collaborators found</string>
+    <string name="noAssigneesFound">No assignees found</string>
     <string name="noLabelsFound">No labels found</string>
 
     <!-- settings -->

@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
-import org.mian.gitnex.activities.AddRemoveAssigneesActivity;
-import org.mian.gitnex.activities.AddRemoveLabelsActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
@@ -29,6 +27,8 @@ import java.util.Objects;
  */
 
 public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
+
+	private BottomSheetListener bmListener;
 
 	@Nullable
 	@Override
@@ -78,42 +78,36 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		else {
 
 			mergePullRequest.setVisibility(View.GONE);
-
 		}
 
 		mergePullRequest.setOnClickListener(v13 -> {
 
 			startActivity(new Intent(ctx, MergePullRequestActivity.class));
 			dismiss();
-
 		});
 
 		openFilesDiff.setOnClickListener(v14 -> {
 
 			startActivity(new Intent(ctx, FileDiffActivity.class));
 			dismiss();
-
 		});
 
 		editIssue.setOnClickListener(v15 -> {
 
 			startActivity(new Intent(ctx, EditIssueActivity.class));
 			dismiss();
-
 		});
 
 		editLabels.setOnClickListener(v16 -> {
 
-			startActivity(new Intent(ctx, AddRemoveLabelsActivity.class));
+			bmListener.onButtonClicked("showLabels");
 			dismiss();
-
 		});
 
 		addRemoveAssignees.setOnClickListener(v17 -> {
 
-			startActivity(new Intent(ctx, AddRemoveAssigneesActivity.class));
+			bmListener.onButtonClicked("showAssignees");
 			dismiss();
-
 		});
 
 		shareIssue.setOnClickListener(v1 -> {
@@ -125,7 +119,6 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle")));
 
 			dismiss();
-
 		});
 
 		copyIssueUrl.setOnClickListener(v12 -> {
@@ -139,7 +132,6 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
 
 			dismiss();
-
 		});
 
 		if(tinyDB.getString("issueType").equalsIgnoreCase("Issue")) {
@@ -183,14 +175,12 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 			IssueActions.subscribe(ctx);
 			dismiss();
-
 		});
 
 		unsubscribeIssue.setOnClickListener(unsubscribeToIssue -> {
 
 			IssueActions.unsubscribe(ctx);
 			dismiss();
-
 		});
 
 		if(new Version(tinyDB.getString("giteaVersion")).less("1.12.0")) {
@@ -209,4 +199,23 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		return v;
 	}
 
+	public interface BottomSheetListener {
+
+		void onButtonClicked(String text);
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+
+		super.onAttach(context);
+
+		try {
+
+			bmListener = (BottomSheetListener) context;
+		}
+		catch(ClassCastException e) {
+
+			throw new ClassCastException(context.toString() + " must implement BottomSheetListener");
+		}
+	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/primaryBackgroundColor">
@@ -55,155 +55,155 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newIssueTitleLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newIssueTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/newIssueTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:inputType="textCapSentences|text"
-                android:labelFor="@+id/newIssueTitle"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor" />
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:counterTextColor="?attr/inputTextColor"
+                android:hint="@string/newIssueTitle">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newIssueDescriptionTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
-
-            <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
-                android:id="@+id/newIssueDescription"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:completionThreshold="1"
-                android:background="@drawable/shape_inputs"
-                android:maxLines="10"
-                android:minLines="8"
-                tools:ignore="Autofill"
-                android:labelFor="@+id/newReplyToIssue"
-                android:scrollbars="vertical"
-                android:gravity="top|start"
-                android:textSize="14sp"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newIssueAssigneesListTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
-
-            <TextView
-                android:id="@+id/newIssueAssigneesList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/hintColor"
-                android:inputType="none"
-                android:textColorHighlight="?attr/primaryTextColor"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/labelsIdHolder"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newIssueMilestoneTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_dropdown"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" >
-
-                <Spinner
-                    android:id="@+id/newIssueMilestoneSpinner"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newIssueTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingStart="5dp" />
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="16sp" />
 
-            </RelativeLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newIssueDescriptionLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newIssueLabelsTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
-
-            <TextView
-                android:id="@+id/newIssueLabels"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:inputType="none"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                android:hint="@string/newIssueDescriptionTitle">
 
-            <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newIssueDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newIssueAssigneesListLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newIssueDueDateTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/newIssueDueDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"/>
+                app:hintTextColor="?attr/hintColor"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/newIssueAssigneesListTitle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newIssueAssigneesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:focusable="false"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newIssueMilestoneSpinnerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
+                android:textColorHint="?attr/hintColor"
+                app:hintTextColor="?attr/hintColor"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/newIssueMilestoneTitle"
+                app:endIconTint="?attr/iconsColor"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:id="@+id/newIssueMilestoneSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="?attr/inputTextColor"
+                    android:labelFor="@+id/newIssueMilestoneSpinner"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newIssueLabelsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
+                android:textColorHint="?attr/hintColor"
+                app:hintTextColor="?attr/hintColor"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/newIssueLabelsTitle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newIssueLabels"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:focusable="false"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newIssueDueDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
+                android:textColorHint="?attr/hintColor"
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                android:hint="@string/newIssueDueDateTitle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newIssueDueDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:maxLines="1"
+                    android:focusable="false"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/createNewIssueButton"

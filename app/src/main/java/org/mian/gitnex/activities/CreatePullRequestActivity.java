@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreatePrBinding;
@@ -48,8 +49,8 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
 	private Dialog dialogLabels;
 	private String labelsSetter;
-	private ArrayList<Integer> labelsIds = new ArrayList<>();
-	private ArrayList<String> assignees = new ArrayList<>();
+	private List<Integer> labelsIds = new ArrayList<>();
+	private List<String> assignees = new ArrayList<>();
 	private int milestoneId;
 
 	private String instanceUrl;
@@ -96,7 +97,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
-		labelsAdapter =  new LabelsListAdapter(labelsList, CreatePullRequestActivity.this);
+		labelsAdapter =  new LabelsListAdapter(labelsList, CreatePullRequestActivity.this, labelsIds);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -164,7 +165,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		//Log.e("processPullRequest", String.valueOf(milestoneId));
 	}
 
-	private void createPullRequest(String prTitle, String prDescription, String mergeInto, String pullFrom, int milestoneId, String dueDate, ArrayList<String> assignees) {
+	private void createPullRequest(String prTitle, String prDescription, String mergeInto, String pullFrom, int milestoneId, String dueDate, List<String> assignees) {
 
 		CreatePullRequest createPullRequest = new CreatePullRequest(prTitle, prDescription, loginUid, mergeInto, pullFrom, milestoneId, dueDate, assignees, labelsIds);
 
@@ -213,14 +214,14 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	}
 
 	@Override
-	public void labelsStringData(ArrayList<String> data) {
+	public void labelsInterface(List<String> data) {
 
 		labelsSetter = String.valueOf(data);
 		viewBinding.prLabels.setText(labelsSetter.replace("]", "").replace("[", ""));
 	}
 
 	@Override
-	public void labelsIdsData(ArrayList<Integer> data) {
+	public void labelsIdsInterface(List<Integer> data) {
 
 		labelsIds = data;
 	}
@@ -242,57 +243,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			dialogLabels.dismiss()
 		);
 
-		Call<List<Labels>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getlabels(instanceToken, repoOwner, repoName);
-
-		call.enqueue(new Callback<List<Labels>>() {
-
-			@Override
-			public void onResponse(@NonNull Call<List<Labels>> call, @NonNull retrofit2.Response<List<Labels>> response) {
-
-				labelsList.clear();
-				List<Labels> labelsList_ = response.body();
-
-				labelsBinding.progressBar.setVisibility(View.GONE);
-				labelsBinding.dialogFrame.setVisibility(View.VISIBLE);
-
-				if (response.code() == 200) {
-
-					assert labelsList_ != null;
-					if(labelsList_.size() > 0) {
-						for (int i = 0; i < labelsList_.size(); i++) {
-
-							labelsList.add(new Labels(labelsList_.get(i).getId(), labelsList_.get(i).getName()));
-
-						}
-					}
-					else {
-
-						dialogLabels.dismiss();
-						Toasty.warning(ctx, getString(R.string.noLabelsFound));
-					}
-
-					labelsBinding.labelsRecyclerView.setAdapter(labelsAdapter);
-
-				}
-				else {
-
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getString(R.string.genericServerResponseError));
-			}
-		});
-
-		dialogLabels.show();
-
+		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 
 	private void getBranches(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {

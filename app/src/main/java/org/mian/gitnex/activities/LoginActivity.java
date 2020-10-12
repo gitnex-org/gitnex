@@ -4,19 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import com.tooltip.Tooltip;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -82,7 +79,6 @@ public class LoginActivity extends BaseActivity {
 		loginPassword = findViewById(R.id.login_passwd);
 		otpCode = findViewById(R.id.otpCode);
 		otpInfo = findViewById(R.id.otpInfo);
-		ImageView info_button = findViewById(R.id.info);
 		protocolSpinner = findViewById(R.id.httpsSpinner);
 		loginMethod = findViewById(R.id.loginMethod);
 		loginTokenCode = findViewById(R.id.loginTokenCode);
@@ -107,11 +103,6 @@ public class LoginActivity extends BaseActivity {
 			}
 
 		});
-
-		info_button.setOnClickListener(
-			view -> new Tooltip.Builder(view).setText(R.string.urlInfoTooltip).setTextColor(getResources().getColor(R.color.colorWhite))
-				.setBackgroundColor(getResources().getColor(R.color.tooltipBackground)).setCancelable(true).setDismissOnClick(true).setPadding(30)
-				.setCornerRadius(R.dimen.tooltipCornor).setGravity(Gravity.BOTTOM).show());
 
 		loginMethod.setOnCheckedChangeListener((group, checkedId) -> {
 
