@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
@@ -44,7 +43,7 @@ public class CreateFileActivity extends BaseActivity {
     private EditText newFileContent;
     private EditText newFileBranchName;
     private EditText newFileCommitMessage;
-    private Spinner newFileBranchesSpinner;
+    private AutoCompleteTextView newFileBranchesSpinner;
 	private String filePath;
 	private String fileSha;
 	private int fileAction = 0; // 0 = create, 1 = delete, 2 = edit
@@ -53,6 +52,14 @@ public class CreateFileActivity extends BaseActivity {
     private TinyDB tinyDb;
 
     List<Branches> branchesList = new ArrayList<>();
+
+    private String instanceUrl;
+	private String loginUid;
+	private String repoOwner;
+	private String repoName;
+	private String instanceToken;
+
+	private String selectedBranch;
 
     @Override
     protected int getLayoutResourceId(){
@@ -70,23 +77,20 @@ public class CreateFileActivity extends BaseActivity {
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
+        instanceUrl = tinyDb.getString("instanceUrl");
+        loginUid = tinyDb.getString("loginUid");
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        repoOwner = parts[0];
+        repoName = parts[1];
+        instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         closeActivity = findViewById(R.id.close);
         newFileName = findViewById(R.id.newFileName);
         newFileContent = findViewById(R.id.newFileContent);
         newFileBranchName = findViewById(R.id.newFileBranchName);
         newFileCommitMessage = findViewById(R.id.newFileCommitMessage);
-        TextView branchNameId = findViewById(R.id.branchNameId);
-        TextView branchNameHintText = findViewById(R.id.branchNameHintText);
 	    TextView toolbarTitle = findViewById(R.id.toolbarTitle);
-	    TextView fileNameHint = findViewById(R.id.fileNameHint);
 
         newFileName.requestFocus();
         assert imm != null;
@@ -99,7 +103,6 @@ public class CreateFileActivity extends BaseActivity {
 
 	    if(getIntent().getStringExtra("filePath") != null && getIntent().getIntExtra("fileAction", 1) == 1) {
 
-		    fileNameHint.setVisibility(View.GONE);
 		    fileAction = getIntent().getIntExtra("fileAction", 1);
 
 		    filePath = getIntent().getStringExtra("filePath");
@@ -120,7 +123,6 @@ public class CreateFileActivity extends BaseActivity {
 
 	    if(getIntent().getStringExtra("filePath") != null && getIntent().getIntExtra("fileAction", 2) == 2) {
 
-		    fileNameHint.setVisibility(View.GONE);
 		    fileAction = getIntent().getIntExtra("fileAction", 2);
 
 		    filePath = getIntent().getStringExtra("filePath");
@@ -143,32 +145,6 @@ public class CreateFileActivity extends BaseActivity {
         newFileBranchesSpinner = findViewById(R.id.newFileBranchesSpinner);
         getBranches(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
 
-        newFileBranchesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            public void onItemSelected(AdapterView<?> arg0,
-                                       View arg1, int arg2, long arg3)
-            {
-                Branches bModelValue = (Branches) newFileBranchesSpinner.getSelectedItem();
-
-                if(bModelValue.toString().equals("No branch")) {
-                    newFileBranchName.setEnabled(true);
-                    newFileBranchName.setVisibility(View.VISIBLE);
-                    branchNameId.setVisibility(View.VISIBLE);
-                    branchNameHintText.setVisibility(View.VISIBLE);
-                }
-                else {
-                    newFileBranchName.setEnabled(false);
-                    newFileBranchName.setVisibility(View.GONE);
-                    branchNameId.setVisibility(View.GONE);
-                    branchNameHintText.setVisibility(View.GONE);
-                    newFileBranchName.setText("");
-                }
-
-            }
-
-            public void onNothingSelected(AdapterView<?> arg0) {}
-        });
-
         disableProcessButton();
 
         if(!connToInternet) {
@@ -188,37 +164,27 @@ public class CreateFileActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
 
         String newFileName_ = newFileName.getText().toString();
         String newFileContent_ = newFileContent.getText().toString();
         String newFileBranchName_ = newFileBranchName.getText().toString();
         String newFileCommitMessage_ = newFileCommitMessage.getText().toString();
 
-        Branches currentBranch = (Branches) newFileBranchesSpinner.getSelectedItem();
+        //Branches currentBranch = (Branches) newFileBranchesSpinner.getSelectedItem();
 
         if(!connToInternet) {
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if(newFileName_.equals("") || newFileContent_.equals("") || newFileCommitMessage_.equals("")) {
 
             Toasty.error(ctx, getString(R.string.newFileRequiredFields));
             return;
-
         }
 
-        if(currentBranch.toString().equals("No branch")) {
+        if(selectedBranch.equals("No branch")) {
 
             if(newFileBranchName_.equals("")) {
                 Toasty.error(ctx, getString(R.string.newFileRequiredFieldNewBranchName));
@@ -229,7 +195,6 @@ public class CreateFileActivity extends BaseActivity {
 
                     Toasty.error(ctx, getString(R.string.newFileInvalidBranchName));
                     return;
-
                 }
             }
 
@@ -238,7 +203,6 @@ public class CreateFileActivity extends BaseActivity {
         if(appUtil.charactersLength(newFileCommitMessage_) > 255) {
 
             Toasty.warning(ctx, getString(R.string.newFileCommitMessageError));
-
         }
         else {
 
@@ -247,17 +211,17 @@ public class CreateFileActivity extends BaseActivity {
             if(fileAction == 1) {
 
 	            deleteFile(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, filePath,
-		            newFileBranchName_, newFileCommitMessage_, currentBranch.toString(), fileSha);
+		            newFileBranchName_, newFileCommitMessage_, selectedBranch, fileSha);
             }
             else if(fileAction == 2) {
 
 	            editFile(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, filePath,
-		           appUtil.encodeBase64(newFileContent_), newFileBranchName_, newFileCommitMessage_, currentBranch.toString(), fileSha);
+		           appUtil.encodeBase64(newFileContent_), newFileBranchName_, newFileCommitMessage_, selectedBranch, fileSha);
             }
             else {
 
 	            createNewFile(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newFileName_,
-		            appUtil.encodeBase64(newFileContent_), newFileBranchName_, newFileCommitMessage_, currentBranch.toString());
+		            appUtil.encodeBase64(newFileContent_), newFileBranchName_, newFileCommitMessage_, selectedBranch);
             }
 
         }
@@ -268,9 +232,11 @@ public class CreateFileActivity extends BaseActivity {
 
         NewFile createNewFileJsonStr;
         if(currentBranch.equals("No branch")) {
+
             createNewFileJsonStr = new NewFile("", fileContent, fileCommitMessage, fileBranchName);
         }
         else {
+
             createNewFileJsonStr = new NewFile(currentBranch, fileContent, fileCommitMessage, "");
         }
 
@@ -358,7 +324,6 @@ public class CreateFileActivity extends BaseActivity {
 					getIntent().removeExtra("fileSha");
 					getIntent().removeExtra("fileContents");
 					finish();
-
 				}
 				else if(response.code() == 401) {
 
@@ -367,7 +332,6 @@ public class CreateFileActivity extends BaseActivity {
 						getResources().getString(R.string.alertDialogTokenRevokedMessage),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
 				}
 				else {
 
@@ -430,7 +394,6 @@ public class CreateFileActivity extends BaseActivity {
 					getIntent().removeExtra("fileContents");
 					tinyDb.putBoolean("fileModified", true);
 					finish();
-
 				}
 				else if(response.code() == 401) {
 
@@ -439,7 +402,6 @@ public class CreateFileActivity extends BaseActivity {
 						getResources().getString(R.string.alertDialogTokenRevokedMessage),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
 				}
 				else {
 
@@ -499,11 +461,28 @@ public class CreateFileActivity extends BaseActivity {
                         }
 
                         ArrayAdapter<Branches> adapter = new ArrayAdapter<>(CreateFileActivity.this,
-                                R.layout.spinner_item, branchesList);
+                                R.layout.list_spinner_items, branchesList);
 
-                        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                         newFileBranchesSpinner.setAdapter(adapter);
                         enableProcessButton();
+
+	                    newFileBranchesSpinner.setOnItemClickListener ((parent, view, position, id) -> {
+
+		                    selectedBranch = branchesList.get(position).getName();
+
+		                    if(selectedBranch.equals("No branch")) {
+
+			                    newFileBranchName.setEnabled(true);
+			                    newFileBranchName.setVisibility(View.VISIBLE);
+		                    }
+		                    else {
+
+			                    newFileBranchName.setEnabled(false);
+			                    newFileBranchName.setVisibility(View.GONE);
+			                    newFileBranchName.setText("");
+		                    }
+
+	                    });
 
                     }
                 }
@@ -512,6 +491,7 @@ public class CreateFileActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<Branches>> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
             }
         });
@@ -519,6 +499,7 @@ public class CreateFileActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
+
         onClickListener = view -> finish();
     }
 

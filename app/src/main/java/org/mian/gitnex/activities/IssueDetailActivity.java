@@ -771,6 +771,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					}
 
 					if(singleIssue.getMilestone() != null) {
+						viewBinding.issueMilestone.setVisibility(View.VISIBLE);
 						viewBinding.issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
 					}
 					else {

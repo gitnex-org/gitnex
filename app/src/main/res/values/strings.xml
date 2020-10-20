@@ -112,6 +112,7 @@
     <string name="repoCreated">Repository created successfully</string>
     <string name="repoCreatedError">Something went wrong, please try again</string>
     <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
+    <string name="repoOwnerError">Select owner for the repository</string>
 
     <string name="orgNameErrorEmpty">Organization name is empty</string>
     <string name="orgNameErrorInvalid">Organization name is not valid, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -291,6 +292,7 @@
     <string name="labelDeleteErrorText">Something went wrong, please try again</string>
 
     <string name="noDataBranchesTab">No branches found</string>
+    <string name="selectBranchError">Select a branch for release</string>
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
@@ -567,6 +569,8 @@
     <string name="mergeOptionRebase">Rebase and Merge</string>
     <string name="mergeOptionRebaseCommit">Rebase and Merge (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">Squash and Merge</string>
+    <string name="mergeStrategy">Merge Strategy</string>
+    <string name="selectMergeStrategy">Select merge strategy</string>
 
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>

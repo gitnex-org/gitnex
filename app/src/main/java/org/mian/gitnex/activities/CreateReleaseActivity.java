@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -36,7 +35,7 @@ public class CreateReleaseActivity extends BaseActivity {
     private View.OnClickListener onClickListener;
     public ImageView closeActivity;
     private EditText releaseTagName;
-    private Spinner releaseBranch;
+    private AutoCompleteTextView releaseBranch;
     private EditText releaseTitle;
     private EditText releaseContent;
     private CheckBox releaseType;
@@ -44,6 +43,14 @@ public class CreateReleaseActivity extends BaseActivity {
     private Button createNewRelease;
     final Context ctx = this;
     private Context appCtx;
+    private TinyDB tinyDb;
+    private String selectedBranch;
+
+    private String instanceUrl;
+	private String loginUid;
+	private String instanceToken;
+	private String repoOwner;
+	private String repoName;
 
     List<Branches> branchesList = new ArrayList<>();
 
@@ -57,19 +64,19 @@ public class CreateReleaseActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         appCtx = getApplicationContext();
+	    tinyDb = new TinyDB(appCtx);
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        instanceUrl = tinyDb.getString("instanceUrl");
+        loginUid = tinyDb.getString("loginUid");
+        instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
+        repoOwner = parts[0];
+        repoName = parts[1];
 
         closeActivity = findViewById(R.id.close);
         releaseTagName = findViewById(R.id.releaseTagName);
@@ -78,26 +85,15 @@ public class CreateReleaseActivity extends BaseActivity {
         releaseType = findViewById(R.id.releaseType);
         releaseDraft = findViewById(R.id.releaseDraft);
 
-        releaseTagName.requestFocus();
+	    releaseTitle.requestFocus();
         assert imm != null;
-        imm.showSoftInput(releaseTagName, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(releaseTitle, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
         releaseBranch = findViewById(R.id.releaseBranch);
         getBranches(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
-        releaseBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Branches branch = (Branches) parent.getSelectedItem();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         createNewRelease = findViewById(R.id.createNewRelease);
         disableProcessButton();
@@ -119,19 +115,10 @@ public class CreateReleaseActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-
         String newReleaseTagName = releaseTagName.getText().toString();
         String newReleaseTitle = releaseTitle.getText().toString();
         String newReleaseContent = releaseContent.getText().toString();
-        String newReleaseBranch = releaseBranch.getSelectedItem().toString();
+	    String checkBranch = selectedBranch;
         boolean newReleaseType = releaseType.isChecked();
         boolean newReleaseDraft = releaseDraft.isChecked();
 
@@ -142,28 +129,32 @@ public class CreateReleaseActivity extends BaseActivity {
 
         }
 
+	    if(newReleaseTitle.equals("")) {
+
+		    Toasty.error(ctx, getString(R.string.titleErrorEmpty));
+		    return;
+	    }
+
         if(newReleaseTagName.equals("")) {
 
             Toasty.error(ctx, getString(R.string.tagNameErrorEmpty));
             return;
-
         }
 
-        if(newReleaseTitle.equals("")) {
+	    if(checkBranch == null) {
 
-            Toasty.error(ctx, getString(R.string.titleErrorEmpty));
-            return;
-
-        }
+	    	Toasty.error(ctx, getString(R.string.selectBranchError));
+		    return;
+	    }
 
         disableProcessButton();
-        createNewReleaseFunc(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newReleaseTagName, newReleaseTitle, newReleaseContent, newReleaseBranch, newReleaseType, newReleaseDraft);
+        createNewReleaseFunc(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newReleaseTagName, newReleaseTitle, newReleaseContent, selectedBranch, newReleaseType, newReleaseDraft);
 
     }
 
-    private void createNewReleaseFunc(final String instanceUrl, final String token, String repoOwner, String repoName, String newReleaseTagName, String newReleaseTitle, String newReleaseContent, String newReleaseBranch, boolean newReleaseType, boolean newReleaseDraft) {
+    private void createNewReleaseFunc(final String instanceUrl, final String token, String repoOwner, String repoName, String newReleaseTagName, String newReleaseTitle, String newReleaseContent, String selectedBranch, boolean newReleaseType, boolean newReleaseDraft) {
 
-        Releases createReleaseJson = new Releases(newReleaseContent, newReleaseDraft, newReleaseTitle, newReleaseType, newReleaseTagName, newReleaseBranch);
+        Releases createReleaseJson = new Releases(newReleaseContent, newReleaseDraft, newReleaseTitle, newReleaseType, newReleaseTagName, selectedBranch);
 
         Call<Releases> call;
 
@@ -179,12 +170,10 @@ public class CreateReleaseActivity extends BaseActivity {
 
                 if (response.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(appCtx);
                     tinyDb.putBoolean("updateReleases", true);
                     Toasty.success(ctx, getString(R.string.releaseCreatedText));
                     enableProcessButton();
                     finish();
-
                 }
                 else if(response.code() == 401) {
 
@@ -218,6 +207,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<Releases> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }
@@ -244,23 +234,20 @@ public class CreateReleaseActivity extends BaseActivity {
 
                         assert branchesList_ != null;
                         if(branchesList_.size() > 0) {
-                            for (int i = 0; i < branchesList_.size(); i++) {
 
-                                Branches data = new Branches(
-                                        branchesList_.get(i).getName()
-                                );
-                                branchesList.add(data);
-
-                            }
+	                        branchesList.addAll(branchesList_);
                         }
 
-                        ArrayAdapter<Branches> adapter = new ArrayAdapter<>(CreateReleaseActivity.this,
-                                R.layout.spinner_item, branchesList);
+	                    ArrayAdapter<Branches> adapter = new ArrayAdapter<>(CreateReleaseActivity.this,
+		                    R.layout.list_spinner_items, branchesList);
 
-                        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                         releaseBranch.setAdapter(adapter);
                         enableProcessButton();
 
+	                    releaseBranch.setOnItemClickListener ((parent, view, position, id) ->
+
+		                    selectedBranch = branchesList.get(position).getName()
+	                    );
                     }
                 }
                 else if(response.code() == 401) {
@@ -276,6 +263,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<Branches>> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
             }
         });
@@ -283,12 +271,8 @@ public class CreateReleaseActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
     private void disableProcessButton() {

@@ -11,15 +11,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import com.hendraanggrian.appcompat.socialview.Mention;
-import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
-import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -30,13 +27,10 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Issues;
-import java.util.List;
 import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Author M M Arif
@@ -51,8 +45,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 	private Context appCtx;
 
 	private TextView draftSaved;
-	private SocialAutoCompleteTextView addComment;
-	private ArrayAdapter<Mention> defaultMentionAdapter;
+	private EditText addComment;
 	private Button replyButton;
 	private String TAG = StaticGlobalVariables.replyToIssueActivity;
 	private long draftIdOnCreate;
@@ -78,11 +71,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 		draftSaved = findViewById(R.id.draftSaved);
 		addComment = findViewById(R.id.addComment);
 		addComment.setShowSoftInputOnFocus(true);
-
-        defaultMentionAdapter = new MentionArrayAdapter<>(ctx);
-		loadCollaboratorsList();
-
-		addComment.setMentionAdapter(defaultMentionAdapter);
 
 		closeActivity = findViewById(R.id.close);
 		TextView toolbar_title = findViewById(R.id.toolbar_title);
@@ -121,13 +109,11 @@ public class ReplyToIssueActivity extends BaseActivity {
 			if(getIntent().getBooleanExtra("cursorToEnd", false)) {
 				addComment.setSelection(addComment.length());
 			}
-
 		}
 
 		if(getIntent().getStringExtra("draftTitle") != null) {
 
 			toolbar_title.setText(getIntent().getStringExtra("draftTitle"));
-
 		}
 
 		if(getIntent().getStringExtra("commentAction") != null && Objects.equals(getIntent().getStringExtra("commentAction"), "edit") && !Objects.equals(getIntent().getStringExtra("commentId"), "new")) {
@@ -144,14 +130,12 @@ public class ReplyToIssueActivity extends BaseActivity {
 				}
 
 				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 				}
 
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 					saveDraft(addComment.getText().toString(), commentId, draftIdOnCreate);
 					draftSaved.setVisibility(View.VISIBLE);
-
 				}
 
 			});
@@ -161,7 +145,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 				disableProcessButton();
 				assert commentId != null;
 				IssueActions.editIssueComment(ctx, Integer.parseInt(commentId), addComment.getText().toString(), draftIdOnCreate);
-
 			});
 
 			return;
@@ -171,18 +154,15 @@ public class ReplyToIssueActivity extends BaseActivity {
 		addComment.addTextChangedListener(new TextWatcher() {
 
 			public void afterTextChanged(Editable s) {
-
 			}
 
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 			}
 
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 				saveDraft(addComment.getText().toString(), "new", draftIdOnCreate);
 				draftSaved.setVisibility(View.VISIBLE);
-
 			}
 
 		});
@@ -190,12 +170,10 @@ public class ReplyToIssueActivity extends BaseActivity {
 		if(!connToInternet) {
 
 			disableProcessButton();
-
 		}
 		else {
 
 			replyButton.setOnClickListener(replyToIssue);
-
 		}
 
 	}
@@ -234,57 +212,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 	}
 
-	public void loadCollaboratorsList() {
-
-		final TinyDB tinyDb = new TinyDB(appCtx);
-
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-		String repoFullName = tinyDb.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
-
-		Call<List<Collaborators>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getCollaborators(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
-
-		call.enqueue(new Callback<List<Collaborators>>() {
-
-			@Override
-			public void onResponse(@NonNull Call<List<Collaborators>> call, @NonNull Response<List<Collaborators>> response) {
-
-				if (response.isSuccessful()) {
-
-					assert response.body() != null;
-					String fullName = "";
-					for(int i = 0; i < response.body().size(); i++) {
-						if(!response.body().get(i).getFull_name().equals("")) {
-							fullName = response.body().get(i).getFull_name();
-						}
-						defaultMentionAdapter.add(new Mention(response.body().get(i).getUsername(), fullName, response.body().get(i).getAvatar_url()));
-					}
-
-				}
-				else {
-
-					Log.i(TAG, String.valueOf(response.code()));
-
-				}
-
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Collaborators>> call, @NonNull Throwable t) {
-
-				Log.e(TAG, t.toString());
-			}
-
-		});
-	}
-
 	private void initCloseListener() {
 
 		onClickListener = view -> finish();
@@ -301,19 +228,16 @@ public class ReplyToIssueActivity extends BaseActivity {
 
 			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 			return;
-
 		}
 
 		if(newReplyDT.equals("")) {
 
 			Toasty.error(ctx, getString(R.string.commentEmptyError));
-
 		}
 		else {
 
 			disableProcessButton();
 			replyComment(newReplyDT);
-
 		}
 
 	}

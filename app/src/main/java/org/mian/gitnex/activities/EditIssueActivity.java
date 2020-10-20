@@ -4,21 +4,19 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
-import com.hendraanggrian.appcompat.socialview.Mention;
-import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
-import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -28,7 +26,6 @@ import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
-import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.models.Milestones;
@@ -39,7 +36,6 @@ import java.util.Calendar;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Author M M Arif
@@ -49,19 +45,27 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
     final Context ctx = this;
     private Context appCtx;
+	private TinyDB tinyDb;
     private View.OnClickListener onClickListener;
     private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
 
     private EditText editIssueTitle;
-    private SocialAutoCompleteTextView editIssueDescription;
+    private EditText editIssueDescription;
     private TextView editIssueDueDate;
     private Button editIssueButton;
-    private Spinner editIssueMilestoneSpinner;
+    private AutoCompleteTextView editIssueMilestoneSpinner;
 
     private String msState = "open";
+    private int milestoneId;
 
     List<Milestones> milestonesList = new ArrayList<>();
-    private ArrayAdapter<Mention> defaultMentionAdapter;
+
+	private String instanceUrl;
+	private String loginUid;
+	private String instanceToken;
+	private String repoOwner;
+	private String repoName;
+	private int issueIndex;
 
     @Override
     protected int getLayoutResourceId(){
@@ -73,19 +77,18 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         appCtx = getApplicationContext();
+	    tinyDb = new TinyDB(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        final TinyDB tinyDb = new TinyDB(appCtx);
-
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+	    instanceUrl = tinyDb.getString("instanceUrl");
+        loginUid = tinyDb.getString("loginUid");
+        instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-        final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
+        repoOwner = parts[0];
+        repoName = parts[1];
+        issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
 
         ImageView closeActivity = findViewById(R.id.close);
         editIssueButton = findViewById(R.id.editIssueButton);
@@ -103,12 +106,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         assert imm != null;
         imm.showSoftInput(editIssueTitle, InputMethodManager.SHOW_IMPLICIT);
 
-        defaultMentionAdapter = new MentionArrayAdapter<>(this);
-        loadCollaboratorsList();
-
         editIssueMilestoneSpinner = findViewById(R.id.editIssueMilestoneSpinner);
-
-        editIssueDescription.setMentionAdapter(defaultMentionAdapter);
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
@@ -128,85 +126,16 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         disableProcessButton();
         getIssue(instanceUrl, instanceToken, loginUid, repoOwner, repoName, issueIndex, resultLimit);
-
-
-    }
-
-    public void loadCollaboratorsList() {
-
-        final TinyDB tinyDb = new TinyDB(appCtx);
-
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-
-        Call<List<Collaborators>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .getCollaborators(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
-
-        call.enqueue(new Callback<List<Collaborators>>() {
-
-            @Override
-            public void onResponse(@NonNull Call<List<Collaborators>> call, @NonNull Response<List<Collaborators>> response) {
-
-                if (response.isSuccessful()) {
-
-                    assert response.body() != null;
-                    String fullName = "";
-                    for (int i = 0; i < response.body().size(); i++) {
-                        if(!response.body().get(i).getFull_name().equals("")) {
-                            fullName = response.body().get(i).getFull_name();
-                        }
-                        defaultMentionAdapter.add(
-                                new Mention(response.body().get(i).getUsername(), fullName, response.body().get(i).getAvatar_url()));
-                    }
-
-                } else {
-
-                    Log.i("onResponse", String.valueOf(response.code()));
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Collaborators>> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.toString());
-            }
-
-        });
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
     private void processEditIssue() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        final int issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
-
-        Milestones mModel = (Milestones) editIssueMilestoneSpinner.getSelectedItem();
-
-        int editIssueMilestoneId = mModel.getId();
 
         String editIssueTitleForm = editIssueTitle.getText().toString();
         String editIssueDescriptionForm = editIssueDescription.getText().toString();
@@ -226,30 +155,20 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         }
 
-        /*if (editIssueDescriptionForm.equals("")) {
-
-            Toasty.info(ctx, getString(R.string.issueDescriptionEmpty));
-            return;
-
-        }*/
-
         if (editIssueDueDateForm.equals("")) {
             editIssueDueDateForm = null;
         } else {
             editIssueDueDateForm = (AppUtil.customDateCombine(AppUtil.customDateFormat(editIssueDueDateForm)));
         }
 
-        //Log.i("editIssueDueDateForm", String.valueOf(editIssueDueDateForm));
         disableProcessButton();
-        editIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm, editIssueMilestoneId);
+        editIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm, milestoneId);
 
     }
 
-    private void editIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate, int editIssueMilestoneId) {
+    private void editIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate, int milestoneId) {
 
-        final TinyDB tinyDb = new TinyDB(appCtx);
-
-        CreateIssue issueData = new CreateIssue(title, description, dueDate, editIssueMilestoneId);
+        CreateIssue issueData = new CreateIssue(title, description, dueDate, milestoneId);
 
         Call<JsonElement> call = RetrofitClient
                 .getInstance(instanceUrl, ctx)
@@ -264,9 +183,11 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                 if(response.code() == 201) {
 
                     if(tinyDb.getString("issueType").equalsIgnoreCase("Pull")) {
+
                         Toasty.success(ctx, getString(R.string.editPrSuccessMessage));
                     }
                     else {
+
                         Toasty.success(ctx, getString(R.string.editIssueSuccessMessage));
                     }
 
@@ -302,7 +223,6 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-
     @Override
     public void onClick(View v) {
 
@@ -314,16 +234,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
             final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-
-                        @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-
-                            editIssueDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
-
-                        }
-                    }, mYear, mMonth, mDay);
+	            (view, year, monthOfYear, dayOfMonth) -> editIssueDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth)), mYear, mMonth, mDay);
             datePickerDialog.show();
 
         }
@@ -351,9 +262,10 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                     editIssueTitle.setText(response.body().getTitle());
                     editIssueDescription.setText(response.body().getBody());
 
-                    int msId = 0;
+                    int currentMilestoneId = 0;
                     if(response.body().getMilestone() != null) {
-                        msId = response.body().getMilestone().getId();
+
+	                    currentMilestoneId = response.body().getMilestone().getId();
                     }
 
                     // get milestones list
@@ -364,14 +276,14 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                                 .getApiInterface()
                                 .getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, 1, resultLimit, msState);
 
-                        final int finalMsId = msId;
+	                    int checkMilestoneId = currentMilestoneId;
 
-                        call_.enqueue(new Callback<List<Milestones>>() {
+	                    call_.enqueue(new Callback<List<Milestones>>() {
 
                             @Override
                             public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull retrofit2.Response<List<Milestones>> response_) {
 
-                                int finalMsId1 = 0;
+                                int getSelectedMilestoneId = 0;
 
                                 if (response_.code() == 200) {
 
@@ -379,31 +291,33 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
                                     milestonesList.add(new Milestones(0, "No milestone"));
                                     assert milestonesList_ != null;
+
                                     if (milestonesList_.size() > 0) {
+
+	                                    milestonesList.addAll(milestonesList_);
+
                                         for (int i = 0; i < milestonesList_.size(); i++) {
 
-                                            Milestones data = new Milestones(
-                                                    milestonesList_.get(i).getId(),
-                                                    milestonesList_.get(i).getTitle()
-                                            );
-                                            milestonesList.add(data);
-
-                                            if(finalMsId == milestonesList_.get(i).getId()) {
-                                                finalMsId1 = i + 1;
+                                            if(checkMilestoneId == milestonesList_.get(i).getId()) {
+	                                            getSelectedMilestoneId = i + 1;
                                             }
-
                                         }
                                     }
 
-                                    ArrayAdapter<Milestones> adapter_ = new ArrayAdapter<>(EditIssueActivity.this,
-                                            R.layout.spinner_item, milestonesList);
+                                    ArrayAdapter<Milestones> adapter = new ArrayAdapter<>(EditIssueActivity.this,
+                                            R.layout.list_spinner_items, milestonesList);
 
-                                    adapter_.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                                    editIssueMilestoneSpinner.setAdapter(adapter_);
+                                    editIssueMilestoneSpinner.setAdapter(adapter);
 
-                                    if(milestonesList_.size() > 0) {
-                                        editIssueMilestoneSpinner.setSelection(finalMsId1);
-                                    }
+	                                editIssueMilestoneSpinner.setOnItemClickListener ((parent, view, position, id) -> milestoneId = milestonesList.get(position).getId());
+
+	                                int finalMsId = getSelectedMilestoneId;
+	                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+		                                editIssueMilestoneSpinner.setText(milestonesList.get(finalMsId).getTitle(),false);
+		                                milestoneId = milestonesList.get(finalMsId).getId();
+	                                }, 500);
+
                                     enableProcessButton();
 
                                 }
@@ -412,6 +326,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
                             @Override
                             public void onFailure(@NonNull Call<List<Milestones>> call, @NonNull Throwable t) {
+
                                 Log.e("onFailure", t.toString());
                             }
                         });
@@ -444,6 +359,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onFailure(@NonNull Call<Issues> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
             }
         });

@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -53,10 +52,10 @@ public class LoginActivity extends BaseActivity {
 
 	private Button loginButton;
 	private EditText instanceUrlET, loginUidET, loginPassword, otpCode, loginTokenCode;
-	private Spinner protocolSpinner;
-	private TextView otpInfo;
+	private AutoCompleteTextView protocolSpinner;
 	private RadioGroup loginMethod;
 	private String device_id = "token";
+	private String selectedProtocol;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -78,45 +77,47 @@ public class LoginActivity extends BaseActivity {
 		loginUidET = findViewById(R.id.login_uid);
 		loginPassword = findViewById(R.id.login_passwd);
 		otpCode = findViewById(R.id.otpCode);
-		otpInfo = findViewById(R.id.otpInfo);
 		protocolSpinner = findViewById(R.id.httpsSpinner);
 		loginMethod = findViewById(R.id.loginMethod);
 		loginTokenCode = findViewById(R.id.loginTokenCode);
 
 		((TextView) findViewById(R.id.appVersion)).setText(AppUtil.getAppVersion(appCtx));
 
-		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(LoginActivity.this, R.layout.spinner_item, Protocol.values());
-		adapterProtocols.setDropDownViewResource(R.layout.spinner_dropdown_item);
+		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 
 		protocolSpinner.setAdapter(adapterProtocols);
-		protocolSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+		protocolSpinner.setOnItemClickListener((parent, view, position, id) -> {
 
-				if(protocolSpinner.getSelectedItem() == Protocol.HTTP) {
-					Toasty.warning(ctx, getResources().getString(R.string.protocolError));
-				}
+			selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
+
+			if(selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
+				Toasty.warning(ctx, getResources().getString(R.string.protocolError));
 			}
-
-			public void onNothingSelected(AdapterView<?> parent) {
-
-			}
-
 		});
+
+		if(R.id.loginToken == loginMethod.getCheckedRadioButtonId()) {
+
+			AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
+			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
+		}
+		else {
+
+			AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
+			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
+		}
 
 		loginMethod.setOnCheckedChangeListener((group, checkedId) -> {
 
 			if(checkedId == R.id.loginToken) {
 
-				AppUtil.setMultiVisibility(View.GONE, loginUidET, loginPassword, otpCode, otpInfo);
-				loginTokenCode.setVisibility(View.VISIBLE);
-
+				AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
+				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
 			}
 			else {
 
-				AppUtil.setMultiVisibility(View.VISIBLE, loginUidET, loginPassword, otpCode, otpInfo);
-				loginTokenCode.setVisibility(View.GONE);
-
+				AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
+				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
 			}
 		});
 
@@ -149,16 +150,22 @@ public class LoginActivity extends BaseActivity {
 
 		try {
 
+			if(selectedProtocol == null) {
+
+				Toasty.error(ctx, getResources().getString(R.string.protocolEmptyError));
+				enableProcessButton();
+				return;
+			}
+
 			String loginUid = loginUidET.getText().toString();
 			String loginPass = loginPassword.getText().toString();
 			String loginToken = loginTokenCode.getText().toString().trim();
 
-			Protocol protocol = (Protocol) protocolSpinner.getSelectedItem();
 			LoginType loginType = (loginMethod.getCheckedRadioButtonId() == R.id.loginUsernamePassword) ? LoginType.BASIC : LoginType.TOKEN;
 
 			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET.getText().toString(), "http")).toUri();
 
-			URI instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(protocol.name().toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
+			URI instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(selectedProtocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
 				.toUri();
 
 			tinyDB.putString("loginType", loginType.name().toLowerCase());
@@ -170,7 +177,6 @@ public class LoginActivity extends BaseActivity {
 				Toasty.error(ctx, getResources().getString(R.string.emptyFieldURL));
 				enableProcessButton();
 				return;
-
 			}
 
 			if(loginType == LoginType.BASIC) {
@@ -180,14 +186,12 @@ public class LoginActivity extends BaseActivity {
 					Toasty.warning(ctx, getResources().getString(R.string.loginOTPTypeError));
 					enableProcessButton();
 					return;
-
 				}
 
 				if(rawInstanceUrl.getUserInfo() != null) {
 
 					tinyDB.putString("basicAuthPassword", loginPass);
 					tinyDB.putBoolean("basicAuthFlag", true);
-
 				}
 
 				if(loginUid.equals("")) {
@@ -195,7 +199,6 @@ public class LoginActivity extends BaseActivity {
 					Toasty.error(ctx, getResources().getString(R.string.emptyFieldUsername));
 					enableProcessButton();
 					return;
-
 				}
 
 				if(loginPass.equals("")) {
@@ -203,7 +206,6 @@ public class LoginActivity extends BaseActivity {
 					Toasty.error(ctx, getResources().getString(R.string.emptyFieldPassword));
 					enableProcessButton();
 					return;
-
 				}
 
 				int loginOTP = (otpCode.length() > 0) ? Integer.parseInt(otpCode.getText().toString().trim()) : 0;

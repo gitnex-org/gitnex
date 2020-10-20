@@ -63,7 +63,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
         ImageView closeActivity = findViewById(R.id.close);
         addCollaboratorSearch = findViewById(R.id.addCollaboratorSearch);
         mRecyclerView = findViewById(R.id.recyclerViewUserSearch);
-        mProgressBar = findViewById(R.id.progress_bar);
+        mProgressBar = findViewById(R.id.progressBar);
         noData = findViewById(R.id.noData);
 
         addCollaboratorSearch.requestFocus();
@@ -76,7 +76,10 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
         addCollaboratorSearch.setOnEditorActionListener((v, actionId, event) -> {
 
             if (actionId == EditorInfo.IME_ACTION_SEND) {
+
                 if(!addCollaboratorSearch.getText().toString().equals("")) {
+
+	                mProgressBar.setVisibility(View.VISIBLE);
                     loadUserSearchList(instanceUrl, instanceToken, addCollaboratorSearch.getText().toString(), loginUid);
                 }
             }
@@ -99,10 +102,15 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
             @Override
             public void onResponse(@NonNull Call<UserSearch> call, @NonNull Response<UserSearch> response) {
 
-                if (response.isSuccessful()) {
+	            mProgressBar.setVisibility(View.GONE);
+
+                if (response.code() == 200) {
+
                     assert response.body() != null;
                     getUsersList(response.body().getData(), ctx);
-                } else {
+                }
+                else {
+
                     Log.i("onResponse", String.valueOf(response.code()));
                 }
 
@@ -129,11 +137,13 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 
         if(adapter.getItemCount() > 0) {
+
             mRecyclerView.setAdapter(adapter);
             noData.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.GONE);
         }
         else {
+
             noData.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.GONE);
         }

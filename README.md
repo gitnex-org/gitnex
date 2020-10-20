@@ -78,7 +78,6 @@ Thanks to all the open source libraries, contributors and donators.
 - Amulyakhare/textdrawable
 - Vdurmont/emoji-java
 - Pes/materialcolorpicker
-- Hendraanggrian/socialview
 - HamidrezaAmz/BreadcrumbsView
 - Chrisbanes/PhotoView
 - Pddstudio/highlightjs-android
