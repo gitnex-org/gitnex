@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	private TextView toolbarTitle;
 	final Context ctx = this;
 	private Context appCtx;
+	private static TinyDB tinyDb;
 	private Typeface myTypeface;
 
 	private String instanceUrl;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		super.onCreate(savedInstanceState);
 		appCtx = getApplicationContext();
 
-		final TinyDB tinyDb = new TinyDB(appCtx);
+		tinyDb = new TinyDB(appCtx);
 		tinyDb.putBoolean("noConnection", false);
 
 		Intent mainIntent = getIntent();
@@ -347,6 +348,36 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			}
 		}
 
+		String launchFragmentByHandler = mainIntent.getStringExtra("launchFragmentByLinkHandler");
+
+		if(launchFragmentByHandler != null) {
+
+			mainIntent.removeExtra("launchFragmentByLinkHandler");
+
+			switch(launchFragmentByHandler) {
+
+				case "repos":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RepositoriesFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_repositories);
+					return;
+
+				case "org":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OrganizationsFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_organizations);
+					return;
+
+				case "notification":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_notifications);
+					return;
+
+				case "explore":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_explore);
+					return;
+			}
+		}
+
 		if(savedInstanceState == null) {
 
 			if(!new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.3")) {
@@ -577,7 +608,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 	public static void logout(Activity activity, Context ctx) {
 
-		TinyDB tinyDb = new TinyDB(ctx.getApplicationContext());
 		tinyDb.putBoolean("loggedInMode", false);
 		tinyDb.remove("basicAuthPassword");
 		tinyDb.putBoolean("basicAuthFlag", false);

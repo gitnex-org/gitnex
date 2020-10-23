@@ -20,7 +20,7 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:drawableStart="@drawable/ic_delete"
+            app:drawableStartCompat="@drawable/ic_delete"
             android:drawablePadding="16dp"
             android:text="@string/repoSettingsDelete"
             android:layout_marginBottom="16dp" />

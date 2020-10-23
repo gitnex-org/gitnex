@@ -25,11 +25,11 @@ public abstract class StaticGlobalVariables {
 	public static String tagPullRequestsList = "PullRequestsListFragment";
 	public static String tagIssuesList = "IssuesListFragment";
 	public static String tagMilestonesAdapter = "MilestonesAdapter";
-	public static String draftsRepository = "DraftsRepository";
-	public static String repositoriesRepository = "RepositoriesRepository";
+	public static String draftsApi = "DraftsApi";
+	public static String repositoriesApi = "RepositoriesApi";
 	public static String replyToIssueActivity = "ReplyToIssueActivity";
 	public static String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
-	public static String userAccountsRepository = "UserAccountsRepository";
+	public static String userAccountsApi = "UserAccountsApi";
 
 	// issues variables
 	public static int issuesPageInit = 1;

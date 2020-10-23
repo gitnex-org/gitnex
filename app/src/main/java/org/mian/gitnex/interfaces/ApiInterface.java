@@ -58,6 +58,9 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
+	@GET("version") // gitea version API without any auth
+	Call<GiteaVersion> getGiteaVersion();
+
     @GET("version") // gitea version API
     Call<GiteaVersion> getGiteaVersionWithBasic(@Header("Authorization") String authorization);
 
@@ -330,6 +333,9 @@ public interface ApiInterface {
 
 	@POST("repos/{owner}/{repo}/pulls") // create a pull request
 	Call<ResponseBody> createPullRequest(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body CreatePullRequest jsonStr);
+
+	@GET("repos/{owner}/{repo}/pulls/{index}") // get pull request by index
+	Call<PullRequests> getPullRequestByIndex(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Path("index") int index);
 
     @GET("repos/{owner}/{repo}/commits") // get all commits
     Call<List<Commits>> getRepositoryCommits(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("page") int page, @Query("sha") String branchName, @Query("limit") int limit);

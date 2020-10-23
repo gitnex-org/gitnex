@@ -11,7 +11,7 @@ GitNex is licensed under GPLv3 License. See the LICENSE file for the full licens
 ## Downloads
 [<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
-[<img alt='Download builds and releases' src='assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE)
+[<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/src/branch/master/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE)
 
 ## Note about Gitea version
 Please make sure that you are on latest stable release or later for better app experience.

@@ -20,6 +20,9 @@ public interface UserAccountsDao {
     @Query("SELECT * FROM UserAccounts ORDER BY accountId ASC")
     LiveData<List<UserAccount>> fetchAllAccounts();
 
+	@Query("SELECT * FROM UserAccounts ORDER BY accountId ASC")
+	List<UserAccount> userAccounts();
+
     @Query("SELECT COUNT(accountId) FROM UserAccounts WHERE accountName = :accountName")
     Integer getCount(String accountName);
 

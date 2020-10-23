@@ -28,7 +28,6 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.Locale;
-import java.util.Objects;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 
@@ -48,6 +47,8 @@ public class ProfileFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         setHasOptionsMenu(true);
+
+	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navProfile));
 
         TinyDB tinyDb = new TinyDB(getContext());
 
@@ -123,15 +124,15 @@ public class ProfileFragment extends Fragment {
         switch(tinyDb.getInt("customFontId", -1)) {
 
             case 0:
-                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/roboto.ttf");
+                myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/roboto.ttf");
                 break;
 
             case 2:
-                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/sourcecodeproregular.ttf");
+                myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/sourcecodeproregular.ttf");
                 break;
 
             default:
-                myTypeface = Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/manroperegular.ttf");
+                myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/manroperegular.ttf");
                 break;
 
         }
@@ -203,7 +204,7 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         menu.clear();
-        Objects.requireNonNull(getActivity()).getMenuInflater().inflate(R.menu.profile_dotted_menu, menu);
+        requireActivity().getMenuInflater().inflate(R.menu.profile_dotted_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
 
     }

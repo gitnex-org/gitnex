@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:layout_centerInParent="true"
+        app:indicatorColor="?attr/progressIndicatorColor" />
+
+    <LinearLayout
+        android:id="@+id/addNewAccountFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="32dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/addAccountText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accountDoesNotExist"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/addNewAccount"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/addNewAccountText"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp" />
+
+        <Button
+            android:id="@+id/openInBrowser"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/openWebRepo"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/launchApp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/launchApp"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/noActionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="32dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noActionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/noActionText"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/repository"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/navRepos"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp" />
+
+        <Button
+            android:id="@+id/organization"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/navOrgs"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/notification"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/pageTitleNotifications"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/explore"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/navExplore"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/launchApp2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/launchApp"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

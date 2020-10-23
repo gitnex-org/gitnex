@@ -270,6 +270,12 @@
     <string name="draftsHintText">Comments draft</string>
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
+    <string name="settingsGeneralHeader">General</string>
+    <string name="generalHintText">Default actions</string>
+    <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
+    <string name="generalDeepLinkSelectedText">N/A</string>
+    <string name="linkSelectorDialogTitle">Select Default Screen</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -715,5 +721,9 @@
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="launchApp">Go to App</string>
+    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
 
 </resources>

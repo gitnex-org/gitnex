@@ -17,6 +17,7 @@ public class UserAccountsApi {
 
 	private static UserAccountsDao userAccountsDao;
 	private static UserAccount userAccount;
+	private static List<UserAccount> userAccounts;
 	private static Integer checkAccount;
 	private static long accountId;
 
@@ -49,7 +50,7 @@ public class UserAccountsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.userAccountsRepository, e.toString());
+			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
 		}
 
 		return accountId;
@@ -80,7 +81,7 @@ public class UserAccountsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.userAccountsRepository, e.toString());
+			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
 		}
 
 		return userAccount;
@@ -96,7 +97,7 @@ public class UserAccountsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.userAccountsRepository, e.toString());
+			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
 		}
 
 		return checkAccount;
@@ -105,6 +106,22 @@ public class UserAccountsApi {
 	public LiveData<List<UserAccount>> getAllAccounts() {
 
 		return userAccountsDao.fetchAllAccounts();
+	}
+
+	public List<UserAccount> usersAccounts() {
+
+		try {
+
+			Thread thread = new Thread(() -> userAccounts = userAccountsDao.userAccounts());
+			thread.start();
+			thread.join();
+		}
+		catch(InterruptedException e) {
+
+			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
+		}
+
+		return userAccounts;
 	}
 
 	public void deleteAccount(final int accountId) {

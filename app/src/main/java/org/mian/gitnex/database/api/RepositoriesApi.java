@@ -47,7 +47,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesRepository, e.toString());
+			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
 		}
 
 		return repositoryId;
@@ -63,7 +63,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesRepository, e.toString());
+			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
 		}
 
 		return repository;
@@ -89,7 +89,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesRepository, e.toString());
+			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
 		}
 
 		return checkRepository;
@@ -105,7 +105,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesRepository, e.toString());
+			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
 		}
 
 		return repository;
@@ -121,7 +121,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesRepository, e.toString());
+			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
 		}
 
 		return repository;

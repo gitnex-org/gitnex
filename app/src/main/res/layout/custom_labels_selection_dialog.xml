@@ -34,7 +34,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:drawableStart="@drawable/ic_label"
+                app:drawableStartCompat="@drawable/ic_label"
                 android:drawablePadding="16dp"
                 android:text="@string/newIssueSelectLabelsListTitle" />
 

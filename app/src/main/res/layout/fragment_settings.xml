@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/primaryBackgroundColor">
@@ -17,23 +18,55 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/appearanceFrame"
+                android:id="@+id/generalFrame"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp">
 
                 <TextView
+                    android:id="@+id/tvGeneral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="24dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/settingsGeneralHeader"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_otp" />
+
+                <TextView
+                    android:id="@+id/generalHintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/generalHintText"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/appearanceFrame"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+
+                <TextView
                     android:id="@+id/tvAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_appearance"
                     android:drawablePadding="24dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/settingsAppearanceHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_appearance" />
 
                 <TextView
                     android:id="@+id/appearanceHintText"
@@ -59,13 +92,13 @@
                     android:id="@+id/fileViewer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_file"
                     android:drawablePadding="24dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/fileViewerHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_file" />
 
                 <TextView
                     android:id="@+id/fileViewerHintText"
@@ -91,13 +124,13 @@
                     android:id="@+id/draftsHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_drafts"
                     android:drawablePadding="24dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/draftsHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_drafts" />
 
                 <TextView
                     android:id="@+id/draftsHintText"
@@ -123,13 +156,13 @@
                     android:id="@+id/tvSecurity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_security"
                     android:drawablePadding="24dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/settingsSecurityHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_security" />
 
                 <TextView
                     android:id="@+id/securityHintText"
@@ -155,13 +188,13 @@
                     android:id="@+id/tvLanguages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_flag"
                     android:drawablePadding="24dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/settingsLanguageHeaderText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_flag" />
 
                 <TextView
                     android:id="@+id/languagesHintText"
@@ -187,13 +220,13 @@
                     android:id="@+id/appReports"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_bug_report"
                     android:drawablePadding="24dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/reportViewerHeader"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_bug_report" />
 
                 <TextView
                     android:id="@+id/reportsHintText"
@@ -245,19 +278,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="20dp">
 
                 <TextView
                     android:id="@+id/aboutApp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_info"
                     android:drawablePadding="24dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/navAbout"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_info" />
 
                 <TextView
                     android:id="@+id/aboutAppHintText"

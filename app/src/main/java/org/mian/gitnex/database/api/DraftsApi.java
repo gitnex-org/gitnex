@@ -50,7 +50,7 @@ public class DraftsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.draftsRepository, e.toString());
+			Log.e(StaticGlobalVariables.draftsApi, e.toString());
 		}
 
 		return draftId;
@@ -66,7 +66,7 @@ public class DraftsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.draftsRepository, e.toString());
+			Log.e(StaticGlobalVariables.draftsApi, e.toString());
 		}
 
 		return draftId;
@@ -82,7 +82,7 @@ public class DraftsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.draftsRepository, e.toString());
+			Log.e(StaticGlobalVariables.draftsApi, e.toString());
 		}
 
 		return checkDraftFlag;

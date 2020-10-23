@@ -15,9 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,14 +24,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.MyReposListAdapter;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.viewmodels.MyRepositoriesViewModel;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -82,7 +78,7 @@ public class MyRepositoriesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
 
         final View v = inflater.inflate(R.layout.fragment_my_repositories, container, false);
         setHasOptionsMenu(true);
@@ -95,6 +91,8 @@ public class MyRepositoriesFragment extends Fragment {
         tinyDb.putBoolean("isRepoAdmin", true);
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+
+	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navMyRepos));
 
         noDataMyRepo = v.findViewById(R.id.noDataMyRepo);
         mProgressBar = v.findViewById(R.id.progress_bar);
@@ -164,29 +162,28 @@ public class MyRepositoriesFragment extends Fragment {
 
         MyRepositoriesViewModel myRepoModel = new ViewModelProvider(this).get(MyRepositoriesViewModel.class);
 
-        myRepoModel.getCurrentUserRepositories(instanceUrl, instanceToken, userLogin, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
-            @Override
-            public void onChanged(@Nullable List<UserRepositories> myReposListMain) {
-                adapter = new MyReposListAdapter(getContext(), myReposListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setAdapter(adapter);
-                    noDataMyRepo.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mRecyclerView.setAdapter(adapter);
-                    noDataMyRepo.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
-            }
-        });
+        myRepoModel.getCurrentUserRepositories(instanceUrl, instanceToken, userLogin, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
+	        myReposListMain -> {
+
+	            adapter = new MyReposListAdapter(getContext(), myReposListMain);
+	            if(adapter.getItemCount() > 0) {
+	                mRecyclerView.setAdapter(adapter);
+	                noDataMyRepo.setVisibility(View.GONE);
+	            }
+	            else {
+	                adapter.notifyDataSetChanged();
+	                mRecyclerView.setAdapter(adapter);
+	                noDataMyRepo.setVisibility(View.VISIBLE);
+	            }
+	            mProgressBar.setVisibility(View.GONE);
+	        });
 
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -790,13 +791,28 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.progressBar.setVisibility(View.GONE);
 
 				}
-
 				else if(response.code() == 401) {
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 						getResources().getString(R.string.alertDialogTokenRevokedMessage),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+
+				}
+				else if(response.code() == 404) {
+
+					if(tinyDb.getString("issueType").equals("Issue")) {
+
+						Toasty.warning(ctx, getResources().getString(R.string.noDataIssueTab));
+					}
+					else if(tinyDb.getString("issueType").equals("Pull")) {
+
+						Toasty.warning(ctx, getResources().getString(R.string.noDataPullRequests));
+					}
+
+					Intent mainIntent = new Intent(ctx, MainActivity.class);
+					ctx.startActivity(mainIntent);
+					finish();
 
 				}
 

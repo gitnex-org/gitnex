@@ -12,9 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
 import org.mian.gitnex.activities.SettingsDraftsActivity;
 import org.mian.gitnex.activities.SettingsFileViewerActivity;
+import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsReportsActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
 import org.mian.gitnex.activities.SettingsTranslationActivity;
@@ -32,6 +34,9 @@ public class SettingsFragment extends Fragment {
 
 		View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navSettings));
+
+		LinearLayout generalFrame = v.findViewById(R.id.generalFrame);
 		LinearLayout appearanceFrame = v.findViewById(R.id.appearanceFrame);
 		LinearLayout fileViewerFrame = v.findViewById(R.id.fileViewerFrame);
 		LinearLayout draftsFrame = v.findViewById(R.id.draftsFrame);
@@ -40,6 +45,8 @@ public class SettingsFragment extends Fragment {
 		LinearLayout reportsFrame = v.findViewById(R.id.reportsFrame);
 		LinearLayout rateAppFrame = v.findViewById(R.id.rateAppFrame);
 		LinearLayout aboutAppFrame = v.findViewById(R.id.aboutAppFrame);
+
+		generalFrame.setOnClickListener(generalFrameCall -> startActivity(new Intent(getContext(), SettingsGeneralActivity.class)));
 
 		appearanceFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsAppearanceActivity.class)));
 
