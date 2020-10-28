@@ -43,6 +43,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private TinyDB tinyDb;
 	private String currentInstance;
 	private String instanceToken;
+	private boolean noAccountFound = false;
 
 	private Intent mainIntent;
 	private Intent issueIntent;
@@ -94,13 +95,20 @@ public class DeepLinksActivity extends BaseActivity {
 				currentInstance = userAccounts.get(i).getInstanceUrl();
 				instanceToken = userAccounts.get(i).getToken();
 
-				if(!hostUri.contains(Objects.requireNonNull(data.getHost()))) {
+				if(hostUri.toLowerCase().contains(Objects.requireNonNull(data.getHost().toLowerCase()))) {
 
-					// check for valid instance
-					checkInstance(data);
-					return;
+					noAccountFound = false;
+					break;
 				}
+
+				noAccountFound = true;
 			}
+		}
+
+		if(noAccountFound) {
+
+			checkInstance(data);
+			return;
 		}
 
 		// redirect to proper fragment/activity, If no action is there, show options where user to want to go like repos, profile, notifications etc
@@ -112,7 +120,6 @@ public class DeepLinksActivity extends BaseActivity {
 			if(data.getPathSegments().contains("issues")) { // issue
 
 				if(!Objects.requireNonNull(data.getLastPathSegment()).contains("issues") & StringUtils.isNumeric(data.getLastPathSegment())) {
-
 
 					issueIntent.putExtra("issueNumber", data.getLastPathSegment());
 
@@ -324,6 +331,11 @@ public class DeepLinksActivity extends BaseActivity {
 						startActivity(mainIntent);
 						finish();
 					});
+				}
+				else {
+
+					Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
+					finish();
 				}
 			}
 
