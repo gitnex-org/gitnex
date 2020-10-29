@@ -1,12 +1,14 @@
 package org.mian.gitnex.fragments;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.ActionResult;
@@ -54,6 +57,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		super.onAttach(context);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,6 +108,25 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		}
 
 		commentContent.requestFocus();
+		commentContent.setOnTouchListener((v, event) -> {
+
+			BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
+
+			switch(event.getAction()) {
+
+				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_SCROLL:
+					bottomSheetBehavior.setDraggable(false);
+					break;
+
+				default:
+					bottomSheetBehavior.setDraggable(true);
+			}
+
+			return false;
+
+		});
+
 		commentContent.addTextChangedListener(new TextWatcher() {
 
 			@Override
