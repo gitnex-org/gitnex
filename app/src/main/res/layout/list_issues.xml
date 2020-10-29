@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayoutFrameIssuesList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:drawablePadding="5dp"
-                        android:drawableStart="@drawable/ic_comment"
+                        app:drawableStartCompat="@drawable/ic_comment"
                         android:layout_gravity="center_horizontal"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="14sp" />

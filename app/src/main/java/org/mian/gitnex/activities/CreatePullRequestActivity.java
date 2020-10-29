@@ -243,6 +243,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			dialogLabels.dismiss()
 		);
 
+		dialogLabels.show();
 		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 

@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
@@ -95,6 +96,10 @@ public class ExploreRepositoriesFragment extends Fragment {
 		viewBinding.recyclerViewReposSearch.setHasFixedSize(true);
 		viewBinding.recyclerViewReposSearch.setLayoutManager(linearLayoutManager);
 		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
+
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerViewReposSearch.getContext(),
+			DividerItemDecoration.VERTICAL);
+		viewBinding.recyclerViewReposSearch.addItemDecoration(dividerItemDecoration);
 
 		viewBinding.searchKeyword.setOnEditorActionListener((v1, actionId, event) -> {
 

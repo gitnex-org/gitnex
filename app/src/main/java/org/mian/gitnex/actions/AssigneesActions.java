@@ -89,8 +89,6 @@ public class AssigneesActions {
 
 					if(assigneesList_.size() > 0) {
 
-						dialogAssignees.show();
-
 						assigneesList.add(new Collaborators(tinyDB.getString("userFullname"), tinyDB.getString("loginUid"), tinyDB.getString("userAvatar")));
 						assigneesList.addAll(assigneesList_);
 					}

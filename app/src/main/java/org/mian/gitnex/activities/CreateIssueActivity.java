@@ -185,6 +185,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 			dialogAssignees.dismiss()
 		);
 
+		dialogAssignees.show();
 		AssigneesActions.getRepositoryAssignees(ctx, instanceUrl, instanceToken, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
 	}
 
@@ -206,6 +207,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 			dialogLabels.dismiss()
 		);
 
+		dialogLabels.show();
 		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 

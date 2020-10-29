@@ -84,8 +84,6 @@ public class LabelsActions {
 
 					if(labelsList_.size() > 0) {
 
-						dialogLabels.show();
-
 						labelsList.addAll(labelsList_);
 					}
 					else {
