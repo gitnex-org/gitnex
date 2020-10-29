@@ -82,22 +82,15 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		// require gitea 1.12 or higher
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			
+
 			viewBinding.transferOwnerFrame.setVisibility(View.VISIBLE);
 		}
 
-		viewBinding.editProperties.setOnClickListener(editProperties -> {
-			showRepositoryProperties();
-		});
+		viewBinding.editProperties.setOnClickListener(editProperties -> showRepositoryProperties());
 
-		viewBinding.deleteRepository.setOnClickListener(deleteRepository -> {
-			showDeleteRepository();
-		});
+		viewBinding.deleteRepository.setOnClickListener(deleteRepository -> showDeleteRepository());
 
-		viewBinding.transferOwnerFrame.setOnClickListener(transferRepositoryOwnership -> {
-			showTransferRepository();
-		});
-
+		viewBinding.transferOwnerFrame.setOnClickListener(transferRepositoryOwnership -> showTransferRepository());
 	}
 
 	private void showTransferRepository() {
@@ -114,9 +107,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		View view = transferRepoBinding.getRoot();
 		dialogTransferRepository.setContentView(view);
 
-		transferRepoBinding.cancel.setOnClickListener(editProperties -> {
-			dialogTransferRepository.dismiss();
-		});
+		transferRepoBinding.cancel.setOnClickListener(editProperties -> dialogTransferRepository.dismiss());
 
 		transferRepoBinding.transfer.setOnClickListener(deleteRepo -> {
 
@@ -197,6 +188,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		dialogDeleteRepository = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 
 		if (dialogDeleteRepository.getWindow() != null) {
+
 			dialogDeleteRepository.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		}
 
@@ -205,9 +197,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		View view = deleteRepoBinding.getRoot();
 		dialogDeleteRepository.setContentView(view);
 
-		deleteRepoBinding.cancel.setOnClickListener(editProperties -> {
-			dialogDeleteRepository.dismiss();
-		});
+		deleteRepoBinding.cancel.setOnClickListener(editProperties -> dialogDeleteRepository.dismiss());
 
 		deleteRepoBinding.delete.setOnClickListener(deleteRepo -> {
 
@@ -273,6 +263,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		dialogProp = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 
 		if (dialogProp.getWindow() != null) {
+
 			dialogProp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		}
 
@@ -281,9 +272,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		View view = propBinding.getRoot();
 		dialogProp.setContentView(view);
 
-		propBinding.cancel.setOnClickListener(editProperties -> {
-			dialogProp.dismiss();
-		});
+		propBinding.cancel.setOnClickListener(editProperties -> dialogProp.dismiss());
 
 		Call<UserRepositories> call = RetrofitClient
 			.getInstance(instanceUrl, ctx)
@@ -314,19 +303,24 @@ public class RepositorySettingsActivity extends BaseActivity {
 					propBinding.repoEnableIssues.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
 						if (isChecked) {
+
 							propBinding.repoEnableTimer.setVisibility(View.VISIBLE);
 						}
 						else {
+
 							propBinding.repoEnableTimer.setVisibility(View.GONE);
 						}
 					});
 
 					if(repoInfo.getInternal_tracker() != null) {
+
 						propBinding.repoEnableTimer.setChecked(repoInfo.getInternal_tracker().isEnable_time_tracker());
 					}
 					else {
+
 						propBinding.repoEnableTimer.setVisibility(View.GONE);
 					}
+
 					propBinding.repoEnableWiki.setChecked(repoInfo.isHas_wiki());
 					propBinding.repoEnablePr.setChecked(repoInfo.isHas_pull_requests());
 					propBinding.repoEnableMerge.setChecked(repoInfo.isAllow_merge_commits());
@@ -359,7 +353,6 @@ public class RepositorySettingsActivity extends BaseActivity {
 			propBinding.repoEnableSquash.isChecked(), propBinding.repoEnableForceMerge.isChecked()));
 
 		dialogProp.show();
-
 	}
 
 	private void saveRepositoryProperties(String repoName, String repoWebsite, String repoDescription,
@@ -370,11 +363,14 @@ public class RepositorySettingsActivity extends BaseActivity {
 		UserRepositories.internalTimeTrackerObject repoPropsTimeTracker = new UserRepositories.internalTimeTrackerObject(repoEnableTimer);
 
 		UserRepositories repoProps;
+
 		if(!repoEnableIssues) {
+
 			repoProps = new UserRepositories(repoName, repoWebsite, repoDescription, repoPrivate, repoAsTemplate, repoEnableIssues, repoEnableWiki, repoEnablePr, repoEnableMerge,
 				repoEnableRebase, repoEnableSquash, repoEnableForceMerge);
 		}
 		else {
+
 			repoProps = new UserRepositories(repoName, repoWebsite, repoDescription, repoPrivate, repoAsTemplate, repoEnableIssues, repoEnableWiki, repoEnablePr, repoPropsTimeTracker, repoEnableMerge,
 				repoEnableRebase, repoEnableSquash, repoEnableForceMerge);
 		}
@@ -406,7 +402,6 @@ public class RepositorySettingsActivity extends BaseActivity {
 						RepositoriesApi.updateRepositoryOwnerAndName(repositoryOwner, repoName, (int) tinyDb.getLong("repositoryId", 0));
 						Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 						RepositorySettingsActivity.this.startActivity(intent);
-
 					}
 				}
 				else {
@@ -415,7 +410,6 @@ public class RepositorySettingsActivity extends BaseActivity {
 					propBinding.processingRequest.setVisibility(View.GONE);
 					Toasty.error(ctx, getString(R.string.genericError));
 				}
-
 			}
 
 			@Override

@@ -229,7 +229,6 @@ public class DeepLinksActivity extends BaseActivity {
 					viewBinding.repository.setOnClickListener(repository -> {
 
 						tinyDb.putInt("defaultScreenId", 1);
-						tinyDb.putString("defaultScreenStr", getResources().getString(R.string.navRepos));
 						mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -238,7 +237,6 @@ public class DeepLinksActivity extends BaseActivity {
 					viewBinding.organization.setOnClickListener(organization -> {
 
 						tinyDb.putInt("defaultScreenId", 2);
-						tinyDb.putString("defaultScreenStr", getResources().getString(R.string.navOrgs));
 						mainIntent.putExtra("launchFragmentByLinkHandler", "org");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -247,7 +245,6 @@ public class DeepLinksActivity extends BaseActivity {
 					viewBinding.notification.setOnClickListener(notification -> {
 
 						tinyDb.putInt("defaultScreenId", 3);
-						tinyDb.putString("defaultScreenStr", getResources().getString(R.string.pageTitleNotifications));
 						mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -256,7 +253,6 @@ public class DeepLinksActivity extends BaseActivity {
 					viewBinding.explore.setOnClickListener(explore -> {
 
 						tinyDb.putInt("defaultScreenId", 4);
-						tinyDb.putString("defaultScreenStr", getResources().getString(R.string.navExplore));
 						mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -265,7 +261,6 @@ public class DeepLinksActivity extends BaseActivity {
 					viewBinding.launchApp2.setOnClickListener(launchApp2 -> {
 
 						tinyDb.putInt("defaultScreenId", 0);
-						tinyDb.putString("defaultScreenStr", getResources().getString(R.string.generalDeepLinkSelectedText));
 						ctx.startActivity(mainIntent);
 						finish();
 					});

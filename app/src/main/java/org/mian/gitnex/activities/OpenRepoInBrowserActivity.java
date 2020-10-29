@@ -46,9 +46,9 @@ public class OpenRepoInBrowserActivity extends AppCompatActivity {
 
 	    }
 	    catch(URISyntaxException e) {
+
 		    Toasty.error(appCtx, getString(R.string.genericError));
 	    }
-
     }
 
 }

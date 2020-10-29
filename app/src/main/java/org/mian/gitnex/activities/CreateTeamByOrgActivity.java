@@ -41,7 +41,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
     private TextView teamAccessControls;
     private TextView teamAccessControlsArray;
     private Button createTeamButton;
-    private String[] permissionList = {"Read", "Write", "Admin"};
+    private final String[] permissionList = {"Read", "Write", "Admin"};
     public int permissionSelectedChoice = -1;
 
     @Override
@@ -49,7 +49,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
         return R.layout.activity_create_team_by_org;
     }
 
-    private String[] accessControlsList = new String[] {
+    private final String[] accessControlsList = new String[] {
             "Code",
             "Issues",
             "Pull Request",
@@ -61,7 +61,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
     private List<String> pushAccessList;
 
-    private boolean[] selectedAccessControlsTrueFalse = new boolean[]{
+    private final boolean[] selectedAccessControlsTrueFalse = new boolean[]{
             false,
             false,
             false,
@@ -102,12 +102,8 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
 
             pBuilder.setTitle(R.string.newTeamPermission);
-            if(permissionSelectedChoice != -1) {
-                pBuilder.setCancelable(true);
-            }
-            else {
-                pBuilder.setCancelable(false);
-            }
+	        pBuilder.setCancelable(permissionSelectedChoice != -1);
+
             pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
 
                 permissionSelectedChoice = i;
@@ -136,14 +132,11 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 	            }
 
                 dialogInterface.dismiss();
-
             });
 
             AlertDialog pDialog = pBuilder.create();
             pDialog.show();
-
         });
-
 
         teamAccessControls.setOnClickListener(v -> {
 
@@ -189,6 +182,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
                         }
 
                         if(value){
+
                             teamAccessControls.setText(getString(R.string.newTeamPermissionValues, teamAccessControls.getText(), pushAccessList.get(selectedVal)));
                             teamAccessControlsArray.setText(getString(R.string.newTeamPermissionValuesFinal, teamAccessControlsArray.getText(), repoCode));
                         }
@@ -198,15 +192,16 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
                     String data = String.valueOf(teamAccessControls.getText());
                     if(!data.equals("")) {
+
                         teamAccessControls.setText(data.substring(0, data.length() - 2));
                     }
 
                     String dataArray = String.valueOf(teamAccessControlsArray.getText());
+
                     if(!dataArray.equals("")) {
+
                         teamAccessControlsArray.setText(dataArray.substring(0, dataArray.length() - 2));
                     }
-                    //Log.i("orgName", String.valueOf(teamAccessControlsArray.getText()));
-
                 });
 
             AlertDialog aDialog = aDialogBuilder.create();
@@ -222,14 +217,12 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             shape.setCornerRadius( 8 );
             shape.setColor(getResources().getColor(R.color.hintColor));
             createTeamButton.setBackground(shape);
-
-        } else {
+        }
+        else {
 
             createTeamButton.setEnabled(true);
             createTeamButton.setOnClickListener(this);
-
         }
-
     }
 
     private void processCreateTeam() {
@@ -251,52 +244,49 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if (newTeamName.equals("")) {
 
             Toasty.error(ctx, getString(R.string.teamNameEmpty));
             return;
-
         }
 
         if(!appUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
 
             Toasty.warning(ctx, getString(R.string.teamNameError));
             return;
-
         }
 
         if(!newTeamDesc.equals("")) {
 
             if(!appUtil.checkStrings(newTeamDesc)) {
+
                 Toasty.warning(ctx, getString(R.string.teamDescError));
                 return;
             }
 
             if(newTeamDesc.length() > 100) {
+
                 Toasty.warning(ctx, getString(R.string.teamDescLimit));
                 return;
             }
-
         }
 
         if (newTeamPermission.equals("")) {
 
             Toasty.error(ctx, getString(R.string.teamPermissionEmpty));
             return;
-
         }
 
         List<String> newTeamAccessControls_ = new ArrayList<>(Arrays.asList(newTeamAccessControls.split(",")));
 
         for (int i = 0; i < newTeamAccessControls_.size(); i++) {
+
             newTeamAccessControls_.set(i, newTeamAccessControls_.get(i).trim());
         }
 
         createNewTeamCall(instanceUrl, instanceToken, orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_, loginUid);
-
     }
 
     private void createNewTeamCall(final String instanceUrl, final String instanceToken, String orgName, String newTeamName, String newTeamDesc, String newTeamPermission, List<String> newTeamAccessControls, String loginUid) {
@@ -316,6 +306,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             public void onResponse(@NonNull Call<Teams> call, @NonNull retrofit2.Response<Teams> response2) {
 
                 if(response2.isSuccessful()) {
+
                     if(response2.code() == 201) {
 
                         TinyDB tinyDb = new TinyDB(appCtx);
@@ -324,7 +315,6 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
                         Toasty.success(ctx, getString(R.string.teamCreated));
                         finish();
                     }
-
                 }
                 else if(response2.code() == 404) {
 
@@ -341,7 +331,6 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
                     Toasty.error(ctx, getString(R.string.teamCreatedError));
                 }
-
             }
 
             @Override
@@ -356,6 +345,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
     public void onClick(View v) {
 
         if(v == createTeamButton) {
+
             processCreateTeam();
         }
     }

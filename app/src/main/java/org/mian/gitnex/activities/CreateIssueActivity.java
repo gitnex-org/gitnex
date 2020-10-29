@@ -127,13 +127,9 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         disableProcessButton();
 
-	    viewBinding.newIssueLabels.setOnClickListener(newIssueLabels ->
-		    showLabels()
-	    );
+	    viewBinding.newIssueLabels.setOnClickListener(newIssueLabels -> showLabels());
 
-	    viewBinding.newIssueAssigneesList.setOnClickListener(newIssueAssigneesList ->
-		    showAssignees()
-	    );
+	    viewBinding.newIssueAssigneesList.setOnClickListener(newIssueAssigneesList -> showAssignees());
 
         if(!connToInternet) {
 
@@ -181,9 +177,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		View view = assigneesBinding.getRoot();
 		dialogAssignees.setContentView(view);
 
-		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ ->
-			dialogAssignees.dismiss()
-		);
+		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ -> dialogAssignees.dismiss());
 
 		dialogAssignees.show();
 		AssigneesActions.getRepositoryAssignees(ctx, instanceUrl, instanceToken, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
@@ -203,9 +197,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		View view = labelsBinding.getRoot();
 		dialogLabels.setContentView(view);
 
-		labelsBinding.cancel.setOnClickListener(labelsBinding_ ->
-			dialogLabels.dismiss()
-		);
+		labelsBinding.cancel.setOnClickListener(labelsBinding_ -> dialogLabels.dismiss());
 
 		dialogLabels.show();
 		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
@@ -223,7 +215,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if (newIssueTitleForm.equals("")) {
@@ -243,7 +234,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         disableProcessButton();
         createNewIssueFunc(instanceUrl, instanceToken, repoOwner, repoName, loginUid, newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
-
     }
 
     private void createNewIssueFunc(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String loginUid, String newIssueDescriptionForm, String newIssueDueDateForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
@@ -316,13 +306,16 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
             public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull retrofit2.Response<List<Milestones>> response) {
 
                 if(response.isSuccessful()) {
+
                     if(response.code() == 200) {
 
                         List<Milestones> milestonesList_ = response.body();
 
                         milestonesList.add(new Milestones(0,getString(R.string.issueCreatedNoMilestone)));
                         assert milestonesList_ != null;
+
                         if(milestonesList_.size() > 0) {
+
                             for (int i = 0; i < milestonesList_.size(); i++) {
 
                                 //Don't translate "open" is a enum
@@ -333,7 +326,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
                                     );
                                     milestonesList.add(data);
                                 }
-
                             }
                         }
 
@@ -377,9 +369,9 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
             datePickerDialog.show();
         }
         else if(v == viewBinding.createNewIssueButton) {
+
             processNewIssue();
         }
-
     }
 
     private void disableProcessButton() {

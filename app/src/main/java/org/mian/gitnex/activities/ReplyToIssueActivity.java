@@ -80,6 +80,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 		imm.showSoftInput(addComment, InputMethodManager.SHOW_IMPLICIT);
 
 		if(!tinyDb.getString("issueTitle").isEmpty()) {
+
 			toolbar_title.setText(tinyDb.getString("issueTitle"));
 		}
 
@@ -93,9 +94,11 @@ public class ReplyToIssueActivity extends BaseActivity {
 		else {
 
 			if(getIntent().getStringExtra("commentBody") != null) {
+
 				draftIdOnCreate = returnDraftId(getIntent().getStringExtra("commentBody"));
 			}
 			else {
+
 				draftIdOnCreate = returnDraftId("");
 			}
 		}
@@ -107,6 +110,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 			addComment.setText(getIntent().getStringExtra("commentBody"));
 
 			if(getIntent().getBooleanExtra("cursorToEnd", false)) {
+
 				addComment.setSelection(addComment.length());
 			}
 		}
@@ -126,7 +130,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 			addComment.addTextChangedListener(new TextWatcher() {
 
 				public void afterTextChanged(Editable s) {
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -148,7 +151,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 			});
 
 			return;
-
 		}
 
 		addComment.addTextChangedListener(new TextWatcher() {
@@ -217,7 +219,7 @@ public class ReplyToIssueActivity extends BaseActivity {
 		onClickListener = view -> finish();
 	}
 
-	private View.OnClickListener replyToIssue = v -> processNewCommentReply();
+	private final View.OnClickListener replyToIssue = v -> processNewCommentReply();
 
 	private void processNewCommentReply() {
 
@@ -239,7 +241,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 			disableProcessButton();
 			replyComment(newReplyDT);
 		}
-
 	}
 
 	private void replyComment(String newReplyDT) {
@@ -282,7 +283,6 @@ public class ReplyToIssueActivity extends BaseActivity {
 					}
 
 					finish();
-
 				}
 				else if(response.code() == 401) {
 
@@ -291,15 +291,12 @@ public class ReplyToIssueActivity extends BaseActivity {
 						getResources().getString(R.string.alertDialogTokenRevokedMessage),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
 						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
 				}
 				else {
 
 					enableProcessButton();
 					Toasty.error(ctx, getString(R.string.commentError));
-
 				}
-
 			}
 
 			@Override
@@ -319,26 +316,24 @@ public class ReplyToIssueActivity extends BaseActivity {
 		inflater.inflate(R.menu.reply_to_issue, menu);
 
 		return super.onCreateOptionsMenu(menu);
-
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		switch(item.getItemId()) {
+		int id = item.getItemId();
 
-			case R.id.replyToIssueMenu:
-				Intent fragmentIntent = new Intent(ReplyToIssueActivity.this, MainActivity.class);
-				fragmentIntent.putExtra("launchFragment", "drafts");
-				ReplyToIssueActivity.this.startActivity(fragmentIntent);
-				break;
+		if(id == R.id.replyToIssueMenu) {
 
-			default:
-				return super.onOptionsItemSelected(item);
-
+			Intent fragmentIntent = new Intent(ReplyToIssueActivity.this, MainActivity.class);
+			fragmentIntent.putExtra("launchFragment", "drafts");
+			ReplyToIssueActivity.this.startActivity(fragmentIntent);
+			return true;
 		}
+		else {
 
-		return true;
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void disableProcessButton() {

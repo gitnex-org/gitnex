@@ -91,11 +91,11 @@
             android:text="@string/settingsPdfModeHeaderText"
             android:textColor="?attr/primaryTextColor"/>
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchPdfMode"
             android:layout_toEndOf="@+id/pdfModeHeader"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:switchMinWidth="56dp"
             android:paddingStart="0dp"
             android:paddingEnd="25dp"

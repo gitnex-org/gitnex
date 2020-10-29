@@ -88,16 +88,17 @@ public class FileDiffActivity extends BaseActivity {
 		}
 
 		getPullDiffContent(instanceUrl, repoOwner, repoName, pullIndex, instanceToken, apiCall);
-
 	}
 
 	private void getPullDiffContent(String instanceUrl, String owner, String repo, String pullIndex, String token, boolean apiCall) {
 
 		Call<ResponseBody> call;
 		if(apiCall) {
+
 			call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getPullDiffContent(token, owner, repo, pullIndex);
 		}
 		else {
+
 			call = RetrofitClient.getInstance(instanceUrl, ctx).getWebInterface().getPullDiffContent(owner, repo, pullIndex);
 		}
 
@@ -109,16 +110,18 @@ public class FileDiffActivity extends BaseActivity {
 				if(response.code() == 200) {
 
 					try {
+
 						assert response.body() != null;
 
-						AppUtil appUtil = new AppUtil();
 						List<FileDiffView> fileContentsArray = ParseDiff.getFileDiffViewArray(response.body().string());
 
 						int filesCount = fileContentsArray.size();
 						if(filesCount > 1) {
+
 							toolbarTitle.setText(getResources().getString(R.string.fileDiffViewHeader, Integer.toString(filesCount)));
 						}
 						else {
+
 							toolbarTitle.setText(getResources().getString(R.string.fileDiffViewHeaderSingle, Integer.toString(filesCount)));
 						}
 
@@ -126,34 +129,28 @@ public class FileDiffActivity extends BaseActivity {
 						mListView.setAdapter(adapter);
 
 						mProgressBar.setVisibility(View.GONE);
-
 					}
 					catch(IOException e) {
+
 						e.printStackTrace();
 					}
-
 				}
 				else if(response.code() == 401) {
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
 				}
 				else if(response.code() == 403) {
 
 					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-
 				}
 				else if(response.code() == 404) {
 
 					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-
 				}
 				else {
 
 					Toasty.error(ctx, getString(R.string.labelGeneralError));
-
 				}
-
 			}
 
 			@Override
@@ -173,6 +170,5 @@ public class FileDiffActivity extends BaseActivity {
 			finish();
 		};
 	}
-
 
 }

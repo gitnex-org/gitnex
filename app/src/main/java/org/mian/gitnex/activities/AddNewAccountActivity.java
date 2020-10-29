@@ -76,7 +76,6 @@ public class AddNewAccountActivity extends BaseActivity {
 			if(!connToInternet) {
 
 				Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-
 			}
 			else {
 
@@ -144,7 +143,9 @@ public class AddNewAccountActivity extends BaseActivity {
 					GiteaVersion version = responseVersion.body();
 
 					assert version != null;
+
 					if(!Version.valid(version.getVersion())) {
+
 						Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
 						return;
 					}
@@ -170,7 +171,6 @@ public class AddNewAccountActivity extends BaseActivity {
 						});
 
 						alertDialogBuilder.create().show();
-
 					}
 					else if(giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
 
@@ -180,7 +180,6 @@ public class AddNewAccountActivity extends BaseActivity {
 
 						Toasty.warning(ctx, getResources().getString(R.string.versionUnsupportedNew));
 						login(instanceUrl, loginToken);
-
 					}
 
 				}
@@ -193,7 +192,6 @@ public class AddNewAccountActivity extends BaseActivity {
 			private void login(String instanceUrl, String loginToken) {
 
 				setupNewAccountWithToken(instanceUrl, loginToken);
-
 			}
 
 			@Override

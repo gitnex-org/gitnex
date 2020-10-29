@@ -81,9 +81,11 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 		closeActivity.setOnClickListener(onClickListener);
 
 		if(getIntent().getStringExtra("teamId") != null && !Objects.requireNonNull(getIntent().getStringExtra("teamId")).equals("")) {
+
 			teamId = getIntent().getStringExtra("teamId");
 		}
 		else {
+
 			teamId = "0";
 		}
 
@@ -104,9 +106,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 					adapter = new UserSearchForTeamMemberAdapter(dataList, ctx, Integer.parseInt(teamId));
 					loadUserSearchList(instanceUrl, instanceToken, addNewTeamMember.getText().toString(), loginUid, teamId);
-
 				}
-
 			}
 
 			@Override
@@ -141,16 +141,13 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 						dataList.addAll(response.body().getData());
 						mRecyclerView.setAdapter(adapter);
 						noData.setVisibility(View.GONE);
-						mProgressBar.setVisibility(View.GONE);
-
 					}
 					else {
 
 						noData.setVisibility(View.VISIBLE);
-						mProgressBar.setVisibility(View.GONE);
-
 					}
 
+					mProgressBar.setVisibility(View.GONE);
 				}
 
 			}

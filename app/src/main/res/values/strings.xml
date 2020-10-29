@@ -271,11 +271,11 @@
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Default actions</string>
+    <string name="generalHintText">Home screen, default link handler</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
     <string name="generalDeepLinkSelectedText">N/A</string>
-    <string name="linkSelectorDialogTitle">Select Default Screen</string>
+    <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -726,4 +726,9 @@
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
 
+    <string name="codeBlockGreenOnBlack">Green on Black</string>
+    <string name="codeBlockWhiteOnBlack">White on Black</string>
+    <string name="codeBlockGreyOnBlack">Grey on Black</string>
+    <string name="codeBlockWhiteOnGrey">White on Grey</string>
+    <string name="codeBlockDarkOnWhite">Dark on White</string>
 </resources>

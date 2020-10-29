@@ -73,22 +73,27 @@ public class SettingsSecurityActivity extends BaseActivity {
 		LinearLayout clearCacheFrame = findViewById(R.id.clearCacheSelectionFrame);
 
 		if(!tinyDb.getString("cacheSizeStr").isEmpty()) {
+
 			cacheSizeDataSelected.setText(tinyDb.getString("cacheSizeStr"));
 		}
 
 		if(!tinyDb.getString("cacheSizeImagesStr").isEmpty()) {
+
 			cacheSizeImagesSelected.setText(tinyDb.getString("cacheSizeImagesStr"));
 		}
 
 		if(cacheSizeDataSelectedChoice == 0) {
+
 			cacheSizeDataSelectedChoice = tinyDb.getInt("cacheSizeId");
 		}
 
 		if(cacheSizeImagesSelectedChoice == 0) {
+
 			cacheSizeImagesSelectedChoice = tinyDb.getInt("cacheSizeImagesId");
 		}
 
 		if(new Version(currentVersion).less("1.12.3")) {
+
 			pollingDelayFrame.setVisibility(View.GONE);
 		}
 
@@ -113,14 +118,11 @@ public class SettingsSecurityActivity extends BaseActivity {
 					FileUtils.mkdir(cacheDir.getAbsolutePath());
 					this.recreate();
 					this.overridePendingTransition(0, 0);
-
 				}
 				catch (IOException e) {
 
 					Log.e("SettingsSecurity", e.toString());
-
 				}
-
 			});
 
 			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
@@ -134,12 +136,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			AlertDialog.Builder tsBuilder = new AlertDialog.Builder(SettingsSecurityActivity.this);
 
 			tsBuilder.setTitle(getResources().getString(R.string.cacheSizeImagesDialogHeader));
-			if(cacheSizeImagesSelectedChoice != -1) {
-				tsBuilder.setCancelable(true);
-			}
-			else {
-				tsBuilder.setCancelable(false);
-			}
+			tsBuilder.setCancelable(cacheSizeImagesSelectedChoice != -1);
 
 			tsBuilder.setSingleChoiceItems(cacheSizeImagesList, cacheSizeImagesSelectedChoice, (dialogInterfaceTheme, i) -> {
 
@@ -150,12 +147,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 				dialogInterfaceTheme.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-
 			});
 
 			AlertDialog cfDialog = tsBuilder.create();
 			cfDialog.show();
-
 		});
 
 		// cache size data selection dialog
@@ -164,12 +159,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			AlertDialog.Builder tsBuilder = new AlertDialog.Builder(SettingsSecurityActivity.this);
 
 			tsBuilder.setTitle(getResources().getString(R.string.cacheSizeDataDialogHeader));
-			if(cacheSizeDataSelectedChoice != -1) {
-				tsBuilder.setCancelable(true);
-			}
-			else {
-				tsBuilder.setCancelable(false);
-			}
+			tsBuilder.setCancelable(cacheSizeDataSelectedChoice != -1);
 
 			tsBuilder.setSingleChoiceItems(cacheSizeDataList, cacheSizeDataSelectedChoice, (dialogInterfaceTheme, i) -> {
 
@@ -180,12 +170,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 				dialogInterfaceTheme.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-
 			});
 
 			AlertDialog cfDialog = tsBuilder.create();
 			cfDialog.show();
-
 		});
 
 		// certs deletion
@@ -206,12 +194,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 				Intent loginActivityIntent = new Intent().setClass(appCtx, LoginActivity.class);
 				loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				appCtx.startActivity(loginActivityIntent);
-
 			});
 
 			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
 			builder.create().show();
-
 		});
 
 		// polling delay
@@ -237,15 +223,12 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 				pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), numberPicker.getValue()));
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-
 			});
 
 			builder.setNeutralButton(R.string.cancelButton, null);
 			builder.setView(numberPicker);
 			builder.create().show();
-
 		});
-
 	}
 
 	private void initCloseListener() {

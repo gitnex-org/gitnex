@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -37,29 +37,16 @@ public class SettingsReportsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		Switch crashReportsSwitch = findViewById(R.id.crashReportsSwitch);
+		SwitchMaterial crashReportsSwitch = findViewById(R.id.crashReportsSwitch);
 
-		if(tinyDb.getBoolean("crashReportingEnabled")) {
-			crashReportsSwitch.setChecked(true);
-		}
-		else {
-			crashReportsSwitch.setChecked(false);
-		}
+		crashReportsSwitch.setChecked(tinyDb.getBoolean("crashReportingEnabled"));
 
 		// crash reports switcher
 		crashReportsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			if(isChecked) {
-				tinyDb.putBoolean("crashReportingEnabled", true);
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			}
-			else {
-				tinyDb.putBoolean("crashReportingEnabled", false);
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			}
-
+			tinyDb.putBoolean("crashReportingEnabled", isChecked);
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
-
 	}
 
 	private void initCloseListener() {

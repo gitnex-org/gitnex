@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * Author M M Arif
@@ -37,27 +37,15 @@ public class SettingsDraftsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		Switch commentsDeletionSwitch = findViewById(R.id.commentsDeletionSwitch);
+		SwitchMaterial commentsDeletionSwitch = findViewById(R.id.commentsDeletionSwitch);
 
-		if(tinyDb.getBoolean("draftsCommentsDeletionEnabled")) {
-			commentsDeletionSwitch.setChecked(true);
-		}
-		else {
-			commentsDeletionSwitch.setChecked(false);
-		}
+		commentsDeletionSwitch.setChecked(tinyDb.getBoolean("draftsCommentsDeletionEnabled"));
 
 		// delete comments on submit switcher
 		commentsDeletionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			if(isChecked) {
-				tinyDb.putBoolean("draftsCommentsDeletionEnabled", true);
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			}
-			else {
-				tinyDb.putBoolean("draftsCommentsDeletionEnabled", false);
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			}
-
+			tinyDb.putBoolean("draftsCommentsDeletionEnabled", isChecked);
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
 
 	}

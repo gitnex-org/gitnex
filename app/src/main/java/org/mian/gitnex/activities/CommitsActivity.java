@@ -96,6 +96,7 @@ public class CommitsActivity extends BaseActivity {
 
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12")) {
+
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
@@ -107,7 +108,6 @@ public class CommitsActivity extends BaseActivity {
 			swipeRefresh.setRefreshing(false);
 			loadInitial(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, branchName, resultLimit);
 			adapter.notifyDataChanged();
-
 		}, 200));
 
 		adapter = new CommitsAdapter(ctx, commitsList);
@@ -118,7 +118,6 @@ public class CommitsActivity extends BaseActivity {
 				int page = (commitsList.size() + resultLimit) / resultLimit;
 				loadMore(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, page, branchName, resultLimit);
 			}
-
 		}));
 
 		recyclerView.setHasFixedSize(true);
@@ -127,7 +126,6 @@ public class CommitsActivity extends BaseActivity {
 
 		api = AppApiService.createService(ApiInterface.class, instanceUrl, ctx);
 		loadInitial(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, branchName, resultLimit);
-
 	}
 
 	private void loadInitial(String token, String repoOwner, String repoName, String branchName, int resultLimit) {
@@ -148,7 +146,6 @@ public class CommitsActivity extends BaseActivity {
 						commitsList.addAll(response.body());
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.GONE);
-
 					}
 					else {
 
@@ -164,7 +161,6 @@ public class CommitsActivity extends BaseActivity {
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
 
 				progressBar.setVisibility(View.GONE);
@@ -211,7 +207,6 @@ public class CommitsActivity extends BaseActivity {
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
 
 				progressLoadMore.setVisibility(View.GONE);
@@ -255,7 +250,6 @@ public class CommitsActivity extends BaseActivity {
 		});
 
 		return super.onCreateOptionsMenu(menu);
-
 	}
 
 	private void filter(String text) {
@@ -263,7 +257,9 @@ public class CommitsActivity extends BaseActivity {
 		List<Commits> arr = new ArrayList<>();
 
 		for(Commits d : commitsList) {
+
 			if(d.getCommit().getMessage().toLowerCase().contains(text) || d.getSha().toLowerCase().contains(text)) {
+
 				arr.add(d);
 			}
 		}
@@ -274,6 +270,7 @@ public class CommitsActivity extends BaseActivity {
 	private void initCloseListener() {
 
 		onClickListener = view -> {
+
 			getIntent().removeExtra("branchName");
 			finish();
 		};

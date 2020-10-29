@@ -74,17 +74,17 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
         switch(tinyDb.getInt("customFontId", -1)) {
 
             case 0:
+
                 myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
                 break;
-
             case 2:
+
                 myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
                 break;
-
             default:
+
                 myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
                 break;
-
         }
 
         toolbarTitle.setTypeface(myTypeface);
@@ -92,12 +92,18 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
+
         for (int j = 0; j < tabsCount; j++) {
+
             ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
             int tabChildCount = vgTab.getChildCount();
+
             for (int i = 0; i < tabChildCount; i++) {
+
                 View tabViewChild = vgTab.getChildAt(i);
+
                 if (tabViewChild instanceof TextView) {
+
                     ((TextView) tabViewChild).setTypeface(myTypeface);
                 }
             }
@@ -105,7 +111,6 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
 
 
@@ -122,18 +127,21 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         int id = item.getItemId();
 
-        switch (id) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.repoMenu:
-                BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment();
-                bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        if(id == android.R.id.home) {
 
+	        finish();
+	        return true;
+        }
+        else if(id == R.id.repoMenu) {
+
+	        BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment();
+	        bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
+	        return true;
+        }
+        else {
+
+	        return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -175,25 +183,31 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
             String orgName;
             if(getIntent().getStringExtra("orgName") != null || !Objects.equals(getIntent().getStringExtra("orgName"), "")) {
+
                 orgName = getIntent().getStringExtra("orgName");
             }
             else {
+
                 orgName = tinyDb.getString("orgName");
             }
 
             Fragment fragment = null;
             switch (position) {
+
                 case 0: // info
+
                     return OrganizationInfoFragment.newInstance(orgName);
                 case 1: // repos
+
                     return RepositoriesByOrgFragment.newInstance(orgName);
                 case 2: // teams
+
                     return TeamsByOrgFragment.newInstance(orgName);
                 case 3: // members
+
                     return MembersByOrgFragment.newInstance(orgName);
             }
             return fragment;
-
         }
 
         @Override

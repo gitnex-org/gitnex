@@ -140,14 +140,13 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
             mRecyclerView.setAdapter(adapter);
             noData.setVisibility(View.GONE);
-            mProgressBar.setVisibility(View.GONE);
         }
         else {
 
             noData.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.GONE);
         }
 
+	    mProgressBar.setVisibility(View.GONE);
     }
 
     private void initCloseListener() {

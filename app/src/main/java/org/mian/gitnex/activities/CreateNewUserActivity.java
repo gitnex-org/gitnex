@@ -73,7 +73,6 @@ public class CreateNewUserActivity extends BaseActivity {
 
             createUserButton.setOnClickListener(createNewUserListener);
         }
-
     }
 
     private void processCreateNewUser() {
@@ -94,40 +93,34 @@ public class CreateNewUserActivity extends BaseActivity {
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if(newFullName.equals("") || newUserName.equals("") | newUserEmail.equals("") || newUserPassword.equals("")) {
 
             Toasty.error(ctx, getString(R.string.emptyFields));
             return;
-
         }
 
         if(!appUtil.checkStrings(newFullName)) {
 
             Toasty.error(ctx, getString(R.string.userInvalidFullName));
             return;
-
         }
 
         if(!appUtil.checkStringsWithAlphaNumeric(newUserName)) {
 
             Toasty.error(ctx, getString(R.string.userInvalidUserName));
             return;
-
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
             Toasty.error(ctx, getString(R.string.userInvalidEmail));
             return;
-
         }
 
         disableProcessButton();
         createNewUser(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), newFullName, newUserName, newUserEmail, newUserPassword);
-
     }
 
     private void createNewUser(final String instanceUrl, final String instanceToken, String newFullName, String newUserName, String newUserEmail, String newUserPassword) {
@@ -151,7 +144,6 @@ public class CreateNewUserActivity extends BaseActivity {
                     Toasty.success(ctx, getString(R.string.userCreatedText));
                     enableProcessButton();
                     finish();
-
                 }
                 else if(response.code() == 401) {
 
@@ -160,33 +152,27 @@ public class CreateNewUserActivity extends BaseActivity {
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else if(response.code() == 403) {
 
                     enableProcessButton();
                     Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-
                 }
                 else if(response.code() == 404) {
 
                     enableProcessButton();
                     Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-
                 }
                 else if(response.code() == 422) {
 
                     enableProcessButton();
                     Toasty.warning(ctx, ctx.getString(R.string.userExistsError));
-
                 }
                 else {
 
                     enableProcessButton();
                     Toasty.error(ctx, getString(R.string.genericError));
-
                 }
-
             }
 
             @Override
@@ -199,7 +185,7 @@ public class CreateNewUserActivity extends BaseActivity {
 
     }
 
-    private View.OnClickListener createNewUserListener = v -> processCreateNewUser();
+    private final View.OnClickListener createNewUserListener = v -> processCreateNewUser();
 
     private void initCloseListener() {
 

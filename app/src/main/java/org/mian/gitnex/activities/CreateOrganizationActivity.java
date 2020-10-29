@@ -75,19 +75,11 @@ public class CreateOrganizationActivity extends BaseActivity {
     }
 
     private void initCloseListener() {
-        onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        };
+
+        onClickListener = view -> finish();
     }
 
-    private View.OnClickListener createOrgListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processNewOrganization();
-        }
-    };
+    private final View.OnClickListener createOrgListener = v -> processNewOrganization();
 
     private void processNewOrganization() {
 
@@ -105,33 +97,29 @@ public class CreateOrganizationActivity extends BaseActivity {
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if(!newOrgDesc.equals("")) {
+
             if (appUtil.charactersLength(newOrgDesc) > 255) {
 
                 Toasty.warning(ctx, getString(R.string.orgDescError));
                 return;
-
             }
         }
 
         if(newOrgName.equals("")) {
 
             Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
-
         }
         else if(!appUtil.checkStrings(newOrgName)) {
 
             Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
-
         }
         else {
 
             disableProcessButton();
             createNewOrganization(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), newOrgName, newOrgDesc);
-
         }
 
     }
@@ -157,7 +145,6 @@ public class CreateOrganizationActivity extends BaseActivity {
                     enableProcessButton();
                     Toasty.success(ctx, getString(R.string.orgCreated));
                     finish();
-
                 }
                 else if(response.code() == 401) {
 
@@ -166,37 +153,35 @@ public class CreateOrganizationActivity extends BaseActivity {
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else if(response.code() == 409) {
 
                     enableProcessButton();
                     Toasty.warning(ctx, getString(R.string.orgExistsError));
-
                 }
                 else if(response.code() == 422) {
 
                     enableProcessButton();
                     Toasty.warning(ctx, getString(R.string.orgExistsError));
-
                 }
                 else {
 
                     if(response.code() == 404) {
+
                         enableProcessButton();
                         Toasty.warning(ctx, getString(R.string.apiNotFound));
                     }
                     else {
+
                         enableProcessButton();
                         Toasty.error(ctx, getString(R.string.orgCreatedError));
                     }
-
                 }
-
             }
 
             @Override
             public void onFailure(@NonNull Call<UserOrganizations> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }

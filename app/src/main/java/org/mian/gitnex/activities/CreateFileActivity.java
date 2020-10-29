@@ -158,7 +158,7 @@ public class CreateFileActivity extends BaseActivity {
 
     }
 
-    private View.OnClickListener createFileListener = v -> processNewFile();
+    private final View.OnClickListener createFileListener = v -> processNewFile();
 
     private void processNewFile() {
 
@@ -169,8 +169,6 @@ public class CreateFileActivity extends BaseActivity {
         String newFileContent_ = newFileContent.getText().toString();
         String newFileBranchName_ = newFileBranchName.getText().toString();
         String newFileCommitMessage_ = newFileCommitMessage.getText().toString();
-
-        //Branches currentBranch = (Branches) newFileBranchesSpinner.getSelectedItem();
 
         if(!connToInternet) {
 
@@ -187,10 +185,12 @@ public class CreateFileActivity extends BaseActivity {
         if(selectedBranch.equals("No branch")) {
 
             if(newFileBranchName_.equals("")) {
+
                 Toasty.error(ctx, getString(R.string.newFileRequiredFieldNewBranchName));
                 return;
             }
             else {
+
                 if(!appUtil.checkStringsWithDash(newFileBranchName_)) {
 
                     Toasty.error(ctx, getString(R.string.newFileInvalidBranchName));
@@ -255,7 +255,6 @@ public class CreateFileActivity extends BaseActivity {
                     enableProcessButton();
                     Toasty.success(ctx, getString(R.string.newFileSuccessMessage));
                     finish();
-
                 }
                 else if(response.code() == 401) {
 
@@ -264,21 +263,20 @@ public class CreateFileActivity extends BaseActivity {
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else {
 
                     if(response.code() == 404) {
+
                         enableProcessButton();
                         Toasty.warning(ctx, getString(R.string.apiNotFound));
                     }
                     else {
+
                         enableProcessButton();
                         Toasty.error(ctx, getString(R.string.orgCreatedError));
                     }
-
                 }
-
             }
 
             @Override
@@ -295,6 +293,7 @@ public class CreateFileActivity extends BaseActivity {
 
     	String branchName;
 		DeleteFile deleteFileJsonStr;
+
 		if(currentBranch.equals("No branch")) {
 
 			branchName = fileBranchName;
@@ -345,9 +344,7 @@ public class CreateFileActivity extends BaseActivity {
 						enableProcessButton();
 						Toasty.info(ctx, getString(R.string.genericError));
 					}
-
 				}
-
 			}
 
 			@Override
@@ -364,6 +361,7 @@ public class CreateFileActivity extends BaseActivity {
 
 		String branchName;
 		EditFile editFileJsonStr;
+
 		if(currentBranch.equals("No branch")) {
 
 			branchName = fileBranchName;
@@ -415,9 +413,7 @@ public class CreateFileActivity extends BaseActivity {
 						enableProcessButton();
 						Toasty.info(ctx, getString(R.string.genericError));
 					}
-
 				}
-
 			}
 
 			@Override
@@ -443,20 +439,20 @@ public class CreateFileActivity extends BaseActivity {
             public void onResponse(@NonNull Call<List<Branches>> call, @NonNull retrofit2.Response<List<Branches>> response) {
 
                 if(response.isSuccessful()) {
+
                     if(response.code() == 200) {
 
                         List<Branches> branchesList_ = response.body();
 
                         branchesList.add(new Branches("No branch"));
                         assert branchesList_ != null;
+
                         if(branchesList_.size() > 0) {
+
                             for (int i = 0; i < branchesList_.size(); i++) {
 
-                                Branches data = new Branches(
-                                        branchesList_.get(i).getName()
-                                );
+                                Branches data = new Branches(branchesList_.get(i).getName());
                                 branchesList.add(data);
-
                             }
                         }
 
@@ -483,10 +479,8 @@ public class CreateFileActivity extends BaseActivity {
 		                    }
 
 	                    });
-
                     }
                 }
-
             }
 
             @Override

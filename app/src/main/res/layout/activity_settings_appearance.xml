@@ -150,11 +150,11 @@
             android:text="@string/settingsCounterBadges"
             android:textColor="?attr/primaryTextColor"/>
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchCounterBadge"
             android:layout_toEndOf="@+id/tvCounterBadgeHeader"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:switchMinWidth="56dp"
             android:paddingStart="0dp"
             android:paddingEnd="24dp"
@@ -190,36 +190,6 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
             android:text="@string/codeBlockSelectedText"
-            android:textColor="?attr/selectedTextColor"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/homeScreenFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/homeScreenHeaderSelector"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="24dp"
-            android:text="@string/settingsHomeScreenHeaderText"
-            android:textColor="?attr/primaryTextColor"/>
-
-        <TextView
-            android:id="@+id/homeScreenSelected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="24dp"
-            android:text="@string/settingsHomeScreenSelectedText"
             android:textColor="?attr/selectedTextColor"/>
 
     </LinearLayout>

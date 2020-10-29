@@ -73,11 +73,7 @@ public class ProfileEmailActivity extends BaseActivity {
 
     }
 
-    private View.OnClickListener addEmailListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processAddNewEmail();
-        }
-    };
+    private final View.OnClickListener addEmailListener = v -> processAddNewEmail();
 
     private void processAddNewEmail() {
 
@@ -93,27 +89,23 @@ public class ProfileEmailActivity extends BaseActivity {
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if(newUserEmail.equals("")) {
 
             Toasty.error(ctx, getString(R.string.emailErrorEmpty));
             return;
-
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
             Toasty.warning(ctx, getString(R.string.emailErrorInvalid));
             return;
-
         }
 
         List<String> newEmailList = new ArrayList<>(Arrays.asList(newUserEmail.split(",")));
 
         disableProcessButton();
         addNewEmail(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), newEmailList);
-
     }
 
     private void addNewEmail(final String instanceUrl, final String token, List<String> newUserEmail) {
@@ -139,7 +131,6 @@ public class ProfileEmailActivity extends BaseActivity {
                     tinyDb.putBoolean("emailsRefresh", true);
                     enableProcessButton();
                     finish();
-
                 }
                 else if(response.code() == 401) {
 
@@ -148,37 +139,32 @@ public class ProfileEmailActivity extends BaseActivity {
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else if(response.code() == 403) {
 
                     enableProcessButton();
                     Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-
                 }
                 else if(response.code() == 404) {
 
                     enableProcessButton();
                     Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-
                 }
                 else if(response.code() == 422) {
 
                     enableProcessButton();
                     Toasty.warning(ctx, ctx.getString(R.string.emailErrorInUse));
-
                 }
                 else {
 
                     enableProcessButton();
                     Toasty.error(ctx, getString(R.string.labelGeneralError));
-
                 }
-
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }

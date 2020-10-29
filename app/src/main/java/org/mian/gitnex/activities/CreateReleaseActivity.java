@@ -109,7 +109,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
     }
 
-    private View.OnClickListener createReleaseListener = v -> processNewRelease();
+    private final View.OnClickListener createReleaseListener = v -> processNewRelease();
 
     private void processNewRelease() {
 
@@ -126,7 +126,6 @@ public class CreateReleaseActivity extends BaseActivity {
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
 	    if(newReleaseTitle.equals("")) {
@@ -149,7 +148,6 @@ public class CreateReleaseActivity extends BaseActivity {
 
         disableProcessButton();
         createNewReleaseFunc(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newReleaseTagName, newReleaseTitle, newReleaseContent, selectedBranch, newReleaseType, newReleaseDraft);
-
     }
 
     private void createNewReleaseFunc(final String instanceUrl, final String token, String repoOwner, String repoName, String newReleaseTagName, String newReleaseTitle, String newReleaseContent, String selectedBranch, boolean newReleaseType, boolean newReleaseDraft) {
@@ -182,27 +180,22 @@ public class CreateReleaseActivity extends BaseActivity {
                              ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
                              ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                              ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else if(response.code() == 403) {
 
                     enableProcessButton();
                     Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-
                 }
                 else if(response.code() == 404) {
 
                     enableProcessButton();
                     Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-
                 }
                 else {
 
                     enableProcessButton();
                     Toasty.error(ctx, ctx.getString(R.string.genericError));
-
                 }
-
             }
 
             @Override
@@ -228,6 +221,7 @@ public class CreateReleaseActivity extends BaseActivity {
             public void onResponse(@NonNull Call<List<Branches>> call, @NonNull retrofit2.Response<List<Branches>> response) {
 
                 if(response.isSuccessful()) {
+
                     if(response.code() == 200) {
 
                         List<Branches> branchesList_ = response.body();
@@ -256,7 +250,6 @@ public class CreateReleaseActivity extends BaseActivity {
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
 
             }

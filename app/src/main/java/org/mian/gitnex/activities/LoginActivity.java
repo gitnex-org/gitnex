@@ -92,6 +92,7 @@ public class LoginActivity extends BaseActivity {
 			selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
 
 			if(selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
+
 				Toasty.warning(ctx, getResources().getString(R.string.protocolError));
 			}
 		});
@@ -141,9 +142,7 @@ public class LoginActivity extends BaseActivity {
 
 			disableProcessButton();
 			login();
-
 		});
-
 	}
 
 	private void login() {
@@ -221,11 +220,9 @@ public class LoginActivity extends BaseActivity {
 					Toasty.error(ctx, getResources().getString(R.string.loginTokenError));
 					enableProcessButton();
 					return;
-
 				}
 
 				versionCheck(instanceUrl.toString(), loginUid, loginPass, 123, loginToken, loginType);
-
 			}
 
 		}
@@ -234,7 +231,6 @@ public class LoginActivity extends BaseActivity {
 			Log.e("onFailure-login", e.toString());
 			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
 			enableProcessButton();
-
 		}
 	}
 
@@ -254,7 +250,6 @@ public class LoginActivity extends BaseActivity {
 			callVersion =
 				(loginOTP != 0) ? RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithOTP(credential, loginOTP) :
 					RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithBasic(credential);
-
 		}
 
 		callVersion.enqueue(new Callback<GiteaVersion>() {
@@ -265,9 +260,10 @@ public class LoginActivity extends BaseActivity {
 				if(responseVersion.code() == 200) {
 
 					GiteaVersion version = responseVersion.body();
-
 					assert version != null;
+
 					if(!Version.valid(version.getVersion())) {
+
 						Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
 						enableProcessButton();
 						return;
@@ -321,9 +317,11 @@ public class LoginActivity extends BaseActivity {
 				// the setup methods then can better handle all different cases
 
 				if(loginType == LoginType.BASIC) {
+
 					setup(instanceUrl, loginUid, loginPass, loginOTP);
 				}
 				else if(loginType == LoginType.TOKEN) { // Token
+
 					setupUsingExistingToken(instanceUrl, loginToken);
 				}
 			}
@@ -352,6 +350,7 @@ public class LoginActivity extends BaseActivity {
 				switch(response.code()) {
 
 					case 200:
+
 						assert userDetails != null;
 						tinyDB.putBoolean("loggedInMode", true);
 						tinyDB.putString(userDetails.getLogin() + "-token", loginToken);
@@ -380,18 +379,16 @@ public class LoginActivity extends BaseActivity {
 						startActivity(new Intent(LoginActivity.this, MainActivity.class));
 						finish();
 						break;
-
 					case 401:
+
 						Toasty.error(ctx, getResources().getString(R.string.unauthorizedApiError));
 						enableProcessButton();
 						break;
-
 					default:
+
 						Toasty.error(ctx, getResources().getString(R.string.genericApiStatusError) + response.code());
 						enableProcessButton();
-
 				}
-
 			}
 
 			@Override
@@ -400,7 +397,6 @@ public class LoginActivity extends BaseActivity {
 				Log.e("onFailure", t.toString());
 				Toasty.error(ctx, getResources().getString(R.string.genericError));
 				enableProcessButton();
-
 			}
 		});
 
@@ -431,7 +427,9 @@ public class LoginActivity extends BaseActivity {
 				if(response.code() == 200) {
 
 					assert userTokens != null;
+
 					for(UserTokens t : userTokens) {
+
 						if(t.getName().equals(tokenName)) {
 
 							// this app had created an token on this instance before
@@ -447,6 +445,7 @@ public class LoginActivity extends BaseActivity {
 
 								delcall = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().deleteToken(credential, loginUid, t.getId());
 							}
+
 							delcall.enqueue(new Callback<Void>() {
 
 								@Override
@@ -460,7 +459,6 @@ public class LoginActivity extends BaseActivity {
 
 										Toasty.error(ctx, getResources().getString(R.string.genericApiStatusError) + response.code());
 										enableProcessButton();
-
 									}
 								}
 
@@ -470,7 +468,6 @@ public class LoginActivity extends BaseActivity {
 									Log.e("onFailure-login", t.toString());
 									Toasty.error(ctx, getResources().getString(R.string.malformedJson));
 									enableProcessButton();
-
 								}
 							});
 							return;
@@ -483,7 +480,6 @@ public class LoginActivity extends BaseActivity {
 
 					Toasty.error(ctx, getResources().getString(R.string.genericApiStatusError) + response.code());
 					enableProcessButton();
-
 				}
 			}
 
@@ -493,7 +489,6 @@ public class LoginActivity extends BaseActivity {
 				Log.e("onFailure-login", t.toString());
 				Toasty.error(ctx, getResources().getString(R.string.malformedJson));
 				enableProcessButton();
-
 			}
 		});
 
@@ -541,6 +536,7 @@ public class LoginActivity extends BaseActivity {
 								switch(response.code()) {
 
 									case 200:
+
 										assert userDetails != null;
 										tinyDB.remove("loginPass");
 										tinyDB.putBoolean("loggedInMode", true);
@@ -570,18 +566,16 @@ public class LoginActivity extends BaseActivity {
 										startActivity(new Intent(LoginActivity.this, MainActivity.class));
 										finish();
 										break;
-
 									case 401:
+
 										Toasty.error(ctx, getResources().getString(R.string.unauthorizedApiError));
 										enableProcessButton();
 										break;
-
 									default:
+
 										Toasty.error(ctx, getResources().getString(R.string.genericApiStatusError) + response.code());
 										enableProcessButton();
-
 								}
-
 							}
 
 							@Override
@@ -590,7 +584,6 @@ public class LoginActivity extends BaseActivity {
 								Log.e("onFailure", t.toString());
 								Toasty.error(ctx, getResources().getString(R.string.genericError));
 								enableProcessButton();
-
 							}
 						});
 					}
@@ -599,7 +592,6 @@ public class LoginActivity extends BaseActivity {
 
 					Toasty.error(ctx, getResources().getString(R.string.genericApiStatusError) + responseCreate.code());
 					enableProcessButton();
-
 				}
 			}
 
@@ -615,17 +607,21 @@ public class LoginActivity extends BaseActivity {
 	private void loadDefaults() {
 
 		if(tinyDB.getString("loginType").equals(LoginType.BASIC.name().toLowerCase())) {
+
 			loginMethod.check(R.id.loginUsernamePassword);
 		}
 		else {
+
 			loginMethod.check(R.id.loginToken);
 		}
 
 		if(!tinyDB.getString("instanceUrlRaw").equals("")) {
+
 			instanceUrlET.setText(tinyDB.getString("instanceUrlRaw"));
 		}
 
 		if(!tinyDB.getString("loginUid").equals("")) {
+
 			loginUidET.setText(tinyDB.getString("loginUid"));
 		}
 
@@ -636,9 +632,11 @@ public class LoginActivity extends BaseActivity {
 		}
 
 		if(!tinyDB.getString("uniqueAppId").isEmpty()) {
+
 			device_id = tinyDB.getString("uniqueAppId");
 		}
 		else {
+
 			device_id = UUID.randomUUID().toString();
 			tinyDB.putString("uniqueAppId", device_id);
 		}

@@ -8,6 +8,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +23,11 @@ public class SettingsGeneralActivity extends BaseActivity {
 	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
+	private List<String> homeScreenList;
+	private static int homeScreenSelectedChoice = 0;
+
 	private List<String> defaultScreen;
-	private static int defaultScreenSelectedChoice = 0;
+	private static int defaultLinkHandlerScreenSelectedChoice = 0;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -46,18 +50,109 @@ public class SettingsGeneralActivity extends BaseActivity {
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);
 
+		// home screen
+		String[] homeDefaultScreen_ = {getResources().getString(R.string.pageTitleMyRepos), getResources().getString(R.string.pageTitleStarredRepos), getResources().getString(R.string.pageTitleOrganizations),
+			getResources().getString(R.string.pageTitleRepositories), getResources().getString(R.string.pageTitleProfile), getResources().getString(R.string.pageTitleExplore),
+			getResources().getString(R.string.titleDrafts)};
+
+		String[] homeDefaultScreenNew = {getResources().getString(R.string.pageTitleMyRepos), getResources().getString(R.string.pageTitleStarredRepos), getResources().getString(R.string.pageTitleOrganizations),
+			getResources().getString(R.string.pageTitleRepositories), getResources().getString(R.string.pageTitleProfile), getResources().getString(R.string.pageTitleExplore),
+			getResources().getString(R.string.titleDrafts), getResources().getString(R.string.pageTitleNotifications)};
+
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.3")) {
+
+			homeDefaultScreen_ = homeDefaultScreenNew;
+		}
+
+		homeScreenList = new ArrayList<>(Arrays.asList(homeDefaultScreen_));
+		String[] homeScreenArray = new String[homeScreenList.size()];
+		homeScreenList.toArray(homeScreenArray);
+
+		if(homeScreenSelectedChoice == 0) {
+
+			homeScreenSelectedChoice = tinyDb.getInt("homeScreenId");
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleMyRepos));
+		}
+
+		if(homeScreenSelectedChoice == 1) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleStarredRepos));
+		}
+		else if(homeScreenSelectedChoice == 2) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleOrganizations));
+		}
+		else if(homeScreenSelectedChoice == 3) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleRepositories));
+		}
+		else if(homeScreenSelectedChoice == 4) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleProfile));
+		}
+		else if(homeScreenSelectedChoice == 5) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleExplore));
+		}
+		else if(homeScreenSelectedChoice == 6) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.titleDrafts));
+		}
+		else if(homeScreenSelectedChoice == 7) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleNotifications));
+		}
+
+		viewBinding.homeScreenFrame.setOnClickListener(setDefaultHomeScreen -> {
+
+			AlertDialog.Builder hsBuilder = new AlertDialog.Builder(SettingsGeneralActivity.this);
+
+			hsBuilder.setTitle(R.string.settingsHomeScreenSelectorDialogTitle);
+			hsBuilder.setCancelable(homeScreenSelectedChoice != -1);
+
+			hsBuilder.setSingleChoiceItems(homeScreenArray, homeScreenSelectedChoice, (dialogInterfaceHomeScreen, i) -> {
+
+				homeScreenSelectedChoice = i;
+				viewBinding.homeScreenSelected.setText(homeScreenArray[i]);
+				tinyDb.putInt("homeScreenId", i);
+
+				dialogInterfaceHomeScreen.dismiss();
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+			});
+
+			AlertDialog hsDialog = hsBuilder.create();
+			hsDialog.show();
+		});
+		// home screen
+
+		// link handler
 		String[] defaultScreen_ = {getResources().getString(R.string.generalDeepLinkSelectedText), getResources().getString(R.string.navRepos), getResources().getString(R.string.navOrgs), getResources().getString(R.string.pageTitleNotifications), getResources().getString(R.string.navExplore)};
 		defaultScreen = new ArrayList<>(Arrays.asList(defaultScreen_));
 
 		String[] linksArray = new String[defaultScreen.size()];
 		defaultScreen.toArray(linksArray);
 
-		if(!tinyDb.getString("defaultScreenStr").isEmpty()) {
-			viewBinding.generalDeepLinkSelected.setText(tinyDb.getString("defaultScreenStr"));
+		if(defaultLinkHandlerScreenSelectedChoice == 0) {
+
+			defaultLinkHandlerScreenSelectedChoice = tinyDb.getInt("defaultScreenId");
+			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.generalDeepLinkSelectedText));
 		}
 
-		if(defaultScreenSelectedChoice == 0) {
-			defaultScreenSelectedChoice = tinyDb.getInt("defaultScreenId");
+		if(defaultLinkHandlerScreenSelectedChoice == 1) {
+
+			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navRepos));
+		}
+		else if(defaultLinkHandlerScreenSelectedChoice == 2) {
+
+			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navOrgs));
+		}
+		else if(defaultLinkHandlerScreenSelectedChoice == 3) {
+
+			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.pageTitleNotifications));
+		}
+		else if(defaultLinkHandlerScreenSelectedChoice == 4) {
+
+			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navExplore));
 		}
 
 		viewBinding.setDefaultLinkHandler.setOnClickListener(setDefaultLinkHandler -> {
@@ -65,18 +160,12 @@ public class SettingsGeneralActivity extends BaseActivity {
 			AlertDialog.Builder dlBuilder = new AlertDialog.Builder(SettingsGeneralActivity.this);
 			dlBuilder.setTitle(R.string.linkSelectorDialogTitle);
 
-			if(defaultScreenSelectedChoice != -1) {
-				dlBuilder.setCancelable(true);
-			}
-			else {
-				dlBuilder.setCancelable(false);
-			}
+			dlBuilder.setCancelable(defaultLinkHandlerScreenSelectedChoice != -1);
 
-			dlBuilder.setSingleChoiceItems(linksArray, defaultScreenSelectedChoice, (dialogInterfaceHomeScreen, i) -> {
+			dlBuilder.setSingleChoiceItems(linksArray, defaultLinkHandlerScreenSelectedChoice, (dialogInterfaceHomeScreen, i) -> {
 
-				defaultScreenSelectedChoice = i;
+				defaultLinkHandlerScreenSelectedChoice = i;
 				viewBinding.generalDeepLinkSelected.setText(linksArray[i]);
-				tinyDb.putString("defaultScreenStr", linksArray[i]);
 				tinyDb.putInt("defaultScreenId", i);
 
 				dialogInterfaceHomeScreen.dismiss();
@@ -85,9 +174,8 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 			AlertDialog dlDialog = dlBuilder.create();
 			dlDialog.show();
-
 		});
-
+		// link handler
 	}
 
 	private void initCloseListener() { onClickListener = view -> finish(); }

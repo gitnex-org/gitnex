@@ -78,7 +78,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
     }
 
-    private View.OnClickListener createMilestoneListener = v -> processNewMilestone();
+    private final View.OnClickListener createMilestoneListener = v -> processNewMilestone();
 
     private void processNewMilestone() {
 
@@ -92,7 +92,6 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        //String appLocale = tinyDb.getString("locale");
 
         String newMilestoneTitle = milestoneTitle.getText().toString();
         String newMilestoneDescription = milestoneDescription.getText().toString();
@@ -102,26 +101,25 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if(newMilestoneTitle.equals("")) {
 
             Toasty.error(ctx, getString(R.string.milestoneNameErrorEmpty));
             return;
-
         }
 
         if(!newMilestoneDescription.equals("")) {
+
             if (appUtil.charactersLength(newMilestoneDescription) > 255) {
 
                 Toasty.warning(ctx, getString(R.string.milestoneDescError));
                 return;
-
             }
         }
 
         String finalMilestoneDueDate = null;
+
         if(!newMilestoneDueDate.isEmpty()) {
 
             finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
@@ -135,7 +133,6 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         disableProcessButton();
         createNewMilestone(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newMilestoneTitle, newMilestoneDescription, finalMilestoneDueDate);
-
     }
 
     private void createNewMilestone(final String instanceUrl, final String token, String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription, String newMilestoneDueDate) {
@@ -155,6 +152,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
             public void onResponse(@NonNull Call<Milestones> call, @NonNull retrofit2.Response<Milestones> response) {
 
                 if(response.isSuccessful()) {
+
                     if(response.code() == 201) {
 
                         TinyDB tinyDb = new TinyDB(appCtx);
@@ -162,7 +160,6 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
                         Toasty.success(ctx, getString(R.string.milestoneCreated));
                         enableProcessButton();
                         finish();
-
                     }
                 }
                 else if(response.code() == 401) {
@@ -172,19 +169,17 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else {
 
                     enableProcessButton();
                     Toasty.error(ctx, getString(R.string.milestoneCreatedError));
-
                 }
-
             }
 
             @Override
             public void onFailure(@NonNull Call<Milestones> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }
@@ -203,16 +198,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
             final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-
-                        @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-
-                            milestoneDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
-
-                        }
-                    }, mYear, mMonth, mDay);
+	            (view, year, monthOfYear, dayOfMonth) -> milestoneDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth)), mYear, mMonth, mDay);
             datePickerDialog.show();
         }
 

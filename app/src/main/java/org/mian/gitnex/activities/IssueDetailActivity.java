@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -460,18 +461,21 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		int id = item.getItemId();
 
-		switch(id) {
-			case android.R.id.home:
-				finish();
-				return true;
-			case R.id.genericMenu:
-				BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment();
-				bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
+		if(id == android.R.id.home) {
 
+			finish();
+			return true;
+		}
+		else if(id == R.id.genericMenu) {
+
+			BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment();
+			bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
+			return true;
+		}
+		else {
+
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -480,6 +484,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		super.onResume();
 
 		if(tinyDb.getBoolean("commentPosted")) {
+
 			viewBinding.scrollViewComments.post(() -> {
 
 				IssueCommentsViewModel
@@ -489,18 +494,17 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN), 1000);
 
 				tinyDb.putBoolean("commentPosted", false);
-
 			});
 		}
 
 		if(tinyDb.getBoolean("commentEdited")) {
+
 			viewBinding.scrollViewComments.post(() -> {
 
 				IssueCommentsViewModel
 					.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex,
 						ctx);
 				tinyDb.putBoolean("commentEdited", false);
-
 			});
 		}
 
@@ -514,7 +518,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				tinyDb.putBoolean("singleIssueUpdate", false);
 
 			}, 500);
-
 		}
 
 		if(tinyDb.getBoolean("issueEdited")) {
@@ -527,9 +530,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				tinyDb.putBoolean("issueEdited", false);
 
 			}, 500);
-
 		}
-
 	}
 
 	private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo, int index, String loginUid) {
@@ -542,14 +543,13 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				assert issueCommentsMain != null;
 
 				if(issueCommentsMain.size() > 0) {
+
 					viewBinding.divider.setVisibility(View.VISIBLE);
 				}
 
 				adapter = new IssueCommentsAdapter(ctx, getSupportFragmentManager(), issueCommentsMain);
 				viewBinding.recyclerView.setAdapter(adapter);
-
 			});
-
 	}
 
 	private void getSingleIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid) {
@@ -569,6 +569,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					assert singleIssue != null;
 
 					viewBinding.issuePrState.setVisibility(View.VISIBLE);
+
 					if(singleIssue.getPull_request() != null) {
 
 						if(singleIssue.getPull_request().isMerged()) { // merged
@@ -600,7 +601,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 									final int resourceId = ctx.getResources()
 										.getIdentifier(raw.substring("drawable://".length()), "drawable", ctx.getPackageName());
 
-									final Drawable drawable = ctx.getDrawable(resourceId);
+									final Drawable drawable = ContextCompat.getDrawable(ctx, resourceId);
 
 									assert drawable != null;
 									return ImageItem.withResult(drawable);
@@ -653,7 +654,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					params1.setMargins(15, 0, 0, 0);
 
 					if(singleIssue.getAssignees() != null) {
+
 						viewBinding.assigneesScrollView.setVisibility(View.VISIBLE);
+
 						for(int i = 0; i < singleIssue.getAssignees().size(); i++) {
 
 							ImageView assigneesView = new ImageView(ctx);
@@ -665,17 +668,19 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 							viewBinding.frameAssignees.addView(assigneesView);
 							assigneesView.setLayoutParams(params1);
 							if(!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
+
 								assigneesView.setOnClickListener(
 									new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), ctx));
 							}
 							else {
+
 								assigneesView.setOnClickListener(
 									new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), ctx));
 							}
-
 						}
 					}
 					else {
+
 						viewBinding.assigneesScrollView.setVisibility(View.GONE);
 					}
 
@@ -684,6 +689,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					params.setMargins(0, 0, 15, 0);
 
 					if(singleIssue.getLabels() != null) {
+
 						viewBinding.labelsScrollView.setVisibility(View.VISIBLE);
 
 						for(int i = 0; i < singleIssue.getLabels().size(); i++) {
@@ -707,16 +713,17 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 							labelsView.setImageDrawable(drawable);
 							viewBinding.frameLabels.addView(labelsView);
-
 						}
 					}
 					else {
+
 						viewBinding.labelsScrollView.setVisibility(View.GONE);
 					}
 
 					if(singleIssue.getDue_date() != null) {
 
 						if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
+
 							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
@@ -724,11 +731,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 								.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), ctx));
 						}
 						else if(timeFormat.equals("normal1")) {
+
 							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
 						}
-
 					}
 					else {
 
@@ -738,6 +745,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					String edited;
 
 					if(!singleIssue.getUpdated_at().equals(singleIssue.getCreated_at())) {
+
 						edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
 						viewBinding.issueModified.setVisibility(View.VISIBLE);
 						viewBinding.issueModified.setText(edited);
@@ -745,22 +753,27 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 							.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getUpdated_at()), ctx));
 					}
 					else {
+
 						viewBinding.issueModified.setVisibility(View.INVISIBLE);
 					}
 
 					if((singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) && singleIssue.getAssignees() != null) {
+
 						paramsDesc.setMargins(0, 35, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else if(singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) {
+
 						paramsDesc.setMargins(0, 55, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else if(singleIssue.getAssignees() == null) {
+
 						paramsDesc.setMargins(0, 35, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else {
+
 						paramsDesc.setMargins(0, 15, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
@@ -769,29 +782,33 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
 
 					if(timeFormat.equals("pretty")) {
+
 						viewBinding.issueCreatedTime
 							.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), ctx));
 					}
 
 					if(singleIssue.getMilestone() != null) {
+
 						viewBinding.issueMilestone.setVisibility(View.VISIBLE);
 						viewBinding.issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
 					}
 					else {
+
 						viewBinding.issueMilestone.setVisibility(View.GONE);
 					}
 
 					if(!singleIssue.getUser().getFull_name().equals("")) {
+
 						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), ctx));
 					}
 					else {
+
 						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), ctx));
 					}
 
 					viewBinding.progressBar.setVisibility(View.GONE);
-
 				}
 				else if(response.code() == 401) {
 
@@ -815,9 +832,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					Intent mainIntent = new Intent(ctx, MainActivity.class);
 					ctx.startActivity(mainIntent);
 					finish();
-
 				}
-
 			}
 
 			@Override
@@ -842,21 +857,17 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 						assert response.body() != null;
 						tinyDb.putBoolean("issueSubscribed", response.body().getSubscribed());
-
 					}
 					else {
 
 						tinyDb.putBoolean("issueSubscribed", false);
-
 					}
-
 				}
 
 				@Override
 				public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
 
 					tinyDb.putBoolean("issueSubscribed", false);
-
 				}
 
 			});

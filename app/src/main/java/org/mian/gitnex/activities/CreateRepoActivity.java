@@ -109,7 +109,7 @@ public class CreateRepoActivity extends BaseActivity {
         }
     }
 
-    private View.OnClickListener createRepoListener = v -> processNewRepo();
+    private final View.OnClickListener createRepoListener = v -> processNewRepo();
 
     private void processNewRepo() {
 
@@ -127,6 +127,7 @@ public class CreateRepoActivity extends BaseActivity {
         }
 
         if(!newRepoDesc.equals("")) {
+
             if (appUtil.charactersLength(newRepoDesc) > 255) {
 
                 Toasty.warning(ctx, getString(R.string.repoDescError));
@@ -212,7 +213,6 @@ public class CreateRepoActivity extends BaseActivity {
                     enableProcessButton();
                     Toasty.error(ctx, getString(R.string.repoCreatedError));
                 }
-
             }
 
             @Override
@@ -244,6 +244,7 @@ public class CreateRepoActivity extends BaseActivity {
 
 		            organizationsList.add(new OrgOwner(userLogin));
 		            assert organizationsList_ != null;
+
 		            if(organizationsList_.size() > 0) {
 
 			            for(int i = 0; i < organizationsList_.size(); i++) {
@@ -257,7 +258,6 @@ public class CreateRepoActivity extends BaseActivity {
 
 				            OrgOwner data = new OrgOwner(organizationsList_.get(i).getUsername());
 				            organizationsList.add(data);
-
 			            }
 		            }
 

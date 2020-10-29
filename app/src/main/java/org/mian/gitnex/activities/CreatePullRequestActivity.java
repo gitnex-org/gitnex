@@ -94,6 +94,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		// require gitea 1.12 or higher
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
@@ -113,13 +114,9 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid, resultLimit);
 		getBranches(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
 
-		viewBinding.prLabels.setOnClickListener(prLabels ->
-			showLabels()
-		);
+		viewBinding.prLabels.setOnClickListener(prLabels -> showLabels());
 
-		viewBinding.createPr.setOnClickListener(createPr ->
-			processPullRequest()
-		);
+		viewBinding.createPr.setOnClickListener(createPr -> processPullRequest());
 	}
 
 	private void processPullRequest() {
@@ -133,13 +130,16 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		assignees.add("");
 
 		if (labelsIds.size() == 0) {
+
 			labelsIds.add(0);
 		}
 
 		if (dueDate.matches("")) {
+
 			dueDate = null;
 		}
 		else {
+
 			dueDate = AppUtil.customDateCombine(AppUtil.customDateFormat(dueDate));
 		}
 
@@ -160,9 +160,9 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			Toasty.error(ctx, getString(R.string.sameBranchesError));
 		}
 		else {
+
 			createPullRequest(prTitle, prDescription, mergeInto, pullFrom, milestoneId, dueDate, assignees);
 		}
-		//Log.e("processPullRequest", String.valueOf(milestoneId));
 	}
 
 	private void createPullRequest(String prTitle, String prDescription, String mergeInto, String pullFrom, int milestoneId, String dueDate, List<String> assignees) {
@@ -201,7 +201,6 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 					enableProcessButton();
 					Toasty.error(ctx, getString(R.string.genericError));
 				}
-
 			}
 
 			@Override
@@ -231,6 +230,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		dialogLabels = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 
 		if (dialogLabels.getWindow() != null) {
+
 			dialogLabels.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		}
 
@@ -239,9 +239,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		View view = labelsBinding.getRoot();
 		dialogLabels.setContentView(view);
 
-		labelsBinding.cancel.setOnClickListener(editProperties ->
-			dialogLabels.dismiss()
-		);
+		labelsBinding.cancel.setOnClickListener(editProperties -> dialogLabels.dismiss());
 
 		dialogLabels.show();
 		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
@@ -260,19 +258,18 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			public void onResponse(@NonNull Call<List<Branches>> call, @NonNull retrofit2.Response<List<Branches>> response) {
 
 				if(response.isSuccessful()) {
+
 					if(response.code() == 200) {
 
 						List<Branches> branchesList_ = response.body();
-
 						assert branchesList_ != null;
+
 						if(branchesList_.size() > 0) {
+
 							for (int i = 0; i < branchesList_.size(); i++) {
 
-								Branches data = new Branches(
-									branchesList_.get(i).getName()
-								);
+								Branches data = new Branches(branchesList_.get(i).getName());
 								branchesList.add(data);
-
 							}
 						}
 
@@ -316,7 +313,9 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 					milestonesList.add(new Milestones(0,getString(R.string.issueCreatedNoMilestone)));
 					assert milestonesList_ != null;
+
 					if(milestonesList_.size() > 0) {
+
 						for (int i = 0; i < milestonesList_.size(); i++) {
 
 							//Don't translate "open" is a enum
@@ -327,7 +326,6 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 								);
 								milestonesList.add(data);
 							}
-
 						}
 					}
 

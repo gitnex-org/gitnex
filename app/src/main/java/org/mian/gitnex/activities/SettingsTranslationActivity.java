@@ -61,10 +61,12 @@ public class SettingsTranslationActivity extends BaseActivity {
 		});
 
 		if(!tinyDb.getString("localeStr").isEmpty()) {
+
 			tvLanguageSelected.setText(tinyDb.getString("localeStr"));
 		}
 
 		if(langSelectedChoice == 0) {
+
 			langSelectedChoice = tinyDb.getInt("langId");
 		}
 
@@ -74,12 +76,7 @@ public class SettingsTranslationActivity extends BaseActivity {
 			AlertDialog.Builder lBuilder = new AlertDialog.Builder(SettingsTranslationActivity.this);
 
 			lBuilder.setTitle(R.string.settingsLanguageSelectorDialogTitle);
-			if(langSelectedChoice != -1) {
-				lBuilder.setCancelable(true);
-			}
-			else {
-				lBuilder.setCancelable(false);
-			}
+			lBuilder.setCancelable(langSelectedChoice != -1);
 
 			lBuilder.setSingleChoiceItems(langList, langSelectedChoice, (dialogInterface, i) -> {
 
@@ -90,54 +87,71 @@ public class SettingsTranslationActivity extends BaseActivity {
 
 				switch(langList[i]) {
 					case "Arabic":
+
 						tinyDb.putString("locale", "ar");
 						break;
 					case "Chinese":
+
 						tinyDb.putString("locale", "zh");
 						break;
 					case "Czech":
+
 						tinyDb.putString("locale", "cs");
 						break;
 					case "Finnish":
+
 						tinyDb.putString("locale", "fi");
 						break;
 					case "French":
+
 						tinyDb.putString("locale", "fr");
 						break;
 					case "German":
+
 						tinyDb.putString("locale", "de");
 						break;
 					case "Italian":
+
 						tinyDb.putString("locale", "it");
 						break;
 					case "Latvian":
+
 						tinyDb.putString("locale", "lv");
 						break;
 					case "Persian":
+
 						tinyDb.putString("locale", "fa");
 						break;
 					case "Polish":
+
 						tinyDb.putString("locale", "pl");
 						break;
 					case "Portuguese/Brazilian":
+
 						tinyDb.putString("locale", "pt");
 						break;
 					case "Russian":
+
 						tinyDb.putString("locale", "ru");
 						break;
 					case "Serbian":
+
 						tinyDb.putString("locale", "sr");
 						break;
 					case "Spanish":
+
 						tinyDb.putString("locale", "es");
 						break;
 					case "Turkish":
+
 						tinyDb.putString("locale", "tr");
 						break;
 					case "Ukrainian":
+
 						tinyDb.putString("locale", "uk");
 						break;
 					default:
+
 						tinyDb.putString("locale", "en");
 						break;
 				}
@@ -147,16 +161,13 @@ public class SettingsTranslationActivity extends BaseActivity {
 				this.overridePendingTransition(0, 0);
 				dialogInterface.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-
 			});
 
 			lBuilder.setNeutralButton(getString(R.string.cancelButton), null);
 
 			AlertDialog lDialog = lBuilder.create();
 			lDialog.show();
-
 		});
-
 	}
 
 	private void initCloseListener() {

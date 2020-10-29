@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -21,7 +21,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
-	private static String[] fileViewerSourceCodeThemesList = {"Sublime", "Arduino Light", "Github", "Far ", "Ir Black", "Android Studio"};
+	private static final String[] fileViewerSourceCodeThemesList = {"Sublime", "Arduino Light", "Github", "Far ", "Ir Black", "Android Studio"};
 	private static int fileViewerSourceCodeThemesSelectedChoice = 0;
 
 	@Override
@@ -47,7 +47,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 
 		LinearLayout sourceCodeThemeFrame = findViewById(R.id.sourceCodeThemeFrame);
 
-		Switch pdfModeSwitch = findViewById(R.id.switchPdfMode);
+		SwitchMaterial pdfModeSwitch = findViewById(R.id.switchPdfMode);
 
 		if(!tinyDb.getString("fileviewerSourceCodeThemeStr").isEmpty()) {
 			fileViewerSourceCodeThemesSelected.setText(tinyDb.getString("fileviewerSourceCodeThemeStr"));
@@ -57,12 +57,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 			fileViewerSourceCodeThemesSelectedChoice = tinyDb.getInt("fileviewerThemeId");
 		}
 
-		if(tinyDb.getBoolean("enablePdfMode")) {
-			pdfModeSwitch.setChecked(true);
-		}
-		else {
-			pdfModeSwitch.setChecked(false);
-		}
+		pdfModeSwitch.setChecked(tinyDb.getBoolean("enablePdfMode"));
 
 		// fileviewer srouce code theme selection dialog
 		sourceCodeThemeFrame.setOnClickListener(view -> {
@@ -70,12 +65,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 			AlertDialog.Builder fvtsBuilder = new AlertDialog.Builder(SettingsFileViewerActivity.this);
 
 			fvtsBuilder.setTitle(R.string.fileviewerSourceCodeThemeSelectorDialogTitle);
-			if(fileViewerSourceCodeThemesSelectedChoice != -1) {
-				fvtsBuilder.setCancelable(true);
-			}
-			else {
-				fvtsBuilder.setCancelable(false);
-			}
+			fvtsBuilder.setCancelable(fileViewerSourceCodeThemesSelectedChoice != -1);
 
 			fvtsBuilder.setSingleChoiceItems(fileViewerSourceCodeThemesList, fileViewerSourceCodeThemesSelectedChoice, (dialogInterfaceTheme, i) -> {
 
@@ -91,25 +81,15 @@ public class SettingsFileViewerActivity extends BaseActivity {
 
 			AlertDialog cfDialog = fvtsBuilder.create();
 			cfDialog.show();
-
 		});
 
 		// pdf night mode switcher
 		pdfModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			if(isChecked) {
-				tinyDb.putBoolean("enablePdfMode", true);
-				tinyDb.putString("enablePdfModeInit", "yes");
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			}
-			else {
-				tinyDb.putBoolean("enablePdfMode", false);
-				tinyDb.putString("enablePdfModeInit", "yes");
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			}
-
+			tinyDb.putBoolean("enablePdfMode", isChecked);
+			tinyDb.putString("enablePdfModeInit", "yes");
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
-
 	}
 
 	private void initCloseListener() {

@@ -95,14 +95,14 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
 
             adapter = new AdminGetUsersAdapter(ctx, usersListMain);
             if(adapter.getItemCount() > 0) {
+
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mRecyclerView.setAdapter(adapter);
                 noDataUsers.setVisibility(View.GONE);
                 searchFilter = true;
             }
             else {
-                //adapter.notifyDataSetChanged();
-                //mRecyclerView.setAdapter(adapter);
+
                 mRecyclerView.setVisibility(View.GONE);
                 noDataUsers.setVisibility(View.VISIBLE);
             }
@@ -140,6 +140,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
+
                         adapter.getFilter().filter(newText);
                         return false;
                     }
@@ -157,18 +158,21 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
 
         int id = item.getItemId();
 
-        switch (id) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.genericMenu:
-                BottomSheetAdminUsersFragment bottomSheet = new BottomSheetAdminUsersFragment();
-                bottomSheet.show(getSupportFragmentManager(), "usersBottomSheet");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        if(id == android.R.id.home) {
 
+	        finish();
+	        return true;
+        }
+        else if(id == R.id.genericMenu) {
+
+	        BottomSheetAdminUsersFragment bottomSheet = new BottomSheetAdminUsersFragment();
+	        bottomSheet.show(getSupportFragmentManager(), "usersBottomSheet");
+	        return true;
+        }
+        else {
+
+	        return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

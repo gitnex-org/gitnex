@@ -33,46 +33,48 @@ import static org.acra.ReportField.STACK_TRACE;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-	private Context appCtx;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		appCtx = getApplicationContext();
+		Context appCtx = getApplicationContext();
 		final TinyDB tinyDb = new TinyDB(appCtx);
 
 		switch(tinyDb.getInt("themeId")) {
 
 			case 1:
+
 				setTheme(R.style.AppThemeLight);
 				break;
-
 			case 2:
+
 				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
+
 					setTheme(R.style.AppTheme);
 				}
 				else {
+
 					setTheme(R.style.AppThemeLight);
 				}
 				break;
-
 			case 3:
+
 				setTheme(R.style.AppThemeRetro);
 				break;
-
 			case 4:
+
 				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
+
 					setTheme(R.style.AppTheme);
 				}
 				else {
+
 					setTheme(R.style.AppThemeRetro);
 				}
 				break;
-
 			default:
+
 				setTheme(R.style.AppTheme);
 				break;
-
 		}
 
 		String appLocale = tinyDb.getString("locale");
@@ -84,29 +86,30 @@ public abstract class BaseActivity extends AppCompatActivity {
 		switch(tinyDb.getInt("customFontId", -1)) {
 
 			case 0:
+
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/roboto.ttf");
 				break;
-
 			case 2:
+
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/sourcecodeproregular.ttf");
 				break;
-
 			default:
+
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/manroperegular.ttf");
 				break;
-
 		}
 
         if(tinyDb.getInt("pollingDelayMinutes") == 0) {
+
             tinyDb.putInt("pollingDelayMinutes", 15);
         }
 
@@ -114,26 +117,31 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // enabling counter badges by default
         if(tinyDb.getString("enableCounterBadgesInit").isEmpty()) {
+
             tinyDb.putBoolean("enableCounterBadges", true);
             tinyDb.putString("enableCounterBadgesInit", "yes");
         }
 
 		// enable crash reports by default
 		if(tinyDb.getString("crashReportingEnabledInit").isEmpty()) {
+
 			tinyDb.putBoolean("crashReportingEnabled", true);
 			tinyDb.putString("crashReportingEnabledInit", "yes");
 		}
 
 		// default cache setter
 		if(tinyDb.getString("cacheSizeStr").isEmpty()) {
+
 			tinyDb.putString("cacheSizeStr", getResources().getString(R.string.cacheSizeDataSelectionSelectedText));
 		}
 		if(tinyDb.getString("cacheSizeImagesStr").isEmpty()) {
+
 			tinyDb.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
 		}
 
 		// enable comment drafts by default
 		if(tinyDb.getString("draftsCommentsDeletionEnabledInit").isEmpty()) {
+
 			tinyDb.putBoolean("draftsCommentsDeletionEnabled", true);
 			tinyDb.putString("draftsCommentsDeletionEnabledInit", "yes");
 		}
@@ -145,7 +153,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setReportAsFile(true).setMailTo(getResources().getString(R.string.appEmail)).setSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil.getAppBuildNo(getApplicationContext()))).setEnabled(true);
 			ACRABuilder.getPluginConfigurationBuilder(LimiterConfigurationBuilder.class).setEnabled(true);
 			ACRA.init(getApplication(), ACRABuilder);
-
 		}
 	}
 

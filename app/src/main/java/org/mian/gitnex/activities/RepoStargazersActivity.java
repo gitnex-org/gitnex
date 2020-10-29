@@ -7,16 +7,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoStargazersAdapter;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
-import java.util.List;
 
 /**
  * Author M M Arif
@@ -66,28 +62,29 @@ public class RepoStargazersActivity extends BaseActivity {
         toolbarTitle.setText(R.string.repoStargazersInMenu);
 
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
-
     }
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, String repoOwner, String repoName) {
 
         RepoStargazersViewModel repoStargazersModel = new ViewModelProvider(this).get(RepoStargazersViewModel.class);
 
-        repoStargazersModel.getRepoStargazers(instanceUrl, instanceToken, repoOwner, repoName, ctx).observe(this, new Observer<List<UserInfo>>() {
-            @Override
-            public void onChanged(@Nullable List<UserInfo> stargazersListMain) {
-                adapter = new RepoStargazersAdapter(ctx, stargazersListMain);
-                if(adapter.getCount() > 0) {
-                    mGridView.setAdapter(adapter);
-                    noDataStargazers.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mGridView.setAdapter(adapter);
-                    noDataStargazers.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
+        repoStargazersModel.getRepoStargazers(instanceUrl, instanceToken, repoOwner, repoName, ctx).observe(this, stargazersListMain -> {
+
+            adapter = new RepoStargazersAdapter(ctx, stargazersListMain);
+
+            if(adapter.getCount() > 0) {
+
+                mGridView.setAdapter(adapter);
+                noDataStargazers.setVisibility(View.GONE);
             }
+            else {
+
+                adapter.notifyDataSetChanged();
+                mGridView.setAdapter(adapter);
+                noDataStargazers.setVisibility(View.VISIBLE);
+            }
+
+            mProgressBar.setVisibility(View.GONE);
         });
 
     }

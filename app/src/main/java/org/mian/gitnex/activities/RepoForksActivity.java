@@ -97,6 +97,7 @@ public class RepoForksActivity extends BaseActivity {
 
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12")) {
+
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
@@ -122,9 +123,7 @@ public class RepoForksActivity extends BaseActivity {
 
 				int page = (forksList.size() + resultLimit) / resultLimit;
 				loadMore(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, page, resultLimit);
-
 			}
-
 		}));
 
 		recyclerView.setHasFixedSize(true);
@@ -132,7 +131,6 @@ public class RepoForksActivity extends BaseActivity {
 		recyclerView.setAdapter(adapter);
 
 		loadInitial(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, pageSize, resultLimit);
-
 	}
 
 	private void loadInitial(String instanceUrl, String instanceToken, String repoOwner, String repoName, int pageSize, int resultLimit) {
@@ -150,29 +148,27 @@ public class RepoForksActivity extends BaseActivity {
 				if(response.isSuccessful()) {
 
 					assert response.body() != null;
+
 					if(response.body().size() > 0) {
 
 						forksList.clear();
 						forksList.addAll(response.body());
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.GONE);
-
 					}
 					else {
+
 						forksList.clear();
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.VISIBLE);
 					}
 
 					progressBar.setVisibility(View.GONE);
-
 				}
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
-
 			}
 
 			@Override
@@ -180,7 +176,6 @@ public class RepoForksActivity extends BaseActivity {
 
 				Log.e(TAG, t.toString());
 			}
-
 		});
 
 	}
@@ -205,37 +200,31 @@ public class RepoForksActivity extends BaseActivity {
 					forksList.remove(forksList.size() - 1);
 
 					List<UserRepositories> result = response.body();
-
 					assert result != null;
+
 					if(result.size() > 0) {
 
 						pageSize = result.size();
 						forksList.addAll(result);
-
 					}
 					else {
 
 						adapter.setMoreDataAvailable(false);
-
 					}
 
 					adapter.notifyDataChanged();
 					progressLoadMore.setVisibility(View.GONE);
-
 				}
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
 
 				Log.e(TAG, t.toString());
-
 			}
 
 		});
@@ -270,7 +259,6 @@ public class RepoForksActivity extends BaseActivity {
 		});
 
 		return super.onCreateOptionsMenu(menu);
-
 	}
 
 	private void filter(String text) {
@@ -278,7 +266,9 @@ public class RepoForksActivity extends BaseActivity {
 		List<UserRepositories> arr = new ArrayList<>();
 
 		for(UserRepositories d : forksList) {
+
 			if(d.getName().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
+
 				arr.add(d);
 			}
 		}
@@ -289,6 +279,7 @@ public class RepoForksActivity extends BaseActivity {
 	private void initCloseListener() {
 
 		onClickListener = view -> {
+
 			getIntent().removeExtra("repoFullNameForForks");
 			finish();
 		};

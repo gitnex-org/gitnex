@@ -99,6 +99,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         // if gitea is 1.12 or higher use the new limit
         if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+
             resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
         }
 
@@ -117,9 +118,11 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         if(!tinyDb.getString("issueNumber").isEmpty()) {
 
             if(tinyDb.getString("issueType").equalsIgnoreCase("Pull")) {
+
                 toolbar_title.setText(getString(R.string.editPrNavHeader, String.valueOf(issueIndex)));
             }
             else {
+
                 toolbar_title.setText(getString(R.string.editIssueNavHeader, String.valueOf(issueIndex)));
             }
         }
@@ -145,25 +148,25 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if (editIssueTitleForm.equals("")) {
 
             Toasty.error(ctx, getString(R.string.issueTitleEmpty));
             return;
-
         }
 
         if (editIssueDueDateForm.equals("")) {
+
             editIssueDueDateForm = null;
-        } else {
+        }
+        else {
+
             editIssueDueDateForm = (AppUtil.customDateCombine(AppUtil.customDateFormat(editIssueDueDateForm)));
         }
 
         disableProcessButton();
         editIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm, milestoneId);
-
     }
 
     private void editIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate, int milestoneId) {
@@ -194,7 +197,6 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                     tinyDb.putBoolean("issueEdited", true);
                     tinyDb.putBoolean("resumeIssues", true);
                     finish();
-
                 }
                 else if(response.code() == 401) {
 
@@ -203,19 +205,17 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else {
 
                     enableProcessButton();
                     Toasty.error(ctx, getString(R.string.genericError));
-
                 }
-
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }
@@ -236,9 +236,9 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
 	            (view, year, monthOfYear, dayOfMonth) -> editIssueDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth)), mYear, mMonth, mDay);
             datePickerDialog.show();
-
         }
         else if(v == editIssueButton) {
+
             processEditIssue();
         }
 
@@ -319,9 +319,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 	                                }, 500);
 
                                     enableProcessButton();
-
                                 }
-
                             }
 
                             @Override
@@ -354,7 +352,6 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
                     Toasty.error(ctx, getString(R.string.genericError));
                 }
-
             }
 
             @Override

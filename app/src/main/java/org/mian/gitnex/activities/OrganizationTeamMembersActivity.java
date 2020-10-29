@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.TeamMembersByOrgAdapter;
+import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.BottomSheetOrganizationTeamsFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
@@ -66,22 +67,25 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
         closeActivity.setOnClickListener(onClickListener);
 
         if(getIntent().getStringExtra("teamTitle") != null && !Objects.requireNonNull(getIntent().getStringExtra("teamTitle")).equals("")) {
-            toolbarTitle.setText(getIntent().getStringExtra("teamTitle"));
+
+        	toolbarTitle.setText(getIntent().getStringExtra("teamTitle"));
         }
         else {
-            toolbarTitle.setText(R.string.orgTeamMembers);
+
+        	toolbarTitle.setText(R.string.orgTeamMembers);
         }
 
         if(getIntent().getStringExtra("teamId") != null && !Objects.requireNonNull(getIntent().getStringExtra("teamId")).equals("")){
-            teamId = getIntent().getStringExtra("teamId");
+
+        	teamId = getIntent().getStringExtra("teamId");
         }
         else {
-            teamId = "0";
+
+        	teamId = "0";
         }
 
         assert teamId != null;
         fetchDataAsync(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), Integer.parseInt(teamId));
-
     }
 
     @Override
@@ -94,10 +98,10 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("teamActionFlag")) {
+
             fetchDataAsync(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), Integer.parseInt(teamId));
             tinyDb.putBoolean("teamActionFlag", false);
         }
-
     }
 
     private void fetchDataAsync(String instanceUrl, String instanceToken, int teamId) {
@@ -107,11 +111,14 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
         teamMembersModel.getMembersByOrgList(instanceUrl, instanceToken, teamId, ctx).observe(this, teamMembersListMain -> {
 
             adapter = new TeamMembersByOrgAdapter(ctx, teamMembersListMain);
+
             if(adapter.getCount() > 0) {
+
                 mGridView.setAdapter(adapter);
                 noDataMembers.setVisibility(View.GONE);
             }
             else {
+
                 adapter.notifyDataSetChanged();
                 mGridView.setAdapter(adapter);
                 noDataMembers.setVisibility(View.VISIBLE);
@@ -119,7 +126,6 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
 
 	        progressBar.setVisibility(View.GONE);
         });
-
     }
 
     @Override
@@ -128,7 +134,6 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
         return true;
-
     }
 
     @Override
@@ -136,31 +141,32 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
 
         int id = item.getItemId();
 
-        switch(id) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.genericMenu:
-                BottomSheetOrganizationTeamsFragment bottomSheet = new BottomSheetOrganizationTeamsFragment();
-                bottomSheet.show(getSupportFragmentManager(), "orgTeamsBottomSheet");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+	    if(id == android.R.id.home) {
 
+		    finish();
+		    return true;
+	    }
+	    else if(id == R.id.genericMenu) {
+
+		    BottomSheetOrganizationTeamsFragment bottomSheet = new BottomSheetOrganizationTeamsFragment();
+		    bottomSheet.show(getSupportFragmentManager(), "orgTeamsBottomSheet");
+		    return true;
+	    }
+	    else {
+
+		    return super.onOptionsItemSelected(item);
+	    }
     }
 
     @Override
     public void onButtonClicked(String text) {
 
-        TinyDB tinyDb = new TinyDB(appCtx);
-
         if("newMember".equals(text)) {
+
             Intent intent = new Intent(OrganizationTeamMembersActivity.this, AddNewTeamMemberActivity.class);
             intent.putExtra("teamId", teamId);
             startActivity(intent);
         }
-
     }
 
     private void initCloseListener() {
