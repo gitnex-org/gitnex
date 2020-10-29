@@ -48,12 +48,13 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 		private ImageView labelColor;
 
 		private LabelsViewHolder(View itemView) {
+
 			super(itemView);
+			this.setIsRecyclable(false);
 
 			labelSelection = itemView.findViewById(R.id.labelSelection);
 			labelText = itemView.findViewById(R.id.labelText);
 			labelColor = itemView.findViewById(R.id.labelColor);
-
 		}
 	}
 
@@ -85,6 +86,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 		}
 
 		currentLabelsIds = new ArrayList<>(new LinkedHashSet<>(currentLabelsIds));
+
 		for(int i = 0; i < currentLabelsIds.size(); i++) {
 
 			if(currentLabelsIds.contains(currentItem.getId())) {
@@ -93,6 +95,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 				labelsIds.add(currentLabelsIds.get(i));
 			}
 		}
+
 		labelsListener.labelsIdsInterface(labelsIds);
 
 		holder.labelSelection.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -117,6 +120,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 
 	@Override
 	public int getItemCount() {
+
 		return labels.size();
 	}
 
