@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -21,8 +22,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
@@ -471,8 +475,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 		if(!tinyDb.getString("downloadFileContents").isEmpty()) {
 
-			int CREATE_REQUEST_CODE = 40;
-
 			File outputFileName = new File(tinyDb.getString("downloadFileName"));
 
 			Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
@@ -481,48 +483,48 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 			intent.setType("*/*");
 			intent.putExtra(Intent.EXTRA_TITLE, outputFileName.getName());
 
-			startActivityForResult(intent, CREATE_REQUEST_CODE);
-
+			fileDownloadActivityResultLauncher.launch(intent);
 		}
 		else {
 
 			Toasty.warning(ctx, getString(R.string.waitLoadingDownloadFile));
 		}
-
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+	ActivityResultLauncher<Intent> fileDownloadActivityResultLauncher = registerForActivityResult(
+		new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
 
-		super.onActivityResult(requestCode, resultCode, data);
+		@Override
+		public void onActivityResult(ActivityResult result) {
 
-		if(requestCode == 40 && resultCode == RESULT_OK) {
+			if (result.getResultCode() == Activity.RESULT_OK) {
 
-			try {
+				Intent data = result.getData();
 
-				assert data != null;
-				Uri uri = data.getData();
+				try {
 
-				assert uri != null;
-				OutputStream outputStream = getContentResolver().openOutputStream(uri);
+					assert data != null;
+					Uri uri = data.getData();
 
-				byte[] dataAsBytes = Base64.decode(tinyDb.getString("downloadFileContents"), 0);
+					assert uri != null;
+					OutputStream outputStream = getContentResolver().openOutputStream(uri);
 
-				assert outputStream != null;
-				outputStream.write(dataAsBytes);
-				outputStream.close();
+					byte[] dataAsBytes = Base64.decode(tinyDb.getString("downloadFileContents"), 0);
 
-				Toasty.success(ctx, getString(R.string.downloadFileSaved));
+					assert outputStream != null;
+					outputStream.write(dataAsBytes);
+					outputStream.close();
 
+					Toasty.success(ctx, getString(R.string.downloadFileSaved));
+
+				}
+				catch(IOException e) {
+
+					Log.e("errorFileDownloading", Objects.requireNonNull(e.getMessage()));
+				}
 			}
-			catch(IOException e) {
-
-				Log.e("errorFileDownloading", Objects.requireNonNull(e.getMessage()));
-			}
-
 		}
-
-	}
+	});
 
 	private void initCloseListener() {
 
