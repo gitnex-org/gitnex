@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -351,7 +352,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 						final int resourceId = mCtx.getResources().getIdentifier(raw.substring("drawable://".length()), "drawable", mCtx.getPackageName());
 
-						final Drawable drawable = mCtx.getDrawable(resourceId);
+						final Drawable drawable = ContextCompat.getDrawable(mCtx, resourceId);
 
 						assert drawable != null;
 						return ImageItem.withResult(drawable);

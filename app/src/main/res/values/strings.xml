@@ -577,6 +577,7 @@
     <string name="mergeOptionSquash">Squash and Merge</string>
     <string name="mergeStrategy">Merge Strategy</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
+    <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
 
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>

@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -79,6 +81,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         return R.layout.activity_create_issue;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -112,6 +115,17 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	    viewBinding.newIssueTitle.requestFocus();
         assert imm != null;
         imm.showSoftInput(viewBinding.newIssueTitle, InputMethodManager.SHOW_IMPLICIT);
+
+	    viewBinding.newIssueDescription.setOnTouchListener((touchView, motionEvent) -> {
+
+		    touchView.getParent().requestDisallowInterceptTouchEvent(true);
+
+		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+
+			    touchView.getParent().requestDisallowInterceptTouchEvent(false);
+		    }
+		    return false;
+	    });
 
 	    labelsAdapter = new LabelsListAdapter(labelsList, CreateIssueActivity.this, labelsIds);
 	    assigneesAdapter = new AssigneesListAdapter(ctx, assigneesList, CreateIssueActivity.this, assigneesListData);

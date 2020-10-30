@@ -1,8 +1,10 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -40,6 +42,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         return R.layout.activity_new_organization;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -57,6 +60,17 @@ public class CreateOrganizationActivity extends BaseActivity {
         orgName.requestFocus();
         assert imm != null;
         imm.showSoftInput(orgName, InputMethodManager.SHOW_IMPLICIT);
+
+	    orgDesc.setOnTouchListener((touchView, motionEvent) -> {
+
+		    touchView.getParent().requestDisallowInterceptTouchEvent(true);
+
+		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+
+			    touchView.getParent().requestDisallowInterceptTouchEvent(false);
+		    }
+		    return false;
+	    });
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -73,6 +75,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		return R.layout.activity_create_pr;
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -97,6 +100,17 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
+
+		viewBinding.prBody.setOnTouchListener((touchView, motionEvent) -> {
+
+			touchView.getParent().requestDisallowInterceptTouchEvent(true);
+
+			if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+
+				touchView.getParent().requestDisallowInterceptTouchEvent(false);
+			}
+			return false;
+		});
 
 		labelsAdapter =  new LabelsListAdapter(labelsList, CreatePullRequestActivity.this, labelsIds);
 

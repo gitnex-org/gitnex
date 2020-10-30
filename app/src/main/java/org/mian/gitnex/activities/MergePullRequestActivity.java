@@ -249,6 +249,11 @@ public class MergePullRequestActivity extends BaseActivity {
 					enableProcessButton();
 					Toasty.warning(ctx, getString(R.string.mergePR404ErrorMsg));
 				}
+				else if(response.code() == 405) {
+
+					enableProcessButton();
+					Toasty.warning(ctx, getString(R.string.mergeNotAllowed));;
+				}
 				else {
 
 					enableProcessButton();
