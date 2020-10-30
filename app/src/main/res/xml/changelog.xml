@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.3.0-rc1" versioncode="327">
-        <change>3.3.0 rc1 release brings new input design, new popups, open links from email and including other features with improvements and bug fixes.</change>
+    <release version="3.3.0-rc2" versioncode="328">
+        <change>A lot of bugs are squashed in this release including many UI improvements.</change>
     </release>
 
 </changelog>
