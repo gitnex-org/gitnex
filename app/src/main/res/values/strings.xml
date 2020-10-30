@@ -6,7 +6,6 @@
     <string name="appRepoLink" translatable="false">https://codeberg.org/gitnex/GitNex</string>
     <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
     <string name="commitPage" translatable="false">Your Gitea Version</string>
-    <string name="supportLink" translatable="false">https://liberapay.com/mmarif/donate</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
     <string name="appVersion" translatable="false">Version</string>
     <string name="appBuild" translatable="false">Build</string>

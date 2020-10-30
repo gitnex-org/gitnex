@@ -32,15 +32,6 @@ public class AboutFragment extends Fragment {
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleAbout));
 
-		viewBinding.donationLinkLiberapay.setOnClickListener(v1 -> {
-
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse(getResources().getString(R.string.supportLink)));
-            startActivity(intent);
-        });
-
 		viewBinding.donationLinkPatreon.setOnClickListener(v12 -> {
 
             Intent intent = new Intent();
@@ -72,7 +63,6 @@ public class AboutFragment extends Fragment {
 
 			viewBinding.supportHeader.setVisibility(View.GONE);
 			viewBinding.dividerSupport.setVisibility(View.GONE);
-			viewBinding.donationLinkLiberapay.setVisibility(View.GONE);
 			viewBinding.donationLinkPatreon.setVisibility(View.GONE);
 		}
 
