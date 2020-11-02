@@ -16,10 +16,7 @@ import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityDeeplinksBinding;
-import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
-import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.PullRequests;
 import org.mian.gitnex.models.UserRepositories;
 import java.net.URI;
@@ -38,7 +35,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private ActivityDeeplinksBinding viewBinding;
 	private String currentInstance;
 	private String instanceToken;
-	private boolean noAccountFound = false;
+	private boolean accountFound = false;
 
 	private Intent mainIntent;
 	private Intent issueIntent;
@@ -78,264 +75,223 @@ public class DeepLinksActivity extends BaseActivity {
 		UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
 		List<UserAccount> userAccounts = userAccountsApi.usersAccounts();
 
-		if(userAccounts.size() > 0) {
+		for(UserAccount userAccount : userAccounts) {
 
-			String hostUri;
-			for(int i = 0; i < userAccounts.size(); i++) {
+			String hostUri = userAccount.getInstanceUrl();
 
-				hostUri = userAccounts.get(i).getInstanceUrl();
+			currentInstance = userAccount.getInstanceUrl();
+			instanceToken = userAccount.getToken();
 
-				currentInstance = userAccounts.get(i).getInstanceUrl();
-				instanceToken = userAccounts.get(i).getToken();
+			if(hostUri.toLowerCase().contains(Objects.requireNonNull(data.getHost().toLowerCase()))) {
 
-				if(hostUri.toLowerCase().contains(Objects.requireNonNull(data.getHost().toLowerCase()))) {
+				accountFound = true;
+				break;
 
-					noAccountFound = false;
-					break;
-				}
-
-				noAccountFound = true;
 			}
 		}
 
-		if(noAccountFound) {
+		if(accountFound) {
 
-			checkInstance(data);
-			return;
-		}
+			// redirect to proper fragment/activity, If no action is there, show options where user to want to go like repos, profile, notifications etc
+			if(data.getPathSegments().size() > 0) {
 
-		// redirect to proper fragment/activity, If no action is there, show options where user to want to go like repos, profile, notifications etc
-		if(data.getPathSegments().size() > 0) {
+				viewBinding.progressBar.setVisibility(View.GONE);
+				String[] restOfUrl = Objects.requireNonNull(data.getPath()).split("/");
 
-			viewBinding.progressBar.setVisibility(View.GONE);
-			String[] restOfUrl = Objects.requireNonNull(data.getPath()).split("/");
+				if(data.getPathSegments().contains("issues")) { // issue
 
-			if(data.getPathSegments().contains("issues")) { // issue
+					if(!Objects.requireNonNull(data.getLastPathSegment()).contains("issues") & StringUtils.isNumeric(data.getLastPathSegment())) {
 
-				if(!Objects.requireNonNull(data.getLastPathSegment()).contains("issues") & StringUtils.isNumeric(data.getLastPathSegment())) {
+						issueIntent.putExtra("issueNumber", data.getLastPathSegment());
 
-					issueIntent.putExtra("issueNumber", data.getLastPathSegment());
+						tinyDB.putString("issueNumber", data.getLastPathSegment());
+						tinyDB.putString("issueType", "Issue");
 
-					tinyDB.putString("issueNumber", data.getLastPathSegment());
-					tinyDB.putString("issueType", "Issue");
+						tinyDB.putString("repoFullName", restOfUrl[restOfUrl.length - 4] + "/" + restOfUrl[restOfUrl.length - 3]);
 
-					tinyDB.putString("repoFullName", restOfUrl[restOfUrl.length - 4] + "/" + restOfUrl[restOfUrl.length - 3]);
+						final String repoOwner = restOfUrl[restOfUrl.length - 4];
+						final String repoName = restOfUrl[restOfUrl.length - 3];
 
-					final String repoOwner = restOfUrl[restOfUrl.length - 4];
-					final String repoName = restOfUrl[restOfUrl.length - 3];
+						int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
+						RepositoriesApi repositoryData = new RepositoriesApi(ctx);
 
-					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-					RepositoriesApi repositoryData = new RepositoriesApi(ctx);
+						Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 
-					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
+						if(count == 0) {
 
-					if(count == 0) {
+							long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
+							tinyDB.putLong("repositoryId", id);
+						}
+						else {
 
-						long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDB.putLong("repositoryId", id);
+							Repository dataRepo = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
+							tinyDB.putLong("repositoryId", dataRepo.getRepositoryId());
+						}
+
+						ctx.startActivity(issueIntent);
+						finish();
+					}
+					else if(Objects.requireNonNull(data.getLastPathSegment()).contains("issues")) {
+
+						new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+							goToRepoSection(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 3], restOfUrl[restOfUrl.length - 2], "issue");
+						}, 500);
 					}
 					else {
 
-						Repository dataRepo = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDB.putLong("repositoryId", dataRepo.getRepositoryId());
+						ctx.startActivity(mainIntent);
+						finish();
+					}
+				}
+				else if(data.getPathSegments().contains("pulls")) { // pr
+
+					if(!Objects.requireNonNull(data.getLastPathSegment()).contains("pulls") & StringUtils.isNumeric(data.getLastPathSegment())) {
+
+						new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+							getPullRequest(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 4], restOfUrl[restOfUrl.length - 3], Integer.parseInt(data.getLastPathSegment()));
+						}, 500);
+
+					}
+					else if(Objects.requireNonNull(data.getLastPathSegment()).contains("pulls")) {
+
+						new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+							goToRepoSection(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 3], restOfUrl[restOfUrl.length - 2], "pull");
+						}, 500);
+					}
+					else {
+
+						ctx.startActivity(mainIntent);
+						finish();
 					}
 
-					ctx.startActivity(issueIntent);
-					finish();
 				}
-				else if(Objects.requireNonNull(data.getLastPathSegment()).contains("issues")) {
+				else if(!restOfUrl[restOfUrl.length - 2].equals("") & !restOfUrl[restOfUrl.length - 1].equals("")) { // go to repo
 
 					new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-						goToRepoSection(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 3], restOfUrl[restOfUrl.length - 2], "issue");
+						goToRepoSection(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 2], restOfUrl[restOfUrl.length - 1], "repo");
 					}, 500);
 				}
-				else {
+				else { // no action, show options
 
-					ctx.startActivity(mainIntent);
-					finish();
-				}
-			}
-			else if(data.getPathSegments().contains("pulls")) { // pr
+					if(tinyDB.getInt("defaultScreenId") == 1) { // repos
 
-				if(!Objects.requireNonNull(data.getLastPathSegment()).contains("pulls") & StringUtils.isNumeric(data.getLastPathSegment())) {
-
-					new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-						getPullRequest(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 4], restOfUrl[restOfUrl.length - 3],
-							Integer.parseInt(data.getLastPathSegment()));
-					}, 500);
-
-				}
-				else if(Objects.requireNonNull(data.getLastPathSegment()).contains("pulls")) {
-
-					new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-						goToRepoSection(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 3], restOfUrl[restOfUrl.length - 2], "pull");
-					}, 500);
-				}
-				else {
-
-					ctx.startActivity(mainIntent);
-					finish();
-				}
-
-			}
-			else if(!restOfUrl[restOfUrl.length - 2].equals("") & !restOfUrl[restOfUrl.length - 1].equals("")) { // go to repo
-
-				new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-					goToRepoSection(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 2], restOfUrl[restOfUrl.length - 1], "repo");
-				}, 500);
-			}
-			else { // no action, show options
-
-				if(tinyDB.getInt("defaultScreenId") == 1) { // repos
-
-					mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
-					ctx.startActivity(mainIntent);
-					finish();
-				}
-				else if(tinyDB.getInt("defaultScreenId") == 2) { // org
-
-					mainIntent.putExtra("launchFragmentByLinkHandler", "org");
-					ctx.startActivity(mainIntent);
-					finish();
-				}
-				else if(tinyDB.getInt("defaultScreenId") == 3) { // notifications
-
-					mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
-					ctx.startActivity(mainIntent);
-					finish();
-				}
-				else if(tinyDB.getInt("defaultScreenId") == 4) { // explore
-
-					mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
-					ctx.startActivity(mainIntent);
-					finish();
-				}
-				else if(tinyDB.getInt("defaultScreenId") == 0) { // show options
-
-					viewBinding.noActionFrame.setVisibility(View.VISIBLE);
-					viewBinding.addNewAccountFrame.setVisibility(View.GONE);
-
-					viewBinding.repository.setOnClickListener(repository -> {
-
-						tinyDB.putInt("defaultScreenId", 1);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
 						ctx.startActivity(mainIntent);
 						finish();
-					});
+					}
+					else if(tinyDB.getInt("defaultScreenId") == 2) { // org
 
-					viewBinding.organization.setOnClickListener(organization -> {
-
-						tinyDB.putInt("defaultScreenId", 2);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "org");
 						ctx.startActivity(mainIntent);
 						finish();
-					});
+					}
+					else if(tinyDB.getInt("defaultScreenId") == 3) { // notifications
 
-					viewBinding.notification.setOnClickListener(notification -> {
-
-						tinyDB.putInt("defaultScreenId", 3);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
 						ctx.startActivity(mainIntent);
 						finish();
-					});
+					}
+					else if(tinyDB.getInt("defaultScreenId") == 4) { // explore
 
-					viewBinding.explore.setOnClickListener(explore -> {
-
-						tinyDB.putInt("defaultScreenId", 4);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
 						ctx.startActivity(mainIntent);
 						finish();
-					});
+					}
+					else if(tinyDB.getInt("defaultScreenId") == 0) { // show options
 
-					viewBinding.launchApp2.setOnClickListener(launchApp2 -> {
+						viewBinding.noActionFrame.setVisibility(View.VISIBLE);
+						viewBinding.addNewAccountFrame.setVisibility(View.GONE);
 
-						tinyDB.putInt("defaultScreenId", 0);
-						ctx.startActivity(mainIntent);
-						finish();
-					});
+						viewBinding.repository.setOnClickListener(repository -> {
+
+							tinyDB.putInt("defaultScreenId", 1);
+							mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
+							ctx.startActivity(mainIntent);
+							finish();
+						});
+
+						viewBinding.organization.setOnClickListener(organization -> {
+
+							tinyDB.putInt("defaultScreenId", 2);
+							mainIntent.putExtra("launchFragmentByLinkHandler", "org");
+							ctx.startActivity(mainIntent);
+							finish();
+						});
+
+						viewBinding.notification.setOnClickListener(notification -> {
+
+							tinyDB.putInt("defaultScreenId", 3);
+							mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
+							ctx.startActivity(mainIntent);
+							finish();
+						});
+
+						viewBinding.explore.setOnClickListener(explore -> {
+
+							tinyDB.putInt("defaultScreenId", 4);
+							mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
+							ctx.startActivity(mainIntent);
+							finish();
+						});
+
+						viewBinding.launchApp2.setOnClickListener(launchApp2 -> {
+
+							tinyDB.putInt("defaultScreenId", 0);
+							ctx.startActivity(mainIntent);
+							finish();
+						});
+					}
 				}
 			}
-		}
-		else {
+			else {
 
-			ctx.startActivity(mainIntent);
-			finish();
-		}
-	}
-
-	private void checkInstance(Uri data) {
-
-		URI host;
-		if(data.getPort() > 0) {
-
-			host = UrlBuilder.fromString(UrlHelper.fixScheme(data.getHost(), "https")).withPort(data.getPort()).toUri();
-		}
-		else {
-
-			host = UrlBuilder.fromString(UrlHelper.fixScheme(data.getHost(), "https")).toUri();
-		}
-
-		URI instanceUrl = UrlBuilder.fromUri(host).withScheme(data.getScheme().toLowerCase()).withPath(PathsHelper.join(host.getPath(), "/api/v1/"))
-			.toUri();
-
-		Call<GiteaVersion> callVersion;
-		callVersion = RetrofitClient
-			.getApiInterface(ctx, instanceUrl.toString())
-			.getGiteaVersion();
-
-		callVersion.enqueue(new Callback<GiteaVersion>() {
-
-			@Override
-			public void onResponse(@NonNull final Call<GiteaVersion> callVersion, @NonNull retrofit2.Response<GiteaVersion> responseVersion) {
-
-				if(responseVersion.isSuccessful() || responseVersion.code() == 403) {
-
-					viewBinding.progressBar.setVisibility(View.GONE);
-					viewBinding.addNewAccountFrame.setVisibility(View.VISIBLE);
-					viewBinding.noActionFrame.setVisibility(View.GONE);
-					viewBinding.addAccountText.setText(String.format(getResources().getString(R.string.accountDoesNotExist), data.getHost()));
-
-					viewBinding.addNewAccount.setOnClickListener(addNewAccount -> {
-
-						Intent accountIntent = new Intent(ctx, AddNewAccountActivity.class);
-						startActivity(accountIntent);
-						finish();
-					});
-
-					viewBinding.openInBrowser.setOnClickListener(addNewAccount -> {
-
-						Intent intentBrowser = new Intent();
-						intentBrowser.setAction(Intent.ACTION_VIEW);
-						intentBrowser.addCategory(Intent.CATEGORY_BROWSABLE);
-						intentBrowser.setData(Uri.parse(String.valueOf(host)));
-						startActivity(intentBrowser);
-						finish();
-					});
-
-					viewBinding.launchApp.setOnClickListener(launchApp -> {
-
-						startActivity(mainIntent);
-						finish();
-					});
-				}
-				else {
-
-					Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
-					finish();
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
+				startActivity(mainIntent);
 				finish();
 			}
-		});
+		}
+		else {
+
+			viewBinding.progressBar.setVisibility(View.GONE);
+			viewBinding.addNewAccountFrame.setVisibility(View.VISIBLE);
+			viewBinding.noActionFrame.setVisibility(View.GONE);
+			viewBinding.addAccountText.setText(String.format(getResources().getString(R.string.accountDoesNotExist), data.getHost()));
+
+			viewBinding.addNewAccount.setOnClickListener(addNewAccount -> {
+
+				Intent accountIntent = new Intent(ctx, AddNewAccountActivity.class);
+				startActivity(accountIntent);
+				finish();
+			});
+
+			viewBinding.openInBrowser.setOnClickListener(addNewAccount -> {
+
+				Integer port = data.getPort() >= 0 ? data.getPort() : null;
+
+				URI host = UrlBuilder.fromString(UrlHelper.fixScheme(data.getHost(), "https"))
+					.withPort(port)
+					.toUri();
+
+				Intent intentBrowser = new Intent();
+
+				intentBrowser.setAction(Intent.ACTION_VIEW);
+				intentBrowser.addCategory(Intent.CATEGORY_BROWSABLE);
+				intentBrowser.setData(Uri.parse(String.valueOf(host)));
+
+				startActivity(intentBrowser);
+				finish();
+
+			});
+
+			viewBinding.launchApp.setOnClickListener(launchApp -> {
+
+				startActivity(mainIntent);
+				finish();
+			});
+		}
 	}
 
 	private void getPullRequest(String url, String token, String repoOwner, String repoName, int index) {

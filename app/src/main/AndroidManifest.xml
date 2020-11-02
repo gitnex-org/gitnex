@@ -163,13 +163,19 @@
         <activity
             android:name=".activities.DeepLinksActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:noHistory="true"
             android:launchMode="singleTask">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="*" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="codeberg.org" />
+                <data android:host="gitea.com" />
+                <data android:host="try.gitea.io" />
+                <data android:host="code.obermui.de" />
             </intent-filter>
 
         </activity>
