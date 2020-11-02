@@ -75,9 +75,6 @@
             android:name=".activities.CreateMilestoneActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
-            android:name=".activities.ReplyToIssueActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
-        <activity
             android:name=".activities.IssueDetailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustNothing" />

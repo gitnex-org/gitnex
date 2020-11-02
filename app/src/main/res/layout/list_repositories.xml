@@ -50,7 +50,6 @@
                 android:id="@+id/frameRepoName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -108,10 +107,10 @@
                 android:id="@+id/repoFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:text="@string/repoFullname"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/repoDescription"

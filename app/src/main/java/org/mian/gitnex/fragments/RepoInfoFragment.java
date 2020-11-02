@@ -2,10 +2,8 @@ package org.mian.gitnex.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,28 +25,12 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.UserRepositories;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Locale;
-import io.noties.markwon.AbstractMarkwonPlugin;
-import io.noties.markwon.Markwon;
-import io.noties.markwon.core.CorePlugin;
-import io.noties.markwon.core.MarkwonTheme;
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import io.noties.markwon.ext.tables.TablePlugin;
-import io.noties.markwon.ext.tasklist.TaskListPlugin;
-import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.DefaultMediaDecoder;
-import io.noties.markwon.image.ImageItem;
-import io.noties.markwon.image.ImagesPlugin;
-import io.noties.markwon.image.SchemeHandler;
-import io.noties.markwon.image.gif.GifMediaDecoder;
-import io.noties.markwon.image.svg.SvgMediaDecoder;
-import io.noties.markwon.linkify.LinkifyPlugin;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -113,10 +95,8 @@ public class RepoInfoFragment extends Fragment {
 
 		View v = inflater.inflate(R.layout.fragment_repo_info, container, false);
 
-		TinyDB tinyDb = new TinyDB(getContext());
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		TinyDB tinyDb = TinyDB.getInstance(getContext());
+
 		final String locale = tinyDb.getString("locale");
 		final String timeFormat = tinyDb.getString("dateFormat");
 
@@ -150,8 +130,8 @@ public class RepoInfoFragment extends Fragment {
 
 		repoMetaFrame.setVisibility(View.GONE);
 
-		getRepoInfo(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, locale, timeFormat);
-		getFileContents(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
+		getRepoInfo(Authorization.get(getContext()), repoOwner, repoName, locale, timeFormat);
+		getFileContents(Authorization.get(getContext()), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
 
 		if(isExpandViewVisible()) {
 			toggleExpandView();
@@ -240,13 +220,12 @@ public class RepoInfoFragment extends Fragment {
 		return repoMetaFrame.getVisibility() == View.VISIBLE;
 	}
 
-	private void getRepoInfo(String instanceUrl, String token, final String owner, String repo, final String locale, final String timeFormat) {
+	private void getRepoInfo(String token, final String owner, String repo, final String locale, final String timeFormat) {
 
-		final TinyDB tinyDb = new TinyDB(getContext());
+		final TinyDB tinyDb = TinyDB.getInstance(getContext());
 
 		Call<UserRepositories> call = RetrofitClient
-				.getInstance(instanceUrl, getContext())
-				.getApiInterface()
+				.getApiInterface(ctx)
 				.getUserRepository(token, owner, repo);
 
 		call.enqueue(new Callback<UserRepositories>() {
@@ -333,7 +312,7 @@ public class RepoInfoFragment extends Fragment {
 
 								alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
 								alertDialog.setView(view);
-								alertDialog.setNeutralButton(getResources().getString(R.string.close), null);
+								alertDialog.setPositiveButton(getString(R.string.okButton), null);
 								alertDialog.create().show();
 
 							});
@@ -376,13 +355,10 @@ public class RepoInfoFragment extends Fragment {
 
 	}
 
-	private void getFileContents(String instanceUrl, String token, final String owner, String repo, final String filename) {
-
-		final TinyDB tinyDb = new TinyDB(getContext());
+	private void getFileContents(String token, final String owner, String repo, final String filename) {
 
 		Call<String> call = RetrofitClient
-				.getInstance(instanceUrl, getContext())
-				.getApiInterface()
+				.getApiInterface(getContext())
 				.getFileContents(token, owner, repo, filename);
 
 		call.enqueue(new Callback<String>() {
@@ -394,62 +370,7 @@ public class RepoInfoFragment extends Fragment {
 
 					if (response.code() == 200) {
 
-						final Markwon markwon = Markwon.builder(requireContext())
-							.usePlugin(CorePlugin.create())
-							.usePlugin(ImagesPlugin.create(plugin -> {
-								plugin.addSchemeHandler(new SchemeHandler() {
-									@NonNull
-									@Override
-									public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
-
-										final int resourceId = requireContext().getResources().getIdentifier(
-												raw.substring("drawable://".length()),
-												"drawable",
-												requireContext().getPackageName());
-
-										final Drawable drawable = requireContext().getDrawable(resourceId);
-
-										assert drawable != null;
-										return ImageItem.withResult(drawable);
-									}
-
-									@NonNull
-									@Override
-									public Collection<String> supportedSchemes() {
-										return Collections.singleton("drawable");
-									}
-								});
-								plugin.placeholderProvider(drawable -> null);
-								plugin.addMediaDecoder(GifMediaDecoder.create(false));
-								plugin.addMediaDecoder(SvgMediaDecoder.create(requireContext().getResources()));
-								plugin.addMediaDecoder(SvgMediaDecoder.create());
-								plugin.defaultMediaDecoder(DefaultMediaDecoder.create(requireContext().getResources()));
-								plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-							}))
-							.usePlugin(new AbstractMarkwonPlugin() {
-								@Override
-								public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-									builder
-											.codeTextColor(tinyDb.getInt("codeBlockColor"))
-											.codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-											.linkColor(getResources().getColor(R.color.lightBlue));
-								}
-							})
-							.usePlugin(TablePlugin.create(requireContext()))
-							.usePlugin(TaskListPlugin.create(requireContext()))
-							.usePlugin(HtmlPlugin.create())
-							.usePlugin(StrikethroughPlugin.create())
-							.usePlugin(LinkifyPlugin.create())
-							.build();
-
-						Spanned bodyWithMD = null;
-
-						if (response.body() != null) {
-							bodyWithMD = markwon.toMarkdown(response.body());
-						}
-
-						assert bodyWithMD != null;
-						markwon.setParsedMarkdown(repoFileContents, bodyWithMD);
+						new Markdown(ctx, response.body(), repoFileContents);
 
 					} else if (response.code() == 401) {
 

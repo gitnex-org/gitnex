@@ -116,8 +116,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 		if(getItemCount() > 0) {
 
-			TinyDB tinyDb = new TinyDB(mCtx);
-			final String instanceUrl = tinyDb.getString("instanceUrl");
+			TinyDB tinyDb = TinyDB.getInstance(mCtx);
 			final String loginUid = tinyDb.getString("loginUid");
 			String repoFullName = tinyDb.getString("repoFullName");
 			String[] parts = repoFullName.split("/");
@@ -125,9 +124,8 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 			final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 			Call<UserInfo> call = RetrofitClient
-					.getInstance(instanceUrl, mCtx)
-					.getApiInterface()
-					.checkTeamMember(Authorization.returnAuthentication(mCtx, loginUid, instanceToken), teamId, currentItem.getLogin());
+					.getApiInterface(mCtx)
+					.checkTeamMember(Authorization.get(mCtx), teamId, currentItem.getLogin());
 
 			call.enqueue(new Callback<UserInfo>() {
 

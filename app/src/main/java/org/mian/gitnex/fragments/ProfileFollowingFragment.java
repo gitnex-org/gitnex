@@ -70,10 +70,7 @@ public class ProfileFollowingFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_profile_following, container, false);
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
 
@@ -92,20 +89,20 @@ public class ProfileFollowingFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            ProfileFollowingViewModel.loadFollowingList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+            ProfileFollowingViewModel.loadFollowingList(Authorization.get(getContext()), getContext());
 
         }, 200));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+        fetchDataAsync(Authorization.get(getContext()));
 
         return v;
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken) {
+    private void fetchDataAsync(String instanceToken) {
 
         ProfileFollowingViewModel pfModel = new ViewModelProvider(this).get(ProfileFollowingViewModel.class);
 
-        pfModel.getFollowingList(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
+        pfModel.getFollowingList(instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> pfListMain) {
                 adapter = new ProfileFollowingAdapter(getContext(), pfListMain);

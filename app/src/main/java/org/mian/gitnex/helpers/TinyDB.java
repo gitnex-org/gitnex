@@ -18,14 +18,23 @@ import java.util.Map;
 
 public class TinyDB {
 
-    private SharedPreferences preferences;
+	private static TinyDB tinyDB;
+
+    private final SharedPreferences preferences;
     private String DEFAULT_APP_IMAGEDATA_DIRECTORY;
     private String lastImagePath = "";
 
-    public TinyDB(Context appContext) {
+	private TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
 
+	public static synchronized TinyDB getInstance(Context context) {
+		if(tinyDB == null) {
+			tinyDB = new TinyDB(context);
+		}
+
+		return tinyDB;
+	}
 
     /**
      * Decodes the Bitmap from 'path' and returns it

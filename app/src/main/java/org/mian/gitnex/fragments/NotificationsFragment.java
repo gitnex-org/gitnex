@@ -80,7 +80,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		activity = requireActivity();
 		context = getContext();
-		tinyDB = new TinyDB(context);
+		tinyDB = TinyDB.getInstance(context);
 
 		pageResultLimit = StaticGlobalVariables.getCurrentResultLimit(context);
 		tinyDB.putString("notificationsFilterState", currentFilterMode);
@@ -193,7 +193,6 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 			loadingMoreView.setVisibility(View.VISIBLE);
 		}
 
-		String instanceUrl = tinyDB.getString("instanceUrl");
 		String loginUid = tinyDB.getString("loginUid");
 		String instanceToken = "token " + tinyDB.getString(loginUid + "-token");
 
@@ -201,8 +200,8 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 			new String[]{"pinned", "read"} :
 			new String[]{"pinned", "unread"};
 
-		Call<List<NotificationThread>> call = RetrofitClient.getInstance(instanceUrl, context)
-			.getApiInterface()
+		Call<List<NotificationThread>> call = RetrofitClient
+			.getApiInterface(context)
 			.getNotificationThreads(instanceToken, false, filter,
 				StaticGlobalVariables.defaultOldestTimestamp, "",
 				pageCurrentIndex, pageResultLimit);

@@ -43,14 +43,9 @@ public class CreateRepoActivity extends BaseActivity {
     private EditText repoName;
     private EditText repoDesc;
     private CheckBox repoAccess;
-    final Context ctx = this;
-    private Context appCtx;
-    private TinyDB tinyDb;
 
-    private String instanceUrl;
 	private String loginUid;
 	private String userLogin;
-	private String instanceToken;
 
 	private String selectedOwner;
 
@@ -69,15 +64,11 @@ public class CreateRepoActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-	    tinyDb = new TinyDB(appCtx);
 
         boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 
-        instanceUrl = tinyDb.getString("instanceUrl");
-        loginUid = tinyDb.getString("loginUid");
-        userLogin = tinyDb.getString("userLogin");
-        instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        loginUid = tinyDB.getString("loginUid");
+        userLogin = tinyDB.getString("userLogin");
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -94,7 +85,7 @@ public class CreateRepoActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         spinner = findViewById(R.id.ownerSpinner);
-        getOrganizations(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), userLogin);
+        getOrganizations(Authorization.get(ctx), userLogin);
 
         createRepo = findViewById(R.id.createNewRepoButton);
         disableProcessButton();
@@ -158,11 +149,11 @@ public class CreateRepoActivity extends BaseActivity {
         else {
 
             disableProcessButton();
-            createNewRepository(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
+            createNewRepository(Authorization.get(ctx), loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
         }
     }
 
-    private void createNewRepository(final String instanceUrl, final String token, String loginUid, String repoName, String repoDesc, String selectedOwner, boolean isPrivate) {
+    private void createNewRepository(final String token, String loginUid, String repoName, String repoDesc, String selectedOwner, boolean isPrivate) {
 
         OrganizationRepository createRepository = new OrganizationRepository(true, repoDesc, null, null, repoName, isPrivate, "Default");
 
@@ -170,15 +161,13 @@ public class CreateRepoActivity extends BaseActivity {
         if(selectedOwner.equals(loginUid)) {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl, ctx)
-                    .getApiInterface()
+                    .getApiInterface(ctx)
                     .createNewUserRepository(token, createRepository);
         }
         else {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl, ctx)
-                    .getApiInterface()
+                    .getApiInterface(ctx)
                     .createNewUserOrgRepository(token, selectedOwner, createRepository);
         }
 
@@ -189,7 +178,7 @@ public class CreateRepoActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(appCtx);
+                    TinyDB tinyDb = TinyDB.getInstance(appCtx);
                     tinyDb.putBoolean("repoCreated", true);
                     Toasty.success(ctx, getString(R.string.repoCreated));
                     enableProcessButton();
@@ -224,11 +213,10 @@ public class CreateRepoActivity extends BaseActivity {
         });
     }
 
-    private void getOrganizations(String instanceUrl, String instanceToken, final String userLogin) {
+    private void getOrganizations(String instanceToken, final String userLogin) {
 
         Call<List<OrgOwner>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getOrgOwners(instanceToken);
 
         call.enqueue(new Callback<List<OrgOwner>>() {
@@ -249,9 +237,9 @@ public class CreateRepoActivity extends BaseActivity {
 
 			            for(int i = 0; i < organizationsList_.size(); i++) {
 
-				            if(!tinyDb.getString("organizationId").isEmpty()) {
+				            if(!tinyDB.getString("organizationId").isEmpty()) {
 
-					            if(Integer.parseInt(tinyDb.getString("organizationId")) == organizationsList_.get(i).getId()) {
+					            if(Integer.parseInt(tinyDB.getString("organizationId")) == organizationsList_.get(i).getId()) {
 						            organizationId = i + 1;
 					            }
 				            }
@@ -267,7 +255,7 @@ public class CreateRepoActivity extends BaseActivity {
 
 		            spinner.setOnItemClickListener ((parent, view, position, id) -> selectedOwner = organizationsList.get(position).getUsername());
 
-		            if(tinyDb.getBoolean("organizationAction") & organizationId != 0) {
+		            if(tinyDB.getBoolean("organizationAction") & organizationId != 0) {
 
 			            int selectOwnerById = organizationId;
 			            new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -276,7 +264,7 @@ public class CreateRepoActivity extends BaseActivity {
 				            selectedOwner = organizationsList.get(selectOwnerById).getUsername();
 			            }, 500);
 
-			            tinyDb.putBoolean("organizationAction", false);
+			            tinyDB.putBoolean("organizationAction", false);
 		            }
 
 		            enableProcessButton();

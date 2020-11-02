@@ -27,19 +27,18 @@ public class FilesViewModel extends ViewModel {
     private static MutableLiveData<List<Files>> filesList;
     private static MutableLiveData<List<Files>> filesList2;
 
-    public LiveData<List<Files>> getFilesList(String instanceUrl, String token, String owner, String repo, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    public LiveData<List<Files>> getFilesList(String token, String owner, String repo, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         filesList = new MutableLiveData<>();
-        loadFilesList(instanceUrl, token, owner, repo, ref, ctx, progressBar, noDataFiles);
+        loadFilesList(token, owner, repo, ref, ctx, progressBar, noDataFiles);
 
         return filesList;
     }
 
-    private static void loadFilesList(String instanceUrl, String token, String owner, String repo, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    private static void loadFilesList(String token, String owner, String repo, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         Call<List<Files>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getFiles(token, owner, repo, ref);
 
         call.enqueue(new Callback<List<Files>>() {
@@ -79,19 +78,18 @@ public class FilesViewModel extends ViewModel {
         });
     }
 
-    public LiveData<List<Files>> getFilesList2(String instanceUrl, String token, String owner, String repo, String filesDir, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    public LiveData<List<Files>> getFilesList2(String token, String owner, String repo, String filesDir, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         filesList2 = new MutableLiveData<>();
-        loadFilesList2(instanceUrl, token, owner, repo, filesDir, ref, ctx, progressBar, noDataFiles);
+        loadFilesList2(token, owner, repo, filesDir, ref, ctx, progressBar, noDataFiles);
 
         return filesList2;
     }
 
-    private static void loadFilesList2(String instanceUrl, String token, String owner, String repo, String filesDir, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    private static void loadFilesList2(String token, String owner, String repo, String filesDir, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         Call<List<Files>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getDirFiles(token, owner, repo, filesDir, ref);
 
         call.enqueue(new Callback<List<Files>>() {

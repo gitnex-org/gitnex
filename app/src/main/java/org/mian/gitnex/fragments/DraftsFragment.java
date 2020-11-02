@@ -54,7 +54,7 @@ public class DraftsFragment extends Fragment {
 
 	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.titleDrafts));
 
-        TinyDB tinyDb = new TinyDB(ctx);
+        TinyDB tinyDb = TinyDB.getInstance(ctx);
 
 	    draftsList_ = new ArrayList<>();
         draftsApi = new DraftsApi(ctx);

@@ -10,11 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
-import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -39,8 +37,6 @@ public class CreateLabelActivity extends BaseActivity {
     private TextView colorPicker;
     private EditText labelName;
     private Button createLabelButton;
-    final Context ctx = this;
-    private Context appCtx;
 
     @Override
     protected int getLayoutResourceId(){
@@ -51,22 +47,20 @@ public class CreateLabelActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        final TinyDB tinyDb = new TinyDB(appCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];
-        final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(getIntent().getStringExtra("labelAction") != null && Objects.requireNonNull(getIntent().getStringExtra("labelAction")).equals("delete")) {
 
-            deleteLabel(instanceUrl, instanceToken, repoOwner, repoName, Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("labelId"))), loginUid);
+            deleteLabel(instanceToken, repoOwner, repoName, Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("labelId"))), loginUid);
             finish();
             return;
 
@@ -129,14 +123,13 @@ public class CreateLabelActivity extends BaseActivity {
 
     private void processUpdateLabel() {
 
-        final TinyDB tinyDb = new TinyDB(appCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(appCtx);
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];
-        final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
@@ -171,7 +164,7 @@ public class CreateLabelActivity extends BaseActivity {
         }
 
         disableProcessButton();
-        patchLabel(instanceUrl, instanceToken, repoOwner, repoName, updateLabelName, updateLabelColor, Integer.parseInt(
+        patchLabel(instanceToken, repoOwner, repoName, updateLabelName, updateLabelColor, Integer.parseInt(
 	        Objects.requireNonNull(getIntent().getStringExtra("labelId"))), loginUid);
 
     }
@@ -180,12 +173,11 @@ public class CreateLabelActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(appCtx);
+        TinyDB tinyDb = TinyDB.getInstance(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];
-        final String instanceUrl = tinyDb.getString("instanceUrl");
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
@@ -220,20 +212,19 @@ public class CreateLabelActivity extends BaseActivity {
         }
 
         disableProcessButton();
-        createNewLabel(instanceUrl, instanceToken, repoOwner, repoName, newLabelName, newLabelColor, loginUid);
+        createNewLabel(instanceToken, repoOwner, repoName, newLabelName, newLabelColor, loginUid);
     }
 
-    private void createNewLabel(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String newLabelName, String newLabelColor, String loginUid) {
+    private void createNewLabel(final String instanceToken, String repoOwner, String repoName, String newLabelName, String newLabelColor, String loginUid) {
 
         CreateLabel createLabelFunc = new CreateLabel(newLabelName, newLabelColor);
-        final TinyDB tinyDb = new TinyDB(appCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
         Call<CreateLabel> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .createLabel(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, createLabelFunc);
+                .getApiInterface(ctx)
+                .createLabel(Authorization.get(ctx), repoOwner, repoName, createLabelFunc);
 
         call.enqueue(new Callback<CreateLabel>() {
 
@@ -274,17 +265,16 @@ public class CreateLabelActivity extends BaseActivity {
 
     }
 
-    private void patchLabel(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String updateLabelName, String updateLabelColor, int labelId, String loginUid) {
+    private void patchLabel(final String instanceToken, String repoOwner, String repoName, String updateLabelName, String updateLabelColor, int labelId, String loginUid) {
 
         CreateLabel createLabelFunc = new CreateLabel(updateLabelName, updateLabelColor);
-        final TinyDB tinyDb = new TinyDB(appCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
         Call<CreateLabel> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .patchLabel(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, labelId, createLabelFunc);
+                .getApiInterface(appCtx)
+                .patchLabel(Authorization.get(ctx), repoOwner, repoName, labelId, createLabelFunc);
 
         call.enqueue(new Callback<CreateLabel>() {
 
@@ -347,14 +337,13 @@ public class CreateLabelActivity extends BaseActivity {
         };
     }
 
-    private void deleteLabel(final String instanceUrl, final String instanceToken, final String repoOwner, final String repoName, int labelId, String loginUid) {
+    private void deleteLabel(final String instanceToken, final String repoOwner, final String repoName, int labelId, String loginUid) {
 
         Call<Labels> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .deleteLabel(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, labelId);
+                .getApiInterface(appCtx)
+                .deleteLabel(Authorization.get(ctx), repoOwner, repoName, labelId);
 
         call.enqueue(new Callback<Labels>() {
 
@@ -366,7 +355,7 @@ public class CreateLabelActivity extends BaseActivity {
                     if(response.code() == 204) {
 
                         Toasty.success(ctx, getString(R.string.labelDeleteText));
-                        LabelsViewModel.loadLabelsList(instanceUrl, instanceToken, repoOwner, repoName, ctx);
+                        LabelsViewModel.loadLabelsList(instanceToken, repoOwner, repoName, ctx);
                         getIntent().removeExtra("labelAction");
                         getIntent().removeExtra("labelId");
                     }

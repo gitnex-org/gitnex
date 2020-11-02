@@ -24,7 +24,6 @@ import org.mian.gitnex.adapters.AdminGetUsersAdapter;
 import org.mian.gitnex.fragments.BottomSheetAdminUsersFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 
 /**
@@ -34,8 +33,6 @@ import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAdminUsersFragment.BottomSheetListener {
 
     private View.OnClickListener onClickListener;
-    final Context ctx = this;
-    private Context appCtx;
     private AdminGetUsersAdapter adapter;
     private RecyclerView mRecyclerView;
     private TextView noDataUsers;
@@ -50,12 +47,6 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         ImageView closeActivity = findViewById(R.id.close);
         noDataUsers = findViewById(R.id.noDataUsers);
@@ -79,19 +70,19 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            AdminGetUsersViewModel.loadUsersList(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
+            AdminGetUsersViewModel.loadUsersList(ctx, Authorization.get(ctx));
 
         }, 500));
 
-        fetchDataAsync(ctx, instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken));
+        fetchDataAsync(ctx, Authorization.get(ctx));
 
     }
 
-    private void fetchDataAsync(Context ctx, String instanceUrl, String instanceToken) {
+    private void fetchDataAsync(Context ctx, String instanceToken) {
 
         AdminGetUsersViewModel usersModel = new ViewModelProvider(this).get(AdminGetUsersViewModel.class);
 
-        usersModel.getUsersList(ctx, instanceUrl, instanceToken).observe(this, usersListMain -> {
+        usersModel.getUsersList(ctx, instanceToken).observe(this, usersListMain -> {
 
             adapter = new AdminGetUsersAdapter(ctx, usersListMain);
             if(adapter.getItemCount() > 0) {

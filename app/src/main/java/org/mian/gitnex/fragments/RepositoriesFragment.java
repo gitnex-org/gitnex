@@ -26,7 +26,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.RepositoriesListViewModel;
@@ -49,15 +48,8 @@ public class RepositoriesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
-
         final View v = inflater.inflate(R.layout.fragment_repositories, container, false);
         setHasOptionsMenu(true);
-
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
 
@@ -101,12 +93,11 @@ public class RepositoriesFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+            RepositoriesListViewModel.loadReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
 
         }, 50));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), pageSize, resultLimit);
-
+        fetchDataAsync(Authorization.get(getContext()), pageSize, resultLimit);
         return v;
 
     }
@@ -114,22 +105,21 @@ public class RepositoriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("repoCreated")) {
-            RepositoriesListViewModel.loadReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+            RepositoriesListViewModel.loadReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
             tinyDb.putBoolean("repoCreated", false);
         }
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, int pageSize, int resultLimit) {
+    private void fetchDataAsync(String instanceToken, int pageSize, int resultLimit) {
 
         RepositoriesListViewModel repoModel = new ViewModelProvider(this).get(RepositoriesListViewModel.class);
 
-        repoModel.getUserRepositories(instanceUrl, instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
+        repoModel.getUserRepositories(instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
 	        reposListMain -> {
 
 	            adapter = new ReposListAdapter(getContext(), reposListMain);
@@ -149,8 +139,6 @@ public class RepositoriesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

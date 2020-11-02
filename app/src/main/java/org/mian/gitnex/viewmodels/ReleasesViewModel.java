@@ -2,13 +2,13 @@ package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.models.Releases;
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.models.Releases;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,19 +21,18 @@ public class ReleasesViewModel extends ViewModel {
 
     private static MutableLiveData<List<Releases>> releasesList;
 
-    public LiveData<List<Releases>> getReleasesList(String instanceUrl, String token, String owner, String repo, Context ctx) {
+    public LiveData<List<Releases>> getReleasesList(String token, String owner, String repo, Context ctx) {
 
         releasesList = new MutableLiveData<>();
-        loadReleasesList(instanceUrl, token, owner, repo, ctx);
+        loadReleasesList(token, owner, repo, ctx);
 
         return releasesList;
     }
 
-    public static void loadReleasesList(String instanceUrl, String token, String owner, String repo, Context ctx) {
+    public static void loadReleasesList(String token, String owner, String repo, Context ctx) {
 
         Call<List<Releases>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getReleases(token, owner, repo);
 
         call.enqueue(new Callback<List<Releases>>() {

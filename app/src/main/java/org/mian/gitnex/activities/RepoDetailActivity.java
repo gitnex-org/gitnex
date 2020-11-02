@@ -42,7 +42,6 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.Branches;
@@ -71,12 +70,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	private FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone;
 	private FragmentRefreshListenerFiles fragmentRefreshListenerFiles;
 
-	private final Context ctx = this;
-	private Context appCtx;
-
-	private TinyDB tinyDB;
-
-	private String instanceUrl;
 	private String loginUid;
 	private String instanceToken;
 
@@ -96,9 +89,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-
-		tinyDB = new TinyDB(appCtx);
 
 		String[] repoNameParts = tinyDB.getString("repoFullName").split("/");
 		repositoryOwner = repoNameParts[0];
@@ -113,7 +103,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repositoryName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		instanceUrl = tinyDB.getString("instanceUrl");
 		loginUid = tinyDB.getString("loginUid");
 		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
 
@@ -198,7 +187,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 			textViewBadgePull.setVisibility(View.GONE);
 			textViewBadgeRelease.setVisibility(View.GONE);
 
-			getRepoInfo(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repositoryOwner, repositoryName);
+			getRepoInfo(Authorization.get(ctx), repositoryOwner, repositoryName);
 			ColorStateList textColor = tabLayout.getTabTextColors();
 
 			// Issue count
@@ -254,8 +243,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 			}
 		}
 
-		checkRepositoryStarStatus(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repositoryOwner, repositoryName);
-		checkRepositoryWatchStatus(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repositoryOwner, repositoryName);
+		checkRepositoryStarStatus(Authorization.get(ctx), repositoryOwner, repositoryName);
+		checkRepositoryWatchStatus(Authorization.get(ctx), repositoryOwner, repositoryName);
 	}
 
 	@Override
@@ -265,7 +254,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 		if(tinyDB.getBoolean("enableCounterIssueBadge")) {
 
-			getRepoInfo(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repositoryOwner, repositoryName);
+			getRepoInfo(Authorization.get(ctx), repositoryOwner, repositoryName);
 		}
 	}
 
@@ -434,8 +423,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 	private void chooseBranch() {
 
-		Call<List<Branches>> call = RetrofitClient.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+		Call<List<Branches>> call = RetrofitClient
+			.getApiInterface(ctx)
 			.getBranches(instanceToken, repositoryOwner, repositoryName);
 
 		call.enqueue(new Callback<List<Branches>>() {
@@ -547,9 +536,9 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 		}
 	}
 
-	private void getRepoInfo(String instanceUrl, String token, final String owner, String repo) {
+	private void getRepoInfo(String token, final String owner, String repo) {
 
-		Call<UserRepositories> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getUserRepository(token, owner, repo);
+		Call<UserRepositories> call = RetrofitClient.getApiInterface(ctx).getUserRepository(token, owner, repo);
 		call.enqueue(new Callback<UserRepositories>() {
 
 			@Override
@@ -599,9 +588,9 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 	}
 
-	private void checkRepositoryStarStatus(String instanceUrl, String instanceToken, final String owner, String repo) {
+	private void checkRepositoryStarStatus(String instanceToken, final String owner, String repo) {
 
-		Call<JsonElement> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().checkRepoStarStatus(instanceToken, owner, repo);
+		Call<JsonElement> call = RetrofitClient.getApiInterface(ctx).checkRepoStarStatus(instanceToken, owner, repo);
 		call.enqueue(new Callback<JsonElement>() {
 
 			@Override
@@ -619,11 +608,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 	}
 
-	private void checkRepositoryWatchStatus(String instanceUrl, String instanceToken, final String owner, String repo) {
+	private void checkRepositoryWatchStatus(String instanceToken, final String owner, String repo) {
 
 		Call<WatchInfo> call;
 
-		call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().checkRepoWatchStatus(instanceToken, owner, repo);
+		call = RetrofitClient.getApiInterface(ctx).checkRepoWatchStatus(instanceToken, owner, repo);
 		call.enqueue(new Callback<WatchInfo>() {
 
 			@Override

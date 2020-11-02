@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -42,8 +41,6 @@ import retrofit2.Response;
 
 public class RepoForksActivity extends BaseActivity {
 
-	final Context ctx = this;
-	private Context appCtx;
 	private View.OnClickListener onClickListener;
 	private TextView noData;
 	private ProgressBar progressBar;
@@ -67,14 +64,11 @@ public class RepoForksActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
+
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		TinyDB tinyDb = new TinyDB(appCtx);
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
 		String repoFullNameForForks = getIntent().getStringExtra("repoFullNameForForks");
 		assert repoFullNameForForks != null;
@@ -111,7 +105,7 @@ public class RepoForksActivity extends BaseActivity {
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
-			loadInitial(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, pageSize, resultLimit);
+			loadInitial(Authorization.get(ctx), repoOwner, repoName, pageSize, resultLimit);
 			adapter.notifyDataChanged();
 
 		}, 200));
@@ -122,7 +116,7 @@ public class RepoForksActivity extends BaseActivity {
 			if(forksList.size() == resultLimit || pageSize == resultLimit) {
 
 				int page = (forksList.size() + resultLimit) / resultLimit;
-				loadMore(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, page, resultLimit);
+				loadMore(Authorization.get(ctx), repoOwner, repoName, page, resultLimit);
 			}
 		}));
 
@@ -130,14 +124,13 @@ public class RepoForksActivity extends BaseActivity {
 		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 		recyclerView.setAdapter(adapter);
 
-		loadInitial(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, pageSize, resultLimit);
+		loadInitial(Authorization.get(ctx), repoOwner, repoName, pageSize, resultLimit);
 	}
 
-	private void loadInitial(String instanceUrl, String instanceToken, String repoOwner, String repoName, int pageSize, int resultLimit) {
+	private void loadInitial(String instanceToken, String repoOwner, String repoName, int pageSize, int resultLimit) {
 
 		Call<List<UserRepositories>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.getRepositoryForks(instanceToken, repoOwner, repoName, pageSize, resultLimit);
 
 		call.enqueue(new Callback<List<UserRepositories>>() {
@@ -180,13 +173,12 @@ public class RepoForksActivity extends BaseActivity {
 
 	}
 
-	private void loadMore(String instanceUrl, String instanceToken, String repoOwner, String repoName, int page, int resultLimit) {
+	private void loadMore(String instanceToken, String repoOwner, String repoName, int page, int resultLimit) {
 
 		progressLoadMore.setVisibility(View.VISIBLE);
 
 		Call<List<UserRepositories>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.getRepositoryForks(instanceToken, repoOwner, repoName, page, resultLimit);
 
 		call.enqueue(new Callback<List<UserRepositories>>() {

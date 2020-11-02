@@ -36,7 +36,7 @@ public class NotificationsMaster {
 
 	public static void hireWorker(Context context) {
 
-		TinyDB tinyDB = new TinyDB(context);
+		TinyDB tinyDB = TinyDB.getInstance(context);
 
 		if(notificationsSupported == -1) {
 			checkVersion(tinyDB);

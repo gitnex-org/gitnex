@@ -74,6 +74,7 @@ Thanks to all the open source libraries, contributors and donators.
 - Okhttp
 - Picasso
 - Markwon
+- Prism4j
 - Prettytime
 - Amulyakhare/textdrawable
 - Vdurmont/emoji-java

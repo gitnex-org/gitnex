@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,10 +45,6 @@ public class LoginActivity extends BaseActivity {
 
 	private enum LoginType {BASIC, TOKEN}
 
-	private Context appCtx;
-	private Context ctx = this;
-	private TinyDB tinyDB;
-
 	private Button loginButton;
 	private EditText instanceUrlET, loginUidET, loginPassword, otpCode, loginTokenCode;
 	private AutoCompleteTextView protocolSpinner;
@@ -67,9 +62,7 @@ public class LoginActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
 
-		tinyDB = new TinyDB(appCtx);
 		NetworkObserver networkMonitor = new NetworkObserver(ctx);
 
 		loginButton = findViewById(R.id.login_button);
@@ -210,7 +203,7 @@ public class LoginActivity extends BaseActivity {
 				int loginOTP = (otpCode.length() > 0) ? Integer.parseInt(otpCode.getText().toString().trim()) : 0;
 				tinyDB.putString("loginUid", loginUid);
 
-				versionCheck(instanceUrl.toString(), loginUid, loginPass, loginOTP, loginToken, loginType);
+				versionCheck(loginUid, loginPass, loginOTP, loginToken, loginType);
 
 			}
 			else {
@@ -222,7 +215,7 @@ public class LoginActivity extends BaseActivity {
 					return;
 				}
 
-				versionCheck(instanceUrl.toString(), loginUid, loginPass, 123, loginToken, loginType);
+				versionCheck(loginUid, loginPass, 123, loginToken, loginType);
 			}
 
 		}
@@ -234,22 +227,22 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
-	private void versionCheck(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP, final String loginToken,
+	private void versionCheck(final String loginUid, final String loginPass, final int loginOTP, final String loginToken,
 		final LoginType loginType) {
 
 		Call<GiteaVersion> callVersion;
 
 		if(!loginToken.equals("")) {
 
-			callVersion = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithToken("token " + loginToken);
+			callVersion = RetrofitClient.getApiInterface(appCtx).getGiteaVersionWithToken("token " + loginToken);
 		}
 		else {
 
 			String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
 			callVersion =
-				(loginOTP != 0) ? RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithOTP(credential, loginOTP) :
-					RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithBasic(credential);
+				(loginOTP != 0) ? RetrofitClient.getApiInterface(appCtx).getGiteaVersionWithOTP(credential, loginOTP) :
+					RetrofitClient.getApiInterface(appCtx).getGiteaVersionWithBasic(credential);
 		}
 
 		callVersion.enqueue(new Callback<GiteaVersion>() {
@@ -287,7 +280,7 @@ public class LoginActivity extends BaseActivity {
 						alertDialogBuilder.setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
 
 							dialog.dismiss();
-							login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken);
+							login(loginType, loginUid, loginPass, loginOTP, loginToken);
 						});
 
 						alertDialogBuilder.create().show();
@@ -295,34 +288,34 @@ public class LoginActivity extends BaseActivity {
 					}
 					else if(gitea_version.lessOrEqual(getString(R.string.versionHigh))) {
 
-						login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken);
+						login(loginType, loginUid, loginPass, loginOTP, loginToken);
 					}
 					else {
 
 						Toasty.warning(ctx, getResources().getString(R.string.versionUnsupportedNew));
-						login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken);
+						login(loginType, loginUid, loginPass, loginOTP, loginToken);
 
 					}
 
 				}
 				else if(responseVersion.code() == 403) {
 
-					login(loginType, instanceUrl, loginUid, loginPass, loginOTP, loginToken);
+					login(loginType, loginUid, loginPass, loginOTP, loginToken);
 				}
 			}
 
-			private void login(LoginType loginType, String instanceUrl, String loginUid, String loginPass, int loginOTP, String loginToken) {
+			private void login(LoginType loginType, String loginUid, String loginPass, int loginOTP, String loginToken) {
 
 				// ToDo: before store/create token: get UserInfo to check DB/AccountManager if there already exist a token
 				// the setup methods then can better handle all different cases
 
 				if(loginType == LoginType.BASIC) {
 
-					setup(instanceUrl, loginUid, loginPass, loginOTP);
+					setup(loginUid, loginPass, loginOTP);
 				}
 				else if(loginType == LoginType.TOKEN) { // Token
 
-					setupUsingExistingToken(instanceUrl, loginToken);
+					setupUsingExistingToken(loginToken);
 				}
 			}
 
@@ -336,9 +329,9 @@ public class LoginActivity extends BaseActivity {
 		});
 	}
 
-	private void setupUsingExistingToken(String instanceUrl, final String loginToken) {
+	private void setupUsingExistingToken(final String loginToken) {
 
-		Call<UserInfo> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getUserInfo("token " + loginToken);
+		Call<UserInfo> call = RetrofitClient.getApiInterface(appCtx).getUserInfo("token " + loginToken);
 
 		call.enqueue(new Callback<UserInfo>() {
 
@@ -358,14 +351,14 @@ public class LoginActivity extends BaseActivity {
 						tinyDB.putString("userLogin", userDetails.getUsername());
 
 						// insert new account to db if does not exist
-						String accountName = userDetails.getUsername() + "@" + instanceUrl;
+						String accountName = userDetails.getUsername() + "@" + TinyDB.getInstance(ctx).getString("instanceUrl");
 						UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
 						int checkAccount = userAccountsApi.getCount(accountName);
 						long accountId;
 
 						if(checkAccount == 0) {
 
-							accountId = userAccountsApi.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
+							accountId = userAccountsApi.insertNewAccount(accountName, TinyDB.getInstance(ctx).getString("instanceUrl"), userDetails.getUsername(), loginToken, "");
 							tinyDB.putInt("currentActiveAccountId", (int) accountId);
 						}
 						else {
@@ -402,7 +395,7 @@ public class LoginActivity extends BaseActivity {
 
 	}
 
-	private void setup(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP) {
+	private void setup(final String loginUid, final String loginPass, final int loginOTP) {
 
 		final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 		final String tokenName = "gitnex-app-" + device_id;
@@ -410,11 +403,11 @@ public class LoginActivity extends BaseActivity {
 		Call<List<UserTokens>> call;
 		if(loginOTP != 0) {
 
-			call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getUserTokensWithOTP(credential, loginOTP, loginUid);
+			call = RetrofitClient.getApiInterface(appCtx).getUserTokensWithOTP(credential, loginOTP, loginUid);
 		}
 		else {
 
-			call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getUserTokens(credential, loginUid);
+			call = RetrofitClient.getApiInterface(appCtx).getUserTokens(credential, loginUid);
 		}
 
 		call.enqueue(new Callback<List<UserTokens>>() {
@@ -438,12 +431,12 @@ public class LoginActivity extends BaseActivity {
 							Call<Void> delcall;
 							if(loginOTP != 0) {
 
-								delcall = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface()
+								delcall = RetrofitClient.getApiInterface(ctx)
 									.deleteTokenWithOTP(credential, loginOTP, loginUid, t.getId());
 							}
 							else {
 
-								delcall = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().deleteToken(credential, loginUid, t.getId());
+								delcall = RetrofitClient.getApiInterface(ctx).deleteToken(credential, loginUid, t.getId());
 							}
 
 							delcall.enqueue(new Callback<Void>() {
@@ -453,7 +446,7 @@ public class LoginActivity extends BaseActivity {
 
 									if(response.code() == 204) {
 
-										setupToken(instanceUrl, loginUid, loginPass, loginOTP, tokenName);
+										setupToken(loginUid, loginPass, loginOTP, tokenName);
 									}
 									else {
 
@@ -474,7 +467,7 @@ public class LoginActivity extends BaseActivity {
 						}
 					}
 
-					setupToken(instanceUrl, loginUid, loginPass, loginOTP, tokenName);
+					setupToken(loginUid, loginPass, loginOTP, tokenName);
 				}
 				else {
 
@@ -494,7 +487,7 @@ public class LoginActivity extends BaseActivity {
 
 	}
 
-	private void setupToken(final String instanceUrl, final String loginUid, final String loginPass, final int loginOTP, final String tokenName) {
+	private void setupToken(final String loginUid, final String loginPass, final int loginOTP, final String tokenName) {
 
 		final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
@@ -503,12 +496,13 @@ public class LoginActivity extends BaseActivity {
 
 		if(loginOTP != 0) {
 
-			callCreateToken = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface()
+			callCreateToken = RetrofitClient.getApiInterface(ctx)
 				.createNewTokenWithOTP(credential, loginOTP, loginUid, createUserToken);
 		}
 		else {
 
-			callCreateToken = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().createNewToken(credential, loginUid, createUserToken);
+			callCreateToken = RetrofitClient.getApiInterface(ctx)
+				.createNewToken(credential, loginUid, createUserToken);
 		}
 
 		callCreateToken.enqueue(new Callback<UserTokens>() {
@@ -523,7 +517,7 @@ public class LoginActivity extends BaseActivity {
 
 					if(!newToken.getSha1().equals("")) {
 
-						Call<UserInfo> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface()
+						Call<UserInfo> call = RetrofitClient.getApiInterface(ctx)
 							.getUserInfo("token " + newToken.getSha1());
 
 						call.enqueue(new Callback<UserInfo>() {
@@ -545,7 +539,7 @@ public class LoginActivity extends BaseActivity {
 										tinyDB.putString(loginUid + "-token-last-eight", newToken.getToken_last_eight());
 
 										// insert new account to db if does not exist
-										String accountName = userDetails.getUsername() + "@" + instanceUrl;
+										String accountName = userDetails.getUsername() + "@" + TinyDB.getInstance(ctx).getString("instanceUrl");
 										UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
 										int checkAccount = userAccountsApi.getCount(accountName);
 										long accountId;
@@ -553,7 +547,7 @@ public class LoginActivity extends BaseActivity {
 										if(checkAccount == 0) {
 
 											accountId = userAccountsApi
-												.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), newToken.getSha1(), "");
+												.insertNewAccount(accountName, TinyDB.getInstance(ctx).getString("instanceUrl"), userDetails.getUsername(), newToken.getSha1(), "");
 											tinyDB.putInt("currentActiveAccountId", (int) accountId);
 										}
 										else {

@@ -31,7 +31,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
 	public NotificationsAdapter(Context context, List<NotificationThread> notificationThreads, OnMoreClickedListener onMoreClickedListener, OnNotificationClickedListener onNotificationClickedListener) {
 
-		this.tinyDb = new TinyDB(context);
+		this.tinyDb = TinyDB.getInstance(context);
 		this.context = context;
 		this.notificationThreads = notificationThreads;
 		this.onMoreClickedListener = onMoreClickedListener;

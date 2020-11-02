@@ -146,19 +146,16 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
 
         if(getItemCount() > 0) {
 
-            TinyDB tinyDb = new TinyDB(mCtx);
-            final String instanceUrl = tinyDb.getString("instanceUrl");
+            TinyDB tinyDb = TinyDB.getInstance(mCtx);
             final String loginUid = tinyDb.getString("loginUid");
             String repoFullName = tinyDb.getString("repoFullName");
             String[] parts = repoFullName.split("/");
             final String repoOwner = parts[0];
             final String repoName = parts[1];
-            final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
             Call<Collaborators> call = RetrofitClient
-                    .getInstance(instanceUrl, mCtx)
-                    .getApiInterface()
-                    .checkRepoCollaborator(Authorization.returnAuthentication(mCtx, loginUid, instanceToken), repoOwner, repoName, currentItem.getUsername());
+                    .getApiInterface(mCtx)
+                    .checkRepoCollaborator(Authorization.get(mCtx), repoOwner, repoName, currentItem.getUsername());
 
             call.enqueue(new Callback<Collaborators>() {
 

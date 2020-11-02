@@ -38,10 +38,6 @@ public class SearchIssuesFragment extends Fragment {
 	private SearchIssuesAdapter adapter;
 	private List<Issues> dataList;
 
-	private String instanceUrl;
-	private String loginUid;
-	private String instanceToken;
-
 	private int apiCallCurrentValue = 10;
 	private int pageCurrentIndex = 1;
 	private String type = "issues";
@@ -54,11 +50,7 @@ public class SearchIssuesFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		ctx = getContext();
-		tinyDb = new TinyDB(getContext());
-
-		instanceUrl = tinyDb.getString("instanceUrl");
-		loginUid = tinyDb.getString("loginUid");
-		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		tinyDb = TinyDB.getInstance(getContext());
 
 		dataList = new ArrayList<>();
 		adapter = new SearchIssuesAdapter(dataList, ctx);
@@ -133,8 +125,8 @@ public class SearchIssuesFragment extends Fragment {
 			viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
 		}
 
-		Call<List<Issues>> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().queryIssues(
-			Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, type, state, pageCurrentIndex);
+		Call<List<Issues>> call = RetrofitClient.getApiInterface(getContext())
+			.queryIssues(Authorization.get(getContext()), searchKeyword, type, state, pageCurrentIndex);
 
 		call.enqueue(new Callback<List<Issues>>() {
 

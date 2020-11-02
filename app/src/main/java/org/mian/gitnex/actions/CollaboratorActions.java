@@ -25,21 +25,16 @@ public class CollaboratorActions {
 
     public static void deleteCollaborator(final Context context, final String searchKeyword, String userName) {
 
-        final TinyDB tinyDb = new TinyDB(context);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        final TinyDB tinyDb = TinyDB.getInstance(context);
+
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];
 
-        Call<Collaborators> call;
-
-        call = RetrofitClient
-                .getInstance(instanceUrl, context)
-                .getApiInterface()
-                .deleteCollaborator(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, userName);
+        Call<Collaborators> call = RetrofitClient
+                .getApiInterface(context)
+                .deleteCollaborator(Authorization.get(context), repoOwner, repoName, userName);
 
         call.enqueue(new Callback<Collaborators>() {
 
@@ -54,7 +49,7 @@ public class CollaboratorActions {
                         //Log.i("addCollaboratorSearch", addCollaboratorSearch.getText().toString());
                         //tinyDb.putBoolean("updateDataSet", true);
                         //AddCollaboratorToRepositoryActivity usersSearchData = new AddCollaboratorToRepositoryActivity();
-                        //usersSearchData.loadUserSearchList(instanceUrl, instanceToken, searchKeyword, context);
+                        //usersSearchData.loadUserSearchList(instanceToken, searchKeyword, context);
 
                     }
                 }
@@ -94,22 +89,18 @@ public class CollaboratorActions {
 
     public static void addCollaborator(final Context context, String permission, String userName) {
 
-        final TinyDB tinyDb = new TinyDB(context);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        final TinyDB tinyDb = TinyDB.getInstance(context);
+
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];
 
         Permission permissionString = new Permission(permission);
-        Call<Permission> call;
 
-        call = RetrofitClient
-                .getInstance(instanceUrl, context)
-                .getApiInterface()
-                .addCollaborator(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName, userName, permissionString);
+        Call<Permission> call = RetrofitClient
+                .getApiInterface(context)
+                .addCollaborator(Authorization.get(context), repoOwner, repoName, userName, permissionString);
 
         call.enqueue(new Callback<Permission>() {
 
@@ -122,7 +113,7 @@ public class CollaboratorActions {
                         Toasty.success(context, context.getString(R.string.addCollaboratorToastText));
                         ((AddCollaboratorToRepositoryActivity)context).finish();
                         //AddCollaboratorToRepositoryActivity usersSearchData = new AddCollaboratorToRepositoryActivity();
-                        //usersSearchData.loadUserSearchList(instanceUrl, instanceToken, searchKeyword, context);
+                        //usersSearchData.loadUserSearchList(instanceToken, searchKeyword, context);
 
                     }
                 }
@@ -164,11 +155,7 @@ public class CollaboratorActions {
 	public static ActionResult<List<Collaborators>> getCollaborators(Context context) {
 
 		ActionResult<List<Collaborators>> actionResult = new ActionResult<>();
-		TinyDB tinyDb = new TinyDB(context);
-
-		String instanceUrl = tinyDb.getString("instanceUrl");
-		String loginUid = tinyDb.getString("loginUid");
-		String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		TinyDB tinyDb = TinyDB.getInstance(context);
 
 		String repoFullName = tinyDb.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
@@ -176,9 +163,8 @@ public class CollaboratorActions {
 		String repoName = parts[1];
 
 		Call<List<Collaborators>> call = RetrofitClient
-			.getInstance(instanceUrl, context)
-			.getApiInterface()
-			.getCollaborators(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
+			.getApiInterface(context)
+			.getCollaborators(Authorization.get(context), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Collaborators>>() {
 

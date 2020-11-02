@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
 
 	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navProfile));
 
-        TinyDB tinyDb = new TinyDB(getContext());
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
 
 	    BlurView blurView = v.findViewById(R.id.blurView);
         TextView userFullName = v.findViewById(R.id.userFullName);

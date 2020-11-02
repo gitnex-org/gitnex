@@ -2,13 +2,13 @@ package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.models.UserRepositories;
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.models.UserRepositories;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,19 +21,18 @@ public class StarredRepositoriesViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> reposList;
 
-    public LiveData<List<UserRepositories>> getUserStarredRepositories(String instanceUrl, String token, Context ctx, int page, int limit) {
+    public LiveData<List<UserRepositories>> getUserStarredRepositories(String token, Context ctx, int page, int limit) {
 
         reposList = new MutableLiveData<>();
-        loadStarredReposList(instanceUrl, token, ctx, page, limit);
+        loadStarredReposList(token, ctx, page, limit);
 
         return reposList;
     }
 
-    public static void loadStarredReposList(String instanceUrl, String token, Context ctx, int page, int limit) {
+    public static void loadStarredReposList(String token, Context ctx, int page, int limit) {
 
         Call<List<UserRepositories>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getUserStarredRepos(token, page, limit);
 
         call.enqueue(new Callback<List<UserRepositories>>() {

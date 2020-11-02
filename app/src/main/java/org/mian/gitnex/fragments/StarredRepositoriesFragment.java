@@ -26,7 +26,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.StarredReposListAdapter;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.StarredRepositoriesViewModel;
@@ -75,13 +74,7 @@ public class StarredRepositoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_starred_repositories, container, false);
-        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
         setHasOptionsMenu(true);
-
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
 
@@ -129,11 +122,11 @@ public class StarredRepositoriesFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+            StarredRepositoriesViewModel.loadStarredReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
 
         }, 50));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), pageSize, resultLimit);
+        fetchDataAsync(Authorization.get(getContext()), pageSize, resultLimit);
 
         return v;
     }
@@ -141,23 +134,21 @@ public class StarredRepositoriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("repoCreated")) {
-            StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+            StarredRepositoriesViewModel.loadStarredReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
             tinyDb.putBoolean("repoCreated", false);
         }
-
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, int pageSize, int resultLimit) {
+    private void fetchDataAsync(String instanceToken, int pageSize, int resultLimit) {
 
         StarredRepositoriesViewModel starredRepoModel = new ViewModelProvider(this).get(StarredRepositoriesViewModel.class);
 
-        starredRepoModel.getUserStarredRepositories(instanceUrl, instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
+        starredRepoModel.getUserStarredRepositories(instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
 	        starredReposListMain -> {
 
 	            adapter = new StarredReposListAdapter(getContext(), starredReposListMain);
@@ -177,8 +168,6 @@ public class StarredRepositoriesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

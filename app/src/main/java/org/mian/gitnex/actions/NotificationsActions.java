@@ -20,24 +20,22 @@ public class NotificationsActions {
 
 	private TinyDB tinyDB;
 	private Context context;
-	private String instanceUrl;
 	private String instanceToken;
 
 	public NotificationsActions(Context context) {
 
 		this.context = context;
-		this.tinyDB = new TinyDB(context);
+		this.tinyDB = TinyDB.getInstance(context);
 
 		String loginUid = tinyDB.getString("loginUid");
 
-		instanceUrl = tinyDB.getString("instanceUrl");
 		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
 
 	}
 
 	public void setNotificationStatus(NotificationThread notificationThread, NotificationStatus notificationStatus) throws IOException {
 
-		Call<ResponseBody> call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface()
+		Call<ResponseBody> call = RetrofitClient.getApiInterface(context)
 			.markNotificationThreadAsRead(instanceToken, notificationThread.getId(), notificationStatus.name());
 
 		if(!call.execute().isSuccessful()) {
@@ -48,7 +46,7 @@ public class NotificationsActions {
 
 	public boolean setAllNotificationsRead(Date date) throws IOException {
 
-		Call<ResponseBody> call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface()
+		Call<ResponseBody> call = RetrofitClient.getApiInterface(context)
 			.markNotificationThreadsAsRead(instanceToken, AppUtil.getTimestampFromDate(context, date), true,
 				new String[]{"unread", "pinned"}, "read");
 

@@ -83,7 +83,7 @@ public class SettingsFragment extends Fragment {
 
 		super.onResume();
 
-		TinyDB tinyDb = new TinyDB(getContext());
+		TinyDB tinyDb = TinyDB.getInstance(getContext());
 
 		if(tinyDb.getBoolean("refreshParent")) {
 			requireActivity().recreate();

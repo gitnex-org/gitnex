@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import static org.acra.ReportField.STACK_TRACE;
  * Author M M Arif
  */
 
+@SuppressLint("NonConstantResourceId")
 @AcraNotification(resIcon = R.drawable.gitnex_transparent,
 		resTitle = R.string.crashTitle,
 		resChannelName = R.string.setCrashReports,
@@ -33,120 +35,127 @@ import static org.acra.ReportField.STACK_TRACE;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+	protected TinyDB tinyDB;
+
+	protected Context ctx = this;
+	protected Context appCtx;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		Context appCtx = getApplicationContext();
-		final TinyDB tinyDb = new TinyDB(appCtx);
+		this.appCtx = getApplicationContext();
+		this.tinyDB = TinyDB.getInstance(appCtx);
 
-		switch(tinyDb.getInt("themeId")) {
+		switch(tinyDB.getInt("themeId")) {
 
 			case 1:
-
+				tinyDB.putString("currentTheme", "light");
 				setTheme(R.style.AppThemeLight);
 				break;
+
 			case 2:
-
 				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
-
+					tinyDB.putString("currentTheme", "dark");
 					setTheme(R.style.AppTheme);
-				}
-				else {
-
+				} else {
+					tinyDB.putString("currentTheme", "light");
 					setTheme(R.style.AppThemeLight);
 				}
 				break;
-			case 3:
 
+			case 3:
+				tinyDB.putString("currentTheme", "light");
 				setTheme(R.style.AppThemeRetro);
 				break;
+
 			case 4:
-
 				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
-
+					tinyDB.putString("currentTheme", "dark");
 					setTheme(R.style.AppTheme);
-				}
-				else {
-
+				} else {
+					tinyDB.putString("currentTheme", "light");
 					setTheme(R.style.AppThemeRetro);
 				}
 				break;
-			default:
 
+			default:
+				tinyDB.putString("currentTheme", "dark");
 				setTheme(R.style.AppTheme);
-				break;
+
 		}
 
-		String appLocale = tinyDb.getString("locale");
+		String appLocale = tinyDB.getString("locale");
 		AppUtil.setAppLocale(getResources(), appLocale);
 
 		super.onCreate(savedInstanceState);
 		setContentView(getLayoutResourceId());
 
-		switch(tinyDb.getInt("customFontId", -1)) {
+		// FIXME Performance nightmare
+		switch(tinyDB.getInt("customFontId", -1)) {
 
 			case 0:
-
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/roboto.ttf");
 				break;
-			case 2:
 
+			case 2:
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/sourcecodeproregular.ttf");
 				break;
-			default:
 
+			default:
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/manroperegular.ttf");
-				break;
+
 		}
 
-        if(tinyDb.getInt("pollingDelayMinutes") == 0) {
+        if(tinyDB.getInt("pollingDelayMinutes") == 0) {
 
-            tinyDb.putInt("pollingDelayMinutes", 15);
+            tinyDB.putInt("pollingDelayMinutes", 15);
         }
 
+		// FIXME Performance nightmare
         NotificationsMaster.hireWorker(appCtx);
 
         // enabling counter badges by default
-        if(tinyDb.getString("enableCounterBadgesInit").isEmpty()) {
+        if(tinyDB.getString("enableCounterBadgesInit").isEmpty()) {
 
-            tinyDb.putBoolean("enableCounterBadges", true);
-            tinyDb.putString("enableCounterBadgesInit", "yes");
+            tinyDB.putBoolean("enableCounterBadges", true);
+            tinyDB.putString("enableCounterBadgesInit", "yes");
         }
 
 		// enable crash reports by default
-		if(tinyDb.getString("crashReportingEnabledInit").isEmpty()) {
+		if(tinyDB.getString("crashReportingEnabledInit").isEmpty()) {
 
-			tinyDb.putBoolean("crashReportingEnabled", true);
-			tinyDb.putString("crashReportingEnabledInit", "yes");
+			tinyDB.putBoolean("crashReportingEnabled", true);
+			tinyDB.putString("crashReportingEnabledInit", "yes");
 		}
 
 		// default cache setter
-		if(tinyDb.getString("cacheSizeStr").isEmpty()) {
+		if(tinyDB.getString("cacheSizeStr").isEmpty()) {
 
-			tinyDb.putString("cacheSizeStr", getResources().getString(R.string.cacheSizeDataSelectionSelectedText));
+			tinyDB.putString("cacheSizeStr", getResources().getString(R.string.cacheSizeDataSelectionSelectedText));
 		}
-		if(tinyDb.getString("cacheSizeImagesStr").isEmpty()) {
+		if(tinyDB.getString("cacheSizeImagesStr").isEmpty()) {
 
-			tinyDb.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
+			tinyDB.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
 		}
 
 		// enable comment drafts by default
-		if(tinyDb.getString("draftsCommentsDeletionEnabledInit").isEmpty()) {
+		if(tinyDB.getString("draftsCommentsDeletionEnabledInit").isEmpty()) {
 
-			tinyDb.putBoolean("draftsCommentsDeletionEnabled", true);
-			tinyDb.putString("draftsCommentsDeletionEnabledInit", "yes");
+			tinyDB.putBoolean("draftsCommentsDeletionEnabled", true);
+			tinyDB.putString("draftsCommentsDeletionEnabledInit", "yes");
 		}
 
-		if (tinyDb.getBoolean("crashReportingEnabled")) {
+		// FIXME Performance nightmare
+		if (tinyDB.getBoolean("crashReportingEnabled")) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);
 			ACRABuilder.setBuildConfigClass(BuildConfig.class).setReportFormat(StringFormat.KEY_VALUE_LIST);

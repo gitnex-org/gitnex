@@ -1,114 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
-    android:padding="15dp"
-    android:id="@+id/relativeLayoutMainFrame"
-    android:background="?attr/primaryBackgroundColor">
-
-    <TextView
-        android:id="@+id/issueNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/commendId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/commendBodyRaw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/commenterUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/htmlUrl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/issueCommenterAvatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="15dp"
-        android:contentDescription="@string/generalImgContentText"
-        android:src="@drawable/ic_android" />
+    android:padding="20dp">
 
     <LinearLayout
-        android:id="@+id/sectionComment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/issueCommenterAvatar"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/issueComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:textColor="?attr/primaryTextColor"
-            android:autoLink="web"
-            android:textColorLink="@color/lightBlue"
-            android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="0"
+            android:contentDescription="@string/generalImgContentText"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/commentsDetailMainFrame"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight=".90"
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/commentsDetailFrame"
-                android:orientation="horizontal"
-                android:layout_marginTop="3dp">
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/issueCommentDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/createdText"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/commentModified"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_toEndOf="@+id/issueCommentDate"
-                    android:textSize="12sp"
-                    android:text="@string/modifiedText" />
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/commentsOptionsMenu"
-                android:layout_width="0dp"
-                android:layout_weight=".10"
+            <TextView
+                android:id="@+id/information"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:scaleType="fitEnd"
-                android:src="@drawable/ic_dotted_menu_horizontal"
-                android:contentDescription="@string/menuContentDesc" />
-
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="?attr/hintColor"
+                android:textSize="15sp" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_weight="0"
+            android:contentDescription="@string/generalImgContentText"
+            app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
 
     </LinearLayout>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="?attr/primaryTextColor"
+        android:textIsSelectable="true"
+        android:textSize="14sp" />
 
+</LinearLayout>

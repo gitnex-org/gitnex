@@ -17,7 +17,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserSearchAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserSearch;
 import java.util.List;
@@ -32,8 +31,6 @@ import retrofit2.Response;
 public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
-    final Context ctx = this;
-    private Context appCtx;
     private TextView addCollaboratorSearch;
     private TextView noData;
     private ProgressBar mProgressBar;
@@ -49,16 +46,8 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         ImageView closeActivity = findViewById(R.id.close);
         addCollaboratorSearch = findViewById(R.id.addCollaboratorSearch);
@@ -80,7 +69,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
                 if(!addCollaboratorSearch.getText().toString().equals("")) {
 
 	                mProgressBar.setVisibility(View.VISIBLE);
-                    loadUserSearchList(instanceUrl, instanceToken, addCollaboratorSearch.getText().toString(), loginUid);
+                    loadUserSearchList(addCollaboratorSearch.getText().toString());
                 }
             }
 
@@ -90,12 +79,11 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
     }
 
-    public void loadUserSearchList(String instanceUrl, String token, String searchKeyword, String loginUid) {
+    public void loadUserSearchList(String searchKeyword) {
 
         Call<UserSearch> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .getUserBySearch(Authorization.returnAuthentication(ctx, loginUid, token), searchKeyword, 10);
+                .getApiInterface(appCtx)
+                .getUserBySearch(Authorization.get(ctx), searchKeyword, 10);
 
         call.enqueue(new Callback<UserSearch>() {
 

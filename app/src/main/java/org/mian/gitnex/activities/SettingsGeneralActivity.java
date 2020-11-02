@@ -1,12 +1,10 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import java.util.List;
 public class SettingsGeneralActivity extends BaseActivity {
 
 	private ActivitySettingsGeneralBinding viewBinding;
-	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	private List<String> homeScreenList;
@@ -39,13 +36,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
 
 		viewBinding = ActivitySettingsGeneralBinding.inflate(getLayoutInflater());
 		View view = viewBinding.getRoot();
 		setContentView(view);
-
-		TinyDB tinyDb = new TinyDB(appCtx);
 
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);
@@ -59,7 +53,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 			getResources().getString(R.string.pageTitleRepositories), getResources().getString(R.string.pageTitleProfile), getResources().getString(R.string.pageTitleExplore),
 			getResources().getString(R.string.titleDrafts), getResources().getString(R.string.pageTitleNotifications)};
 
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.3")) {
+		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.3")) {
 
 			homeDefaultScreen_ = homeDefaultScreenNew;
 		}
@@ -70,7 +64,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		if(homeScreenSelectedChoice == 0) {
 
-			homeScreenSelectedChoice = tinyDb.getInt("homeScreenId");
+			homeScreenSelectedChoice = tinyDB.getInt("homeScreenId");
 			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleMyRepos));
 		}
 
@@ -114,7 +108,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 				homeScreenSelectedChoice = i;
 				viewBinding.homeScreenSelected.setText(homeScreenArray[i]);
-				tinyDb.putInt("homeScreenId", i);
+				tinyDB.putInt("homeScreenId", i);
 
 				dialogInterfaceHomeScreen.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
@@ -134,7 +128,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		if(defaultLinkHandlerScreenSelectedChoice == 0) {
 
-			defaultLinkHandlerScreenSelectedChoice = tinyDb.getInt("defaultScreenId");
+			defaultLinkHandlerScreenSelectedChoice = tinyDB.getInt("defaultScreenId");
 			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.generalDeepLinkSelectedText));
 		}
 
@@ -166,7 +160,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 				defaultLinkHandlerScreenSelectedChoice = i;
 				viewBinding.generalDeepLinkSelected.setText(linksArray[i]);
-				tinyDb.putInt("defaultScreenId", i);
+				tinyDB.putInt("defaultScreenId", i);
 
 				dialogInterfaceHomeScreen.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));

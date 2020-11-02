@@ -1,12 +1,10 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -15,7 +13,6 @@ import org.mian.gitnex.helpers.Toasty;
 
 public class SettingsDraftsActivity extends BaseActivity {
 
-	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	@Override
@@ -28,9 +25,6 @@ public class SettingsDraftsActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-
-		TinyDB tinyDb = new TinyDB(appCtx);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -39,12 +33,12 @@ public class SettingsDraftsActivity extends BaseActivity {
 
 		SwitchMaterial commentsDeletionSwitch = findViewById(R.id.commentsDeletionSwitch);
 
-		commentsDeletionSwitch.setChecked(tinyDb.getBoolean("draftsCommentsDeletionEnabled"));
+		commentsDeletionSwitch.setChecked(tinyDB.getBoolean("draftsCommentsDeletionEnabled"));
 
 		// delete comments on submit switcher
 		commentsDeletionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			tinyDb.putBoolean("draftsCommentsDeletionEnabled", isChecked);
+			tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
 

@@ -19,7 +19,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.Branches;
 import org.mian.gitnex.models.Releases;
@@ -43,14 +42,8 @@ public class CreateReleaseActivity extends BaseActivity {
     private CheckBox releaseType;
     private CheckBox releaseDraft;
     private Button createNewRelease;
-    final Context ctx = this;
-    private Context appCtx;
-    private TinyDB tinyDb;
     private String selectedBranch;
 
-    private String instanceUrl;
-	private String loginUid;
-	private String instanceToken;
 	private String repoOwner;
 	private String repoName;
 
@@ -66,17 +59,12 @@ public class CreateReleaseActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-	    tinyDb = new TinyDB(appCtx);
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        instanceUrl = tinyDb.getString("instanceUrl");
-        loginUid = tinyDb.getString("loginUid");
-        instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        String repoFullName = tinyDb.getString("repoFullName");
+        String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         repoOwner = parts[0];
         repoName = parts[1];
@@ -107,7 +95,7 @@ public class CreateReleaseActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         releaseBranch = findViewById(R.id.releaseBranch);
-        getBranches(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
+        getBranches(Authorization.get(ctx), repoOwner, repoName);
 
         createNewRelease = findViewById(R.id.createNewRelease);
         disableProcessButton();
@@ -161,18 +149,17 @@ public class CreateReleaseActivity extends BaseActivity {
 	    }
 
         disableProcessButton();
-        createNewReleaseFunc(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newReleaseTagName, newReleaseTitle, newReleaseContent, selectedBranch, newReleaseType, newReleaseDraft);
+        createNewReleaseFunc(Authorization.get(ctx), repoOwner, repoName, newReleaseTagName, newReleaseTitle, newReleaseContent, selectedBranch, newReleaseType, newReleaseDraft);
     }
 
-    private void createNewReleaseFunc(final String instanceUrl, final String token, String repoOwner, String repoName, String newReleaseTagName, String newReleaseTitle, String newReleaseContent, String selectedBranch, boolean newReleaseType, boolean newReleaseDraft) {
+    private void createNewReleaseFunc(final String token, String repoOwner, String repoName, String newReleaseTagName, String newReleaseTitle, String newReleaseContent, String selectedBranch, boolean newReleaseType, boolean newReleaseDraft) {
 
         Releases createReleaseJson = new Releases(newReleaseContent, newReleaseDraft, newReleaseTitle, newReleaseType, newReleaseTagName, selectedBranch);
 
         Call<Releases> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .createNewRelease(token, repoOwner, repoName, createReleaseJson);
 
         call.enqueue(new Callback<Releases>() {
@@ -182,7 +169,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
                 if (response.code() == 201) {
 
-                    tinyDb.putBoolean("updateReleases", true);
+                    tinyDB.putBoolean("updateReleases", true);
                     Toasty.success(ctx, getString(R.string.releaseCreatedText));
                     enableProcessButton();
                     finish();
@@ -222,11 +209,10 @@ public class CreateReleaseActivity extends BaseActivity {
 
     }
 
-    private void getBranches(String instanceUrl, String instanceToken, final String repoOwner, final String repoName) {
+    private void getBranches(String instanceToken, final String repoOwner, final String repoName) {
 
         Call<List<Branches>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getBranches(instanceToken, repoOwner, repoName);
 
         call.enqueue(new Callback<List<Branches>>() {

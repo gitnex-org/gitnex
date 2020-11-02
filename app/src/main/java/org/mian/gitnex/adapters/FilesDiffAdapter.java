@@ -36,9 +36,9 @@ public class FilesDiffAdapter extends BaseAdapter {
 	private static int COLOR_SELECTED;
 	private static int COLOR_FONT;
 
-	private Context context;
-	private FragmentManager fragmentManager;
-	private List<FileDiffView> fileDiffViews;
+	private final Context context;
+	private final FragmentManager fragmentManager;
+	private final List<FileDiffView> fileDiffViews;
 
 	public FilesDiffAdapter(Context context, FragmentManager fragmentManager, List<FileDiffView> fileDiffViews) {
 
@@ -184,7 +184,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 							}
 
 						});
-
 
 						diffTextView.setOnLongClickListener(v -> {
 

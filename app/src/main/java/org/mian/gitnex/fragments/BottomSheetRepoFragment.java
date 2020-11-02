@@ -26,7 +26,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_repo, container, false);
 
-        final TinyDB tinyDb = new TinyDB(getContext());
+        final TinyDB tinyDb = TinyDB.getInstance(getContext());
 
         TextView createLabel = v.findViewById(R.id.createLabel);
         TextView createIssue = v.findViewById(R.id.createNewIssue);

@@ -27,7 +27,7 @@ public class DraftsApi {
 		draftsDao = db.draftsDao();
 	}
 
-	public long insertDraft(int repositoryId, int draftAccountId, int issueId, String draftText, String draftType, String commentId) {
+	public long insertDraft(int repositoryId, int draftAccountId, int issueId, String draftText, String draftType, String commentId, String issueType) {
 
 		Draft draft = new Draft();
 		draft.setDraftRepositoryId(repositoryId);
@@ -35,7 +35,8 @@ public class DraftsApi {
 		draft.setIssueId(issueId);
 		draft.setDraftText(draftText);
 		draft.setDraftType(draftType);
-		draft.setCommentId(draftType);
+		draft.setCommentId(commentId);
+		draft.setIssueType(issueType);
 
 		return insertDraftAsyncTask(draft);
 	}

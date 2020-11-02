@@ -92,7 +92,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 				Intent intent = new Intent(context, RepoDetailActivity.class);
 				intent.putExtra("repoFullName", repoFullName.getText().toString());
 
-				TinyDB tinyDb = new TinyDB(context);
+				TinyDB tinyDb = TinyDB.getInstance(context);
 				tinyDb.putString("repoFullName", repoFullName.getText().toString());
 				tinyDb.putString("repoType", repoType.getText().toString());
 				//tinyDb.putBoolean("resumeIssues", true);
@@ -125,14 +125,13 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 				//store if user is watching this repo
 				{
 
-					final String instanceUrl = tinyDb.getString("instanceUrl");
 					final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
 					WatchInfo watch = new WatchInfo();
 
 					Call<WatchInfo> call;
 
-					call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface().checkRepoWatchStatus(token, repoOwner, repoName);
+					call = RetrofitClient.getApiInterface(context).checkRepoWatchStatus(token, repoOwner, repoName);
 
 					call.enqueue(new Callback<WatchInfo>() {
 

@@ -25,7 +25,7 @@ public class AlertDialogs {
             .setNeutralButton(copyNegativeButton, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(copyPositiveButton, (dialog, which) -> {
 
-                final TinyDB tinyDb = new TinyDB(context);
+                final TinyDB tinyDb = TinyDB.getInstance(context);
                 tinyDb.putBoolean("loggedInMode", false);
                 tinyDb.remove("basicAuthPassword");
                 tinyDb.putBoolean("basicAuthFlag", false);
@@ -48,7 +48,7 @@ public class AlertDialogs {
 		    .setIcon(R.drawable.ic_info)
 		    .setPositiveButton(copyPositiveButton, (dialog, which) -> {
 
-			    final TinyDB tinyDb = new TinyDB(context);
+			    final TinyDB tinyDb = TinyDB.getInstance(context);
 			    tinyDb.putBoolean("loggedInMode", false);
 			    tinyDb.remove("basicAuthPassword");
 			    tinyDb.putBoolean("basicAuthFlag", false);

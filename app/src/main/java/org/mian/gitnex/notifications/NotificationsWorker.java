@@ -41,7 +41,7 @@ public class NotificationsWorker extends Worker {
 		super(context, workerParams);
 
 		this.context = context;
-		this.tinyDB = new TinyDB(context);
+		this.tinyDB = TinyDB.getInstance(context);
 
 	}
 
@@ -49,7 +49,6 @@ public class NotificationsWorker extends Worker {
 	@Override
 	public Result doWork() {
 
-		String instanceUrl = tinyDB.getString("instanceUrl");
 		String token = "token " + tinyDB.getString(tinyDB.getString("loginUid") + "-token");
 
 		int notificationLoops = tinyDB.getInt("pollingDelayMinutes") >= 15 ? 1 : Math.min(15 - tinyDB.getInt("pollingDelayMinutes"), 10);
@@ -62,8 +61,8 @@ public class NotificationsWorker extends Worker {
 
 				String previousRefreshTimestamp = tinyDB.getString("previousRefreshTimestamp", AppUtil.getTimestampFromDate(context, new Date()));
 
-				Call<List<NotificationThread>> call = RetrofitClient.getInstance(instanceUrl, context)
-					.getApiInterface()
+				Call<List<NotificationThread>> call = RetrofitClient
+					.getApiInterface(context)
 					.getNotificationThreads(token, false, new String[]{"unread"}, previousRefreshTimestamp,
 						null, 1, MAXIMUM_NOTIFICATIONS);
 

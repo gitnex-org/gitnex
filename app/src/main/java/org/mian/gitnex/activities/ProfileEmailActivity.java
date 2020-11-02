@@ -33,8 +33,6 @@ public class ProfileEmailActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     private EditText userEmail;
-    final Context ctx = this;
-    private Context appCtx;
     private Button addEmailButton;
 
     @Override
@@ -46,7 +44,6 @@ public class ProfileEmailActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -78,10 +75,6 @@ public class ProfileEmailActivity extends BaseActivity {
     private void processAddNewEmail() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         String newUserEmail = userEmail.getText().toString().trim();
 
@@ -105,19 +98,18 @@ public class ProfileEmailActivity extends BaseActivity {
         List<String> newEmailList = new ArrayList<>(Arrays.asList(newUserEmail.split(",")));
 
         disableProcessButton();
-        addNewEmail(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), newEmailList);
+        addNewEmail(Authorization.get(ctx), newEmailList);
     }
 
-    private void addNewEmail(final String instanceUrl, final String token, List<String> newUserEmail) {
+    private void addNewEmail(final String token, List<String> newUserEmail) {
 
         AddEmail addEmailFunc = new AddEmail(newUserEmail);
-        final TinyDB tinyDb = new TinyDB(appCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(appCtx)
                 .addNewEmail(token, addEmailFunc);
 
         call.enqueue(new Callback<JsonElement>() {

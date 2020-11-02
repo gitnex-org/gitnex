@@ -25,7 +25,6 @@ import org.mian.gitnex.fragments.MembersByOrgFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
 import org.mian.gitnex.fragments.TeamsByOrgFragment;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
@@ -36,10 +35,6 @@ import io.mikael.urlbuilder.UrlBuilder;
 
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
 
-    final Context ctx = this;
-    private Context appCtx;
-	private TinyDB tinyDb;
-
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_org_detail;
@@ -49,11 +44,8 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-	    tinyDb = new TinyDB(appCtx);
 
-        TinyDB tinyDb = new TinyDB(appCtx);
-        String orgName = tinyDb.getString("orgName");
+        String orgName = tinyDB.getString("orgName");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
@@ -71,7 +63,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         Typeface myTypeface;
 
-        switch(tinyDb.getInt("customFontId", -1)) {
+        switch(tinyDB.getInt("customFontId", -1)) {
 
             case 0:
 
@@ -150,7 +142,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
         switch (text) {
             case "repository":
 
-                tinyDb.putBoolean("organizationAction", true);
+                tinyDB.putBoolean("organizationAction", true);
                 startActivity(new Intent(OrganizationDetailActivity.this, CreateRepoActivity.class));
                 break;
             case "team":
@@ -159,11 +151,11 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
                 break;
 	        case "copyOrgUrl":
 
-		        String url = UrlBuilder.fromString(tinyDb.getString("instanceUrl"))
+		        String url = UrlBuilder.fromString(tinyDB.getString("instanceUrl"))
 			        .withPath("/")
 			        .toString();
 		        ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-		        ClipData clip = ClipData.newPlainText("orgUrl", url + tinyDb.getString("orgName"));
+		        ClipData clip = ClipData.newPlainText("orgUrl", url + tinyDB.getString("orgName"));
 		        assert clipboard != null;
 		        clipboard.setPrimaryClip(clip);
 		        Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
@@ -188,7 +180,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
             }
             else {
 
-                orgName = tinyDb.getString("orgName");
+                orgName = tinyDB.getString("orgName");
             }
 
             Fragment fragment = null;

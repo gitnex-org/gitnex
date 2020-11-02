@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,7 +17,6 @@ import org.mian.gitnex.databinding.ActivityRepositorySettingsBinding;
 import org.mian.gitnex.databinding.CustomRepositoryDeleteDialogBinding;
 import org.mian.gitnex.databinding.CustomRepositoryEditPropertiesDialogBinding;
 import org.mian.gitnex.databinding.CustomRepositoryTransferDialogBinding;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.RepositoryTransfer;
@@ -40,11 +38,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private Dialog dialogDeleteRepository;
 	private Dialog dialogTransferRepository;
 	private View.OnClickListener onClickListener;
-	private Context ctx = this;
-	private Context appCtx;
-	private TinyDB tinyDb;
 
-	private String instanceUrl;
 	private String loginUid;
 	private String instanceToken;
 
@@ -60,20 +54,17 @@ public class RepositorySettingsActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-		tinyDb = new TinyDB(appCtx);
 
 		viewBinding = ActivityRepositorySettingsBinding.inflate(getLayoutInflater());
 		View view = viewBinding.getRoot();
 		setContentView(view);
 
-		instanceUrl = tinyDb.getString("instanceUrl");
-		loginUid = tinyDb.getString("loginUid");
-		String repoFullName = tinyDb.getString("repoFullName");
+		loginUid = tinyDB.getString("loginUid");
+		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		repositoryOwner = parts[0];
 		repositoryName = parts[1];
-		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -81,7 +72,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		closeActivity.setOnClickListener(onClickListener);
 
 		// require gitea 1.12 or higher
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
 			viewBinding.transferOwnerFrame.setVisibility(View.VISIBLE);
 		}
@@ -136,8 +127,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		RepositoryTransfer repositoryTransfer = new RepositoryTransfer(newOwner);
 
 		Call<JsonElement> transferCall = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.transferRepository(instanceToken, repositoryOwner, repositoryName, repositoryTransfer);
 
 		transferCall.enqueue(new Callback<JsonElement>() {
@@ -154,7 +144,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
 
 					finish();
-					RepositoriesApi.deleteRepository((int) tinyDb.getLong("repositoryId", 0));
+					RepositoriesApi.deleteRepository((int) tinyDB.getLong("repositoryId", 0));
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -217,8 +207,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private void deleteRepository() {
 
 		Call<JsonElement> deleteCall = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.deleteRepository(instanceToken, repositoryOwner, repositoryName);
 
 		deleteCall.enqueue(new Callback<JsonElement>() {
@@ -235,7 +224,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
 
 					finish();
-					RepositoriesApi.deleteRepository((int) tinyDb.getLong("repositoryId", 0));
+					RepositoriesApi.deleteRepository((int) tinyDB.getLong("repositoryId", 0));
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -275,8 +264,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		propBinding.cancel.setOnClickListener(editProperties -> dialogProp.dismiss());
 
 		Call<UserRepositories> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.getUserRepository(instanceToken, repositoryOwner, repositoryName);
 
 		call.enqueue(new Callback<UserRepositories>() {
@@ -376,8 +364,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		}
 
 		Call<UserRepositories> propsCall = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.updateRepositoryProperties(instanceToken, repositoryOwner, repositoryName, repoProps);
 
 		propsCall.enqueue(new Callback<UserRepositories>() {
@@ -390,8 +377,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 				if (response.code() == 200) {
 
-					tinyDb.putBoolean("hasIssues", repoEnableIssues);
-					tinyDb.putBoolean("hasPullRequests", repoEnablePr);
+					tinyDB.putBoolean("hasIssues", repoEnableIssues);
+					tinyDB.putBoolean("hasPullRequests", repoEnablePr);
 
 					dialogProp.dismiss();
 					Toasty.success(ctx, getString(R.string.repoPropertiesSaveSuccess));
@@ -399,7 +386,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					if(!repositoryName.equals(repoName)) {
 
 						finish();
-						RepositoriesApi.updateRepositoryOwnerAndName(repositoryOwner, repoName, (int) tinyDb.getLong("repositoryId", 0));
+						RepositoriesApi.updateRepositoryOwnerAndName(repositoryOwner, repoName, (int) tinyDB.getLong("repositoryId", 0));
 						Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 						RepositorySettingsActivity.this.startActivity(intent);
 					}

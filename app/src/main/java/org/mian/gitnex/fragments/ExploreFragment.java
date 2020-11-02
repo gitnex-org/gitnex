@@ -36,7 +36,7 @@ public class ExploreFragment extends Fragment {
 
 		View v = inflater.inflate(R.layout.fragment_explore, container,false);
 		ctx = getContext();
-		tinyDB = new TinyDB(ctx);
+		tinyDB = TinyDB.getInstance(ctx);
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navExplore));
 

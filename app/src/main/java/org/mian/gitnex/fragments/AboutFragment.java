@@ -24,7 +24,7 @@ public class AboutFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		FragmentAboutBinding viewBinding = FragmentAboutBinding.inflate(inflater, container, false);
-        TinyDB tinyDb = new TinyDB(getContext());
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
 
 	    viewBinding.appVersion.setText(AppUtil.getAppVersion(requireContext()));
 	    viewBinding.userServerVersion.setText(tinyDb.getString("giteaVersion"));

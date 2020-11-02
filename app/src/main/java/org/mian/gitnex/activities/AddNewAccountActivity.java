@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.databinding.ActivityAddNewAccountBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
@@ -31,10 +29,6 @@ import retrofit2.Callback;
  */
 
 public class AddNewAccountActivity extends BaseActivity {
-
-	final Context ctx = this;
-	private Context appCtx;
-	private TinyDB tinyDB;
 
 	private View.OnClickListener onClickListener;
 	private ActivityAddNewAccountBinding viewBinding;
@@ -52,8 +46,6 @@ public class AddNewAccountActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-		tinyDB = new TinyDB(appCtx);
 
 		viewBinding = ActivityAddNewAccountBinding.inflate(getLayoutInflater());
 		View view = viewBinding.getRoot();
@@ -131,7 +123,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		Call<GiteaVersion> callVersion;
 
-		callVersion = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getGiteaVersionWithToken("token " + loginToken);
+		callVersion = RetrofitClient.getApiInterface(ctx).getGiteaVersionWithToken("token " + loginToken);
 
 		callVersion.enqueue(new Callback<GiteaVersion>() {
 
@@ -205,7 +197,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 	private void setupNewAccountWithToken(String instanceUrl, final String loginToken) {
 
-		Call<UserInfo> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getUserInfo("token " + loginToken);
+		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx).getUserInfo("token " + loginToken);
 
 		call.enqueue(new Callback<UserInfo>() {
 

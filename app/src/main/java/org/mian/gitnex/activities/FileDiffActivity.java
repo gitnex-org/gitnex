@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.FilesDiffAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -36,8 +34,6 @@ public class FileDiffActivity extends BaseActivity {
 	private TextView toolbarTitle;
 	private ListView mListView;
 	private ProgressBar mProgressBar;
-	final Context ctx = this;
-	private Context appCtx;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -49,12 +45,11 @@ public class FileDiffActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		final TinyDB tinyDb = new TinyDB(appCtx);
+		final TinyDB tinyDb = TinyDB.getInstance(appCtx);
 		String repoFullName = tinyDb.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
@@ -77,29 +72,21 @@ public class FileDiffActivity extends BaseActivity {
 
 		String pullIndex = tinyDb.getString("issueNumber");
 
-		boolean apiCall = true;
-		String instanceUrl = tinyDb.getString("instanceUrl");
+		boolean apiCall = !new Version(tinyDb.getString("giteaVersion")).less("1.13.0");
+		getPullDiffContent(repoOwner, repoName, pullIndex, instanceToken, apiCall);
 
-		// fallback for old gitea instances
-		if(new Version(tinyDb.getString("giteaVersion")).less("1.13.0")) {
-
-			apiCall = false;
-			instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
-		}
-
-		getPullDiffContent(instanceUrl, repoOwner, repoName, pullIndex, instanceToken, apiCall);
 	}
 
-	private void getPullDiffContent(String instanceUrl, String owner, String repo, String pullIndex, String token, boolean apiCall) {
+	private void getPullDiffContent(String owner, String repo, String pullIndex, String token, boolean apiCall) {
 
 		Call<ResponseBody> call;
 		if(apiCall) {
 
-			call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface().getPullDiffContent(token, owner, repo, pullIndex);
+			call = RetrofitClient.getApiInterface(ctx).getPullDiffContent(token, owner, repo, pullIndex);
 		}
 		else {
 
-			call = RetrofitClient.getInstance(instanceUrl, ctx).getWebInterface().getPullDiffContent(owner, repo, pullIndex);
+			call = RetrofitClient.getWebInterface(ctx).getPullDiffContent(owner, repo, pullIndex);
 		}
 
 		call.enqueue(new Callback<ResponseBody>() {

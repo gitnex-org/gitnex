@@ -9,33 +9,18 @@ import okhttp3.Credentials;
 
 public class Authorization {
 
-    public static String returnAuthentication(Context context, String loginUid, String token) {
+	public static String get(Context context) {
 
-        TinyDB tinyDb = new TinyDB(context);
+		TinyDB tinyDb = TinyDB.getInstance(context);
+		String loginUid = tinyDb.getString("loginUid");
 
-        String credential;
+		if(tinyDb.getBoolean("basicAuthFlag") &&
+			!tinyDb.getString("basicAuthPassword").isEmpty()) {
 
-        if(tinyDb.getBoolean("basicAuthFlag")) {
+			return Credentials.basic(loginUid, tinyDb.getString("basicAuthPassword"));
+		}
 
-            if (!tinyDb.getString("basicAuthPassword").isEmpty()) {
+		return  "token " + tinyDb.getString(loginUid + "-token");
 
-                credential = Credentials.basic(loginUid, tinyDb.getString("basicAuthPassword"));
-
-            }
-            else {
-
-                credential = token;
-
-            }
-        }
-        else {
-
-            credential = token;
-
-        }
-
-        return credential;
-
-    }
-
+	}
 }

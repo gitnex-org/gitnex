@@ -5,17 +5,13 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -26,33 +22,16 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.models.IssueComments;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import io.noties.markwon.AbstractMarkwonPlugin;
-import io.noties.markwon.Markwon;
-import io.noties.markwon.core.CorePlugin;
-import io.noties.markwon.core.MarkwonTheme;
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import io.noties.markwon.ext.tables.TablePlugin;
-import io.noties.markwon.ext.tasklist.TaskListPlugin;
-import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.DefaultMediaDecoder;
-import io.noties.markwon.image.ImageItem;
-import io.noties.markwon.image.ImagesPlugin;
-import io.noties.markwon.image.SchemeHandler;
-import io.noties.markwon.image.gif.GifMediaDecoder;
-import io.noties.markwon.image.svg.SvgMediaDecoder;
-import io.noties.markwon.linkify.LinkifyPlugin;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -62,94 +41,91 @@ import retrofit2.Callback;
 
 public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdapter.IssueCommentViewHolder> {
 
-	private List<IssueComments> issuesComments;
-	private FragmentManager fragmentManager;
-	private Context mCtx;
+	private final Context ctx;
+	private final List<IssueComments> issuesComments;
+	private final FragmentManager fragmentManager;
+	private final BottomSheetReplyFragment.OnInteractedListener onInteractedListener;
 
-	public IssueCommentsAdapter(Context mCtx, FragmentManager fragmentManager, List<IssueComments> issuesCommentsMain) {
+	public IssueCommentsAdapter(Context ctx, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, BottomSheetReplyFragment.OnInteractedListener onInteractedListener) {
 
-		this.mCtx = mCtx;
-		this.fragmentManager = fragmentManager;
+		this.ctx = ctx;
 		this.issuesComments = issuesCommentsMain;
+		this.fragmentManager = fragmentManager;
+		this.onInteractedListener = onInteractedListener;
 
 	}
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
-		private TextView issueNumber;
-		private TextView commendId;
-		private ImageView issueCommenterAvatar;
-		private TextView issueComment;
-		private TextView issueCommentDate;
-		private TextView commendBodyRaw;
-		private TextView commentModified;
-		private TextView commenterUsername;
-		private TextView htmlUrl;
+		private IssueComments issueComment;
 
-		private IssueCommentViewHolder(View itemView) {
+		private final ImageView avatar;
+		private final TextView author;
+		private final TextView information;
+		private final TextView comment;
 
-			super(itemView);
+		private IssueCommentViewHolder(View view) {
 
-			issueNumber = itemView.findViewById(R.id.issueNumber);
-			commendId = itemView.findViewById(R.id.commendId);
-			issueCommenterAvatar = itemView.findViewById(R.id.issueCommenterAvatar);
-			issueComment = itemView.findViewById(R.id.issueComment);
-			issueCommentDate = itemView.findViewById(R.id.issueCommentDate);
-			ImageView commentsOptionsMenu = itemView.findViewById(R.id.commentsOptionsMenu);
-			commendBodyRaw = itemView.findViewById(R.id.commendBodyRaw);
-			commentModified = itemView.findViewById(R.id.commentModified);
-			commenterUsername = itemView.findViewById(R.id.commenterUsername);
-			htmlUrl = itemView.findViewById(R.id.htmlUrl);
+			super(view);
 
-			commentsOptionsMenu.setOnClickListener(v -> {
+			avatar = view.findViewById(R.id.avatar);
+			author = view.findViewById(R.id.author);
+			information = view.findViewById(R.id.information);
+			ImageView menu = view.findViewById(R.id.menu);
+			comment = view.findViewById(R.id.comment);
+
+			menu.setOnClickListener(v -> {
 
 				final Context ctx = v.getContext();
-				final TinyDB tinyDb = new TinyDB(ctx);
+				final TinyDB tinyDb = TinyDB.getInstance(ctx);
 				final String loginUid = tinyDb.getString("loginUid");
 
-				@SuppressLint("InflateParams") View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_issue_comments, null);
+				@SuppressLint("InflateParams") View vw = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_issue_comments, null);
 
-				TextView commentMenuEdit = view.findViewById(R.id.commentMenuEdit);
-				TextView commentShare = view.findViewById(R.id.issueCommentShare);
-				TextView commentMenuQuote = view.findViewById(R.id.commentMenuQuote);
-				TextView commentMenuCopy = view.findViewById(R.id.commentMenuCopy);
-				TextView commentMenuDelete = view.findViewById(R.id.commentMenuDelete);
-				TextView issueCommentCopyUrl = view.findViewById(R.id.issueCommentCopyUrl);
+				TextView commentMenuEdit = vw.findViewById(R.id.commentMenuEdit);
+				TextView commentShare = vw.findViewById(R.id.issueCommentShare);
+				TextView commentMenuQuote = vw.findViewById(R.id.commentMenuQuote);
+				TextView commentMenuCopy = vw.findViewById(R.id.commentMenuCopy);
+				TextView commentMenuDelete = vw.findViewById(R.id.commentMenuDelete);
+				TextView issueCommentCopyUrl = vw.findViewById(R.id.issueCommentCopyUrl);
 
-				if(!loginUid.contentEquals(commenterUsername.getText())) {
+				if(!loginUid.contentEquals(issueComment.getUser().getUsername())) {
 					commentMenuEdit.setVisibility(View.GONE);
 					commentMenuDelete.setVisibility(View.GONE);
 				}
 
-				if(issueComment.getText().toString().isEmpty()) {
+				if(issueComment.getBody().isEmpty()) {
 					commentMenuCopy.setVisibility(View.GONE);
 				}
 
 				BottomSheetDialog dialog = new BottomSheetDialog(ctx);
-				dialog.setContentView(view);
+				dialog.setContentView(vw);
 				dialog.show();
 
-				commentMenuEdit.setOnClickListener(ediComment -> {
+				commentMenuEdit.setOnClickListener(v1 -> {
 
 					Bundle bundle = new Bundle();
-					bundle.putString("commentId", commendId.getText().toString());
+					bundle.putInt("commentId", issueComment.getId());
 					bundle.putString("commentAction", "edit");
-					bundle.putString("commentBody", commendBodyRaw.getText().toString());
+					bundle.putString("commentBody", issueComment.getBody());
 
-					BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
+					BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(bundle);
+					bottomSheetReplyFragment.setOnInteractedListener(onInteractedListener);
+					bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
+
 					dialog.dismiss();
 
 				});
 
-				commentShare.setOnClickListener(ediComment -> {
+				commentShare.setOnClickListener(v1 -> {
 
 					// get comment Url
-					CharSequence commentUrl = htmlUrl.getText();
+					CharSequence commentUrl = issueComment.getHtml_url();
 
 					// share issue comment
 					Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 					sharingIntent.setType("text/plain");
-					String intentHeader = tinyDb.getString("issueNumber") + ctx.getResources().getString(R.string.hash) + "issuecomment-" + commendId.getText() + " " + tinyDb.getString("issueTitle");
+					String intentHeader = tinyDb.getString("issueNumber") + ctx.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + tinyDb.getString("issueTitle");
 					sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, intentHeader);
 					sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, commentUrl);
 					ctx.startActivity(Intent.createChooser(sharingIntent, intentHeader));
@@ -158,10 +134,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				});
 
-				issueCommentCopyUrl.setOnClickListener(ediComment -> {
+				issueCommentCopyUrl.setOnClickListener(v1 -> {
 
 					// comment Url
-					CharSequence commentUrl = htmlUrl.getText();
+					CharSequence commentUrl = issueComment.getHtml_url();
 
 					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
@@ -177,14 +153,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				commentMenuQuote.setOnClickListener(v1 -> {
 
 					StringBuilder stringBuilder = new StringBuilder();
-					String commenterName = commenterUsername.getText().toString();
+					String commenterName = issueComment.getUser().getUsername();
 
 					if(!commenterName.equals(tinyDb.getString("userLogin"))) {
 
 						stringBuilder.append("@").append(commenterName).append("\n\n");
 					}
 
-					String[] lines = commendBodyRaw.getText().toString().split("\\R");
+					String[] lines = issueComment.getBody().split("\\R");
 
 					for(String line : lines) {
 
@@ -202,12 +178,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				});
 
-				commentMenuCopy.setOnClickListener(view1 -> {
+				commentMenuCopy.setOnClickListener(v1 -> {
 
 					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
 
-					ClipData clip = ClipData.newPlainText("Comment on issue #" + issueNumber.getText().toString(), issueComment.getText().toString());
+					ClipData clip = ClipData.newPlainText("Comment on issue #" + tinyDb.getString("issueNumber"), issueComment.getBody());
 					clipboard.setPrimaryClip(clip);
 
 					dialog.dismiss();
@@ -215,9 +191,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				});
 
-				commentMenuDelete.setOnClickListener(deleteComment -> {
+				commentMenuDelete.setOnClickListener(v1 -> {
 
-					deleteIssueComment(ctx, Integer.parseInt(commendId.getText().toString()), getAdapterPosition());
+					deleteIssueComment(ctx, issueComment.getId(), getAdapterPosition());
 					dialog.dismiss();
 
 				});
@@ -238,22 +214,20 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
 
-		final TinyDB tinyDb = new TinyDB(ctx);
-		final String instanceUrl = tinyDb.getString("instanceUrl");
+		final TinyDB tinyDb = TinyDB.getInstance(ctx);
 		final String loginUid = tinyDb.getString("loginUid");
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 		String[] repoFullName = tinyDb.getString("repoFullName").split("/");
+
 		if (repoFullName.length != 2) {
 			return;
 		}
+
 		final String repoOwner = repoFullName[0];
 		final String repoName = repoFullName[1];
 
-		Call<JsonElement> call;
-
-		call = RetrofitClient
-				.getInstance(instanceUrl, ctx)
-				.getApiInterface()
+		Call<JsonElement> call = RetrofitClient
+				.getApiInterface(ctx)
 				.deleteComment(instanceToken, repoOwner, repoName, commentId);
 
 		call.enqueue(new Callback<JsonElement>() {
@@ -261,47 +235,40 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			@Override
 			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-				if(response.code() == 204) {
+				switch(response.code()) {
 
-					updateAdapter(position);
-					Toasty.success(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
+					case 204:
+						updateAdapter(position);
+						Toasty.success(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
+						break;
 
-				}
-				else if(response.code() == 401) {
-
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
+					case 401:
+						AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
 							ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
 							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
 							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+						break;
+
+					case 403:
+						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						break;
+
+					case 404:
+						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+						break;
+
+					default:
+						Toasty.error(ctx, ctx.getString(R.string.genericError));
 
 				}
-				else if(response.code() == 403) {
-
-					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-
-				}
-				else if(response.code() == 404) {
-
-					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-
-				}
-				else {
-
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-
-				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
-
 			}
-
 		});
-
 	}
 
 	@NonNull
@@ -312,109 +279,40 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		return new IssueCommentsAdapter.IssueCommentViewHolder(v);
 
 	}
-
-	@SuppressLint("SetTextI18n")
 	@Override
 	public void onBindViewHolder(@NonNull IssueCommentsAdapter.IssueCommentViewHolder holder, int position) {
 
-		final TinyDB tinyDb = new TinyDB(mCtx);
-		final String locale = tinyDb.getString("locale");
-		final String timeFormat = tinyDb.getString("dateFormat");
+		IssueComments issueComment = issuesComments.get(position);
 
-		IssueComments currentItem = issuesComments.get(position);
+		holder.issueComment = issueComment;
+		holder.author.setText(issueComment.getUser().getUsername());
 
-		holder.htmlUrl.setText(currentItem.getHtml_url());
-		holder.commenterUsername.setText(currentItem.getUser().getUsername());
-		holder.commendId.setText(String.valueOf(currentItem.getId()));
-		holder.commendBodyRaw.setText(currentItem.getBody());
+		PicassoService.getInstance(ctx).get()
+			.load(issueComment.getUser().getAvatar_url())
+			.placeholder(R.drawable.loader_animated)
+			.transform(new RoundedTransformation(4, 0))
+			.resize(AppUtil.getPixelsFromDensity(ctx, 35), AppUtil.getPixelsFromDensity(ctx, 35))
+			.centerCrop()
+			.into(holder.avatar);
 
-		if(!currentItem.getUser().getFull_name().equals("")) {
-			holder.issueCommenterAvatar.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.issueCommenter) + currentItem.getUser().getFull_name(), mCtx));
-		}
-		else {
-			holder.issueCommenterAvatar.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.issueCommenter) + currentItem.getUser().getLogin(), mCtx));
-		}
+		new Markdown(ctx, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment);
 
-		PicassoService.getInstance(mCtx).get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueCommenterAvatar);
+		StringBuilder informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", ctx));
 
-		String cleanIssueComments = currentItem.getBody().trim();
+		if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
 
-		final Markwon markwon = Markwon.builder(Objects.requireNonNull(mCtx)).usePlugin(CorePlugin.create()).usePlugin(ImagesPlugin.create(new ImagesPlugin.ImagesConfigure() {
-
-			@Override
-			public void configureImages(@NonNull ImagesPlugin plugin) {
-
-				plugin.addSchemeHandler(new SchemeHandler() {
-
-					@NonNull
-					@Override
-					public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
-
-						final int resourceId = mCtx.getResources().getIdentifier(raw.substring("drawable://".length()), "drawable", mCtx.getPackageName());
-
-						final Drawable drawable = ContextCompat.getDrawable(mCtx, resourceId);
-
-						assert drawable != null;
-						return ImageItem.withResult(drawable);
-
-					}
-
-					@NonNull
-					@Override
-					public Collection<String> supportedSchemes() {
-
-						return Collections.singleton("drawable");
-					}
-				});
-				plugin.placeholderProvider(drawable -> null);
-				plugin.addMediaDecoder(GifMediaDecoder.create(false));
-				plugin.addMediaDecoder(SvgMediaDecoder.create(mCtx.getResources()));
-				plugin.addMediaDecoder(SvgMediaDecoder.create());
-				plugin.defaultMediaDecoder(DefaultMediaDecoder.create(mCtx.getResources()));
-				plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-
-			}
-		})).usePlugin(new AbstractMarkwonPlugin() {
-
-			@Override
-			public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-
-				builder.codeTextColor(tinyDb.getInt("codeBlockColor")).codeBackgroundColor(tinyDb.getInt("codeBlockBackground")).linkColor(mCtx.getResources().getColor(R.color.lightBlue));
-			}
-
-		}).usePlugin(TablePlugin.create(mCtx)).usePlugin(TaskListPlugin.create(mCtx)).usePlugin(HtmlPlugin.create()).usePlugin(StrikethroughPlugin.create()).usePlugin(LinkifyPlugin.create()).build();
-
-		Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueComments));
-		markwon.setParsedMarkdown(holder.issueComment, UserMentions.UserMentionsFunc(mCtx, bodyWithMD, cleanIssueComments));
-
-		String edited;
-
-		if(!currentItem.getUpdated_at().equals(currentItem.getCreated_at())) {
-
-			edited = mCtx.getResources().getString(R.string.colorfulBulletSpan) + mCtx.getResources().getString(R.string.modifiedText);
-			holder.commentModified.setVisibility(View.VISIBLE);
-			holder.commentModified.setText(edited);
-			holder.commentModified.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getUpdated_at()), mCtx));
-
-		}
-		else {
-
-			holder.commentModified.setVisibility(View.INVISIBLE);
-
+			informationBuilder.append(ctx.getString(R.string.colorfulBulletSpan))
+				.append(ctx.getString(R.string.modifiedText));
 		}
 
-		holder.issueCommentDate.setText(TimeHelper.formatTime(currentItem.getCreated_at(), new Locale(locale), timeFormat, mCtx));
+		holder.information.setText(informationBuilder.toString());
 
-		if(timeFormat.equals("pretty")) {
-			holder.issueCommentDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), mCtx));
-		}
 	}
 
 	@Override
 	public int getItemCount() {
 
 		return issuesComments.size();
-
 	}
 
 }

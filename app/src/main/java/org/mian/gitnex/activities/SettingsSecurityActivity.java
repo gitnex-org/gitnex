@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
@@ -25,9 +24,6 @@ import java.io.IOException;
  */
 
 public class SettingsSecurityActivity extends BaseActivity {
-
-	private Context appCtx;
-	private Context ctx = this;
 
 	private View.OnClickListener onClickListener;
 
@@ -51,10 +47,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
 
-		TinyDB tinyDb = new TinyDB(appCtx);
-		String currentVersion = tinyDb.getString("giteaVersion");
+		String currentVersion = tinyDB.getString("giteaVersion");
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -72,24 +66,24 @@ public class SettingsSecurityActivity extends BaseActivity {
 		LinearLayout cacheSizeImagesFrame = findViewById(R.id.cacheSizeImagesSelectionFrame);
 		LinearLayout clearCacheFrame = findViewById(R.id.clearCacheSelectionFrame);
 
-		if(!tinyDb.getString("cacheSizeStr").isEmpty()) {
+		if(!tinyDB.getString("cacheSizeStr").isEmpty()) {
 
-			cacheSizeDataSelected.setText(tinyDb.getString("cacheSizeStr"));
+			cacheSizeDataSelected.setText(tinyDB.getString("cacheSizeStr"));
 		}
 
-		if(!tinyDb.getString("cacheSizeImagesStr").isEmpty()) {
+		if(!tinyDB.getString("cacheSizeImagesStr").isEmpty()) {
 
-			cacheSizeImagesSelected.setText(tinyDb.getString("cacheSizeImagesStr"));
+			cacheSizeImagesSelected.setText(tinyDB.getString("cacheSizeImagesStr"));
 		}
 
 		if(cacheSizeDataSelectedChoice == 0) {
 
-			cacheSizeDataSelectedChoice = tinyDb.getInt("cacheSizeId");
+			cacheSizeDataSelectedChoice = tinyDB.getInt("cacheSizeId");
 		}
 
 		if(cacheSizeImagesSelectedChoice == 0) {
 
-			cacheSizeImagesSelectedChoice = tinyDb.getInt("cacheSizeImagesId");
+			cacheSizeImagesSelectedChoice = tinyDB.getInt("cacheSizeImagesId");
 		}
 
 		if(new Version(currentVersion).less("1.12.3")) {
@@ -97,7 +91,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			pollingDelayFrame.setVisibility(View.GONE);
 		}
 
-		pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), tinyDb.getInt("pollingDelayMinutes", DEFAULT_POLLING_DELAY)));
+		pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), tinyDB.getInt("pollingDelayMinutes", DEFAULT_POLLING_DELAY)));
 
 		// clear cache setter
 		File cacheDir = appCtx.getCacheDir();
@@ -142,8 +136,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 				cacheSizeImagesSelectedChoice = i;
 				cacheSizeImagesSelected.setText(cacheSizeImagesList[i]);
-				tinyDb.putString("cacheSizeImagesStr", cacheSizeImagesList[i]);
-				tinyDb.putInt("cacheSizeImagesId", i);
+				tinyDB.putString("cacheSizeImagesStr", cacheSizeImagesList[i]);
+				tinyDB.putInt("cacheSizeImagesId", i);
 
 				dialogInterfaceTheme.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
@@ -165,8 +159,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 				cacheSizeDataSelectedChoice = i;
 				cacheSizeDataSelected.setText(cacheSizeDataList[i]);
-				tinyDb.putString("cacheSizeStr", cacheSizeDataList[i]);
-				tinyDb.putInt("cacheSizeId", i);
+				tinyDB.putString("cacheSizeStr", cacheSizeDataList[i]);
+				tinyDB.putInt("cacheSizeId", i);
 
 				dialogInterfaceTheme.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
@@ -187,9 +181,9 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 				appCtx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE).edit().remove(MemorizingTrustManager.KEYSTORE_KEY).apply();
 
-				tinyDb.putBoolean("loggedInMode", false);
-				tinyDb.remove("basicAuthPassword");
-				tinyDb.putBoolean("basicAuthFlag", false);
+				tinyDB.putBoolean("loggedInMode", false);
+				tinyDB.remove("basicAuthPassword");
+				tinyDB.putBoolean("basicAuthFlag", false);
 
 				Intent loginActivityIntent = new Intent().setClass(appCtx, LoginActivity.class);
 				loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -206,7 +200,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			NumberPicker numberPicker = new NumberPicker(ctx);
 			numberPicker.setMinValue(MINIMUM_POLLING_DELAY);
 			numberPicker.setMaxValue(MAXIMUM_POLLING_DELAY);
-			numberPicker.setValue(tinyDb.getInt("pollingDelayMinutes", DEFAULT_POLLING_DELAY));
+			numberPicker.setValue(tinyDB.getInt("pollingDelayMinutes", DEFAULT_POLLING_DELAY));
 			numberPicker.setWrapSelectorWheel(true);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
@@ -216,7 +210,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			builder.setCancelable(true);
 			builder.setPositiveButton(getString(R.string.okButton), (dialog, which) -> {
 
-				tinyDb.putInt("pollingDelayMinutes", numberPicker.getValue());
+				tinyDB.putInt("pollingDelayMinutes", numberPicker.getValue());
 
 				NotificationsMaster.fireWorker(ctx);
 				NotificationsMaster.hireWorker(ctx);

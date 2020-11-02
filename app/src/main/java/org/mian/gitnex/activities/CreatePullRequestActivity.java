@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.Branches;
@@ -43,9 +41,6 @@ import retrofit2.Callback;
 public class CreatePullRequestActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener {
 
 	private View.OnClickListener onClickListener;
-	private Context ctx = this;
-	private Context appCtx;
-	private TinyDB tinyDb;
 	private ActivityCreatePrBinding viewBinding;
 	private CustomLabelsSelectionDialogBinding labelsBinding;
 	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
@@ -55,7 +50,6 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	private List<String> assignees = new ArrayList<>();
 	private int milestoneId;
 
-	private String instanceUrl;
 	private String loginUid;
 	private String instanceToken;
 	private String repoOwner;
@@ -80,23 +74,20 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-		tinyDb = new TinyDB(appCtx);
 
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
 		View view = viewBinding.getRoot();
 		setContentView(view);
 
-		instanceUrl = tinyDb.getString("instanceUrl");
-		loginUid = tinyDb.getString("loginUid");
-		String repoFullName = tinyDb.getString("repoFullName");
+		loginUid = tinyDB.getString("loginUid");
+		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		repoOwner = parts[0];
 		repoName = parts[1];
-		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
 
 		// require gitea 1.12 or higher
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
@@ -125,8 +116,8 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		disableProcessButton();
 
-		getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid, resultLimit);
-		getBranches(instanceUrl, instanceToken, repoOwner, repoName, loginUid);
+		getMilestones(repoOwner, repoName, resultLimit);
+		getBranches(repoOwner, repoName);
 
 		viewBinding.prLabels.setOnClickListener(prLabels -> showLabels());
 
@@ -184,8 +175,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		CreatePullRequest createPullRequest = new CreatePullRequest(prTitle, prDescription, loginUid, mergeInto, pullFrom, milestoneId, dueDate, assignees, labelsIds);
 
 		Call<ResponseBody> transferCall = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(appCtx)
 			.createPullRequest(instanceToken, repoOwner, repoName, createPullRequest);
 
 		transferCall.enqueue(new Callback<ResponseBody>() {
@@ -256,15 +246,14 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		labelsBinding.cancel.setOnClickListener(editProperties -> dialogLabels.dismiss());
 
 		dialogLabels.show();
-		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 
-	private void getBranches(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid) {
+	private void getBranches(String repoOwner, String repoName) {
 
 		Call<List<Branches>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getBranches(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
+			.getApiInterface(ctx)
+			.getBranches(Authorization.get(ctx), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Branches>>() {
 
@@ -308,13 +297,12 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 	}
 
-	private void getMilestones(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid, int resultLimit) {
+	private void getMilestones(String repoOwner, String repoName, int resultLimit) {
 
 		String msState = "open";
 		Call<List<Milestones>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, 1, resultLimit, msState);
+			.getApiInterface(appCtx)
+			.getMilestones(Authorization.get(ctx), repoOwner, repoName, 1, resultLimit, msState);
 
 		call.enqueue(new Callback<List<Milestones>>() {
 

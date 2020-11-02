@@ -51,9 +51,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private CustomLabelsSelectionDialogBinding labelsBinding;
 	private CustomAssigneesSelectionDialogBinding assigneesBinding;
     private View.OnClickListener onClickListener;
-    final Context ctx = this;
-    private Context appCtx;
-    private TinyDB tinyDb;
     private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
 	private Dialog dialogLabels;
 	private Dialog dialogAssignees;
@@ -61,9 +58,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private String assigneesSetter;
 	private int milestoneId;
 
-	private String instanceUrl;
 	private String loginUid;
-	private String instanceToken;
 	private String repoOwner;
 	private String repoName;
 
@@ -86,8 +81,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-	    tinyDb = new TinyDB(appCtx);
 
 	    viewBinding = ActivityCreateIssueBinding.inflate(getLayoutInflater());
 	    View view = viewBinding.getRoot();
@@ -97,17 +90,14 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        instanceUrl = tinyDb.getString("instanceUrl");
-        loginUid = tinyDb.getString("loginUid");
-        final String loginFullName = tinyDb.getString("userFullname");
-        String repoFullName = tinyDb.getString("repoFullName");
+        loginUid = tinyDB.getString("loginUid");
+        String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         repoOwner = parts[0];
         repoName = parts[1];
-        instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         // require gitea 1.12 or higher
-        if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+        if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
             resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
         }
@@ -137,7 +127,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	    viewBinding.newIssueLabels.setOnClickListener(this);
 	    viewBinding.newIssueDueDate.setOnClickListener(this);
 
-        getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid, resultLimit);
+        getMilestones(repoOwner, repoName, resultLimit);
 
         disableProcessButton();
 
@@ -194,7 +184,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ -> dialogAssignees.dismiss());
 
 		dialogAssignees.show();
-		AssigneesActions.getRepositoryAssignees(ctx, instanceUrl, instanceToken, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
+		AssigneesActions.getRepositoryAssignees(ctx, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
 	}
 
 	private void showLabels() {
@@ -214,7 +204,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		labelsBinding.cancel.setOnClickListener(labelsBinding_ -> dialogLabels.dismiss());
 
 		dialogLabels.show();
-		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 
     private void processNewIssue() {
@@ -247,19 +237,18 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         }
 
         disableProcessButton();
-        createNewIssueFunc(instanceUrl, instanceToken, repoOwner, repoName, loginUid, newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
+        createNewIssueFunc(repoOwner, repoName, loginUid, newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
     }
 
-    private void createNewIssueFunc(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String loginUid, String newIssueDescriptionForm, String newIssueDueDateForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
+    private void createNewIssueFunc(String repoOwner, String repoName, String loginUid, String newIssueDescriptionForm, String newIssueDueDateForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
 
         CreateIssue createNewIssueJson = new CreateIssue(loginUid, newIssueDescriptionForm, false, newIssueDueDateForm, newIssueMilestoneIdForm, newIssueTitleForm, assigneesListData, labelsIds);
 
         Call<JsonElement> call3;
 
         call3 = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .createNewIssue(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, createNewIssueJson);
+                .getApiInterface(ctx)
+                .createNewIssue(Authorization.get(ctx), repoOwner, repoName, createNewIssueJson);
 
         call3.enqueue(new Callback<JsonElement>() {
 
@@ -268,7 +257,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
 				if(response2.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(appCtx);
+                    TinyDB tinyDb = TinyDB.getInstance(appCtx);
                     tinyDb.putBoolean("resumeIssues", true);
 
                     Toasty.success(ctx, getString(R.string.issueCreated));
@@ -306,13 +295,12 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         onClickListener = view -> finish();
     }
 
-    private void getMilestones(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid, int resultLimit) {
+    private void getMilestones(String repoOwner, String repoName, int resultLimit) {
 
         String msState = "open";
         Call<List<Milestones>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, 1, resultLimit, msState);
+                .getApiInterface(ctx)
+                .getMilestones(Authorization.get(ctx), repoOwner, repoName, 1, resultLimit, msState);
 
         call.enqueue(new Callback<List<Milestones>>() {
 

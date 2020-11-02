@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoWatchersAdapter;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 
 /**
@@ -26,9 +24,6 @@ public class RepoWatchersActivity extends BaseActivity {
     private GridView mGridView;
     private ProgressBar mProgressBar;
 
-    final Context ctx = this;
-    private Context appCtx;
-
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_repo_watchers;
@@ -38,12 +33,6 @@ public class RepoWatchersActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         ImageView closeActivity = findViewById(R.id.close);
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
@@ -61,14 +50,14 @@ public class RepoWatchersActivity extends BaseActivity {
 
         toolbarTitle.setText(R.string.repoWatchersInMenu);
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName);
+        fetchDataAsync(Authorization.get(ctx), repoOwner, repoName);
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String repoOwner, String repoName) {
+    private void fetchDataAsync(String instanceToken, String repoOwner, String repoName) {
 
         RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
-        repoWatchersModel.getRepoWatchers(instanceUrl, instanceToken, repoOwner, repoName, ctx).observe(this, watchersListMain -> {
+        repoWatchersModel.getRepoWatchers(instanceToken, repoOwner, repoName, ctx).observe(this, watchersListMain -> {
 
             adapter = new RepoWatchersAdapter(ctx, watchersListMain);
 

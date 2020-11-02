@@ -26,7 +26,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.OrganizationListViewModel;
@@ -49,13 +48,6 @@ public class OrganizationsFragment extends Fragment {
 
         final View v = inflater.inflate(R.layout.fragment_organizations, container, false);
         setHasOptionsMenu(true);
-
-        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
-
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
 
@@ -98,11 +90,11 @@ public class OrganizationsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+            OrganizationListViewModel.loadOrgsList(Authorization.get(getContext()), getContext());
 
         }, 50));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+        fetchDataAsync(Authorization.get(getContext()));
 
         return v;
 
@@ -111,22 +103,21 @@ public class OrganizationsFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("orgCreated")) {
-            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+            OrganizationListViewModel.loadOrgsList(Authorization.get(getContext()), getContext());
             tinyDb.putBoolean("orgCreated", false);
         }
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken) {
+    private void fetchDataAsync(String instanceToken) {
 
         OrganizationListViewModel orgModel = new ViewModelProvider(this).get(OrganizationListViewModel.class);
 
-        orgModel.getUserOrgs(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), orgsListMain -> {
+        orgModel.getUserOrgs(instanceToken, getContext()).observe(getViewLifecycleOwner(), orgsListMain -> {
             adapter = new OrganizationsListAdapter(getContext(), orgsListMain);
 
             if(adapter.getItemCount() > 0) {
@@ -145,8 +136,6 @@ public class OrganizationsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

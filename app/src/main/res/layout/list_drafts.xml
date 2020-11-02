@@ -12,62 +12,20 @@
     android:background="?attr/primaryBackgroundColor"
     tools:context=".activities.MainActivity">
 
-    <TextView
-        android:id="@+id/repoId"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/draftId"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/issueNumber"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/issueType"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/repoOwner"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/repoName"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/commentId"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/frameDraftInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
         <TextView
             android:id="@+id/repoInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".95"
-            android:layout_gravity="start"
+            android:layout_weight="1"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
@@ -75,9 +33,17 @@
             android:id="@+id/editCommentStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit"
-            android:layout_gravity="end"
-            android:contentDescription="@string/menuDeleteText" />
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/menuDeleteText"
+            android:src="@drawable/ic_edit" />
+
+        <ImageView
+            android:id="@+id/deleteDraft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/menuDeleteText"
+            android:src="@drawable/ic_delete" />
 
     </LinearLayout>
 
@@ -93,19 +59,11 @@
             android:id="@+id/draftText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".95"
             android:layout_marginBottom="0dp"
+            android:layout_weight=".95"
+            android:text="@string/noDataFound"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="12sp"
-            android:text="@string/noDataFound" />
-
-        <ImageView
-            android:id="@+id/deleteDraft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="@string/menuDeleteText" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

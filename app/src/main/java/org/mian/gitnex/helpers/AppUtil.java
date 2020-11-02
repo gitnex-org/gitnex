@@ -124,7 +124,7 @@ public class AppUtil {
 
 	public static String getTimestampFromDate(Context context, Date date) {
 
-		TinyDB tinyDB = new TinyDB(context);
+		TinyDB tinyDB = TinyDB.getInstance(context);
 		Locale locale = new Locale(tinyDB.getString("locale"));
 
 		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);

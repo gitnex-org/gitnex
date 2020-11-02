@@ -22,12 +22,11 @@ import retrofit2.Callback;
 
 public class LabelsActions {
 
-	public static void getCurrentIssueLabels(Context ctx, String instanceUrl, String loginUid, String instanceToken, String repoOwner, String repoName, int issueIndex, List<Integer> currentLabelsIds) {
+	public static void getCurrentIssueLabels(Context ctx, String repoOwner, String repoName, int issueIndex, List<Integer> currentLabelsIds) {
 
 		Call<List<Labels>> callSingleIssueLabels = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getIssueLabels(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
+			.getApiInterface(ctx)
+			.getIssueLabels(Authorization.get(ctx), repoOwner, repoName, issueIndex);
 
 		callSingleIssueLabels.enqueue(new Callback<List<Labels>>() {
 
@@ -60,12 +59,11 @@ public class LabelsActions {
 		});
 	}
 
-	public static void getRepositoryLabels(Context ctx, String instanceUrl, String instanceToken, String repoOwner, String repoName, List<Labels> labelsList, Dialog dialogLabels, LabelsListAdapter labelsAdapter, CustomLabelsSelectionDialogBinding labelsBinding) {
+	public static void getRepositoryLabels(Context ctx, String repoOwner, String repoName, List<Labels> labelsList, Dialog dialogLabels, LabelsListAdapter labelsAdapter, CustomLabelsSelectionDialogBinding labelsBinding) {
 
 		Call<List<Labels>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getlabels(instanceToken, repoOwner, repoName);
+			.getApiInterface(ctx)
+			.getlabels(Authorization.get(ctx), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Labels>>() {
 

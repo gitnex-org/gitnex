@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 import java.util.List;
@@ -65,18 +64,12 @@ public class CollaboratorsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_collaborators, container, false);
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+
         noDataCollaborators = v.findViewById(R.id.noDataCollaborators);
-
         mProgressBar = v.findViewById(R.id.progress_bar);
-
         mGridView = v.findViewById(R.id.gridView);
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
-
+        fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName);
         return v;
     }
 
@@ -96,11 +89,11 @@ public class CollaboratorsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo) {
+    private void fetchDataAsync(String instanceToken, String owner, String repo) {
 
         CollaboratorsViewModel collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 
-        collaboratorsModel.getCollaboratorsList(instanceUrl, instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Collaborators>>() {
+        collaboratorsModel.getCollaboratorsList(instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Collaborators>>() {
             @Override
             public void onChanged(@Nullable List<Collaborators> collaboratorsListMain) {
                 adapter = new CollaboratorsAdapter(getContext(), collaboratorsListMain);

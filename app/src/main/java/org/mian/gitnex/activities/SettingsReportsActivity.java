@@ -1,12 +1,10 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -15,7 +13,6 @@ import org.mian.gitnex.helpers.Toasty;
 
 public class SettingsReportsActivity extends BaseActivity {
 
-	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	@Override
@@ -28,9 +25,6 @@ public class SettingsReportsActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-
-		TinyDB tinyDb = new TinyDB(appCtx);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -39,12 +33,12 @@ public class SettingsReportsActivity extends BaseActivity {
 
 		SwitchMaterial crashReportsSwitch = findViewById(R.id.crashReportsSwitch);
 
-		crashReportsSwitch.setChecked(tinyDb.getBoolean("crashReportingEnabled"));
+		crashReportsSwitch.setChecked(tinyDB.getBoolean("crashReportingEnabled"));
 
 		// crash reports switcher
 		crashReportsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			tinyDb.putBoolean("crashReportingEnabled", isChecked);
+			tinyDB.putBoolean("crashReportingEnabled", isChecked);
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
 	}

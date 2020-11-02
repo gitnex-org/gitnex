@@ -2,13 +2,13 @@ package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.models.UserInfo;
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.models.UserInfo;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,19 +21,18 @@ public class ProfileFollowersViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserInfo>> followersList;
 
-    public LiveData<List<UserInfo>> getFollowersList(String instanceUrl, String token, Context ctx) {
+    public LiveData<List<UserInfo>> getFollowersList(String token, Context ctx) {
 
         followersList = new MutableLiveData<>();
-        loadFollowersList(instanceUrl, token, ctx);
+        loadFollowersList(token, ctx);
 
         return followersList;
     }
 
-    public static void loadFollowersList(String instanceUrl, String token, Context ctx) {
+    public static void loadFollowersList(String token, Context ctx) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getFollowers(token);
 
         call.enqueue(new Callback<List<UserInfo>>() {

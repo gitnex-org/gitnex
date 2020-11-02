@@ -125,7 +125,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 	public void onBindViewHolder(@NonNull UserAccountsAdapter.UserAccountsViewHolder holder, int position) {
 
 		UserAccount currentItem = userAccountsList.get(position);
-		tinyDB = new TinyDB(mCtx);
+		tinyDB = TinyDB.getInstance(mCtx);
 
 		String url = UrlBuilder.fromString(currentItem.getInstanceUrl())
 			.withPath("/")

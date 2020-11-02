@@ -21,10 +21,8 @@ public class RepositoryActions {
 
     public static void starRepository(final Context context) {
 
-        final TinyDB tinyDb = new TinyDB(context);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        final TinyDB tinyDb = TinyDB.getInstance(context);
+
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -33,9 +31,8 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, context)
-                .getApiInterface()
-                .starRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
+                .getApiInterface(context)
+                .starRepository(Authorization.get(context), repoOwner, repoName);
 
         call.enqueue(new Callback<JsonElement>() {
 
@@ -86,10 +83,8 @@ public class RepositoryActions {
 
     public static void unStarRepository(final Context context) {
 
-        final TinyDB tinyDb = new TinyDB(context);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        final TinyDB tinyDb = TinyDB.getInstance(context);
+
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -98,9 +93,8 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, context)
-                .getApiInterface()
-                .unStarRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
+                .getApiInterface(context)
+                .unStarRepository(Authorization.get(context), repoOwner, repoName);
 
         call.enqueue(new Callback<JsonElement>() {
 
@@ -151,10 +145,8 @@ public class RepositoryActions {
 
     public static void watchRepository(final Context context) {
 
-        final TinyDB tinyDb = new TinyDB(context);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        final TinyDB tinyDb = TinyDB.getInstance(context);
+
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -163,9 +155,8 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, context)
-                .getApiInterface()
-                .watchRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
+                .getApiInterface(context)
+                .watchRepository(Authorization.get(context), repoOwner, repoName);
 
         call.enqueue(new Callback<JsonElement>() {
 
@@ -216,10 +207,8 @@ public class RepositoryActions {
 
     public static void unWatchRepository(final Context context) {
 
-        final TinyDB tinyDb = new TinyDB(context);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        final TinyDB tinyDb = TinyDB.getInstance(context);
+
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -228,9 +217,8 @@ public class RepositoryActions {
         Call<JsonElement> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, context)
-                .getApiInterface()
-                .unWatchRepository(Authorization.returnAuthentication(context, loginUid, instanceToken), repoOwner, repoName);
+                .getApiInterface(context)
+                .unWatchRepository(Authorization.get(context), repoOwner, repoName);
 
         call.enqueue(new Callback<JsonElement>() {
 

@@ -2,13 +2,13 @@ package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.models.UserRepositories;
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.models.UserRepositories;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,21 +21,20 @@ public class RepositoriesListViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> reposList;
 
-    public LiveData<List<UserRepositories>> getUserRepositories(String instanceUrl, String token, Context ctx, int page, int limit) {
+    public LiveData<List<UserRepositories>> getUserRepositories(String token, Context ctx, int page, int limit) {
 
         //if (reposList == null) {
             reposList = new MutableLiveData<>();
-            loadReposList(instanceUrl, token, ctx, page, limit);
+            loadReposList(token, ctx, page, limit);
         //}
 
         return reposList;
     }
 
-    public static void loadReposList(String instanceUrl, String token, Context ctx, int page, int limit) {
+    public static void loadReposList(String token, Context ctx, int page, int limit) {
 
         Call<List<UserRepositories>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getUserRepositories(token, page, limit);
 
         call.enqueue(new Callback<List<UserRepositories>>() {

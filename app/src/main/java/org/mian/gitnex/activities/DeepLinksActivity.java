@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityDeeplinksBinding;
 import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.models.GiteaVersion;
@@ -38,9 +36,6 @@ import retrofit2.Callback;
 public class DeepLinksActivity extends BaseActivity {
 
 	private ActivityDeeplinksBinding viewBinding;
-	private Context ctx = this;
-	private Context appCtx;
-	private TinyDB tinyDb;
 	private String currentInstance;
 	private String instanceToken;
 	private boolean noAccountFound = false;
@@ -59,8 +54,6 @@ public class DeepLinksActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-		tinyDb = new TinyDB(appCtx);
 
 		viewBinding = ActivityDeeplinksBinding.inflate(getLayoutInflater());
 		View view = viewBinding.getRoot();
@@ -75,7 +68,7 @@ public class DeepLinksActivity extends BaseActivity {
 		assert data != null;
 
 		// check for login
-		if(!tinyDb.getBoolean("loggedInMode")) {
+		if(!tinyDB.getBoolean("loggedInMode")) {
 
 			finish();
 			ctx.startActivity(new Intent(ctx, LoginActivity.class));
@@ -123,15 +116,15 @@ public class DeepLinksActivity extends BaseActivity {
 
 					issueIntent.putExtra("issueNumber", data.getLastPathSegment());
 
-					tinyDb.putString("issueNumber", data.getLastPathSegment());
-					tinyDb.putString("issueType", "Issue");
+					tinyDB.putString("issueNumber", data.getLastPathSegment());
+					tinyDB.putString("issueType", "Issue");
 
-					tinyDb.putString("repoFullName", restOfUrl[restOfUrl.length - 4] + "/" + restOfUrl[restOfUrl.length - 3]);
+					tinyDB.putString("repoFullName", restOfUrl[restOfUrl.length - 4] + "/" + restOfUrl[restOfUrl.length - 3]);
 
 					final String repoOwner = restOfUrl[restOfUrl.length - 4];
 					final String repoName = restOfUrl[restOfUrl.length - 3];
 
-					int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
 					RepositoriesApi repositoryData = new RepositoriesApi(ctx);
 
 					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
@@ -139,12 +132,12 @@ public class DeepLinksActivity extends BaseActivity {
 					if(count == 0) {
 
 						long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDb.putLong("repositoryId", id);
+						tinyDB.putLong("repositoryId", id);
 					}
 					else {
 
 						Repository dataRepo = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDb.putLong("repositoryId", dataRepo.getRepositoryId());
+						tinyDB.putLong("repositoryId", dataRepo.getRepositoryId());
 					}
 
 					ctx.startActivity(issueIntent);
@@ -197,38 +190,38 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 			else { // no action, show options
 
-				if(tinyDb.getInt("defaultScreenId") == 1) { // repos
+				if(tinyDB.getInt("defaultScreenId") == 1) { // repos
 
 					mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
 					ctx.startActivity(mainIntent);
 					finish();
 				}
-				else if(tinyDb.getInt("defaultScreenId") == 2) { // org
+				else if(tinyDB.getInt("defaultScreenId") == 2) { // org
 
 					mainIntent.putExtra("launchFragmentByLinkHandler", "org");
 					ctx.startActivity(mainIntent);
 					finish();
 				}
-				else if(tinyDb.getInt("defaultScreenId") == 3) { // notifications
+				else if(tinyDB.getInt("defaultScreenId") == 3) { // notifications
 
 					mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
 					ctx.startActivity(mainIntent);
 					finish();
 				}
-				else if(tinyDb.getInt("defaultScreenId") == 4) { // explore
+				else if(tinyDB.getInt("defaultScreenId") == 4) { // explore
 
 					mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
 					ctx.startActivity(mainIntent);
 					finish();
 				}
-				else if(tinyDb.getInt("defaultScreenId") == 0) { // show options
+				else if(tinyDB.getInt("defaultScreenId") == 0) { // show options
 
 					viewBinding.noActionFrame.setVisibility(View.VISIBLE);
 					viewBinding.addNewAccountFrame.setVisibility(View.GONE);
 
 					viewBinding.repository.setOnClickListener(repository -> {
 
-						tinyDb.putInt("defaultScreenId", 1);
+						tinyDB.putInt("defaultScreenId", 1);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -236,7 +229,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 					viewBinding.organization.setOnClickListener(organization -> {
 
-						tinyDb.putInt("defaultScreenId", 2);
+						tinyDB.putInt("defaultScreenId", 2);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "org");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -244,7 +237,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 					viewBinding.notification.setOnClickListener(notification -> {
 
-						tinyDb.putInt("defaultScreenId", 3);
+						tinyDB.putInt("defaultScreenId", 3);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -252,7 +245,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 					viewBinding.explore.setOnClickListener(explore -> {
 
-						tinyDb.putInt("defaultScreenId", 4);
+						tinyDB.putInt("defaultScreenId", 4);
 						mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
 						ctx.startActivity(mainIntent);
 						finish();
@@ -260,7 +253,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 					viewBinding.launchApp2.setOnClickListener(launchApp2 -> {
 
-						tinyDb.putInt("defaultScreenId", 0);
+						tinyDB.putInt("defaultScreenId", 0);
 						ctx.startActivity(mainIntent);
 						finish();
 					});
@@ -290,7 +283,9 @@ public class DeepLinksActivity extends BaseActivity {
 			.toUri();
 
 		Call<GiteaVersion> callVersion;
-		callVersion = RetrofitClient.getInstance(String.valueOf(instanceUrl), ctx).getApiInterface().getGiteaVersion();
+		callVersion = RetrofitClient
+			.getApiInterface(ctx, instanceUrl.toString())
+			.getGiteaVersion();
 
 		callVersion.enqueue(new Callback<GiteaVersion>() {
 
@@ -346,8 +341,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private void getPullRequest(String url, String token, String repoOwner, String repoName, int index) {
 
 		Call<PullRequests> call = RetrofitClient
-			.getInstance(url, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx, url)
 			.getPullRequestByIndex(token, repoOwner, repoName, index);
 
 		call.enqueue(new Callback<PullRequests>() {
@@ -367,28 +361,28 @@ public class DeepLinksActivity extends BaseActivity {
 					if(prInfo.getHead() != null) {
 
 						issueIntent.putExtra("prHeadBranch", prInfo.getHead().getRef());
-						tinyDb.putString("prHeadBranch", prInfo.getHead().getRef());
+						tinyDB.putString("prHeadBranch", prInfo.getHead().getRef());
 
 						if(prInfo.getHead().getRepo() != null) {
 
-							tinyDb.putString("prIsFork", String.valueOf(prInfo.getHead().getRepo().isFork()));
-							tinyDb.putString("prForkFullName", prInfo.getHead().getRepo().getFull_name());
+							tinyDB.putString("prIsFork", String.valueOf(prInfo.getHead().getRepo().isFork()));
+							tinyDB.putString("prForkFullName", prInfo.getHead().getRepo().getFull_name());
 						}
 						else {
 
 							// pull was done from a deleted fork
-							tinyDb.putString("prIsFork", "true");
-							tinyDb.putString("prForkFullName", ctx.getString(R.string.prDeletedFrok));
+							tinyDB.putString("prIsFork", "true");
+							tinyDB.putString("prForkFullName", ctx.getString(R.string.prDeletedFrok));
 						}
 					}
 
-					tinyDb.putString("issueNumber", String.valueOf(index));
-					tinyDb.putString("prMergeable", String.valueOf(prInfo.isMergeable()));
-					tinyDb.putString("issueType", "Pull");
+					tinyDB.putString("issueNumber", String.valueOf(index));
+					tinyDB.putString("prMergeable", String.valueOf(prInfo.isMergeable()));
+					tinyDB.putString("issueType", "Pull");
 
-					tinyDb.putString("repoFullName", repoOwner + "/" + repoName);
+					tinyDB.putString("repoFullName", repoOwner + "/" + repoName);
 
-					int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
 					RepositoriesApi repositoryData = new RepositoriesApi(ctx);
 
 					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
@@ -396,12 +390,12 @@ public class DeepLinksActivity extends BaseActivity {
 					if(count == 0) {
 
 						long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDb.putLong("repositoryId", id);
+						tinyDB.putLong("repositoryId", id);
 					}
 					else {
 
 						Repository dataRepo = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDb.putLong("repositoryId", dataRepo.getRepositoryId());
+						tinyDB.putLong("repositoryId", dataRepo.getRepositoryId());
 					}
 
 					ctx.startActivity(issueIntent);
@@ -425,8 +419,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private void goToRepoSection(String url, String token, String repoOwner, String repoName, String type) {
 
 		Call<UserRepositories> call = RetrofitClient
-			.getInstance(url, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx, url)
 			.getUserRepository(token, repoOwner, repoName);
 
 		call.enqueue(new Callback<UserRepositories>() {
@@ -444,19 +437,19 @@ public class DeepLinksActivity extends BaseActivity {
 					repoIntent.putExtra("goToSection", "yes");
 					repoIntent.putExtra("goToSectionType", type);
 
-					tinyDb.putString("repoFullName", repoInfo.getFullName());
+					tinyDB.putString("repoFullName", repoInfo.getFullName());
 					if(repoInfo.getPrivateFlag()) {
 
-						tinyDb.putString("repoType", getResources().getString(R.string.strPrivate));
+						tinyDB.putString("repoType", getResources().getString(R.string.strPrivate));
 					}
 					else {
 
-						tinyDb.putString("repoType", getResources().getString(R.string.strPublic));
+						tinyDB.putString("repoType", getResources().getString(R.string.strPublic));
 					}
-					tinyDb.putBoolean("isRepoAdmin", repoInfo.getPermissions().isAdmin());
-					tinyDb.putString("repoBranch", repoInfo.getDefault_branch());
+					tinyDB.putBoolean("isRepoAdmin", repoInfo.getPermissions().isAdmin());
+					tinyDB.putString("repoBranch", repoInfo.getDefault_branch());
 
-					int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
 					RepositoriesApi repositoryData = new RepositoriesApi(ctx);
 
 					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
@@ -464,12 +457,12 @@ public class DeepLinksActivity extends BaseActivity {
 					if(count == 0) {
 
 						long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDb.putLong("repositoryId", id);
+						tinyDB.putLong("repositoryId", id);
 					}
 					else {
 
 						Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-						tinyDb.putLong("repositoryId", data.getRepositoryId());
+						tinyDB.putLong("repositoryId", data.getRepositoryId());
 					}
 
 					ctx.startActivity(repoIntent);

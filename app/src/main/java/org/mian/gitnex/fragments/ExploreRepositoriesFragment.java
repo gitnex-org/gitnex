@@ -58,10 +58,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private List<UserRepositories> dataList;
 	private ExploreRepositoriesAdapter adapter;
 
-	private String instanceUrl;
-	private String loginUid;
-	private String instanceToken;
-
 	private Dialog dialogFilterOptions;
 	private CustomExploreRepositoriesDialogBinding filterBinding;
 
@@ -72,11 +68,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		ctx = getContext();
-		tinyDb = new TinyDB(getContext());
-
-		instanceUrl = tinyDb.getString("instanceUrl");
-		loginUid = tinyDb.getString("loginUid");
-		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		tinyDb = TinyDB.getInstance(getContext());
 
 		dataList = new ArrayList<>();
 		adapter = new ExploreRepositoriesAdapter(dataList, ctx);
@@ -183,7 +175,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 			viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
 		}
 
-		Call<ExploreRepositories> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().queryRepos(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, limit, pageCurrentIndex);
+		Call<ExploreRepositories> call = RetrofitClient.getApiInterface(ctx).queryRepos(Authorization.get(getContext()), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, limit, pageCurrentIndex);
 
 		call.enqueue(new Callback<ExploreRepositories>() {
 

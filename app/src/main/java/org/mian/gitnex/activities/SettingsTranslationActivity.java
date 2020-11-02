@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -19,7 +17,6 @@ import org.mian.gitnex.helpers.Toasty;
 
 public class SettingsTranslationActivity extends BaseActivity {
 
-	private Context appCtx;
 	private View.OnClickListener onClickListener;
 
 	private static String[] langList = {"English", "Arabic", "Chinese", "Czech", "Finnish", "French", "German", "Italian", "Latvian", "Persian",
@@ -36,9 +33,6 @@ public class SettingsTranslationActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-
-		TinyDB tinyDb = new TinyDB(appCtx);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -60,14 +54,14 @@ public class SettingsTranslationActivity extends BaseActivity {
 
 		});
 
-		if(!tinyDb.getString("localeStr").isEmpty()) {
+		if(!tinyDB.getString("localeStr").isEmpty()) {
 
-			tvLanguageSelected.setText(tinyDb.getString("localeStr"));
+			tvLanguageSelected.setText(tinyDB.getString("localeStr"));
 		}
 
 		if(langSelectedChoice == 0) {
 
-			langSelectedChoice = tinyDb.getInt("langId");
+			langSelectedChoice = tinyDB.getInt("langId");
 		}
 
 		// language dialog
@@ -82,81 +76,81 @@ public class SettingsTranslationActivity extends BaseActivity {
 
 				langSelectedChoice = i;
 				tvLanguageSelected.setText(langList[i]);
-				tinyDb.putString("localeStr", langList[i]);
-				tinyDb.putInt("langId", i);
+				tinyDB.putString("localeStr", langList[i]);
+				tinyDB.putInt("langId", i);
 
 				switch(langList[i]) {
 					case "Arabic":
 
-						tinyDb.putString("locale", "ar");
+						tinyDB.putString("locale", "ar");
 						break;
 					case "Chinese":
 
-						tinyDb.putString("locale", "zh");
+						tinyDB.putString("locale", "zh");
 						break;
 					case "Czech":
 
-						tinyDb.putString("locale", "cs");
+						tinyDB.putString("locale", "cs");
 						break;
 					case "Finnish":
 
-						tinyDb.putString("locale", "fi");
+						tinyDB.putString("locale", "fi");
 						break;
 					case "French":
 
-						tinyDb.putString("locale", "fr");
+						tinyDB.putString("locale", "fr");
 						break;
 					case "German":
 
-						tinyDb.putString("locale", "de");
+						tinyDB.putString("locale", "de");
 						break;
 					case "Italian":
 
-						tinyDb.putString("locale", "it");
+						tinyDB.putString("locale", "it");
 						break;
 					case "Latvian":
 
-						tinyDb.putString("locale", "lv");
+						tinyDB.putString("locale", "lv");
 						break;
 					case "Persian":
 
-						tinyDb.putString("locale", "fa");
+						tinyDB.putString("locale", "fa");
 						break;
 					case "Polish":
 
-						tinyDb.putString("locale", "pl");
+						tinyDB.putString("locale", "pl");
 						break;
 					case "Portuguese/Brazilian":
 
-						tinyDb.putString("locale", "pt");
+						tinyDB.putString("locale", "pt");
 						break;
 					case "Russian":
 
-						tinyDb.putString("locale", "ru");
+						tinyDB.putString("locale", "ru");
 						break;
 					case "Serbian":
 
-						tinyDb.putString("locale", "sr");
+						tinyDB.putString("locale", "sr");
 						break;
 					case "Spanish":
 
-						tinyDb.putString("locale", "es");
+						tinyDB.putString("locale", "es");
 						break;
 					case "Turkish":
 
-						tinyDb.putString("locale", "tr");
+						tinyDB.putString("locale", "tr");
 						break;
 					case "Ukrainian":
 
-						tinyDb.putString("locale", "uk");
+						tinyDB.putString("locale", "uk");
 						break;
 					default:
 
-						tinyDb.putString("locale", "en");
+						tinyDB.putString("locale", "en");
 						break;
 				}
 
-				tinyDb.putBoolean("refreshParent", true);
+				tinyDB.putBoolean("refreshParent", true);
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterface.dismiss();

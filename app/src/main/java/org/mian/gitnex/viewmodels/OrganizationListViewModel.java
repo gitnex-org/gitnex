@@ -2,13 +2,13 @@ package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.models.UserOrganizations;
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.models.UserOrganizations;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,21 +21,20 @@ public class OrganizationListViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserOrganizations>> orgsList;
 
-    public LiveData<List<UserOrganizations>> getUserOrgs(String instanceUrl, String token, Context ctx) {
+    public LiveData<List<UserOrganizations>> getUserOrgs(String token, Context ctx) {
 
         //if (orgsList == null) {
             orgsList = new MutableLiveData<>();
-            loadOrgsList(instanceUrl, token, ctx);
+            loadOrgsList(token, ctx);
         //}
 
         return orgsList;
     }
 
-    public static void loadOrgsList(String instanceUrl, String token, Context ctx) {
+    public static void loadOrgsList(String token, Context ctx) {
 
         Call<List<UserOrganizations>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getUserOrgs(token);
 
         call.enqueue(new Callback<List<UserOrganizations>>() {

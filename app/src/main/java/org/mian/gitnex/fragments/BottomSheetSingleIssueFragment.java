@@ -37,7 +37,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		View v = inflater.inflate(R.layout.bottom_sheet_single_issue, container, false);
 
 		final Context ctx = getContext();
-		final TinyDB tinyDB = new TinyDB(ctx);
+		final TinyDB tinyDB = TinyDB.getInstance(ctx);
 
 		TextView editIssue = v.findViewById(R.id.editIssue);
 		TextView editLabels = v.findViewById(R.id.editLabels);

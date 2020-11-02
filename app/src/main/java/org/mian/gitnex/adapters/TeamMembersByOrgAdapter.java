@@ -82,7 +82,7 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         UserInfo currentItem = teamMembersList.get(position);
         PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
 
-        final TinyDB tinyDb = new TinyDB(mCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(mCtx);
         Typeface myTypeface;
 
         switch(tinyDb.getInt("customFontId", -1)) {

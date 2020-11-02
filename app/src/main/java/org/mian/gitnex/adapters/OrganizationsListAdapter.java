@@ -53,7 +53,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
                     Intent intent = new Intent(context, OrganizationDetailActivity.class);
                     intent.putExtra("orgName", mTextView1.getText().toString());
 
-                    TinyDB tinyDb = new TinyDB(context);
+                    TinyDB tinyDb = TinyDB.getInstance(context);
                     tinyDb.putString("orgName", mTextView1.getText().toString());
                     tinyDb.putString("organizationId", organizationId.getText().toString());
                     tinyDb.putBoolean("organizationAction", true);
