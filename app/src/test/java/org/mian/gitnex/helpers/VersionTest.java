@@ -1,12 +1,12 @@
 package org.mian.gitnex.helpers;
 
-/**
- * Author 6543
- */
-
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+/**
+ * Author 6543
+ */
 
 public class VersionTest {
 

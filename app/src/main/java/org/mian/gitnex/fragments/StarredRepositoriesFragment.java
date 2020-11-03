@@ -92,14 +92,10 @@ public class StarredRepositoriesFragment extends Fragment {
 
         createNewRepo = v.findViewById(R.id.addNewRepo);
 
-        createNewRepo.setOnClickListener(new View.OnClickListener() {
+        createNewRepo.setOnClickListener(view -> {
 
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-                startActivity(intent);
-            }
-
+            Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
+            startActivity(intent);
         });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -133,6 +129,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
     @Override
     public void onResume() {
+
         super.onResume();
         TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");

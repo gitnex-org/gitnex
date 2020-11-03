@@ -178,6 +178,39 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/notificationsFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/notificationsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="24dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/pageTitleNotifications"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_notifications" />
+
+                <TextView
+                    android:id="@+id/notificationsHintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/notificationsHintText"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/languagesFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

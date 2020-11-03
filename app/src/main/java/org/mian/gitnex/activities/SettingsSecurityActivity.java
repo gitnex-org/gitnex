@@ -7,15 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
-import org.mian.gitnex.notifications.NotificationsMaster;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,15 +24,11 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
 
-	private static String[] cacheSizeDataList = {"50 MB", "100 MB", "250 MB", "500 MB", "1 GB"};
+	private static final String[] cacheSizeDataList = {"50 MB", "100 MB", "250 MB", "500 MB", "1 GB"};
 	private static int cacheSizeDataSelectedChoice = 0;
 
-	private static String[] cacheSizeImagesList = {"50 MB", "100 MB", "250 MB", "500 MB", "1 GB"};
+	private static final String[] cacheSizeImagesList = {"50 MB", "100 MB", "250 MB", "500 MB", "1 GB"};
 	private static int cacheSizeImagesSelectedChoice = 0;
-
-	private static int MINIMUM_POLLING_DELAY = 1;
-	private static int DEFAULT_POLLING_DELAY = 20;
-	private static int MAXIMUM_POLLING_DELAY = 720;
 
 	@Override
 	protected int getLayoutResourceId() {
@@ -48,8 +41,6 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		String currentVersion = tinyDB.getString("giteaVersion");
-
 		ImageView closeActivity = findViewById(R.id.close);
 
 		initCloseListener();
@@ -58,10 +49,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 		TextView cacheSizeDataSelected = findViewById(R.id.cacheSizeDataSelected); // setter for data cache size
 		TextView cacheSizeImagesSelected = findViewById(R.id.cacheSizeImagesSelected); // setter for images cache size
 		TextView clearCacheSelected = findViewById(R.id.clearCacheSelected); // setter for clear cache
-		TextView pollingDelaySelected = findViewById(R.id.pollingDelaySelected);
 
 		LinearLayout certsFrame = findViewById(R.id.certsFrame);
-		LinearLayout pollingDelayFrame = findViewById(R.id.pollingDelayFrame);
 		LinearLayout cacheSizeDataFrame = findViewById(R.id.cacheSizeDataSelectionFrame);
 		LinearLayout cacheSizeImagesFrame = findViewById(R.id.cacheSizeImagesSelectionFrame);
 		LinearLayout clearCacheFrame = findViewById(R.id.clearCacheSelectionFrame);
@@ -85,13 +74,6 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 			cacheSizeImagesSelectedChoice = tinyDB.getInt("cacheSizeImagesId");
 		}
-
-		if(new Version(currentVersion).less("1.12.3")) {
-
-			pollingDelayFrame.setVisibility(View.GONE);
-		}
-
-		pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), tinyDB.getInt("pollingDelayMinutes", DEFAULT_POLLING_DELAY)));
 
 		// clear cache setter
 		File cacheDir = appCtx.getCacheDir();
@@ -191,36 +173,6 @@ public class SettingsSecurityActivity extends BaseActivity {
 			});
 
 			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
-			builder.create().show();
-		});
-
-		// polling delay
-		pollingDelayFrame.setOnClickListener(v -> {
-
-			NumberPicker numberPicker = new NumberPicker(ctx);
-			numberPicker.setMinValue(MINIMUM_POLLING_DELAY);
-			numberPicker.setMaxValue(MAXIMUM_POLLING_DELAY);
-			numberPicker.setValue(tinyDB.getInt("pollingDelayMinutes", DEFAULT_POLLING_DELAY));
-			numberPicker.setWrapSelectorWheel(true);
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-			builder.setTitle(getString(R.string.pollingDelayDialogHeaderText));
-			builder.setMessage(getString(R.string.pollingDelayDialogDescriptionText));
-
-			builder.setCancelable(true);
-			builder.setPositiveButton(getString(R.string.okButton), (dialog, which) -> {
-
-				tinyDB.putInt("pollingDelayMinutes", numberPicker.getValue());
-
-				NotificationsMaster.fireWorker(ctx);
-				NotificationsMaster.hireWorker(ctx);
-
-				pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), numberPicker.getValue()));
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
-
-			builder.setNeutralButton(R.string.cancelButton, null);
-			builder.setView(numberPicker);
 			builder.create().show();
 		});
 	}

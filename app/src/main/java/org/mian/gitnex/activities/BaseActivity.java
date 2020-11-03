@@ -15,6 +15,7 @@ import org.acra.data.StringFormat;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
+import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.notifications.NotificationsMaster;
@@ -115,9 +116,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 		}
 
-        if(tinyDB.getInt("pollingDelayMinutes") == 0) {
+		if(tinyDB.getInt("pollingDelayMinutes", 0) <= 0) {
 
-            tinyDB.putInt("pollingDelayMinutes", 15);
+			tinyDB.putInt("pollingDelayMinutes", StaticGlobalVariables.defaultPollingDelay);
         }
 
 		// FIXME Performance nightmare

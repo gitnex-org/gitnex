@@ -642,7 +642,7 @@
 
     <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
-    <string name="securityHintText">SSL certificates, cache, polling delay</string>
+    <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
@@ -662,18 +662,23 @@
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">No notifications found</string>
-
-    <string name="notificationBody">You have received a new notification. (%s)</string>
-
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-
     <string name="markAsRead">Mark as Read</string>
     <string name="markAsUnread">Mark as Unread</string>
     <string name="pinNotification">Pin Notification</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
+    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="enableNotificationsHeaderText">Enable Notifications</string>
+    <string name="enableLightsHeaderText">Enable Light</string>
+    <string name="enableVibrationHeaderText">Enable Vibration</string>
+    <string name="chooseColorSelectorHeader">Choose Color</string>
+    <string name="newMessages">New messages</string>
+    <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
+    <string name="notificationChannelDescription" translatable="false">This is the main notification channel of GitNex.</string>
+    <string name="notificationExtraInfo" translatable="false">- %s (%s)</string>
 
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>

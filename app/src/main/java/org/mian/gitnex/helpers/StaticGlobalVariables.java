@@ -46,4 +46,8 @@ public abstract class StaticGlobalVariables {
 	public static String draftTypeIssue = "Issue";
 	public static String draftTypePull = "Pull";
 
+	// polling - notifications
+	public static int minimumPollingDelay = 1;
+	public static int defaultPollingDelay = 15;
+	public static int maximumPollingDelay = 720;
 }

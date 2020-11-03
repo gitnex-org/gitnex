@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,10 +18,12 @@ import org.mian.gitnex.activities.SettingsAppearanceActivity;
 import org.mian.gitnex.activities.SettingsDraftsActivity;
 import org.mian.gitnex.activities.SettingsFileViewerActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
+import org.mian.gitnex.activities.SettingsNotificationsActivity;
 import org.mian.gitnex.activities.SettingsReportsActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
 import org.mian.gitnex.activities.SettingsTranslationActivity;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Version;
 
 /**
  * Author M M Arif
@@ -28,11 +31,16 @@ import org.mian.gitnex.helpers.TinyDB;
 
 public class SettingsFragment extends Fragment {
 
+	private Context ctx;
+	private TinyDB tinyDB;
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_settings, container, false);
+		ctx = getContext();
+		tinyDB = TinyDB.getInstance(ctx);
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navSettings));
 
@@ -41,39 +49,48 @@ public class SettingsFragment extends Fragment {
 		LinearLayout fileViewerFrame = v.findViewById(R.id.fileViewerFrame);
 		LinearLayout draftsFrame = v.findViewById(R.id.draftsFrame);
 		LinearLayout securityFrame = v.findViewById(R.id.securityFrame);
+		LinearLayout notificationsFrame = v.findViewById(R.id.notificationsFrame);
 		LinearLayout languagesFrame = v.findViewById(R.id.languagesFrame);
 		LinearLayout reportsFrame = v.findViewById(R.id.reportsFrame);
 		LinearLayout rateAppFrame = v.findViewById(R.id.rateAppFrame);
 		LinearLayout aboutAppFrame = v.findViewById(R.id.aboutAppFrame);
 
-		generalFrame.setOnClickListener(generalFrameCall -> startActivity(new Intent(getContext(), SettingsGeneralActivity.class)));
+		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.3")) {
 
-		appearanceFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsAppearanceActivity.class)));
+			notificationsFrame.setVisibility(View.VISIBLE);
+		}
 
-		fileViewerFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsFileViewerActivity.class)));
+		generalFrame.setOnClickListener(generalFrameCall -> startActivity(new Intent(ctx, SettingsGeneralActivity.class)));
 
-		draftsFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsDraftsActivity.class)));
+		appearanceFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
-		securityFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsSecurityActivity.class)));
+		fileViewerFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsFileViewerActivity.class)));
 
-		languagesFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsTranslationActivity.class)));
+		draftsFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsDraftsActivity.class)));
 
-		reportsFrame.setOnClickListener(v1 -> startActivity(new Intent(getContext(), SettingsReportsActivity.class)));
+		securityFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
+
+		notificationsFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsNotificationsActivity.class)));
+
+		languagesFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsTranslationActivity.class)));
+
+		reportsFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsReportsActivity.class)));
 
 		rateAppFrame.setOnClickListener(aboutApp -> rateThisApp());
 
 		aboutAppFrame.setOnClickListener(aboutApp -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit());
 
 		return v;
-
 	}
 
 	public void rateThisApp() {
 
 		try {
+
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + requireActivity().getPackageName())));
 		}
 		catch(ActivityNotFoundException e) {
+
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + requireActivity().getPackageName())));
 		}
 	}
@@ -83,14 +100,12 @@ public class SettingsFragment extends Fragment {
 
 		super.onResume();
 
-		TinyDB tinyDb = TinyDB.getInstance(getContext());
+		if(tinyDB.getBoolean("refreshParent")) {
 
-		if(tinyDb.getBoolean("refreshParent")) {
 			requireActivity().recreate();
 			requireActivity().overridePendingTransition(0, 0);
-			tinyDb.putBoolean("refreshParent", false);
+			tinyDB.putBoolean("refreshParent", false);
 		}
-
 	}
 
 }
