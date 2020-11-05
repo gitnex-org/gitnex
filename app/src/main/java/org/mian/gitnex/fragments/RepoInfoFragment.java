@@ -262,7 +262,7 @@ public class RepoInfoFragment extends Fragment {
 
 							repoMetaForks.setText(repoInfo.getForks_count());
 							repoMetaWatchers.setText(repoInfo.getWatchers_count());
-							repoMetaSize.setText(FileUtils.byteCountToDisplaySize((int) repoInfo.getSize()));
+							repoMetaSize.setText(FileUtils.byteCountToDisplaySize((int) (repoInfo.getSize() * 1024)));
 
 							repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
 							if(timeFormat.equals("pretty")) {

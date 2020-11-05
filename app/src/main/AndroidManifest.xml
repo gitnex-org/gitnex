@@ -179,6 +179,8 @@
                 <data android:host="gitea.com" />
                 <data android:host="try.gitea.io" />
                 <data android:host="code.obermui.de" />
+                <data android:host="git.fsfe.org" />
+                <data android:host="opendev.org" />
             </intent-filter>
 
         </activity>

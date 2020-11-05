@@ -33,7 +33,7 @@ public class LabelsViewModel extends ViewModel {
 
         Call<List<Labels>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getlabels(token, owner, repo);
+                .getLabels(token, owner, repo);
 
         call.enqueue(new Callback<List<Labels>>() {
 

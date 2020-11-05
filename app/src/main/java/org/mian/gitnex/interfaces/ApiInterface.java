@@ -176,7 +176,10 @@ public interface ApiInterface {
     Call<JsonElement> createNewIssue(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Body CreateIssue jsonStr);
 
     @GET("repos/{owner}/{repo}/labels") // get labels list
-    Call<List<Labels>> getlabels(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+    Call<List<Labels>> getLabels(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
+
+	@GET("orgs/{owner}/labels") // get org labels list
+	Call<List<Labels>> getOrganizationLabels(@Header("Authorization") String token, @Path("owner") String ownerName);
 
     @GET("users/{username}/repos") // get current logged in user repositories
     Call<List<UserRepositories>> getCurrentUserRepositories(@Header("Authorization") String token, @Path("username") String username, @Query("page") int page, @Query("limit") int limit);

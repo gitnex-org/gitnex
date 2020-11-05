@@ -63,7 +63,7 @@ public class LabelsActions {
 
 		Call<List<Labels>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getlabels(Authorization.get(ctx), repoOwner, repoName);
+			.getLabels(Authorization.get(ctx), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Labels>>() {
 
@@ -71,26 +71,45 @@ public class LabelsActions {
 			public void onResponse(@NonNull Call<List<Labels>> call, @NonNull retrofit2.Response<List<Labels>> response) {
 
 				labelsList.clear();
-				List<Labels> labelsList_ = response.body();
-
-				labelsBinding.progressBar.setVisibility(View.GONE);
-				labelsBinding.dialogFrame.setVisibility(View.VISIBLE);
 
 				if (response.code() == 200) {
 
-					assert labelsList_ != null;
+					if(response.body() != null) {
 
-					if(labelsList_.size() > 0) {
-
-						labelsList.addAll(labelsList_);
-					}
-					else {
-
-						dialogLabels.dismiss();
-						Toasty.warning(ctx, ctx.getResources().getString(R.string.noLabelsFound));
+						labelsList.addAll(response.body());
 					}
 
-					labelsBinding.labelsRecyclerView.setAdapter(labelsAdapter);
+					// Load organization labels
+					Call<List<Labels>> callOrgLabels = RetrofitClient
+						.getApiInterface(ctx)
+						.getOrganizationLabels(Authorization.get(ctx), repoOwner);
+
+					callOrgLabels.enqueue(new Callback<List<Labels>>() {
+
+						@Override
+						public void onResponse(@NonNull Call<List<Labels>> call, @NonNull retrofit2.Response<List<Labels>> responseOrg) {
+
+							labelsBinding.progressBar.setVisibility(View.GONE);
+							labelsBinding.dialogFrame.setVisibility(View.VISIBLE);
+
+							if(responseOrg.body() != null) {
+
+								labelsList.addAll(responseOrg.body());
+							}
+
+							if(labelsList.isEmpty()) {
+
+								dialogLabels.dismiss();
+								Toasty.warning(ctx, ctx.getResources().getString(R.string.noLabelsFound));
+
+							}
+
+							labelsBinding.labelsRecyclerView.setAdapter(labelsAdapter);
+						}
+
+						@Override public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {}
+
+					});
 
 				}
 				else {
