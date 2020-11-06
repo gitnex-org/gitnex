@@ -99,6 +99,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		tinyDB.putBoolean("noConnection", false);
 
+		String currentVersion = tinyDB.getString("giteaVersion");
+
 		Intent mainIntent = getIntent();
 		String launchFragment = mainIntent.getStringExtra("launchFragment");
 
@@ -224,12 +226,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			@Override
 			public void onDrawerOpened(@NonNull View drawerView) {
 
-				getNotificationsCount(instanceToken);
-			}
-
-			@Override
-			public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
 				if(tinyDB.getBoolean("noConnection")) {
 
 					Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
@@ -319,7 +315,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					drawer.closeDrawers();
 				});
 
-				String currentVersion = tinyDB.getString("giteaVersion");
+				getNotificationsCount(instanceToken);
+			}
+
+			@Override
+			public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
 				navigationView.getMenu().findItem(R.id.nav_administration).setVisible(tinyDB.getBoolean("userIsAdmin"));
 				navigationView.getMenu().findItem(R.id.nav_notifications).setVisible(new Version(currentVersion).higherOrEqual("1.12.3"));
