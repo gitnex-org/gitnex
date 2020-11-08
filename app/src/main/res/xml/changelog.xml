@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.3.0-rc2" versioncode="328">
-        <change>A lot of bugs are squashed in this release including many UI improvements.</change>
+    <release version="3.3.0-rc3" versioncode="329">
+        <change>Last release candidate(rc) before 3.3.0 stable release, includes bug fixes, ui improvements and issue/pr emoji reactions.</change>
     </release>
 
 </changelog>

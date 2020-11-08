@@ -89,6 +89,5 @@ Thanks to all the open source libraries, contributors and donators.
 - Ge0rg/memorizingTrustManager
 - Dimezis/blurView
 - Mikaelhg/urlbuilder
-- emoji-java
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
