@@ -59,6 +59,7 @@ import org.mian.gitnex.models.Labels;
 import org.mian.gitnex.models.UpdateIssueAssignees;
 import org.mian.gitnex.models.WatchInfo;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
+import org.mian.gitnex.views.ReactionList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -207,6 +208,10 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	public void onButtonClicked(String text) {
 
 		switch(text) {
+
+			case "onResume":
+				onResume();
+				break;
 
 			case "showLabels":
 				showLabels();
@@ -519,7 +524,13 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.divider.setVisibility(View.VISIBLE);
 				}
 
-				adapter = new IssueCommentsAdapter(ctx, issueCommentsMain, getSupportFragmentManager(), this::onResume);
+				Bundle bundle = new Bundle();
+				bundle.putString("repoOwner", repoOwner);
+				bundle.putString("repoName", repoName);
+				bundle.putInt("issueNumber", issueIndex);
+
+				adapter = new IssueCommentsAdapter(ctx, bundle, issueCommentsMain, getSupportFragmentManager(), this::onResume);
+
 				viewBinding.recyclerView.setAdapter(adapter);
 
 			});
@@ -717,6 +728,15 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						viewBinding.issueCreatedTime
 							.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), ctx));
 					}
+
+					Bundle bundle = new Bundle();
+					bundle.putString("repoOwner", repoOwner);
+					bundle.putString("repoName", repoName);
+					bundle.putInt("issueId", singleIssue.getNumber());
+
+					ReactionList reactionList = new ReactionList(ctx, bundle);
+					viewBinding.commentReactionBadges.removeAllViews();
+					viewBinding.commentReactionBadges.addView(reactionList);
 
 					if(singleIssue.getMilestone() != null) {
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.views.ReactionSpinner;
 import java.util.Objects;
 
 /**
@@ -50,6 +52,29 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		TextView shareIssue = v.findViewById(R.id.shareIssue);
 		TextView subscribeIssue = v.findViewById(R.id.subscribeIssue);
 		TextView unsubscribeIssue = v.findViewById(R.id.unsubscribeIssue);
+
+		LinearLayout linearLayout = v.findViewById(R.id.commentReactionButtons);
+
+		Bundle bundle1 = new Bundle();
+
+		String repoFullName = tinyDB.getString("repoFullName");
+		String[] parts = repoFullName.split("/");
+
+		bundle1.putString("repoOwner", parts[0]);
+		bundle1.putString("repoName", parts[1]);
+		bundle1.putInt("issueId", Integer.parseInt(tinyDB.getString("issueNumber")));
+
+		ReactionSpinner reactionSpinner = new ReactionSpinner(ctx, bundle1);
+		reactionSpinner.setOnInteractedListener(() -> {
+
+			tinyDB.putBoolean("singleIssueUpdate", true);
+
+			bmListener.onButtonClicked("onResume");
+			dismiss();
+
+		});
+
+		linearLayout.addView(reactionSpinner);
 
 		if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
 

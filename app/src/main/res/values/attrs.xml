@@ -6,6 +6,7 @@
     <attr name="primaryTextColor" format="reference"/>
     <attr name="primaryBackgroundColor" format="reference" />
     <attr name="inputBackgroundColor" format="reference" />
+    <attr name="inputSelectedColor" format="reference" />
     <attr name="hintColor" format="reference" />
     <attr name="inputTextColor" format="reference" />
     <attr name="selectedTextColor" format="reference" />

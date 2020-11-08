@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +30,8 @@ import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.IssueComments;
+import org.mian.gitnex.views.ReactionList;
+import org.mian.gitnex.views.ReactionSpinner;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -42,16 +45,21 @@ import retrofit2.Callback;
 public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdapter.IssueCommentViewHolder> {
 
 	private final Context ctx;
+	private final TinyDB tinyDB;
+	private final Bundle bundle;
 	private final List<IssueComments> issuesComments;
 	private final FragmentManager fragmentManager;
 	private final BottomSheetReplyFragment.OnInteractedListener onInteractedListener;
 
-	public IssueCommentsAdapter(Context ctx, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, BottomSheetReplyFragment.OnInteractedListener onInteractedListener) {
+	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, BottomSheetReplyFragment.OnInteractedListener onInteractedListener) {
 
 		this.ctx = ctx;
+		this.bundle = bundle;
 		this.issuesComments = issuesCommentsMain;
 		this.fragmentManager = fragmentManager;
 		this.onInteractedListener = onInteractedListener;
+
+		tinyDB = TinyDB.getInstance(ctx);
 
 	}
 
@@ -63,6 +71,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		private final TextView author;
 		private final TextView information;
 		private final TextView comment;
+		private final LinearLayout commentReactionBadges;
 
 		private IssueCommentViewHolder(View view) {
 
@@ -73,12 +82,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			information = view.findViewById(R.id.information);
 			ImageView menu = view.findViewById(R.id.menu);
 			comment = view.findViewById(R.id.comment);
+			commentReactionBadges = view.findViewById(R.id.commentReactionBadges);
 
 			menu.setOnClickListener(v -> {
 
 				final Context ctx = v.getContext();
-				final TinyDB tinyDb = TinyDB.getInstance(ctx);
-				final String loginUid = tinyDb.getString("loginUid");
+				final String loginUid = tinyDB.getString("loginUid");
 
 				@SuppressLint("InflateParams") View vw = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_issue_comments, null);
 
@@ -101,6 +110,24 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				BottomSheetDialog dialog = new BottomSheetDialog(ctx);
 				dialog.setContentView(vw);
 				dialog.show();
+
+				LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
+
+				Bundle bundle1 = new Bundle();
+				bundle1.putAll(bundle);
+				bundle1.putInt("commentId", issueComment.getId());
+
+				ReactionSpinner reactionSpinner = new ReactionSpinner(ctx, bundle1);
+				reactionSpinner.setOnInteractedListener(() -> {
+
+					tinyDB.putBoolean("commentEdited", true);
+
+					onInteractedListener.onInteracted();
+					dialog.dismiss();
+
+				});
+
+				linearLayout.addView(reactionSpinner);
 
 				commentMenuEdit.setOnClickListener(v1 -> {
 
@@ -125,7 +152,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					// share issue comment
 					Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 					sharingIntent.setType("text/plain");
-					String intentHeader = tinyDb.getString("issueNumber") + ctx.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + tinyDb.getString("issueTitle");
+					String intentHeader = tinyDB.getString("issueNumber") + ctx.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + tinyDB.getString("issueTitle");
 					sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, intentHeader);
 					sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, commentUrl);
 					ctx.startActivity(Intent.createChooser(sharingIntent, intentHeader));
@@ -155,7 +182,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					StringBuilder stringBuilder = new StringBuilder();
 					String commenterName = issueComment.getUser().getUsername();
 
-					if(!commenterName.equals(tinyDb.getString("userLogin"))) {
+					if(!commenterName.equals(tinyDB.getString("userLogin"))) {
 
 						stringBuilder.append("@").append(commenterName).append("\n\n");
 					}
@@ -183,7 +210,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
 
-					ClipData clip = ClipData.newPlainText("Comment on issue #" + tinyDb.getString("issueNumber"), issueComment.getBody());
+					ClipData clip = ClipData.newPlainText("Comment on issue #" + tinyDB.getString("issueNumber"), issueComment.getBody());
 					clipboard.setPrimaryClip(clip);
 
 					dialog.dismiss();
@@ -214,10 +241,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
 
-		final TinyDB tinyDb = TinyDB.getInstance(ctx);
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-		String[] repoFullName = tinyDb.getString("repoFullName").split("/");
+		final String loginUid = tinyDB.getString("loginUid");
+		final String instanceToken = "token " + tinyDB.getString(loginUid + "-token");
+		String[] repoFullName = tinyDB.getString("repoFullName").split("/");
 
 		if (repoFullName.length != 2) {
 			return;
@@ -306,6 +332,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		}
 
 		holder.information.setText(informationBuilder.toString());
+
+		Bundle bundle1 = new Bundle();
+		bundle1.putAll(bundle);
+		bundle1.putInt("commentId", issueComment.getId());
+
+		ReactionList reactionList = new ReactionList(ctx, bundle1);
+		holder.commentReactionBadges.addView(reactionList);
 
 	}
 

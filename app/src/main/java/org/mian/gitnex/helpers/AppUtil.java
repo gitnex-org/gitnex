@@ -9,7 +9,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
+import androidx.annotation.ColorInt;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -128,6 +130,16 @@ public class AppUtil {
 		Locale locale = new Locale(tinyDB.getString("locale"));
 
 		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
+
+	}
+
+	@ColorInt
+	public static int getColorFromAttribute(Context context, int resid) {
+
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(resid, typedValue, true);
+
+		return typedValue.data;
 
 	}
 

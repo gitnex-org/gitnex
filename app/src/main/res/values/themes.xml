@@ -17,6 +17,7 @@
         <item name="primaryTextColor">@color/colorWhite</item>
         <item name="primaryBackgroundColor">@color/colorPrimary</item>
         <item name="inputBackgroundColor">@color/inputBackground</item>
+        <item name="inputSelectedColor">@color/inputSelected</item>
         <item name="inputTextColor">@color/colorWhite</item>
         <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
         <item name="selectedTextColor">@color/darkGreen</item>
@@ -56,6 +57,7 @@
         <item name="primaryTextColor">@color/lightThemeTextColor</item>
         <item name="primaryBackgroundColor">@color/lightThemeBackground</item>
         <item name="inputBackgroundColor">@color/lightThemeInputBackground</item>
+        <item name="inputSelectedColor">@color/lightThemInputSelected</item>
         <item name="inputTextColor">@color/lightThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
         <item name="selectedTextColor">@color/darkGreen</item>
@@ -95,6 +97,7 @@
         <item name="primaryTextColor">@color/retroThemeTextColor</item>
         <item name="primaryBackgroundColor">@color/retroThemeBackground</item>
         <item name="inputBackgroundColor">@color/retroThemeInputBackground</item>
+        <item name="inputSelectedColor">@color/retroThemeInputSelected</item>
         <item name="inputTextColor">@color/retroThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeRetroCheckBoxStyle</item>
         <item name="selectedTextColor">@color/retroThemeColorPrimary</item>

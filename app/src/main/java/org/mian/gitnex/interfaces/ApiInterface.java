@@ -1,13 +1,16 @@
 package org.mian.gitnex.interfaces;
 
 import com.google.gson.JsonElement;
+import org.mian.gitnex.models.APISettings;
 import org.mian.gitnex.models.AddEmail;
+import org.mian.gitnex.models.AttachmentSettings;
 import org.mian.gitnex.models.Branches;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Commits;
 import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.CreateLabel;
 import org.mian.gitnex.models.CreatePullRequest;
+import org.mian.gitnex.models.CreateStatusOption;
 import org.mian.gitnex.models.DeleteFile;
 import org.mian.gitnex.models.EditFile;
 import org.mian.gitnex.models.Emails;
@@ -15,8 +18,10 @@ import org.mian.gitnex.models.ExploreRepositories;
 import org.mian.gitnex.models.Files;
 import org.mian.gitnex.models.GiteaVersion;
 import org.mian.gitnex.models.IssueComments;
+import org.mian.gitnex.models.IssueReaction;
 import org.mian.gitnex.models.Issues;
 import org.mian.gitnex.models.Labels;
+import org.mian.gitnex.models.MarkdownOption;
 import org.mian.gitnex.models.MergePullRequest;
 import org.mian.gitnex.models.Milestones;
 import org.mian.gitnex.models.NewFile;
@@ -28,10 +33,14 @@ import org.mian.gitnex.models.OrganizationRepository;
 import org.mian.gitnex.models.Permission;
 import org.mian.gitnex.models.PullRequests;
 import org.mian.gitnex.models.Releases;
+import org.mian.gitnex.models.RepositorySettings;
 import org.mian.gitnex.models.RepositoryTransfer;
+import org.mian.gitnex.models.Status;
 import org.mian.gitnex.models.Teams;
+import org.mian.gitnex.models.UISettings;
 import org.mian.gitnex.models.UpdateIssueAssignees;
 import org.mian.gitnex.models.UpdateIssueState;
+import org.mian.gitnex.models.UserHeatmap;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserOrganizations;
 import org.mian.gitnex.models.UserRepositories;
@@ -70,8 +79,26 @@ public interface ApiInterface {
     @GET("version") // gitea version API
     Call<GiteaVersion> getGiteaVersionWithToken(@Header("Authorization") String token);
 
-    @GET("user") // username, full name, email
-    Call<UserInfo> getUserInfo(@Header("Authorization") String token);
+    @POST("markdown")
+    Call<String> renderMarkdown(@Header("Authorization") String token, @Body MarkdownOption markdownOption);
+
+    @POST("markdown/raw")
+    Call<String> renderRawMarkdown(@Header("Authorization") String token, @Body String body);
+
+    @GET("signing-key.gpg") // Get default signing-key.gpg
+    Call<String> getSigningKey(@Header("Authorization") String token);
+
+	@GET("settings/api") // Get instance's global settings for api
+	Call<APISettings> getAPISettings(@Header("Authorization") String token);
+
+	@GET("settings/attachment") // Get instance's global settings for attachments
+	Call<AttachmentSettings> getAttachmentSettings(@Header("Authorization") String token);
+
+	@GET("settings/repository") // Get instance's global settings for repositories
+	Call<RepositorySettings> getRepositorySettings(@Header("Authorization") String token);
+
+    @GET("settings/ui") // Get instance's global settings for ui
+    Call<UISettings> getUISettings(@Header("Authorization") String token);
 
     @GET("users/{username}/tokens") // get user token
     Call<List<UserTokens>> getUserTokens(@Header("Authorization") String authorization, @Path("username") String loginUid);
@@ -112,6 +139,9 @@ public interface ApiInterface {
     @PUT("repos/{owner}/{repo}/notifications") // Mark notification threads as read, pinned or unread on a specific repo
     Call<ResponseBody> markRepoNotificationThreadsAsRead(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("all") Boolean all, @Query("status-types") String[] statusTypes, @Query("to-status") String toStatus, @Query("last_read_at") String last_read_at);
 
+	@GET("user") // username, full name, email
+	Call<UserInfo> getUserInfo(@Header("Authorization") String token);
+
     @GET("user/orgs") // get user organizations
     Call<List<UserOrganizations>> getUserOrgs(@Header("Authorization") String token);
 
@@ -129,6 +159,24 @@ public interface ApiInterface {
 
     @POST("user/repos") // create new repository
     Call<OrganizationRepository> createNewUserRepository(@Header("Authorization") String token, @Body OrganizationRepository jsonStr);
+
+	@GET("user/followers") // get user followers
+	Call<List<UserInfo>> getFollowers(@Header("Authorization") String token);
+
+	@GET("user/following") // get following
+	Call<List<UserInfo>> getFollowing(@Header("Authorization") String token);
+
+	@POST("user/emails") // add new email
+	Call<JsonElement> addNewEmail(@Header("Authorization") String token, @Body AddEmail jsonStr);
+
+	@GET("user/emails") // get user emails
+	Call<List<Emails>> getUserEmails(@Header("Authorization") String token);
+
+	@GET("user/starred") // get user starred repositories
+	Call<List<UserRepositories>> getUserStarredRepos(@Header("Authorization") String token, @Query("page") int page, @Query("limit") int limit);
+
+	@GET("users/{username}/heatmap") // Get a user's heatmap
+	Call<List<UserHeatmap>> getUserHeatmap(@Header("Authorization") String token, @Path("username") String username);
 
     @GET("repos/{owner}/{repo}") // get repo information
     Call<UserRepositories> getUserRepository(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName);
@@ -193,9 +241,6 @@ public interface ApiInterface {
     @PATCH("repos/{owner}/{repo}/labels/{index}") // update / patch a label
     Call<CreateLabel> patchLabel(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int labelIndex, @Body CreateLabel jsonStr);
 
-    @GET("user/starred") // get user starred repositories
-    Call<List<UserRepositories>> getUserStarredRepos(@Header("Authorization") String token, @Query("page") int page, @Query("limit") int limit);
-
     @GET("orgs/{orgName}/repos") // get repositories by org
     Call<List<UserRepositories>> getReposByOrg(@Header("Authorization") String token, @Path("orgName") String orgName, @Query("page") int page, @Query("limit") int limit);
 
@@ -226,17 +271,23 @@ public interface ApiInterface {
     @PATCH("repos/{owner}/{repo}/issues/comments/{commentId}") // edit a comment
     Call<IssueComments> patchIssueComment(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("commentId") int commentId, @Body IssueComments jsonStr);
 
-    @GET("user/followers") // get user followers
-    Call<List<UserInfo>> getFollowers(@Header("Authorization") String token);
+    @GET("repos/{owner}/{repo}/issues/comments/{commentId}/reactions") // get comment reactions
+    Call<List<IssueReaction>> getIssueCommentReactions(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("commentId") int commentId);
 
-    @GET("user/following") // get following
-    Call<List<UserInfo>> getFollowing(@Header("Authorization") String token);
+    @POST("repos/{owner}/{repo}/issues/comments/{commentId}/reactions") // add reaction to a comment
+    Call<IssueReaction> setIssueCommentReaction(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("commentId") int commentId, @Body IssueReaction jsonStr);
 
-    @POST("user/emails") // add new email
-    Call<JsonElement> addNewEmail(@Header("Authorization") String token, @Body AddEmail jsonStr);
+    @HTTP(method = "DELETE", path = "repos/{owner}/{repo}/issues/comments/{commentId}/reactions", hasBody = true) // delete a reaction of a comment
+    Call<ResponseBody> removeIssueCommentReaction(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("commentId") int commentId, @Body IssueReaction jsonStr);
 
-    @GET("user/emails") // get user emails
-    Call<List<Emails>> getUserEmails(@Header("Authorization") String token);
+	@GET("repos/{owner}/{repo}/issues/{index}/reactions") // get issue reactions
+	Call<List<IssueReaction>> getIssueReactions(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex);
+
+	@POST("repos/{owner}/{repo}/issues/{index}/reactions") // add reaction to an issue
+	Call<IssueReaction> setIssueReaction(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex, @Body IssueReaction jsonStr);
+
+	@HTTP(method = "DELETE", path = "repos/{owner}/{repo}/issues/{index}/reactions", hasBody = true) // delete a reaction of an issue
+	Call<ResponseBody> removeIssueReaction(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex, @Body IssueReaction jsonStr);
 
     @GET("repos/{owner}/{repo}/issues/{index}/labels") // get issue labels
     Call<List<Labels>> getIssueLabels(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Path("index") int issueIndex);
@@ -363,4 +414,12 @@ public interface ApiInterface {
 
 	@GET("repos/{owner}/{repo}/forks") // get all repo forks
 	Call<List<UserRepositories>> getRepositoryForks(@Header("Authorization") String token, @Path("owner") String ownerName, @Path("repo") String repoName, @Query("page") int page, @Query("limit") int limit);
+
+	@POST("repos/{owner}/{repo}/statuses/{sha}") // Create a commit status
+	Call<Status> createCommitStatus(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Path("sha") String sha, @Body CreateStatusOption createStatusOption);
+
+	@GET("repos/{owner}/{repo}/statuses/{sha}") // Get a commit's statuses
+	Call<List<Status>> getCommitStatuses(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("sort") String sort, @Query("state") String state, @Query("page") int page, @Query("limit") int limit);
+
+
 }
