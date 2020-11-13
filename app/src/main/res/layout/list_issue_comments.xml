@@ -69,6 +69,8 @@
         android:layout_marginTop="15dp"
         android:textColor="?attr/primaryTextColor"
         android:textIsSelectable="true"
+        android:autoLink="web"
+        android:textColorLink="@color/lightBlue"
         android:textSize="14sp" />
 
     <LinearLayout

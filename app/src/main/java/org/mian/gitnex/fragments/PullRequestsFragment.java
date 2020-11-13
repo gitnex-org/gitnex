@@ -96,7 +96,7 @@ public class PullRequestsFragment extends Fragment {
 		adapter = new PullRequestsAdapter(getContext(), prList);
 		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
 
-			if(prList.size() == 10 || pageSize == resultLimit) {
+			if(prList.size() == resultLimit || pageSize == resultLimit) {
 
 				int page = (prList.size() + resultLimit) / resultLimit;
 				loadMore(Authorization.get(getContext()), repoOwner, repoName, page, tinyDb.getString("repoPrState"), resultLimit);
@@ -125,7 +125,7 @@ public class PullRequestsFragment extends Fragment {
 			adapter = new PullRequestsAdapter(context, prList);
 			adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
 
-				if(prList.size() == 10 || pageSize == resultLimit) {
+				if(prList.size() == resultLimit || pageSize == resultLimit) {
 
 					int page = (prList.size() + resultLimit) / resultLimit;
 					loadMore(Authorization.get(getContext()), repoOwner, repoName, page, tinyDb.getString("repoPrState"), resultLimit);

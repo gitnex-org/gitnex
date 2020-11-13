@@ -80,7 +80,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 			});
 
-			builder.setNegativeButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
+			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
 			builder.setView(numberPicker);
 			builder.create().show();
 		});
