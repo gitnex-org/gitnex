@@ -86,7 +86,6 @@ public class DeepLinksActivity extends BaseActivity {
 
 				accountFound = true;
 				break;
-
 			}
 		}
 
@@ -166,7 +165,13 @@ public class DeepLinksActivity extends BaseActivity {
 						ctx.startActivity(mainIntent);
 						finish();
 					}
+				}
+				else if(data.getPathSegments().contains("commit")) { // commits (no API yet to properly implement)
 
+					new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+						goToRepoSection(currentInstance, instanceToken, restOfUrl[restOfUrl.length - 4], restOfUrl[restOfUrl.length - 3], "pull");
+					}, 500);
 				}
 				else if(!restOfUrl[restOfUrl.length - 2].equals("") & !restOfUrl[restOfUrl.length - 1].equals("")) { // go to repo
 
@@ -360,6 +365,8 @@ public class DeepLinksActivity extends BaseActivity {
 
 				else {
 
+					ctx.startActivity(issueIntent);
+					finish();
 					Log.e("onFailure-links-pr", String.valueOf(response.code()));
 				}
 			}
@@ -367,6 +374,8 @@ public class DeepLinksActivity extends BaseActivity {
 			@Override
 			public void onFailure(@NonNull Call<PullRequests> call, @NonNull Throwable t) {
 
+				ctx.startActivity(issueIntent);
+				finish();
 				Log.e("onFailure-links-pr", t.toString());
 			}
 		});
@@ -427,7 +436,9 @@ public class DeepLinksActivity extends BaseActivity {
 
 				else {
 
-					Log.e("onFailure-links", String.valueOf(response.code()));
+					ctx.startActivity(mainIntent);
+					finish();
+					Log.e("onFailure-goToRepo", String.valueOf(response.code()));
 				}
 
 			}
@@ -435,7 +446,9 @@ public class DeepLinksActivity extends BaseActivity {
 			@Override
 			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
 
-				Log.e("onFailure-links", t.toString());
+				ctx.startActivity(mainIntent);
+				finish();
+				Log.e("onFailure-goToRepo", t.toString());
 			}
 		});
 	}
