@@ -83,6 +83,7 @@
     <string name="repoCreated">仓库创建成功</string>
     <string name="repoCreatedError">出错了，请重试</string>
     <string name="repoExistsError">当前所有者已拥有同名仓库</string>
+    <string name="repoOwnerError">选择仓库所有者</string>
     <string name="orgNameErrorEmpty">组织名称为空</string>
     <string name="orgNameErrorInvalid">组织名称无效, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">组织描述超过最大255个字符限制</string>
@@ -165,7 +166,7 @@
     <string name="issueCreated">新问题创建成功</string>
     <string name="issueCreatedError">出了错，请重试</string>
     <string name="issueCreatedNoMilestone">没有里程碑</string>
-    <string name="noAssigneesFound">未找到合作者</string>
+    <string name="noAssigneesFound">未找到受让人</string>
     <string name="noLabelsFound">未找到标签</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">翻译</string>
@@ -207,6 +208,12 @@
     <string name="draftsHintText">评论草稿</string>
     <string name="settingsEnableCommentsDeletionText">启用草稿删除</string>
     <string name="settingsEnableCommentsDeletionHintText">发表评论时删除评论草稿</string>
+    <string name="settingsGeneralHeader">常规​​​​​</string>
+    <string name="generalHintText">主屏幕、默认的链接处理程序</string>
+    <string name="generalDeepLinkDefaultScreen">默认链接处理程序</string>
+    <string name="generalDeepLinkDefaultScreenHintText">如果应用无法处理外部链接，请选择应加载的屏幕。 它会自动把你重定向。</string>
+    <string name="generalDeepLinkSelectedText">N/A</string>
+    <string name="linkSelectorDialogTitle">选择默认链接处理程序屏幕</string>
     <!-- settings -->
     <string name="noMoreData">没有更多可用数据</string>
     <string name="createLabel">创建标签</string>
@@ -225,6 +232,7 @@
     <string name="labelDeleteText">标签已删除</string>
     <string name="labelDeleteErrorText">出了错，请重试</string>
     <string name="noDataBranchesTab">未找到分支</string>
+    <string name="selectBranchError">选择用于发行的分支</string>
     <string name="alertDialogTokenRevokedTitle">授权错误</string>
     <string name="alertDialogTokenRevokedMessage">看来访问令牌已被吊销，或者您不被允许查看这些内容。\n\n如果令牌被吊销，请注销并重新登录</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">取消</string>
@@ -463,6 +471,9 @@
     <string name="mergeOptionRebase">重建并合并</string>
     <string name="mergeOptionRebaseCommit">重建合并 (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">压缩提交并合并</string>
+    <string name="mergeStrategy">合并策略</string>
+    <string name="selectMergeStrategy">选择合并策略</string>
+    <string name="mergeNotAllowed">不允许合并 [理由：没有足够多的认可]</string>
     <string name="downloadFile">下载此文件</string>
     <string name="waitLoadingDownloadFile">请等待文件加载到内存</string>
     <string name="downloadFileSaved">文件保存成功</string>
@@ -514,10 +525,10 @@
     <string name="draftsDeleteSuccess">已成功删除草稿</string>
     <string name="draftsSingleDeleteSuccess">草稿已成功删除</string>
     <string name="deleteAllDraftsDialogMessage">这将删除此帐户的所有草稿。 \n\n继续删除？</string>
-    <string name="draftSaved">草稿已保存</string>
-    <string name="appearanceHintText">主题、 字体、 徽章、 代码块主题</string>
+    <string name="draftSaved">草稿已自动保存。</string>
+    <string name="appearanceHintText">主题、字体、徽章</string>
     <string name="fileViewerHintText">PDF 模式，源代码主题</string>
-    <string name="securityHintText">SSL 证书、缓存、轮询延迟</string>
+    <string name="securityHintText">SSL 证书、缓存</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
     <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
@@ -534,7 +545,6 @@
     <!-- Notifications -->
     <string name="pageTitleNotifications">通知</string>
     <string name="noDataNotifications">没有找到通知</string>
-    <string name="notificationBody">您收到了一个新的通知。(%s)</string>
     <string name="notificationsPollingHeaderText">通知轮询延迟</string>
     <string name="pollingDelaySelectedText">%d 分钟</string>
     <string name="pollingDelayDialogHeaderText">选择轮询延迟</string>
@@ -543,6 +553,13 @@
     <string name="markAsUnread">标记为未读</string>
     <string name="pinNotification">固定通知</string>
     <string name="markedNotificationsAsRead">成功将所有通知标记为已读</string>
+    <string name="notificationsHintText">轮询延迟、light、振动</string>
+    <string name="enableNotificationsHeaderText">启用通知</string>
+    <string name="enableLightsHeaderText">启用 Light</string>
+    <string name="enableVibrationHeaderText">启用振动</string>
+    <string name="chooseColorSelectorHeader">选择颜色</string>
+    <string name="newMessages">新消息</string>
+    <string name="youHaveGotNewNotifications">您有%d条新通知</string>
     <string name="isRead">已读</string>
     <string name="isUnread">未读</string>
     <string name="repoSettingsTitle">存储库设置</string>
@@ -586,4 +603,12 @@
     <string name="titleError">标题不可为空</string>
     <string name="prCreateSuccess">拉取请求创建成功</string>
     <string name="prAlreadyExists">这些分支之间的拉取请求已存在</string>
+    <string name="accountDoesNotExist">似乎应用程序中并不存在URI%1$s的账户。您可以通过点击添加新帐户按钮来添加一个。</string>
+    <string name="launchApp">前往应用</string>
+    <string name="noActionText">GitNex无法处理所请求的资源，您可以在项目代码库中发起一个问题，提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。</string>
+    <string name="codeBlockGreenOnBlack">黑底绿字</string>
+    <string name="codeBlockWhiteOnBlack">黑底白字</string>
+    <string name="codeBlockGreyOnBlack">黑底灰字</string>
+    <string name="codeBlockWhiteOnGrey">灰底白字</string>
+    <string name="codeBlockDarkOnWhite">白底黑字</string>
 </resources>
