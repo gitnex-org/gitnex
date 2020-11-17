@@ -197,7 +197,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 	private void setupNewAccountWithToken(String instanceUrl, final String loginToken) {
 
-		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx).getUserInfo("token " + loginToken);
+		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx, instanceUrl).getUserInfo("token " + loginToken);
 
 		call.enqueue(new Callback<UserInfo>() {
 
