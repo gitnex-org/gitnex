@@ -84,6 +84,7 @@ URL è richiesto</string>
     <string name="repoCreated">Il repository è stato creato</string>
     <string name="repoCreatedError">Qualcosa è andato storto, riprova</string>
     <string name="repoExistsError">Il repository di questo nome esiste già sotto il proprietario selezionato</string>
+    <string name="repoOwnerError">Select owner for the repository</string>
     <string name="orgNameErrorEmpty">Nome organizzazione vuoto</string>
     <string name="orgNameErrorInvalid">Nome organizzazione nono valido, [a&#8211;z A&#8211;Z 0&#8211;char@@9 &#8211; _]</string>
     <string name="orgDescError">La descrizione dell\'organizzazione supera il limite massimo di 255 caratteri</string>
@@ -166,7 +167,7 @@ URL è richiesto</string>
     <string name="issueCreated">Nuovo problema creato con successo</string>
     <string name="issueCreatedError">Qualcosa è andato storto, riprova</string>
     <string name="issueCreatedNoMilestone">Nessun traguardo</string>
-    <string name="noAssigneesFound">Nessun collaboratore trovato</string>
+    <string name="noAssigneesFound">No assignees found</string>
     <string name="noLabelsFound">Nessun label trovato</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduzione</string>
@@ -208,6 +209,12 @@ URL è richiesto</string>
     <string name="draftsHintText">Bozze dei commenti</string>
     <string name="settingsEnableCommentsDeletionText">Abilita Eliminazione Bozze</string>
     <string name="settingsEnableCommentsDeletionHintText">Elimina la bozza del commento quando viene pubblicato</string>
+    <string name="settingsGeneralHeader">General</string>
+    <string name="generalHintText">Home screen, default link handler</string>
+    <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
+    <string name="generalDeepLinkSelectedText">N/A</string>
+    <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <!-- settings -->
     <string name="noMoreData">Nessun altro dato disponibile</string>
     <string name="createLabel">Nuovo label</string>
@@ -226,6 +233,7 @@ URL è richiesto</string>
     <string name="labelDeleteText">Label cancellato</string>
     <string name="labelDeleteErrorText">Qualcosa è andato storto, riprova</string>
     <string name="noDataBranchesTab">Nessun branch trovato</string>
+    <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Errore di autorizzazione</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Annullare</string>
@@ -465,6 +473,9 @@ autorizzazione</string>
     <string name="mergeOptionRebase">Fai rebase e unisci</string>
     <string name="mergeOptionRebaseCommit">Fai rebase e unisci (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">Fai squash e unisci</string>
+    <string name="mergeStrategy">Merge Strategy</string>
+    <string name="selectMergeStrategy">Select merge strategy</string>
+    <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="downloadFile">Scarica Questo File</string>
     <string name="waitLoadingDownloadFile">Attendere che il file venga caricato in memoria</string>
     <string name="downloadFileSaved">File salvato con successo</string>
@@ -516,10 +527,10 @@ autorizzazione</string>
     <string name="draftsDeleteSuccess">Bozze eliminate con successo</string>
     <string name="draftsSingleDeleteSuccess">Bozza eliminata con successo</string>
     <string name="deleteAllDraftsDialogMessage">Questo eliminerà tutte le bozze per questo account. \n\nProcedi con la cancellazione?</string>
-    <string name="draftSaved">Bozza salvata</string>
-    <string name="appearanceHintText">Temi, caratteri, badge, tema del codice</string>
+    <string name="draftSaved">Draft was saved automatically.</string>
+    <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="fileViewerHintText">Modalità PDF, tema codice sorgente</string>
-    <string name="securityHintText">Certificati SSL, cache, ricerca di notifiche</string>
+    <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Lingue</string>
     <string name="reportsHintText">Rapporti crash</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
@@ -536,7 +547,6 @@ autorizzazione</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifiche</string>
     <string name="noDataNotifications">Nessuna notifica trovata</string>
-    <string name="notificationBody">Hai ricevuto una nuova notifica. (%s)</string>
     <string name="notificationsPollingHeaderText">Intervallo di ricerca notifiche</string>
     <string name="pollingDelaySelectedText">%d Minuti</string>
     <string name="pollingDelayDialogHeaderText">Seleziona l\'intervallo per la ricerca</string>
@@ -545,6 +555,13 @@ autorizzazione</string>
     <string name="markAsUnread">Segna come non letto</string>
     <string name="pinNotification">Fissa Notifica</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
+    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="enableNotificationsHeaderText">Enable Notifications</string>
+    <string name="enableLightsHeaderText">Enable Light</string>
+    <string name="enableVibrationHeaderText">Enable Vibration</string>
+    <string name="chooseColorSelectorHeader">Choose Color</string>
+    <string name="newMessages">New messages</string>
+    <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="isRead">Letto</string>
     <string name="isUnread">Non letto</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -588,4 +605,12 @@ autorizzazione</string>
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="launchApp">Go to App</string>
+    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="codeBlockGreenOnBlack">Green on Black</string>
+    <string name="codeBlockWhiteOnBlack">White on Black</string>
+    <string name="codeBlockGreyOnBlack">Grey on Black</string>
+    <string name="codeBlockWhiteOnGrey">White on Grey</string>
+    <string name="codeBlockDarkOnWhite">Dark on White</string>
 </resources>

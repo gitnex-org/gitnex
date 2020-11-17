@@ -12,7 +12,7 @@
     <string name="navLogout">Déconnexion</string>
     <string name="navExplore">Explorer</string>
     <string name="navAdministration">Administration</string>
-    <string name="navSearchIssuesPulls">Search Issues</string>
+    <string name="navSearchIssuesPulls">Rechercher des tickets</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">À propos</string>
@@ -83,6 +83,7 @@
     <string name="repoCreated">Dépôt créé</string>
     <string name="repoCreatedError">Une erreur s’est produite, veuillez réessayer</string>
     <string name="repoExistsError">Le propriétaire possède déjà un dépôt du même nom</string>
+    <string name="repoOwnerError">Propriétaire du dépôt</string>
     <string name="orgNameErrorEmpty">Nom manquant</string>
     <string name="orgNameErrorInvalid">Nom de l’organisation invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">La description dépasse la limite de 255 caractères</string>
@@ -165,7 +166,7 @@
     <string name="issueCreated">Nouveau ticket créé</string>
     <string name="issueCreatedError">Une erreur s’est produite, veuillez réessayer</string>
     <string name="issueCreatedNoMilestone">Aucun jalon</string>
-    <string name="noAssigneesFound">Aucun collaborateur</string>
+    <string name="noAssigneesFound">Aucun membre assigné</string>
     <string name="noLabelsFound">Aucune étiquette</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduction</string>
@@ -207,6 +208,12 @@
     <string name="draftsHintText">Brouillon de commentaires</string>
     <string name="settingsEnableCommentsDeletionText">Suppression des brouillons</string>
     <string name="settingsEnableCommentsDeletionHintText">Supprimer le brouillon d’un commentaire publié</string>
+    <string name="settingsGeneralHeader">Général</string>
+    <string name="generalHintText">Écran d’accueil, gestionnaire de liens par défaut</string>
+    <string name="generalDeepLinkDefaultScreen">Ouvrir avec par défaut</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Choisissez l\'écran à afficher si l\'application n\'est pas compatible avec le lien externe.</string>
+    <string name="generalDeepLinkSelectedText">S/O</string>
+    <string name="linkSelectorDialogTitle">Choix du gestionnaire de liens par défaut</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -225,6 +232,7 @@
     <string name="labelDeleteText">Étiquette supprimée</string>
     <string name="labelDeleteErrorText">Une erreur s’est produite, veuillez réessayer</string>
     <string name="noDataBranchesTab">Aucune branche</string>
+    <string name="selectBranchError">Branche de diffusion</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
     <string name="alertDialogTokenRevokedMessage">Le jeton d’accès est peut-être révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nEn cas de jeton révoqué, veuillez vous reconnecter</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Annuler</string>
@@ -463,6 +471,9 @@
     <string name="mergeOptionRebase">Rebaser et fusionner</string>
     <string name="mergeOptionRebaseCommit">Rebaser et fusionner (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">Squasher et fusionner</string>
+    <string name="mergeStrategy">Stratégie de fusion</string>
+    <string name="selectMergeStrategy">Stratégie de fusion</string>
+    <string name="mergeNotAllowed">Fusion non permise [Raison : autorisations insuffisante]</string>
     <string name="downloadFile">Télécharger ce fichier</string>
     <string name="waitLoadingDownloadFile">Chargement du fichier dans la mémoire</string>
     <string name="downloadFileSaved">Fichier sauvegardé avec succès</string>
@@ -514,10 +525,10 @@
     <string name="draftsDeleteSuccess">Brouillons supprimés</string>
     <string name="draftsSingleDeleteSuccess">Brouillon supprimé</string>
     <string name="deleteAllDraftsDialogMessage">Tous les brouillons du compte seront supprimés.\n\nContinuer ?</string>
-    <string name="draftSaved">Brouillon enregistré</string>
-    <string name="appearanceHintText">Thèmes, polices, badges, couleur du code</string>
+    <string name="draftSaved">Brouillon sauvegardé automatiquement</string>
+    <string name="appearanceHintText">Thèmes, polices, badges</string>
     <string name="fileViewerHintText">Mode PDF, thème du code source</string>
-    <string name="securityHintText">Certificats SSL, cache, scrutation des notifications</string>
+    <string name="securityHintText">Certificats SSL, cache</string>
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
@@ -534,7 +545,6 @@
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">Aucune notification</string>
-    <string name="notificationBody">Vous avez reçu une nouvelle notification. (%s)</string>
     <string name="notificationsPollingHeaderText">Délai de scrutation des notifications</string>
     <string name="pollingDelaySelectedText">%d minutes</string>
     <string name="pollingDelayDialogHeaderText">Délai de scrutation</string>
@@ -543,6 +553,13 @@
     <string name="markAsUnread">Marquer comme non lu</string>
     <string name="pinNotification">Épingler la notification</string>
     <string name="markedNotificationsAsRead">Les notifications ont été marquées comme lues</string>
+    <string name="notificationsHintText">Délai d\'interrogation, témoin lumineux, vibreur</string>
+    <string name="enableNotificationsHeaderText">Activer les notifications</string>
+    <string name="enableLightsHeaderText">Activer le témoin lumineux</string>
+    <string name="enableVibrationHeaderText">Activer le vibreur</string>
+    <string name="chooseColorSelectorHeader">Choisir une couleur</string>
+    <string name="newMessages">Nouveaux messages</string>
+    <string name="youHaveGotNewNotifications">Vous avez %d nouvelles notifications.</string>
     <string name="isRead">Lu</string>
     <string name="isUnread">Non lu</string>
     <string name="repoSettingsTitle">Paramètres du dépôt</string>
@@ -586,4 +603,12 @@
     <string name="titleError">Titre requis</string>
     <string name="prCreateSuccess">Requête de tirage créé</string>
     <string name="prAlreadyExists">Une requête de tirage existe déjà entre ces branches</string>
+    <string name="accountDoesNotExist">Ce compte associé à l\'URI %1$s n\'existe pas dans l\'application. Vous pouvez l\'ajouter en appuyant sur Ajouter un nouveau compte.</string>
+    <string name="launchApp">Lancer l’app</string>
+    <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet. Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessus.</string>
+    <string name="codeBlockGreenOnBlack">Vert sur noir</string>
+    <string name="codeBlockWhiteOnBlack">Blanc sur noir</string>
+    <string name="codeBlockGreyOnBlack">Gris sur noir</string>
+    <string name="codeBlockWhiteOnGrey">Blanc sur gris</string>
+    <string name="codeBlockDarkOnWhite">Sombre sur blanc</string>
 </resources>
