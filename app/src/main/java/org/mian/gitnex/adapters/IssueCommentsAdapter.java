@@ -24,6 +24,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -308,6 +309,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	@Override
 	public void onBindViewHolder(@NonNull IssueCommentsAdapter.IssueCommentViewHolder holder, int position) {
 
+		String timeFormat = tinyDB.getString("dateFormat");
 		IssueComments issueComment = issuesComments.get(position);
 
 		holder.issueComment = issueComment;
@@ -323,15 +325,30 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		new Markdown(ctx, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment);
 
-		StringBuilder informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", ctx));
+		StringBuilder informationBuilder = null;
+		if(issueComment.getCreated_at() != null) {
 
-		if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
+			if(timeFormat.equals("pretty")) {
 
-			informationBuilder.append(ctx.getString(R.string.colorfulBulletSpan))
-				.append(ctx.getString(R.string.modifiedText));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", ctx));
+				holder.information
+					.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()), ctx));
+			}
+			else if(timeFormat.equals("normal")) {
+
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "normal", ctx));
+			}
+
+			if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
+
+				if(informationBuilder != null) {
+
+					informationBuilder.append(ctx.getString(R.string.colorfulBulletSpan)).append(ctx.getString(R.string.modifiedText));
+				}
+			}
 		}
 
-		holder.information.setText(informationBuilder.toString());
+		holder.information.setText(informationBuilder);
 
 		Bundle bundle1 = new Bundle();
 		bundle1.putAll(bundle);
