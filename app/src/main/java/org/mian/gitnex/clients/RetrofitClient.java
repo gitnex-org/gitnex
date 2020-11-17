@@ -17,6 +17,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -37,6 +38,9 @@ public class RetrofitClient {
 		int cacheSize = FilesData.returnOnlyNumber(tinyDB.getString("cacheSizeStr")) * 1024 * 1024;
 		Cache cache = new Cache(new File(context.getCacheDir(), "responses"), cacheSize);
 
+		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
 		try {
 
 			SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -45,6 +49,7 @@ public class RetrofitClient {
 			sslContext.init(null, new X509TrustManager[]{ memorizingTrustManager }, new SecureRandom());
 
 			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder().cache(cache)
+				//.addInterceptor(logging)
 				.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
 				.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
 				.addInterceptor(chain -> {

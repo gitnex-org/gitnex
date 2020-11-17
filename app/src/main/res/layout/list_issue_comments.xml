@@ -71,7 +71,7 @@
         android:textIsSelectable="true"
         android:autoLink="web"
         android:textColorLink="@color/lightBlue"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <LinearLayout
         android:id="@+id/commentReactionBadges"
