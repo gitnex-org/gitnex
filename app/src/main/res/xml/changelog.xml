@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.3.0-rc3" versioncode="329">
-        <change>Last release candidate(rc) before 3.3.0 stable release, includes bug fixes, ui improvements and issue/pr emoji reactions.</change>
+    <release version="3.3.0" versioncode="330">
+        <change>New: New labels/assignees popups</change>
+        <change>New: Transition to new input design</change>
+        <change>New: New commenting screen</change>
+        <change>New: Handle popular instances links (open from email etc)</change>
+        <change>New: Syntax highlighting in code blocks</change>
+        <change>New: Organization labels in issue labels</change>
+        <change>New: Group notifications, settings screen to enable/disable, change delay, light color</change>
+        <change>New: Issue/PR and comments emoji reactions</change>
     </release>
 
 </changelog>
