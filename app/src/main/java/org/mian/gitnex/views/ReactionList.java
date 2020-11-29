@@ -33,6 +33,7 @@ import retrofit2.Response;
 public class ReactionList extends HorizontalScrollView {
 
 	private enum ReactionType { COMMENT, ISSUE }
+	private OnReactionAddedListener onReactionAddedListener;
 
 	@SuppressLint("SetTextI18n")
 	public ReactionList(Context context, Bundle bundle) {
@@ -127,7 +128,9 @@ public class ReactionList extends HorizontalScrollView {
 					Emoji emoji = EmojiManager.getForAlias(content);
 
 					((TextView) reactionBadge.findViewById(R.id.symbol)).setText(((emoji == null) ? content : emoji.getUnicode()) + " " + issueReactions.size());
+
 					root.post(() -> root.addView(reactionBadge));
+					onReactionAddedListener.reactionAdded();
 
 				}
 
@@ -136,5 +139,11 @@ public class ReactionList extends HorizontalScrollView {
 		}).start();
 
 	}
+
+	public void setOnReactionAddedListener(OnReactionAddedListener onReactionAddedListener) {
+		this.onReactionAddedListener = onReactionAddedListener;
+	}
+
+	public interface OnReactionAddedListener { void reactionAdded(); }
 
 }

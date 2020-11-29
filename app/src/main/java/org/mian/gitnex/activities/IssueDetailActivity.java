@@ -735,8 +735,16 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					bundle.putInt("issueId", singleIssue.getNumber());
 
 					ReactionList reactionList = new ReactionList(ctx, bundle);
+
 					viewBinding.commentReactionBadges.removeAllViews();
 					viewBinding.commentReactionBadges.addView(reactionList);
+
+					reactionList.setOnReactionAddedListener(() -> {
+
+						if(viewBinding.commentReactionBadges.getVisibility() != View.VISIBLE) {
+							viewBinding.commentReactionBadges.post(() -> viewBinding.commentReactionBadges.setVisibility(View.VISIBLE));
+						}
+					});
 
 					if(singleIssue.getMilestone() != null) {
 

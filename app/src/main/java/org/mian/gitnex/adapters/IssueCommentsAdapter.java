@@ -24,7 +24,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -331,8 +330,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			if(timeFormat.equals("pretty")) {
 
 				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", ctx));
-				holder.information
-					.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()), ctx));
+				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()));
+
 			}
 			else if(timeFormat.equals("normal")) {
 
@@ -355,7 +354,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		bundle1.putInt("commentId", issueComment.getId());
 
 		ReactionList reactionList = new ReactionList(ctx, bundle1);
+
 		holder.commentReactionBadges.addView(reactionList);
+		reactionList.setOnReactionAddedListener(() -> {
+
+			if(holder.commentReactionBadges.getVisibility() != View.VISIBLE) {
+				holder.commentReactionBadges.post(() -> holder.commentReactionBadges.setVisibility(View.VISIBLE));
+			}
+		});
 
 	}
 
