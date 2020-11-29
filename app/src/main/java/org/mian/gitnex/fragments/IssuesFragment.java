@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -105,7 +106,9 @@ public class IssuesFragment extends Fragment {
 
 		}));
 
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		recyclerView.setHasFixedSize(true);
+		recyclerView.addItemDecoration(dividerItemDecoration);
 		recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		recyclerView.setAdapter(adapter);
 

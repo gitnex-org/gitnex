@@ -102,11 +102,4 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_below="@id/mainFrame"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:id="@+id/divider"
-        android:background="?attr/dividerColor" />
-
 </RelativeLayout>

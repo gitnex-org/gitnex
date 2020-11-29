@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -22,36 +23,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_file"
                 android:drawablePadding="24dp"
                 android:padding="12dp"
                 android:text="@string/pageTitleNewFile"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_file" />
 
             <TextView
                 android:id="@+id/createNewIssue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_issue"
                 android:drawablePadding="24dp"
                 android:padding="12dp"
                 android:text="@string/pageTitleCreateNewIssue"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_issue" />
 
             <TextView
                 android:id="@+id/createPullRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_pull_request"
                 android:drawablePadding="24dp"
                 android:padding="12dp"
                 android:text="@string/pageTitleNewPullRequest"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_pull_request" />
 
             <TextView
                 android:id="@+id/createNewMilestone"
@@ -59,11 +60,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/pageTitleCreateMilestone"
-                android:drawableStart="@drawable/ic_milestone"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_milestone" />
 
             <TextView
                 android:id="@+id/createLabel"
@@ -71,11 +72,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/createLabel"
-                android:drawableStart="@drawable/ic_label"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_label" />
 
             <TextView
                 android:id="@+id/createRelease"
@@ -83,11 +84,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/createRelease"
-                android:drawableStart="@drawable/ic_release"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_release" />
 
             <View
                 android:layout_width="match_parent"
@@ -103,11 +104,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/addCollaboratorTitle"
-                android:drawableStart="@drawable/ic_person_add"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_person_add" />
 
             <TextView
                 android:id="@+id/starRepository"
@@ -115,11 +116,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/starRepository"
-                android:drawableStart="@drawable/ic_star_unfilled"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_star_unfilled" />
 
             <TextView
                 android:id="@+id/unStarRepository"
@@ -127,11 +128,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/unStarRepository"
-                android:drawableStart="@drawable/ic_star"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_star" />
 
             <TextView
                 android:id="@+id/watchRepository"
@@ -139,11 +140,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/watchRepository"
-                android:drawableStart="@drawable/ic_unwatch"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_unwatch" />
 
             <TextView
                 android:id="@+id/unWatchRepository"
@@ -151,11 +152,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/unWatchRepository"
-                android:drawableStart="@drawable/ic_watchers"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_watchers" />
 
             <View
                 android:layout_width="match_parent"
@@ -170,36 +171,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_copy"
                 android:drawablePadding="24dp"
                 android:text="@string/genericCopyUrl"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_copy" />
 
             <TextView
                 android:id="@+id/shareRepository"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_share"
                 android:drawablePadding="24dp"
                 android:text="@string/shareRepository"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_share" />
 
             <TextView
                 android:id="@+id/openWebRepo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_browser"
                 android:drawablePadding="24dp"
                 android:text="@string/openWebRepo"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_browser" />
 
             <View
                 android:id="@+id/repoSettingsDivider"
@@ -215,12 +216,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableStart="@drawable/ic_settings"
                 android:drawablePadding="24dp"
                 android:text="@string/navSettings"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_settings" />
 
         </LinearLayout>
 

@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.adapters.SearchIssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -57,6 +58,8 @@ public class SearchIssuesFragment extends Fragment {
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ctx);
 
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerViewSearchIssues.getContext(), DividerItemDecoration.VERTICAL);
+		viewBinding.recyclerViewSearchIssues.addItemDecoration(dividerItemDecoration);
 		viewBinding.recyclerViewSearchIssues.setHasFixedSize(true);
 		viewBinding.recyclerViewSearchIssues.setLayoutManager(linearLayoutManager);
 		viewBinding.recyclerViewSearchIssues.setAdapter(adapter);

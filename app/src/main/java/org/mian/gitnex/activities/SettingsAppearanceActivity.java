@@ -24,7 +24,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	private static final String[] customFontList = {"Roboto", "Manrope", "Source Code Pro"};
 	private static int customFontSelectedChoice = 0;
 
-	private static final String[] themeList = {"Dark", "Light", "Auto (Light / Dark)", "Retro", "Auto (Retro / Dark)"};
+	private static final String[] themeList = {"Dark", "Light", "Auto (Light / Dark)", "Retro", "Auto (Retro / Dark)", "Pitch Black"};
 	private static int themeSelectedChoice = 0;
 
 	@Override

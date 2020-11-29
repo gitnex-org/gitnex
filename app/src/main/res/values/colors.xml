@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#7f7e7b</color>
@@ -56,4 +55,7 @@
     <color name="iconPrMergedColor">#a333c8</color>
     <color name="iconIssuePrClosedColor">#db2828</color>
 
+    <color name="pitchBlackThemeBackground">#050505</color>
+    <color name="pitchBlackThemeTextColor">#d2d2d2</color>
+    <color name="pitchBlackThemeGeneralBackgroundColor">#151515</color>
 </resources>

@@ -50,36 +50,47 @@ public abstract class BaseActivity extends AppCompatActivity {
 		switch(tinyDB.getInt("themeId")) {
 
 			case 1:
+
 				tinyDB.putString("currentTheme", "light");
 				setTheme(R.style.AppThemeLight);
 				break;
-
 			case 2:
+
 				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
+
 					tinyDB.putString("currentTheme", "dark");
 					setTheme(R.style.AppTheme);
-				} else {
+				}
+				else {
+
 					tinyDB.putString("currentTheme", "light");
 					setTheme(R.style.AppThemeLight);
 				}
 				break;
-
 			case 3:
+
 				tinyDB.putString("currentTheme", "light");
 				setTheme(R.style.AppThemeRetro);
 				break;
-
 			case 4:
 				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
+
 					tinyDB.putString("currentTheme", "dark");
 					setTheme(R.style.AppTheme);
-				} else {
+				}
+				else {
+
 					tinyDB.putString("currentTheme", "light");
 					setTheme(R.style.AppThemeRetro);
 				}
 				break;
+			case 5:
 
+				tinyDB.putString("currentTheme", "dark");
+				setTheme(R.style.AppThemePitchBlack);
+				break;
 			default:
+
 				tinyDB.putString("currentTheme", "dark");
 				setTheme(R.style.AppTheme);
 
@@ -95,25 +106,25 @@ public abstract class BaseActivity extends AppCompatActivity {
 		switch(tinyDB.getInt("customFontId", -1)) {
 
 			case 0:
+
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/roboto.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/roboto.ttf");
 				break;
-
 			case 2:
+
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/sourcecodeproregular.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/sourcecodeproregular.ttf");
 				break;
-
 			default:
+
 				FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "SERIF", "fonts/manroperegular.ttf");
 				FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/manroperegular.ttf");
-
 		}
 
 		if(tinyDB.getInt("pollingDelayMinutes", 0) <= 0) {

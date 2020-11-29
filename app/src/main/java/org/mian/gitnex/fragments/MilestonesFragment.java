@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -88,6 +89,8 @@ public class MilestonesFragment extends Fragment {
 
 	    }
 
+	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+	    viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
         viewBinding.recyclerView.setHasFixedSize(true);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         viewBinding.recyclerView.setAdapter(adapter);

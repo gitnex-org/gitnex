@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:orientation="vertical"
 android:paddingTop="6dp"
@@ -23,11 +24,11 @@ android:background="?attr/primaryBackgroundColor">
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/pinNotification"
-            android:drawableStart="@drawable/ic_pin"
             android:drawablePadding="24dp"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
-            android:padding="12dp" />
+            android:padding="12dp"
+            app:drawableStartCompat="@drawable/ic_pin" />
 
         <TextView
             android:id="@+id/markRead"
@@ -35,11 +36,11 @@ android:background="?attr/primaryBackgroundColor">
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/markAsRead"
-            android:drawableStart="@drawable/ic_unwatch"
             android:drawablePadding="24dp"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
-            android:padding="12dp" />
+            android:padding="12dp"
+            app:drawableStartCompat="@drawable/ic_unwatch" />
 
         <TextView
             android:id="@+id/markUnread"
@@ -47,11 +48,11 @@ android:background="?attr/primaryBackgroundColor">
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/markAsUnread"
-            android:drawableStart="@drawable/ic_watchers"
             android:drawablePadding="24dp"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
-            android:padding="12dp" />
+            android:padding="12dp"
+            app:drawableStartCompat="@drawable/ic_watchers" />
 
     </LinearLayout>
 
