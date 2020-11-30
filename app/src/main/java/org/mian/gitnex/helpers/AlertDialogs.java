@@ -62,7 +62,7 @@ public class AlertDialogs {
 	    alertDialogBuilder.create().show();
     }
 
-    public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton) {
+    public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton, String type, String orgName) {
 
         new AlertDialog.Builder(context)
             .setTitle(title + labelTitle)
@@ -73,6 +73,8 @@ public class AlertDialogs {
                 Intent intent = new Intent(context, CreateLabelActivity.class);
                 intent.putExtra("labelId", labelId);
                 intent.putExtra("labelAction", "delete");
+	            intent.putExtra("type", type);
+	            intent.putExtra("orgName", orgName);
                 context.startActivity(intent);
 
             })

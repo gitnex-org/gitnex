@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,9 +20,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.Labels;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
-import java.util.List;
 
 /**
  * Author M M Arif
@@ -38,6 +34,7 @@ public class LabelsFragment extends Fragment {
     private TextView noData;
     private static String repoNameF = "param2";
     private static String repoOwnerF = "param1";
+    private final String type = "repo";
 
     private String repoName;
     private String repoOwner;
@@ -48,6 +45,7 @@ public class LabelsFragment extends Fragment {
     }
 
     public static LabelsFragment newInstance(String param1, String param2) {
+
         LabelsFragment fragment = new LabelsFragment();
         Bundle args = new Bundle();
         args.putString(repoOwnerF, param1);
@@ -58,8 +56,11 @@ public class LabelsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
+
             repoName = getArguments().getString(repoNameF);
             repoOwner = getArguments().getString(repoOwnerF);
         }
@@ -88,17 +89,16 @@ public class LabelsFragment extends Fragment {
 
             swipeRefresh.setRefreshing(false);
             LabelsViewModel.loadLabelsList(Authorization.get(getContext()), repoOwner, repoName, getContext());
-
         }, 200));
 
         fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName);
 
         return v;
-
     }
 
     @Override
     public void onResume() {
+
         super.onResume();
         final TinyDB tinyDb = TinyDB.getInstance(getContext());
 
@@ -108,24 +108,29 @@ public class LabelsFragment extends Fragment {
         final String repoName = parts[1];
 
         if(tinyDb.getBoolean("labelsRefresh")) {
+
             LabelsViewModel.loadLabelsList(Authorization.get(getContext()), repoOwner, repoName, getContext());
             tinyDb.putBoolean("labelsRefresh", false);
         }
     }
 
     public void onButtonPressed(Uri uri) {
+
         if (mListener != null) {
+
             mListener.onFragmentInteraction(uri);
         }
     }
 
     @Override
     public void onDetach() {
+
         super.onDetach();
         mListener = null;
     }
 
     public interface OnFragmentInteractionListener {
+
         void onFragmentInteraction(Uri uri);
     }
 
@@ -133,21 +138,23 @@ public class LabelsFragment extends Fragment {
 
         LabelsViewModel labelsModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
-        labelsModel.getLabelsList(instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Labels>>() {
-            @Override
-            public void onChanged(@Nullable List<Labels> labelsListMain) {
-                adapter = new LabelsAdapter(getContext(), labelsListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setAdapter(adapter);
-                    noData.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mRecyclerView.setAdapter(adapter);
-                    noData.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
+        labelsModel.getLabelsList(instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), labelsListMain -> {
+
+            adapter = new LabelsAdapter(getContext(), labelsListMain, type, owner);
+
+            if(adapter.getItemCount() > 0) {
+
+                mRecyclerView.setAdapter(adapter);
+                noData.setVisibility(View.GONE);
             }
+            else {
+
+                adapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(adapter);
+                noData.setVisibility(View.VISIBLE);
+            }
+
+            mProgressBar.setVisibility(View.GONE);
         });
 
     }

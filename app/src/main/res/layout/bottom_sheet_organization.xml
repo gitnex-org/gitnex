@@ -31,6 +31,18 @@
                 app:drawableStartCompat="@drawable/ic_repo" />
 
             <TextView
+                android:id="@+id/createLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/createLabel"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_label" />
+
+            <TextView
                 android:id="@+id/createTeam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

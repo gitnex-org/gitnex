@@ -23,6 +23,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.MembersByOrgFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
+import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
 import org.mian.gitnex.fragments.TeamsByOrgFragment;
 import org.mian.gitnex.helpers.Toasty;
@@ -145,6 +146,13 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
                 tinyDB.putBoolean("organizationAction", true);
                 startActivity(new Intent(OrganizationDetailActivity.this, CreateRepoActivity.class));
                 break;
+	        case "label":
+
+		        Intent intent = new Intent(ctx, CreateLabelActivity.class);
+		        intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
+		        intent.putExtra("type", "org");
+		        ctx.startActivity(intent);
+		        break;
             case "team":
 
                 startActivity(new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class));
@@ -191,11 +199,14 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
                     return OrganizationInfoFragment.newInstance(orgName);
                 case 1: // repos
 
-                    return RepositoriesByOrgFragment.newInstance(orgName);
-                case 2: // teams
+	                return RepositoriesByOrgFragment.newInstance(orgName);
+	            case 2: // labels
+
+                    return OrganizationLabelsFragment.newInstance(orgName);
+                case 3: // teams
 
                     return TeamsByOrgFragment.newInstance(orgName);
-                case 3: // members
+                case 4: // members
 
                     return MembersByOrgFragment.newInstance(orgName);
             }
