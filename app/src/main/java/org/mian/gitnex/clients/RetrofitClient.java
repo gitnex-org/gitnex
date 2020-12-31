@@ -2,6 +2,7 @@ package org.mian.gitnex.clients;
 
 import android.content.Context;
 import android.util.Log;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FilesData;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
@@ -35,6 +36,8 @@ public class RetrofitClient {
 
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
+		final boolean connToInternet = AppUtil.hasNetworkConnection(context);
+
 		int cacheSize = FilesData.returnOnlyNumber(tinyDB.getString("cacheSizeStr")) * 1024 * 1024;
 		Cache cache = new Cache(new File(context.getCacheDir(), "responses"), cacheSize);
 
@@ -54,13 +57,16 @@ public class RetrofitClient {
 				.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
 				.addInterceptor(chain -> {
 
-					Request request = chain.request()
-						.newBuilder()
-						.header("Cache-Control", "public, max-age=" + 60)
-						.build();
+					Request request = chain.request();
+					if(connToInternet) {
 
+						request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+					}
+					else {
+
+						request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
+					}
 					return chain.proceed(request);
-
 				});
 
 			return new Retrofit.Builder()
@@ -70,9 +76,10 @@ public class RetrofitClient {
 				.addConverterFactory(GsonConverterFactory.create())
 				.build();
 
-		} catch(Exception e) {
+		}
+		catch(Exception e) {
 
-			Log.e("onFailure", e.toString());
+			Log.e("onFailureRetrofit", e.toString());
 		}
 
 		return null;
@@ -93,29 +100,21 @@ public class RetrofitClient {
 	}
 
 	public static synchronized ApiInterface getApiInterface(Context context, String url) {
-		if(!apiInterfaces.containsKey(url)) {
 
-			ApiInterface apiInterface = createRetrofit(context, url)
-				.create(ApiInterface.class);
+		ApiInterface apiInterface = createRetrofit(context, url)
+			.create(ApiInterface.class);
 
-			apiInterfaces.put(url, apiInterface);
-			return apiInterface;
-
-		}
+		apiInterfaces.put(url, apiInterface);
 
 		return apiInterfaces.get(url);
 	}
 
 	public static synchronized WebInterface getWebInterface(Context context, String url) {
-		if(!webInterfaces.containsKey(url)) {
 
-			WebInterface webInterface = createRetrofit(context, url)
-				.create(WebInterface.class);
+		WebInterface webInterface = createRetrofit(context, url)
+			.create(WebInterface.class);
 
-			webInterfaces.put(url, webInterface);
-			return webInterface;
-
-		}
+		webInterfaces.put(url, webInterface);
 
 		return webInterfaces.get(url);
 	}
