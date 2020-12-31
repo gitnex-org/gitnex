@@ -473,7 +473,7 @@
     <string name="mergeOptionSquash">Zusammenfassen und Mergen</string>
     <string name="mergeStrategy">Merge-Strategie</string>
     <string name="selectMergeStrategy">Wähle eine Merge-Strategie</string>
-    <string name="mergeNotAllowed">Nicht erlaubt zu mergen [Grund: Hat nicht genügend Genehmigungen]</string>
+    <string name="mergeNotAllowed">Mergen nicht erlaubt [Grund: Hat nicht genügend Genehmigungen]</string>
     <string name="downloadFile">Datei herunterladen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
@@ -555,7 +555,7 @@
     <string name="markedNotificationsAsRead">Alle Benachrichtigungen erfolgreich als gelesen markiert</string>
     <string name="notificationsHintText">Intervall, Licht, Vibration</string>
     <string name="enableNotificationsHeaderText">Benachrichtigungen aktivieren</string>
-    <string name="enableLightsHeaderText">Aktiviere LED</string>
+    <string name="enableLightsHeaderText">Aktiviere Hell</string>
     <string name="enableVibrationHeaderText">Vibration aktivieren</string>
     <string name="chooseColorSelectorHeader">Farbe auswählen</string>
     <string name="newMessages">Neue Nachrichten</string>

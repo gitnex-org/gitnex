@@ -11,8 +11,8 @@
     <string name="navRate">Oceń GitNex</string>
     <string name="navLogout">Wyloguj się</string>
     <string name="navExplore">Przeglądaj</string>
-    <string name="navAdministration">Administration</string>
-    <string name="navSearchIssuesPulls">Search Issues</string>
+    <string name="navAdministration">Administracja</string>
+    <string name="navSearchIssuesPulls">Wyszukaj problemy</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">O programie</string>
@@ -64,7 +64,7 @@
     <string name="navigation_drawer_open">Otwórz szufladę nawigacji</string>
     <string name="navigation_drawer_close">Zamknij szufladę nawigacji</string>
     <string name="logo">Zaloguj się do Gitea</string>
-    <string name="protocol">Protocol</string>
+    <string name="protocol">Protokół</string>
     <string name="urlInfoTooltip">1- Wybierz poprawny protokół (https lub http). \n2- Wprowadź adres URL Gitea np: try.gitea.io. \n3- Jeśli włączyłeś 2FA dla swojego konta, wprowadź kod w polu OTP Code. \n4 - Dla podstawowej autoryzacji HTTP użyj NAZWAUŻYTKOWNIKA@STRONA.PL w polu URL.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
@@ -201,14 +201,14 @@
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
     <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
-    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
-    <string name="clearCacheDialogHeader">Clear Cache?</string>
+    <string name="clearCacheSelectionHeaderText">Czyść Cache</string>
+    <string name="clearCacheDialogHeader">Wyczyścić pamięć podręczną?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <string name="draftsHeader">Drafts</string>
     <string name="draftsHintText">Comments draft</string>
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
-    <string name="settingsGeneralHeader">General</string>
+    <string name="settingsGeneralHeader">Ogólne</string>
     <string name="generalHintText">Home screen, default link handler</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
@@ -255,8 +255,8 @@
     <string name="orgMember">Członkowie organizacji</string>
     <string name="orgTeamMembers">Członkowie zespołu organizacji</string>
     <string name="addNewMember">Add / Remove New Member</string>
-    <string name="removeTeamMemberTitle">Remove\u0020</string>
-    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="removeTeamMemberTitle">Usuń\u0020</string>
+    <string name="addTeamMemberTitle">Dodaj\u0020</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
     <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
     <string name="memberAddedMessage">Member added to the team successfully</string>
@@ -284,7 +284,7 @@
     <string name="editCommentUpdatedText">Komentarz zaktualizowany</string>
     <string name="issueCommentShare">Udostępnij komentarz</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
-    <string name="copyCommentText">Copy Comment</string>
+    <string name="copyCommentText">Skopiuj komentarz</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Dodaj / Usuń współpracownika</string>
@@ -301,7 +301,7 @@
     <string name="profileCreateNewEmailAddress">Dodaj adres e-mail</string>
     <string name="profileEmailButton">Zapisz</string>
     <string name="profileEmailTitle">Adres e-mail</string>
-    <string name="emailAddedText">New email added successfully</string>
+    <string name="emailAddedText">Nowy e-mail został dodany</string>
     <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">Adres e-mail jest nieprawidłowy</string>
     <string name="emailErrorInUse">Adres e-mail jest już używany</string>
@@ -414,7 +414,7 @@
     <string name="menuContentDesc">Menu</string>
     <string name="menuEditText">Edytuj</string>
     <string name="menuDeleteText">Usuń</string>
-    <string name="menuCopyText">Copy</string>
+    <string name="menuCopyText">Kopiuj</string>
     <string name="menuQuoteText">Quote and Reply</string>
     <string name="modifiedText">edytowano</string>
     <string name="saveButton">Zapisz</string>

@@ -38,7 +38,7 @@
     <string name="pageTitleExplore">Обзор</string>
     <string name="pageTitleAdministration">Администрирование Gitea</string>
     <string name="pageTitleUserAccounts">Управление аккаунтами</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleNewPullRequest">Новый запрос на слияние</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторий</string>
     <string name="repoFullname">Репозиторий с организацией</string>
@@ -64,7 +64,7 @@
     <string name="navigation_drawer_open">Открыть навигацию</string>
     <string name="navigation_drawer_close">Закрыть навигацию</string>
     <string name="logo">Войти в Gitea</string>
-    <string name="protocol">Protocol</string>
+    <string name="protocol">Протокол</string>
     <string name="urlInfoTooltip">1. Выберите протокол (https или http) \n2. Укажите URL Gitea, например: try.gitea.io \n3. Если для учетной записи включена 2FA, введите код OTP в соответствующее поле. \n4. Для базовой аутентификации HTTP укажите USERNAME@DOMAIN.COM в поле URL.</string>
     <string name="malformedUrl">Не удалось подключиться к хосту. Пожалуйста, проверьте URL-адрес или порт на наличие ошибок</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете в локальной сети</string>
@@ -72,7 +72,7 @@
     <string name="emptyFieldURL">Требуется URL экземпляра</string>
     <string name="emptyFieldUsername">Требуется имя пользователя</string>
     <string name="emptyFieldPassword">Требуется пароль</string>
-    <string name="protocolEmptyError">Protocol is required</string>
+    <string name="protocolEmptyError">Требуется протокол</string>
     <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
     <string name="netConnectionIsBack">Ура, у нас есть интернет!</string>
     <string name="repoNameErrorEmpty">Название репозитория пустое.</string>
@@ -83,7 +83,7 @@
     <string name="repoCreated">Репозиторий успешно создан!</string>
     <string name="repoCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="repoExistsError">Репозиторий с таким именему уже существует у выбранного владельца</string>
-    <string name="repoOwnerError">Select owner for the repository</string>
+    <string name="repoOwnerError">Выбрать владельца репозитория</string>
     <string name="orgNameErrorEmpty">Название организации пустое.</string>
     <string name="orgNameErrorInvalid">Недоступное название организации. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Описание организации превышает 255 символов.</string>
@@ -208,12 +208,12 @@
     <string name="draftsHintText">Черновик комментариев</string>
     <string name="settingsEnableCommentsDeletionText">Включить удаление черновиков</string>
     <string name="settingsEnableCommentsDeletionHintText">Удалить черновик комментария при публикации комментария</string>
-    <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Home screen, default link handler</string>
-    <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
-    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
-    <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
+    <string name="settingsGeneralHeader">Общее</string>
+    <string name="generalHintText">Домашний экран, обработчик ссылок по умолчанию</string>
+    <string name="generalDeepLinkDefaultScreen">Обработчик ссылок по умолчанию</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Выберите, какой экран следует загрузить, если приложение не может обрабатывать внешние ссылки. Он автоматически перенаправит вас.</string>
+    <string name="generalDeepLinkSelectedText">Н/Д</string>
+    <string name="linkSelectorDialogTitle">Выбрать экран обработчика ссылок по умолчанию</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
