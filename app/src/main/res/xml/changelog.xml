@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.4.0-dev" versioncode="336">
-        <change>Under development</change>
+    <release version="3.4.0" versioncode="340">
+        <change>New: Organization labels(list, create, edit, delete)</change>
+        <change>New: Pitch black theme</change>
+        <change>Improvement: Cap sentence start letters</change>
+        <change>Bugfix: Fix spacing when no reactions are available</change>
+        <change>Bugfix: Fix offline mode</change>
     </release>
 
 </changelog>

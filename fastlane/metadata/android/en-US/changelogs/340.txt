@@ -1,0 +1,11 @@
+3.4.0
+
+New: Organization labels(list, create, edit, delete)
+New: Pitch black theme
+Improvement: Cap sentence start letters
+Bugfix: Fix spacing when no reactions are available
+Bugfix: Fix offline mode
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Blog: https://gitnex.codeberg.page/posts/340.html
