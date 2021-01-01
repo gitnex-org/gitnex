@@ -10,8 +10,8 @@ import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.interfaces.WebInterface;
 import java.io.File;
 import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
@@ -29,8 +29,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
 
-	private static final Map<String, ApiInterface> apiInterfaces = new HashMap<>();
-	private static final Map<String, WebInterface> webInterfaces = new HashMap<>();
+	private static final Map<String, ApiInterface> apiInterfaces = new ConcurrentHashMap<>();
+	private static final Map<String, WebInterface> webInterfaces = new ConcurrentHashMap<>();
 
 	private static Retrofit createRetrofit(Context context, String instanceUrl) {
 
@@ -58,15 +58,13 @@ public class RetrofitClient {
 				.addInterceptor(chain -> {
 
 					Request request = chain.request();
-					if(connToInternet) {
 
-						request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
-					}
-					else {
+					request = connToInternet ?
+						request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build() :
+						request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
 
-						request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
-					}
 					return chain.proceed(request);
+
 				});
 
 			return new Retrofit.Builder()
@@ -85,12 +83,12 @@ public class RetrofitClient {
 		return null;
 	}
 
-	public static synchronized ApiInterface getApiInterface(Context context) {
+	public static ApiInterface getApiInterface(Context context) {
 
 		return getApiInterface(context, TinyDB.getInstance(context).getString("instanceUrl"));
 	}
 
-	public static synchronized WebInterface getWebInterface(Context context) {
+	public static WebInterface getWebInterface(Context context) {
 
 		String instanceUrl = TinyDB.getInstance(context).getString("instanceUrl");
 		instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
@@ -99,22 +97,30 @@ public class RetrofitClient {
 
 	}
 
-	public static synchronized ApiInterface getApiInterface(Context context, String url) {
+	public static ApiInterface getApiInterface(Context context, String url) {
+		if(!apiInterfaces.containsKey(url)) {
 
-		ApiInterface apiInterface = createRetrofit(context, url)
-			.create(ApiInterface.class);
+			ApiInterface apiInterface = createRetrofit(context, url)
+				.create(ApiInterface.class);
 
-		apiInterfaces.put(url, apiInterface);
+			apiInterfaces.put(url, apiInterface);
+			return apiInterface;
+
+		}
 
 		return apiInterfaces.get(url);
 	}
 
-	public static synchronized WebInterface getWebInterface(Context context, String url) {
+	public static WebInterface getWebInterface(Context context, String url) {
+		if(!webInterfaces.containsKey(url)) {
 
-		WebInterface webInterface = createRetrofit(context, url)
-			.create(WebInterface.class);
+			WebInterface webInterface = createRetrofit(context, url)
+				.create(WebInterface.class);
 
-		webInterfaces.put(url, webInterface);
+			webInterfaces.put(url, webInterface);
+			return webInterface;
+
+		}
 
 		return webInterfaces.get(url);
 	}

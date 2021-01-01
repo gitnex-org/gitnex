@@ -20,7 +20,7 @@ import okhttp3.OkHttpClient;
 public class PicassoService {
 
 	private static PicassoService picassoService;
-	private static File cachePath;
+	private final File cachePath;
 	private Picasso picasso;
 
 	private PicassoService(Context context) {
@@ -54,7 +54,6 @@ public class PicassoService {
 
 			Log.e("PicassoService", e.toString());
 		}
-
 	}
 
 	public Picasso get() {
