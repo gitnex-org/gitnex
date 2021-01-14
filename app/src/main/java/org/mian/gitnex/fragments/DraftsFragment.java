@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.DraftsAdapter;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.database.models.DraftWithRepository;
@@ -51,7 +52,9 @@ public class DraftsFragment extends Fragment {
 	    ctx = getContext();
         setHasOptionsMenu(true);
 
-        TinyDB tinyDb = new TinyDB(ctx);
+	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.titleDrafts));
+
+        TinyDB tinyDb = TinyDB.getInstance(ctx);
 
 	    draftsList_ = new ArrayList<>();
         draftsApi = new DraftsApi(ctx);

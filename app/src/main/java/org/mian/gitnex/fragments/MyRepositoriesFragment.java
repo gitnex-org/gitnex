@@ -15,9 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,14 +24,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.MyReposListAdapter;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.viewmodels.MyRepositoriesViewModel;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -82,19 +77,16 @@ public class MyRepositoriesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
-
         final View v = inflater.inflate(R.layout.fragment_my_repositories, container, false);
         setHasOptionsMenu(true);
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String userLogin =  tinyDb.getString("userLogin");
         tinyDb.putBoolean("isRepoAdmin", true);
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+
+	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navMyRepos));
 
         noDataMyRepo = v.findViewById(R.id.noDataMyRepo);
         mProgressBar = v.findViewById(R.id.progress_bar);
@@ -134,11 +126,11 @@ public class MyRepositoriesFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
+            MyRepositoriesViewModel.loadMyReposList(Authorization.get(getContext()), userLogin, getContext(),  pageSize, resultLimit);
 
         }, 50));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, pageSize, resultLimit);
+        fetchDataAsync(Authorization.get(getContext()), userLogin, pageSize, resultLimit);
 
         return v;
 
@@ -147,46 +139,40 @@ public class MyRepositoriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String userLogin =  tinyDb.getString("userLogin");
 
         if(tinyDb.getBoolean("repoCreated")) {
-            MyRepositoriesViewModel.loadMyReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), userLogin, getContext(),  pageSize, resultLimit);
+            MyRepositoriesViewModel.loadMyReposList(Authorization.get(getContext()), userLogin, getContext(),  pageSize, resultLimit);
             tinyDb.putBoolean("repoCreated", false);
         }
 
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String userLogin, int  pageSize, int resultLimit) {
+    private void fetchDataAsync(String instanceToken, String userLogin, int  pageSize, int resultLimit) {
 
         MyRepositoriesViewModel myRepoModel = new ViewModelProvider(this).get(MyRepositoriesViewModel.class);
 
-        myRepoModel.getCurrentUserRepositories(instanceUrl, instanceToken, userLogin, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
-            @Override
-            public void onChanged(@Nullable List<UserRepositories> myReposListMain) {
-                adapter = new MyReposListAdapter(getContext(), myReposListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setAdapter(adapter);
-                    noDataMyRepo.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mRecyclerView.setAdapter(adapter);
-                    noDataMyRepo.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
-            }
-        });
+        myRepoModel.getCurrentUserRepositories(instanceToken, userLogin, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
+	        myReposListMain -> {
+
+	            adapter = new MyReposListAdapter(getContext(), myReposListMain);
+	            if(adapter.getItemCount() > 0) {
+	                mRecyclerView.setAdapter(adapter);
+	                noDataMyRepo.setVisibility(View.GONE);
+	            }
+	            else {
+	                adapter.notifyDataSetChanged();
+	                mRecyclerView.setAdapter(adapter);
+	                noDataMyRepo.setVisibility(View.VISIBLE);
+	            }
+	            mProgressBar.setVisibility(View.GONE);
+	        });
 
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

@@ -23,9 +23,8 @@ public class MilestoneActions {
 
 	public static void closeMilestone(final Context ctx, int milestoneId_) {
 
-		final TinyDB tinyDB = new TinyDB(ctx);
+		final TinyDB tinyDB = TinyDB.getInstance(ctx);
 
-		final String instanceUrl = tinyDB.getString("instanceUrl");
 		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
@@ -37,8 +36,7 @@ public class MilestoneActions {
 		Call<JsonElement> call;
 
 		call = RetrofitClient
-				.getInstance(instanceUrl, ctx)
-				.getApiInterface()
+				.getApiInterface(ctx)
 				.closeReopenMilestone(token, repoOwner, repoName, milestoneId_, milestoneStateJson);
 
 		call.enqueue(new Callback<JsonElement>() {
@@ -81,9 +79,8 @@ public class MilestoneActions {
 
 	public static void openMilestone(final Context ctx, int milestoneId_) {
 
-		final TinyDB tinyDB = new TinyDB(ctx);
+		final TinyDB tinyDB = TinyDB.getInstance(ctx);
 
-		final String instanceUrl = tinyDB.getString("instanceUrl");
 		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
@@ -95,8 +92,7 @@ public class MilestoneActions {
 		Call<JsonElement> call;
 
 		call = RetrofitClient
-				.getInstance(instanceUrl, ctx)
-				.getApiInterface()
+				.getApiInterface(ctx)
 				.closeReopenMilestone(token, repoOwner, repoName, milestoneId_, milestoneStateJson);
 
 		call.enqueue(new Callback<JsonElement>() {

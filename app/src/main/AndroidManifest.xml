@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -73,9 +74,6 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.CreateMilestoneActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
-        <activity
-            android:name=".activities.ReplyToIssueActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.IssueDetailActivity"
@@ -153,11 +151,41 @@
         <activity
             android:name=".activities.CreatePullRequestActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.SettingsGeneralActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.SettingsNotificationsActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
 
         <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
         <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>
         <!-- Version >= 3.0. DeX Dual Mode support -->
         <meta-data android:name="com.samsung.android.multidisplay.keep_process_alive" android:value="true"/>
+
+        <!-- deep links -->
+        <activity
+            android:name=".activities.DeepLinksActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:noHistory="true"
+            android:launchMode="singleTask">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="codeberg.org" />
+                <data android:host="gitea.com" />
+                <data android:host="try.gitea.io" />
+                <data android:host="code.obermui.de" />
+                <data android:host="git.fsfe.org" />
+                <data android:host="opendev.org" />
+            </intent-filter>
+
+        </activity>
+        <!-- deep links -->
 
     </application>
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
     android:paddingTop="6dp"
-    android:paddingBottom="12dp"
-    android:background="?attr/primaryBackgroundColor">
+    android:paddingBottom="12dp">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -14,8 +15,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/commentReactionButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal" />
 
             <TextView
                 android:id="@+id/commentMenuEdit"
@@ -23,11 +31,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/menuEditText"
-                android:drawableStart="@drawable/ic_edit"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_edit" />
 
             <TextView
                 android:id="@+id/commentMenuDelete"
@@ -35,11 +43,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/menuDeleteText"
-                android:drawableStart="@drawable/ic_delete"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_delete" />
 
             <TextView
                 android:id="@+id/commentMenuQuote"
@@ -47,11 +55,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/menuQuoteText"
-                android:drawableStart="@drawable/ic_comment"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_comment" />
 
             <TextView
                 android:id="@+id/commentMenuCopy"
@@ -59,11 +67,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/copyCommentText"
-                android:drawableStart="@drawable/ic_copy"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_copy" />
 
             <TextView
                 android:id="@+id/issueCommentShare"
@@ -71,11 +79,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/issueCommentShare"
-                android:drawableStart="@drawable/ic_share"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_share" />
 
             <TextView
                 android:id="@+id/issueCommentCopyUrl"
@@ -83,11 +91,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/genericCopyUrl"
-                android:drawableStart="@drawable/ic_link"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_link" />
 
         </LinearLayout>
 

@@ -38,7 +38,7 @@
     <string name="pageTitleExplore">Обзор</string>
     <string name="pageTitleAdministration">Администрирование Gitea</string>
     <string name="pageTitleUserAccounts">Управление аккаунтами</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleNewPullRequest">Новый запрос на слияние</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторий</string>
     <string name="repoFullname">Репозиторий с организацией</string>
@@ -64,7 +64,7 @@
     <string name="navigation_drawer_open">Открыть навигацию</string>
     <string name="navigation_drawer_close">Закрыть навигацию</string>
     <string name="logo">Войти в Gitea</string>
-    <string name="protocol">Protocol</string>
+    <string name="protocol">Протокол</string>
     <string name="urlInfoTooltip">1. Выберите протокол (https или http) \n2. Укажите URL Gitea, например: try.gitea.io \n3. Если для учетной записи включена 2FA, введите код OTP в соответствующее поле. \n4. Для базовой аутентификации HTTP укажите USERNAME@DOMAIN.COM в поле URL.</string>
     <string name="malformedUrl">Не удалось подключиться к хосту. Пожалуйста, проверьте URL-адрес или порт на наличие ошибок</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете в локальной сети</string>
@@ -72,7 +72,7 @@
     <string name="emptyFieldURL">Требуется URL экземпляра</string>
     <string name="emptyFieldUsername">Требуется имя пользователя</string>
     <string name="emptyFieldPassword">Требуется пароль</string>
-    <string name="protocolEmptyError">Protocol is required</string>
+    <string name="protocolEmptyError">Требуется протокол</string>
     <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
     <string name="netConnectionIsBack">Ура, у нас есть интернет!</string>
     <string name="repoNameErrorEmpty">Название репозитория пустое.</string>
@@ -83,6 +83,7 @@
     <string name="repoCreated">Репозиторий успешно создан!</string>
     <string name="repoCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="repoExistsError">Репозиторий с таким именему уже существует у выбранного владельца</string>
+    <string name="repoOwnerError">Выбрать владельца репозитория</string>
     <string name="orgNameErrorEmpty">Название организации пустое.</string>
     <string name="orgNameErrorInvalid">Недоступное название организации. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Описание организации превышает 255 символов.</string>
@@ -165,7 +166,7 @@
     <string name="issueCreated">Задача успешно добавлена!</string>
     <string name="issueCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="issueCreatedNoMilestone">Нет вехи</string>
-    <string name="noAssigneesFound">Сотрудников не обнаружено</string>
+    <string name="noAssigneesFound">No assignees found</string>
     <string name="noLabelsFound">Меток не обнаружено</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Перевод</string>
@@ -207,6 +208,12 @@
     <string name="draftsHintText">Черновик комментариев</string>
     <string name="settingsEnableCommentsDeletionText">Включить удаление черновиков</string>
     <string name="settingsEnableCommentsDeletionHintText">Удалить черновик комментария при публикации комментария</string>
+    <string name="settingsGeneralHeader">Общее</string>
+    <string name="generalHintText">Домашний экран, обработчик ссылок по умолчанию</string>
+    <string name="generalDeepLinkDefaultScreen">Обработчик ссылок по умолчанию</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Выберите, какой экран следует загрузить, если приложение не может обрабатывать внешние ссылки. Он автоматически перенаправит вас.</string>
+    <string name="generalDeepLinkSelectedText">Н/Д</string>
+    <string name="linkSelectorDialogTitle">Выбрать экран обработчика ссылок по умолчанию</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -225,6 +232,7 @@
     <string name="labelDeleteText">Метка удалена!</string>
     <string name="labelDeleteErrorText">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="noDataBranchesTab">Веток не обнаружено</string>
+    <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
     <string name="alertDialogTokenRevokedMessage">Похоже, токен доступа отозван, либо вам не разрешено просматривать это содержимое.\n\nВ случае отзыва токена, пожалуйста, выйдите из системы и войдите снова</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Закрыть</string>
@@ -463,6 +471,9 @@
     <string name="mergeOptionRebase">Выполнить rebase и принять PR</string>
     <string name="mergeOptionRebaseCommit">Выполнить rebase и принять PR (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">Объединить и принять PR</string>
+    <string name="mergeStrategy">Merge Strategy</string>
+    <string name="selectMergeStrategy">Select merge strategy</string>
+    <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="downloadFile">Скачать этот файл</string>
     <string name="waitLoadingDownloadFile">Пожалуйста дождитесь загрузки файла</string>
     <string name="downloadFileSaved">Файл успешно сохранён</string>
@@ -514,10 +525,10 @@
     <string name="draftsDeleteSuccess">Черновики успешно удалены</string>
     <string name="draftsSingleDeleteSuccess">Черновик успешно удален</string>
     <string name="deleteAllDraftsDialogMessage">Это приведет к удалению всех черновиков для этой учетной записи. \n\nПродолжить удаление?</string>
-    <string name="draftSaved">Черновик сохранён</string>
-    <string name="appearanceHintText">Темы, шрифты, значки, тема блока кода</string>
+    <string name="draftSaved">Draft was saved automatically.</string>
+    <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="fileViewerHintText">PDF режим, исходный код темы</string>
-    <string name="securityHintText">SSL-сертификаты, кэш, задержка опроса</string>
+    <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Языки</string>
     <string name="reportsHintText">Отчёты об ошибках</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
@@ -534,7 +545,6 @@
     <!-- Notifications -->
     <string name="pageTitleNotifications">Уведомления</string>
     <string name="noDataNotifications">Уведомления не найдены</string>
-    <string name="notificationBody">Вы получили новое уведомление. (%s)</string>
     <string name="notificationsPollingHeaderText">Задержка опроса уведомлений</string>
     <string name="pollingDelaySelectedText">%d Минут</string>
     <string name="pollingDelayDialogHeaderText">Выбрать задержку опроса</string>
@@ -543,6 +553,13 @@
     <string name="markAsUnread">Отметить как непрочитанное</string>
     <string name="pinNotification">Прикрепить уведомление</string>
     <string name="markedNotificationsAsRead">Все уведомления успешно помечены как прочитанные</string>
+    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="enableNotificationsHeaderText">Enable Notifications</string>
+    <string name="enableLightsHeaderText">Enable Light</string>
+    <string name="enableVibrationHeaderText">Enable Vibration</string>
+    <string name="chooseColorSelectorHeader">Choose Color</string>
+    <string name="newMessages">New messages</string>
+    <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="isRead">Прочитано</string>
     <string name="isUnread">Непрочитано</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -586,4 +603,12 @@
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="launchApp">Go to App</string>
+    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="codeBlockGreenOnBlack">Green on Black</string>
+    <string name="codeBlockWhiteOnBlack">White on Black</string>
+    <string name="codeBlockGreyOnBlack">Grey on Black</string>
+    <string name="codeBlockWhiteOnGrey">White on Grey</string>
+    <string name="codeBlockDarkOnWhite">Dark on White</string>
 </resources>

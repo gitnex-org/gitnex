@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -23,11 +24,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/createRepository"
-                android:drawableStart="@drawable/ic_repo"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_repo" />
+
+            <TextView
+                android:id="@+id/createLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/createLabel"
+                android:drawablePadding="24dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_label" />
 
             <TextView
                 android:id="@+id/createTeam"
@@ -35,11 +48,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/orgCreateTeam"
-                android:drawableStart="@drawable/ic_people"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_people" />
 
             <TextView
                 android:id="@+id/copyOrgUrl"
@@ -47,11 +60,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/genericCopyUrl"
-                android:drawableStart="@drawable/ic_copy"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_copy" />
 
         </LinearLayout>
 

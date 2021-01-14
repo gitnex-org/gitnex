@@ -1,12 +1,14 @@
 package org.mian.gitnex.fragments;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -14,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.ActionResult;
@@ -31,6 +35,9 @@ import java.util.Objects;
 
 public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
+	private enum Mode { EDIT, SEND }
+	private Mode mode = Mode.SEND;
+
 	private TinyDB tinyDB;
 	private DraftsApi draftsApi;
 
@@ -39,12 +46,13 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 	private int issueNumber;
 	private long draftId;
 
+	private OnInteractedListener onInteractedListener;
 	private TextView draftsHint;
 
 	@Override
 	public void onAttach(@NonNull Context context) {
 
-		tinyDB = new TinyDB(context);
+		tinyDB = TinyDB.getInstance(context);
 		draftsApi = new DraftsApi(context);
 
 		repositoryId = (int) tinyDB.getLong("repositoryId", 0);
@@ -54,6 +62,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		super.onAttach(context);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,7 +72,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 		draftsHint = view.findViewById(R.id.drafts_hint);
 
-		EditText commentContent = view.findViewById(R.id.comment);
+		EditText comment = view.findViewById(R.id.comment);
 		TextView toolbarTitle = view.findViewById(R.id.toolbar_title);
 		ImageButton close = view.findViewById(R.id.close);
 		ImageButton drafts = view.findViewById(R.id.drafts);
@@ -71,9 +80,12 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 		send.setEnabled(false);
 
-		if(Objects.equals(arguments.getString("commentAction"), "edit")) {
+		if(Objects.equals(arguments.getString("commentAction"), "edit") &&
+			arguments.getString("draftId") == null) {
 
-			send.setVisibility(View.GONE);
+			send.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_save));
+			mode = Mode.EDIT;
+
 		}
 
 		if(arguments.getString("draftId") != null) {
@@ -95,21 +107,40 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			send.setEnabled(true);
 			send.setAlpha(1f);
 
-			commentContent.setText(arguments.getString("commentBody"));
+			comment.setText(arguments.getString("commentBody"));
 
 			if(arguments.getBoolean("cursorToEnd", false)) {
 
-				commentContent.setSelection(commentContent.length());
+				comment.setSelection(comment.length());
 			}
 		}
 
-		commentContent.requestFocus();
-		commentContent.addTextChangedListener(new TextWatcher() {
+		comment.requestFocus();
+		comment.setOnTouchListener((v, event) -> {
+
+			BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
+
+			switch(event.getAction()) {
+
+				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_SCROLL:
+					bottomSheetBehavior.setDraggable(false);
+					break;
+
+				default:
+					bottomSheetBehavior.setDraggable(true);
+			}
+
+			return false;
+
+		});
+
+		comment.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void afterTextChanged(Editable s) {
 
-				String text = commentContent.getText().toString();
+				String text = comment.getText().toString();
 
 				if(text.isEmpty()) {
 
@@ -127,6 +158,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 			@Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
 		});
 
 		close.setOnClickListener(v -> dismiss());
@@ -138,33 +170,69 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			startActivity(intent);
 
 			dismiss();
+
 		});
 
-		send.setOnClickListener(v -> IssueActions
-			.reply(getContext(), commentContent.getText().toString(), issueNumber)
-			.accept((status, result) -> {
+		send.setOnClickListener(v -> {
 
-				if(status == ActionResult.Status.SUCCESS) {
+			if(mode == Mode.SEND) {
 
-					Toasty.success(getContext(), getString(R.string.commentSuccess));
+				IssueActions
+					.reply(getContext(), comment.getText().toString(), issueNumber)
+					.accept((status, result) -> {
 
-					tinyDB.putBoolean("commentPosted", true);
-					tinyDB.putBoolean("resumeIssues", true);
-					tinyDB.putBoolean("resumePullRequests", true);
+						if(status == ActionResult.Status.SUCCESS) {
 
-					if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled")) {
+							Toasty.success(getContext(), getString(R.string.commentSuccess));
 
-						draftsApi.deleteSingleDraft((int) draftId);
-					}
+							if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled")) {
+								draftsApi.deleteSingleDraft((int) draftId);
+							}
 
-					dismiss();
-				}
-				else {
+							tinyDB.putBoolean("commentPosted", true);
+							tinyDB.putBoolean("resumeIssues", true);
+							tinyDB.putBoolean("resumePullRequests", true);
 
-					Toasty.error(getContext(), getString(R.string.commentError));
-					dismiss();
-				}
-			}));
+							if(onInteractedListener != null) {
+								onInteractedListener.onInteracted();
+							}
+						}
+						else {
+
+							Toasty.error(getContext(), getString(R.string.commentError));
+						}
+
+						dismiss();
+
+					});
+			} else {
+
+				IssueActions
+					.edit(getContext(), comment.getText().toString(), arguments.getInt("commentId"))
+					.accept((status, result) -> {
+
+						if(status == ActionResult.Status.SUCCESS) {
+
+							if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled")) {
+								draftsApi.deleteSingleDraft((int) draftId);
+							}
+
+							tinyDB.putBoolean("commentEdited", true);
+
+							if(onInteractedListener != null) {
+								onInteractedListener.onInteracted();
+							}
+						}
+						else {
+
+							Toasty.error(getContext(), getString(R.string.genericError));
+						}
+
+						dismiss();
+
+					});
+			}
+		});
 
 		return view;
 	}
@@ -193,9 +261,26 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		}
 		else {
 
+			String draftType;
+			if(tinyDB.getString("issueType").equalsIgnoreCase("Issue")) {
+
+				draftType = StaticGlobalVariables.draftTypeIssue;
+			}
+			else if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
+
+				draftType = StaticGlobalVariables.draftTypePull;
+			}
+			else {
+
+				draftType = "";
+			}
+
 			if(draftId == 0) {
-				draftId = draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, text, StaticGlobalVariables.draftTypeComment, "TODO");
-			} else {
+
+				draftId = draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, text, draftType, "TODO", tinyDB.getString("issueType"));
+			}
+			else {
+
 				DraftsApi.updateDraft(text, (int) draftId, "TODO");
 			}
 
@@ -211,4 +296,12 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 		return fragment;
 	}
+
+	public void setOnInteractedListener(OnInteractedListener onInteractedListener) {
+
+		this.onInteractedListener = onInteractedListener;
+	}
+
+	public interface OnInteractedListener { void onInteracted(); }
+
 }

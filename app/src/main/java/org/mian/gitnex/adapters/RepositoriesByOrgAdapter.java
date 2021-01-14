@@ -23,9 +23,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
-import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -91,7 +91,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                 Intent intent = new Intent(context, RepoDetailActivity.class);
                 intent.putExtra("repoFullName", fullName.getText().toString());
 
-                TinyDB tinyDb = new TinyDB(context);
+                TinyDB tinyDb = TinyDB.getInstance(context);
                 tinyDb.putString("repoFullName", fullName.getText().toString());
                 tinyDb.putString("repoType", repoType.getText().toString());
                 //tinyDb.putBoolean("resumeIssues", true);
@@ -124,12 +124,11 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                 //store if user is watching this repo
                 {
 
-                    final String instanceUrl = tinyDb.getString("instanceUrl");
                     final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
                     Call<WatchInfo> call;
 
-                    call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface().checkRepoWatchStatus(token, repoOwner, repoName);
+                    call = RetrofitClient.getApiInterface(context).checkRepoWatchStatus(token, repoOwner, repoName);
 
                     call.enqueue(new Callback<WatchInfo>() {
 

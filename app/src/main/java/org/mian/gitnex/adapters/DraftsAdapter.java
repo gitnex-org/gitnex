@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -14,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.database.models.DraftWithRepository;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
@@ -28,21 +31,16 @@ import java.util.List;
 public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsViewHolder> {
 
     private List<DraftWithRepository> draftsList;
-    private FragmentManager fragmentManager;
-    private Context mCtx;
+    private final FragmentManager fragmentManager;
+    private final Context mCtx;
 
     class DraftsViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView draftText;
-        private TextView repoInfo;
-        private TextView repoId;
-        private TextView draftId;
-        private TextView issueNumber;
-        private TextView issueType;
-        private TextView repoOwner;
-        private TextView repoName;
-	    private TextView commentId;
-	    private ImageView editCommentStatus;
+    	private DraftWithRepository draftWithRepository;
+
+        private final TextView draftText;
+        private final TextView repoInfo;
+	    private final ImageView editCommentStatus;
 
         private DraftsViewHolder(View itemView) {
 
@@ -50,19 +48,12 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
             draftText = itemView.findViewById(R.id.draftText);
             repoInfo = itemView.findViewById(R.id.repoInfo);
-            repoId = itemView.findViewById(R.id.repoId);
-            draftId = itemView.findViewById(R.id.draftId);
-            issueNumber = itemView.findViewById(R.id.issueNumber);
-            issueType = itemView.findViewById(R.id.issueType);
-            repoOwner = itemView.findViewById(R.id.repoOwner);
-            repoName = itemView.findViewById(R.id.repoName);
-	        commentId = itemView.findViewById(R.id.commentId);
             ImageView deleteDraft = itemView.findViewById(R.id.deleteDraft);
 	        editCommentStatus = itemView.findViewById(R.id.editCommentStatus);
 
             deleteDraft.setOnClickListener(itemDelete -> {
 
-                int getDraftId = Integer.parseInt(draftId.getText().toString());
+                int getDraftId = draftWithRepository.getDraftId();
                 deleteDraft(getAdapterPosition());
 	            DraftsApi draftsApi = new DraftsApi(mCtx);
 	            draftsApi.deleteSingleDraft(getDraftId);
@@ -73,23 +64,26 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
 		        Bundle bundle = new Bundle();
 
-                bundle.putString("commentBody", draftText.getText().toString());
-                bundle.putString("issueNumber", issueNumber.getText().toString());
-                bundle.putString("repositoryId", repoId.getText().toString());
+                bundle.putString("commentBody", draftWithRepository.getDraftText());
+                bundle.putString("issueNumber", String.valueOf(draftWithRepository.getIssueId()));
+                bundle.putString("repositoryId", String.valueOf(draftWithRepository.getRepositoryId()));
                 bundle.putString("draftTitle", repoInfo.getText().toString());
-		        bundle.putString("commentId", commentId.getText().toString());
-		        bundle.putString("draftId", draftId.getText().toString());
+		        bundle.putString("commentId", draftWithRepository.getCommentId());
+		        bundle.putString("draftId", String.valueOf(draftWithRepository.getDraftId()));
 
-                if(!commentId.getText().toString().isEmpty()) {
+                if(!draftWithRepository.getCommentId().isEmpty()) {
 	                bundle.putString("commentAction", "edit");
                 }
 
-                TinyDB tinyDb = new TinyDB(mCtx);
-                tinyDb.putString("issueNumber", issueNumber.getText().toString());
-                tinyDb.putLong("repositoryId", Long.parseLong(repoId.getText().toString()));
-                //tinyDb.putString("issueType", issueType.getText().toString());
+                TinyDB tinyDb = TinyDB.getInstance(mCtx);
+                tinyDb.putString("issueNumber", String.valueOf(draftWithRepository.getIssueId()));
+                tinyDb.putLong("repositoryId", draftWithRepository.getRepositoryId());
+		        tinyDb.putString("issueType", draftWithRepository.getIssueType());
+		        tinyDb.putString("repoFullName", draftWithRepository.getRepositoryOwner() + "/" + draftWithRepository.getRepositoryName());
 
-		        BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
+		        BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(bundle);
+		        bottomSheetReplyFragment.setOnInteractedListener(() -> mCtx.startActivity(new Intent(mCtx, IssueDetailActivity.class)));
+		        bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
 
             });
 
@@ -125,18 +119,13 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
         DraftWithRepository currentItem = draftsList.get(position);
 
-        holder.repoId.setText(String.valueOf(currentItem.getRepositoryId()));
-        holder.draftId.setText(String.valueOf(currentItem.getDraftId()));
-        holder.issueNumber.setText(String.valueOf(currentItem.getIssueId()));
-        holder.issueType.setText(currentItem.getDraftType());
-        holder.repoOwner.setText(currentItem.getRepositoryOwner());
-        holder.repoName.setText(currentItem.getRepositoryName());
-        holder.draftText.setText(currentItem.getDraftText());
-	    holder.commentId.setText(currentItem.getCommentId());
-
 	    String issueNumber = "<font color='" + mCtx.getResources().getColor(R.color.lightGray) + "'>" + mCtx.getResources().getString(R.string.hash) + currentItem.getIssueId() + "</font>";
 	    Spanned headTitle = Html.fromHtml(issueNumber + " " + currentItem.getRepositoryOwner() + " / " + currentItem.getRepositoryName());
+
 	    holder.repoInfo.setText(headTitle);
+	    holder.draftWithRepository = currentItem;
+
+	    new Markdown(mCtx, currentItem.getDraftText(), holder.draftText);
 
 	    if(!currentItem.getCommentId().equalsIgnoreCase("new")) {
 		    holder.editCommentStatus.setVisibility(View.VISIBLE);
@@ -144,7 +133,6 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 	    else {
 	    	holder.editCommentStatus.setVisibility(View.GONE);
 	    }
-
     }
 
     @Override
@@ -157,6 +145,4 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 		draftsList = list;
 		notifyDataSetChanged();
 	}
-
-
 }

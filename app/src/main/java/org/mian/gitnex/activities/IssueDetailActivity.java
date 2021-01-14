@@ -1,18 +1,15 @@
 package org.mian.gitnex.activities;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,11 +47,11 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.UserMentions;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.models.Issues;
@@ -62,30 +59,15 @@ import org.mian.gitnex.models.Labels;
 import org.mian.gitnex.models.UpdateIssueAssignees;
 import org.mian.gitnex.models.WatchInfo;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
+import org.mian.gitnex.views.ReactionList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import io.noties.markwon.AbstractMarkwonPlugin;
-import io.noties.markwon.Markwon;
-import io.noties.markwon.core.CorePlugin;
-import io.noties.markwon.core.MarkwonTheme;
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import io.noties.markwon.ext.tables.TablePlugin;
-import io.noties.markwon.ext.tasklist.TaskListPlugin;
-import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.DefaultMediaDecoder;
-import io.noties.markwon.image.ImageItem;
-import io.noties.markwon.image.ImagesPlugin;
-import io.noties.markwon.image.SchemeHandler;
-import io.noties.markwon.image.gif.GifMediaDecoder;
-import io.noties.markwon.image.svg.SvgMediaDecoder;
-import io.noties.markwon.linkify.LinkifyPlugin;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,13 +79,7 @@ import retrofit2.Response;
 public class IssueDetailActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener, BottomSheetSingleIssueFragment.BottomSheetListener {
 
 	private IssueCommentsAdapter adapter;
-	final Context ctx = this;
-	private Context appCtx;
-	private TinyDB tinyDb;
 
-	private String instanceUrl;
-	private String loginUid;
-	private String instanceToken;
 	private String repoOwner;
 	private String repoName;
 	private int issueIndex;
@@ -135,21 +111,16 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
-		tinyDb = new TinyDB(appCtx);
 
 		viewBinding = ActivityIssueDetailBinding.inflate(getLayoutInflater());
 		View view = viewBinding.getRoot();
 		setContentView(view);
 
-		instanceUrl = tinyDb.getString("instanceUrl");
-		loginUid = tinyDb.getString("loginUid");
-		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-		String repoFullName = tinyDb.getString("repoFullName");
+		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		repoOwner = parts[0];
 		repoName = parts[1];
-		issueIndex = Integer.parseInt(tinyDb.getString("issueNumber"));
+		issueIndex = Integer.parseInt(tinyDB.getString("issueNumber"));
 
 		setSupportActionBar(viewBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
@@ -162,12 +133,18 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-		viewBinding.addNewComment.setOnClickListener(v -> BottomSheetReplyFragment.newInstance(new Bundle()).show(getSupportFragmentManager(), "replyBottomSheet"));
+		viewBinding.addNewComment.setOnClickListener(v -> {
+
+			BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(new Bundle());
+			bottomSheetReplyFragment.setOnInteractedListener(this::onResume);
+			bottomSheetReplyFragment.show(getSupportFragmentManager(), "replyBottomSheet");
+
+		});
 
 		labelsAdapter = new LabelsListAdapter(labelsList, IssueDetailActivity.this, currentLabelsIds);
 		assigneesAdapter = new AssigneesListAdapter(ctx, assigneesList, IssueDetailActivity.this, currentAssignees);
-		LabelsActions.getCurrentIssueLabels(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentLabelsIds);
-		AssigneesActions.getCurrentIssueAssignees(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentAssignees);
+		LabelsActions.getCurrentIssueLabels(ctx, repoOwner, repoName, issueIndex, currentLabelsIds);
+		AssigneesActions.getCurrentIssueAssignees(ctx, repoOwner, repoName, issueIndex, currentAssignees);
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -196,14 +173,14 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 			viewBinding.pullToRefresh.setRefreshing(false);
 			IssueCommentsViewModel
-				.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex,
+				.loadIssueComments(Authorization.get(ctx), repoOwner, repoName, issueIndex,
 					ctx);
 
 		}, 500));
 
 		Typeface myTypeface;
 
-		switch(tinyDb.getInt("customFontId", -1)) {
+		switch(tinyDB.getInt("customFontId", -1)) {
 
 			case 1:
 				myTypeface = Typeface.createFromAsset(Objects.requireNonNull(ctx).getAssets(), "fonts/manroperegular.ttf");
@@ -222,8 +199,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		viewBinding.toolbarTitle.setTypeface(myTypeface);
 		viewBinding.toolbarTitle.setText(repoName);
 
-		getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
-		fetchDataAsync(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+		getSingleIssue(repoOwner, repoName, issueIndex);
+		fetchDataAsync(repoOwner, repoName, issueIndex);
 
 	}
 
@@ -231,6 +208,10 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	public void onButtonClicked(String text) {
 
 		switch(text) {
+
+			case "onResume":
+				onResume();
+				break;
 
 			case "showLabels":
 				showLabels();
@@ -292,7 +273,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			}
 		});
 
-		AssigneesActions.getRepositoryAssignees(ctx, instanceUrl, instanceToken, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
+		dialogAssignees.show();
+		AssigneesActions.getRepositoryAssignees(ctx, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
 	}
 
 	public void showLabels() {
@@ -328,7 +310,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			}
 		});
 
-		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		dialogLabels.show();
+		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 
 	private void updateIssueAssignees() {
@@ -338,9 +321,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		Call<JsonElement> call3;
 
 		call3 = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.patchIssueAssignees(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, updateAssigneeJson);
+			.getApiInterface(ctx)
+			.patchIssueAssignees(Authorization.get(ctx), repoOwner, repoName, issueIndex, updateAssigneeJson);
 
 		call3.enqueue(new Callback<JsonElement>() {
 
@@ -355,9 +337,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 					viewBinding.frameAssignees.removeAllViews();
 					viewBinding.frameLabels.removeAllViews();
-					getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+					getSingleIssue(repoOwner, repoName, issueIndex);
 					currentAssignees.clear();
-					new Handler(Looper.getMainLooper()).postDelayed(() -> AssigneesActions.getCurrentIssueAssignees(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentAssignees), 1000);
+					new Handler(Looper.getMainLooper()).postDelayed(() -> AssigneesActions.getCurrentIssueAssignees(ctx, repoOwner, repoName, issueIndex, currentAssignees), 1000);
 				}
 				else if(response2.code() == 401) {
 
@@ -394,9 +376,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		Labels patchIssueLabels = new Labels(labelsIds);
 
 		Call<JsonElement> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.updateIssueLabels(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex, patchIssueLabels);
+			.getApiInterface(ctx)
+			.updateIssueLabels(Authorization.get(ctx), repoOwner, repoName, issueIndex, patchIssueLabels);
 
 		call.enqueue(new Callback<JsonElement>() {
 
@@ -410,9 +391,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 					viewBinding.frameAssignees.removeAllViews();
 					viewBinding.frameLabels.removeAllViews();
-					getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
+					getSingleIssue(repoOwner, repoName, issueIndex);
 					currentLabelsIds.clear();
-					new Handler(Looper.getMainLooper()).postDelayed(() -> LabelsActions.getCurrentIssueLabels(ctx, instanceUrl, loginUid, instanceToken, repoOwner, repoName, issueIndex, currentLabelsIds), 1000);
+					new Handler(Looper.getMainLooper()).postDelayed(() -> LabelsActions.getCurrentIssueLabels(ctx, repoOwner, repoName, issueIndex, currentLabelsIds), 1000);
 				}
 				else if(response.code() == 401) {
 
@@ -457,18 +438,21 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		int id = item.getItemId();
 
-		switch(id) {
-			case android.R.id.home:
-				finish();
-				return true;
-			case R.id.genericMenu:
-				BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment();
-				bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
+		if(id == android.R.id.home) {
 
+			finish();
+			return true;
+		}
+		else if(id == R.id.genericMenu) {
+
+			BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment();
+			bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
+			return true;
+		}
+		else {
+
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -476,84 +460,87 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		super.onResume();
 
-		if(tinyDb.getBoolean("commentPosted")) {
+		if(tinyDB.getBoolean("commentPosted")) {
+
 			viewBinding.scrollViewComments.post(() -> {
 
 				IssueCommentsViewModel
-					.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex,
+					.loadIssueComments(Authorization.get(ctx), repoOwner, repoName, issueIndex,
 						ctx);
 
 				new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN), 1000);
 
-				tinyDb.putBoolean("commentPosted", false);
-
+				tinyDB.putBoolean("commentPosted", false);
 			});
 		}
 
-		if(tinyDb.getBoolean("commentEdited")) {
+		if(tinyDB.getBoolean("commentEdited")) {
+
 			viewBinding.scrollViewComments.post(() -> {
 
 				IssueCommentsViewModel
-					.loadIssueComments(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex,
+					.loadIssueComments(Authorization.get(ctx), repoOwner, repoName, issueIndex,
 						ctx);
-				tinyDb.putBoolean("commentEdited", false);
-
+				tinyDB.putBoolean("commentEdited", false);
 			});
 		}
 
-		if(tinyDb.getBoolean("singleIssueUpdate")) {
+		if(tinyDB.getBoolean("singleIssueUpdate")) {
 
 			new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 				viewBinding.frameAssignees.removeAllViews();
 				viewBinding.frameLabels.removeAllViews();
-				getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
-				tinyDb.putBoolean("singleIssueUpdate", false);
+				getSingleIssue(repoOwner, repoName, issueIndex);
+				tinyDB.putBoolean("singleIssueUpdate", false);
 
 			}, 500);
-
 		}
 
-		if(tinyDb.getBoolean("issueEdited")) {
+		if(tinyDB.getBoolean("issueEdited")) {
 
 			new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 				viewBinding.frameAssignees.removeAllViews();
 				viewBinding.frameLabels.removeAllViews();
-				getSingleIssue(instanceUrl, instanceToken, repoOwner, repoName, issueIndex, loginUid);
-				tinyDb.putBoolean("issueEdited", false);
+				getSingleIssue(repoOwner, repoName, issueIndex);
+				tinyDB.putBoolean("issueEdited", false);
 
 			}, 500);
-
 		}
-
 	}
 
-	private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo, int index, String loginUid) {
+	private void fetchDataAsync(String owner, String repo, int index) {
 
 		IssueCommentsViewModel issueCommentsModel = new ViewModelProvider(this).get(IssueCommentsViewModel.class);
 
-		issueCommentsModel.getIssueCommentList(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), owner, repo, index, ctx)
+		issueCommentsModel.getIssueCommentList(Authorization.get(ctx), owner, repo, index, ctx)
 			.observe(this, issueCommentsMain -> {
 
 				assert issueCommentsMain != null;
 
 				if(issueCommentsMain.size() > 0) {
+
 					viewBinding.divider.setVisibility(View.VISIBLE);
 				}
 
-				adapter = new IssueCommentsAdapter(ctx, getSupportFragmentManager(), issueCommentsMain);
+				Bundle bundle = new Bundle();
+				bundle.putString("repoOwner", repoOwner);
+				bundle.putString("repoName", repoName);
+				bundle.putInt("issueNumber", issueIndex);
+
+				adapter = new IssueCommentsAdapter(ctx, bundle, issueCommentsMain, getSupportFragmentManager(), this::onResume);
+
 				viewBinding.recyclerView.setAdapter(adapter);
 
 			});
-
 	}
 
-	private void getSingleIssue(String instanceUrl, String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid) {
+	private void getSingleIssue(String repoOwner, String repoName, int issueIndex) {
 
-		final TinyDB tinyDb = new TinyDB(appCtx);
-		Call<Issues> call = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface()
-			.getIssueByIndex(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
+		final TinyDB tinyDb = TinyDB.getInstance(appCtx);
+		Call<Issues> call = RetrofitClient.getApiInterface(ctx)
+			.getIssueByIndex(Authorization.get(ctx), repoOwner, repoName, issueIndex);
 
 		call.enqueue(new Callback<Issues>() {
 
@@ -566,6 +553,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					assert singleIssue != null;
 
 					viewBinding.issuePrState.setVisibility(View.VISIBLE);
+
 					if(singleIssue.getPull_request() != null) {
 
 						if(singleIssue.getPull_request().isMerged()) { // merged
@@ -586,49 +574,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						viewBinding.issuePrState.setImageResource(R.drawable.ic_issue_closed_red);
 					}
 
-					final Markwon markwon = Markwon.builder(Objects.requireNonNull(ctx)).usePlugin(CorePlugin.create())
-						.usePlugin(ImagesPlugin.create(plugin -> {
-							plugin.addSchemeHandler(new SchemeHandler() {
-
-								@NonNull
-								@Override
-								public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
-
-									final int resourceId = ctx.getResources()
-										.getIdentifier(raw.substring("drawable://".length()), "drawable", ctx.getPackageName());
-
-									final Drawable drawable = ctx.getDrawable(resourceId);
-
-									assert drawable != null;
-									return ImageItem.withResult(drawable);
-								}
-
-								@NonNull
-								@Override
-								public Collection<String> supportedSchemes() {
-
-									return Collections.singleton("drawable");
-								}
-							});
-							plugin.placeholderProvider(drawable -> null);
-							plugin.addMediaDecoder(GifMediaDecoder.create(false));
-							plugin.addMediaDecoder(SvgMediaDecoder.create(ctx.getResources()));
-							plugin.addMediaDecoder(SvgMediaDecoder.create());
-							plugin.defaultMediaDecoder(DefaultMediaDecoder.create(ctx.getResources()));
-							plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-
-						})).usePlugin(new AbstractMarkwonPlugin() {
-
-							@Override
-							public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-
-								builder.codeTextColor(tinyDb.getInt("codeBlockColor")).codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-									.linkColor(getResources().getColor(R.color.lightBlue));
-							}
-						}).usePlugin(TablePlugin.create(ctx)).usePlugin(TaskListPlugin.create(ctx)).usePlugin(HtmlPlugin.create())
-						.usePlugin(StrikethroughPlugin.create()).usePlugin(LinkifyPlugin.create()).build();
-
-					TinyDB tinyDb = new TinyDB(appCtx);
+					TinyDB tinyDb = TinyDB.getInstance(appCtx);
 					final String locale = tinyDb.getString("locale");
 					final String timeFormat = tinyDb.getString("dateFormat");
 					tinyDb.putString("issueState", singleIssue.getState());
@@ -641,8 +587,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						.getString(R.string.hash) + singleIssue.getNumber() + "</font>";
 					viewBinding.issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
 					String cleanIssueDescription = singleIssue.getBody().trim();
-					Spanned bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(cleanIssueDescription));
-					markwon.setParsedMarkdown(viewBinding.issueDescription, UserMentions.UserMentionsFunc(ctx, bodyWithMD, cleanIssueDescription));
+
+					new Markdown(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription);
 
 					RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams) viewBinding.issueDescription.getLayoutParams();
 
@@ -650,7 +596,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					params1.setMargins(15, 0, 0, 0);
 
 					if(singleIssue.getAssignees() != null) {
+
 						viewBinding.assigneesScrollView.setVisibility(View.VISIBLE);
+
 						for(int i = 0; i < singleIssue.getAssignees().size(); i++) {
 
 							ImageView assigneesView = new ImageView(ctx);
@@ -662,17 +610,19 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 							viewBinding.frameAssignees.addView(assigneesView);
 							assigneesView.setLayoutParams(params1);
 							if(!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
+
 								assigneesView.setOnClickListener(
 									new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), ctx));
 							}
 							else {
+
 								assigneesView.setOnClickListener(
 									new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), ctx));
 							}
-
 						}
 					}
 					else {
+
 						viewBinding.assigneesScrollView.setVisibility(View.GONE);
 					}
 
@@ -681,6 +631,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					params.setMargins(0, 0, 15, 0);
 
 					if(singleIssue.getLabels() != null) {
+
 						viewBinding.labelsScrollView.setVisibility(View.VISIBLE);
 
 						for(int i = 0; i < singleIssue.getLabels().size(); i++) {
@@ -704,16 +655,17 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 							labelsView.setImageDrawable(drawable);
 							viewBinding.frameLabels.addView(labelsView);
-
 						}
 					}
 					else {
+
 						viewBinding.labelsScrollView.setVisibility(View.GONE);
 					}
 
 					if(singleIssue.getDue_date() != null) {
 
 						if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
+
 							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
@@ -721,11 +673,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 								.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getDue_date()), ctx));
 						}
 						else if(timeFormat.equals("normal1")) {
+
 							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
 						}
-
 					}
 					else {
 
@@ -735,6 +687,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					String edited;
 
 					if(!singleIssue.getUpdated_at().equals(singleIssue.getCreated_at())) {
+
 						edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
 						viewBinding.issueModified.setVisibility(View.VISIBLE);
 						viewBinding.issueModified.setText(edited);
@@ -742,22 +695,27 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 							.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getUpdated_at()), ctx));
 					}
 					else {
+
 						viewBinding.issueModified.setVisibility(View.INVISIBLE);
 					}
 
 					if((singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) && singleIssue.getAssignees() != null) {
+
 						paramsDesc.setMargins(0, 35, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else if(singleIssue.getDue_date() == null && singleIssue.getMilestone() == null) {
+
 						paramsDesc.setMargins(0, 55, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else if(singleIssue.getAssignees() == null) {
+
 						paramsDesc.setMargins(0, 35, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 					else {
+
 						paramsDesc.setMargins(0, 15, 0, 0);
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
@@ -766,30 +724,51 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
 
 					if(timeFormat.equals("pretty")) {
+
 						viewBinding.issueCreatedTime
 							.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(singleIssue.getCreated_at()), ctx));
 					}
 
+					Bundle bundle = new Bundle();
+					bundle.putString("repoOwner", repoOwner);
+					bundle.putString("repoName", repoName);
+					bundle.putInt("issueId", singleIssue.getNumber());
+
+					ReactionList reactionList = new ReactionList(ctx, bundle);
+
+					viewBinding.commentReactionBadges.removeAllViews();
+					viewBinding.commentReactionBadges.addView(reactionList);
+
+					reactionList.setOnReactionAddedListener(() -> {
+
+						if(viewBinding.commentReactionBadges.getVisibility() != View.VISIBLE) {
+							viewBinding.commentReactionBadges.post(() -> viewBinding.commentReactionBadges.setVisibility(View.VISIBLE));
+						}
+					});
+
 					if(singleIssue.getMilestone() != null) {
+
+						viewBinding.issueMilestone.setVisibility(View.VISIBLE);
 						viewBinding.issueMilestone.setText(getString(R.string.issueMilestone, singleIssue.getMilestone().getTitle()));
 					}
 					else {
+
 						viewBinding.issueMilestone.setVisibility(View.GONE);
 					}
 
 					if(!singleIssue.getUser().getFull_name().equals("")) {
+
 						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), ctx));
 					}
 					else {
+
 						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), ctx));
 					}
 
 					viewBinding.progressBar.setVisibility(View.GONE);
-
 				}
-
 				else if(response.code() == 401) {
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
@@ -798,7 +777,21 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 
 				}
+				else if(response.code() == 404) {
 
+					if(tinyDb.getString("issueType").equals("Issue")) {
+
+						Toasty.warning(ctx, getResources().getString(R.string.noDataIssueTab));
+					}
+					else if(tinyDb.getString("issueType").equals("Pull")) {
+
+						Toasty.warning(ctx, getResources().getString(R.string.noDataPullRequests));
+					}
+
+					Intent mainIntent = new Intent(ctx, MainActivity.class);
+					ctx.startActivity(mainIntent);
+					finish();
+				}
 			}
 
 			@Override
@@ -811,8 +804,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
-			Call<WatchInfo> call2 = RetrofitClient.getInstance(instanceUrl, ctx).getApiInterface()
-				.checkIssueWatchStatus(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
+			Call<WatchInfo> call2 = RetrofitClient.getApiInterface(appCtx)
+				.checkIssueWatchStatus(Authorization.get(ctx), repoOwner, repoName, issueIndex);
 
 			call2.enqueue(new Callback<WatchInfo>() {
 
@@ -823,21 +816,17 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 						assert response.body() != null;
 						tinyDb.putBoolean("issueSubscribed", response.body().getSubscribed());
-
 					}
 					else {
 
 						tinyDb.putBoolean("issueSubscribed", false);
-
 					}
-
 				}
 
 				@Override
 				public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
 
 					tinyDb.putBoolean("issueSubscribed", false);
-
 				}
 
 			});

@@ -26,7 +26,6 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,11 +88,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		View v = inflater.inflate(R.layout.fragment_files, container, false);
 		setHasOptionsMenu(true);
 
-		TinyDB tinyDb = new TinyDB(getContext());
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-
 		noDataFiles = v.findViewById(R.id.noDataFiles);
 		filesFrame = v.findViewById(R.id.filesFrame);
 
@@ -115,11 +109,11 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 			fileStructure.setText("");
 			ref = repoBranch;
 			mBreadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
-			fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, repoBranch);
+			fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, repoBranch);
 
 		});
 
-		fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, ref);
+		fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
 
 		return v;
 	}
@@ -132,11 +126,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 	@Override
 	public void onClickDir(String dirName) {
-
-		TinyDB tinyDb = new TinyDB(getContext());
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 		StringBuilder breadcrumbBuilder = new StringBuilder();
 
@@ -158,7 +147,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 				if(position == 0) {
 
-					fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, ref);
+					fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
 					fileStructure.setText("");
 					return;
 				}
@@ -169,7 +158,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 				String currentIndex = (result + item.getSelectedItem()).substring(1);
 
-				fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, currentIndex, ref);
+				fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, currentIndex, ref);
 
 			}
 
@@ -179,7 +168,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 			}
 		});
 
-		fetchDataAsyncSub(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, finalDirName_, ref);
+		fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, finalDirName_, ref);
 
 	}
 
@@ -200,14 +189,14 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		requireContext().startActivity(intent);
 	}
 
-	private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo, String ref) {
+	private void fetchDataAsync(String instanceToken, String owner, String repo, String ref) {
 
 		mRecyclerView.setVisibility(View.GONE);
 		mProgressBar.setVisibility(View.VISIBLE);
 
 		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel.getFilesList(instanceUrl, instanceToken, owner, repo, ref, getContext(), mProgressBar, noDataFiles).observe(getViewLifecycleOwner(), filesListMain -> {
+		filesModel.getFilesList(instanceToken, owner, repo, ref, getContext(), mProgressBar, noDataFiles).observe(getViewLifecycleOwner(), filesListMain -> {
 
 			adapter = new FilesAdapter(getContext(), filesListMain, FilesFragment.this);
 			mBreadcrumbsView.removeItemAfter(1);
@@ -231,14 +220,14 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 	}
 
-	private void fetchDataAsyncSub(String instanceUrl, String instanceToken, String owner, String repo, String filesDir, String ref) {
+	private void fetchDataAsyncSub(String instanceToken, String owner, String repo, String filesDir, String ref) {
 
 		mRecyclerView.setVisibility(View.GONE);
 		mProgressBar.setVisibility(View.VISIBLE);
 
 		FilesViewModel filesModel2 = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel2.getFilesList2(instanceUrl, instanceToken, owner, repo, filesDir, ref, getContext(), mProgressBar, noDataFiles).observe(this, filesListMain2 -> {
+		filesModel2.getFilesList2(instanceToken, owner, repo, filesDir, ref, getContext(), mProgressBar, noDataFiles).observe(this, filesListMain2 -> {
 
 			adapter = new FilesAdapter(getContext(), filesListMain2, FilesFragment.this);
 

@@ -24,19 +24,18 @@ public class AdminGetUsersViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserInfo>> usersList;
 
-    public LiveData<List<UserInfo>> getUsersList(Context ctx, String instanceUrl, String token) {
+    public LiveData<List<UserInfo>> getUsersList(Context ctx, String token) {
 
         usersList = new MutableLiveData<>();
-        loadUsersList(ctx, instanceUrl, token);
+        loadUsersList(ctx, token);
 
         return usersList;
     }
 
-    public static void loadUsersList(final Context ctx, String instanceUrl, String token) {
+    public static void loadUsersList(final Context ctx, String token) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .adminGetUsers(token);
 
         call.enqueue(new Callback<List<UserInfo>>() {

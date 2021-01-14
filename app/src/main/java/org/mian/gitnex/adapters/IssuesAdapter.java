@@ -123,7 +123,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issueNumber.getText());
 
-				TinyDB tinyDb = new TinyDB(context);
+				TinyDB tinyDb = TinyDB.getInstance(context);
 				tinyDb.putString("issueNumber", issueNumber.getText().toString());
 				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
@@ -136,7 +136,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issueNumber.getText());
 
-				TinyDB tinyDb = new TinyDB(context);
+				TinyDB tinyDb = TinyDB.getInstance(context);
 				tinyDb.putString("issueNumber", issueNumber.getText().toString());
 				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
@@ -148,7 +148,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		@SuppressLint("SetTextI18n")
 		void bindData(Issues issuesModel) {
 
-			final TinyDB tinyDb = new TinyDB(context);
+			final TinyDB tinyDb = TinyDB.getInstance(context);
 			final String locale = tinyDb.getString("locale");
 			final String timeFormat = tinyDb.getString("dateFormat");
 

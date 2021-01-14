@@ -25,7 +25,7 @@ public class AlertDialogs {
             .setNeutralButton(copyNegativeButton, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(copyPositiveButton, (dialog, which) -> {
 
-                final TinyDB tinyDb = new TinyDB(context);
+                final TinyDB tinyDb = TinyDB.getInstance(context);
                 tinyDb.putBoolean("loggedInMode", false);
                 tinyDb.remove("basicAuthPassword");
                 tinyDb.putBoolean("basicAuthFlag", false);
@@ -48,7 +48,7 @@ public class AlertDialogs {
 		    .setIcon(R.drawable.ic_info)
 		    .setPositiveButton(copyPositiveButton, (dialog, which) -> {
 
-			    final TinyDB tinyDb = new TinyDB(context);
+			    final TinyDB tinyDb = TinyDB.getInstance(context);
 			    tinyDb.putBoolean("loggedInMode", false);
 			    tinyDb.remove("basicAuthPassword");
 			    tinyDb.putBoolean("basicAuthFlag", false);
@@ -62,7 +62,7 @@ public class AlertDialogs {
 	    alertDialogBuilder.create().show();
     }
 
-    public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton) {
+    public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton, String type, String orgName) {
 
         new AlertDialog.Builder(context)
             .setTitle(title + labelTitle)
@@ -73,6 +73,8 @@ public class AlertDialogs {
                 Intent intent = new Intent(context, CreateLabelActivity.class);
                 intent.putExtra("labelId", labelId);
                 intent.putExtra("labelAction", "delete");
+	            intent.putExtra("type", type);
+	            intent.putExtra("orgName", orgName);
                 context.startActivity(intent);
 
             })

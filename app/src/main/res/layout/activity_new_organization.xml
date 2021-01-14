@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/primaryBackgroundColor">
@@ -13,7 +13,6 @@
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +43,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor">
@@ -55,70 +53,68 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newOrganizationNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newOrgTintCopy"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
+                android:textColorHint="?attr/hintColor"
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                android:hint="@string/newOrgTintCopy">
 
-            <EditText
-                android:id="@+id/newOrganizationName"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newOrganizationName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:inputType="textCapSentences"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newOrganizationDescriptionLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:labelFor="@+id/newOrganizationName"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="textCapSentences|text" />
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
+                android:textColorHint="?attr/hintColor"
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:counterTextColor="?attr/inputTextColor"
+                android:hint="@string/newOrgDescTintCopy">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newOrgDescTintCopy"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newOrganizationDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"
+                    android:inputType="textCapSentences"
+                    android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/newOrganizationDescription"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:maxLines="8"
-                android:minLines="6"
-                tools:ignore="Autofill"
-                android:labelFor="@+id/newOrganizationDescription"
-                android:scrollbars="vertical"
-                android:gravity="top|start"
-                android:textSize="14sp"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/primaryBackgroundColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="textCapSentences|textMultiLine" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newOrgDescInfo"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="12sp"
-                android:gravity="end" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/createNewOrganizationButton"
-                android:gravity="center"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/newCreateButtonCopy"
                 android:textColor="@color/btnTextColor" />
 

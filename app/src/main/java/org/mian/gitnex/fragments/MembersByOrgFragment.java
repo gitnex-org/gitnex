@@ -68,8 +68,7 @@ public class MembersByOrgFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_members_by_org, container, false);
         setHasOptionsMenu(true);
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         noDataMembers = v.findViewById(R.id.noDataMembers);
@@ -77,16 +76,16 @@ public class MembersByOrgFragment extends Fragment {
 	    progressBar = v.findViewById(R.id.progressBar);
         mGridView = v.findViewById(R.id.gridView);
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
+        fetchDataAsync(Authorization.get(getContext()), orgName);
 
         return v;
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String owner) {
+    private void fetchDataAsync(String instanceToken, String owner) {
 
         MembersByOrgViewModel membersModel= new ViewModelProvider(this).get(MembersByOrgViewModel.class);
 
-        membersModel.getMembersList(instanceUrl, instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
+        membersModel.getMembersList(instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(@Nullable List<UserInfo> membersListMain) {
                 adapter = new MembersByOrgAdapter(getContext(), membersListMain);

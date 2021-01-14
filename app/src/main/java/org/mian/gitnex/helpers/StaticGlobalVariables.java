@@ -15,7 +15,7 @@ public abstract class StaticGlobalVariables {
 
 	public static int getCurrentResultLimit(Context context) {
 
-		Version version = new Version(new TinyDB(context).getString("giteaVersion"));
+		Version version = new Version(TinyDB.getInstance(context).getString("giteaVersion"));
 		return version.higherOrEqual("1.12") ? resultLimitNewGiteaInstances : resultLimitOldGiteaInstances;
 
 	}
@@ -25,11 +25,11 @@ public abstract class StaticGlobalVariables {
 	public static String tagPullRequestsList = "PullRequestsListFragment";
 	public static String tagIssuesList = "IssuesListFragment";
 	public static String tagMilestonesAdapter = "MilestonesAdapter";
-	public static String draftsRepository = "DraftsRepository";
-	public static String repositoriesRepository = "RepositoriesRepository";
+	public static String draftsApi = "DraftsApi";
+	public static String repositoriesApi = "RepositoriesApi";
 	public static String replyToIssueActivity = "ReplyToIssueActivity";
 	public static String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
-	public static String userAccountsRepository = "UserAccountsRepository";
+	public static String userAccountsApi = "UserAccountsApi";
 
 	// issues variables
 	public static int issuesPageInit = 1;
@@ -43,6 +43,11 @@ public abstract class StaticGlobalVariables {
 
 	// drafts
 	public static String draftTypeComment = "comment";
-	public static String draftTypeIssue = "issue";
+	public static String draftTypeIssue = "Issue";
+	public static String draftTypePull = "Pull";
 
+	// polling - notifications
+	public static int minimumPollingDelay = 1;
+	public static int defaultPollingDelay = 15;
+	public static int maximumPollingDelay = 720;
 }

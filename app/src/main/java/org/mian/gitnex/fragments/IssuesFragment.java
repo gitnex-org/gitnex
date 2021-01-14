@@ -17,19 +17,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
-import org.mian.gitnex.clients.AppApiService;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
-import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.Issues;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,6 @@ public class IssuesFragment extends Fragment {
 	private RecyclerView recyclerView;
 	private List<Issues> issuesList;
 	private IssuesAdapter adapter;
-	private ApiInterface api;
 	private Context context;
 	private int pageSize = StaticGlobalVariables.issuesPageInit;
 	private ProgressBar mProgressBar;
@@ -65,12 +64,11 @@ public class IssuesFragment extends Fragment {
 		setHasOptionsMenu(true);
 		context = getContext();
 
-		TinyDB tinyDb = new TinyDB(getContext());
+		TinyDB tinyDb = TinyDB.getInstance(getContext());
 		String repoFullName = tinyDb.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
 		final String repoName = parts[1];
-		final String instanceUrl = tinyDb.getString("instanceUrl");
 		final String loginUid = tinyDb.getString("loginUid");
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
@@ -102,13 +100,15 @@ public class IssuesFragment extends Fragment {
 			if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 
 				int page = (issuesList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+				loadMore(Authorization.get(getContext()), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
 			}
 
 		}));
 
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		recyclerView.setHasFixedSize(true);
+		recyclerView.addItemDecoration(dividerItemDecoration);
 		recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		recyclerView.setAdapter(adapter);
 
@@ -129,7 +129,7 @@ public class IssuesFragment extends Fragment {
 				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 
 					int page = (issuesList.size() + resultLimit) / resultLimit;
-					loadMore(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+					loadMore(Authorization.get(getContext()), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
 				}
 
@@ -140,13 +140,12 @@ public class IssuesFragment extends Fragment {
 			mProgressBar.setVisibility(View.VISIBLE);
 			noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, issueState);
+			loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, issueState);
 			recyclerView.setAdapter(adapter);
 
 		});
 
-		api = AppApiService.createService(ApiInterface.class, instanceUrl, getContext());
-		loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+		loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
 		return v;
 
@@ -156,17 +155,16 @@ public class IssuesFragment extends Fragment {
 	public void onResume() {
 
 		super.onResume();
-		TinyDB tinyDb = new TinyDB(getContext());
-		final String loginUid = tinyDb.getString("loginUid");
+		TinyDB tinyDb = TinyDB.getInstance(getContext());
+
 		String repoFullName = tinyDb.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
 		final String repoName = parts[1];
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 		if(tinyDb.getBoolean("resumeIssues")) {
 
-			loadInitial(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+			loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 			tinyDb.putBoolean("resumeIssues", false);
 
 		}
@@ -175,7 +173,7 @@ public class IssuesFragment extends Fragment {
 
 	private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType, String issueState) {
 
-		Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, 1, resultLimit, requestType, issueState);
+		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, 1, resultLimit, requestType, issueState);
 
 		call.enqueue(new Callback<List<Issues>>() {
 
@@ -230,7 +228,7 @@ public class IssuesFragment extends Fragment {
 
 		progressLoadMore.setVisibility(View.VISIBLE);
 
-		Call<List<Issues>> call = api.getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState);
+		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState);
 
 		call.enqueue(new Callback<List<Issues>>() {
 
@@ -285,7 +283,7 @@ public class IssuesFragment extends Fragment {
 		inflater.inflate(R.menu.filter_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 
-		TinyDB tinyDb = new TinyDB(context);
+		TinyDB tinyDb = TinyDB.getInstance(context);
 
 		if(tinyDb.getString("repoIssuesState").equals("closed")) {
 			menu.getItem(1).setIcon(R.drawable.ic_filter_closed);

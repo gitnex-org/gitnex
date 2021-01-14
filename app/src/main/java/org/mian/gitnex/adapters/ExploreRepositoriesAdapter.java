@@ -96,7 +96,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 				Intent intent = new Intent(context, RepoDetailActivity.class);
 				intent.putExtra("repoFullName", repoFullName.getText().toString());
 
-				TinyDB tinyDb = new TinyDB(context);
+				TinyDB tinyDb = TinyDB.getInstance(context);
 				tinyDb.putString("repoFullName", repoFullName.getText().toString());
 				tinyDb.putBoolean("resumeIssues", true);
 				tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
@@ -128,14 +128,13 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 				//store if user is watching this repo
 				{
 
-					final String instanceUrl = tinyDb.getString("instanceUrl");
 					final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
 					WatchInfo watch = new WatchInfo();
 
 					Call<WatchInfo> call;
 
-					call = RetrofitClient.getInstance(instanceUrl, context).getApiInterface().checkRepoWatchStatus(token, repoOwner, repoName);
+					call = RetrofitClient.getApiInterface(context).checkRepoWatchStatus(token, repoOwner, repoName);
 
 					call.enqueue(new Callback<WatchInfo>() {
 

@@ -71,10 +71,6 @@ public class ReleasesFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_releases, container, false);
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         noDataReleases = v.findViewById(R.id.noDataReleases);
 
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
@@ -92,11 +88,11 @@ public class ReleasesFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            ReleasesViewModel.loadReleasesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getContext());
+            ReleasesViewModel.loadReleasesList(Authorization.get(getContext()), repoOwner, repoName, getContext());
 
         }, 50));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName);
+        fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName);
 
         return v;
 
@@ -106,13 +102,10 @@ public class ReleasesFragment extends Fragment {
     public void onResume() {
 
         super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
 
         if(tinyDb.getBoolean("updateReleases")) {
-            ReleasesViewModel.loadReleasesList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), repoOwner, repoName, getContext());
+            ReleasesViewModel.loadReleasesList(Authorization.get(getContext()), repoOwner, repoName, getContext());
             tinyDb.putBoolean("updateReleases", false);
         }
 
@@ -134,11 +127,11 @@ public class ReleasesFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, String owner, String repo) {
+    private void fetchDataAsync(String instanceToken, String owner, String repo) {
 
         ReleasesViewModel releasesModel = new ViewModelProvider(this).get(ReleasesViewModel.class);
 
-        releasesModel.getReleasesList(instanceUrl, instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Releases>>() {
+        releasesModel.getReleasesList(instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Releases>>() {
             @Override
             public void onChanged(@Nullable List<Releases> releasesListMain) {
                 adapter = new ReleasesAdapter(getContext(), releasesListMain);

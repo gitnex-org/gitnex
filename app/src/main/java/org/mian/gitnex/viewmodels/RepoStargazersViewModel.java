@@ -21,19 +21,18 @@ public class RepoStargazersViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserInfo>> stargazersList;
 
-    public LiveData<List<UserInfo>> getRepoStargazers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
+    public LiveData<List<UserInfo>> getRepoStargazers(String token, String repoOwner, String repoName, Context ctx) {
 
         stargazersList = new MutableLiveData<>();
-        loadRepoStargazers(instanceUrl, token, repoOwner, repoName, ctx);
+        loadRepoStargazers(token, repoOwner, repoName, ctx);
 
         return stargazersList;
     }
 
-    private static void loadRepoStargazers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
+    private static void loadRepoStargazers(String token, String repoOwner, String repoName, Context ctx) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getRepoStargazers(token, repoOwner, repoName);
 
         call.enqueue(new Callback<List<UserInfo>>() {

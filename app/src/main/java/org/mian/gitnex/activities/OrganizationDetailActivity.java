@@ -23,9 +23,9 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.MembersByOrgFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
+import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
 import org.mian.gitnex.fragments.TeamsByOrgFragment;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
@@ -36,10 +36,6 @@ import io.mikael.urlbuilder.UrlBuilder;
 
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
 
-    final Context ctx = this;
-    private Context appCtx;
-	private TinyDB tinyDb;
-
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_org_detail;
@@ -49,11 +45,8 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-	    tinyDb = new TinyDB(appCtx);
 
-        TinyDB tinyDb = new TinyDB(appCtx);
-        String orgName = tinyDb.getString("orgName");
+        String orgName = tinyDB.getString("orgName");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
@@ -71,20 +64,20 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         Typeface myTypeface;
 
-        switch(tinyDb.getInt("customFontId", -1)) {
+        switch(tinyDB.getInt("customFontId", -1)) {
 
             case 0:
+
                 myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
                 break;
-
             case 2:
+
                 myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
                 break;
-
             default:
+
                 myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
                 break;
-
         }
 
         toolbarTitle.setTypeface(myTypeface);
@@ -92,12 +85,18 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
+
         for (int j = 0; j < tabsCount; j++) {
+
             ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
             int tabChildCount = vgTab.getChildCount();
+
             for (int i = 0; i < tabChildCount; i++) {
+
                 View tabViewChild = vgTab.getChildAt(i);
+
                 if (tabViewChild instanceof TextView) {
+
                     ((TextView) tabViewChild).setTypeface(myTypeface);
                 }
             }
@@ -105,7 +104,6 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
 
 
@@ -122,18 +120,21 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         int id = item.getItemId();
 
-        switch (id) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.repoMenu:
-                BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment();
-                bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        if(id == android.R.id.home) {
 
+	        finish();
+	        return true;
+        }
+        else if(id == R.id.repoMenu) {
+
+	        BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment();
+	        bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
+	        return true;
+        }
+        else {
+
+	        return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -142,20 +143,27 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
         switch (text) {
             case "repository":
 
-                tinyDb.putBoolean("organizationAction", true);
+                tinyDB.putBoolean("organizationAction", true);
                 startActivity(new Intent(OrganizationDetailActivity.this, CreateRepoActivity.class));
                 break;
+	        case "label":
+
+		        Intent intent = new Intent(ctx, CreateLabelActivity.class);
+		        intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
+		        intent.putExtra("type", "org");
+		        ctx.startActivity(intent);
+		        break;
             case "team":
 
                 startActivity(new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class));
                 break;
 	        case "copyOrgUrl":
 
-		        String url = UrlBuilder.fromString(tinyDb.getString("instanceUrl"))
+		        String url = UrlBuilder.fromString(tinyDB.getString("instanceUrl"))
 			        .withPath("/")
 			        .toString();
 		        ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-		        ClipData clip = ClipData.newPlainText("orgUrl", url + tinyDb.getString("orgName"));
+		        ClipData clip = ClipData.newPlainText("orgUrl", url + tinyDB.getString("orgName"));
 		        assert clipboard != null;
 		        clipboard.setPrimaryClip(clip);
 		        Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
@@ -175,25 +183,34 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
             String orgName;
             if(getIntent().getStringExtra("orgName") != null || !Objects.equals(getIntent().getStringExtra("orgName"), "")) {
+
                 orgName = getIntent().getStringExtra("orgName");
             }
             else {
-                orgName = tinyDb.getString("orgName");
+
+                orgName = tinyDB.getString("orgName");
             }
 
             Fragment fragment = null;
             switch (position) {
+
                 case 0: // info
+
                     return OrganizationInfoFragment.newInstance(orgName);
                 case 1: // repos
-                    return RepositoriesByOrgFragment.newInstance(orgName);
-                case 2: // teams
+
+	                return RepositoriesByOrgFragment.newInstance(orgName);
+	            case 2: // labels
+
+                    return OrganizationLabelsFragment.newInstance(orgName);
+                case 3: // teams
+
                     return TeamsByOrgFragment.newInstance(orgName);
-                case 3: // members
+                case 4: // members
+
                     return MembersByOrgFragment.newInstance(orgName);
             }
             return fragment;
-
         }
 
         @Override

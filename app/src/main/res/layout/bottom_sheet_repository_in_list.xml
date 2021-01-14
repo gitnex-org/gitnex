@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -41,11 +42,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/repoStargazersInMenu"
-                android:drawableStart="@drawable/ic_star_unfilled"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_star_unfilled" />
 
             <TextView
                 android:id="@+id/repoWatchers"
@@ -53,11 +54,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/repoWatchersInMenu"
-                android:drawableStart="@drawable/ic_unwatch"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_unwatch" />
 
             <TextView
                 android:id="@+id/repoForksList"
@@ -65,11 +66,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/infoTabRepoForksCount"
-                android:drawableStart="@drawable/ic_fork"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_fork" />
 
             <TextView
                 android:id="@+id/repoCopyUrl"
@@ -77,11 +78,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/genericCopyUrl"
-                android:drawableStart="@drawable/ic_copy"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_copy" />
 
             <TextView
                 android:id="@+id/repoOpenInBrowser"
@@ -89,11 +90,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/openWebRepo"
-                android:drawableStart="@drawable/ic_browser"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_browser" />
 
         </LinearLayout>
 

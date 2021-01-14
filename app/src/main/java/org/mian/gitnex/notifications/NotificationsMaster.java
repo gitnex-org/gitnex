@@ -7,6 +7,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
 import java.util.concurrent.TimeUnit;
@@ -36,32 +37,35 @@ public class NotificationsMaster {
 
 	public static void hireWorker(Context context) {
 
-		TinyDB tinyDB = new TinyDB(context);
+		TinyDB tinyDB = TinyDB.getInstance(context);
 
-		if(notificationsSupported == -1) {
-			checkVersion(tinyDB);
-		}
+		if(tinyDB.getBoolean("notificationsEnabled", true)) {
 
-		if(notificationsSupported == 1) {
+			if(notificationsSupported == -1) checkVersion(tinyDB);
 
-			Constraints.Builder constraints = new Constraints.Builder()
-				.setRequiredNetworkType(NetworkType.CONNECTED)
-				.setRequiresBatteryNotLow(false)
-				.setRequiresStorageNotLow(false)
-				.setRequiresCharging(false);
+			if(notificationsSupported == 1) {
 
-			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				Constraints.Builder constraints = new Constraints.Builder()
+					.setRequiredNetworkType(NetworkType.CONNECTED)
+					.setRequiresBatteryNotLow(false)
+					.setRequiresStorageNotLow(false)
+					.setRequiresCharging(false);
 
-				constraints.setRequiresDeviceIdle(false);
+				if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+					constraints.setRequiresDeviceIdle(false);
+				}
+
+				int pollingDelayMinutes = Math.max(tinyDB.getInt("pollingDelayMinutes", StaticGlobalVariables.defaultPollingDelay), 15);
+
+				PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationsWorker.class, pollingDelayMinutes, TimeUnit.MINUTES)
+					.setConstraints(constraints.build())
+					.addTag(context.getPackageName())
+					.build();
+
+				WorkManager.getInstance(context).enqueueUniquePeriodicWork(context.getPackageName(), ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest);
+
 			}
-
-			PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationsWorker.class, tinyDB.getInt("pollingDelayMinutes"), TimeUnit.MINUTES)
-				.setConstraints(constraints.build())
-				.addTag(context.getPackageName())
-				.build();
-
-			WorkManager.getInstance(context).enqueueUniquePeriodicWork(context.getPackageName(), ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest);
-
 		}
 	}
 }

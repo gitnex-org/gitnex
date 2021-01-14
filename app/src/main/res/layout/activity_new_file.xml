@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/primaryBackgroundColor">
@@ -13,7 +13,6 @@
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +43,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor">
@@ -55,179 +53,152 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newFileNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newFileNameTintCopy"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/newFileName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:labelFor="@+id/newFileName"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="textCapSentences|text" />
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:helperTextEnabled="true"
+                app:helperText="@string/newFileNameHintMessage"
+                app:helperTextTextColor="?attr/inputTextColor"
+                android:hint="@string/newFileNameTintCopy">
 
-            <TextView
-                android:id="@+id/fileNameHint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newFileNameHintMessage"
-                android:textColor="@color/hintColor"
-                android:textSize="12sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="5dp"
-                android:gravity="end" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newFileContentTintCopy"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
-
-            <EditText
-                android:id="@+id/newFileContent"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:maxLines="16"
-                android:minLines="14"
-                tools:ignore="Autofill"
-                android:labelFor="@+id/newFileContent"
-                android:scrollbars="vertical"
-                android:gravity="top|start"
-                android:textSize="14sp"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="textCapSentences|textMultiLine" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newFileOldBranches"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_dropdown"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" >
-
-                <Spinner
-                    android:id="@+id/newFileBranchesSpinner"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newFileName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingStart="5dp" />
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:inputType="textCapSentences"
+                    android:textSize="16sp" />
 
-            </RelativeLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newFileContentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newFileCurrentBranchMessage"
-                android:textColor="@color/hintColor"
-                android:textSize="12sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="5dp"
-                android:gravity="end" />
-
-            <TextView
-                android:id="@+id/branchNameId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newFileBranchTintCopy"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
-
-            <EditText
-                android:id="@+id/newFileBranchName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:labelFor="@+id/newFileBranchName"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="textCapSentences|text" />
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                android:hint="@string/newFileContentTintCopy">
 
-            <TextView
-                android:id="@+id/branchNameHintText"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newFileContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"
+                    android:inputType="textCapSentences"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newFileBranchesSpinnerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newFileNewBranchMessage"
-                android:textColor="@color/hintColor"
-                android:textSize="12sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="5dp"
-                android:gravity="end" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newFileMessageTintCopy"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
-
-            <EditText
-                android:id="@+id/newFileCommitMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:labelFor="@+id/newFileCommitMessage"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="textCapSentences|text" />
+                app:hintTextColor="?attr/hintColor"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/newFileOldBranches"
+                app:endIconTint="?attr/iconsColor"
+                app:helperTextEnabled="true"
+                app:helperText="@string/newFileCurrentBranchMessage"
+                app:helperTextTextColor="?attr/inputTextColor"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
-            <TextView
+                <AutoCompleteTextView
+                    android:id="@+id/newFileBranchesSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="?attr/inputTextColor"
+                    android:labelFor="@+id/newFileBranchesSpinner"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newFileBranchNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/characters255Limit"
-                android:textColor="?attr/hintColor"
-                android:textSize="12sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="5dp"
-                android:gravity="end" />
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
+                android:textColorHint="?attr/hintColor"
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:helperTextEnabled="true"
+                app:helperText="@string/newFileNewBranchMessage"
+                app:helperTextTextColor="?attr/inputTextColor"
+                android:hint="@string/newFileBranchTintCopy">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newFileBranchName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newFileCommitMessageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
+                android:textColorHint="?attr/hintColor"
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:counterTextColor="?attr/inputTextColor"
+                android:hint="@string/newFileMessageTintCopy">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newFileCommitMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:inputType="textCapSentences"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/newFileCreate"
-                android:gravity="center"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/newFileButtonCopy"
                 android:textColor="@color/btnTextColor" />
 

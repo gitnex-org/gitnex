@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,14 +24,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.UserOrganizations;
 import org.mian.gitnex.viewmodels.OrganizationListViewModel;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -53,14 +49,9 @@ public class OrganizationsFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_organizations, container, false);
         setHasOptionsMenu(true);
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
-
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+
+	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navOrgs));
 
         mProgressBar = v.findViewById(R.id.progress_bar);
         noDataOrg = v.findViewById(R.id.noDataOrg);
@@ -74,14 +65,10 @@ public class OrganizationsFragment extends Fragment {
 
         createNewOrganization = v.findViewById(R.id.addNewOrganization);
 
-        createNewOrganization.setOnClickListener(new View.OnClickListener() {
+        createNewOrganization.setOnClickListener(view -> {
 
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
-                startActivity(intent);
-            }
-
+            Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
+            startActivity(intent);
         });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -103,11 +90,11 @@ public class OrganizationsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+            OrganizationListViewModel.loadOrgsList(Authorization.get(getContext()), getContext());
 
         }, 50));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken));
+        fetchDataAsync(Authorization.get(getContext()));
 
         return v;
 
@@ -116,44 +103,39 @@ public class OrganizationsFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("orgCreated")) {
-            OrganizationListViewModel.loadOrgsList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext());
+            OrganizationListViewModel.loadOrgsList(Authorization.get(getContext()), getContext());
             tinyDb.putBoolean("orgCreated", false);
         }
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken) {
+    private void fetchDataAsync(String instanceToken) {
 
         OrganizationListViewModel orgModel = new ViewModelProvider(this).get(OrganizationListViewModel.class);
 
-        orgModel.getUserOrgs(instanceUrl, instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserOrganizations>>() {
-            @Override
-            public void onChanged(@Nullable List<UserOrganizations> orgsListMain) {
-                adapter = new OrganizationsListAdapter(getContext(), orgsListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setAdapter(adapter);
-                    noDataOrg.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mRecyclerView.setAdapter(adapter);
-                    noDataOrg.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
+        orgModel.getUserOrgs(instanceToken, getContext()).observe(getViewLifecycleOwner(), orgsListMain -> {
+            adapter = new OrganizationsListAdapter(getContext(), orgsListMain);
+
+            if(adapter.getItemCount() > 0) {
+                mRecyclerView.setAdapter(adapter);
+                noDataOrg.setVisibility(View.GONE);
             }
+            else {
+                adapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(adapter);
+                noDataOrg.setVisibility(View.VISIBLE);
+            }
+            mProgressBar.setVisibility(View.GONE);
         });
 
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

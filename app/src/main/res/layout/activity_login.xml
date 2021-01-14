@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
     android:gravity="center"
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="16dp"
         android:fitsSystemWindows="true" >
 
         <ImageView
@@ -31,8 +31,6 @@
             android:text="@string/loginMethodText"
             android:textColor="?attr/primaryTextColor"
             android:textSize="12sp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="start" />
 
@@ -40,16 +38,14 @@
             android:id="@+id/loginMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_inputs"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/loginToken"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:text="@string/copyToken"
                 android:checked="true"
                 android:textColor="?attr/primaryTextColor"/>
@@ -57,142 +53,184 @@
             <RadioButton
                 android:id="@+id/loginUsernamePassword"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:text="@string/loginViaPassword"
-                android:layout_marginEnd="30dp"
                 android:textColor="?attr/primaryTextColor"/>
 
         </RadioGroup>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/httpsSpinnerLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_dropdown"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp" >
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
+            android:textColorHint="?attr/hintColor"
+            app:hintTextColor="?attr/hintColor"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/protocol"
+            app:endIconTint="?attr/iconsColor"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
-            <Spinner
+            <AutoCompleteTextView
                 android:id="@+id/httpsSpinner"
-                android:layout_width="120dp"
-                android:layout_height="44dp"
-                android:spinnerMode="dropdown"
-                android:padding="10dp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:textColor="?attr/inputTextColor"
+                android:labelFor="@+id/httpsSpinner"
+                android:textSize="16sp" />
 
-        </RelativeLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/instance_url"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/instance_urlLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textSize="14sp"
-            tools:ignore="Autofill"
-            android:drawableStart="@drawable/ic_link"
-            android:drawablePadding="10dp"
-            android:inputType="textUri"
-            android:background="@drawable/shape_inputs"
-            android:textColor="?attr/inputTextColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
             android:textColorHint="?attr/hintColor"
-            android:textColorHighlight="?attr/hintColor"
-            android:hint="@string/instanceUrl" />
+            app:hintTextColor="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_link"
+            app:startIconTint="?attr/iconsColor"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            android:hint="@string/instanceUrl">
 
-        <EditText
-            android:id="@+id/login_uid"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/instance_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/hintColor"
+                android:textColorHint="?attr/hintColor"
+                android:inputType="textUri"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_uidLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textSize="14sp"
-            tools:ignore="Autofill"
-            android:drawableStart="@drawable/ic_person"
-            android:drawablePadding="10dp"
-            android:background="@drawable/shape_inputs"
-            android:textColor="?attr/inputTextColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
             android:textColorHint="?attr/hintColor"
-            android:textColorHighlight="?attr/hintColor"
-            android:hint="@string/userName"
-            android:inputType="text"
-            android:visibility="gone" />
+            app:hintTextColor="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_person"
+            app:startIconTint="?attr/iconsColor"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            android:hint="@string/userName">
 
-        <EditText
-            android:id="@+id/login_passwd"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_uid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/hintColor"
+                android:textColorHint="?attr/hintColor"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_passwdLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textSize="14sp"
-            tools:ignore="Autofill"
-            android:drawableStart="@drawable/ic_lock"
-            android:drawablePadding="10dp"
-            android:background="@drawable/shape_inputs"
-            android:textColor="?attr/inputTextColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
             android:textColorHint="?attr/hintColor"
-            android:textColorHighlight="?attr/hintColor"
-            android:hint="@string/passWord"
-            android:inputType="textPassword"
-            android:visibility="gone" />
+            app:hintTextColor="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="?attr/iconsColor"
+            app:endIconTint="?attr/iconsColor"
+            app:endIconMode="password_toggle"
+            android:hint="@string/passWord">
 
-        <EditText
-            android:id="@+id/otpCode"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_passwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/hintColor"
+                android:textColorHint="?attr/hintColor"
+                android:inputType="textPassword"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otpCodeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textSize="14sp"
-            tools:ignore="Autofill"
-            android:drawableStart="@drawable/ic_otp"
-            android:drawablePadding="10dp"
-            android:background="@drawable/shape_inputs"
-            android:textColor="?attr/inputTextColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
             android:textColorHint="?attr/hintColor"
-            android:textColorHighlight="?attr/hintColor"
-            android:hint="@string/loginOTP"
-            android:inputType="number"
-            android:visibility="gone" />
+            app:hintTextColor="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_otp"
+            app:startIconTint="?attr/iconsColor"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            app:helperText="@string/otpMessage"
+            app:helperTextTextColor="?attr/inputTextColor"
+            app:helperTextEnabled="true"
+            android:hint="@string/loginOTP">
 
-        <EditText
-            android:id="@+id/loginTokenCode"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otpCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/hintColor"
+                android:textColorHint="?attr/hintColor"
+                android:inputType="number"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginTokenCodeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textSize="14sp"
-            tools:ignore="Autofill"
-            android:drawableStart="@drawable/ic_lock"
-            android:drawablePadding="10dp"
-            android:background="@drawable/shape_inputs"
-            android:textColor="?attr/inputTextColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
             android:textColorHint="?attr/hintColor"
-            android:textColorHighlight="?attr/hintColor"
-            android:hint="@string/copyToken"
-            android:inputType="text"
-            android:visibility="visible" />
+            app:hintTextColor="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="?attr/iconsColor"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            android:hint="@string/copyToken">
 
-        <TextView
-            android:id="@+id/otpInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/otpMessage"
-            android:textColor="@color/hintColor"
-            android:textSize="12sp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:gravity="end"
-            android:visibility="gone" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginTokenCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/hintColor"
+                android:textColorHint="?attr/hintColor"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_marginTop="8dp"
             android:text="@string/btnLogin"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/btnTextColor"
-            android:textSize="16sp"
-            android:id="@+id/login_button"/>
+            android:textColor="@color/btnTextColor" />
 
         <TextView
             android:layout_width="match_parent"

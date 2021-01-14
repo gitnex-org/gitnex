@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -41,11 +42,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/labelMenuEdit"
-                android:drawableStart="@drawable/ic_edit"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_edit" />
 
             <TextView
                 android:id="@+id/labelMenuDelete"
@@ -53,11 +54,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/labelMenuDelete"
-                android:drawableStart="@drawable/ic_delete"
                 android:drawablePadding="24dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                app:drawableStartCompat="@drawable/ic_delete" />
 
         </LinearLayout>
 

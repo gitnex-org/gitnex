@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewAccountActivity;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
@@ -42,6 +43,8 @@ public class UserAccountsFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_user_accounts, container, false);
 		ctx = getContext();
 		setHasOptionsMenu(true);
+
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleUserAccounts));
 
 		userAccountsList = new ArrayList<>();
 		userAccountsApi = new UserAccountsApi(ctx);

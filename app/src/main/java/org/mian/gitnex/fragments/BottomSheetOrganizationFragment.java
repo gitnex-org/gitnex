@@ -28,12 +28,19 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
         TextView createTeam = v.findViewById(R.id.createTeam);
         TextView createRepository = v.findViewById(R.id.createRepository);
         TextView copyOrgUrl = v.findViewById(R.id.copyOrgUrl);
+	    TextView createLabel = v.findViewById(R.id.createLabel);
 
         createTeam.setOnClickListener(v1 -> {
 
             bmListener.onButtonClicked("team");
             dismiss();
         });
+
+	    createLabel.setOnClickListener(v1 -> {
+
+		    bmListener.onButtonClicked("label");
+		    dismiss();
+	    });
 
         createRepository.setOnClickListener(v12 -> {
 

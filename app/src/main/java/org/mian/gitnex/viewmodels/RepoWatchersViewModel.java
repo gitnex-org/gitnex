@@ -21,19 +21,18 @@ public class RepoWatchersViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserInfo>> watchersList;
 
-    public LiveData<List<UserInfo>> getRepoWatchers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
+    public LiveData<List<UserInfo>> getRepoWatchers(String token, String repoOwner, String repoName, Context ctx) {
 
         watchersList = new MutableLiveData<>();
-        loadRepoWatchers(instanceUrl, token, repoOwner, repoName, ctx);
+        loadRepoWatchers(token, repoOwner, repoName, ctx);
 
         return watchersList;
     }
 
-    private static void loadRepoWatchers(String instanceUrl, String token, String repoOwner, String repoName, Context ctx) {
+    private static void loadRepoWatchers(String token, String repoOwner, String repoName, Context ctx) {
 
         Call<List<UserInfo>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getRepoWatchers(token, repoOwner, repoName);
 
         call.enqueue(new Callback<List<UserInfo>>() {

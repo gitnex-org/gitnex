@@ -5,11 +5,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
+import androidx.annotation.ColorInt;
+import androidx.core.content.pm.PackageInfoCompat;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -32,32 +33,14 @@ public class AppUtil {
 
 	public static boolean hasNetworkConnection(Context context) {
 
-		boolean haveConnectedWifi = false;
-		boolean haveConnectedMobile = false;
-
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		assert cm != null;
-		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-		for(NetworkInfo ni : netInfo) {
-			if(ni.getTypeName().equalsIgnoreCase("WIFI")) {
-				if(ni.isConnected()) {
-					haveConnectedWifi = true;
-				}
-			}
-			if(ni.getTypeName().equalsIgnoreCase("MOBILE")) {
-				if(ni.isConnected()) {
-					haveConnectedMobile = true;
-				}
-			}
-		}
-		return haveConnectedWifi || haveConnectedMobile;
+		return NetworkStatusObserver.get(context).hasNetworkConnection();
 	}
 
 	public static int getAppBuildNo(Context context) {
 
 		try {
 			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-			return packageInfo.versionCode;
+			return (int) PackageInfoCompat.getLongVersionCode(packageInfo);
 		}
 		catch(PackageManager.NameNotFoundException e) {
 			throw new RuntimeException("Could not get package name: " + e);
@@ -124,10 +107,20 @@ public class AppUtil {
 
 	public static String getTimestampFromDate(Context context, Date date) {
 
-		TinyDB tinyDB = new TinyDB(context);
+		TinyDB tinyDB = TinyDB.getInstance(context);
 		Locale locale = new Locale(tinyDB.getString("locale"));
 
 		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
+
+	}
+
+	@ColorInt
+	public static int getColorFromAttribute(Context context, int resid) {
+
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(resid, typedValue, true);
+
+		return typedValue.data;
 
 	}
 

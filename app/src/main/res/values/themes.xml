@@ -17,6 +17,7 @@
         <item name="primaryTextColor">@color/colorWhite</item>
         <item name="primaryBackgroundColor">@color/colorPrimary</item>
         <item name="inputBackgroundColor">@color/inputBackground</item>
+        <item name="inputSelectedColor">@color/inputSelected</item>
         <item name="inputTextColor">@color/colorWhite</item>
         <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
         <item name="selectedTextColor">@color/darkGreen</item>
@@ -36,6 +37,7 @@
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/inputBackground</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
     </style>
     <!-- Dark theme - default -->
 
@@ -55,6 +57,7 @@
         <item name="primaryTextColor">@color/lightThemeTextColor</item>
         <item name="primaryBackgroundColor">@color/lightThemeBackground</item>
         <item name="inputBackgroundColor">@color/lightThemeInputBackground</item>
+        <item name="inputSelectedColor">@color/lightThemInputSelected</item>
         <item name="inputTextColor">@color/lightThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
         <item name="selectedTextColor">@color/darkGreen</item>
@@ -74,6 +77,7 @@
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/lightThemeInputBackground</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
     </style>
     <!-- Light theme -->
 
@@ -93,6 +97,7 @@
         <item name="primaryTextColor">@color/retroThemeTextColor</item>
         <item name="primaryBackgroundColor">@color/retroThemeBackground</item>
         <item name="inputBackgroundColor">@color/retroThemeInputBackground</item>
+        <item name="inputSelectedColor">@color/retroThemeInputSelected</item>
         <item name="inputTextColor">@color/retroThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeRetroCheckBoxStyle</item>
         <item name="selectedTextColor">@color/retroThemeColorPrimary</item>
@@ -112,8 +117,54 @@
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/retroThemeInputBackground</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
     </style>
     <!-- Retro theme -->
+
+    <!-- Pitch black theme -->
+    <style name="AppThemePitchBlack" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">@color/pitchBlackThemeBackground</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/pitchBlackThemeTextColor</item>
+        <item name="android:textColorPrimary">@color/pitchBlackThemeTextColor</item>
+        <item name="colorPrimary">@color/darkGreen</item>
+        <item name="colorSecondary">@color/pitchBlackThemeTextColor</item>
+
+        <item name="diffAddedColor">@color/diffAddedColor</item>
+        <item name="diffRemovedColor">@color/diffRemovedColor</item>
+        <item name="diffSelectedColor">@color/diffSelectedColor</item>
+        <item name="primaryTextColor">@color/pitchBlackThemeTextColor</item>
+        <item name="primaryBackgroundColor">@color/pitchBlackThemeBackground</item>
+        <item name="inputBackgroundColor">@color/inputBackground</item>
+        <item name="inputSelectedColor">@color/inputSelected</item>
+        <item name="inputTextColor">@color/pitchBlackThemeTextColor</item>
+        <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/darkGreen</item>
+        <item name="alertDialogTheme">@style/AppThemePitchBlackConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemePitchBlackPopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
+        <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
+        <item name="dividerColor">@color/hintColor</item>
+        <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="progressIndicatorColor">@color/darkGreen</item>
+        <item name="fabColor">@color/darkGreen</item>
+        <item name="iconsColor">@color/darkGreen</item>
+        <item name="pagerTabIndicatorColor">@color/darkGreen</item>
+        <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
+        <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
+        <item name="colorSurface">@color/inputBackground</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+    </style>
+    <!-- Pitch black theme -->
+
+    <style name="inputsMaterialComponentCorner" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">6dp</item>
+    </style>
 
     <style name="customOverflowButtonStyle">
         <item name="android:src">@drawable/ic_dotted_menu</item>
@@ -262,5 +313,27 @@
         <item name="android:layout_marginEnd">3dp</item>
     </style>
     <!-- Retro theme styles -->
+
+    <!-- Pitch black theme styles -->
+    <style name="AppThemePitchBlackConfirmDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:background">@color/pitchBlackThemeGeneralBackgroundColor</item>
+        <item name="android:textColorPrimary">@color/pitchBlackThemeTextColor</item>
+        <item name="android:textColor">@color/pitchBlackThemeTextColor</item>
+        <item name="colorControlNormal">@color/pitchBlackThemeTextColor</item>
+        <item name="colorControlActivated">@color/darkGreen</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
+        <item name="android:windowBackground">@drawable/shape_round_corners</item>
+    </style>
+
+    <style name="AppThemePitchBlackPopupMenuStyle" parent="Widget.MaterialComponents.PopupMenu">
+        <item name="android:popupBackground">@color/pitchBlackThemeGeneralBackgroundColor</item>
+        <item name="android:itemBackground">@color/pitchBlackThemeGeneralBackgroundColor</item>
+        <item name="android:textColor">@color/pitchBlackThemeTextColor</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
+    </style>
+    <!-- Pitch black theme styles -->
 
 </resources>

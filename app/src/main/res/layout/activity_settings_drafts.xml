@@ -61,11 +61,11 @@
             android:text="@string/settingsEnableCommentsDeletionText"
             android:textColor="?attr/primaryTextColor" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/commentsDeletionSwitch"
             android:layout_toEndOf="@+id/enableCommentsDeletionHeader"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:switchMinWidth="56dp"
             android:layout_alignParentEnd="true"
             android:paddingStart="0dp"

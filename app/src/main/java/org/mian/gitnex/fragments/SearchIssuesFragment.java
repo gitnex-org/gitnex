@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.adapters.SearchIssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -38,10 +39,6 @@ public class SearchIssuesFragment extends Fragment {
 	private SearchIssuesAdapter adapter;
 	private List<Issues> dataList;
 
-	private String instanceUrl;
-	private String loginUid;
-	private String instanceToken;
-
 	private int apiCallCurrentValue = 10;
 	private int pageCurrentIndex = 1;
 	private String type = "issues";
@@ -54,17 +51,15 @@ public class SearchIssuesFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		ctx = getContext();
-		tinyDb = new TinyDB(getContext());
-
-		instanceUrl = tinyDb.getString("instanceUrl");
-		loginUid = tinyDb.getString("loginUid");
-		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		tinyDb = TinyDB.getInstance(getContext());
 
 		dataList = new ArrayList<>();
 		adapter = new SearchIssuesAdapter(dataList, ctx);
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ctx);
 
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerViewSearchIssues.getContext(), DividerItemDecoration.VERTICAL);
+		viewBinding.recyclerViewSearchIssues.addItemDecoration(dividerItemDecoration);
 		viewBinding.recyclerViewSearchIssues.setHasFixedSize(true);
 		viewBinding.recyclerViewSearchIssues.setLayoutManager(linearLayoutManager);
 		viewBinding.recyclerViewSearchIssues.setAdapter(adapter);
@@ -133,8 +128,8 @@ public class SearchIssuesFragment extends Fragment {
 			viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
 		}
 
-		Call<List<Issues>> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().queryIssues(
-			Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, type, state, pageCurrentIndex);
+		Call<List<Issues>> call = RetrofitClient.getApiInterface(getContext())
+			.queryIssues(Authorization.get(getContext()), searchKeyword, type, state, pageCurrentIndex);
 
 		call.enqueue(new Callback<List<Issues>>() {
 

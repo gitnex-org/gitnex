@@ -210,20 +210,29 @@
                                 android:gravity="start"
                                 android:text="@string/createdText"
                                 android:visibility="gone"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="12sp" />
+                                android:textColor="?attr/hintColor"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/issueModified"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
+                                android:textColor="?attr/hintColor"
                                 android:layout_toEndOf="@+id/issueCreatedTime"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 android:visibility="gone"
                                 android:text="@string/modifiedText" />
 
                         </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/commentReactionBadges"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/issueTimeFrame"
+                            android:visibility="gone"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal" />
 
                     </RelativeLayout>
 

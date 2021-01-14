@@ -1,13 +1,14 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -35,19 +36,17 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     private EditText milestoneTitle;
     private EditText milestoneDescription;
     private Button createNewMilestoneButton;
-    final Context ctx = this;
-    private Context appCtx;
 
     @Override
     protected int getLayoutResourceId(){
         return R.layout.activity_new_milestone;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -62,6 +61,17 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         milestoneTitle.requestFocus();
         assert imm != null;
         imm.showSoftInput(milestoneTitle, InputMethodManager.SHOW_IMPLICIT);
+
+	    milestoneDescription.setOnTouchListener((touchView, motionEvent) -> {
+
+		    touchView.getParent().requestDisallowInterceptTouchEvent(true);
+
+		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+
+			    touchView.getParent().requestDisallowInterceptTouchEvent(false);
+		    }
+		    return false;
+	    });
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
@@ -78,21 +88,17 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
     }
 
-    private View.OnClickListener createMilestoneListener = v -> processNewMilestone();
+    private final View.OnClickListener createMilestoneListener = v -> processNewMilestone();
 
     private void processNewMilestone() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(appCtx);
+        TinyDB tinyDb = TinyDB.getInstance(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
         final String repoName = parts[1];
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        //String appLocale = tinyDb.getString("locale");
 
         String newMilestoneTitle = milestoneTitle.getText().toString();
         String newMilestoneDescription = milestoneDescription.getText().toString();
@@ -102,26 +108,25 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if(newMilestoneTitle.equals("")) {
 
             Toasty.error(ctx, getString(R.string.milestoneNameErrorEmpty));
             return;
-
         }
 
         if(!newMilestoneDescription.equals("")) {
+
             if (appUtil.charactersLength(newMilestoneDescription) > 255) {
 
                 Toasty.warning(ctx, getString(R.string.milestoneDescError));
                 return;
-
             }
         }
 
         String finalMilestoneDueDate = null;
+
         if(!newMilestoneDueDate.isEmpty()) {
 
             finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
@@ -134,19 +139,17 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         }
 
         disableProcessButton();
-        createNewMilestone(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, newMilestoneTitle, newMilestoneDescription, finalMilestoneDueDate);
-
+        createNewMilestone(Authorization.get(ctx), repoOwner, repoName, newMilestoneTitle, newMilestoneDescription, finalMilestoneDueDate);
     }
 
-    private void createNewMilestone(final String instanceUrl, final String token, String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription, String newMilestoneDueDate) {
+    private void createNewMilestone(final String token, String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription, String newMilestoneDueDate) {
 
         Milestones createMilestone = new Milestones(newMilestoneDescription, newMilestoneTitle, newMilestoneDueDate);
 
         Call<Milestones> call;
 
         call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(appCtx)
                 .createMilestone(token, repoOwner, repoName, createMilestone);
 
         call.enqueue(new Callback<Milestones>() {
@@ -155,14 +158,14 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
             public void onResponse(@NonNull Call<Milestones> call, @NonNull retrofit2.Response<Milestones> response) {
 
                 if(response.isSuccessful()) {
+
                     if(response.code() == 201) {
 
-                        TinyDB tinyDb = new TinyDB(appCtx);
+                        TinyDB tinyDb = TinyDB.getInstance(appCtx);
                         tinyDb.putBoolean("milestoneCreated", true);
                         Toasty.success(ctx, getString(R.string.milestoneCreated));
                         enableProcessButton();
                         finish();
-
                     }
                 }
                 else if(response.code() == 401) {
@@ -172,19 +175,17 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
                             getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-
                 }
                 else {
 
                     enableProcessButton();
                     Toasty.error(ctx, getString(R.string.milestoneCreatedError));
-
                 }
-
             }
 
             @Override
             public void onFailure(@NonNull Call<Milestones> call, @NonNull Throwable t) {
+
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
             }
@@ -203,16 +204,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
             final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-
-                        @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-
-                            milestoneDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
-
-                        }
-                    }, mYear, mMonth, mDay);
+	            (view, year, monthOfYear, dayOfMonth) -> milestoneDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth)), mYear, mMonth, mDay);
             datePickerDialog.show();
         }
 

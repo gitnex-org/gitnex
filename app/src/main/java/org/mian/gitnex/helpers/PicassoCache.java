@@ -30,12 +30,12 @@ public class PicassoCache implements Cache {
 
 	private static final String CACHE_MAP_FILE = "cacheMap";
 
-	private File cachePath;
-	private HashMap<String, String> cacheMap;
+	private final File cachePath;
+	private final HashMap<String, String> cacheMap;
 
 	public PicassoCache(File cachePath, Context ctx) throws IOException, ClassNotFoundException {
 
-		TinyDB tinyDb = new TinyDB(ctx);
+		TinyDB tinyDb = TinyDB.getInstance(ctx);
 
 		CACHE_SIZE = FilesData.returnOnlyNumber(tinyDb.getString("cacheSizeImagesStr")) * 1024 * 1024;
 		this.cachePath = cachePath;
@@ -45,9 +45,7 @@ public class PicassoCache implements Cache {
 		if(cacheMapExists(cachePath)) {
 
 			cacheMap.putAll(loadCacheMap());
-
 		}
-
 	}
 
 	@Override

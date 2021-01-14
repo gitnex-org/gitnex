@@ -17,6 +17,7 @@
         <item name="primaryTextColor">@color/lightThemeTextColor</item>
         <item name="primaryBackgroundColor">@color/lightThemeBackground</item>
         <item name="inputBackgroundColor">@color/lightThemeInputBackground</item>
+        <item name="inputSelectedColor">@color/lightThemInputSelected</item>
         <item name="inputTextColor">@color/lightThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
         <item name="selectedTextColor">@color/darkGreen</item>
@@ -36,6 +37,7 @@
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/lightThemeInputBackground</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
     </style>
     <!-- Light theme -->
 
@@ -56,6 +58,7 @@
         <item name="primaryTextColor">@color/retroThemeTextColor</item>
         <item name="primaryBackgroundColor">@color/retroThemeBackground</item>
         <item name="inputBackgroundColor">@color/retroThemeInputBackground</item>
+        <item name="inputSelectedColor">@color/retroThemeInputSelected</item>
         <item name="inputTextColor">@color/retroThemeInputTextColor</item>
         <item name="checkboxStyle">@style/AppThemeRetroCheckBoxStyle</item>
         <item name="selectedTextColor">@color/retroThemeColorPrimary</item>
@@ -75,6 +78,7 @@
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/retroThemeInputBackground</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
     </style>
     <!-- Retro theme -->
 

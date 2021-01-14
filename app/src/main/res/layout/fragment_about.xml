@@ -143,17 +143,6 @@
                 android:layout_marginBottom="5dp" />
 
             <TextView
-                android:id="@+id/donationLinkLiberapay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/supportTextLiberapay"
-                android:textColor="@color/lightBlue"
-                android:textSize="14sp"
-                android:autoLink="web"
-                android:layout_marginBottom="10dp"
-                android:textColorLink="@color/lightBlue" />
-
-            <TextView
                 android:id="@+id/donationLinkPatreon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

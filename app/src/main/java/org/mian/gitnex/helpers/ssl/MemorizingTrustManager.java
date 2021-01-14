@@ -56,7 +56,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private Handler masterHandler;
 	private SharedPreferences keyStoreStorage;
 	private KeyStore appKeyStore;
-	private X509TrustManager defaultTrustManager;
+	private final X509TrustManager defaultTrustManager;
 	private X509TrustManager appTrustManager;
 
 	/**
@@ -634,7 +634,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	class MemorizingHostnameVerifier implements HostnameVerifier {
 
-		private HostnameVerifier defaultVerifier;
+		private final HostnameVerifier defaultVerifier;
 
 		MemorizingHostnameVerifier(HostnameVerifier wrapped) {
 

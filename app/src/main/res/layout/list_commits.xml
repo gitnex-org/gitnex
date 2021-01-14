@@ -22,38 +22,25 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/commitCommitterVw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp" />
-
         <LinearLayout
-            android:id="@+id/frameViewnDate"
+            android:id="@+id/frameCommitterAndDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/frameViewInBrowser"
+                android:id="@+id/frameCommitter"
                 android:layout_width="0dp"
                 android:layout_weight=".25"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/commitHtmlUrlVw"
+                <TextView
+                    android:id="@+id/commitCommitterVw"
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:text="@string/viewInBrowser"
-                    android:layout_marginTop="15dp"
-                    android:textColor="@color/btnTextColor"
-                    android:textSize="14sp"
-                    android:minHeight="0dp"
-                    android:minWidth="0dp"
-                    android:padding="8dp" />
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -64,8 +51,24 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp"
-                android:layout_marginTop="20dp"/>
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/frameViewCommits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/commitHtmlUrlVw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:text="@string/viewInBrowser"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/btnTextColor"
+                    android:textSize="14sp" />
 
         </LinearLayout>
 

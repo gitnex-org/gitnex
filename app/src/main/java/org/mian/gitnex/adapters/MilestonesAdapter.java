@@ -2,9 +2,6 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +16,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.MilestoneActions;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -26,27 +24,9 @@ import org.mian.gitnex.models.Milestones;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import io.noties.markwon.AbstractMarkwonPlugin;
-import io.noties.markwon.Markwon;
-import io.noties.markwon.core.CorePlugin;
-import io.noties.markwon.core.MarkwonTheme;
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import io.noties.markwon.ext.tables.TablePlugin;
-import io.noties.markwon.ext.tasklist.TaskListPlugin;
-import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.DefaultMediaDecoder;
-import io.noties.markwon.image.ImageItem;
-import io.noties.markwon.image.ImagesPlugin;
-import io.noties.markwon.image.SchemeHandler;
-import io.noties.markwon.image.gif.GifMediaDecoder;
-import io.noties.markwon.image.svg.SvgMediaDecoder;
-import io.noties.markwon.linkify.LinkifyPlugin;
 
 /**
  * Author M M Arif
@@ -177,71 +157,18 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		@SuppressLint("SetTextI18n")
 		void bindData(Milestones dataModel) {
 
-			final TinyDB tinyDb = new TinyDB(context);
+			final TinyDB tinyDb = TinyDB.getInstance(context);
 			final String locale = tinyDb.getString("locale");
 			final String timeFormat = tinyDb.getString("dateFormat");
 
 			milestoneId.setText(String.valueOf(dataModel.getId()));
 			milestoneStatus.setText(dataModel.getState());
 
-			Markwon markwon = Markwon.builder(Objects.requireNonNull(context)).usePlugin(CorePlugin.create()).usePlugin(ImagesPlugin.create(plugin -> {
-				plugin.addSchemeHandler(new SchemeHandler() {
-
-					@NonNull
-					@Override
-					public ImageItem handle(@NonNull String raw, @NonNull Uri uri) {
-
-							final int resourceId = context.getResources().getIdentifier(
-									raw.substring("drawable://".length()),
-									"drawable",
-									context.getPackageName());
-
-							final Drawable drawable = context.getDrawable(resourceId);
-
-							assert drawable != null;
-							return ImageItem.withResult(drawable);
-						}
-
-						@NonNull
-						@Override
-						public Collection<String> supportedSchemes() {
-							return Collections.singleton("drawable");
-						}
-					});
-
-					plugin.placeholderProvider(drawable -> null);
-					plugin.addMediaDecoder(GifMediaDecoder.create(false));
-					plugin.addMediaDecoder(SvgMediaDecoder.create(context.getResources()));
-					plugin.addMediaDecoder(SvgMediaDecoder.create());
-					plugin.defaultMediaDecoder(DefaultMediaDecoder.create(context.getResources()));
-					plugin.defaultMediaDecoder(DefaultMediaDecoder.create());
-
-				}))
-
-			.usePlugin(new AbstractMarkwonPlugin() {
-				@Override
-				public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-					builder
-							.codeTextColor(tinyDb.getInt("codeBlockColor"))
-							.codeBackgroundColor(tinyDb.getInt("codeBlockBackground"))
-							.linkColor(context.getResources().getColor(R.color.lightBlue));
-				}
-			})
-			.usePlugin(TablePlugin.create(context))
-			.usePlugin(TaskListPlugin.create(context))
-			.usePlugin(HtmlPlugin.create())
-			.usePlugin(StrikethroughPlugin.create())
-			.usePlugin(LinkifyPlugin.create())
-			.build();
-
-			Spanned msTitle_ = markwon.toMarkdown(dataModel.getTitle());
-			markwon.setParsedMarkdown(msTitle, msTitle_);
+			new Markdown(context, dataModel.getTitle(), msTitle);
 
 			if(!dataModel.getDescription().equals("")) {
 
-				CharSequence bodyWithMD = markwon.toMarkdown(EmojiParser.parseToUnicode(dataModel.getDescription()));
-				msDescription.setText(bodyWithMD);
-
+				new Markdown(context, EmojiParser.parseToUnicode(dataModel.getDescription()), msDescription);
 			}
 			else {
 

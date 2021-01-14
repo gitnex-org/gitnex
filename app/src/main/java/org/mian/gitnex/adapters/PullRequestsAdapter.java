@@ -130,7 +130,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				intent.putExtra("prMergeable", prMergeable.getText());
 				intent.putExtra("prHeadBranch", prHeadBranch.getText());
 
-				TinyDB tinyDb = new TinyDB(context);
+				TinyDB tinyDb = TinyDB.getInstance(context);
 				tinyDb.putString("issueNumber", prNumber.getText().toString());
 				tinyDb.putString("prMergeable", prMergeable.getText().toString());
 				tinyDb.putString("prHeadBranch", prHeadBranch.getText().toString());
@@ -149,7 +149,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				intent.putExtra("prMergeable", prMergeable.getText());
 				intent.putExtra("prHeadBranch", prHeadBranch.getText());
 
-				TinyDB tinyDb = new TinyDB(context);
+				TinyDB tinyDb = TinyDB.getInstance(context);
 				tinyDb.putString("issueNumber", prNumber.getText().toString());
 				tinyDb.putString("prMergeable", prMergeable.getText().toString());
 				tinyDb.putString("prHeadBranch", prHeadBranch.getText().toString());
@@ -165,7 +165,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		@SuppressLint("SetTextI18n")
 		void bindData(PullRequests prModel) {
 
-			final TinyDB tinyDb = new TinyDB(context);
+			final TinyDB tinyDb = TinyDB.getInstance(context);
 			final String locale = tinyDb.getString("locale");
 			final String timeFormat = tinyDb.getString("dateFormat");
 

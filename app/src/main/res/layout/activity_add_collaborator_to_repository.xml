@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/primaryBackgroundColor">
@@ -42,24 +42,52 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <EditText
-        android:id="@+id/addCollaboratorSearch"
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="14sp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:inputType="text"
-        android:labelFor="@+id/addCollaboratorSearch"
-        android:background="@drawable/shape_inputs"
-        android:textColor="?attr/inputTextColor"
-        android:textColorHint="?attr/hintColor"
-        android:textColorHighlight="?attr/primaryTextColor"
-        android:hint="@string/addCollaboratorSearchHint"
-        android:imeOptions="actionSend" />
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:visibility="gone"
+        app:indicatorColor="?attr/progressIndicatorColor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addCollaboratorSearchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
+            android:textColorHint="?attr/hintColor"
+            app:hintTextColor="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_search"
+            app:startIconTint="?attr/iconsColor"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            android:hint="@string/addCollaboratorSearchHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addCollaboratorSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHighlight="?attr/hintColor"
+                android:textColorHint="?attr/hintColor"
+                android:imeOptions="actionSend"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/noData"
@@ -70,14 +98,6 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
-        android:visibility="gone" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Base.Widget.AppCompat.ProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

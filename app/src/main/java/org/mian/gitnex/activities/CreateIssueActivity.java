@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -49,9 +51,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private CustomLabelsSelectionDialogBinding labelsBinding;
 	private CustomAssigneesSelectionDialogBinding assigneesBinding;
     private View.OnClickListener onClickListener;
-    final Context ctx = this;
-    private Context appCtx;
-    private TinyDB tinyDb;
     private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
 	private Dialog dialogLabels;
 	private Dialog dialogAssignees;
@@ -59,9 +58,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private String assigneesSetter;
 	private int milestoneId;
 
-	private String instanceUrl;
 	private String loginUid;
-	private String instanceToken;
 	private String repoOwner;
 	private String repoName;
 
@@ -79,12 +76,11 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         return R.layout.activity_create_issue;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
-	    tinyDb = new TinyDB(appCtx);
 
 	    viewBinding = ActivityCreateIssueBinding.inflate(getLayoutInflater());
 	    View view = viewBinding.getRoot();
@@ -94,17 +90,14 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        instanceUrl = tinyDb.getString("instanceUrl");
-        loginUid = tinyDb.getString("loginUid");
-        final String loginFullName = tinyDb.getString("userFullname");
-        String repoFullName = tinyDb.getString("repoFullName");
+        loginUid = tinyDB.getString("loginUid");
+        String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         repoOwner = parts[0];
         repoName = parts[1];
-        instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         // require gitea 1.12 or higher
-        if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+        if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
             resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
         }
@@ -112,6 +105,17 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	    viewBinding.newIssueTitle.requestFocus();
         assert imm != null;
         imm.showSoftInput(viewBinding.newIssueTitle, InputMethodManager.SHOW_IMPLICIT);
+
+	    viewBinding.newIssueDescription.setOnTouchListener((touchView, motionEvent) -> {
+
+		    touchView.getParent().requestDisallowInterceptTouchEvent(true);
+
+		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+
+			    touchView.getParent().requestDisallowInterceptTouchEvent(false);
+		    }
+		    return false;
+	    });
 
 	    labelsAdapter = new LabelsListAdapter(labelsList, CreateIssueActivity.this, labelsIds);
 	    assigneesAdapter = new AssigneesListAdapter(ctx, assigneesList, CreateIssueActivity.this, assigneesListData);
@@ -123,17 +127,13 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	    viewBinding.newIssueLabels.setOnClickListener(this);
 	    viewBinding.newIssueDueDate.setOnClickListener(this);
 
-        getMilestones(instanceUrl, instanceToken, repoOwner, repoName, loginUid, resultLimit);
+        getMilestones(repoOwner, repoName, resultLimit);
 
         disableProcessButton();
 
-	    viewBinding.newIssueLabels.setOnClickListener(newIssueLabels ->
-		    showLabels()
-	    );
+	    viewBinding.newIssueLabels.setOnClickListener(newIssueLabels -> showLabels());
 
-	    viewBinding.newIssueAssigneesList.setOnClickListener(newIssueAssigneesList ->
-		    showAssignees()
-	    );
+	    viewBinding.newIssueAssigneesList.setOnClickListener(newIssueAssigneesList -> showAssignees());
 
         if(!connToInternet) {
 
@@ -181,11 +181,10 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		View view = assigneesBinding.getRoot();
 		dialogAssignees.setContentView(view);
 
-		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ ->
-			dialogAssignees.dismiss()
-		);
+		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ -> dialogAssignees.dismiss());
 
-		AssigneesActions.getRepositoryAssignees(ctx, instanceUrl, instanceToken, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
+		dialogAssignees.show();
+		AssigneesActions.getRepositoryAssignees(ctx, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
 	}
 
 	private void showLabels() {
@@ -202,11 +201,10 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		View view = labelsBinding.getRoot();
 		dialogLabels.setContentView(view);
 
-		labelsBinding.cancel.setOnClickListener(labelsBinding_ ->
-			dialogLabels.dismiss()
-		);
+		labelsBinding.cancel.setOnClickListener(labelsBinding_ -> dialogLabels.dismiss());
 
-		LabelsActions.getRepositoryLabels(ctx, instanceUrl, instanceToken, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		dialogLabels.show();
+		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 
     private void processNewIssue() {
@@ -221,7 +219,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
-
         }
 
         if (newIssueTitleForm.equals("")) {
@@ -240,20 +237,18 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         }
 
         disableProcessButton();
-        createNewIssueFunc(instanceUrl, instanceToken, repoOwner, repoName, loginUid, newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
-
+        createNewIssueFunc(repoOwner, repoName, loginUid, newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
     }
 
-    private void createNewIssueFunc(final String instanceUrl, final String instanceToken, String repoOwner, String repoName, String loginUid, String newIssueDescriptionForm, String newIssueDueDateForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
+    private void createNewIssueFunc(String repoOwner, String repoName, String loginUid, String newIssueDescriptionForm, String newIssueDueDateForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
 
         CreateIssue createNewIssueJson = new CreateIssue(loginUid, newIssueDescriptionForm, false, newIssueDueDateForm, newIssueMilestoneIdForm, newIssueTitleForm, assigneesListData, labelsIds);
 
         Call<JsonElement> call3;
 
         call3 = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .createNewIssue(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, createNewIssueJson);
+                .getApiInterface(ctx)
+                .createNewIssue(Authorization.get(ctx), repoOwner, repoName, createNewIssueJson);
 
         call3.enqueue(new Callback<JsonElement>() {
 
@@ -262,7 +257,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
 				if(response2.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(appCtx);
+                    TinyDB tinyDb = TinyDB.getInstance(appCtx);
                     tinyDb.putBoolean("resumeIssues", true);
 
                     Toasty.success(ctx, getString(R.string.issueCreated));
@@ -300,13 +295,12 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         onClickListener = view -> finish();
     }
 
-    private void getMilestones(String instanceUrl, String instanceToken, String repoOwner, String repoName, String loginUid, int resultLimit) {
+    private void getMilestones(String repoOwner, String repoName, int resultLimit) {
 
         String msState = "open";
         Call<List<Milestones>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .getMilestones(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, 1, resultLimit, msState);
+                .getApiInterface(ctx)
+                .getMilestones(Authorization.get(ctx), repoOwner, repoName, 1, resultLimit, msState);
 
         call.enqueue(new Callback<List<Milestones>>() {
 
@@ -314,13 +308,16 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
             public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull retrofit2.Response<List<Milestones>> response) {
 
                 if(response.isSuccessful()) {
+
                     if(response.code() == 200) {
 
                         List<Milestones> milestonesList_ = response.body();
 
                         milestonesList.add(new Milestones(0,getString(R.string.issueCreatedNoMilestone)));
                         assert milestonesList_ != null;
+
                         if(milestonesList_.size() > 0) {
+
                             for (int i = 0; i < milestonesList_.size(); i++) {
 
                                 //Don't translate "open" is a enum
@@ -331,7 +328,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
                                     );
                                     milestonesList.add(data);
                                 }
-
                             }
                         }
 
@@ -375,9 +371,9 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
             datePickerDialog.show();
         }
         else if(v == viewBinding.createNewIssueButton) {
+
             processNewIssue();
         }
-
     }
 
     private void disableProcessButton() {

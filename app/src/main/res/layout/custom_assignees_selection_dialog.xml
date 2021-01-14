@@ -34,7 +34,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:drawableStart="@drawable/ic_person_add"
+                app:drawableStartCompat="@drawable/ic_person_add"
                 android:drawablePadding="16dp"
                 android:text="@string/newIssueSelectAssigneesListTitle" />
 

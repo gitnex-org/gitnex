@@ -83,6 +83,7 @@
     <string name="repoCreated">Repository erfolgreich erstellt!</string>
     <string name="repoCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="repoExistsError">Ein Repository mit diesem Namen existiert bereits unter dem ausgewählten Besitzer</string>
+    <string name="repoOwnerError">Wähle den Besitzer für das Repository aus</string>
     <string name="orgNameErrorEmpty">Name der Organisation ist leer</string>
     <string name="orgNameErrorInvalid">Organisationsname ist nicht gültig, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organisationsbeschreibung überschreitet maximale Anzahl von 255 Zeichen</string>
@@ -165,7 +166,7 @@
     <string name="issueCreated">Neues Issues wurde erfolgreich erstellt!</string>
     <string name="issueCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="issueCreatedNoMilestone">Kein Meilenstein</string>
-    <string name="noAssigneesFound">Keine Zuständigen gefunden!</string>
+    <string name="noAssigneesFound">Keine Zuständigen gefunden</string>
     <string name="noLabelsFound">Keine Labels gefunden!</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Sprachen</string>
@@ -207,6 +208,12 @@
     <string name="draftsHintText">Kommentarentwürfe</string>
     <string name="settingsEnableCommentsDeletionText">Entwürfe löschen aktivieren</string>
     <string name="settingsEnableCommentsDeletionHintText">Kommentar-Entwurf löschen, wenn Kommentar veröffentlicht wird</string>
+    <string name="settingsGeneralHeader">Allgemein</string>
+    <string name="generalHintText">Startseite, Standard Link Handhaber</string>
+    <string name="generalDeepLinkDefaultScreen">Standard Link Handhaber</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Wähle die Ansicht, welche geladen werden soll, wenn ein externer Link nicht handhabbar ist. Du wirst dann automatisch zu jener weitergeleitet.</string>
+    <string name="generalDeepLinkSelectedText">N/V</string>
+    <string name="linkSelectorDialogTitle">Wähle Standard Link Handhaber</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -225,6 +232,7 @@
     <string name="labelDeleteText">Label gelöscht!</string>
     <string name="labelDeleteErrorText">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="noDataBranchesTab">Keine Branch gefunden!</string>
+    <string name="selectBranchError">Wähle einen Branch für das Release</string>
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
     <string name="alertDialogTokenRevokedMessage">Es scheint, dass der Access Token widerrufen wurde ODER du diese Inhalte nicht sehen darfst.\n\nFalls der Token wiederrufen wurde, melde dich bitte ab und wieder an</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Abbrechen</string>
@@ -463,6 +471,9 @@
     <string name="mergeOptionRebase">Rebase und Mergen</string>
     <string name="mergeOptionRebaseCommit">Rebasen und Mergen (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">Zusammenfassen und Mergen</string>
+    <string name="mergeStrategy">Merge-Strategie</string>
+    <string name="selectMergeStrategy">Wähle eine Merge-Strategie</string>
+    <string name="mergeNotAllowed">Mergen nicht erlaubt [Grund: Hat nicht genügend Genehmigungen]</string>
     <string name="downloadFile">Datei herunterladen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
@@ -514,10 +525,10 @@
     <string name="draftsDeleteSuccess">Entwürfe erfolgreich gelöscht</string>
     <string name="draftsSingleDeleteSuccess">Entwurf erfolgreich gelöscht</string>
     <string name="deleteAllDraftsDialogMessage">Dadurch werden alle Entwürfe für dieses Konto gelöscht. \n\nMit dem Löschen fortfahren?</string>
-    <string name="draftSaved">Entwurf gespeichert</string>
-    <string name="appearanceHintText">Designs, Schriftarten, Plaketten, Code Block-Template</string>
+    <string name="draftSaved">Entwurf wurde automatisch gespeichert.</string>
+    <string name="appearanceHintText">Themen, Schriften, Abzeichen</string>
     <string name="fileViewerHintText">PDF-Modus, Quellcode Theme</string>
-    <string name="securityHintText">SSL-Zertifikate, Cache, Abfrageverzögerung</string>
+    <string name="securityHintText">SSL-Zertifikate, Cache</string>
     <string name="languagesHintText">Sprachen</string>
     <string name="reportsHintText">Absturzberichte</string>
     <string name="rateAppHintText">Wenn dir GitNex gefällt, hinterlassen Feedback</string>
@@ -534,7 +545,6 @@
     <!-- Notifications -->
     <string name="pageTitleNotifications">Benachrichtigungen</string>
     <string name="noDataNotifications">Keine Benachrichtigungen gefunden</string>
-    <string name="notificationBody">Sie haben eine neue Benachrichtigung erhalten. (%s)</string>
     <string name="notificationsPollingHeaderText">Benachrichtigungsverzögerung</string>
     <string name="pollingDelaySelectedText">%d Minuten</string>
     <string name="pollingDelayDialogHeaderText">Abfrageverzögerung auswählen</string>
@@ -543,6 +553,13 @@
     <string name="markAsUnread">Als ungelesen markieren</string>
     <string name="pinNotification">Nachricht Anpinnen</string>
     <string name="markedNotificationsAsRead">Alle Benachrichtigungen erfolgreich als gelesen markiert</string>
+    <string name="notificationsHintText">Intervall, Licht, Vibration</string>
+    <string name="enableNotificationsHeaderText">Benachrichtigungen aktivieren</string>
+    <string name="enableLightsHeaderText">Aktiviere Hell</string>
+    <string name="enableVibrationHeaderText">Vibration aktivieren</string>
+    <string name="chooseColorSelectorHeader">Farbe auswählen</string>
+    <string name="newMessages">Neue Nachrichten</string>
+    <string name="youHaveGotNewNotifications">Du hast %d neue Nachrichten.</string>
     <string name="isRead">Gelesen</string>
     <string name="isUnread">Ungelesen</string>
     <string name="repoSettingsTitle">Repository Einstellungen</string>
@@ -586,4 +603,12 @@
     <string name="titleError">Titel wird benötigt</string>
     <string name="prCreateSuccess">Pull-Request erfolgreich erstellt</string>
     <string name="prAlreadyExists">Zwischen diesen Branches existiert bereits ein Pull-Request</string>
+    <string name="accountDoesNotExist">Es sieht so aus als würde das Konto für den Link %1$s nicht existieren. Du kannst ihn hinzufügen, indem du auf \"Neues Konto hinzufügen\" klickst.</string>
+    <string name="launchApp">App aufrufen</string>
+    <string name="noActionText">GitNex kann den Link nicht handhaben, du kannst ein Issue im Projekt-Repository öffnen, so dass es ausgebessert werden kann. Bitte gebe alle nötigen Details an. Um die Standart-Ansicht zu öffnen, einfach den Button unten anklicken.</string>
+    <string name="codeBlockGreenOnBlack">Grün auf Schwarz</string>
+    <string name="codeBlockWhiteOnBlack">Weiß auf Schwarz</string>
+    <string name="codeBlockGreyOnBlack">Grau auf Schwarz</string>
+    <string name="codeBlockWhiteOnGrey">Weiß auf Grau</string>
+    <string name="codeBlockDarkOnWhite">Dunkel auf Weiß</string>
 </resources>

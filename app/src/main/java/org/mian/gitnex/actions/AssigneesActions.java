@@ -24,12 +24,11 @@ import retrofit2.Callback;
 
 public class AssigneesActions {
 
-	public static void getCurrentIssueAssignees(Context ctx, String instanceUrl, String loginUid, String instanceToken, String repoOwner, String repoName, int issueIndex, List<String> currentAssignees) {
+	public static void getCurrentIssueAssignees(Context ctx, String repoOwner, String repoName, int issueIndex, List<String> currentAssignees) {
 
 		Call<Issues> callSingleIssueLabels = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getIssueByIndex(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, issueIndex);
+			.getApiInterface(ctx)
+			.getIssueByIndex(Authorization.get(ctx), repoOwner, repoName, issueIndex);
 
 		callSingleIssueLabels.enqueue(new Callback<Issues>() {
 
@@ -63,14 +62,13 @@ public class AssigneesActions {
 		});
 	}
 
-	public static void getRepositoryAssignees(Context ctx, String instanceUrl, String instanceToken, String repoOwner, String repoName, List<Collaborators> assigneesList, Dialog dialogAssignees, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding) {
+	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<Collaborators> assigneesList, Dialog dialogAssignees, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding) {
 
-		TinyDB tinyDB = new TinyDB(ctx);
+		TinyDB tinyDB = TinyDB.getInstance(ctx);
 
 		Call<List<Collaborators>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
-			.getCollaborators(instanceToken, repoOwner, repoName);
+			.getApiInterface(ctx)
+			.getCollaborators(Authorization.get(ctx), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Collaborators>>() {
 
@@ -88,8 +86,6 @@ public class AssigneesActions {
 					assert assigneesList_ != null;
 
 					if(assigneesList_.size() > 0) {
-
-						dialogAssignees.show();
 
 						assigneesList.add(new Collaborators(tinyDB.getString("userFullname"), tinyDB.getString("loginUid"), tinyDB.getString("userAvatar")));
 						assigneesList.addAll(assigneesList_);

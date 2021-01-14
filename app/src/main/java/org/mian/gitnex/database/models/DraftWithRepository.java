@@ -19,6 +19,7 @@ public class DraftWithRepository {
 	private String draftText;
 	private String draftType;
 	private String commentId;
+	private String issueType;
 
 	public int getRepositoryId() {
 
@@ -128,6 +129,16 @@ public class DraftWithRepository {
 	public void setCommentId(String commentId) {
 
 		this.commentId = commentId;
+	}
+
+	public String getIssueType() {
+
+		return issueType;
+	}
+
+	public void setIssueType(String issueType) {
+
+		this.issueType = issueType;
 	}
 
 }

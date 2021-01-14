@@ -10,6 +10,8 @@ import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.interfaces.WebInterface;
 import java.io.File;
 import java.security.SecureRandom;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
@@ -27,15 +29,15 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
 
-	private Retrofit retrofit;
+	private static final Map<String, ApiInterface> apiInterfaces = new ConcurrentHashMap<>();
+	private static final Map<String, WebInterface> webInterfaces = new ConcurrentHashMap<>();
 
-	private RetrofitClient(String instanceUrl, Context ctx) {
+	private static Retrofit createRetrofit(Context context, String instanceUrl) {
 
-		TinyDB tinyDb = new TinyDB(ctx);
-		final boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
-		int cacheSize = FilesData.returnOnlyNumber(tinyDb.getString("cacheSizeStr")) * 1024 * 1024;
-		File httpCacheDirectory = new File(ctx.getCacheDir(), "responses");
-		Cache cache = new Cache(httpCacheDirectory, cacheSize);
+		TinyDB tinyDB = TinyDB.getInstance(context);
+
+		int cacheSize = FilesData.returnOnlyNumber(tinyDB.getString("cacheSizeStr")) * 1024 * 1024;
+		Cache cache = new Cache(new File(context.getCacheDir(), "responses"), cacheSize);
 
 		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -44,47 +46,80 @@ public class RetrofitClient {
 
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 
-			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(ctx);
-			sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
+			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(context);
+			sslContext.init(null, new X509TrustManager[]{ memorizingTrustManager }, new SecureRandom());
 
 			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder().cache(cache)
-					//.addInterceptor(logging)
-					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager).hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).addInterceptor(chain -> {
+				//.addInterceptor(logging)
+				.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+				.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
+				.addInterceptor(chain -> {
 
-						Request request = chain.request();
-						if(connToInternet) {
-							request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
-						}
-						else {
-							request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
-						}
-						return chain.proceed(request);
-					});
+					Request request = chain.request();
 
-			Retrofit.Builder builder = new Retrofit.Builder().baseUrl(instanceUrl).client(okHttpClient.build()).addConverterFactory(ScalarsConverterFactory.create()).addConverterFactory(GsonConverterFactory.create());
+					request = AppUtil.hasNetworkConnection(context) ?
+						request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build() :
+						request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
 
-			retrofit = builder.build();
+					return chain.proceed(request);
+
+				});
+
+			return new Retrofit.Builder()
+				.baseUrl(instanceUrl)
+				.client(okHttpClient.build())
+				.addConverterFactory(ScalarsConverterFactory.create())
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
 
 		}
 		catch(Exception e) {
-			Log.e("onFailure", e.toString());
+
+			Log.e("onFailureRetrofit", e.toString());
 		}
 
+		return null;
 	}
 
-	public static synchronized RetrofitClient getInstance(String instanceUrl, Context ctx) {
+	public static ApiInterface getApiInterface(Context context) {
 
-		return new RetrofitClient(instanceUrl, ctx);
+		return getApiInterface(context, TinyDB.getInstance(context).getString("instanceUrl"));
 	}
 
-	public ApiInterface getApiInterface() {
+	public static WebInterface getWebInterface(Context context) {
 
-		return retrofit.create(ApiInterface.class);
+		String instanceUrl = TinyDB.getInstance(context).getString("instanceUrl");
+		instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
+
+		return getWebInterface(context, instanceUrl);
+
 	}
 
-	public WebInterface getWebInterface() {
+	public static ApiInterface getApiInterface(Context context, String url) {
+		if(!apiInterfaces.containsKey(url)) {
 
-		return retrofit.create(WebInterface.class);
+			ApiInterface apiInterface = createRetrofit(context, url)
+				.create(ApiInterface.class);
+
+			apiInterfaces.put(url, apiInterface);
+			return apiInterface;
+
+		}
+
+		return apiInterfaces.get(url);
 	}
 
+	public static WebInterface getWebInterface(Context context, String url) {
+		if(!webInterfaces.containsKey(url)) {
+
+			WebInterface webInterface = createRetrofit(context, url)
+				.create(WebInterface.class);
+
+			webInterfaces.put(url, webInterface);
+			return webInterface;
+
+		}
+
+		return webInterfaces.get(url);
+	}
 }

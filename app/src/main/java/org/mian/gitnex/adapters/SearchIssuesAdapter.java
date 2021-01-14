@@ -40,7 +40,7 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 
 		this.mCtx = mCtx;
 		this.searchedList = dataList;
-		this.tinyDb = new TinyDB(mCtx);
+		this.tinyDb = TinyDB.getInstance(mCtx);
 	}
 
 	class SearchViewHolder extends RecyclerView.ViewHolder {

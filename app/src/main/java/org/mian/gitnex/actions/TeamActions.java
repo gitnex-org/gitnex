@@ -21,17 +21,13 @@ public class TeamActions {
 
 	public static void removeTeamMember(final Context context, String userName, int teamId) {
 
-		final TinyDB tinyDb = new TinyDB(context);
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		final TinyDB tinyDb = TinyDB.getInstance(context);
 
 		Call<JsonElement> call;
 
 		call = RetrofitClient
-				.getInstance(instanceUrl, context)
-				.getApiInterface()
-				.removeTeamMember(Authorization.returnAuthentication(context, loginUid, instanceToken), teamId, userName);
+				.getApiInterface(context)
+				.removeTeamMember(Authorization.get(context), teamId, userName);
 
 		call.enqueue(new Callback<JsonElement>() {
 
@@ -87,17 +83,11 @@ public class TeamActions {
 
 	public static void addTeamMember(final Context context, String userName, int teamId) {
 
-		final TinyDB tinyDb = new TinyDB(context);
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		final TinyDB tinyDb = TinyDB.getInstance(context);
 
-		Call<JsonElement> call;
-
-		call = RetrofitClient
-				.getInstance(instanceUrl, context)
-				.getApiInterface()
-				.addTeamMember(Authorization.returnAuthentication(context, loginUid, instanceToken), teamId, userName);
+		Call<JsonElement> call = RetrofitClient
+				.getApiInterface(context)
+				.addTeamMember(Authorization.get(context), teamId, userName);
 
 		call.enqueue(new Callback<JsonElement>() {
 

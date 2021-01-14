@@ -45,27 +45,23 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
             image = itemView.findViewById(R.id.imageAvatar);
             organizationId = itemView.findViewById(R.id.organizationId);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            itemView.setOnClickListener(v -> {
 
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, OrganizationDetailActivity.class);
-                    intent.putExtra("orgName", mTextView1.getText().toString());
+                Context context = v.getContext();
+                Intent intent = new Intent(context, OrganizationDetailActivity.class);
+                intent.putExtra("orgName", mTextView1.getText().toString());
 
-                    TinyDB tinyDb = new TinyDB(context);
-                    tinyDb.putString("orgName", mTextView1.getText().toString());
-                    tinyDb.putString("organizationId", organizationId.getText().toString());
-                    tinyDb.putBoolean("organizationAction", true);
-                    context.startActivity(intent);
-
-                }
+                TinyDB tinyDb = TinyDB.getInstance(context);
+                tinyDb.putString("orgName", mTextView1.getText().toString());
+                tinyDb.putString("organizationId", organizationId.getText().toString());
+                tinyDb.putBoolean("organizationAction", true);
+                context.startActivity(intent);
             });
-
         }
     }
 
     public OrganizationsListAdapter(Context mCtx, List<UserOrganizations> orgsListMain) {
+
         this.mCtx = mCtx;
         this.orgList = orgsListMain;
         orgListFull = new ArrayList<>(orgList);
@@ -74,6 +70,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
     @NonNull
     @Override
     public OrganizationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_organizations, parent, false);
         return new OrganizationsViewHolder(v);
     }
@@ -88,11 +85,12 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
 
         PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
         holder.mTextView1.setText(currentItem.getUsername());
+
         if (!currentItem.getDescription().equals("")) {
+
             holder.mTextView2.setVisibility(View.VISIBLE);
             holder.mTextView2.setText(currentItem.getDescription());
         }
-
     }
 
     @Override
@@ -105,14 +103,19 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
         return orgFilter;
     }
 
-    private Filter orgFilter = new Filter() {
+    private final Filter orgFilter = new Filter() {
+
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
+
             List<UserOrganizations> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
+
                 filteredList.addAll(orgListFull);
-            } else {
+            }
+            else {
+
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (UserOrganizations item : orgListFull) {
@@ -130,6 +133,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
+
             orgList.clear();
             orgList.addAll((List) results.values);
             notifyDataSetChanged();

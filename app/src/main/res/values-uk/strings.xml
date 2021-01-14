@@ -83,6 +83,7 @@
     <string name="repoCreated">Репозиторій створено успішно</string>
     <string name="repoCreatedError">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="repoExistsError">Репозиторій із такою назвою вже існує в обраного власника</string>
+    <string name="repoOwnerError">Select owner for the repository</string>
     <string name="orgNameErrorEmpty">Назва організації порожня</string>
     <string name="orgNameErrorInvalid">Назва організації некоректна, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Довжина опису організації перевищує 255 символів</string>
@@ -165,7 +166,7 @@
     <string name="issueCreated">Нову проблему створено успішно</string>
     <string name="issueCreatedError">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="issueCreatedNoMilestone">Етап відсутній</string>
-    <string name="noAssigneesFound">Співавторів не знайдено</string>
+    <string name="noAssigneesFound">No assignees found</string>
     <string name="noLabelsFound">Міток не знайдено</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Переклад</string>
@@ -207,6 +208,12 @@
     <string name="draftsHintText">Comments draft</string>
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
+    <string name="settingsGeneralHeader">General</string>
+    <string name="generalHintText">Home screen, default link handler</string>
+    <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
+    <string name="generalDeepLinkSelectedText">N/A</string>
+    <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <!-- settings -->
     <string name="noMoreData">Даних більше немає</string>
     <string name="createLabel">Створити мітку</string>
@@ -225,6 +232,7 @@
     <string name="labelDeleteText">Мітку видалено</string>
     <string name="labelDeleteErrorText">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="noDataBranchesTab">Гілок не знайдено</string>
+    <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Помилка авторизації</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="alertDialogTokenRevokedCopyNegativeButton">Скасувати</string>
@@ -463,6 +471,9 @@
     <string name="mergeOptionRebase">Зробити Rebase і злити</string>
     <string name="mergeOptionRebaseCommit">Rebase та Об\'єднати (&#45;&#45;no-ff)</string>
     <string name="mergeOptionSquash">Об\'єднати (Squash) і злити</string>
+    <string name="mergeStrategy">Merge Strategy</string>
+    <string name="selectMergeStrategy">Select merge strategy</string>
+    <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="downloadFile">Завантажити цей файл</string>
     <string name="waitLoadingDownloadFile">Зачекайте, поки файл завантажиться</string>
     <string name="downloadFileSaved">Файл успішно збережений</string>
@@ -514,10 +525,10 @@
     <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
     <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
-    <string name="draftSaved">Draft saved</string>
-    <string name="appearanceHintText">Теми, шрифти, значки, тема блоку коду</string>
+    <string name="draftSaved">Draft was saved automatically.</string>
+    <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="fileViewerHintText">Режим PDF-версії, тема відображення коду</string>
-    <string name="securityHintText">SSL certificates, cache, polling delay</string>
+    <string name="securityHintText">SSL certificates, cache</string>
     <string name="languagesHintText">Мови</string>
     <string name="reportsHintText">Звіти про падіння</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
@@ -534,7 +545,6 @@
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">No notifications found</string>
-    <string name="notificationBody">You have received a new notification. (%s)</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
@@ -543,6 +553,13 @@
     <string name="markAsUnread">Mark as Unread</string>
     <string name="pinNotification">Pin Notification</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
+    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="enableNotificationsHeaderText">Enable Notifications</string>
+    <string name="enableLightsHeaderText">Enable Light</string>
+    <string name="enableVibrationHeaderText">Enable Vibration</string>
+    <string name="chooseColorSelectorHeader">Choose Color</string>
+    <string name="newMessages">New messages</string>
+    <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -586,4 +603,12 @@
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="launchApp">Go to App</string>
+    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="codeBlockGreenOnBlack">Green on Black</string>
+    <string name="codeBlockWhiteOnBlack">White on Black</string>
+    <string name="codeBlockGreyOnBlack">Grey on Black</string>
+    <string name="codeBlockWhiteOnGrey">White on Grey</string>
+    <string name="codeBlockDarkOnWhite">Dark on White</string>
 </resources>

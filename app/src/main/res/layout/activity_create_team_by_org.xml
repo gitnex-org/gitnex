@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/primaryBackgroundColor">
@@ -54,72 +53,84 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/teamNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newTeamTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/teamName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:inputType="textCapSentences|text"
-                android:labelFor="@+id/teamName"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor" />
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                android:hint="@string/newTeamTitle">
 
-            <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/teamName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:inputType="textCapSentences"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/teamDescLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newTeamDesc"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
-
-            <EditText
-                android:id="@+id/teamDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:inputType="textCapSentences|text"
-                android:labelFor="@+id/teamDesc"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor" />
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:counterTextColor="?attr/inputTextColor"
+                android:hint="@string/newTeamDesc">
 
-            <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/teamDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/teamPermissionLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newTeamPermission"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/teamPermission"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="none" />
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/newTeamPermission">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/teamPermission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:maxLines="1"
+                    android:focusable="false"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/teamPermissionDetail"
@@ -130,27 +141,30 @@
                 android:gravity="start"
                 android:visibility="gone" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/teamAccessControlsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newTeamAccessControls"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/teamAccessControls"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill"
-                android:background="@drawable/shape_inputs"
-                android:textColor="?attr/inputTextColor"
+                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 android:textColorHint="?attr/hintColor"
-                android:textColorHighlight="?attr/primaryTextColor"
-                android:inputType="none" />
+                app:hintTextColor="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/newTeamAccessControls">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/teamAccessControls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:maxLines="1"
+                    android:focusable="false"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/teamAccessControlsArray"
@@ -160,11 +174,9 @@
 
             <Button
                 android:id="@+id/createTeamButton"
-                android:gravity="center"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/newCreateButtonCopy"
                 android:textColor="@color/btnTextColor" />
 

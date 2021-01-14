@@ -112,7 +112,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @SuppressLint("SetTextI18n")
         void bindData(Commits commitsModel) {
 
-            final TinyDB tinyDb = new TinyDB(ctx);
+            final TinyDB tinyDb = TinyDB.getInstance(ctx);
             final String locale = tinyDb.getString("locale");
             final String timeFormat = tinyDb.getString("dateFormat");
 

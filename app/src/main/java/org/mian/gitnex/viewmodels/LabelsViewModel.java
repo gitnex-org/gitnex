@@ -2,13 +2,13 @@ package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.models.Labels;
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.models.Labels;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,20 +21,19 @@ public class LabelsViewModel extends ViewModel {
 
     private static MutableLiveData<List<Labels>> labelsList;
 
-    public LiveData<List<Labels>> getLabelsList(String instanceUrl, String token, String owner, String repo, Context ctx) {
+    public LiveData<List<Labels>> getLabelsList(String token, String owner, String repo, Context ctx) {
 
         labelsList = new MutableLiveData<>();
-        loadLabelsList(instanceUrl, token, owner, repo, ctx);
+        loadLabelsList(token, owner, repo, ctx);
 
         return labelsList;
     }
 
-    public static void loadLabelsList(String instanceUrl, String token, String owner, String repo, Context ctx) {
+    public static void loadLabelsList(String token, String owner, String repo, Context ctx) {
 
         Call<List<Labels>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
-                .getlabels(token, owner, repo);
+                .getApiInterface(ctx)
+                .getLabels(token, owner, repo);
 
         call.enqueue(new Callback<List<Labels>>() {
 

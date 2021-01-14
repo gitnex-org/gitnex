@@ -15,8 +15,9 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
-import org.mian.gitnex.helpers.DiffTextView;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.models.FileDiffView;
+import org.mian.gitnex.views.DiffTextView;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -36,9 +37,9 @@ public class FilesDiffAdapter extends BaseAdapter {
 	private static int COLOR_SELECTED;
 	private static int COLOR_FONT;
 
-	private Context context;
-	private FragmentManager fragmentManager;
-	private List<FileDiffView> fileDiffViews;
+	private final Context context;
+	private final FragmentManager fragmentManager;
+	private final List<FileDiffView> fileDiffViews;
 
 	public FilesDiffAdapter(Context context, FragmentManager fragmentManager, List<FileDiffView> fileDiffViews) {
 
@@ -48,11 +49,11 @@ public class FilesDiffAdapter extends BaseAdapter {
 
 		selectedViews = new ConcurrentSkipListMap<>();
 
-		COLOR_ADDED = getColorFromAttribute(R.attr.diffAddedColor);
-		COLOR_REMOVED = getColorFromAttribute(R.attr.diffRemovedColor);
-		COLOR_NORMAL = getColorFromAttribute(R.attr.primaryBackgroundColor);
-		COLOR_SELECTED = getColorFromAttribute(R.attr.diffSelectedColor);
-		COLOR_FONT = getColorFromAttribute(R.attr.inputTextColor);
+		COLOR_ADDED = AppUtil.getColorFromAttribute(context, R.attr.diffAddedColor);
+		COLOR_REMOVED = AppUtil.getColorFromAttribute(context, R.attr.diffRemovedColor);
+		COLOR_NORMAL = AppUtil.getColorFromAttribute(context, R.attr.primaryBackgroundColor);
+		COLOR_SELECTED = AppUtil.getColorFromAttribute(context, R.attr.diffSelectedColor);
+		COLOR_FONT = AppUtil.getColorFromAttribute(context, R.attr.inputTextColor);
 
 	}
 
@@ -185,7 +186,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 
 						});
 
-
 						diffTextView.setOnLongClickListener(v -> {
 
 							if(((DiffTextView) v).getCurrentBackgroundColor() == COLOR_SELECTED) {
@@ -254,15 +254,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 	private String[] getLines(String content) {
 
 		return content.split("\\R");
-
-	}
-
-	private int getColorFromAttribute(int resid) {
-
-		TypedValue typedValue = new TypedValue();
-		context.getTheme().resolveAttribute(resid, typedValue, true);
-
-		return typedValue.data;
 
 	}
 

@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,13 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitsAdapter;
-import org.mian.gitnex.clients.AppApiService;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
-import org.mian.gitnex.interfaces.ApiInterface;
 import org.mian.gitnex.models.Commits;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +38,6 @@ import retrofit2.Response;
 
 public class CommitsActivity extends BaseActivity {
 
-	final Context ctx = this;
-	private Context appCtx;
 	private View.OnClickListener onClickListener;
 	private TextView noData;
 	private ProgressBar progressBar;
@@ -53,7 +48,6 @@ public class CommitsActivity extends BaseActivity {
 	private RecyclerView recyclerView;
 	private List<Commits> commitsList;
 	private CommitsAdapter adapter;
-	private ApiInterface api;
 	private ProgressBar progressLoadMore;
 
 	@Override
@@ -66,15 +60,10 @@ public class CommitsActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		TinyDB tinyDb = new TinyDB(appCtx);
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-		String repoFullName = tinyDb.getString("repoFullName");
+		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
 		final String repoName = parts[1];
@@ -95,7 +84,8 @@ public class CommitsActivity extends BaseActivity {
 		closeActivity.setOnClickListener(onClickListener);
 
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12")) {
+		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12")) {
+
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
@@ -105,9 +95,8 @@ public class CommitsActivity extends BaseActivity {
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
-			loadInitial(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, branchName, resultLimit);
+			loadInitial(Authorization.get(ctx), repoOwner, repoName, branchName, resultLimit);
 			adapter.notifyDataChanged();
-
 		}, 200));
 
 		adapter = new CommitsAdapter(ctx, commitsList);
@@ -116,23 +105,20 @@ public class CommitsActivity extends BaseActivity {
 			if(commitsList.size() == resultLimit || pageSize == resultLimit) {
 
 				int page = (commitsList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, page, branchName, resultLimit);
+				loadMore(Authorization.get(ctx), repoOwner, repoName, page, branchName, resultLimit);
 			}
-
 		}));
 
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 		recyclerView.setAdapter(adapter);
 
-		api = AppApiService.createService(ApiInterface.class, instanceUrl, ctx);
-		loadInitial(Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, branchName, resultLimit);
-
+		loadInitial(Authorization.get(ctx), repoOwner, repoName, branchName, resultLimit);
 	}
 
 	private void loadInitial(String token, String repoOwner, String repoName, String branchName, int resultLimit) {
 
-		Call<List<Commits>> call = api.getRepositoryCommits(token, repoOwner, repoName, 1, branchName, resultLimit);
+		Call<List<Commits>> call = RetrofitClient.getApiInterface(ctx).getRepositoryCommits(token, repoOwner, repoName, 1, branchName, resultLimit);
 
 		call.enqueue(new Callback<List<Commits>>() {
 
@@ -148,7 +134,6 @@ public class CommitsActivity extends BaseActivity {
 						commitsList.addAll(response.body());
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.GONE);
-
 					}
 					else {
 
@@ -164,7 +149,6 @@ public class CommitsActivity extends BaseActivity {
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
 
 				progressBar.setVisibility(View.GONE);
@@ -184,7 +168,7 @@ public class CommitsActivity extends BaseActivity {
 
 		progressLoadMore.setVisibility(View.VISIBLE);
 
-		Call<List<Commits>> call = api.getRepositoryCommits(token, repoOwner, repoName, page, branchName, resultLimit);
+		Call<List<Commits>> call = RetrofitClient.getApiInterface(ctx).getRepositoryCommits(token, repoOwner, repoName, page, branchName, resultLimit);
 
 		call.enqueue(new Callback<List<Commits>>() {
 
@@ -211,7 +195,6 @@ public class CommitsActivity extends BaseActivity {
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
 
 				progressLoadMore.setVisibility(View.GONE);
@@ -255,7 +238,6 @@ public class CommitsActivity extends BaseActivity {
 		});
 
 		return super.onCreateOptionsMenu(menu);
-
 	}
 
 	private void filter(String text) {
@@ -263,7 +245,9 @@ public class CommitsActivity extends BaseActivity {
 		List<Commits> arr = new ArrayList<>();
 
 		for(Commits d : commitsList) {
+
 			if(d.getCommit().getMessage().toLowerCase().contains(text) || d.getSha().toLowerCase().contains(text)) {
+
 				arr.add(d);
 			}
 		}
@@ -274,6 +258,7 @@ public class CommitsActivity extends BaseActivity {
 	private void initCloseListener() {
 
 		onClickListener = view -> {
+
 			getIntent().removeExtra("branchName");
 			finish();
 		};

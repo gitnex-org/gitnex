@@ -31,7 +31,7 @@ public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 
 		super(mCtx, resource, userAccounts);
 
-		tinyDB = new TinyDB(mCtx);
+		tinyDB = TinyDB.getInstance(mCtx);
 		this.userAccounts = userAccounts;
 		this.mCtx = mCtx;
 

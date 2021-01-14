@@ -18,7 +18,6 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.Organization;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,11 +66,6 @@ public class OrganizationInfoFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_organization_info, container, false);
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-
         mProgressBar = v.findViewById(R.id.progress_bar);
         orgAvatar = v.findViewById(R.id.orgAvatar);
         TextView orgNameInfo = v.findViewById(R.id.orgNameInfo);
@@ -82,17 +76,16 @@ public class OrganizationInfoFragment extends Fragment {
 
         orgNameInfo.setText(orgName);
 
-        getOrgInfo(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), orgName);
+        getOrgInfo(Authorization.get(getContext()), orgName);
 
         return v;
 
     }
 
-    private void getOrgInfo(String instanceUrl, String token, final String owner) {
+    private void getOrgInfo(String token, final String owner) {
 
         Call<Organization> call = RetrofitClient
-                .getInstance(instanceUrl, getContext())
-                .getApiInterface()
+                .getApiInterface(getContext())
                 .getOrganization(token, owner);
 
         call.enqueue(new Callback<Organization>() {

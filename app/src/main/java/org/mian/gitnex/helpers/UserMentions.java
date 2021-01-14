@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class UserMentions {
 
-    public static Spannable UserMentionsFunc(Context mCtx, CharSequence bodyWithMD, String currentItemBody) {
+    public static Spannable UserMentionsFunc(Context mCtx, CharSequence bodyWithMD) {
 
         Spannable bodyWithMentions = new SpannableString(bodyWithMD);
         Pattern pattern = Pattern.compile("@\\w+");

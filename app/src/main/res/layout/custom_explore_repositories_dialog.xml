@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/shape_custom_dialog"
     android:orientation="vertical">
 
@@ -25,7 +26,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:drawableStart="@drawable/ic_filter"
+                app:drawableStartCompat="@drawable/ic_filter"
                 android:drawablePadding="16dp"
                 android:text="@string/exploreFilterDialogTitle"
                 android:layout_marginBottom="4dp" />

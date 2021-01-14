@@ -1,8 +1,9 @@
-Please check the following:
+### Describe what your pull request does and which issue you’re targeting
+<!-- Create a new issue, if it doesn't exist yet -->
+<br><br>
 
-1. Make sure you are targeting the `master` branch, pull requests on release branches are only allowed for bug fixes.
-2. Read contributing guidelines: [CONTRIBUTING.md](https://gitea.com/GitNex/GitNex/src/branch/master/CONTRIBUTING.md)
-3. Please follow the [Code-Standards](https://gitea.com/gitnex/GitNex/wiki/Code-Standards)
-4. Describe what your pull request does and which issue you’re targeting (create one if does not exist)
+<!-- Make sure you are targeting the master branch, pull requests on release branches are only allowed for bug fixes. -->
 
-**You MUST delete the content above including this line before posting, otherwise your pull request will be invalid.**
+- [ ] I carefully read the [contribution guidelines](https://codeberg.org/GitNex/GitNex/src/branch/master/CONTRIBUTING.md).
+- [ ] I'm following the code standards as defined [here](https://codeberg.org/gitnex/GitNex/wiki/Code-Standards).
+- [ ] By submitting this pull request, I permit GitNex to license my work under the [GNU General Public License v3](https://codeberg.org/GitNex/GitNex/src/branch/master/LICENSE).

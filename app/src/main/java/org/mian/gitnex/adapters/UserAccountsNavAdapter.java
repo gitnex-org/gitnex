@@ -96,7 +96,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 
 	private void customDialogUserAccountsList(List<UserAccount> allAccountsList) {
 
-		TinyDB tinyDB = new TinyDB(mCtx);
+		TinyDB tinyDB = TinyDB.getInstance(mCtx);
 		Dialog dialog = new Dialog(mCtx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 		dialog.setContentView(R.layout.custom_user_accounts_dialog);
 

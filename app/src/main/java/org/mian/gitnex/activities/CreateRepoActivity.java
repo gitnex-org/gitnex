@@ -2,16 +2,17 @@ package org.mian.gitnex.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -37,15 +38,18 @@ public class CreateRepoActivity extends BaseActivity {
 
     public ImageView closeActivity;
     private View.OnClickListener onClickListener;
-    private Spinner spinner;
+    private AutoCompleteTextView spinner;
     private Button createRepo;
     private EditText repoName;
     private EditText repoDesc;
     private CheckBox repoAccess;
-    final Context ctx = this;
-    private Context appCtx;
 
-    List<OrgOwner> organizationsList = new ArrayList<>();
+	private String loginUid;
+	private String userLogin;
+
+	private String selectedOwner;
+
+	List<OrgOwner> organizationsList = new ArrayList<>();
 
     //https://github.com/go-gitea/gitea/blob/52cfd2743c0e85b36081cf80a850e6a5901f1865/models/repo.go#L964-L967
     final List<String> reservedRepoNames = Arrays.asList(".", "..");
@@ -60,15 +64,11 @@ public class CreateRepoActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appCtx = getApplicationContext();
 
         boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String userLogin = tinyDb.getString("userLogin");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+        loginUid = tinyDB.getString("loginUid");
+        userLogin = tinyDB.getString("userLogin");
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -85,19 +85,7 @@ public class CreateRepoActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         spinner = findViewById(R.id.ownerSpinner);
-        getOrganizations(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), userLogin);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                OrgOwner user = (OrgOwner) parent.getSelectedItem();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        getOrganizations(Authorization.get(ctx), userLogin);
 
         createRepo = findViewById(R.id.createNewRepoButton);
         disableProcessButton();
@@ -112,24 +100,15 @@ public class CreateRepoActivity extends BaseActivity {
         }
     }
 
-    private View.OnClickListener createRepoListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            processNewRepo();
-        }
-    };
+    private final View.OnClickListener createRepoListener = v -> processNewRepo();
 
     private void processNewRepo() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = new TinyDB(appCtx);
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         String newRepoName = repoName.getText().toString();
         String newRepoDesc = repoDesc.getText().toString();
-        String repoOwner = spinner.getSelectedItem().toString();
         boolean newRepoAccess = repoAccess.isChecked();
 
         if(!connToInternet) {
@@ -139,6 +118,7 @@ public class CreateRepoActivity extends BaseActivity {
         }
 
         if(!newRepoDesc.equals("")) {
+
             if (appUtil.charactersLength(newRepoDesc) > 255) {
 
                 Toasty.warning(ctx, getString(R.string.repoDescError));
@@ -162,31 +142,33 @@ public class CreateRepoActivity extends BaseActivity {
 
             Toasty.warning(ctx, getString(R.string.repoNameErrorReservedPatterns));
         }
+	    else if(selectedOwner == null) {
+
+		    Toasty.error(ctx, getString(R.string.repoOwnerError));
+        }
         else {
 
             disableProcessButton();
-            createNewRepository(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), loginUid, newRepoName, newRepoDesc, repoOwner, newRepoAccess);
+            createNewRepository(Authorization.get(ctx), loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
         }
     }
 
-    private void createNewRepository(final String instanceUrl, final String token, String loginUid, String repoName, String repoDesc, String repoOwner, boolean isPrivate) {
+    private void createNewRepository(final String token, String loginUid, String repoName, String repoDesc, String selectedOwner, boolean isPrivate) {
 
         OrganizationRepository createRepository = new OrganizationRepository(true, repoDesc, null, null, repoName, isPrivate, "Default");
 
         Call<OrganizationRepository> call;
-        if(repoOwner.equals(loginUid)) {
+        if(selectedOwner.equals(loginUid)) {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl, ctx)
-                    .getApiInterface()
+                    .getApiInterface(ctx)
                     .createNewUserRepository(token, createRepository);
         }
         else {
 
             call = RetrofitClient
-                    .getInstance(instanceUrl, ctx)
-                    .getApiInterface()
-                    .createNewUserOrgRepository(token, repoOwner, createRepository);
+                    .getApiInterface(ctx)
+                    .createNewUserOrgRepository(token, selectedOwner, createRepository);
         }
 
         call.enqueue(new Callback<OrganizationRepository>() {
@@ -196,7 +178,7 @@ public class CreateRepoActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    TinyDB tinyDb = new TinyDB(appCtx);
+                    TinyDB tinyDb = TinyDB.getInstance(appCtx);
                     tinyDb.putBoolean("repoCreated", true);
                     Toasty.success(ctx, getString(R.string.repoCreated));
                     enableProcessButton();
@@ -220,7 +202,6 @@ public class CreateRepoActivity extends BaseActivity {
                     enableProcessButton();
                     Toasty.error(ctx, getString(R.string.repoCreatedError));
                 }
-
             }
 
             @Override
@@ -232,13 +213,10 @@ public class CreateRepoActivity extends BaseActivity {
         });
     }
 
-    private void getOrganizations(String instanceUrl, String instanceToken, final String userLogin) {
-
-        TinyDB tinyDb = new TinyDB(appCtx);
+    private void getOrganizations(String instanceToken, final String userLogin) {
 
         Call<List<OrgOwner>> call = RetrofitClient
-                .getInstance(instanceUrl, ctx)
-                .getApiInterface()
+                .getApiInterface(ctx)
                 .getOrgOwners(instanceToken);
 
         call.enqueue(new Callback<List<OrgOwner>>() {
@@ -246,59 +224,58 @@ public class CreateRepoActivity extends BaseActivity {
             @Override
             public void onResponse(@NonNull Call<List<OrgOwner>> call, @NonNull retrofit2.Response<List<OrgOwner>> response) {
 
-                if(response.isSuccessful()) {
-                    if(response.code() == 200) {
+	            if(response.code() == 200) {
 
-                        int organizationId = 0;
+		            int organizationId = 0;
 
-                        List<OrgOwner> organizationsList_ = response.body();
+		            List<OrgOwner> organizationsList_ = response.body();
 
-                        organizationsList.add(new OrgOwner(userLogin));
-                        assert organizationsList_ != null;
-                        if(organizationsList_.size() > 0) {
+		            organizationsList.add(new OrgOwner(userLogin));
+		            assert organizationsList_ != null;
 
-                            for (int i = 0; i < organizationsList_.size(); i++) {
+		            if(organizationsList_.size() > 0) {
 
-                                if(!tinyDb.getString("organizationId").isEmpty()) {
+			            for(int i = 0; i < organizationsList_.size(); i++) {
 
-                                    if (Integer.parseInt(tinyDb.getString("organizationId")) == organizationsList_.get(i).getId()) {
-                                        organizationId = i + 1;
-                                    }
-                                }
+				            if(!tinyDB.getString("organizationId").isEmpty()) {
 
-                                OrgOwner data = new OrgOwner(
-                                        organizationsList_.get(i).getUsername()
-                                );
-                                organizationsList.add(data);
+					            if(Integer.parseInt(tinyDB.getString("organizationId")) == organizationsList_.get(i).getId()) {
+						            organizationId = i + 1;
+					            }
+				            }
 
-                            }
-                        }
+				            OrgOwner data = new OrgOwner(organizationsList_.get(i).getUsername());
+				            organizationsList.add(data);
+			            }
+		            }
 
-                        ArrayAdapter<OrgOwner> adapter = new ArrayAdapter<>(CreateRepoActivity.this,
-                                R.layout.spinner_item, organizationsList);
+		            ArrayAdapter<OrgOwner> adapter = new ArrayAdapter<>(CreateRepoActivity.this, R.layout.list_spinner_items, organizationsList);
 
-                        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                        spinner.setAdapter(adapter);
+		            spinner.setAdapter(adapter);
 
-                        if (tinyDb.getBoolean("organizationAction") & organizationId != 0) {
+		            spinner.setOnItemClickListener ((parent, view, position, id) -> selectedOwner = organizationsList.get(position).getUsername());
 
-                            spinner.setSelection(organizationId);
-                            tinyDb.putBoolean("organizationAction", false);
-                        }
+		            if(tinyDB.getBoolean("organizationAction") & organizationId != 0) {
 
-                        enableProcessButton();
+			            int selectOwnerById = organizationId;
+			            new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-                    }
-                }
-                else if(response.code() == 401) {
+				            spinner.setText(organizationsList.get(selectOwnerById).getUsername(), false);
+				            selectedOwner = organizationsList.get(selectOwnerById).getUsername();
+			            }, 500);
 
-                    enableProcessButton();
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-                }
+			            tinyDB.putBoolean("organizationAction", false);
+		            }
 
+		            enableProcessButton();
+	            }
+
+	            else if(response.code() == 401) {
+
+		            enableProcessButton();
+		            AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage),
+			            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+	            }
             }
 
             @Override

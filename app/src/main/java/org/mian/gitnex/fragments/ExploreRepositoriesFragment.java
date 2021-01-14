@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
@@ -57,10 +58,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private List<UserRepositories> dataList;
 	private ExploreRepositoriesAdapter adapter;
 
-	private String instanceUrl;
-	private String loginUid;
-	private String instanceToken;
-
 	private Dialog dialogFilterOptions;
 	private CustomExploreRepositoriesDialogBinding filterBinding;
 
@@ -71,11 +68,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		ctx = getContext();
-		tinyDb = new TinyDB(getContext());
-
-		instanceUrl = tinyDb.getString("instanceUrl");
-		loginUid = tinyDb.getString("loginUid");
-		instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		tinyDb = TinyDB.getInstance(getContext());
 
 		dataList = new ArrayList<>();
 		adapter = new ExploreRepositoriesAdapter(dataList, ctx);
@@ -95,6 +88,10 @@ public class ExploreRepositoriesFragment extends Fragment {
 		viewBinding.recyclerViewReposSearch.setHasFixedSize(true);
 		viewBinding.recyclerViewReposSearch.setLayoutManager(linearLayoutManager);
 		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
+
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerViewReposSearch.getContext(),
+			DividerItemDecoration.VERTICAL);
+		viewBinding.recyclerViewReposSearch.addItemDecoration(dividerItemDecoration);
 
 		viewBinding.searchKeyword.setOnEditorActionListener((v1, actionId, event) -> {
 
@@ -178,7 +175,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 			viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
 		}
 
-		Call<ExploreRepositories> call = RetrofitClient.getInstance(instanceUrl, getContext()).getApiInterface().queryRepos(Authorization.returnAuthentication(getContext(), loginUid, instanceToken), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, limit, pageCurrentIndex);
+		Call<ExploreRepositories> call = RetrofitClient.getApiInterface(ctx).queryRepos(Authorization.get(getContext()), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, limit, pageCurrentIndex);
 
 		call.enqueue(new Callback<ExploreRepositories>() {
 

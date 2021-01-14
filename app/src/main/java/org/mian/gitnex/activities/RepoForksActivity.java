@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -42,8 +41,6 @@ import retrofit2.Response;
 
 public class RepoForksActivity extends BaseActivity {
 
-	final Context ctx = this;
-	private Context appCtx;
 	private View.OnClickListener onClickListener;
 	private TextView noData;
 	private ProgressBar progressBar;
@@ -67,14 +64,11 @@ public class RepoForksActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		appCtx = getApplicationContext();
+
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		TinyDB tinyDb = new TinyDB(appCtx);
-		final String instanceUrl = tinyDb.getString("instanceUrl");
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
 		String repoFullNameForForks = getIntent().getStringExtra("repoFullNameForForks");
 		assert repoFullNameForForks != null;
@@ -97,6 +91,7 @@ public class RepoForksActivity extends BaseActivity {
 
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12")) {
+
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
@@ -110,7 +105,7 @@ public class RepoForksActivity extends BaseActivity {
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
-			loadInitial(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, pageSize, resultLimit);
+			loadInitial(Authorization.get(ctx), repoOwner, repoName, pageSize, resultLimit);
 			adapter.notifyDataChanged();
 
 		}, 200));
@@ -121,25 +116,21 @@ public class RepoForksActivity extends BaseActivity {
 			if(forksList.size() == resultLimit || pageSize == resultLimit) {
 
 				int page = (forksList.size() + resultLimit) / resultLimit;
-				loadMore(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, page, resultLimit);
-
+				loadMore(Authorization.get(ctx), repoOwner, repoName, page, resultLimit);
 			}
-
 		}));
 
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 		recyclerView.setAdapter(adapter);
 
-		loadInitial(instanceUrl, Authorization.returnAuthentication(ctx, loginUid, instanceToken), repoOwner, repoName, pageSize, resultLimit);
-
+		loadInitial(Authorization.get(ctx), repoOwner, repoName, pageSize, resultLimit);
 	}
 
-	private void loadInitial(String instanceUrl, String instanceToken, String repoOwner, String repoName, int pageSize, int resultLimit) {
+	private void loadInitial(String instanceToken, String repoOwner, String repoName, int pageSize, int resultLimit) {
 
 		Call<List<UserRepositories>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.getRepositoryForks(instanceToken, repoOwner, repoName, pageSize, resultLimit);
 
 		call.enqueue(new Callback<List<UserRepositories>>() {
@@ -150,29 +141,27 @@ public class RepoForksActivity extends BaseActivity {
 				if(response.isSuccessful()) {
 
 					assert response.body() != null;
+
 					if(response.body().size() > 0) {
 
 						forksList.clear();
 						forksList.addAll(response.body());
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.GONE);
-
 					}
 					else {
+
 						forksList.clear();
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.VISIBLE);
 					}
 
 					progressBar.setVisibility(View.GONE);
-
 				}
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
-
 			}
 
 			@Override
@@ -180,18 +169,16 @@ public class RepoForksActivity extends BaseActivity {
 
 				Log.e(TAG, t.toString());
 			}
-
 		});
 
 	}
 
-	private void loadMore(String instanceUrl, String instanceToken, String repoOwner, String repoName, int page, int resultLimit) {
+	private void loadMore(String instanceToken, String repoOwner, String repoName, int page, int resultLimit) {
 
 		progressLoadMore.setVisibility(View.VISIBLE);
 
 		Call<List<UserRepositories>> call = RetrofitClient
-			.getInstance(instanceUrl, ctx)
-			.getApiInterface()
+			.getApiInterface(ctx)
 			.getRepositoryForks(instanceToken, repoOwner, repoName, page, resultLimit);
 
 		call.enqueue(new Callback<List<UserRepositories>>() {
@@ -205,37 +192,31 @@ public class RepoForksActivity extends BaseActivity {
 					forksList.remove(forksList.size() - 1);
 
 					List<UserRepositories> result = response.body();
-
 					assert result != null;
+
 					if(result.size() > 0) {
 
 						pageSize = result.size();
 						forksList.addAll(result);
-
 					}
 					else {
 
 						adapter.setMoreDataAvailable(false);
-
 					}
 
 					adapter.notifyDataChanged();
 					progressLoadMore.setVisibility(View.GONE);
-
 				}
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
 
 				Log.e(TAG, t.toString());
-
 			}
 
 		});
@@ -270,7 +251,6 @@ public class RepoForksActivity extends BaseActivity {
 		});
 
 		return super.onCreateOptionsMenu(menu);
-
 	}
 
 	private void filter(String text) {
@@ -278,7 +258,9 @@ public class RepoForksActivity extends BaseActivity {
 		List<UserRepositories> arr = new ArrayList<>();
 
 		for(UserRepositories d : forksList) {
+
 			if(d.getName().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
+
 				arr.add(d);
 			}
 		}
@@ -289,6 +271,7 @@ public class RepoForksActivity extends BaseActivity {
 	private void initCloseListener() {
 
 		onClickListener = view -> {
+
 			getIntent().removeExtra("repoFullNameForForks");
 			finish();
 		};

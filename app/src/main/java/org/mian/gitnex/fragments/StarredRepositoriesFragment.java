@@ -15,9 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,14 +24,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.StarredReposListAdapter;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.UserRepositories;
 import org.mian.gitnex.viewmodels.StarredRepositoriesViewModel;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -79,15 +74,11 @@ public class StarredRepositoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_starred_repositories, container, false);
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
         setHasOptionsMenu(true);
 
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-
         final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+
+	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navStarredRepos));
 
         noData = v.findViewById(R.id.noData);
         mProgressBar = v.findViewById(R.id.progress_bar);
@@ -101,14 +92,10 @@ public class StarredRepositoriesFragment extends Fragment {
 
         createNewRepo = v.findViewById(R.id.addNewRepo);
 
-        createNewRepo.setOnClickListener(new View.OnClickListener() {
+        createNewRepo.setOnClickListener(view -> {
 
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-                startActivity(intent);
-            }
-
+            Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
+            startActivity(intent);
         });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -131,57 +118,53 @@ public class StarredRepositoriesFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+            StarredRepositoriesViewModel.loadStarredReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
 
         }, 50));
 
-        fetchDataAsync(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), pageSize, resultLimit);
+        fetchDataAsync(Authorization.get(getContext()), pageSize, resultLimit);
 
         return v;
     }
 
     @Override
     public void onResume() {
+
         super.onResume();
-        TinyDB tinyDb = new TinyDB(getContext());
-        final String instanceUrl = tinyDb.getString("instanceUrl");
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
         if(tinyDb.getBoolean("repoCreated")) {
-            StarredRepositoriesViewModel.loadStarredReposList(instanceUrl, Authorization.returnAuthentication(getContext(), loginUid, instanceToken), getContext(), pageSize, resultLimit);
+            StarredRepositoriesViewModel.loadStarredReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
             tinyDb.putBoolean("repoCreated", false);
         }
-
     }
 
-    private void fetchDataAsync(String instanceUrl, String instanceToken, int pageSize, int resultLimit) {
+    private void fetchDataAsync(String instanceToken, int pageSize, int resultLimit) {
 
         StarredRepositoriesViewModel starredRepoModel = new ViewModelProvider(this).get(StarredRepositoriesViewModel.class);
 
-        starredRepoModel.getUserStarredRepositories(instanceUrl, instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(), new Observer<List<UserRepositories>>() {
-            @Override
-            public void onChanged(@Nullable List<UserRepositories> starredReposListMain) {
-                adapter = new StarredReposListAdapter(getContext(), starredReposListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setAdapter(adapter);
-                    noData.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mRecyclerView.setAdapter(adapter);
-                    noData.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
-            }
-        });
+        starredRepoModel.getUserStarredRepositories(instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
+	        starredReposListMain -> {
+
+	            adapter = new StarredReposListAdapter(getContext(), starredReposListMain);
+	            if(adapter.getItemCount() > 0) {
+	                mRecyclerView.setAdapter(adapter);
+	                noData.setVisibility(View.GONE);
+	            }
+	            else {
+	                adapter.notifyDataSetChanged();
+	                mRecyclerView.setAdapter(adapter);
+	                noData.setVisibility(View.VISIBLE);
+	            }
+	            mProgressBar.setVisibility(View.GONE);
+	        });
 
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

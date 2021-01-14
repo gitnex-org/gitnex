@@ -50,12 +50,13 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		private ImageView assigneesAvatar;
 
 		private AssigneesViewHolder(View itemView) {
+
 			super(itemView);
+			this.setIsRecyclable(false);
 
 			assigneesSelection = itemView.findViewById(R.id.assigneesSelection);
 			assigneesName = itemView.findViewById(R.id.assigneesName);
 			assigneesAvatar = itemView.findViewById(R.id.assigneesAvatar);
-
 		}
 	}
 
@@ -73,9 +74,11 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		Collaborators currentItem = assigneesList.get(position);
 
 		if(currentItem.getFull_name().equals("")) {
+
 			holder.assigneesName.setText(currentItem.getLogin());
 		}
 		else {
+
 			holder.assigneesName.setText(currentItem.getFull_name());
 		}
 		PicassoService
@@ -90,6 +93,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		}
 
 		currentAssignees = new ArrayList<>(new LinkedHashSet<>(currentAssignees));
+
 		for(int i = 0; i < currentAssignees.size(); i++) {
 
 			if(currentAssignees.contains(currentItem.getLogin())) {
@@ -98,6 +102,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 				assigneesStrings.add(currentAssignees.get(i));
 			}
 		}
+
 		assigneesListener.assigneesInterface(assigneesStrings);
 
 		holder.assigneesSelection.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -119,6 +124,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 
 	@Override
 	public int getItemCount() {
+
 		return assigneesList.size();
 	}
 

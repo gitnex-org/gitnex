@@ -24,22 +24,13 @@ public class AboutFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		FragmentAboutBinding viewBinding = FragmentAboutBinding.inflate(inflater, container, false);
-        TinyDB tinyDb = new TinyDB(getContext());
+        TinyDB tinyDb = TinyDB.getInstance(getContext());
 
 	    viewBinding.appVersion.setText(AppUtil.getAppVersion(requireContext()));
 	    viewBinding.userServerVersion.setText(tinyDb.getString("giteaVersion"));
 	    viewBinding.appBuild.setText(String.valueOf(AppUtil.getAppBuildNo(requireContext())));
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleAbout));
-
-		viewBinding.donationLinkLiberapay.setOnClickListener(v1 -> {
-
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse(getResources().getString(R.string.supportLink)));
-            startActivity(intent);
-        });
 
 		viewBinding.donationLinkPatreon.setOnClickListener(v12 -> {
 
@@ -72,7 +63,6 @@ public class AboutFragment extends Fragment {
 
 			viewBinding.supportHeader.setVisibility(View.GONE);
 			viewBinding.dividerSupport.setVisibility(View.GONE);
-			viewBinding.donationLinkLiberapay.setVisibility(View.GONE);
 			viewBinding.donationLinkPatreon.setVisibility(View.GONE);
 		}
 

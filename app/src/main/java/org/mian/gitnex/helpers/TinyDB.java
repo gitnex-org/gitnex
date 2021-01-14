@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import java.io.File;
@@ -18,14 +17,23 @@ import java.util.Map;
 
 public class TinyDB {
 
-    private SharedPreferences preferences;
+	private static TinyDB tinyDB;
+
+    private final SharedPreferences preferences;
     private String DEFAULT_APP_IMAGEDATA_DIRECTORY;
     private String lastImagePath = "";
 
-    public TinyDB(Context appContext) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+	private TinyDB(Context appContext) {
+        preferences = appContext.getSharedPreferences(appContext.getPackageName() + "_preferences", Context.MODE_PRIVATE);
     }
 
+	public static synchronized TinyDB getInstance(Context context) {
+		if(tinyDB == null) {
+			tinyDB = new TinyDB(context);
+		}
+
+		return tinyDB;
+	}
 
     /**
      * Decodes the Bitmap from 'path' and returns it

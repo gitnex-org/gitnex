@@ -1,10 +1,5 @@
 package org.mian.gitnex.helpers;
 
-import java.io.IOException;
-import java.util.Objects;
-import org.mian.gitnex.R;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -12,6 +7,11 @@ import android.content.res.XmlResourceParser;
 import android.text.Html;
 import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
+import org.mian.gitnex.R;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -90,13 +90,14 @@ public class ChangeLog {
 
 		String changelogMessage = getChangelog(resId, res);
 
-		androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(changelogActivity);
+		AlertDialog.Builder builder = new AlertDialog.Builder(changelogActivity);
+
 		builder.setTitle(R.string.changelogTitle);
 		builder.setMessage(Html.fromHtml("<small>" + changelogMessage + "</small>"));
 		builder.setNeutralButton(R.string.close, null);
 		builder.setCancelable(false);
-		builder.create();
-		builder.show();
+
+		builder.create().show();
 
 	}
 

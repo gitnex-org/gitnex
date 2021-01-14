@@ -26,6 +26,8 @@ public class Draft implements Serializable {
 	private String draftType;
 	@Nullable
 	private String commentId;
+	@Nullable
+	private String issueType;
 
 	public int getDraftId() {
 
@@ -97,6 +99,17 @@ public class Draft implements Serializable {
 	public void setCommentId(@Nullable String commentId) {
 
 		this.commentId = commentId;
+	}
+
+	@Nullable
+	public String getIssueType() {
+
+		return issueType;
+	}
+
+	public void setIssueType(@Nullable String issueType) {
+
+		this.issueType = issueType;
 	}
 
 }
