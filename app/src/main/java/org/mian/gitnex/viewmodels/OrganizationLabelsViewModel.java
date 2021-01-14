@@ -28,7 +28,7 @@ public class OrganizationLabelsViewModel extends ViewModel {
 	public LiveData<List<Labels>> getOrgLabelsList(String token, String owner, Context ctx, ProgressBar progressBar, TextView noData) {
 
 		orgLabelsList = new MutableLiveData<>();
-		loadOrgLabelsList(token, owner, ctx, progressBar = null, noData = null);
+		loadOrgLabelsList(token, owner, ctx, progressBar, noData);
 
 		return orgLabelsList;
 	}
