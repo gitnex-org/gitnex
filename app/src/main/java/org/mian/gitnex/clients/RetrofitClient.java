@@ -36,8 +36,6 @@ public class RetrofitClient {
 
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
-		final boolean connToInternet = AppUtil.hasNetworkConnection(context);
-
 		int cacheSize = FilesData.returnOnlyNumber(tinyDB.getString("cacheSizeStr")) * 1024 * 1024;
 		Cache cache = new Cache(new File(context.getCacheDir(), "responses"), cacheSize);
 
@@ -59,7 +57,7 @@ public class RetrofitClient {
 
 					Request request = chain.request();
 
-					request = connToInternet ?
+					request = AppUtil.hasNetworkConnection(context) ?
 						request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build() :
 						request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build();
 

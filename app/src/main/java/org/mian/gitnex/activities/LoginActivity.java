@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,7 +18,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.NetworkObserver;
+import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -63,7 +64,7 @@ public class LoginActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		NetworkObserver networkMonitor = new NetworkObserver(ctx);
+		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.get(ctx);
 
 		loginButton = findViewById(R.id.login_button);
 		instanceUrlET = findViewById(R.id.instance_url);
@@ -79,7 +80,7 @@ public class LoginActivity extends BaseActivity {
 		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 
 		protocolSpinner.setAdapter(adapterProtocols);
-
+		protocolSpinner.setSelection(0);
 		protocolSpinner.setOnItemClickListener((parent, view, position, id) -> {
 
 			selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
@@ -115,18 +116,24 @@ public class LoginActivity extends BaseActivity {
 			}
 		});
 
-		networkMonitor.onInternetStateListener(isAvailable -> {
+		Handler handler = new Handler(getMainLooper());
 
-			if(isAvailable) {
+		networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> {
 
-				enableProcessButton();
-			}
-			else {
+			handler.post(() -> {
 
-				disableProcessButton();
-				loginButton.setText(getResources().getString(R.string.btnLogin));
-				Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			}
+				if(hasNetworkConnection) {
+
+					enableProcessButton();
+				}
+				else {
+
+					disableProcessButton();
+					loginButton.setText(getResources().getString(R.string.btnLogin));
+					Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+				}
+
+			});
 		});
 
 		loadDefaults();
@@ -267,8 +274,10 @@ public class LoginActivity extends BaseActivity {
 
 					if(gitea_version.less(getString(R.string.versionLow))) {
 
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
-							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setIcon(R.drawable.ic_warning)
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx)
+							.setTitle(getString(R.string.versionAlertDialogHeader))
+							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
+							.setIcon(R.drawable.ic_warning)
 							.setCancelable(true);
 
 						alertDialogBuilder.setNegativeButton(getString(R.string.cancelButton), (dialog, which) -> {

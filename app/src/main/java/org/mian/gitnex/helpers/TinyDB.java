@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import java.io.File;
@@ -25,7 +24,7 @@ public class TinyDB {
     private String lastImagePath = "";
 
 	private TinyDB(Context appContext) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+        preferences = appContext.getSharedPreferences(appContext.getPackageName() + "_preferences", Context.MODE_PRIVATE);
     }
 
 	public static synchronized TinyDB getInstance(Context context) {
