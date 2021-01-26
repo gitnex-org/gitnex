@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -33,7 +34,7 @@ import java.util.Locale;
 
 public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private Context context;
+	private final Context context;
 	private final int TYPE_LOAD = 0;
 	private List<Issues> issuesList;
 	private OnLoadMoreListener loadMoreListener;
@@ -100,11 +101,11 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
 
-		private TextView issueNumber;
-		private ImageView issueAssigneeAvatar;
-		private TextView issueTitle;
-		private TextView issueCreatedTime;
-		private TextView issueCommentsCount;
+		private final TextView issueNumber;
+		private final ImageView issueAssigneeAvatar;
+		private final TextView issueTitle;
+		private final TextView issueCreatedTime;
+		private final TextView issueCommentsCount;
 
 		IssuesHolder(View itemView) {
 
@@ -163,7 +164,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			PicassoService.getInstance(context).get().load(issuesModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
 
 			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + issuesModel.getNumber() + "</font>";
-			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + issuesModel.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
+			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(issuesModel.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
 			issueNumber.setText(String.valueOf(issuesModel.getNumber()));
 			issueCommentsCount.setText(String.valueOf(issuesModel.getComments()));

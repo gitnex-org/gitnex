@@ -29,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -322,7 +323,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 		}
 		else if(id == R.id.markdown) {
 
-			new Markdown(ctx, appUtil.decodeBase64(tinyDB.getString("downloadFileContents")), singleFileContents);
+			new Markdown(ctx, EmojiParser.parseToUnicode(appUtil.decodeBase64(tinyDB.getString("downloadFileContents"))), singleFileContents);
 
 			if(!tinyDB.getBoolean("enableMarkdownInFileView")) {
 
