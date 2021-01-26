@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import androidx.core.content.res.ResourcesCompat;
 import org.mian.gitnex.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +26,7 @@ public class UserMentions {
 
             int indexStart = String.valueOf(bodyWithMD).indexOf(matcher.group());
             int indexEnd = indexStart + matcher.group().length();
-            bodyWithMentions.setSpan(new ForegroundColorSpan(mCtx.getResources().getColor(R.color.colorDarkGreen)), indexStart, indexEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            bodyWithMentions.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(mCtx.getResources(), R.color.colorDarkGreen, null)), indexStart, indexEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         }
         return bodyWithMentions;

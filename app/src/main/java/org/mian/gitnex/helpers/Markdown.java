@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.text.Spanned;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import java.util.concurrent.ExecutorService;
@@ -76,7 +77,7 @@ public class Markdown {
 					public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
 						builder.codeBlockTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf"));
 						builder.codeTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf"));
-						builder.linkColor(context.getResources().getColor(R.color.lightBlue));
+						builder.linkColor(ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null));
 					}
 				});
 

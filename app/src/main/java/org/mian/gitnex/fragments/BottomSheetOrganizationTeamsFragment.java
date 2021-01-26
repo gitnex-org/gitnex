@@ -6,11 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.BottomSheetOrganizationTeamsBinding;
 
 /**
  * Author M M Arif
@@ -24,18 +23,16 @@ public class BottomSheetOrganizationTeamsFragment extends BottomSheetDialogFragm
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.bottom_sheet_organization_teams, container, false);
+		BottomSheetOrganizationTeamsBinding bottomSheetOrganizationTeamsBinding = BottomSheetOrganizationTeamsBinding.inflate(inflater, container, false);
 
-		TextView addNewMember = v.findViewById(R.id.addNewMember);
-
-		addNewMember.setOnClickListener(v1 -> {
+		bottomSheetOrganizationTeamsBinding.addNewMember.setOnClickListener(v1 -> {
 
 			bmListener.onButtonClicked("newMember");
 			dismiss();
 
 		});
 
-		return v;
+		return bottomSheetOrganizationTeamsBinding.getRoot();
 
 	}
 

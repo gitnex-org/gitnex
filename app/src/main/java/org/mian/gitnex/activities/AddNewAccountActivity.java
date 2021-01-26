@@ -57,10 +57,9 @@ public class AddNewAccountActivity extends BaseActivity {
 		viewBinding.close.setOnClickListener(onClickListener);
 
 		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
+
 		viewBinding.protocolSpinner.setAdapter(adapterProtocols);
-
 		viewBinding.protocolSpinner.setOnItemClickListener((parent, view1, position, id) -> spinnerSelectedValue = String.valueOf(parent.getItemAtPosition(position)));
-
 		viewBinding.addNewAccount.setOnClickListener(login -> {
 
 			boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);

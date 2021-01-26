@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.BottomSheetIssuesFilterBinding;
 
 /**
  * Author M M Arif
@@ -23,22 +22,19 @@ public class BottomSheetIssuesFilterFragment extends BottomSheetDialogFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.bottom_sheet_issues_filter, container, false);
+		BottomSheetIssuesFilterBinding bottomSheetIssuesFilterBinding = BottomSheetIssuesFilterBinding.inflate(inflater, container, false);
 
-		TextView openIssues = v.findViewById(R.id.openIssues);
-		TextView closedIssues = v.findViewById(R.id.closedIssues);
-
-		openIssues.setOnClickListener(v1 -> {
+		bottomSheetIssuesFilterBinding.openIssues.setOnClickListener(v1 -> {
 			bmListener.onButtonClicked("openIssues");
 			dismiss();
 		});
 
-		closedIssues.setOnClickListener(v12 -> {
+		bottomSheetIssuesFilterBinding.closedIssues.setOnClickListener(v12 -> {
 			bmListener.onButtonClicked("closedIssues");
 			dismiss();
 		});
 
-		return v;
+		return bottomSheetIssuesFilterBinding.getRoot();
 	}
 
 	public interface BottomSheetListener {

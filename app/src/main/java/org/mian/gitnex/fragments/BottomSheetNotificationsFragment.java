@@ -13,10 +13,10 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.NotificationsActions;
+import org.mian.gitnex.databinding.BottomSheetNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.models.NotificationThread;
-import java.util.Objects;
 
 /**
  * Author opyale
@@ -40,14 +40,14 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.bottom_sheet_notifications, container, false);
+		BottomSheetNotificationsBinding bottomSheetNotificationsBinding = BottomSheetNotificationsBinding.inflate(inflater, container, false);
 
-		TextView markRead = v.findViewById(R.id.markRead);
-		TextView markUnread = v.findViewById(R.id.markUnread);
-		TextView markPinned = v.findViewById(R.id.markPinned);
+		TextView markRead = bottomSheetNotificationsBinding.markRead;
+		TextView markUnread = bottomSheetNotificationsBinding.markUnread;
+		TextView markPinned = bottomSheetNotificationsBinding.markPinned;
 
 		NotificationsActions notificationsActions = new NotificationsActions(context);
-		Activity activity = Objects.requireNonNull(getActivity());
+		Activity activity = requireActivity();
 
 		if(notificationThread.isPinned()) {
 
@@ -135,7 +135,7 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 		});
 
-		return v;
+		return bottomSheetNotificationsBinding.getRoot();
 
 	}
 

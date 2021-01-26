@@ -1,7 +1,6 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -81,10 +82,10 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 		NotificationThread notificationThread = notificationThreads.get(position);
 
 		String url = notificationThread.getSubject().getUrl();
-		String subjectId = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources()
+		String subjectId = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources()
 			.getString(R.string.hash) + url.substring(url.lastIndexOf("/") + 1) + "</font>";
 
-		holder.subject.setText(Html.fromHtml(subjectId + " " + notificationThread.getSubject().getTitle()));
+		holder.subject.setText(HtmlCompat.fromHtml(subjectId + " " + notificationThread.getSubject().getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 		holder.repository.setText(notificationThread.getRepository().getFullName());
 
 		if(notificationThread.isPinned()) {

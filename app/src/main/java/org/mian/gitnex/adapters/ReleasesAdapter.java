@@ -1,7 +1,6 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
@@ -153,11 +153,11 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    });
 
         holder.releaseZipDownload.setText(
-                Html.fromHtml("<a href='" + currentItem.getZipball_url() + "'>" + mCtx.getResources().getString(R.string.zipArchiveDownloadReleasesTab) + "</a> "));
+                HtmlCompat.fromHtml("<a href='" + currentItem.getZipball_url() + "'>" + mCtx.getResources().getString(R.string.zipArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
         holder.releaseZipDownload.setMovementMethod(LinkMovementMethod.getInstance());
 
         holder.releaseTarDownload.setText(
-                Html.fromHtml("<a href='" + currentItem.getTarball_url() + "'>" + mCtx.getResources().getString(R.string.tarArchiveDownloadReleasesTab) + "</a> "));
+                HtmlCompat.fromHtml("<a href='" + currentItem.getTarball_url() + "'>" + mCtx.getResources().getString(R.string.tarArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
         holder.releaseTarDownload.setMovementMethod(LinkMovementMethod.getInstance());
 
 	    ReleasesDownloadsAdapter adapter = new ReleasesDownloadsAdapter(currentItem.getAssets());

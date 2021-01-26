@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCreateLabelBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -50,6 +51,8 @@ public class CreateLabelActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
+	    ActivityCreateLabelBinding activityCreateLabelBinding = ActivityCreateLabelBinding.inflate(getLayoutInflater());
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         tinyDB = TinyDB.getInstance(appCtx);
@@ -67,10 +70,10 @@ public class CreateLabelActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        colorPicker = findViewById(R.id.colorPicker);
-        labelName = findViewById(R.id.labelName);
-        createLabelButton = findViewById(R.id.createLabelButton);
+        ImageView closeActivity = activityCreateLabelBinding.close;
+        colorPicker = activityCreateLabelBinding.colorPicker;
+        labelName = activityCreateLabelBinding.labelName;
+        createLabelButton = activityCreateLabelBinding.createLabelButton;
 
         labelName.requestFocus();
         assert imm != null;
@@ -97,7 +100,7 @@ public class CreateLabelActivity extends BaseActivity {
             colorPicker.setBackgroundColor(labelColor_);
 	        tinyDB.putString("labelColorDefault", "#" + getIntent().getStringExtra("labelColor"));
 
-            TextView toolbar_title = findViewById(R.id.toolbar_title);
+            TextView toolbar_title = activityCreateLabelBinding.toolbarTitle;
             toolbar_title.setText(getResources().getString(R.string.pageTitleLabelUpdate));
             createLabelButton.setText(getResources().getString(R.string.newUpdateButtonCopy));
 

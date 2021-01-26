@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.FilesDiffAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityFileDiffBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.TinyDB;
@@ -46,7 +47,9 @@ public class FileDiffActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		Toolbar toolbar = findViewById(R.id.toolbar);
+		ActivityFileDiffBinding activityFileDiffBinding = ActivityFileDiffBinding.inflate(getLayoutInflater());
+
+		Toolbar toolbar = activityFileDiffBinding.toolbar;
 		setSupportActionBar(toolbar);
 
 		final TinyDB tinyDb = TinyDB.getInstance(appCtx);
@@ -57,10 +60,10 @@ public class FileDiffActivity extends BaseActivity {
 		final String loginUid = tinyDb.getString("loginUid");
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-		ImageView closeActivity = findViewById(R.id.close);
-		toolbarTitle = findViewById(R.id.toolbar_title);
-		mListView = findViewById(R.id.listView);
-		mProgressBar = findViewById(R.id.progress_bar);
+		ImageView closeActivity = activityFileDiffBinding.close;
+		toolbarTitle = activityFileDiffBinding.toolbarTitle;
+		mListView = activityFileDiffBinding.listView;
+		mProgressBar = activityFileDiffBinding.progressBar;
 
 		mListView.setDivider(null);
 

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vdurmont.emoji.EmojiParser;
@@ -220,7 +221,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 					String dueDate = formatter.format(date);
 
 					if(date.before(new Date())) {
-						msDueDate.setTextColor(context.getResources().getColor(R.color.darkRed));
+						msDueDate.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.darkRed, null));
 					}
 
 					msDueDate.setText(dueDate);

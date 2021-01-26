@@ -6,11 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.BottomSheetMilestonesFilterBinding;
 
 /**
  * Author M M Arif
@@ -24,22 +23,19 @@ public class BottomSheetMilestonesFilterFragment extends BottomSheetDialogFragme
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.bottom_sheet_milestones_filter, container, false);
+		BottomSheetMilestonesFilterBinding bottomSheetMilestonesFilterBinding = BottomSheetMilestonesFilterBinding.inflate(inflater, container, false);
 
-		TextView openMilestone = v.findViewById(R.id.openMilestone);
-		TextView closedMilestone = v.findViewById(R.id.closedMilestone);
-
-		openMilestone.setOnClickListener(v1 -> {
+		bottomSheetMilestonesFilterBinding.openMilestone.setOnClickListener(v1 -> {
 			bmListener.onButtonClicked("openMilestone");
 			dismiss();
 		});
 
-		closedMilestone.setOnClickListener(v12 -> {
+		bottomSheetMilestonesFilterBinding.closedMilestone.setOnClickListener(v12 -> {
 			bmListener.onButtonClicked("closedMilestone");
 			dismiss();
 		});
 
-		return v;
+		return bottomSheetMilestonesFilterBinding.getRoot();
 	}
 
 	public interface BottomSheetListener {

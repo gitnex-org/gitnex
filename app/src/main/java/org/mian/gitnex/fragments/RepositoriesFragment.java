@@ -26,6 +26,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
+import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.RepositoriesListViewModel;
@@ -41,23 +42,24 @@ public class RepositoriesFragment extends Fragment {
     private ReposListAdapter adapter;
     private ExtendedFloatingActionButton createNewRepo;
     private TextView noDataRepo;
-    private int pageSize = 1;
-    private int resultLimit = 50;
+    private final int pageSize = 1;
+    private final int resultLimit = 50;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.fragment_repositories, container, false);
+	    FragmentRepositoriesBinding fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+
         setHasOptionsMenu(true);
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentRepositoriesBinding.pullToRefresh;
 
 	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navRepos));
 
-        noDataRepo = v.findViewById(R.id.noData);
-        mProgressBar = v.findViewById(R.id.progress_bar);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        noDataRepo = fragmentRepositoriesBinding.noData;
+        mProgressBar = fragmentRepositoriesBinding.progressBar;
+        mRecyclerView = fragmentRepositoriesBinding.recyclerView;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -65,7 +67,7 @@ public class RepositoriesFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        createNewRepo = v.findViewById(R.id.addNewRepo);
+        createNewRepo = fragmentRepositoriesBinding.addNewRepo;
 
         createNewRepo.setOnClickListener(view -> {
 
@@ -98,7 +100,7 @@ public class RepositoriesFragment extends Fragment {
         }, 50));
 
         fetchDataAsync(Authorization.get(getContext()), pageSize, resultLimit);
-        return v;
+        return fragmentRepositoriesBinding.getRoot();
 
     }
 

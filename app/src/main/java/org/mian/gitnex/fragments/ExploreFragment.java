@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.databinding.FragmentExploreBinding;
 import org.mian.gitnex.helpers.TinyDB;
 
 /**
@@ -32,15 +33,16 @@ public class ExploreFragment extends Fragment {
 
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_explore, container,false);
+		FragmentExploreBinding fragmentExploreBinding = FragmentExploreBinding.inflate(inflater, container, false);
+
 		ctx = getContext();
 		tinyDB = TinyDB.getInstance(ctx);
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navExplore));
 
-		TabLayout tabLayout = v.findViewById(R.id.tabsExplore);
+		TabLayout tabLayout = fragmentExploreBinding.tabsExplore;
 
 		ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
 		tabsCount = viewGroup.getChildCount();
@@ -78,7 +80,7 @@ public class ExploreFragment extends Fragment {
 			}
 		}
 
-		mViewPager = v.findViewById(R.id.containerExplore);
+		mViewPager = fragmentExploreBinding.containerExplore;
 
 		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -86,7 +88,7 @@ public class ExploreFragment extends Fragment {
 		SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		return v;
+		return fragmentExploreBinding.getRoot();
 	}
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {

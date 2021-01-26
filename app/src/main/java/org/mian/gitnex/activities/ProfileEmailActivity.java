@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityProfileEmailBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -45,13 +46,15 @@ public class ProfileEmailActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
+	    ActivityProfileEmailBinding activityProfileEmailBinding = ActivityProfileEmailBinding.inflate(getLayoutInflater());
+
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        userEmail = findViewById(R.id.userEmail);
-        addEmailButton = findViewById(R.id.addEmailButton);
+        ImageView closeActivity = activityProfileEmailBinding.close;
+        userEmail = activityProfileEmailBinding.userEmail;
+        addEmailButton = activityProfileEmailBinding.addEmailButton;
 
         userEmail.requestFocus();
         assert imm != null;

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentOrganizationInfoBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.models.Organization;
@@ -64,21 +65,21 @@ public class OrganizationInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_organization_info, container, false);
+        FragmentOrganizationInfoBinding fragmentOrganizationInfoBinding = FragmentOrganizationInfoBinding.inflate(inflater, container, false);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
-        orgAvatar = v.findViewById(R.id.orgAvatar);
-        TextView orgNameInfo = v.findViewById(R.id.orgNameInfo);
-        orgDescInfo = v.findViewById(R.id.orgDescInfo);
-        orgWebsiteInfo = v.findViewById(R.id.orgWebsiteInfo);
-        orgLocationInfo = v.findViewById(R.id.orgLocationInfo);
-	    orgInfoLayout = v.findViewById(R.id.orgInfoLayout);
+        mProgressBar = fragmentOrganizationInfoBinding.progressBar;
+        orgAvatar = fragmentOrganizationInfoBinding.orgAvatar;
+        TextView orgNameInfo = fragmentOrganizationInfoBinding.orgNameInfo;
+        orgDescInfo = fragmentOrganizationInfoBinding.orgDescInfo;
+        orgWebsiteInfo = fragmentOrganizationInfoBinding.orgWebsiteInfo;
+        orgLocationInfo = fragmentOrganizationInfoBinding.orgLocationInfo;
+	    orgInfoLayout = fragmentOrganizationInfoBinding.orgInfoLayout;
 
         orgNameInfo.setText(orgName);
 
         getOrgInfo(Authorization.get(getContext()), orgName);
 
-        return v;
+        return fragmentOrganizationInfoBinding.getRoot();
 
     }
 

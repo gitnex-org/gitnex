@@ -9,6 +9,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import org.mian.gitnex.R;
@@ -86,12 +87,12 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
             holder.userRole.setVisibility(View.VISIBLE);
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
-                    .textColor(mCtx.getResources().getColor(R.color.colorWhite))
+                    .textColor(ResourcesCompat.getColor(mCtx.getResources(), R.color.colorWhite, null))
                     .fontSize(44)
                     .width(180)
                     .height(60)
                     .endConfig()
-                    .buildRoundRect(mCtx.getResources().getString(R.string.userRoleAdmin).toLowerCase(), mCtx.getResources().getColor(R.color.releasePre), 8);
+                    .buildRoundRect(mCtx.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(mCtx.getResources(), R.color.releasePre, null), 8);
             holder.userRole.setImageDrawable(drawable);
         }
         else {

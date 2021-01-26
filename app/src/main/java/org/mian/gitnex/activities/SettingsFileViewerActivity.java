@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.ActivitySettingsFileviewerBinding;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -24,7 +25,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 	@Override
 	protected int getLayoutResourceId() {
 
-		return R.layout.activity_settings_fileview;
+		return R.layout.activity_settings_fileviewer;
 	}
 
 	@Override
@@ -32,16 +33,16 @@ public class SettingsFileViewerActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ImageView closeActivity = findViewById(R.id.close);
+		ActivitySettingsFileviewerBinding activitySettingsFileviewerBinding = ActivitySettingsFileviewerBinding.inflate(getLayoutInflater());
+
+		ImageView closeActivity = activitySettingsFileviewerBinding.close;
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		final TextView fileViewerSourceCodeThemesSelected = findViewById(R.id.sourceCodeThemeSelected); // setter for fileviewer theme
-
-		LinearLayout sourceCodeThemeFrame = findViewById(R.id.sourceCodeThemeFrame);
-
-		SwitchMaterial pdfModeSwitch = findViewById(R.id.switchPdfMode);
+		TextView fileViewerSourceCodeThemesSelected = activitySettingsFileviewerBinding.sourceCodeThemeSelected; // setter for fileviewer theme
+		LinearLayout sourceCodeThemeFrame = activitySettingsFileviewerBinding.sourceCodeThemeFrame;
+		SwitchMaterial pdfModeSwitch = activitySettingsFileviewerBinding.switchPdfMode;
 
 		if(!tinyDB.getString("fileviewerSourceCodeThemeStr").isEmpty()) {
 			fileViewerSourceCodeThemesSelected.setText(tinyDB.getString("fileviewerSourceCodeThemeStr"));

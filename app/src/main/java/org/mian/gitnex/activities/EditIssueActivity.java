@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityEditIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -74,6 +75,8 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
 
+	    ActivityEditIssueBinding activityEditIssueBinding = ActivityEditIssueBinding.inflate(getLayoutInflater());
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         loginUid = tinyDB.getString("loginUid");
@@ -84,12 +87,12 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         repoName = parts[1];
         issueIndex = Integer.parseInt(tinyDB.getString("issueNumber"));
 
-        ImageView closeActivity = findViewById(R.id.close);
-        editIssueButton = findViewById(R.id.editIssueButton);
-        TextView toolbar_title = findViewById(R.id.toolbar_title);
-        editIssueTitle = findViewById(R.id.editIssueTitle);
-        editIssueDescription = findViewById(R.id.editIssueDescription);
-        editIssueDueDate = findViewById(R.id.editIssueDueDate);
+        ImageView closeActivity = activityEditIssueBinding.close;
+        editIssueButton = activityEditIssueBinding.editIssueButton;
+        TextView toolbar_title = activityEditIssueBinding.toolbarTitle;
+        editIssueTitle = activityEditIssueBinding.editIssueTitle;
+        editIssueDescription = activityEditIssueBinding.editIssueDescription;
+        editIssueDueDate = activityEditIssueBinding.editIssueDueDate;
 
         // if gitea is 1.12 or higher use the new limit
         if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {

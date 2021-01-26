@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepositoriesByOrgAdapter;
+import org.mian.gitnex.databinding.FragmentRepositoriesByOrgBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
@@ -71,13 +72,14 @@ public class RepositoriesByOrgFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_repositories_by_org, container, false);
+	    FragmentRepositoriesByOrgBinding fragmentRepositoriesByOrgBinding = FragmentRepositoriesByOrgBinding.inflate(inflater, container, false);
+
         setHasOptionsMenu(true);
-        noData = v.findViewById(R.id.noData);
+        noData = fragmentRepositoriesByOrgBinding.noData;
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentRepositoriesByOrgBinding.pullToRefresh;
 
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView = fragmentRepositoriesByOrgBinding.recyclerView;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -85,7 +87,7 @@ public class RepositoriesByOrgFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
+        mProgressBar = fragmentRepositoriesByOrgBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -96,7 +98,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()), orgName, pageSize, resultLimit);
 
-        return v;
+        return fragmentRepositoriesByOrgBinding.getRoot();
     }
 
     @Override

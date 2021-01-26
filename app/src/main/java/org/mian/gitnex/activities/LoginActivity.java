@@ -10,13 +10,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.databinding.ActivityLoginBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
@@ -64,18 +64,20 @@ public class LoginActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
+		ActivityLoginBinding activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
+
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.get(ctx);
 
-		loginButton = findViewById(R.id.login_button);
-		instanceUrlET = findViewById(R.id.instance_url);
-		loginUidET = findViewById(R.id.login_uid);
-		loginPassword = findViewById(R.id.login_passwd);
-		otpCode = findViewById(R.id.otpCode);
-		protocolSpinner = findViewById(R.id.httpsSpinner);
-		loginMethod = findViewById(R.id.loginMethod);
-		loginTokenCode = findViewById(R.id.loginTokenCode);
+		loginButton = activityLoginBinding.loginButton;
+		instanceUrlET = activityLoginBinding.instanceUrl;
+		loginUidET = activityLoginBinding.loginUid;
+		loginPassword = activityLoginBinding.loginPasswd;
+		otpCode = activityLoginBinding.otpCode;
+		protocolSpinner = activityLoginBinding.httpsSpinner;
+		loginMethod = activityLoginBinding.loginMethod;
+		loginTokenCode = activityLoginBinding.loginTokenCode;
 
-		((TextView) findViewById(R.id.appVersion)).setText(AppUtil.getAppVersion(appCtx));
+		activityLoginBinding.appVersion.setText(AppUtil.getAppVersion(appCtx));
 
 		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 

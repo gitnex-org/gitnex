@@ -25,6 +25,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
@@ -60,7 +61,8 @@ public class IssuesFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		final View v = inflater.inflate(R.layout.fragment_issues, container, false);
+		FragmentIssuesBinding fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
+
 		setHasOptionsMenu(true);
 		context = getContext();
 
@@ -72,19 +74,19 @@ public class IssuesFragment extends Fragment {
 		final String loginUid = tinyDb.getString("loginUid");
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-		final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+		final SwipeRefreshLayout swipeRefresh = fragmentIssuesBinding.pullToRefresh;
 
 		// if gitea is 1.12 or higher use the new limit
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
-		recyclerView = v.findViewById(R.id.recyclerView);
+		recyclerView = fragmentIssuesBinding.recyclerView;
 		issuesList = new ArrayList<>();
 
-		progressLoadMore = v.findViewById(R.id.progressLoadMore);
-		mProgressBar = v.findViewById(R.id.progress_bar);
-		noDataIssues = v.findViewById(R.id.noDataIssues);
+		progressLoadMore = fragmentIssuesBinding.progressLoadMore;
+		mProgressBar = fragmentIssuesBinding.progressBar;
+		noDataIssues = fragmentIssuesBinding.noDataIssues;
 
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -147,7 +149,7 @@ public class IssuesFragment extends Fragment {
 
 		loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
-		return v;
+		return fragmentIssuesBinding.getRoot();
 
 	}
 

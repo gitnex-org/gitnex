@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.ActivityOrgDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.MembersByOrgFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
@@ -46,10 +47,12 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         super.onCreate(savedInstanceState);
 
+	    ActivityOrgDetailBinding activityOrgDetailBinding = ActivityOrgDetailBinding.inflate(getLayoutInflater());
+
         String orgName = tinyDB.getString("orgName");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+        Toolbar toolbar = activityOrgDetailBinding.toolbar;
+        TextView toolbarTitle = activityOrgDetailBinding.toolbarTitle;
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
@@ -57,10 +60,10 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter = new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
-        ViewPager mViewPager = findViewById(R.id.container);
+        ViewPager mViewPager = activityOrgDetailBinding.container;
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        TabLayout tabLayout = activityOrgDetailBinding.tabs;
 
         Typeface myTypeface;
 

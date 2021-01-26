@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoWatchersAdapter;
+import org.mian.gitnex.databinding.ActivityRepoWatchersBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 
@@ -34,11 +35,13 @@ public class RepoWatchersActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        noDataWatchers = findViewById(R.id.noDataWatchers);
-        mGridView = findViewById(R.id.gridView);
-        mProgressBar = findViewById(R.id.progress_bar);
+	    ActivityRepoWatchersBinding activityRepoWatchersBinding = ActivityRepoWatchersBinding.inflate(getLayoutInflater());
+
+        ImageView closeActivity = activityRepoWatchersBinding.close;
+        TextView toolbarTitle = activityRepoWatchersBinding.toolbarTitle;
+        noDataWatchers = activityRepoWatchersBinding.noDataWatchers;
+        mGridView = activityRepoWatchersBinding.gridView;
+        mProgressBar = activityRepoWatchersBinding.progressBar;
 
         String repoFullNameForWatchers = getIntent().getStringExtra("repoFullNameForWatchers");
         String[] parts = repoFullNameForWatchers.split("/");

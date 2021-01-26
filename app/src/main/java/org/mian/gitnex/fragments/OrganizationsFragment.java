@@ -26,6 +26,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
+import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.OrganizationListViewModel;
@@ -46,16 +47,16 @@ public class OrganizationsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.fragment_organizations, container, false);
+	    FragmentOrganizationsBinding fragmentOrganizationsBinding = FragmentOrganizationsBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentOrganizationsBinding.pullToRefresh;
 
 	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navOrgs));
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
-        noDataOrg = v.findViewById(R.id.noDataOrg);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mProgressBar = fragmentOrganizationsBinding.progressBar;
+        noDataOrg = fragmentOrganizationsBinding.noDataOrg;
+        mRecyclerView = fragmentOrganizationsBinding.recyclerView;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -63,7 +64,7 @@ public class OrganizationsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        createNewOrganization = v.findViewById(R.id.addNewOrganization);
+        createNewOrganization = fragmentOrganizationsBinding.addNewOrganization;
 
         createNewOrganization.setOnClickListener(view -> {
 
@@ -96,7 +97,7 @@ public class OrganizationsFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()));
 
-        return v;
+        return fragmentOrganizationsBinding.getRoot();
 
     }
 

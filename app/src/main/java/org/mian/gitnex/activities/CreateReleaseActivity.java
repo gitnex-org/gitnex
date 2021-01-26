@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCreateReleaseBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -60,6 +61,8 @@ public class CreateReleaseActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
+	    ActivityCreateReleaseBinding activityCreateReleaseBinding = ActivityCreateReleaseBinding.inflate(getLayoutInflater());
+
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -69,12 +72,12 @@ public class CreateReleaseActivity extends BaseActivity {
         repoOwner = parts[0];
         repoName = parts[1];
 
-        closeActivity = findViewById(R.id.close);
-        releaseTagName = findViewById(R.id.releaseTagName);
-        releaseTitle = findViewById(R.id.releaseTitle);
-        releaseContent = findViewById(R.id.releaseContent);
-        releaseType = findViewById(R.id.releaseType);
-        releaseDraft = findViewById(R.id.releaseDraft);
+        closeActivity = activityCreateReleaseBinding.close;
+        releaseTagName = activityCreateReleaseBinding.releaseTagName;
+        releaseTitle = activityCreateReleaseBinding.releaseTitle;
+        releaseContent = activityCreateReleaseBinding.releaseContent;
+        releaseType = activityCreateReleaseBinding.releaseType;
+        releaseDraft = activityCreateReleaseBinding.releaseDraft;
 
 	    releaseTitle.requestFocus();
         assert imm != null;
@@ -94,10 +97,10 @@ public class CreateReleaseActivity extends BaseActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        releaseBranch = findViewById(R.id.releaseBranch);
+        releaseBranch = activityCreateReleaseBinding.releaseBranch;
         getBranches(Authorization.get(ctx), repoOwner, repoName);
 
-        createNewRelease = findViewById(R.id.createNewRelease);
+        createNewRelease = activityCreateReleaseBinding.createNewRelease;
         disableProcessButton();
 
         if(!connToInternet) {

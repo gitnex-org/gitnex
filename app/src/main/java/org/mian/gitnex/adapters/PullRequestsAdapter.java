@@ -3,7 +3,6 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -183,8 +184,8 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				PicassoService.getInstance(context).get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
 			}
 
-			String prNumber_ = "<font color='" + context.getResources().getColor(R.color.lightGray) + "'>" + context.getResources().getString(R.string.hash) + prModel.getNumber() + "</font>";
-			prTitle.setText(Html.fromHtml(prNumber_ + " " + prModel.getTitle()));
+			String prNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + prModel.getNumber() + "</font>";
+			prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + prModel.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
 			prNumber.setText(String.valueOf(prModel.getNumber()));
 			prMergeable.setText(String.valueOf(prModel.isMergeable()));

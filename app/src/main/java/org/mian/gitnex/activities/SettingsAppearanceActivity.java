@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -38,17 +39,19 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ImageView closeActivity = findViewById(R.id.close);
+		ActivitySettingsAppearanceBinding activitySettingsAppearanceBinding = ActivitySettingsAppearanceBinding.inflate(getLayoutInflater());
 
-		final TextView tvDateTimeSelected = findViewById(R.id.tvDateTimeSelected); // setter for time
-		final TextView customFontSelected = findViewById(R.id.customFontSelected); // setter for custom font
-		final TextView themeSelected = findViewById(R.id.themeSelected); // setter for theme
+		ImageView closeActivity = activitySettingsAppearanceBinding.close;
 
-		LinearLayout timeFrame = findViewById(R.id.timeFrame);
-		LinearLayout customFontFrame = findViewById(R.id.customFontFrame);
-		LinearLayout themeFrame = findViewById(R.id.themeSelectionFrame);
+		final TextView tvDateTimeSelected = activitySettingsAppearanceBinding.tvDateTimeSelected; // setter for time
+		final TextView customFontSelected = activitySettingsAppearanceBinding.customFontSelected; // setter for custom font
+		final TextView themeSelected = activitySettingsAppearanceBinding.themeSelected; // setter for theme
 
-		SwitchMaterial counterBadgesSwitch = findViewById(R.id.switchCounterBadge);
+		LinearLayout timeFrame = activitySettingsAppearanceBinding.timeFrame;
+		LinearLayout customFontFrame = activitySettingsAppearanceBinding.customFontFrame;
+		LinearLayout themeFrame = activitySettingsAppearanceBinding.themeSelectionFrame;
+
+		SwitchMaterial counterBadgesSwitch = activitySettingsAppearanceBinding.switchCounterBadge;
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);

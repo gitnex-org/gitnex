@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.ActivitySettingsTranslationBinding;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -34,15 +35,17 @@ public class SettingsTranslationActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ImageView closeActivity = findViewById(R.id.close);
+		ActivitySettingsTranslationBinding activitySettingsTranslationBinding = ActivitySettingsTranslationBinding.inflate(getLayoutInflater());
+
+		ImageView closeActivity = activitySettingsTranslationBinding.close;
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		final TextView tvLanguageSelected = findViewById(R.id.tvLanguageSelected); // setter for en, fr
-		TextView helpTranslate = findViewById(R.id.helpTranslate);
+		final TextView tvLanguageSelected = activitySettingsTranslationBinding.tvLanguageSelected; // setter for en, fr
+		TextView helpTranslate = activitySettingsTranslationBinding.helpTranslate;
 
-		LinearLayout langFrame = findViewById(R.id.langFrame);
+		LinearLayout langFrame = activitySettingsTranslationBinding.langFrame;
 
 		helpTranslate.setOnClickListener(v12 -> {
 

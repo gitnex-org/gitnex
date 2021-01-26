@@ -24,6 +24,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
+import org.mian.gitnex.databinding.FragmentFilesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.FilesViewModel;
@@ -85,23 +86,23 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_files, container, false);
+		FragmentFilesBinding fragmentFilesBinding = FragmentFilesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
-		noDataFiles = v.findViewById(R.id.noDataFiles);
-		filesFrame = v.findViewById(R.id.filesFrame);
+		noDataFiles = fragmentFilesBinding.noDataFiles;
+		filesFrame = fragmentFilesBinding.filesFrame;
 
-		fileStructure = v.findViewById(R.id.fileStructure);
-		mRecyclerView = v.findViewById(R.id.recyclerView);
+		fileStructure = fragmentFilesBinding.fileStructure;
+		mRecyclerView = fragmentFilesBinding.recyclerView;
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-		mProgressBar = v.findViewById(R.id.progress_bar);
+		mProgressBar = fragmentFilesBinding.progressBar;
 
-		mBreadcrumbsView = v.findViewById(R.id.breadcrumbs_view);
+		mBreadcrumbsView = fragmentFilesBinding.breadcrumbsView;
 		mBreadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
 
 		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerFiles(repoBranch -> {
@@ -115,7 +116,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
 
-		return v;
+		return fragmentFilesBinding.getRoot();
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package org.mian.gitnex.adapters;
 
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.models.Releases;
@@ -53,7 +53,7 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 		if(currentItem.getName() != null) {
 
 			holder.downloadName.setText(
-				Html.fromHtml("<a href='" + currentItem.getBrowser_download_url() + "'>" + currentItem.getName() + "</a> "));
+				HtmlCompat.fromHtml("<a href='" + currentItem.getBrowser_download_url() + "'>" + currentItem.getName() + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
 			holder.downloadName.setMovementMethod(LinkMovementMethod.getInstance());
 
 		}

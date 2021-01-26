@@ -18,6 +18,7 @@ import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
+import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
@@ -36,24 +37,24 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.bottom_sheet_single_issue, container, false);
+		BottomSheetSingleIssueBinding bottomSheetSingleIssueBinding = BottomSheetSingleIssueBinding.inflate(inflater, container, false);
 
 		final Context ctx = getContext();
 		final TinyDB tinyDB = TinyDB.getInstance(ctx);
 
-		TextView editIssue = v.findViewById(R.id.editIssue);
-		TextView editLabels = v.findViewById(R.id.editLabels);
-		TextView closeIssue = v.findViewById(R.id.closeIssue);
-		TextView reOpenIssue = v.findViewById(R.id.reOpenIssue);
-		TextView addRemoveAssignees = v.findViewById(R.id.addRemoveAssignees);
-		TextView copyIssueUrl = v.findViewById(R.id.copyIssueUrl);
-		TextView openFilesDiff = v.findViewById(R.id.openFilesDiff);
-		TextView mergePullRequest = v.findViewById(R.id.mergePullRequest);
-		TextView shareIssue = v.findViewById(R.id.shareIssue);
-		TextView subscribeIssue = v.findViewById(R.id.subscribeIssue);
-		TextView unsubscribeIssue = v.findViewById(R.id.unsubscribeIssue);
+		TextView editIssue = bottomSheetSingleIssueBinding.editIssue;
+		TextView editLabels = bottomSheetSingleIssueBinding.editLabels;
+		TextView closeIssue = bottomSheetSingleIssueBinding.closeIssue;
+		TextView reOpenIssue = bottomSheetSingleIssueBinding.reOpenIssue;
+		TextView addRemoveAssignees = bottomSheetSingleIssueBinding.addRemoveAssignees;
+		TextView copyIssueUrl = bottomSheetSingleIssueBinding.copyIssueUrl;
+		TextView openFilesDiff = bottomSheetSingleIssueBinding.openFilesDiff;
+		TextView mergePullRequest = bottomSheetSingleIssueBinding.mergePullRequest;
+		TextView shareIssue = bottomSheetSingleIssueBinding.shareIssue;
+		TextView subscribeIssue = bottomSheetSingleIssueBinding.subscribeIssue;
+		TextView unsubscribeIssue = bottomSheetSingleIssueBinding.unsubscribeIssue;
 
-		LinearLayout linearLayout = v.findViewById(R.id.commentReactionButtons);
+		LinearLayout linearLayout = bottomSheetSingleIssueBinding.commentReactionButtons;
 
 		Bundle bundle1 = new Bundle();
 
@@ -221,7 +222,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			unsubscribeIssue.setVisibility(View.GONE);
 		}
 
-		return v;
+		return bottomSheetSingleIssueBinding.getRoot();
 	}
 
 	public interface BottomSheetListener {

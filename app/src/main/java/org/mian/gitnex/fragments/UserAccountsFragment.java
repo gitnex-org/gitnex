@@ -20,6 +20,7 @@ import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.databinding.FragmentUserAccountsBinding;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class UserAccountsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_user_accounts, container, false);
+		FragmentUserAccountsBinding fragmentUserAccountsBinding = FragmentUserAccountsBinding.inflate(inflater, container, false);
 		ctx = getContext();
 		setHasOptionsMenu(true);
 
@@ -49,8 +50,8 @@ public class UserAccountsFragment extends Fragment {
 		userAccountsList = new ArrayList<>();
 		userAccountsApi = new UserAccountsApi(ctx);
 
-		mRecyclerView = v.findViewById(R.id.recyclerView);
-		final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+		mRecyclerView = fragmentUserAccountsBinding.recyclerView;
+		final SwipeRefreshLayout swipeRefresh = fragmentUserAccountsBinding.pullToRefresh;
 
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -69,7 +70,7 @@ public class UserAccountsFragment extends Fragment {
 
 		}, 250));
 
-		addNewAccount = v.findViewById(R.id.addNewAccount);
+		addNewAccount = fragmentUserAccountsBinding.addNewAccount;
 		addNewAccount.setOnClickListener(view -> {
 
 			Intent intent = new Intent(view.getContext(), AddNewAccountActivity.class);
@@ -78,7 +79,7 @@ public class UserAccountsFragment extends Fragment {
 
 		fetchDataAsync();
 
-		return v;
+		return fragmentUserAccountsBinding.getRoot();
 
 	}
 

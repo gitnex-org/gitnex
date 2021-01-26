@@ -2,13 +2,14 @@ package org.mian.gitnex.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -129,8 +130,8 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 		PicassoService
 			.getInstance(mCtx).get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueAssigneeAvatar);
 
-		String issueNumber_ = "<font color='" + mCtx.getResources().getColor(R.color.lightGray) + "'>" + currentItem.getRepository().getFull_name() + mCtx.getResources().getString(R.string.hash) + currentItem.getNumber() + "</font>";
-		holder.issueTitle.setText(Html.fromHtml(issueNumber_ + " " + currentItem.getTitle()));
+		String issueNumber_ = "<font color='" + ResourcesCompat.getColor(mCtx.getResources(), R.color.lightGray, null) + "'>" + currentItem.getRepository().getFull_name() + mCtx.getResources().getString(R.string.hash) + currentItem.getNumber() + "</font>";
+		holder.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + currentItem.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
 		holder.issueNumber.setText(String.valueOf(currentItem.getNumber()));
 		holder.issueCommentsCount.setText(String.valueOf(currentItem.getComments()));

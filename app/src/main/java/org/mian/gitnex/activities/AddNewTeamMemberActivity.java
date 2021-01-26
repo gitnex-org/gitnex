@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserSearchForTeamMemberAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityAddNewTeamMemberBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserSearch;
@@ -54,13 +55,15 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
+		ActivityAddNewTeamMemberBinding activityAddNewTeamMemberBinding = ActivityAddNewTeamMemberBinding.inflate(getLayoutInflater());
+
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		ImageView closeActivity = findViewById(R.id.close);
-		addNewTeamMember = findViewById(R.id.addNewTeamMember);
-		mRecyclerView = findViewById(R.id.recyclerViewUserSearch);
-		mProgressBar = findViewById(R.id.progress_bar);
-		noData = findViewById(R.id.noData);
+		ImageView closeActivity = activityAddNewTeamMemberBinding.close;
+		addNewTeamMember = activityAddNewTeamMemberBinding.addNewTeamMember;
+		mRecyclerView = activityAddNewTeamMemberBinding.recyclerViewUserSearch;
+		mProgressBar = activityAddNewTeamMemberBinding.progressBar;
+		noData = activityAddNewTeamMemberBinding.noData;
 
 		addNewTeamMember.requestFocus();
 		assert imm != null;

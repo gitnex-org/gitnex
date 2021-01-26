@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCreateFileBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -60,7 +61,7 @@ public class CreateFileActivity extends BaseActivity {
 
     @Override
     protected int getLayoutResourceId(){
-        return R.layout.activity_new_file;
+        return R.layout.activity_create_file;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -68,6 +69,8 @@ public class CreateFileActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+	    ActivityCreateFileBinding activityCreateFileBinding = ActivityCreateFileBinding.inflate(getLayoutInflater());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -80,12 +83,12 @@ public class CreateFileActivity extends BaseActivity {
         repoName = parts[1];
         instanceToken = "token " + tinyDB.getString(loginUid + "-token");
 
-        closeActivity = findViewById(R.id.close);
-        newFileName = findViewById(R.id.newFileName);
-        newFileContent = findViewById(R.id.newFileContent);
-        newFileBranchName = findViewById(R.id.newFileBranchName);
-        newFileCommitMessage = findViewById(R.id.newFileCommitMessage);
-	    TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+        closeActivity = activityCreateFileBinding.close;
+        newFileName = activityCreateFileBinding.newFileName;
+        newFileContent = activityCreateFileBinding.newFileContent;
+        newFileBranchName = activityCreateFileBinding.newFileBranchName;
+        newFileCommitMessage = activityCreateFileBinding.newFileCommitMessage;
+	    TextView toolbarTitle = activityCreateFileBinding.toolbarTitle;
 
         newFileName.requestFocus();
         assert imm != null;
@@ -94,7 +97,7 @@ public class CreateFileActivity extends BaseActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        newFileCreate = findViewById(R.id.newFileCreate);
+        newFileCreate = activityCreateFileBinding.newFileCreate;
 
 	    newFileContent.setOnTouchListener((touchView, motionEvent) -> {
 
@@ -148,7 +151,7 @@ public class CreateFileActivity extends BaseActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        newFileBranchesSpinner = findViewById(R.id.newFileBranchesSpinner);
+        newFileBranchesSpinner = activityCreateFileBinding.newFileBranchesSpinner;
         getBranches(instanceToken, repoOwner, repoName, loginUid);
 
         disableProcessButton();

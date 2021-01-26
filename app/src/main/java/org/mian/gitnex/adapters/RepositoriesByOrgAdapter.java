@@ -328,7 +328,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
         return orgReposFilter;
     }
 
-    private Filter orgReposFilter = new Filter() {
+    private final Filter orgReposFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserRepositories> filteredList = new ArrayList<>();

@@ -24,6 +24,7 @@ import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.DraftsAdapter;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.database.models.DraftWithRepository;
+import org.mian.gitnex.databinding.FragmentDraftsBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.ArrayList;
@@ -45,10 +46,11 @@ public class DraftsFragment extends Fragment {
 	private SwipeRefreshLayout swipeRefresh;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_drafts, container, false);
+    	FragmentDraftsBinding fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
+
 	    ctx = getContext();
         setHasOptionsMenu(true);
 
@@ -59,9 +61,9 @@ public class DraftsFragment extends Fragment {
 	    draftsList_ = new ArrayList<>();
         draftsApi = new DraftsApi(ctx);
 
-        noData = v.findViewById(R.id.noData);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
-        swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        noData = fragmentDraftsBinding.noData;
+        mRecyclerView = fragmentDraftsBinding.recyclerView;
+        swipeRefresh = fragmentDraftsBinding.pullToRefresh;
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -81,7 +83,7 @@ public class DraftsFragment extends Fragment {
 
         fetchDataAsync(currentActiveAccountId);
 
-        return v;
+        return fragmentDraftsBinding.getRoot();
 
     }
 
