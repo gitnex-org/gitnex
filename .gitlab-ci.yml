@@ -4,7 +4,7 @@ stages:
   - publish
 
 on_setup:
-  image: tutum/curl
+  image: jgoclawski/wget:1.0
   stage: .pre
   only:
     - master
@@ -72,7 +72,7 @@ release:
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/releases/'"$CI_COMMIT_REF_NAME"'.apk'
 
 on_success:
-  image: tutum/curl
+  image: jgoclawski/wget:1.0
   stage: .post
   only:
     - master
@@ -86,7 +86,7 @@ on_success:
   when: on_success
 
 on_failure:
-  image: tutum/curl
+  image: jgoclawski/wget:1.0
   stage: .post
   only:
     - master
