@@ -37,19 +37,12 @@ public class AddNewAccountActivity extends BaseActivity {
 	private String spinnerSelectedValue;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_add_new_account;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityAddNewAccountBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		getWindow().getDecorView().setBackground(new ColorDrawable(Color.TRANSPARENT));
 

@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.ActivityOrgDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.MembersByOrgFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
@@ -38,21 +37,16 @@ import io.mikael.urlbuilder.UrlBuilder;
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_org_detail;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-	    ActivityOrgDetailBinding activityOrgDetailBinding = ActivityOrgDetailBinding.inflate(getLayoutInflater());
+	    setContentView(R.layout.activity_org_detail);
 
         String orgName = tinyDB.getString("orgName");
 
-        Toolbar toolbar = activityOrgDetailBinding.toolbar;
-        TextView toolbarTitle = activityOrgDetailBinding.toolbarTitle;
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
@@ -60,10 +54,10 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter = new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
-        ViewPager mViewPager = activityOrgDetailBinding.container;
+        ViewPager mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = activityOrgDetailBinding.tabs;
+        TabLayout tabLayout = findViewById(R.id.tabs);
 
         Typeface myTypeface;
 

@@ -42,16 +42,12 @@ public class CreateLabelActivity extends BaseActivity {
     private TinyDB tinyDB;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_label;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateLabelBinding activityCreateLabelBinding = ActivityCreateLabelBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateLabelBinding.getRoot());
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 

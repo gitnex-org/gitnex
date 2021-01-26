@@ -42,19 +42,12 @@ public class DeepLinksActivity extends BaseActivity {
 	private Intent repoIntent;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_deeplinks;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityDeeplinksBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		mainIntent = new Intent(ctx, MainActivity.class);
 		issueIntent = new Intent(ctx, IssueDetailActivity.class);

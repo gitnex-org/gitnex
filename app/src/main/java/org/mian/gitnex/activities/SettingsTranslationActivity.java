@@ -25,17 +25,12 @@ public class SettingsTranslationActivity extends BaseActivity {
 	private static int langSelectedChoice = 0;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_translation;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivitySettingsTranslationBinding activitySettingsTranslationBinding = ActivitySettingsTranslationBinding.inflate(getLayoutInflater());
+		setContentView(activitySettingsTranslationBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsTranslationBinding.close;
 

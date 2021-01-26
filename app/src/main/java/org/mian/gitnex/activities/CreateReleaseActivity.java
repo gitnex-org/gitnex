@@ -50,11 +50,6 @@ public class CreateReleaseActivity extends BaseActivity {
 
     List<Branches> branchesList = new ArrayList<>();
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_release;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +57,7 @@ public class CreateReleaseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateReleaseBinding activityCreateReleaseBinding = ActivityCreateReleaseBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateReleaseBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

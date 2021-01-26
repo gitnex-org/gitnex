@@ -37,16 +37,12 @@ public class ProfileEmailActivity extends BaseActivity {
     private Button addEmailButton;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_profile_email;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityProfileEmailBinding activityProfileEmailBinding = ActivityProfileEmailBinding.inflate(getLayoutInflater());
+	    setContentView(activityProfileEmailBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

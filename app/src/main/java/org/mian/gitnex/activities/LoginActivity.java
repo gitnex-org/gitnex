@@ -54,17 +54,12 @@ public class LoginActivity extends BaseActivity {
 	private String selectedProtocol;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_login;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivityLoginBinding activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
+		setContentView(activityLoginBinding.getRoot());
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.get(ctx);
 

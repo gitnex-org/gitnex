@@ -26,16 +26,12 @@ public class RepoWatchersActivity extends BaseActivity {
     private ProgressBar mProgressBar;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_repo_watchers;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityRepoWatchersBinding activityRepoWatchersBinding = ActivityRepoWatchersBinding.inflate(getLayoutInflater());
+	    setContentView(activityRepoWatchersBinding.getRoot());
 
         ImageView closeActivity = activityRepoWatchersBinding.close;
         TextView toolbarTitle = activityRepoWatchersBinding.toolbarTitle;

@@ -23,17 +23,12 @@ public class SettingsFileViewerActivity extends BaseActivity {
 	private static int fileViewerSourceCodeThemesSelectedChoice = 0;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_fileviewer;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivitySettingsFileviewerBinding activitySettingsFileviewerBinding = ActivitySettingsFileviewerBinding.inflate(getLayoutInflater());
+		setContentView(activitySettingsFileviewerBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsFileviewerBinding.close;
 

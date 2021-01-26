@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,11 +24,11 @@ import com.squareup.picasso.Callback;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.databinding.FragmentProfileBinding;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.Locale;
+import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 
 /**
@@ -44,55 +45,63 @@ public class ProfileFragment extends Fragment {
 
     	ctx = getContext();
 
-	    FragmentProfileBinding fragmentProfileBinding = FragmentProfileBinding.inflate(inflater, container, false);
-
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
         setHasOptionsMenu(true);
 
 	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navProfile));
 
         TinyDB tinyDb = TinyDB.getInstance(getContext());
 
-	    ViewGroup aboutFrame = fragmentProfileBinding.aboutFrame;
+	    BlurView blurView = v.findViewById(R.id.blurView);
+        TextView userFullName = v.findViewById(R.id.userFullName);
+	    ImageView userAvatarBackground = v.findViewById(R.id.userAvatarBackground);
+        ImageView userAvatar = v.findViewById(R.id.userAvatar);
+        TextView userLogin = v.findViewById(R.id.userLogin);
+        View divider = v.findViewById(R.id.divider);
+        TextView userLanguage = v.findViewById(R.id.userLanguage);
+        ImageView userLanguageIcon = v.findViewById(R.id.userLanguageIcon);
+
+	    ViewGroup aboutFrame = v.findViewById(R.id.aboutFrame);
 
 	    String[] userLanguageCodes = tinyDb.getString("userLang").split("-");
 
 	    if(userLanguageCodes.length >= 2) {
 
 		    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
-		    fragmentProfileBinding.userLanguage.setText(locale.getDisplayLanguage());
+		    userLanguage.setText(locale.getDisplayLanguage());
 	    }
 	    else {
 
-		    fragmentProfileBinding.userLanguage.setText(R.string.notSupported);
+	    	userLanguage.setText(R.string.notSupported);
 	    }
 
-	    fragmentProfileBinding.userFullName.setText(tinyDb.getString("userFullname"));
-	    fragmentProfileBinding.userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
+	    userFullName.setText(tinyDb.getString("userFullname"));
+	    userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
 
 	    PicassoService.getInstance(ctx).get()
 		    .load(tinyDb.getString("userAvatar"))
 		    .transform(new RoundedTransformation(8, 0))
 		    .placeholder(R.drawable.loader_animated)
 		    .resize(120, 120)
-		    .centerCrop().into(fragmentProfileBinding.userAvatar);
+		    .centerCrop().into(userAvatar);
 
 	    PicassoService.getInstance(ctx).get()
 		    .load(tinyDb.getString("userAvatar"))
-		    .into(fragmentProfileBinding.userAvatarBackground, new Callback() {
+		    .into(userAvatarBackground, new Callback() {
 
 			    @Override
 			    public void onSuccess() {
 
-				    int invertedColor = new ColorInverter().getImageViewContrastColor(fragmentProfileBinding.userAvatarBackground);
+				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
 
-				    fragmentProfileBinding.userFullName.setTextColor(invertedColor);
-				    fragmentProfileBinding.divider.setBackgroundColor(invertedColor);
-				    fragmentProfileBinding.userLogin.setTextColor(invertedColor);
-				    fragmentProfileBinding.userLanguage.setTextColor(invertedColor);
+				    userFullName.setTextColor(invertedColor);
+				    divider.setBackgroundColor(invertedColor);
+				    userLogin.setTextColor(invertedColor);
+				    userLanguage.setTextColor(invertedColor);
 
-				    ImageViewCompat.setImageTintList(fragmentProfileBinding.userLanguageIcon, ColorStateList.valueOf(invertedColor));
+				    ImageViewCompat.setImageTintList(userLanguageIcon, ColorStateList.valueOf(invertedColor));
 
-				    fragmentProfileBinding.blurView.setupWith(aboutFrame)
+				    blurView.setupWith(aboutFrame)
 					    .setBlurAlgorithm(new RenderScriptBlur(ctx))
 					    .setBlurRadius(3)
 					    .setHasFixedTransformationMatrix(true);
@@ -107,7 +116,7 @@ public class ProfileFragment extends Fragment {
 
         ProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
-        ViewPager mViewPager = fragmentProfileBinding.container;
+        ViewPager mViewPager = v.findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         Typeface myTypeface;
@@ -128,7 +137,7 @@ public class ProfileFragment extends Fragment {
 
         }
 
-        TabLayout tabLayout = fragmentProfileBinding.tabs;
+        TabLayout tabLayout = v.findViewById(R.id.tabs);
 
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
@@ -151,7 +160,7 @@ public class ProfileFragment extends Fragment {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        return fragmentProfileBinding.getRoot();
+        return v;
 
     }
 

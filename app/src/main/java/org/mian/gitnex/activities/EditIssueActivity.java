@@ -64,11 +64,6 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 	private String repoName;
 	private int issueIndex;
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_edit_issue;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +71,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
 	    ActivityEditIssueBinding activityEditIssueBinding = ActivityEditIssueBinding.inflate(getLayoutInflater());
+	    setContentView(activityEditIssueBinding.getRoot());
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 

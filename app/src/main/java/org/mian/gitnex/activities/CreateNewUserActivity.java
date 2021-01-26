@@ -36,16 +36,12 @@ public class CreateNewUserActivity extends BaseActivity {
     private Button createUserButton;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_new_user;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateNewUserBinding activityCreateNewUserBinding = ActivityCreateNewUserBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateNewUserBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

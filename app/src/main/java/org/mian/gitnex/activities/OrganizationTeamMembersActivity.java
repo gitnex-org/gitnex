@@ -36,16 +36,12 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
     private String teamId;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_org_team_members;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityOrgTeamMembersBinding activityOrgTeamMembersBinding = ActivityOrgTeamMembersBinding.inflate(getLayoutInflater());
+	    setContentView(activityOrgTeamMembersBinding.getRoot());
 
         Toolbar toolbar = activityOrgTeamMembersBinding.toolbar;
         setSupportActionBar(toolbar);

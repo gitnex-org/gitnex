@@ -37,17 +37,12 @@ public class FileDiffActivity extends BaseActivity {
 	private ProgressBar mProgressBar;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_file_diff;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivityFileDiffBinding activityFileDiffBinding = ActivityFileDiffBinding.inflate(getLayoutInflater());
+		setContentView(activityFileDiffBinding.getRoot());
 
 		Toolbar toolbar = activityFileDiffBinding.toolbar;
 		setSupportActionBar(toolbar);

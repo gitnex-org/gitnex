@@ -40,16 +40,12 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
     private Boolean searchFilter = false;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_admin_get_users;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityAdminGetUsersBinding activityAdminGetUsersBinding = ActivityAdminGetUsersBinding.inflate(getLayoutInflater());
+	    setContentView(activityAdminGetUsersBinding.getRoot());
 
         ImageView closeActivity = activityAdminGetUsersBinding.close;
         noDataUsers = activityAdminGetUsersBinding.noDataUsers;

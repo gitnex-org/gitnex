@@ -45,49 +45,49 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem1_info"
+                android:id="@+id/tab_item_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_info" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItemFiles"
+                android:id="@+id/tab_item_files"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_files" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem2_issues"
+                android:id="@+id/tab_item_issues"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pageTitleIssues" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItemPullRequests"
+                android:id="@+id/tab_item_pull_requests"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tabPullRequests" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem6_releases"
+                android:id="@+id/tab_item_releases"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_releases" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem3_ml"
+                android:id="@+id/tab_item_ml"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_ml" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem4_labels"
+                android:id="@+id/tab_item_labels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_labels" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem7_collaborators"
+                android:id="@+id/tab_item_collaborators"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_collaborators" />

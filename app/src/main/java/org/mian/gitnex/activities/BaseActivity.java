@@ -100,7 +100,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 		AppUtil.setAppLocale(getResources(), appLocale);
 
 		super.onCreate(savedInstanceState);
-		setContentView(getLayoutResourceId());
 
 		// FIXME Performance nightmare
 		switch(tinyDB.getInt("customFontId", -1)) {
@@ -176,8 +175,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 			ACRA.init(getApplication(), ACRABuilder);
 		}
 	}
-
-	protected abstract int getLayoutResourceId();
 
 }
 

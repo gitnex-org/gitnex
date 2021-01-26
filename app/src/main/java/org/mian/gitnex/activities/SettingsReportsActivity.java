@@ -16,17 +16,12 @@ public class SettingsReportsActivity extends BaseActivity {
 	private View.OnClickListener onClickListener;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_reports;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivitySettingsReportsBinding activitySettingsReportsBinding = ActivitySettingsReportsBinding.inflate(getLayoutInflater());
+		setContentView(activitySettingsReportsBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsReportsBinding.close;
 

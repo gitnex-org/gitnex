@@ -36,11 +36,6 @@ public class CreateOrganizationActivity extends BaseActivity {
     private EditText orgName;
     private EditText orgDesc;
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_organization;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +43,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateOrganizationBinding activityCreateOrganizationBinding = ActivityCreateOrganizationBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateOrganizationBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

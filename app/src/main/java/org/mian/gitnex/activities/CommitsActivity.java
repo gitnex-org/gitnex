@@ -52,17 +52,12 @@ public class CommitsActivity extends BaseActivity {
 	private ProgressBar progressLoadMore;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_commits;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivityCommitsBinding activityCommitsBinding = ActivityCommitsBinding.inflate(getLayoutInflater());
+		setContentView(activityCommitsBinding.getRoot());
 
 		Toolbar toolbar = activityCommitsBinding.toolbar;
 		setSupportActionBar(toolbar);

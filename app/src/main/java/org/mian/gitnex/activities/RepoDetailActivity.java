@@ -29,7 +29,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetIssuesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetMilestonesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetPullRequestFilterFragment;
@@ -81,25 +80,19 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	private int tabsCount;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_repo_detail;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityRepoDetailBinding activityRepoDetailBinding = ActivityRepoDetailBinding.inflate(getLayoutInflater());
+		setContentView(R.layout.activity_repo_detail);
 
 		String[] repoNameParts = tinyDB.getString("repoFullName").split("/");
 		repositoryOwner = repoNameParts[0];
 		repositoryName = repoNameParts[1];
 
-		Toolbar toolbar = activityRepoDetailBinding.toolbar;
+		Toolbar toolbar = findViewById(R.id.toolbar);
 
-		TextView toolbarTitle = activityRepoDetailBinding.toolbarTitle;
+		TextView toolbarTitle = findViewById(R.id.toolbar_title);
 		toolbarTitle.setText(repositoryName);
 
 		setSupportActionBar(toolbar);
@@ -133,7 +126,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 		toolbarTitle.setTypeface(myTypeface);
 
-		TabLayout tabLayout = activityRepoDetailBinding.tabs;
+		TabLayout tabLayout = findViewById(R.id.tabs);
 
 		ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
 		tabsCount = viewGroup.getChildCount();
@@ -167,7 +160,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 			collaboratorTab.setVisibility(View.GONE);
 		}
 
-		mViewPager = activityRepoDetailBinding.container;
+		mViewPager = findViewById(R.id.container);
 
 		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));

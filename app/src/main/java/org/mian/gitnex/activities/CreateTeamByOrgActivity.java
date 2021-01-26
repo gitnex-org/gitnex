@@ -44,11 +44,6 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
     private final String[] permissionList = {"Read", "Write", "Admin"};
     public int permissionSelectedChoice = -1;
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_team_by_org;
-    }
-
     private final String[] accessControlsList = new String[] {
             "Code",
             "Issues",
@@ -77,6 +72,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateTeamByOrgBinding activityCreateTeamByOrgBinding = ActivityCreateTeamByOrgBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateTeamByOrgBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

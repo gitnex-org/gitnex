@@ -72,18 +72,13 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 	private AppUtil appUtil;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_file_view;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		appUtil = new AppUtil();
 
 		ActivityFileViewBinding activityFileViewBinding = ActivityFileViewBinding.inflate(getLayoutInflater());
+		setContentView(activityFileViewBinding.getRoot());
 
 		Toolbar toolbar = activityFileViewBinding.toolbar;
 		setSupportActionBar(toolbar);

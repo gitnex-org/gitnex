@@ -27,19 +27,12 @@ public class SettingsGeneralActivity extends BaseActivity {
 	private static int defaultLinkHandlerScreenSelectedChoice = 0;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_general;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivitySettingsGeneralBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);

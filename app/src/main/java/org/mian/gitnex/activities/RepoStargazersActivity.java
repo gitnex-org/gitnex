@@ -26,14 +26,10 @@ public class RepoStargazersActivity extends BaseActivity {
     private ProgressBar mProgressBar;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_repo_stargazers;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
 	    ActivityRepoStargazersBinding activityRepoStargazersBinding = ActivityRepoStargazersBinding.inflate(getLayoutInflater());
+	    setContentView(activityRepoStargazersBinding.getRoot());
 
         super.onCreate(savedInstanceState);
 

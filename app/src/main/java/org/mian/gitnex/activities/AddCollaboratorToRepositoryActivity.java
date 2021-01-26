@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserSearchAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityAddCollaboratorToRepositoryBinding;
@@ -39,16 +38,12 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_add_collaborator_to_repository;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityAddCollaboratorToRepositoryBinding activityAddCollaboratorToRepositoryBinding = ActivityAddCollaboratorToRepositoryBinding.inflate(getLayoutInflater());
+		setContentView(activityAddCollaboratorToRepositoryBinding.getRoot());
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 

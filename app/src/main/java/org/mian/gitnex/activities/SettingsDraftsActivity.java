@@ -16,17 +16,12 @@ public class SettingsDraftsActivity extends BaseActivity {
 	private View.OnClickListener onClickListener;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_drafts;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivitySettingsDraftsBinding activitySettingsDraftsBinding = ActivitySettingsDraftsBinding.inflate(getLayoutInflater());
+		setContentView(activitySettingsDraftsBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsDraftsBinding.close;
 

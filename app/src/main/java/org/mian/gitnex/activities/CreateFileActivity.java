@@ -59,11 +59,6 @@ public class CreateFileActivity extends BaseActivity {
 
 	private String selectedBranch;
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_file;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +66,7 @@ public class CreateFileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateFileBinding activityCreateFileBinding = ActivityCreateFileBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateFileBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

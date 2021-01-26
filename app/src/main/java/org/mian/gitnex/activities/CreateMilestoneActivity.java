@@ -38,11 +38,6 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     private EditText milestoneDescription;
     private Button createNewMilestoneButton;
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_milestone;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +45,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateMilestoneBinding activityCreateMilestoneBinding = ActivityCreateMilestoneBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateMilestoneBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

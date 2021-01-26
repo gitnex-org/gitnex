@@ -54,12 +54,6 @@ public class RepoForksActivity extends BaseActivity {
 	private RepoForksAdapter adapter;
 	private ProgressBar progressLoadMore;
 
-	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_repo_forks;
-	}
-
 	@SuppressLint("DefaultLocale")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +61,7 @@ public class RepoForksActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		ActivityRepoForksBinding activityRepoForksBinding = ActivityRepoForksBinding.inflate(getLayoutInflater());
+		setContentView(activityRepoForksBinding.getRoot());
 
 		Toolbar toolbar = activityRepoForksBinding.toolbar;
 		setSupportActionBar(toolbar);

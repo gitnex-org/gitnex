@@ -29,17 +29,12 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	private static int themeSelectedChoice = 0;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_appearance;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivitySettingsAppearanceBinding activitySettingsAppearanceBinding = ActivitySettingsAppearanceBinding.inflate(getLayoutInflater());
+		setContentView(activitySettingsAppearanceBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsAppearanceBinding.close;
 

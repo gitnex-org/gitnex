@@ -46,18 +46,12 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private String repositoryName;
 
 	@Override
-	protected int getLayoutResourceId(){
-		return R.layout.activity_repository_settings;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityRepositorySettingsBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		loginUid = tinyDB.getString("loginUid");
 		String repoFullName = tinyDB.getString("repoFullName");

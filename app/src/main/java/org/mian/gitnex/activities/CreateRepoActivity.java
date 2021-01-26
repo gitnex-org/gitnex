@@ -57,16 +57,12 @@ public class CreateRepoActivity extends BaseActivity {
     final Pattern reservedRepoPatterns = Pattern.compile("\\.(git|wiki)$");
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_repo;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
 	    ActivityCreateRepoBinding activityCreateRepoBinding = ActivityCreateRepoBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateRepoBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 

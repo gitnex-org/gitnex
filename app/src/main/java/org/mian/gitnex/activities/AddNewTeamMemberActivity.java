@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserSearchForTeamMemberAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityAddNewTeamMemberBinding;
@@ -46,16 +45,12 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 	private String teamId;
 
 	@Override
-	protected int getLayoutResourceId() {
-		return R.layout.activity_add_new_team_member;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivityAddNewTeamMemberBinding activityAddNewTeamMemberBinding = ActivityAddNewTeamMemberBinding.inflate(getLayoutInflater());
+		setContentView(activityAddNewTeamMemberBinding.getRoot());
 
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 

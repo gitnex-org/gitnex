@@ -32,17 +32,12 @@ public class SettingsSecurityActivity extends BaseActivity {
 	private static int cacheSizeImagesSelectedChoice = 0;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_security;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		ActivitySettingsSecurityBinding activitySettingsSecurityBinding = ActivitySettingsSecurityBinding.inflate(getLayoutInflater());
+		setContentView(activitySettingsSecurityBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsSecurityBinding.close;
 
