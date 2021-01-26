@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCreateOrganizationBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -35,24 +36,22 @@ public class CreateOrganizationActivity extends BaseActivity {
     private EditText orgName;
     private EditText orgDesc;
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_new_organization;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+	    ActivityCreateOrganizationBinding activityCreateOrganizationBinding = ActivityCreateOrganizationBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateOrganizationBinding.getRoot());
+
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        closeActivity = findViewById(R.id.close);
-        orgName = findViewById(R.id.newOrganizationName);
-        orgDesc = findViewById(R.id.newOrganizationDescription);
+        closeActivity = activityCreateOrganizationBinding.close;
+        orgName = activityCreateOrganizationBinding.newOrganizationName;
+        orgDesc = activityCreateOrganizationBinding.newOrganizationDescription;
 
         orgName.requestFocus();
         assert imm != null;
@@ -72,7 +71,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        createOrganizationButton = findViewById(R.id.createNewOrganizationButton);
+        createOrganizationButton = activityCreateOrganizationBinding.createNewOrganizationButton;
 
         if(!connToInternet) {
 

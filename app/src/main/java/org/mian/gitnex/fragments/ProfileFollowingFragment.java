@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ProfileFollowingAdapter;
+import org.mian.gitnex.databinding.FragmentProfileFollowingBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.UserInfo;
@@ -68,14 +68,15 @@ public class ProfileFollowingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_profile_following, container, false);
+
+	    FragmentProfileFollowingBinding fragmentProfileFollowingBinding = FragmentProfileFollowingBinding.inflate(inflater, container, false);
 
         TinyDB tinyDb = TinyDB.getInstance(getContext());
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentProfileFollowingBinding.pullToRefresh;
 
-        noDataFollowing = v.findViewById(R.id.noDataFollowing);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        noDataFollowing = fragmentProfileFollowingBinding.noDataFollowing;
+        mRecyclerView = fragmentProfileFollowingBinding.recyclerView;
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -84,7 +85,7 @@ public class ProfileFollowingFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
+        mProgressBar = fragmentProfileFollowingBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -95,7 +96,7 @@ public class ProfileFollowingFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()));
 
-        return v;
+        return fragmentProfileFollowingBinding.getRoot();
     }
 
     private void fetchDataAsync(String instanceToken) {

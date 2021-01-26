@@ -3,8 +3,6 @@ package org.mian.gitnex.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -31,6 +30,7 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.databinding.ActivityMainBinding;
 import org.mian.gitnex.fragments.AdministrationFragment;
 import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
 import org.mian.gitnex.fragments.DraftsFragment;
@@ -57,7 +57,6 @@ import org.mian.gitnex.models.NotificationCount;
 import org.mian.gitnex.models.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 import retrofit2.Call;
@@ -87,15 +86,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	private TextView notificationCounter;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_main;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+
+		ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+		setContentView(activityMainBinding.getRoot());
 
 		tinyDB.putBoolean("noConnection", false);
 
@@ -114,8 +110,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		if(tinyDB.getString("codeBlockStr").isEmpty()) {
 
-			tinyDB.putInt("codeBlockColor", getResources().getColor(R.color.colorLightGreen));
-			tinyDB.putInt("codeBlockBackground", getResources().getColor(R.color.black));
+			tinyDB.putInt("codeBlockColor", ResourcesCompat.getColor(getResources(), R.color.colorLightGreen, null));
+			tinyDB.putInt("codeBlockBackground", ResourcesCompat.getColor(getResources(), R.color.black, null));
 		}
 
 		if(tinyDB.getString("enableCounterIssueBadgeInit").isEmpty()) {
@@ -142,8 +138,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			AlertDialogs.forceLogoutDialog(ctx, getResources().getString(R.string.forceLogoutDialogHeader), getResources().getString(R.string.forceLogoutDialogDescription), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 		}
 
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+		Toolbar toolbar = activityMainBinding.toolbar;
+		toolbarTitle = activityMainBinding.toolbarTitle;
 
 		switch(tinyDB.getInt("customFontId", -1)) {
 
@@ -210,8 +206,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		getNotificationsCount(instanceToken);
 
-		drawer = findViewById(R.id.drawer_layout);
-		NavigationView navigationView = findViewById(R.id.nav_view);
+		drawer = activityMainBinding.drawerLayout;
+		NavigationView navigationView = activityMainBinding.navView;
 		navigationView.setNavigationItemSelectedListener(this);
 		hView = navigationView.getHeaderView(0);
 
@@ -468,17 +464,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 
 		// Changelog popup
-		int versionCode = 0;
-
-		try {
-
-			PackageInfo packageInfo = appCtx.getPackageManager().getPackageInfo(appCtx.getPackageName(), 0);
-			versionCode = packageInfo.versionCode;
-		}
-		catch(PackageManager.NameNotFoundException e) {
-
-			Log.e("changelogDialog", Objects.requireNonNull(e.getMessage()));
-		}
+		int versionCode = AppUtil.getAppBuildNo(appCtx);
 
 		if(versionCode > tinyDB.getInt("versionCode")) {
 

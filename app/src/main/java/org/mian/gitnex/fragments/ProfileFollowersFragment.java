@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ProfileFollowersAdapter;
+import org.mian.gitnex.databinding.FragmentProfileFollowersBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.viewmodels.ProfileFollowersViewModel;
@@ -67,12 +67,13 @@ public class ProfileFollowersFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_profile_followers, container, false);
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+	    FragmentProfileFollowersBinding fragmentProfileFollowersBinding = FragmentProfileFollowersBinding.inflate(inflater, container, false);
 
-        noDataFollowers = v.findViewById(R.id.noDataFollowers);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        final SwipeRefreshLayout swipeRefresh = fragmentProfileFollowersBinding.pullToRefresh;
+
+        noDataFollowers = fragmentProfileFollowersBinding.noDataFollowers;
+        mRecyclerView = fragmentProfileFollowersBinding.recyclerView;
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -81,7 +82,7 @@ public class ProfileFollowersFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
+        mProgressBar = fragmentProfileFollowersBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -92,7 +93,7 @@ public class ProfileFollowersFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()));
 
-        return v;
+        return fragmentProfileFollowersBinding.getRoot();
     }
 
     private void fetchDataAsync(String instanceToken) {

@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.BottomSheetAdminUsersBinding;
 
 /**
  * Author M M Arif
@@ -22,17 +21,17 @@ public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.bottom_sheet_admin_users, container, false);
 
-        TextView createNewUser = v.findViewById(R.id.createNewUser);
+	    BottomSheetAdminUsersBinding bottomSheetAdminUsersBinding = BottomSheetAdminUsersBinding.inflate(inflater, container, false);
 
-        createNewUser.setOnClickListener(v1 -> {
+        bottomSheetAdminUsersBinding.createNewUser.setOnClickListener(v1 -> {
 
             bmListener.onButtonClicked("newUser");
             dismiss();
+
         });
 
-        return v;
+        return bottomSheetAdminUsersBinding.getRoot();
     }
 
     public interface BottomSheetListener {

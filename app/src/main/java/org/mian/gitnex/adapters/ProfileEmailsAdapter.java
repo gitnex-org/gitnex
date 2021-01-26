@@ -6,12 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import org.mian.gitnex.R;
 import org.mian.gitnex.models.Emails;
 import java.util.List;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author M M Arif
@@ -58,12 +59,12 @@ public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdap
         if(currentItem.getPrimary()) {
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
-                    .textColor(mCtx.getResources().getColor(R.color.colorWhite))
+                    .textColor(ResourcesCompat.getColor(mCtx.getResources(), R.color.colorWhite, null))
                     .fontSize(36)
                     .width(220)
                     .height(60)
                     .endConfig()
-                    .buildRoundRect(mCtx.getResources().getString(R.string.emailTypeText), mCtx.getResources().getColor(R.color.tooltipBackground), 8);
+                    .buildRoundRect(mCtx.getResources().getString(R.string.emailTypeText), ResourcesCompat.getColor(mCtx.getResources(), R.color.tooltipBackground, null), 8);
             holder.emailPrimary.setImageDrawable(drawable);
         }
         else {

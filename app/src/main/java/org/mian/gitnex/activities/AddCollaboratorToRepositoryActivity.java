@@ -13,9 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserSearchAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityAddCollaboratorToRepositoryBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.models.UserSearch;
@@ -38,22 +38,20 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_add_collaborator_to_repository;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+	    ActivityAddCollaboratorToRepositoryBinding activityAddCollaboratorToRepositoryBinding = ActivityAddCollaboratorToRepositoryBinding.inflate(getLayoutInflater());
+		setContentView(activityAddCollaboratorToRepositoryBinding.getRoot());
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        addCollaboratorSearch = findViewById(R.id.addCollaboratorSearch);
-        mRecyclerView = findViewById(R.id.recyclerViewUserSearch);
-        mProgressBar = findViewById(R.id.progressBar);
-        noData = findViewById(R.id.noData);
+        ImageView closeActivity = activityAddCollaboratorToRepositoryBinding.close;
+        addCollaboratorSearch = activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch;
+        mRecyclerView = activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch;
+        mProgressBar = activityAddCollaboratorToRepositoryBinding.progressBar;
+        noData = activityAddCollaboratorToRepositoryBinding.noData;
 
         addCollaboratorSearch.requestFocus();
         assert imm != null;

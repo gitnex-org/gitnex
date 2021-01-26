@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.MembersByOrgAdapter;
+import org.mian.gitnex.databinding.FragmentMembersByOrgBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
@@ -65,20 +66,20 @@ public class MembersByOrgFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_members_by_org, container, false);
+	    FragmentMembersByOrgBinding fragmentMembersByOrgBinding = FragmentMembersByOrgBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
         TinyDB tinyDb = TinyDB.getInstance(getContext());
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        noDataMembers = v.findViewById(R.id.noDataMembers);
+        noDataMembers = fragmentMembersByOrgBinding.noDataMembers;
 
-	    progressBar = v.findViewById(R.id.progressBar);
-        mGridView = v.findViewById(R.id.gridView);
+	    progressBar = fragmentMembersByOrgBinding.progressBar;
+        mGridView = fragmentMembersByOrgBinding.gridView;
 
         fetchDataAsync(Authorization.get(getContext()), orgName);
 
-        return v;
+        return fragmentMembersByOrgBinding.getRoot();
     }
 
     private void fetchDataAsync(String instanceToken, String owner) {

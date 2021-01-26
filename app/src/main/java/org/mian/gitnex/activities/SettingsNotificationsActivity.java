@@ -22,19 +22,12 @@ public class SettingsNotificationsActivity extends BaseActivity {
 	private ActivitySettingsNotificationsBinding viewBinding;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_notifications;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivitySettingsNotificationsBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		View.OnClickListener onClickListener = viewClose -> finish();
 

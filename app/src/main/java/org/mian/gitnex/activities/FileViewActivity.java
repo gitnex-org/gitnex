@@ -29,9 +29,11 @@ import androidx.appcompat.widget.Toolbar;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityFileViewBinding;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -71,18 +73,15 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 	private AppUtil appUtil;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_file_view;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		appUtil = new AppUtil();
 
-		Toolbar toolbar = findViewById(R.id.toolbar);
+		ActivityFileViewBinding activityFileViewBinding = ActivityFileViewBinding.inflate(getLayoutInflater());
+		setContentView(activityFileViewBinding.getRoot());
+
+		Toolbar toolbar = activityFileViewBinding.toolbar;
 		setSupportActionBar(toolbar);
 
 		String repoFullName = tinyDB.getString("repoFullName");
@@ -95,18 +94,18 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 		tinyDB.putBoolean("enableMarkdownInFileView", false);
 
-		ImageView closeActivity = findViewById(R.id.close);
-		singleFileContents = findViewById(R.id.singleFileContents);
-		singleCodeContents = findViewById(R.id.singleCodeContents);
-		imageView = findViewById(R.id.imageView);
-		mProgressBar = findViewById(R.id.progress_bar);
-		pdfView = findViewById(R.id.pdfView);
-		pdfViewFrame = findViewById(R.id.pdfViewFrame);
-		singleFileContentsFrame = findViewById(R.id.singleFileContentsFrame);
+		ImageView closeActivity = activityFileViewBinding.close;
+		singleFileContents = activityFileViewBinding.singleFileContents;
+		singleCodeContents = activityFileViewBinding.singleCodeContents;
+		imageView = activityFileViewBinding.imageView;
+		mProgressBar = activityFileViewBinding.progressBar;
+		pdfView = activityFileViewBinding.pdfView;
+		pdfViewFrame = activityFileViewBinding.pdfViewFrame;
+		singleFileContentsFrame = activityFileViewBinding.singleFileContentsFrame;
 
 		singleFileName = getIntent().getStringExtra("singleFileName");
 
-		TextView toolbar_title = findViewById(R.id.toolbar_title);
+		TextView toolbar_title = activityFileViewBinding.toolbarTitle;
 		toolbar_title.setMovementMethod(new ScrollingMovementMethod());
 
 		initCloseListener();
@@ -324,7 +323,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 		}
 		else if(id == R.id.markdown) {
 
-			new Markdown(ctx, appUtil.decodeBase64(tinyDB.getString("downloadFileContents")), singleFileContents);
+			new Markdown(ctx, EmojiParser.parseToUnicode(appUtil.decodeBase64(tinyDB.getString("downloadFileContents"))), singleFileContents);
 
 			if(!tinyDB.getBoolean("enableMarkdownInFileView")) {
 

@@ -80,15 +80,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	private int tabsCount;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_repo_detail;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_repo_detail);
 
 		String[] repoNameParts = tinyDB.getString("repoFullName").split("/");
 		repositoryOwner = repoNameParts[0];
@@ -96,7 +92,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 
-		TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+		TextView toolbarTitle = findViewById(R.id.toolbar_title);
 		toolbarTitle.setText(repositoryName);
 
 		setSupportActionBar(toolbar);

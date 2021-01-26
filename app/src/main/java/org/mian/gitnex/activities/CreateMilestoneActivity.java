@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCreateMilestoneBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -37,26 +38,24 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     private EditText milestoneDescription;
     private Button createNewMilestoneButton;
 
-    @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_new_milestone;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+	    ActivityCreateMilestoneBinding activityCreateMilestoneBinding = ActivityCreateMilestoneBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateMilestoneBinding.getRoot());
+
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        milestoneDueDate = findViewById(R.id.milestoneDueDate);
-        ImageView closeActivity = findViewById(R.id.close);
-        createNewMilestoneButton = findViewById(R.id.createNewMilestoneButton);
-        milestoneTitle = findViewById(R.id.milestoneTitle);
-        milestoneDescription = findViewById(R.id.milestoneDescription);
+        milestoneDueDate = activityCreateMilestoneBinding.milestoneDueDate;
+        ImageView closeActivity = activityCreateMilestoneBinding.close;
+        createNewMilestoneButton = activityCreateMilestoneBinding.createNewMilestoneButton;
+        milestoneTitle = activityCreateMilestoneBinding.milestoneTitle;
+        milestoneDescription = activityCreateMilestoneBinding.milestoneDescription;
 
         milestoneTitle.requestFocus();
         assert imm != null;

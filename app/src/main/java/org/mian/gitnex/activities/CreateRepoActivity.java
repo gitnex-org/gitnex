@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCreateRepoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -56,14 +57,12 @@ public class CreateRepoActivity extends BaseActivity {
     final Pattern reservedRepoPatterns = Pattern.compile("\\.(git|wiki)$");
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_new_repo;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+	    ActivityCreateRepoBinding activityCreateRepoBinding = ActivityCreateRepoBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateRepoBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 
@@ -72,10 +71,10 @@ public class CreateRepoActivity extends BaseActivity {
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        closeActivity = findViewById(R.id.close);
-        repoName = findViewById(R.id.newRepoName);
-        repoDesc = findViewById(R.id.newRepoDescription);
-        repoAccess = findViewById(R.id.newRepoPrivate);
+        closeActivity = activityCreateRepoBinding.close;
+        repoName = activityCreateRepoBinding.newRepoName;
+        repoDesc = activityCreateRepoBinding.newRepoDescription;
+        repoAccess = activityCreateRepoBinding.newRepoPrivate;
 
         repoName.requestFocus();
         assert imm != null;
@@ -84,10 +83,10 @@ public class CreateRepoActivity extends BaseActivity {
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
-        spinner = findViewById(R.id.ownerSpinner);
+        spinner = activityCreateRepoBinding.ownerSpinner;
         getOrganizations(Authorization.get(ctx), userLogin);
 
-        createRepo = findViewById(R.id.createNewRepoButton);
+        createRepo = activityCreateRepoBinding.createNewRepoButton;
         disableProcessButton();
 
         if(!connToInternet) {

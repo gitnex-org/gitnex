@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -25,7 +26,7 @@ import java.util.Locale;
 
 public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context ctx;
+    private final Context ctx;
     private final int TYPE_LOAD = 0;
     private List<Commits> commitsList;
     private CommitsAdapter.OnLoadMoreListener loadMoreListener;
@@ -116,7 +117,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             final String locale = tinyDb.getString("locale");
             final String timeFormat = tinyDb.getString("dateFormat");
 
-            commitTitle.setText(commitsModel.getCommit().getMessage());
+            commitTitle.setText(EmojiParser.parseToUnicode(commitsModel.getCommit().getMessage()));
             commitCommitter.setText(ctx.getString(R.string.commitCommittedBy, commitsModel.getCommit().getCommitter().getName()));
 
             commitDate.setText(TimeHelper.formatTime(commitsModel.getCommit().getCommitter().getDate(), new Locale(locale), timeFormat, ctx));

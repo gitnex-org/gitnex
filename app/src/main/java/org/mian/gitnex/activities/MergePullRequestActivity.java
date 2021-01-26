@@ -41,12 +41,6 @@ public class MergePullRequestActivity extends BaseActivity {
 
 	private String Do;
 
-	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_merge_pull_request;
-	}
-
 	@SuppressLint("SetTextI18n")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,8 +48,7 @@ public class MergePullRequestActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityMergePullRequestBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");

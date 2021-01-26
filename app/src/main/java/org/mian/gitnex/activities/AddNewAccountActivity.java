@@ -37,19 +37,12 @@ public class AddNewAccountActivity extends BaseActivity {
 	private String spinnerSelectedValue;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_add_new_account;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityAddNewAccountBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		getWindow().getDecorView().setBackground(new ColorDrawable(Color.TRANSPARENT));
 
@@ -57,10 +50,9 @@ public class AddNewAccountActivity extends BaseActivity {
 		viewBinding.close.setOnClickListener(onClickListener);
 
 		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
+
 		viewBinding.protocolSpinner.setAdapter(adapterProtocols);
-
 		viewBinding.protocolSpinner.setOnItemClickListener((parent, view1, position, id) -> spinnerSelectedValue = String.valueOf(parent.getItemAtPosition(position)));
-
 		viewBinding.addNewAccount.setOnClickListener(login -> {
 
 			boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);

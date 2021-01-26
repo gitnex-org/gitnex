@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ReleasesAdapter;
+import org.mian.gitnex.databinding.FragmentReleasesBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.Releases;
@@ -69,13 +69,13 @@ public class ReleasesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_releases, container, false);
+        FragmentReleasesBinding fragmentReleasesBinding = FragmentReleasesBinding.inflate(inflater, container, false);
 
-        noDataReleases = v.findViewById(R.id.noDataReleases);
+        noDataReleases = fragmentReleasesBinding.noDataReleases;
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentReleasesBinding.pullToRefresh;
 
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView = fragmentReleasesBinding.recyclerView;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -83,7 +83,7 @@ public class ReleasesFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
+        mProgressBar = fragmentReleasesBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -94,7 +94,7 @@ public class ReleasesFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName);
 
-        return v;
+        return fragmentReleasesBinding.getRoot();
 
     }
 

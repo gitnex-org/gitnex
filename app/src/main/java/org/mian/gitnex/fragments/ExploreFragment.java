@@ -32,15 +32,16 @@ public class ExploreFragment extends Fragment {
 
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_explore, container,false);
+		View view = inflater.inflate(R.layout.fragment_explore, container, false);
+
 		ctx = getContext();
 		tinyDB = TinyDB.getInstance(ctx);
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navExplore));
 
-		TabLayout tabLayout = v.findViewById(R.id.tabsExplore);
+		TabLayout tabLayout = view.findViewById(R.id.tabsExplore);
 
 		ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
 		tabsCount = viewGroup.getChildCount();
@@ -78,7 +79,7 @@ public class ExploreFragment extends Fragment {
 			}
 		}
 
-		mViewPager = v.findViewById(R.id.containerExplore);
+		mViewPager = view.findViewById(R.id.containerExplore);
 
 		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -86,7 +87,8 @@ public class ExploreFragment extends Fragment {
 		SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		return v;
+		return view;
+
 	}
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {

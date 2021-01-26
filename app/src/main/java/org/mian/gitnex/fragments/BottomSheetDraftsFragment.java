@@ -6,11 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.BottomSheetDraftsBinding;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 
 /**
@@ -25,18 +24,17 @@ public class BottomSheetDraftsFragment extends BottomSheetDialogFragment {
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.bottom_sheet_drafts, container, false);
 
-		TextView deleteAllDrafts = v.findViewById(R.id.deleteAllDrafts);
+		BottomSheetDraftsBinding bottomSheetDraftsBinding = BottomSheetDraftsBinding.inflate(inflater, container, false);
 
-		deleteAllDrafts.setOnClickListener(v1 -> {
+		bottomSheetDraftsBinding.deleteAllDrafts.setOnClickListener(v1 -> {
 
 			dismiss();
 			bmListener.onButtonClicked("deleteDrafts");
 
 		});
 
-		return v;
+		return bottomSheetDraftsBinding.getRoot();
 	}
 
 	public interface BottomSheetListener {

@@ -24,6 +24,7 @@ import org.mian.gitnex.actions.ActionResult;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.database.api.DraftsApi;
+import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -67,16 +68,16 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.bottom_sheet_reply_layout, container, false);
+		BottomSheetReplyLayoutBinding bottomSheetReplyLayoutBinding = BottomSheetReplyLayoutBinding.inflate(inflater, container, false);
 		Bundle arguments = requireArguments();
 
-		draftsHint = view.findViewById(R.id.drafts_hint);
+		draftsHint = bottomSheetReplyLayoutBinding.draftsHint;
 
-		EditText comment = view.findViewById(R.id.comment);
-		TextView toolbarTitle = view.findViewById(R.id.toolbar_title);
-		ImageButton close = view.findViewById(R.id.close);
-		ImageButton drafts = view.findViewById(R.id.drafts);
-		ImageButton send = view.findViewById(R.id.send);
+		EditText comment = bottomSheetReplyLayoutBinding.comment;
+		TextView toolbarTitle = bottomSheetReplyLayoutBinding.toolbarTitle;
+		ImageButton close = bottomSheetReplyLayoutBinding.close;
+		ImageButton drafts = bottomSheetReplyLayoutBinding.drafts;
+		ImageButton send = bottomSheetReplyLayoutBinding.send;
 
 		send.setEnabled(false);
 
@@ -118,7 +119,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		comment.requestFocus();
 		comment.setOnTouchListener((v, event) -> {
 
-			BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
+			BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetReplyLayoutBinding.getRoot().getParent());
 
 			switch(event.getAction()) {
 
@@ -234,7 +235,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			}
 		});
 
-		return view;
+		return bottomSheetReplyLayoutBinding.getRoot();
 	}
 
 	private void saveDraft(String text, boolean remove) {

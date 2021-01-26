@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.LabelsAdapter;
+import org.mian.gitnex.databinding.FragmentLabelsBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
@@ -69,13 +69,13 @@ public class LabelsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.fragment_labels, container, false);
+	    FragmentLabelsBinding fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
-        noData = v.findViewById(R.id.noData);
+        final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
+        noData = fragmentLabelsBinding.noData;
 
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView = fragmentLabelsBinding.recyclerView;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -83,7 +83,7 @@ public class LabelsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
+        mProgressBar = fragmentLabelsBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -93,7 +93,7 @@ public class LabelsFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName);
 
-        return v;
+        return fragmentLabelsBinding.getRoot();
     }
 
     @Override

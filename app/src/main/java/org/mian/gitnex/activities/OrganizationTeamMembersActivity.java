@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.TeamMembersByOrgAdapter;
+import org.mian.gitnex.databinding.ActivityOrgTeamMembersBinding;
 import org.mian.gitnex.fragments.BottomSheetOrganizationTeamsFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
@@ -35,23 +36,21 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
     private String teamId;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_org_team_members;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+	    ActivityOrgTeamMembersBinding activityOrgTeamMembersBinding = ActivityOrgTeamMembersBinding.inflate(getLayoutInflater());
+	    setContentView(activityOrgTeamMembersBinding.getRoot());
+
+        Toolbar toolbar = activityOrgTeamMembersBinding.toolbar;
         setSupportActionBar(toolbar);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        noDataMembers = findViewById(R.id.noDataMembers);
-        mGridView = findViewById(R.id.gridView);
-	    progressBar = findViewById(R.id.progressBar);
+        ImageView closeActivity = activityOrgTeamMembersBinding.close;
+        TextView toolbarTitle = activityOrgTeamMembersBinding.toolbarTitle;
+        noDataMembers = activityOrgTeamMembersBinding.noDataMembers;
+        mGridView = activityOrgTeamMembersBinding.gridView;
+	    progressBar = activityOrgTeamMembersBinding.progressBar;
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);

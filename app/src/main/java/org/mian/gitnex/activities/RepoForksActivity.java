@@ -24,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoForksAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityRepoForksBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
@@ -53,19 +54,16 @@ public class RepoForksActivity extends BaseActivity {
 	private RepoForksAdapter adapter;
 	private ProgressBar progressLoadMore;
 
-	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_forks;
-	}
-
 	@SuppressLint("DefaultLocale")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		Toolbar toolbar = findViewById(R.id.toolbar);
+		ActivityRepoForksBinding activityRepoForksBinding = ActivityRepoForksBinding.inflate(getLayoutInflater());
+		setContentView(activityRepoForksBinding.getRoot());
+
+		Toolbar toolbar = activityRepoForksBinding.toolbar;
 		setSupportActionBar(toolbar);
 
 		TinyDB tinyDb = TinyDB.getInstance(appCtx);
@@ -76,15 +74,15 @@ public class RepoForksActivity extends BaseActivity {
 		final String repoOwner = parts[0];
 		final String repoName = parts[1];
 
-		TextView toolbar_title = findViewById(R.id.toolbar_title);
+		TextView toolbar_title = activityRepoForksBinding.toolbarTitle;
 		toolbar_title.setMovementMethod(new ScrollingMovementMethod());
 		toolbar_title.setText(String.format("%s : %s", ctx.getResources().getString(R.string.infoTabRepoForksCount), repoName));
 
-		ImageView closeActivity = findViewById(R.id.close);
-		noData = findViewById(R.id.noData);
-		progressLoadMore = findViewById(R.id.progressLoadMore);
-		progressBar = findViewById(R.id.progress_bar);
-		SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
+		ImageView closeActivity = activityRepoForksBinding.close;
+		noData = activityRepoForksBinding.noData;
+		progressLoadMore = activityRepoForksBinding.progressLoadMore;
+		progressBar = activityRepoForksBinding.progressBar;
+		SwipeRefreshLayout swipeRefresh = activityRepoForksBinding.pullToRefresh;
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
@@ -95,7 +93,7 @@ public class RepoForksActivity extends BaseActivity {
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
-		recyclerView = findViewById(R.id.recyclerView);
+		recyclerView = activityRepoForksBinding.recyclerView;
 		forksList = new ArrayList<>();
 
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),

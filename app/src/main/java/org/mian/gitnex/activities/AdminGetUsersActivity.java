@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminGetUsersAdapter;
+import org.mian.gitnex.databinding.ActivityAdminGetUsersBinding;
 import org.mian.gitnex.fragments.BottomSheetAdminUsersFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -39,22 +40,20 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAd
     private Boolean searchFilter = false;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_admin_get_users;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        noDataUsers = findViewById(R.id.noDataUsers);
-        mRecyclerView = findViewById(R.id.recyclerView);
+	    ActivityAdminGetUsersBinding activityAdminGetUsersBinding = ActivityAdminGetUsersBinding.inflate(getLayoutInflater());
+	    setContentView(activityAdminGetUsersBinding.getRoot());
 
-        final SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
+        ImageView closeActivity = activityAdminGetUsersBinding.close;
+        noDataUsers = activityAdminGetUsersBinding.noDataUsers;
+        mRecyclerView = activityAdminGetUsersBinding.recyclerView;
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final SwipeRefreshLayout swipeRefresh = activityAdminGetUsersBinding.pullToRefresh;
+
+        Toolbar toolbar = activityAdminGetUsersBinding.toolbar;
         setSupportActionBar(toolbar);
 
         initCloseListener();

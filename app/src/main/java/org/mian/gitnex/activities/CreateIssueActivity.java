@@ -71,11 +71,6 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private List<Collaborators> assigneesList = new ArrayList<>();
 	private List<String> assigneesListData = new ArrayList<>();
 
-    @Override
-    protected int getLayoutResourceId() {
-        return R.layout.activity_create_issue;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +78,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
 	    viewBinding = ActivityCreateIssueBinding.inflate(getLayoutInflater());
-	    View view = viewBinding.getRoot();
-	    setContentView(view);
+	    setContentView(viewBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 

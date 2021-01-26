@@ -26,6 +26,7 @@ import org.mian.gitnex.actions.NotificationsActions;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.adapters.NotificationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.InfiniteScrollListener;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
@@ -75,7 +76,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_notifications, container, false);
+		FragmentNotificationsBinding fragmentNotificationsBinding = FragmentNotificationsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
 		activity = requireActivity();
@@ -85,10 +86,10 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		pageResultLimit = StaticGlobalVariables.getCurrentResultLimit(context);
 		tinyDB.putString("notificationsFilterState", currentFilterMode);
 
-		markAllAsRead = v.findViewById(R.id.markAllAsRead);
-		noDataNotifications = v.findViewById(R.id.noDataNotifications);
-		loadingMoreView = v.findViewById(R.id.loadingMoreView);
-		progressBar = v.findViewById(R.id.progressBar);
+		markAllAsRead = fragmentNotificationsBinding.markAllAsRead;
+		noDataNotifications = fragmentNotificationsBinding.noDataNotifications;
+		loadingMoreView = fragmentNotificationsBinding.loadingMoreView;
+		progressBar = fragmentNotificationsBinding.progressBar;
 
 		notificationThreads = new ArrayList<>();
 		notificationsActions = new NotificationsActions(context);
@@ -96,7 +97,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
 
-		RecyclerView recyclerView = v.findViewById(R.id.notifications);
+		RecyclerView recyclerView = fragmentNotificationsBinding.notifications;
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(linearLayoutManager);
 		recyclerView.setAdapter(notificationsAdapter);
@@ -164,7 +165,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		});
 
-		pullToRefresh = v.findViewById(R.id.pullToRefresh);
+		pullToRefresh = fragmentNotificationsBinding.pullToRefresh;
 		pullToRefresh.setOnRefreshListener(() -> {
 
 			pageCurrentIndex = 1;
@@ -173,7 +174,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		});
 
 		loadNotifications(false);
-		return v;
+		return fragmentNotificationsBinding.getRoot();
 
 	}
 

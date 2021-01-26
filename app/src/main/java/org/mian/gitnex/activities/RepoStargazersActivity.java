@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoStargazersAdapter;
+import org.mian.gitnex.databinding.ActivityRepoStargazersBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
 
@@ -25,20 +26,18 @@ public class RepoStargazersActivity extends BaseActivity {
     private ProgressBar mProgressBar;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_repo_stargazers;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
+
+	    ActivityRepoStargazersBinding activityRepoStargazersBinding = ActivityRepoStargazersBinding.inflate(getLayoutInflater());
+	    setContentView(activityRepoStargazersBinding.getRoot());
 
         super.onCreate(savedInstanceState);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        noDataStargazers = findViewById(R.id.noDataStargazers);
-        mGridView = findViewById(R.id.gridView);
-        mProgressBar = findViewById(R.id.progress_bar);
+        ImageView closeActivity = activityRepoStargazersBinding.close;
+        TextView toolbarTitle = activityRepoStargazersBinding.toolbarTitle;
+        noDataStargazers = activityRepoStargazersBinding.noDataStargazers;
+        mGridView = activityRepoStargazersBinding.gridView;
+        mProgressBar = activityRepoStargazersBinding.progressBar;
 
         String repoFullNameForStars = getIntent().getStringExtra("repoFullNameForStars");
         String[] parts = repoFullNameForStars.split("/");

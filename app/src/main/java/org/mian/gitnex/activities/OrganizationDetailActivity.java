@@ -37,19 +37,16 @@ import io.mikael.urlbuilder.UrlBuilder;
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_org_detail;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+	    setContentView(R.layout.activity_org_detail);
+
         String orgName = tinyDB.getString("orgName");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);

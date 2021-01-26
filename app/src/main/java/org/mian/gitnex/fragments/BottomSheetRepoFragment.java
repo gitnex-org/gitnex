@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
 import org.mian.gitnex.actions.RepositoryActions;
+import org.mian.gitnex.databinding.BottomSheetRepoBinding;
 import org.mian.gitnex.helpers.TinyDB;
 
 /**
@@ -24,26 +24,27 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.bottom_sheet_repo, container, false);
+
+	    BottomSheetRepoBinding bottomSheetRepoBinding = BottomSheetRepoBinding.inflate(inflater, container, false);
 
         final TinyDB tinyDb = TinyDB.getInstance(getContext());
 
-        TextView createLabel = v.findViewById(R.id.createLabel);
-        TextView createIssue = v.findViewById(R.id.createNewIssue);
-        TextView createMilestone = v.findViewById(R.id.createNewMilestone);
-        TextView addCollaborator = v.findViewById(R.id.addCollaborator);
-        TextView createRelease = v.findViewById(R.id.createRelease);
-        TextView openWebRepo = v.findViewById(R.id.openWebRepo);
-        TextView newFile = v.findViewById(R.id.newFile);
-        TextView starRepository = v.findViewById(R.id.starRepository);
-        TextView unStarRepository = v.findViewById(R.id.unStarRepository);
-        TextView watchRepository = v.findViewById(R.id.watchRepository);
-        TextView unWatchRepository = v.findViewById(R.id.unWatchRepository);
-        TextView shareRepository = v.findViewById(R.id.shareRepository);
-	    TextView copyRepoUrl = v.findViewById(R.id.copyRepoUrl);
-	    View repoSettingsDivider = v.findViewById(R.id.repoSettingsDivider);
-	    TextView repoSettings = v.findViewById(R.id.repoSettings);
-	    TextView createPullRequest = v.findViewById(R.id.createPullRequest);
+        TextView createLabel = bottomSheetRepoBinding.createLabel;
+        TextView createIssue = bottomSheetRepoBinding.createNewIssue;
+        TextView createMilestone = bottomSheetRepoBinding.createNewMilestone;
+        TextView addCollaborator = bottomSheetRepoBinding.addCollaborator;
+        TextView createRelease = bottomSheetRepoBinding.createRelease;
+        TextView openWebRepo = bottomSheetRepoBinding.openWebRepo;
+        TextView newFile = bottomSheetRepoBinding.newFile;
+        TextView starRepository = bottomSheetRepoBinding.starRepository;
+        TextView unStarRepository = bottomSheetRepoBinding.unStarRepository;
+        TextView watchRepository = bottomSheetRepoBinding.watchRepository;
+        TextView unWatchRepository = bottomSheetRepoBinding.unWatchRepository;
+        TextView shareRepository = bottomSheetRepoBinding.shareRepository;
+	    TextView copyRepoUrl = bottomSheetRepoBinding.copyRepoUrl;
+	    View repoSettingsDivider = bottomSheetRepoBinding.repoSettingsDivider;
+	    TextView repoSettings = bottomSheetRepoBinding.repoSettings;
+	    TextView createPullRequest = bottomSheetRepoBinding.createPullRequest;
 
         createLabel.setOnClickListener(v112 -> {
 
@@ -186,7 +187,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
         }
 
-        return v;
+        return bottomSheetRepoBinding.getRoot();
     }
 
     public interface BottomSheetListener {

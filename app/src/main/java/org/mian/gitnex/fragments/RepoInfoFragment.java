@@ -22,6 +22,7 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentRepoInfoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ClickListener;
@@ -93,7 +94,7 @@ public class RepoInfoFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_repo_info, container, false);
+		FragmentRepoInfoBinding fragmentRepoInfoBinding = FragmentRepoInfoBinding.inflate(inflater, container, false);
 
 		TinyDB tinyDb = TinyDB.getInstance(getContext());
 
@@ -102,31 +103,31 @@ public class RepoInfoFragment extends Fragment {
 
 		ctx = getActivity();
 
-		pageContent = v.findViewById(R.id.repoInfoLayout);
+		pageContent = fragmentRepoInfoBinding.repoInfoLayout;
 		pageContent.setVisibility(View.GONE);
 
-		mProgressBar = v.findViewById(R.id.progress_bar);
-		repoMetaName = v.findViewById(R.id.repoMetaName);
-		repoMetaDescription = v.findViewById(R.id.repoMetaDescription);
-		repoMetaStars = v.findViewById(R.id.repoMetaStars);
-		repoMetaPullRequests = v.findViewById(R.id.repoMetaPullRequests);
-		repoMetaPullRequestsFrame = v.findViewById(R.id.repoMetaPullRequestsFrame);
-		repoMetaForks = v.findViewById(R.id.repoMetaForks);
-		repoMetaSize = v.findViewById(R.id.repoMetaSize);
-		repoMetaWatchers = v.findViewById(R.id.repoMetaWatchers);
-		repoMetaCreatedAt = v.findViewById(R.id.repoMetaCreatedAt);
-		repoMetaWebsite = v.findViewById(R.id.repoMetaWebsite);
-		repoAdditionalButton = v.findViewById(R.id.repoAdditionalButton);
-		repoFileContents = v.findViewById(R.id.repoFileContents);
-		repoMetaFrame = v.findViewById(R.id.repoMetaFrame);
-		LinearLayout repoMetaFrameHeader = v.findViewById(R.id.repoMetaFrameHeader);
-		repoMetaDataExpandCollapse = v.findViewById(R.id.repoMetaDataExpandCollapse);
-		repoFilenameExpandCollapse = v.findViewById(R.id.repoFilenameExpandCollapse);
-		fileContentsFrameHeader = v.findViewById(R.id.fileContentsFrameHeader);
-		fileContentsFrame = v.findViewById(R.id.fileContentsFrame);
-		LinearLayout repoMetaStarsFrame = v.findViewById(R.id.repoMetaStarsFrame);
-		LinearLayout repoMetaForksFrame = v.findViewById(R.id.repoMetaForksFrame);
-		LinearLayout repoMetaWatchersFrame = v.findViewById(R.id.repoMetaWatchersFrame);
+		mProgressBar = fragmentRepoInfoBinding.progressBar;
+		repoMetaName = fragmentRepoInfoBinding.repoMetaName;
+		repoMetaDescription = fragmentRepoInfoBinding.repoMetaDescription;
+		repoMetaStars = fragmentRepoInfoBinding.repoMetaStars;
+		repoMetaPullRequests = fragmentRepoInfoBinding.repoMetaPullRequests;
+		repoMetaPullRequestsFrame = fragmentRepoInfoBinding.repoMetaPullRequestsFrame;
+		repoMetaForks = fragmentRepoInfoBinding.repoMetaForks;
+		repoMetaSize = fragmentRepoInfoBinding.repoMetaSize;
+		repoMetaWatchers = fragmentRepoInfoBinding.repoMetaWatchers;
+		repoMetaCreatedAt = fragmentRepoInfoBinding.repoMetaCreatedAt;
+		repoMetaWebsite = fragmentRepoInfoBinding.repoMetaWebsite;
+		repoAdditionalButton = fragmentRepoInfoBinding.repoAdditionalButton;
+		repoFileContents = fragmentRepoInfoBinding.repoFileContents;
+		repoMetaFrame = fragmentRepoInfoBinding.repoMetaFrame;
+		LinearLayout repoMetaFrameHeader = fragmentRepoInfoBinding.repoMetaFrameHeader;
+		repoMetaDataExpandCollapse = fragmentRepoInfoBinding.repoMetaDataExpandCollapse;
+		repoFilenameExpandCollapse = fragmentRepoInfoBinding.repoFilenameExpandCollapse;
+		fileContentsFrameHeader = fragmentRepoInfoBinding.fileContentsFrameHeader;
+		fileContentsFrame = fragmentRepoInfoBinding.fileContentsFrame;
+		LinearLayout repoMetaStarsFrame = fragmentRepoInfoBinding.repoMetaStarsFrame;
+		LinearLayout repoMetaForksFrame = fragmentRepoInfoBinding.repoMetaForksFrame;
+		LinearLayout repoMetaWatchersFrame = fragmentRepoInfoBinding.repoMetaWatchersFrame;
 
 		repoMetaFrame.setVisibility(View.GONE);
 
@@ -161,7 +162,7 @@ public class RepoInfoFragment extends Fragment {
 
 		repoMetaPullRequestsFrame.setOnClickListener(metaPR -> RepoDetailActivity.mViewPager.setCurrentItem(3));
 
-		return v;
+		return fragmentRepoInfoBinding.getRoot();
 	}
 
 	public void onButtonPressed(Uri uri) {

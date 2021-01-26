@@ -26,6 +26,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.StarredReposListAdapter;
+import org.mian.gitnex.databinding.FragmentStarredRepositoriesBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.StarredRepositoriesViewModel;
@@ -73,16 +74,16 @@ public class StarredRepositoriesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_starred_repositories, container, false);
+	    FragmentStarredRepositoriesBinding fragmentStarredRepositoriesBinding = FragmentStarredRepositoriesBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentStarredRepositoriesBinding.pullToRefresh;
 
 	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navStarredRepos));
 
-        noData = v.findViewById(R.id.noData);
-        mProgressBar = v.findViewById(R.id.progress_bar);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        noData = fragmentStarredRepositoriesBinding.noData;
+        mProgressBar = fragmentStarredRepositoriesBinding.progressBar;
+        mRecyclerView = fragmentStarredRepositoriesBinding.recyclerView;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -90,7 +91,7 @@ public class StarredRepositoriesFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        createNewRepo = v.findViewById(R.id.addNewRepo);
+        createNewRepo = fragmentStarredRepositoriesBinding.addNewRepo;
 
         createNewRepo.setOnClickListener(view -> {
 
@@ -124,7 +125,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()), pageSize, resultLimit);
 
-        return v;
+        return fragmentStarredRepositoriesBinding.getRoot();
     }
 
     @Override

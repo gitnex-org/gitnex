@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCreateNewUserBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -35,25 +36,23 @@ public class CreateNewUserActivity extends BaseActivity {
     private Button createUserButton;
 
     @Override
-    protected int getLayoutResourceId(){
-        return R.layout.activity_create_new_user;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+	    ActivityCreateNewUserBinding activityCreateNewUserBinding = ActivityCreateNewUserBinding.inflate(getLayoutInflater());
+	    setContentView(activityCreateNewUserBinding.getRoot());
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        ImageView closeActivity = findViewById(R.id.close);
-        createUserButton = findViewById(R.id.createUserButton);
-        fullName = findViewById(R.id.fullName);
-        userUserName = findViewById(R.id.userUserName);
-        userEmail = findViewById(R.id.userEmail);
-        userPassword = findViewById(R.id.userPassword);
+        ImageView closeActivity = activityCreateNewUserBinding.close;
+        createUserButton = activityCreateNewUserBinding.createUserButton;
+        fullName = activityCreateNewUserBinding.fullName;
+        userUserName = activityCreateNewUserBinding.userUserName;
+        userEmail = activityCreateNewUserBinding.userEmail;
+        userPassword = activityCreateNewUserBinding.userPassword;
 
         fullName.requestFocus();
         assert imm != null;

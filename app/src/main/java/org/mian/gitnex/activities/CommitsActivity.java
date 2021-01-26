@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityCommitsBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
@@ -51,16 +52,14 @@ public class CommitsActivity extends BaseActivity {
 	private ProgressBar progressLoadMore;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_commits;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		Toolbar toolbar = findViewById(R.id.toolbar);
+
+		ActivityCommitsBinding activityCommitsBinding = ActivityCommitsBinding.inflate(getLayoutInflater());
+		setContentView(activityCommitsBinding.getRoot());
+
+		Toolbar toolbar = activityCommitsBinding.toolbar;
 		setSupportActionBar(toolbar);
 
 		String repoFullName = tinyDB.getString("repoFullName");
@@ -70,15 +69,15 @@ public class CommitsActivity extends BaseActivity {
 
 		String branchName = getIntent().getStringExtra("branchName");
 
-		TextView toolbar_title = findViewById(R.id.toolbar_title);
+		TextView toolbar_title = activityCommitsBinding.toolbarTitle;
 		toolbar_title.setMovementMethod(new ScrollingMovementMethod());
 		toolbar_title.setText(branchName);
 
-		ImageView closeActivity = findViewById(R.id.close);
-		noData = findViewById(R.id.noDataCommits);
-		progressLoadMore = findViewById(R.id.progressLoadMore);
-		progressBar = findViewById(R.id.progress_bar);
-		SwipeRefreshLayout swipeRefresh = findViewById(R.id.pullToRefresh);
+		ImageView closeActivity = activityCommitsBinding.close;
+		noData = activityCommitsBinding.noDataCommits;
+		progressLoadMore = activityCommitsBinding.progressLoadMore;
+		progressBar = activityCommitsBinding.progressBar;
+		SwipeRefreshLayout swipeRefresh = activityCommitsBinding.pullToRefresh;
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
@@ -89,7 +88,7 @@ public class CommitsActivity extends BaseActivity {
 			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
 		}
 
-		recyclerView = findViewById(R.id.recyclerView);
+		recyclerView = activityCommitsBinding.recyclerView;
 		commitsList = new ArrayList<>();
 
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {

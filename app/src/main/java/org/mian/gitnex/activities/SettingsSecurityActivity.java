@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.ActivitySettingsSecurityBinding;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import java.io.File;
@@ -31,29 +32,26 @@ public class SettingsSecurityActivity extends BaseActivity {
 	private static int cacheSizeImagesSelectedChoice = 0;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_settings_security;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		ImageView closeActivity = findViewById(R.id.close);
+		ActivitySettingsSecurityBinding activitySettingsSecurityBinding = ActivitySettingsSecurityBinding.inflate(getLayoutInflater());
+		setContentView(activitySettingsSecurityBinding.getRoot());
+
+		ImageView closeActivity = activitySettingsSecurityBinding.close;
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		TextView cacheSizeDataSelected = findViewById(R.id.cacheSizeDataSelected); // setter for data cache size
-		TextView cacheSizeImagesSelected = findViewById(R.id.cacheSizeImagesSelected); // setter for images cache size
-		TextView clearCacheSelected = findViewById(R.id.clearCacheSelected); // setter for clear cache
+		TextView cacheSizeDataSelected = activitySettingsSecurityBinding.cacheSizeDataSelected; // setter for data cache size
+		TextView cacheSizeImagesSelected = activitySettingsSecurityBinding.cacheSizeImagesSelected; // setter for images cache size
+		TextView clearCacheSelected = activitySettingsSecurityBinding.clearCacheSelected; // setter for clear cache
 
-		LinearLayout certsFrame = findViewById(R.id.certsFrame);
-		LinearLayout cacheSizeDataFrame = findViewById(R.id.cacheSizeDataSelectionFrame);
-		LinearLayout cacheSizeImagesFrame = findViewById(R.id.cacheSizeImagesSelectionFrame);
-		LinearLayout clearCacheFrame = findViewById(R.id.clearCacheSelectionFrame);
+		LinearLayout certsFrame = activitySettingsSecurityBinding.certsFrame;
+		LinearLayout cacheSizeDataFrame = activitySettingsSecurityBinding.cacheSizeDataSelectionFrame;
+		LinearLayout cacheSizeImagesFrame = activitySettingsSecurityBinding.cacheSizeImagesSelectionFrame;
+		LinearLayout clearCacheFrame = activitySettingsSecurityBinding.clearCacheSelectionFrame;
 
 		if(!tinyDB.getString("cacheSizeStr").isEmpty()) {
 

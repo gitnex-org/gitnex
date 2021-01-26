@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -89,8 +90,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 	private List<Integer> currentLabelsIds = new ArrayList<>();
 	private List<Integer> labelsIds = new ArrayList<>();
-	private List<Labels> labelsList = new ArrayList<>();
-	private List<Collaborators> assigneesList = new ArrayList<>();
+	private final List<Labels> labelsList = new ArrayList<>();
+	private final List<Collaborators> assigneesList = new ArrayList<>();
 	private List<String> assigneesListData = new ArrayList<>();
 	private List<String> currentAssignees = new ArrayList<>();
 
@@ -102,19 +103,12 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	private ActivityIssueDetailBinding viewBinding;
 
 	@Override
-	protected int getLayoutResourceId() {
-
-		return R.layout.activity_issue_detail;
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityIssueDetailBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		String repoFullName = tinyDB.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
@@ -583,9 +577,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 					PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated)
 						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(viewBinding.assigneeAvatar);
-					String issueNumber_ = "<font color='" + appCtx.getResources().getColor(R.color.lightGray) + "'>" + appCtx.getResources()
+					String issueNumber_ = "<font color='" + ResourcesCompat.getColor(getResources(), R.color.lightGray, null) + "'>" + appCtx.getResources()
 						.getString(R.string.hash) + singleIssue.getNumber() + "</font>";
-					viewBinding.issueTitle.setText(Html.fromHtml(issueNumber_ + " " + singleIssue.getTitle()));
+					viewBinding.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(singleIssue.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 					String cleanIssueDescription = singleIssue.getBody().trim();
 
 					new Markdown(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription);

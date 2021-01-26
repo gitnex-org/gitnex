@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
+import org.mian.gitnex.databinding.FragmentCollaboratorsBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
@@ -63,14 +63,15 @@ public class CollaboratorsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_collaborators, container, false);
+	    FragmentCollaboratorsBinding fragmentCollaboratorsBinding = FragmentCollaboratorsBinding.inflate(inflater, container, false);
 
-        noDataCollaborators = v.findViewById(R.id.noDataCollaborators);
-        mProgressBar = v.findViewById(R.id.progress_bar);
-        mGridView = v.findViewById(R.id.gridView);
+        noDataCollaborators = fragmentCollaboratorsBinding.noDataCollaborators;
+        mProgressBar = fragmentCollaboratorsBinding.progressBar;
+        mGridView = fragmentCollaboratorsBinding.gridView;
 
         fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName);
-        return v;
+        return fragmentCollaboratorsBinding.getRoot();
+
     }
 
     public void onButtonPressed(Uri uri) {

@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ProfileEmailsAdapter;
+import org.mian.gitnex.databinding.FragmentProfileEmailsBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.models.Emails;
 import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
@@ -67,12 +67,12 @@ public class ProfileEmailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.fragment_profile_emails, container, false);
+	    FragmentProfileEmailsBinding fragmentProfileEmailsBinding = FragmentProfileEmailsBinding.inflate(inflater, container, false);
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentProfileEmailsBinding.pullToRefresh;
 
-        noDataEmails = v.findViewById(R.id.noDataEmails);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        noDataEmails = fragmentProfileEmailsBinding.noDataEmails;
+        mRecyclerView = fragmentProfileEmailsBinding.recyclerView;
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -81,7 +81,7 @@ public class ProfileEmailsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
+        mProgressBar = fragmentProfileEmailsBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -92,7 +92,7 @@ public class ProfileEmailsFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()));
 
-        return v;
+        return fragmentProfileEmailsBinding.getRoot();
 
     }
 

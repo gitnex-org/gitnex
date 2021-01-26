@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.BottomSheetPullRequestFilterBinding;
 
 /**
  * Author M M Arif
@@ -23,22 +22,19 @@ public class BottomSheetPullRequestFilterFragment extends BottomSheetDialogFragm
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.bottom_sheet_pull_request_filter, container, false);
+		BottomSheetPullRequestFilterBinding bottomSheetPullRequestFilterBinding = BottomSheetPullRequestFilterBinding.inflate(inflater, container, false);
 
-		TextView openPr = v.findViewById(R.id.openPr);
-		TextView closedPr = v.findViewById(R.id.closedPr);
-
-		openPr.setOnClickListener(v1 -> {
+		bottomSheetPullRequestFilterBinding.openPr.setOnClickListener(v1 -> {
 			bmListener.onButtonClicked("openPr");
 			dismiss();
 		});
 
-		closedPr.setOnClickListener(v12 -> {
+		bottomSheetPullRequestFilterBinding.closedPr.setOnClickListener(v12 -> {
 			bmListener.onButtonClicked("closedPr");
 			dismiss();
 		});
 
-		return v;
+		return bottomSheetPullRequestFilterBinding.getRoot();
 	}
 
 	public interface BottomSheetListener {

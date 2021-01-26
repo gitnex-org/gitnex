@@ -61,14 +61,6 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	List<Branches> branchesList = new ArrayList<>();
 	List<Labels> labelsList = new ArrayList<>();
 
-	public CreatePullRequestActivity() {
-	}
-
-	@Override
-	protected int getLayoutResourceId(){
-		return R.layout.activity_create_pr;
-	}
-
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,8 +68,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
-		View view = viewBinding.getRoot();
-		setContentView(view);
+		setContentView(viewBinding.getRoot());
 
 		loginUid = tinyDB.getString("loginUid");
 		String repoFullName = tinyDB.getString("repoFullName");

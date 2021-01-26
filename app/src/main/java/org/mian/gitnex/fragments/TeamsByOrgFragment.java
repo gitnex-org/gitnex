@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.TeamsByOrgAdapter;
+import org.mian.gitnex.databinding.FragmentTeamsByOrgBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.models.Teams;
@@ -68,14 +69,14 @@ public class TeamsByOrgFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_teams_by_org, container, false);
+	    FragmentTeamsByOrgBinding fragmentTeamsByOrgBinding = FragmentTeamsByOrgBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
-        noDataTeams = v.findViewById(R.id.noDataTeams);
+        noDataTeams = fragmentTeamsByOrgBinding.noDataTeams;
 
-        final SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.pullToRefresh);
+        final SwipeRefreshLayout swipeRefresh = fragmentTeamsByOrgBinding.pullToRefresh;
 
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView = fragmentTeamsByOrgBinding.recyclerView;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -83,7 +84,7 @@ public class TeamsByOrgFragment extends Fragment {
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = v.findViewById(R.id.progress_bar);
+        mProgressBar = fragmentTeamsByOrgBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -94,7 +95,7 @@ public class TeamsByOrgFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()), orgName);
 
-        return v;
+        return fragmentTeamsByOrgBinding.getRoot();
     }
 
     @Override

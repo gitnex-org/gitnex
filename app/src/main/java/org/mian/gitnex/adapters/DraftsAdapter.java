@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
@@ -119,8 +120,9 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
         DraftWithRepository currentItem = draftsList.get(position);
 
-	    String issueNumber = "<font color='" + mCtx.getResources().getColor(R.color.lightGray) + "'>" + mCtx.getResources().getString(R.string.hash) + currentItem.getIssueId() + "</font>";
-	    Spanned headTitle = Html.fromHtml(issueNumber + " " + currentItem.getRepositoryOwner() + " / " + currentItem.getRepositoryName());
+	    String issueNumber = "<font color='" + ResourcesCompat.getColor(mCtx.getResources(), R.color.lightGray, null) + "'>" + mCtx.getResources().getString(R.string.hash) + currentItem.getIssueId() + "</font>";
+	    Spanned headTitle = HtmlCompat
+		    .fromHtml(issueNumber + " " + currentItem.getRepositoryOwner() + " / " + currentItem.getRepositoryName(), HtmlCompat.FROM_HTML_MODE_LEGACY);
 
 	    holder.repoInfo.setText(headTitle);
 	    holder.draftWithRepository = currentItem;
