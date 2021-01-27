@@ -4,7 +4,7 @@ stages:
   - publish
 
 on_setup:
-  image: jgoclawski/wget:1.0
+  image: nextcloudci/android:android-54
   stage: .pre
   only:
     - master
@@ -17,7 +17,7 @@ on_setup:
     - ./scripts/add_commit_status.sh
 
 build:
-  image: nextcloudci/android:android-49
+  image: nextcloudci/android:android-54
   stage: build
   only:
     - master
@@ -30,7 +30,7 @@ build:
     expire_in: 15 minutes
 
 sign:
-  image: nextcloudci/android:android-49
+  image: nextcloudci/android:android-54
   stage: sign
   only:
     - master
@@ -72,7 +72,7 @@ release:
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/releases/'"$CI_COMMIT_REF_NAME"'.apk'
 
 on_success:
-  image: jgoclawski/wget:1.0
+  image: nextcloudci/android:android-54
   stage: .post
   only:
     - master
@@ -86,7 +86,7 @@ on_success:
   when: on_success
 
 on_failure:
-  image: jgoclawski/wget:1.0
+  image: nextcloudci/android:android-54
   stage: .post
   only:
     - master
