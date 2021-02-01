@@ -128,7 +128,7 @@
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:gravity="top|start"
-                    android:inputType="textCapSentences"
+                    android:inputType="textCapSentences|textMultiLine"
                     android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>

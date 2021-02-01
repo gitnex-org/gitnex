@@ -117,7 +117,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         if(!newMilestoneDescription.equals("")) {
 
-            if (appUtil.charactersLength(newMilestoneDescription) > 255) {
+            if (newMilestoneDescription.length() > 255) {
 
                 Toasty.warning(ctx, getString(R.string.milestoneDescError));
                 return;
