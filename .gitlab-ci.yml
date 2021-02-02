@@ -14,10 +14,10 @@ on_setup:
     MAIN_REPO: gitnex/GitNex
     STATE: pending
   script:
-    - ./scripts/add_commit_status.sh
+    - ./scripts/add-commit-status.sh
 
 build:
-  image: nextcloudci/android:android-49
+  image: nextcloudci/android:android-54
   stage: build
   only:
     - master
@@ -30,7 +30,7 @@ build:
     expire_in: 15 minutes
 
 sign:
-  image: nextcloudci/android:android-49
+  image: nextcloudci/android:android-54
   stage: sign
   only:
     - master
@@ -82,7 +82,7 @@ on_success:
     MAIN_REPO: gitnex/GitNex
     STATE: success
   script:
-    - ./scripts/add_commit_status.sh
+    - ./scripts/add-commit-status.sh
   when: on_success
 
 on_failure:
@@ -96,5 +96,5 @@ on_failure:
     MAIN_REPO: gitnex/GitNex
     STATE: failure
   script:
-    - ./scripts/add_commit_status.sh
+    - ./scripts/add-commit-status.sh
   when: on_failure

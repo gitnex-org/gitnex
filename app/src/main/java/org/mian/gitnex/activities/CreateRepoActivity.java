@@ -118,7 +118,7 @@ public class CreateRepoActivity extends BaseActivity {
 
         if(!newRepoDesc.equals("")) {
 
-            if (appUtil.charactersLength(newRepoDesc) > 255) {
+            if (newRepoDesc.length() > 255) {
 
                 Toasty.warning(ctx, getString(R.string.repoDescError));
                 return;

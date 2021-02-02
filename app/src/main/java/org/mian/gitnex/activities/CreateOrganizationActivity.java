@@ -108,7 +108,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 
         if(!newOrgDesc.equals("")) {
 
-            if (appUtil.charactersLength(newOrgDesc) > 255) {
+            if (newOrgDesc.length() > 255) {
 
                 Toasty.warning(ctx, getString(R.string.orgDescError));
                 return;

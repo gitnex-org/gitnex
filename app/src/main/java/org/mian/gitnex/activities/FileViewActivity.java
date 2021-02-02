@@ -361,7 +361,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 			String fileExtension = FileUtils.getExtension(singleFileName);
 			String data = appUtil.decodeBase64(tinyDB.getString("downloadFileContents"));
 			Intent intent = new Intent(ctx, CreateFileActivity.class);
-			intent.putExtra("fileAction", 1);
+			intent.putExtra("fileAction", CreateFileActivity.FILE_ACTION_DELETE);
 			intent.putExtra("filePath", singleFileName);
 			intent.putExtra("fileSha", fileSha);
 
@@ -382,7 +382,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 			String fileExtension = FileUtils.getExtension(singleFileName);
 			String data = appUtil.decodeBase64(tinyDB.getString("downloadFileContents"));
 			Intent intent = new Intent(ctx, CreateFileActivity.class);
-			intent.putExtra("fileAction", 2);
+			intent.putExtra("fileAction", CreateFileActivity.FILE_ACTION_EDIT);
 			intent.putExtra("filePath", singleFileName);
 			intent.putExtra("fileSha", fileSha);
 

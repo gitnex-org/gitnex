@@ -26,11 +26,6 @@ import java.util.Locale;
 
 public class AppUtil {
 
-	public static String strReplace(String str, String original, String replace) {
-
-		return str.replace(original, replace);
-	}
-
 	public static boolean hasNetworkConnection(Context context) {
 
 		return NetworkStatusObserver.get(context).hasNetworkConnection();
@@ -60,11 +55,6 @@ public class AppUtil {
 
 	public static boolean isPro(Context context) {
 		return context.getPackageName().equals("org.mian.gitnex.pro");
-	}
-
-	public int charactersLength(String str) {
-
-		return str.length();
 	}
 
 	public Boolean checkStringsWithAlphaNumeric(String str) { // [a-zA-Z0-9]
