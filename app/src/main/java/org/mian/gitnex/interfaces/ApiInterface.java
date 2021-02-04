@@ -11,6 +11,7 @@ import org.mian.gitnex.models.CreateIssue;
 import org.mian.gitnex.models.CreateLabel;
 import org.mian.gitnex.models.CreatePullRequest;
 import org.mian.gitnex.models.CreateStatusOption;
+import org.mian.gitnex.models.CronTasks;
 import org.mian.gitnex.models.DeleteFile;
 import org.mian.gitnex.models.EditFile;
 import org.mian.gitnex.models.Emails;
@@ -430,5 +431,10 @@ public interface ApiInterface {
 	@GET("repos/{owner}/{repo}/statuses/{sha}") // Get a commit's statuses
 	Call<List<Status>> getCommitStatuses(@Header("Authorization") String token, @Path("owner") String owner, @Path("repo") String repo, @Query("sort") String sort, @Query("state") String state, @Query("page") int page, @Query("limit") int limit);
 
+	@GET("admin/cron") // get cron tasks
+	Call<List<CronTasks>> adminGetCronTasks(@Header("Authorization") String token, @Query("page") int page, @Query("limit") int limit);
+
+	@POST("admin/cron/{taskName}") // run cron task
+	Call<JsonElement> adminRunCronTask(@Header("Authorization") String token, @Path("taskName") String taskName);
 
 }

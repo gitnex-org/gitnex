@@ -158,6 +158,10 @@
             android:name=".activities.SettingsNotificationsActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
 
+        <activity
+            android:name=".activities.AdminCronTasksActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
+
         <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
         <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>
         <!-- Version >= 3.0. DeX Dual Mode support -->
