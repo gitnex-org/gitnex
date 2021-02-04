@@ -26,6 +26,25 @@
                 android:padding="16dp"
                 app:drawableStartCompat="@drawable/ic_people" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/divider"
+                android:background="?attr/dividerColor" />
+
+            <TextView
+                android:id="@+id/adminCron"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/adminCron"
+                android:drawablePadding="32dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_tasks" />
+
         </LinearLayout>
 
     </ScrollView>
