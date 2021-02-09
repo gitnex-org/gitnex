@@ -30,6 +30,8 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 	public void onAttach(Context context, NotificationThread notificationThread, OnOptionSelectedListener onOptionSelectedListener) {
 
+		super.onAttach(context);
+
 		this.context = context;
 		this.notificationThread = notificationThread;
 		this.onOptionSelectedListener = onOptionSelectedListener;
