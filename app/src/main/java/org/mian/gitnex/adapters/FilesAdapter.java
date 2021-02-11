@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.io.FileUtils;
+import org.gitnex.tea4j.models.Files;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.Files;
 import java.util.ArrayList;
 import java.util.List;
 

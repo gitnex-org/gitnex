@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
+import org.gitnex.tea4j.models.Milestones;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.Milestones;
 import retrofit2.Call;
 import retrofit2.Callback;
 

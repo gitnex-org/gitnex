@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
+import org.gitnex.tea4j.models.RepositoryTransfer;
+import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -19,8 +21,6 @@ import org.mian.gitnex.databinding.CustomRepositoryEditPropertiesDialogBinding;
 import org.mian.gitnex.databinding.CustomRepositoryTransferDialogBinding;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
-import org.mian.gitnex.models.RepositoryTransfer;
-import org.mian.gitnex.models.UserRepositories;
 import retrofit2.Call;
 import retrofit2.Callback;
 

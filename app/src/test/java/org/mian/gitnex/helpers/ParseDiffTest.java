@@ -1,7 +1,7 @@
 package org.mian.gitnex.helpers;
 
+import org.gitnex.tea4j.models.FileDiffView;
 import org.junit.Test;
-import org.mian.gitnex.models.FileDiffView;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

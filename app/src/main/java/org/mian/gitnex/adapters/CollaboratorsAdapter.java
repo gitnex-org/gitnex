@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import org.gitnex.tea4j.models.Collaborators;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import java.util.List;
 

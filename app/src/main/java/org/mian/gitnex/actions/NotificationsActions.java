@@ -1,10 +1,10 @@
 package org.mian.gitnex.actions;
 
 import android.content.Context;
+import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.NotificationThread;
 import java.io.IOException;
 import java.util.Date;
 import okhttp3.ResponseBody;

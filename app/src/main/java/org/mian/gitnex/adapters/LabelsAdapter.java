@@ -15,11 +15,11 @@ import androidx.cardview.widget.CardView;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import org.gitnex.tea4j.models.Labels;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.models.Labels;
 import java.util.ArrayList;
 import java.util.List;
 

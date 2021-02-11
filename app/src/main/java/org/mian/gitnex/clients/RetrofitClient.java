@@ -2,12 +2,12 @@ package org.mian.gitnex.clients;
 
 import android.content.Context;
 import android.util.Log;
+import org.gitnex.tea4j.ApiInterface;
+import org.gitnex.tea4j.WebInterface;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FilesData;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
-import org.mian.gitnex.interfaces.ApiInterface;
-import org.mian.gitnex.interfaces.WebInterface;
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.Map;

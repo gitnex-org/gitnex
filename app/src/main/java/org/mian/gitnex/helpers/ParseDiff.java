@@ -1,6 +1,6 @@
 package org.mian.gitnex.helpers;
 
-import org.mian.gitnex.models.FileDiffView;
+import org.gitnex.tea4j.models.FileDiffView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import org.mian.gitnex.R;
-import org.mian.gitnex.activities.OrganizationTeamMembersActivity;
-import org.mian.gitnex.models.Teams;
-import java.util.ArrayList;
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.models.Teams;
+import org.mian.gitnex.R;
+import org.mian.gitnex.activities.OrganizationTeamMembersActivity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author M M Arif

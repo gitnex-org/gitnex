@@ -13,10 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import org.gitnex.tea4j.models.Collaborators;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
 import org.mian.gitnex.databinding.FragmentCollaboratorsBinding;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.models.Collaborators;
 import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 import java.util.List;
 
