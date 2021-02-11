@@ -28,10 +28,10 @@ public class RepoStargazersActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+	    super.onCreate(savedInstanceState);
+
 	    ActivityRepoStargazersBinding activityRepoStargazersBinding = ActivityRepoStargazersBinding.inflate(getLayoutInflater());
 	    setContentView(activityRepoStargazersBinding.getRoot());
-
-        super.onCreate(savedInstanceState);
 
         ImageView closeActivity = activityRepoStargazersBinding.close;
         TextView toolbarTitle = activityRepoStargazersBinding.toolbarTitle;
