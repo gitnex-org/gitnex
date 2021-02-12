@@ -1,0 +1,10 @@
+"project_id":         "375123"
+"api_token":          "-removed-"
+"base_path" : ""
+"preserve_hierarchy": false
+files: [
+ {
+  "source" : "app/src/main/res/values/strings.xml",
+  "translation" : "app/src/main/res/values-%two_letters_code%/strings.xml",
+ }
+]
