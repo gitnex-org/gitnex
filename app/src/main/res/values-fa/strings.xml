@@ -204,7 +204,7 @@
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
     <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
-    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
+    <string name="clearCacheSelectionHeaderText">پاک‌کردن حافظه پنهان</string>
     <string name="clearCacheDialogHeader">حافظه پنهان پاک شود؟</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <string name="draftsHeader">پیش نویس‌ها</string>
@@ -337,6 +337,12 @@
     <string name="adminCreateNewUser">افزودن کاربر جدید</string>
     <string name="adminUsers">کاربران سامانه</string>
     <string name="userRoleAdmin">مدیر</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">نام کامل</string>
@@ -375,7 +381,7 @@
     <string name="noDataDescription">هیج توضیحی یافت نشد</string>
     <string name="noDataLocation">هیچ مکانی یافت نشد</string>
     <string name="starMember">Star</string>
-    <string name="watcherMember">Watcher</string>
+    <string name="watcherMember">دیدبان</string>
     <string name="zipArchiveDownloadReleasesTab">کد منبع (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">کد منبع (TAR.GZ)</string>
     <!-- new file -->
@@ -388,10 +394,9 @@
     <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Commit message is too long</string>
     <string name="newFileSuccessMessage">پرونده جدید ایجاد شد</string>
-    <string name="newFileOldBranches">شاخه‌های کنونی</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
-    <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
-    <string name="newFileNewBranchMessage">برای مثال: شاخه-جدید</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">پالایه</string>
     <string name="strSwitchBranches">شاخه‌ها</string>
@@ -508,7 +513,7 @@
     <string name="mtm_decision_abort">انصراف</string>
     <string name="subscribedSuccessfully">با موفقیت مشترک شد</string>
     <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscriptionError">Subscription failed</string>
+    <string name="subscriptionError">اشتراک شکست خورد</string>
     <string name="unsubscribedSuccessfully">اشتراک با موفقیت لغو شد</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unsubscriptionError">لغو اشتراک شکست خورد</string>

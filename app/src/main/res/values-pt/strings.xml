@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Adicionar novo usuário</string>
     <string name="adminUsers">Usuários do Sistema</string>
     <string name="userRoleAdmin">Admin</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Nome completo</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Nome de branch inválido só pode conter &#8211;, um&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Mensagem de commit muito longa</string>
     <string name="newFileSuccessMessage">Novo arquivo criado</string>
-    <string name="newFileOldBranches">Branches atuais</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Campos como nome de arquivo, conteúdo e mensagem de commit são necessários</string>
-    <string name="newFileCurrentBranchMessage">Selecionar branch atual irá desativar o novo branch</string>
-    <string name="newFileNewBranchMessage">ex.: nova-branch</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Novo nome do branch não pode estar vazio se o branch atual não estiver selecionado</string>
     <string name="strFilter">Filtro</string>
     <string name="strSwitchBranches">Filiais</string>

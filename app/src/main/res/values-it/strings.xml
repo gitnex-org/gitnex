@@ -336,6 +336,12 @@ autorizzazione</string>
     <string name="adminCreateNewUser">Aggiungi nuovo utente</string>
     <string name="adminUsers">Utenti Di Sistema</string>
     <string name="userRoleAdmin">Amministratore</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Nome completo</string>
@@ -387,10 +393,9 @@ autorizzazione</string>
     <string name="newFileInvalidBranchName">Nome del branch non valido, può contenere solo &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Il messaggio di commit è troppo lungo</string>
     <string name="newFileSuccessMessage">Nuovo file creato</string>
-    <string name="newFileOldBranches">Branches correnti</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Campi come nome file, contenuto e messaggio di commit sono obbligatori</string>
-    <string name="newFileCurrentBranchMessage">Selezionando il branch attuale disattiverà il nuovo branch</string>
-    <string name="newFileNewBranchMessage">ad es: nuovo branch</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Il nuovo nome del branch non può essere vuoto se il branch attuale non è selezionato</string>
     <string name="strFilter">Filtro</string>
     <string name="strSwitchBranches">Branches</string>

@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Neuen Benutzer erstellen</string>
     <string name="adminUsers">Systembenutzer</string>
     <string name="userRoleAdmin">Administrator</string>
+    <string name="adminCron">Cron-Jobs</string>
+    <string name="adminCronScheduleHeader">Termin planen</string>
+    <string name="adminCronNextRunHeader">Nächste Ausführung</string>
+    <string name="adminCronLastRunHeader">Zuletzt ausgeführt</string>
+    <string name="adminCronExecutionHeader">Ausführungen</string>
+    <string name="adminCronTaskSuccessMsg">Job %1$s wurde erfolgreich erstellt</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Ganzer Name</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Der Branch-Name ist ungültig und sollte nur folgendes beinhalten &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Commit-Nachricht ist zu lang</string>
     <string name="newFileSuccessMessage">Neue Datei erstellt</string>
-    <string name="newFileOldBranches">Derzeitige Branches</string>
+    <string name="newFileBranches">Wähle oder Erstelle einen Branch</string>
     <string name="newFileRequiredFields">Felder wie Dateiname, Inhalt und Commit-Nachricht sind erforderlich.</string>
-    <string name="newFileCurrentBranchMessage">Das Auswählen des derzeitigen Branches wird \"neuer Branch-Name\" deaktivieren</string>
-    <string name="newFileNewBranchMessage">z.B.: neuer-branch</string>
+    <string name="newFileEmptyBranchMessage">Leer lassen, um zum Standart-Branch zu pushen</string>
     <string name="newFileRequiredFieldNewBranchName">Neuer Branch-Name kann nicht leer sein, wenn der derzeitige Branch nicht ausgewählt ist</string>
     <string name="strFilter">Filter</string>
     <string name="strSwitchBranches">Branches</string>

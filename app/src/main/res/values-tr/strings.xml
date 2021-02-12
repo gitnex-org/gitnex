@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Yeni Kullanıcı Ekle</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Yönetici</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Tam Ad</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Geçersiz dal adı, yalnızca &#8211;, a&#8211;z, 0&#8211;9 içerebilir</string>
     <string name="newFileCommitMessageError">İşleme mesajı çok uzun</string>
     <string name="newFileSuccessMessage">Yeni dosya oluşturuldu</string>
-    <string name="newFileOldBranches">Dallar</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Dosya adı, içerik ve işleme mesajı gibi alanların doldurulması zorunludur</string>
-    <string name="newFileCurrentBranchMessage">Mevcut şubeyi seçmek yeni şubeyi devre dışı bırakacaktır</string>
-    <string name="newFileNewBranchMessage">ör: yeni-dal</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Geçerli dal seçilmemişse yeni dal adı boş bırakılamaz</string>
     <string name="strFilter">Filtre</string>
     <string name="strSwitchBranches">Branches</string>

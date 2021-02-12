@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Создать нового пользователя</string>
     <string name="adminUsers">Пользователи системы</string>
     <string name="userRoleAdmin">Администратор</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Полное имя</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Некоректное имя ветки, разрешенные символя: &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Слишком длинное сообщение коммита</string>
     <string name="newFileSuccessMessage">Новый файл создан</string>
-    <string name="newFileOldBranches">Текущие ветки</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Необходимо указать имя файла, содержимое и сообщение коммита</string>
-    <string name="newFileCurrentBranchMessage">Выбор текущей ветки отключит новую ветку</string>
-    <string name="newFileNewBranchMessage">например: новая-ветка</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Имя новой ветки не может быть пустым, если текущая ветка не выбрана</string>
     <string name="strFilter">Фильтр</string>
     <string name="strSwitchBranches">Ветки</string>

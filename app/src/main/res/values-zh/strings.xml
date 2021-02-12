@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">添加新用户</string>
     <string name="adminUsers">系统用户</string>
     <string name="userRoleAdmin">管理员</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">全名</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">分支名称无效，只能包含 &#8211;,&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">提交消息过长</string>
     <string name="newFileSuccessMessage">新文件已创建</string>
-    <string name="newFileOldBranches">当前分支</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">需要文件名、内容和提交消息等字段</string>
-    <string name="newFileCurrentBranchMessage">选择当前分支将禁用新分支</string>
-    <string name="newFileNewBranchMessage">例如：新分支</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">如果未选择当前分支，新分支名称不能为空</string>
     <string name="strFilter">筛选器</string>
     <string name="strSwitchBranches">分支</string>

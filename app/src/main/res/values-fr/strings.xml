@@ -171,8 +171,8 @@
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduction</string>
     <string name="settingsSecurityHeader">Sécurité</string>
-    <string name="settingsCertsSelectorHeader">Supprimer les certificats de confiance</string>
-    <string name="settingsCertsPopupTitle">Supprimer les certificats de confiance ?</string>
+    <string name="settingsCertsSelectorHeader">Supprimer les certificats</string>
+    <string name="settingsCertsPopupTitle">Supprimer les certificats ?</string>
     <string name="settingsCertsPopupMessage">Les noms d’hôtes et les certificats ajoutés manuellement seront supprimés.\n\nIl faudra vous reconnecter.</string>
     <string name="settingsDateTimeHeaderText">Date et heure</string>
     <string name="settingsSave">Réglages enregistrés</string>
@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Ajouter un nouvel utilisateur</string>
     <string name="adminUsers">Utilisateurs système</string>
     <string name="userRoleAdmin">Admin</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Nom complet</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Nom de branche invalide [&#8211;, un&#8211;z, 0&#8211;9]</string>
     <string name="newFileCommitMessageError">Message de la révision trop long</string>
     <string name="newFileSuccessMessage">Nouveau fichier créé</string>
-    <string name="newFileOldBranches">Branche</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Le nom de fichier, le contenu et le message de la révision sont requis</string>
-    <string name="newFileCurrentBranchMessage">Sélectionner une branche désactive les champs suivants</string>
-    <string name="newFileNewBranchMessage">ex : new-branch</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Nom de la nouvelle branche requis si aucune branche n’est sélectionnée</string>
     <string name="strFilter">Filtrer</string>
     <string name="strSwitchBranches">Branches</string>
@@ -513,10 +518,10 @@
     <string name="openMilestone">Ouvrir le jalon</string>
     <string name="milestoneStatusUpdate">Jalon mis à jour</string>
     <string name="errorOnLogin">Impossible d’accéder au serveur, veuillez vérifier son statut</string>
-    <string name="reportViewerHeader">Rapports de plantage</string>
+    <string name="reportViewerHeader">Débogage</string>
     <string name="settingsEnableReportsText">Rapports de plantage</string>
     <string name="crashTitle">GitNex a planté :(</string>
-    <string name="setCrashReports">Rapports de plantage</string>
+    <string name="setCrashReports">Débogage</string>
     <string name="crashMessage">Il est conseillé de créer un ticket expliquant comment reproduire ce bogue pour faciliter la correction du problème.\n\nAppuyez sur OK si vous préférez envoyer le rapport de plantage par courriel. Libre à vous d’y ajouter du contenu supplémentaire.\nMerci!</string>
     <string name="forceLogoutDialogHeader">Veuillez vous reconnecter</string>
     <string name="forceLogoutDialogDescription">Une reconnexion est nécessaire en raison de changements majeurs du fonctionnement interne pour améliorer la souplesse de l\'application.\n\nMerci pour votre patience et toutes nos excuses pour la gêne occasionnée.</string>
@@ -545,19 +550,19 @@
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">Aucune notification</string>
-    <string name="notificationsPollingHeaderText">Délai de scrutation des notifications</string>
+    <string name="notificationsPollingHeaderText">Période de scrutation</string>
     <string name="pollingDelaySelectedText">%d minutes</string>
-    <string name="pollingDelayDialogHeaderText">Délai de scrutation</string>
-    <string name="pollingDelayDialogDescriptionText">Choisissez un délai de scrutation où GitNex obtient les notifications</string>
+    <string name="pollingDelayDialogHeaderText">Période de scrutation</string>
+    <string name="pollingDelayDialogDescriptionText">GitNex tentera de récupérer des notifications toutes les (en minutes) :</string>
     <string name="markAsRead">Marquer comme lu</string>
     <string name="markAsUnread">Marquer comme non lu</string>
     <string name="pinNotification">Épingler la notification</string>
     <string name="markedNotificationsAsRead">Les notifications ont été marquées comme lues</string>
     <string name="notificationsHintText">Délai d\'interrogation, témoin lumineux, vibreur</string>
-    <string name="enableNotificationsHeaderText">Activer les notifications</string>
+    <string name="enableNotificationsHeaderText">Notifications</string>
     <string name="enableLightsHeaderText">Activer le témoin lumineux</string>
     <string name="enableVibrationHeaderText">Activer le vibreur</string>
-    <string name="chooseColorSelectorHeader">Choisir une couleur</string>
+    <string name="chooseColorSelectorHeader">Couleur</string>
     <string name="newMessages">Nouveaux messages</string>
     <string name="youHaveGotNewNotifications">Vous avez %d nouvelles notifications.</string>
     <string name="isRead">Lu</string>

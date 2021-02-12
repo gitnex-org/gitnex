@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Додај новог корисника</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Администратор</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Пуно име</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Назив гране није валидан</string>
     <string name="newFileCommitMessageError">Опис комита је предугачак</string>
     <string name="newFileSuccessMessage">Фајл је креиран</string>
-    <string name="newFileOldBranches">Постојеће гране</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Назив фајла и опис комита су обавезни</string>
-    <string name="newFileCurrentBranchMessage">Одабир тренутне гране ће онемогућити нову грану</string>
-    <string name="newFileNewBranchMessage">нпр. nova-grana</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Назив нове гране је обавезан ако тренутна грана није одабрана</string>
     <string name="strFilter">Филтер</string>
     <string name="strSwitchBranches">Branches</string>

@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Add New User</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Admin</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Full Name</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Commit message is too long</string>
     <string name="newFileSuccessMessage">New file created</string>
-    <string name="newFileOldBranches">Current Branches</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
-    <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
-    <string name="newFileNewBranchMessage">e.g: new-branch</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filter</string>
     <string name="strSwitchBranches">Branches</string>

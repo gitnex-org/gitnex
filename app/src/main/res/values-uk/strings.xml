@@ -334,6 +334,12 @@
     <string name="adminCreateNewUser">Додати нового користувача</string>
     <string name="adminUsers">Користувачі системи</string>
     <string name="userRoleAdmin">Адміністратор</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Повне ім\'я</string>
@@ -385,10 +391,9 @@
     <string name="newFileInvalidBranchName">Некоректне ім\'я гілки, дозволені символи: &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Повідомлення коміту задовге</string>
     <string name="newFileSuccessMessage">Новий файл створено</string>
-    <string name="newFileOldBranches">Поточні гілки</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Поля імені файлу, вмісту та повідомлення коміту є обов\'язковими</string>
-    <string name="newFileCurrentBranchMessage">Вибір поточної гілки вимкне нову гілку</string>
-    <string name="newFileNewBranchMessage">наприклад: нова-гілка</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Назва нової гілки не може бути пустою, якщо не обрано поточну гілку</string>
     <string name="strFilter">Фільтр</string>
     <string name="strSwitchBranches">Branches</string>
