@@ -2,10 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -38,6 +35,7 @@ import org.mian.gitnex.databinding.ActivityFileViewBinding;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.highlightjs.HighlightJsView;
@@ -182,8 +180,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 							imageView.setVisibility(View.VISIBLE);
 
 							imageData = Base64.decode(response.body().getContent(), Base64.DEFAULT);
-							Drawable imageDrawable = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
-							imageView.setImageDrawable(imageDrawable);
+
+							imageView.setImageBitmap(Images.scaleImage(imageData, 1920, 1920));
 						}
 						else if(appUtil.sourceCodeExtension(fileExtension)) { // file is sourcecode
 
