@@ -449,10 +449,10 @@ public class MemorizingTrustManager implements X509TrustManager {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		if(isPathException(e)) {
-			stringBuilder.append(context.getString(R.string.mtm_trust_anchor));
+			stringBuilder.append(context.getString(R.string.mtmTrustAnchor));
 		}
 		else if(isExpiredException(e)) {
-			stringBuilder.append(context.getString(R.string.mtm_cert_expired));
+			stringBuilder.append(context.getString(R.string.mtmCertExpired));
 		}
 		else {
 			// get to the cause
@@ -464,9 +464,9 @@ public class MemorizingTrustManager implements X509TrustManager {
 		}
 
 		stringBuilder.append("\n\n");
-		stringBuilder.append(context.getString(R.string.mtm_connect_anyway));
+		stringBuilder.append(context.getString(R.string.mtmConnectAnyway));
 		stringBuilder.append("\n\n");
-		stringBuilder.append(context.getString(R.string.mtm_cert_details));
+		stringBuilder.append(context.getString(R.string.mtmCertDetails));
 
 		for(X509Certificate c : chain) {
 			certDetails(stringBuilder, c);
@@ -479,7 +479,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		StringBuilder stringBuilder = new StringBuilder();
 
-		stringBuilder.append(context.getString(R.string.mtm_hostname_mismatch, hostname));
+		stringBuilder.append(context.getString(R.string.mtmHostnameMismatch, hostname));
 		stringBuilder.append("\n\n");
 
 		try {
@@ -510,9 +510,9 @@ public class MemorizingTrustManager implements X509TrustManager {
 		}
 
 		stringBuilder.append("\n");
-		stringBuilder.append(context.getString(R.string.mtm_connect_anyway));
+		stringBuilder.append(context.getString(R.string.mtmConnectAnyway));
 		stringBuilder.append("\n\n");
-		stringBuilder.append(context.getString(R.string.mtm_cert_details));
+		stringBuilder.append(context.getString(R.string.mtmCertDetails));
 		certDetails(stringBuilder, cert);
 		return stringBuilder.toString();
 	}
@@ -544,7 +544,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private void startActivityNotification(Intent intent, int decisionId, String certName) {
 
 		final PendingIntent call = PendingIntent.getActivity(context, 0, intent, 0);
-		final String mtmNotification = context.getString(R.string.mtm_notification);
+		final String mtmNotification = context.getString(R.string.mtmNotification);
 
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ssl")
 				.setSmallIcon(android.R.drawable.ic_lock_lock)
@@ -596,7 +596,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	private void interactCert(final X509Certificate[] chain, String authType, CertificateException cause) throws CertificateException {
 
-		if(interact(certChainMessage(chain, cause), R.string.mtm_accept_cert) == MTMDecision.DECISION_ALWAYS) {
+		if(interact(certChainMessage(chain, cause), R.string.mtmAcceptCert) == MTMDecision.DECISION_ALWAYS) {
 			storeCert(chain[0]); // only store the server cert, not the whole chain
 		} else {
 			throw (cause);
@@ -605,7 +605,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	private boolean interactHostname(X509Certificate cert, String hostname) {
 
-		if(interact(hostNameMessage(cert, hostname), R.string.mtm_accept_server_name) == MTMDecision.DECISION_ALWAYS) {
+		if(interact(hostNameMessage(cert, hostname), R.string.mtmAcceptServerName) == MTMDecision.DECISION_ALWAYS) {
 			storeCert(hostname, cert);
 			return true;
 		}

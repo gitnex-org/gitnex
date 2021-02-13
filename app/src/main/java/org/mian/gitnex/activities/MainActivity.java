@@ -214,7 +214,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		Menu menu = navigationView.getMenu();
 		navNotifications = menu.findItem(R.id.nav_notifications);
 
-		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigationDrawerOpen, R.string.navigationDrawerClose);
 
 		drawer.addDrawerListener(toggle);
 		drawer.addDrawerListener(new DrawerLayout.DrawerListener() {

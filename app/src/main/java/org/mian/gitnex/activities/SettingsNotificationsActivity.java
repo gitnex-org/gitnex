@@ -10,7 +10,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsNotificationsBinding;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.notifications.NotificationsMaster;
+import org.mian.gitnex.notifications.Notifications;
 
 /**
  * Template Author M M Arif
@@ -43,7 +43,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.enableNotificationsMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
 			tinyDB.putBoolean("notificationsEnabled", isChecked);
-			if(!isChecked) NotificationsMaster.fireWorker(ctx);
+			if(!isChecked) Notifications.stopWorker(ctx);
 			Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 
 		});
@@ -66,8 +66,8 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 				tinyDB.putInt("pollingDelayMinutes", numberPicker.getValue());
 
-				NotificationsMaster.fireWorker(ctx);
-				NotificationsMaster.hireWorker(ctx);
+				Notifications.stopWorker(ctx);
+				Notifications.startWorker(ctx);
 
 				viewBinding.pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), numberPicker.getValue()));
 				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));

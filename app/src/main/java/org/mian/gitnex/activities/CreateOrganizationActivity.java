@@ -94,8 +94,6 @@ public class CreateOrganizationActivity extends BaseActivity {
     private void processNewOrganization() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
         String newOrgName = orgName.getText().toString();
         String newOrgDesc = orgDesc.getText().toString();
@@ -119,7 +117,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 
             Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
         }
-        else if(!appUtil.checkStrings(newOrgName)) {
+        else if(!AppUtil.checkStrings(newOrgName)) {
 
             Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
         }

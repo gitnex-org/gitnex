@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -25,6 +27,33 @@ import java.util.Locale;
  */
 
 public class AppUtil {
+
+	public enum FileType { IMAGE, DOCUMENT, TEXT, UNKNOWN }
+
+	private static final HashMap<List<String>, FileType> extensions = new HashMap<>();
+
+	// AppUtil should not be instantiated.
+	private AppUtil() {}
+
+	static {
+
+		extensions.put(Arrays.asList("jpg", "jpeg", "gif", "png", "ico"), FileType.IMAGE);
+		extensions.put(Arrays.asList("doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt", "ott", "odf", "ods", "ots", "exe", "jar", "odg", "otg", "odp", "otp", "bin", "dmg", "psd", "xcf", "pdf"), FileType.DOCUMENT);
+		extensions.put(Arrays.asList("txt", "md", "json", "java", "go", "php", "c", "cc", "cpp", "h", "cxx", "cyc", "m", "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript", "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt", "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs", "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js", "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat", "twig", "cvs", "cmake", "in", "info", "spec", "m4", "am", "dist", "pam", "hx", "ts"), FileType.TEXT);
+	}
+
+	public static FileType getFileType(String extension) {
+
+		for(List<String> e : extensions.keySet()) {
+
+			if(e.contains(extension)) {
+
+				return extensions.get(e);
+			}
+		}
+
+		return FileType.UNKNOWN;
+	}
 
 	public static boolean hasNetworkConnection(Context context) {
 
@@ -57,19 +86,19 @@ public class AppUtil {
 		return context.getPackageName().equals("org.mian.gitnex.pro");
 	}
 
-	public Boolean checkStringsWithAlphaNumeric(String str) { // [a-zA-Z0-9]
+	public static Boolean checkStringsWithAlphaNumeric(String str) { // [a-zA-Z0-9]
 		return str.matches("^[\\w]+$");
 	}
 
-	public Boolean checkStrings(String str) { // [a-zA-Z0-9-_. ]
+	public static Boolean checkStrings(String str) { // [a-zA-Z0-9-_. ]
 		return str.matches("^[\\w .-]+$");
 	}
 
-	public Boolean checkStringsWithAlphaNumericDashDotUnderscore(String str) { // [a-zA-Z0-9-_]
+	public static Boolean checkStringsWithAlphaNumericDashDotUnderscore(String str) { // [a-zA-Z0-9-_]
 		return str.matches("^[\\w.-]+$");
 	}
 
-	public Boolean checkStringsWithDash(String str) { // [a-zA-Z0-9-_. ]
+	public static Boolean checkStringsWithDash(String str) { // [a-zA-Z0-9-_. ]
 		return str.matches("^[\\w-]+$");
 	}
 
@@ -168,7 +197,7 @@ public class AppUtil {
 
 	}
 
-	public String encodeBase64(String str) {
+	public static String encodeBase64(String str) {
 
 		String base64Str = str;
 		if(!str.equals("")) {
@@ -180,7 +209,7 @@ public class AppUtil {
 
 	}
 
-	public String decodeBase64(String str) {
+	public static String decodeBase64(String str) {
 
 		String base64Str = str;
 		if(!str.equals("")) {
@@ -192,39 +221,7 @@ public class AppUtil {
 
 	}
 
-	public Boolean sourceCodeExtension(String ext) {
-
-		String[] extValues = new String[]{"md", "json", "java", "go", "php", "c", "cc", "cpp", "h", "cxx", "cyc", "m", "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript", "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt", "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs", "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js", "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat", "twig", "cvs", "cmake", "in", "info", "spec", "m4", "am", "dist", "pam", "hx", "ts"};
-
-		return Arrays.asList(extValues).contains(ext);
-
-	}
-
-	public Boolean pdfExtension(String ext) {
-
-		String[] extValues = new String[]{"pdf"};
-
-		return Arrays.asList(extValues).contains(ext);
-
-	}
-
-	public Boolean imageExtension(String ext) {
-
-		String[] extValues = new String[]{"jpg", "jpeg", "gif", "png", "ico"};
-
-		return Arrays.asList(extValues).contains(ext);
-
-	}
-
-	public Boolean excludeFilesInFileViewerExtension(String ext) {
-
-		String[] extValues = new String[]{"doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt", "ott", "odf", "ods", "ots", "exe", "jar", "odg", "otg", "odp", "otp", "bin", "dmg", "psd", "xcf"};
-
-		return Arrays.asList(extValues).contains(ext);
-
-	}
-
-	public String getLastCharactersOfWord(String str, int count) {
+	public static String getLastCharactersOfWord(String str, int count) {
 
 		return str.substring(str.length() - count);
 

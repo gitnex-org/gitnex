@@ -122,7 +122,7 @@ public class CreateLabelActivity extends BaseActivity {
     private void processUpdateLabel() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
+
         String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -152,7 +152,7 @@ public class CreateLabelActivity extends BaseActivity {
             return;
         }
 
-        if(!appUtil.checkStrings(updateLabelName)) {
+        if(!AppUtil.checkStrings(updateLabelName)) {
 
             Toasty.error(ctx, getString(R.string.labelNameError));
             return;
@@ -167,7 +167,6 @@ public class CreateLabelActivity extends BaseActivity {
     private void processCreateLabel() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
 
         String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
@@ -198,7 +197,7 @@ public class CreateLabelActivity extends BaseActivity {
             return;
         }
 
-        if(!appUtil.checkStrings(newLabelName)) {
+        if(!AppUtil.checkStrings(newLabelName)) {
 
             Toasty.error(ctx, getString(R.string.labelNameError));
             return;

@@ -104,7 +104,6 @@ public class CreateRepoActivity extends BaseActivity {
     private void processNewRepo() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
 
         String newRepoName = repoName.getText().toString();
         String newRepoDesc = repoDesc.getText().toString();
@@ -129,7 +128,7 @@ public class CreateRepoActivity extends BaseActivity {
 
             Toasty.error(ctx, getString(R.string.repoNameErrorEmpty));
         }
-        else if(!appUtil.checkStrings(newRepoName)) {
+        else if(!AppUtil.checkStrings(newRepoName)) {
 
             Toasty.warning(ctx, getString(R.string.repoNameErrorInvalid));
         }

@@ -254,7 +254,7 @@ public class IssueActions {
 				}
 				else {
 
-					Toasty.error(ctx, ctx.getString(R.string.unsubscriptionError));
+					Toasty.error(ctx, ctx.getString(R.string.unSubscriptionError));
 
 				}
 

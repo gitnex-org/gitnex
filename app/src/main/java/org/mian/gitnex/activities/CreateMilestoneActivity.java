@@ -92,7 +92,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     private void processNewMilestone() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
+
         TinyDB tinyDb = TinyDB.getInstance(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");

@@ -224,7 +224,6 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
     private void processCreateTeam() {
 
-        AppUtil appUtil = new AppUtil();
         final TinyDB tinyDb = TinyDB.getInstance(appCtx);
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -248,7 +247,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             return;
         }
 
-        if(!appUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
+        if(!AppUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
 
             Toasty.warning(ctx, getString(R.string.teamNameError));
             return;
@@ -256,7 +255,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
         if(!newTeamDesc.equals("")) {
 
-            if(!appUtil.checkStrings(newTeamDesc)) {
+            if(!AppUtil.checkStrings(newTeamDesc)) {
 
                 Toasty.warning(ctx, getString(R.string.teamDescError));
                 return;

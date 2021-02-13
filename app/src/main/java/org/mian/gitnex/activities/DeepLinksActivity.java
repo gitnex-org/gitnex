@@ -326,7 +326,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 							// pull was done from a deleted fork
 							tinyDB.putString("prIsFork", "true");
-							tinyDB.putString("prForkFullName", ctx.getString(R.string.prDeletedFrok));
+							tinyDB.putString("prForkFullName", ctx.getString(R.string.prDeletedFork));
 						}
 					}
 

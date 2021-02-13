@@ -17,7 +17,6 @@ import org.mian.gitnex.databinding.ActivityCreateNewUserBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,8 +73,6 @@ public class CreateNewUserActivity extends BaseActivity {
     private void processCreateNewUser() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
         String newFullName = fullName.getText().toString().trim();
         String newUserName = userUserName.getText().toString().trim();
@@ -94,13 +91,13 @@ public class CreateNewUserActivity extends BaseActivity {
             return;
         }
 
-        if(!appUtil.checkStrings(newFullName)) {
+        if(!AppUtil.checkStrings(newFullName)) {
 
             Toasty.error(ctx, getString(R.string.userInvalidFullName));
             return;
         }
 
-        if(!appUtil.checkStringsWithAlphaNumeric(newUserName)) {
+        if(!AppUtil.checkStringsWithAlphaNumeric(newUserName)) {
 
             Toasty.error(ctx, getString(R.string.userInvalidUserName));
             return;

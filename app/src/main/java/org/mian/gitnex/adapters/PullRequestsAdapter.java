@@ -199,7 +199,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				else {
 					// pull was done from a deleted fork
 					prIsFork.setText("true");
-					prForkFullName.setText(context.getString(R.string.prDeletedFrok));
+					prForkFullName.setText(context.getString(R.string.prDeletedFork));
 				}
 			}
 			prCommentsCount.setText(String.valueOf(prModel.getComments()));

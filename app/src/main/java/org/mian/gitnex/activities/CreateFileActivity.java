@@ -162,7 +162,6 @@ public class CreateFileActivity extends BaseActivity {
     private void processNewFile() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
 
         String newFileName_ = newFileName.getText().toString();
         String newFileContent_ = newFileContent.getText().toString();
@@ -181,7 +180,7 @@ public class CreateFileActivity extends BaseActivity {
             return;
         }
 
-	    if(!appUtil.checkStringsWithDash(newFileBranchName_)) {
+	    if(!AppUtil.checkStringsWithDash(newFileBranchName_)) {
 
 		    Toasty.error(ctx, getString(R.string.newFileInvalidBranchName));
 		    return;
@@ -198,7 +197,7 @@ public class CreateFileActivity extends BaseActivity {
             switch(fileAction) {
 
 	            case FILE_ACTION_CREATE:
-		            createNewFile(Authorization.get(ctx), repoOwner, repoName, newFileName_, appUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_);
+		            createNewFile(Authorization.get(ctx), repoOwner, repoName, newFileName_, AppUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_);
 		            break;
 
 	            case FILE_ACTION_DELETE:
@@ -207,7 +206,7 @@ public class CreateFileActivity extends BaseActivity {
 
 	            case FILE_ACTION_EDIT:
 		            editFile(Authorization.get(ctx), repoOwner, repoName, filePath,
-			            appUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_, fileSha);
+			            AppUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_, fileSha);
 	            	break;
 
             }

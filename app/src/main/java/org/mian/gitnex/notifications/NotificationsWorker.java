@@ -36,8 +36,8 @@ public class NotificationsWorker extends Worker {
 	private static final int MAXIMUM_NOTIFICATIONS = 100;
 	private static final long[] VIBRATION_PATTERN = new long[]{ 1000, 1000 };
 
-	private Context context;
-	private TinyDB tinyDB;
+	private final Context context;
+	private final TinyDB tinyDB;
 
 	public NotificationsWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
 
@@ -157,7 +157,7 @@ public class NotificationsWorker extends Worker {
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-			NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.app_name),
+			NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.appName),
 				NotificationManager.IMPORTANCE_DEFAULT);
 
 			notificationChannel.setDescription(context.getString(R.string.notificationChannelDescription));

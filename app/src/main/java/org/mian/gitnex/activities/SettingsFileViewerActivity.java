@@ -54,7 +54,7 @@ public class SettingsFileViewerActivity extends BaseActivity {
 
 			AlertDialog.Builder fvtsBuilder = new AlertDialog.Builder(SettingsFileViewerActivity.this);
 
-			fvtsBuilder.setTitle(R.string.fileviewerSourceCodeThemeSelectorDialogTitle);
+			fvtsBuilder.setTitle(R.string.fileViewerSourceCodeThemeSelectorDialogTitle);
 			fvtsBuilder.setCancelable(fileViewerSourceCodeThemesSelectedChoice != -1);
 
 			fvtsBuilder.setSingleChoiceItems(fileViewerSourceCodeThemesList, fileViewerSourceCodeThemesSelectedChoice, (dialogInterfaceTheme, i) -> {

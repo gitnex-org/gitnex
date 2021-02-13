@@ -19,15 +19,15 @@ public class MemorizingActivity extends Activity {
 
 		Intent intent = getIntent();
 		int decisionId = intent.getIntExtra("DECISION_INTENT_ID", MTMDecision.DECISION_INVALID);
-		int titleId = intent.getIntExtra("DECISION_TITLE_ID", R.string.mtm_accept_cert);
+		int titleId = intent.getIntExtra("DECISION_TITLE_ID", R.string.mtmAcceptCert);
 		String cert = intent.getStringExtra("DECISION_INTENT_CERT");
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(MemorizingActivity.this);
 		builder.setTitle(titleId);
 		builder.setMessage(cert);
 
-		builder.setPositiveButton(R.string.mtm_decision_always, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ALWAYS));
-		builder.setNeutralButton(R.string.mtm_decision_abort, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ABORT));
+		builder.setPositiveButton(R.string.mtmDecisionAlways, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ALWAYS));
+		builder.setNeutralButton(R.string.mtmDecisionAbort, (dialog, which) -> onSendResult(decisionId, MTMDecision.DECISION_ABORT));
 		builder.setOnCancelListener(dialog -> onSendResult(decisionId, MTMDecision.DECISION_ABORT));
 
 		builder.create().show();
