@@ -110,7 +110,7 @@ dependencies {
     implementation "com.eightbitlab:blurview:1.6.4"
     implementation "io.mikael:urlbuilder:2.0.9"
     implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
-    implementation "org.codeberg.gitnex:tea4j:1.0.0"
+    implementation "org.codeberg.gitnex:tea4j:1.0.1"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.1"
 
 }

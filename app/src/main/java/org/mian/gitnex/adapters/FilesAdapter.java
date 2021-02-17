@@ -23,25 +23,26 @@ import java.util.List;
 
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> implements Filterable {
 
-    private List<Files> filesList;
-    private Context mCtx;
-    private List<Files> filesListFull;
+	private final List<Files> originalFiles = new ArrayList<>();
+	private final List<Files> alteredFiles = new ArrayList<>();
 
-    private FilesAdapterListener filesListener;
+    private Context mCtx;
+
+    private final FilesAdapterListener filesListener;
 
     public interface FilesAdapterListener {
         void onClickDir(String str);
         void onClickFile(String str);
     }
 
-    class FilesViewHolder extends RecyclerView.ViewHolder {
+	class FilesViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView fileTypeImage;
-	    private ImageView dirTypeImage;
-	    private ImageView unknownTypeImage;
-        private TextView fileName;
-        private TextView fileType;
-        private TextView fileInfo;
+        private final ImageView fileTypeImage;
+	    private final ImageView dirTypeImage;
+	    private final ImageView unknownTypeImage;
+        private final TextView fileName;
+        private final TextView fileType;
+        private final TextView fileInfo;
 
         private FilesViewHolder(View itemView) {
 
@@ -138,11 +139,24 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         }
     }
 
-    public FilesAdapter(Context mCtx, List<Files> filesListMain, FilesAdapterListener filesListener) {
+    public FilesAdapter(Context mCtx, FilesAdapterListener filesListener) {
+
         this.mCtx = mCtx;
-        this.filesList = filesListMain;
-        filesListFull = new ArrayList<>(filesList);
         this.filesListener = filesListener;
+
+    }
+
+	public List<Files> getOriginalFiles() {
+		return originalFiles;
+	}
+
+    public void notifyOriginalDataSetChanged() {
+
+	    alteredFiles.clear();
+	    alteredFiles.addAll(originalFiles);
+
+    	notifyDataSetChanged();
+
     }
 
     @NonNull
@@ -155,7 +169,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     @Override
     public void onBindViewHolder(@NonNull FilesAdapter.FilesViewHolder holder, int position) {
 
-        Files currentItem = filesList.get(position);
+        Files currentItem = alteredFiles.get(position);
 
         holder.fileType.setText(currentItem.getType());
         holder.fileName.setText(currentItem.getName());
@@ -183,7 +197,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     @Override
     public int getItemCount() {
-        return filesList.size();
+        return alteredFiles.size();
     }
 
     @Override
@@ -191,17 +205,19 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         return filesFilter;
     }
 
-    private Filter filesFilter = new Filter() {
+    private final Filter filesFilter = new Filter() {
+
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
+
             List<Files> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(filesListFull);
+                filteredList.addAll(originalFiles);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Files item : filesListFull) {
+                for (Files item : originalFiles) {
                     if (item.getName().toLowerCase().contains(filterPattern) || item.getPath().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
@@ -216,10 +232,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filesList.clear();
-            filesList.addAll((List) results.values);
+
+            alteredFiles.clear();
+	        alteredFiles.addAll((List) results.values);
+
             notifyDataSetChanged();
+
         }
+
     };
 
 }

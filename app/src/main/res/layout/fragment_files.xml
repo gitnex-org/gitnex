@@ -9,25 +9,20 @@
 
     <LinearLayout
         android:id="@+id/filesFrame"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/fileStructure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <moe.feng.common.view.breadcrumbs.BreadcrumbsView
             android:id="@+id/breadcrumbs_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/filesBreadcrumbRoot"
             app:CustomTextSize="16sp"
             app:SelectedTextColor="?attr/primaryTextColor"
-            app:UnSelectedTextColor="@color/lightGray"
-            android:text="@string/filesBreadcrumbRoot" />
+            app:UnSelectedTextColor="@color/lightGray" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
