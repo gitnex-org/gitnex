@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,9 +87,11 @@ public class MembersByOrgAdapter extends BaseAdapter implements Filterable {
         PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
 
         if(!currentItem.getFullname().equals("")) {
-            viewHolder.memberName.setText(currentItem.getFullname());
+
+            viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullname()));
         }
         else {
+
             viewHolder.memberName.setText(currentItem.getLogin());
         }
 

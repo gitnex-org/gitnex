@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,10 +58,12 @@ public class ProfileFollowingAdapter extends RecyclerView.Adapter<ProfileFollowi
         UserInfo currentItem = followingList.get(position);
 
         if(!currentItem.getFullname().equals("")) {
-            holder.userFullName.setText(currentItem.getFullname());
+
+            holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
             holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
         }
         else {
+
             holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
             holder.userName.setVisibility(View.GONE);
         }

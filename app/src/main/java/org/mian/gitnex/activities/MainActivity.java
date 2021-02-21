@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -268,7 +269,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				if(!userFullNameNav.equals("")) {
 
-					userFullName.setText(userFullNameNav);
+					userFullName.setText(Html.fromHtml(userFullNameNav));
 				}
 
 				if(!userAvatarNav.equals("")) {

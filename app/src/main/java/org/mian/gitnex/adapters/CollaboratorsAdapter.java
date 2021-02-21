@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,9 +81,11 @@ public class CollaboratorsAdapter extends BaseAdapter  {
         PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
 
         if(!currentItem.getFull_name().equals("")) {
-            viewHolder.collaboratorName.setText(currentItem.getFull_name());
+
+            viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFull_name()));
         }
         else {
+
             viewHolder.collaboratorName.setText(currentItem.getLogin());
         }
 

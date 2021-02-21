@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,11 +104,15 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 		holder.teamId_.setText(String.valueOf(teamId));
 
 		if (!currentItem.getFullname().equals("")) {
-			holder.userFullName.setText(currentItem.getFullname());
+
+
+			holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
 		}
 		else {
+
 			holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 		}
+
 		holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
 		if (!currentItem.getAvatar().equals("")) {

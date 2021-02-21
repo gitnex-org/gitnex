@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -75,7 +76,7 @@ public class ProfileFragment extends Fragment {
 	    	userLanguage.setText(R.string.notSupported);
 	    }
 
-	    userFullName.setText(tinyDb.getString("userFullname"));
+	    userFullName.setText(Html.fromHtml(tinyDb.getString("userFullname")));
 	    userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
 
 	    PicassoService.getInstance(ctx).get()

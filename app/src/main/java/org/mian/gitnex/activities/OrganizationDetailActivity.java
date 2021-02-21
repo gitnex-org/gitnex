@@ -212,7 +212,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
     }
 }

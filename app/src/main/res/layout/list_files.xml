@@ -1,91 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayoutFilesFrame"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
-    android:background="?attr/primaryBackgroundColor">
+    android:background="?attr/primaryBackgroundColor"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/fileType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible" />
-
-    <RelativeLayout
-        android:id="@+id/imageTypes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/fileImage"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="15dp"
-            android:contentDescription="@string/generalImgContentText"
-            android:visibility="gone"
-            android:src="@drawable/ic_file" />
-
-        <ImageView
-            android:id="@+id/dirImage"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="15dp"
-            android:contentDescription="@string/generalImgContentText"
-            android:visibility="gone"
-            android:src="@drawable/ic_directory" />
-
-        <ImageView
-            android:id="@+id/unknownImage"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="15dp"
-            android:contentDescription="@string/generalImgContentText"
-            android:visibility="gone"
-            android:src="@drawable/ic_question" />
-
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/fileTypeIs"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="15dp"
+        android:contentDescription="@string/generalImgContentText"
+        android:src="@drawable/ic_file" />
 
     <LinearLayout
         android:id="@+id/infoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/imageTypes"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/fileName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight=".80"
-            android:layout_marginBottom="0dp"
             android:text="@string/defaultFilename"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/fileInfo"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/infoRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".20"
-            android:layout_marginBottom="0dp"
-            android:text="@string/sizeCopy"
-            android:visibility="gone"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="12sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fileInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sizeCopy"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+        <!--
 
         <ImageView
             android:id="@+id/filesDropdownMenu"
-            android:layout_width="0dp"
-            android:layout_weight=".0"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:contentDescription="@string/menuContentDesc"
             android:scaleType="fitEnd"
-            android:visibility="gone"
             android:src="@drawable/ic_dotted_menu_horizontal"
-            android:contentDescription="@string/menuContentDesc" />
+            android:visibility="gone" />
+
+        -->
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

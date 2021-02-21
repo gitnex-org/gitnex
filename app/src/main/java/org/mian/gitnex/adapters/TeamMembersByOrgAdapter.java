@@ -3,6 +3,7 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,13 +103,15 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         }
 
         if(!currentItem.getFullname().equals("")) {
-            viewHolder.memberName.setText(currentItem.getFullname());
-            viewHolder.memberName.setTypeface(myTypeface);
+
+            viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullname()));
         }
         else {
+
             viewHolder.memberName.setText(currentItem.getLogin());
-            viewHolder.memberName.setTypeface(myTypeface);
         }
+
+	    viewHolder.memberName.setTypeface(myTypeface);
 
     }
 }

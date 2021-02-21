@@ -9,6 +9,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.models.Files;
@@ -26,7 +27,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 	private final List<Files> originalFiles = new ArrayList<>();
 	private final List<Files> alteredFiles = new ArrayList<>();
 
-    private Context mCtx;
+    private final Context mCtx;
 
     private final FilesAdapterListener filesListener;
 
@@ -37,21 +38,18 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
 	class FilesViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView fileTypeImage;
-	    private final ImageView dirTypeImage;
-	    private final ImageView unknownTypeImage;
+    	private String fileType;
+
+        private final ImageView fileTypeIs;
         private final TextView fileName;
-        private final TextView fileType;
         private final TextView fileInfo;
 
         private FilesViewHolder(View itemView) {
 
             super(itemView);
+
             fileName = itemView.findViewById(R.id.fileName);
-            fileTypeImage = itemView.findViewById(R.id.fileImage);
-	        dirTypeImage = itemView.findViewById(R.id.dirImage);
-	        unknownTypeImage = itemView.findViewById(R.id.unknownImage);
-            fileType = itemView.findViewById(R.id.fileType);
+	        fileTypeIs = itemView.findViewById(R.id.fileTypeIs);
             fileInfo = itemView.findViewById(R.id.fileInfo);
 
             //ImageView filesDropdownMenu = itemView.findViewById(R.id.filesDropdownMenu);
@@ -60,10 +58,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
                 Context context = v.getContext();
 
-                if(fileType.getText().toString().equals("file")) {
+                if(fileType.equals("file")) {
                     filesListener.onClickFile(fileName.getText().toString());
                 }
-                else if(fileType.getText().toString().equals("dir")) {
+                else if(fileType.equals("dir")) {
                     filesListener.onClickDir(fileName.getText().toString());
                 }
                 else {
@@ -171,26 +169,23 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
         Files currentItem = alteredFiles.get(position);
 
-        holder.fileType.setText(currentItem.getType());
+        holder.fileType = currentItem.getType();
         holder.fileName.setText(currentItem.getName());
 
         if(currentItem.getType().equals("file")) {
-            holder.fileTypeImage.setVisibility(View.VISIBLE);
-	        holder.dirTypeImage.setVisibility(View.GONE);
-	        holder.unknownTypeImage.setVisibility(View.GONE);
+
+            holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_file));
             holder.fileInfo.setVisibility(View.VISIBLE);
             holder.fileInfo.setText(FileUtils.byteCountToDisplaySize(currentItem.getSize()));
         }
         else if(currentItem.getType().equals("dir")) {
-	        holder.dirTypeImage.setVisibility(View.VISIBLE);
-	        holder.unknownTypeImage.setVisibility(View.GONE);
-	        holder.fileTypeImage.setVisibility(View.GONE);
+
+	        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_directory));
 	        holder.fileInfo.setVisibility(View.GONE);
         }
         else {
-	        holder.unknownTypeImage.setVisibility(View.VISIBLE);
-	        holder.dirTypeImage.setVisibility(View.GONE);
-	        holder.fileTypeImage.setVisibility(View.GONE);
+
+	        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_question));
         }
 
     }
