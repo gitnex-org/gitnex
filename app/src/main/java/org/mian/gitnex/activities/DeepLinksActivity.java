@@ -78,6 +78,13 @@ public class DeepLinksActivity extends BaseActivity {
 			if(hostUri.toLowerCase().contains(Objects.requireNonNull(data.getHost().toLowerCase()))) {
 
 				accountFound = true;
+
+				tinyDB.putString("loginUid", userAccount.getUserName());
+				tinyDB.putString("userLogin", userAccount.getUserName());
+				tinyDB.putString(userAccount.getUserName() + "-token", userAccount.getToken());
+				tinyDB.putString("instanceUrl", userAccount.getInstanceUrl());
+				tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
+
 				break;
 			}
 		}

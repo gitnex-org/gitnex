@@ -32,6 +32,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     private final FilesAdapterListener filesListener;
 
     public interface FilesAdapterListener {
+
         void onClickDir(String str);
         void onClickFile(String str);
     }

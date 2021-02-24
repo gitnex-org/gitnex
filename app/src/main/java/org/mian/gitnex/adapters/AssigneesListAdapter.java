@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,12 @@ import java.util.List;
 
 public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdapter.AssigneesViewHolder> {
 
-	private Context mCtx;
-	private List<Collaborators> assigneesList;
+	private final Context mCtx;
+	private final List<Collaborators> assigneesList;
 	private List<String> assigneesStrings = new ArrayList<>();
 	private List<String> currentAssignees;
 
-	private AssigneesListAdapterListener assigneesListener;
+	private final AssigneesListAdapterListener assigneesListener;
 
 	public interface AssigneesListAdapterListener {
 
@@ -45,9 +46,9 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 
 	static class AssigneesViewHolder extends RecyclerView.ViewHolder {
 
-		private CheckBox assigneesSelection;
-		private TextView assigneesName;
-		private ImageView assigneesAvatar;
+		private final CheckBox assigneesSelection;
+		private final TextView assigneesName;
+		private final ImageView assigneesAvatar;
 
 		private AssigneesViewHolder(View itemView) {
 
@@ -79,7 +80,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		}
 		else {
 
-			holder.assigneesName.setText(currentItem.getFull_name());
+			holder.assigneesName.setText(Html.fromHtml(currentItem.getFull_name()));
 		}
 		PicassoService
 			.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(holder.assigneesAvatar);

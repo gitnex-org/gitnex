@@ -81,6 +81,7 @@
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
+                android:singleLine="true"
                 android:imeOptions="actionSend"
                 android:inputType="text"
                 android:textSize="16sp" />

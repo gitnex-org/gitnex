@@ -75,6 +75,7 @@
                 android:inputType="none"
                 android:textColor="?attr/inputTextColor"
                 android:labelFor="@+id/protocolSpinner"
+                android:imeOptions="actionNext"
                 android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -102,7 +103,8 @@
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
-                android:maxLines="1"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -130,7 +132,8 @@
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
-                android:maxLines="1"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>

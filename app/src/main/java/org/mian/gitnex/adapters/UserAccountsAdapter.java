@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
@@ -27,19 +28,20 @@ import io.mikael.urlbuilder.UrlBuilder;
 
 public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapter.UserAccountsViewHolder> {
 
-	private List<UserAccount> userAccountsList;
-	private Context mCtx;
+	private final List<UserAccount> userAccountsList;
+	private final Context mCtx;
 	private TinyDB tinyDB;
 
 	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
 
-		private TextView accountUrl;
-		private TextView userId;
-		private ImageView activeAccount;
-		private ImageView deleteAccount;
-		private ImageView repoAvatar;
-		private TextView accountId;
-		private TextView accountName;
+		private int accountId;
+		private String accountName;
+
+		private final TextView accountUrl;
+		private final TextView userId;
+		private final ImageView activeAccount;
+		private final ImageView deleteAccount;
+		private final ImageView repoAvatar;
 
 		private UserAccountsViewHolder(View itemView) {
 
@@ -50,30 +52,26 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 			activeAccount = itemView.findViewById(R.id.activeAccount);
 			deleteAccount = itemView.findViewById(R.id.deleteAccount);
 			repoAvatar = itemView.findViewById(R.id.repoAvatar);
-			accountId = itemView.findViewById(R.id.accountId);
-			accountName = itemView.findViewById(R.id.accountName);
 
 			deleteAccount.setOnClickListener(itemDelete -> {
 
 				new AlertDialog.Builder(mCtx)
-					.setIcon(mCtx.getDrawable(R.drawable.ic_delete))
+					.setIcon(AppCompatResources.getDrawable(mCtx, R.drawable.ic_delete))
 					.setTitle(mCtx.getResources().getString(R.string.removeAccountPopupTitle))
 					.setMessage(mCtx.getResources().getString(R.string.removeAccountPopupMessage))
 					.setPositiveButton(mCtx.getResources().getString(R.string.removeButton), (dialog, which) -> {
 
 						updateLayoutByPosition(getAdapterPosition());
 						UserAccountsApi userAccountsApi = new UserAccountsApi(mCtx);
-						userAccountsApi.deleteAccount(Integer.parseInt(accountId.getText().toString()));
+						userAccountsApi.deleteAccount(Integer.parseInt(String.valueOf(accountId)));
 					}).setNeutralButton(mCtx.getResources().getString(R.string.cancelButton), null)
 					.show();
-
 			});
 
-			itemView.setOnClickListener(itemEdit -> {
+			itemView.setOnClickListener(switchAccount -> {
 
-				String accountNameSwitch = accountName.getText().toString();
 				UserAccountsApi userAccountsApi = new UserAccountsApi(mCtx);
-				UserAccount userAccount = userAccountsApi.getAccountData(accountNameSwitch);
+				UserAccount userAccount = userAccountsApi.getAccountData(accountName);
 
 				if(tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
 
@@ -109,7 +107,6 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, userAccountsList.size());
 		Toasty.success(mCtx, mCtx.getResources().getString(R.string.accountDeletedMessage));
-
 	}
 
 	@NonNull
@@ -131,20 +128,22 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 			.withPath("/")
 			.toString();
 
-		holder.accountId.setText(String.valueOf(currentItem.getAccountId()));
-		holder.accountName.setText(currentItem.getAccountName());
+		holder.accountId = currentItem.getAccountId();
+		holder.accountName = currentItem.getAccountName();
+
 		holder.userId.setText(String.format("@%s", currentItem.getUserName()));
 		holder.accountUrl.setText(url);
 
 		PicassoService.getInstance(mCtx).get().load(url + "img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.repoAvatar);
 
 		if(tinyDB.getInt("currentActiveAccountId") == currentItem.getAccountId()) {
+
 			holder.activeAccount.setVisibility(View.VISIBLE);
 		}
 		else {
+
 			holder.deleteAccount.setVisibility(View.VISIBLE);
 		}
-
 	}
 
 	@Override

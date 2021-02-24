@@ -78,6 +78,8 @@
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -134,6 +136,7 @@
                     android:inputType="textCapSentences"
                     android:labelFor="@id/new_file_branches"
                     android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:textColor="?attr/inputTextColor"
                     android:textSize="16sp" />
 
@@ -164,6 +167,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
+                    android:singleLine="true"
                     android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
