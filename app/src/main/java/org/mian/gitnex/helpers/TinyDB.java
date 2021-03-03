@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class TinyDB {
 
-	private static TinyDB tinyDB;
+	private static volatile TinyDB tinyDB;
 
     private final SharedPreferences preferences;
 
@@ -24,11 +24,17 @@ public class TinyDB {
     }
 
 	public static synchronized TinyDB getInstance(Context context) {
+
 		if(tinyDB == null) {
-			tinyDB = new TinyDB(context);
+			synchronized(TinyDB.class) {
+				if(tinyDB == null) {
+					tinyDB = new TinyDB(context);
+				}
+			}
 		}
 
 		return tinyDB;
+
 	}
 
     /**

@@ -150,7 +150,7 @@ public class CreateFileActivity extends BaseActivity {
 
         disableProcessButton();
 
-	    NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.get(ctx);
+	    NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 	    networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> newFileCreate.setEnabled(hasNetworkConnection));
 
 	    newFileCreate.setOnClickListener(createFileListener);

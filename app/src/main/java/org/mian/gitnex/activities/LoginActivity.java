@@ -61,7 +61,7 @@ public class LoginActivity extends BaseActivity {
 		ActivityLoginBinding activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
 
-		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.get(ctx);
+		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 
 		loginButton = activityLoginBinding.loginButton;
 		instanceUrlET = activityLoginBinding.instanceUrl;

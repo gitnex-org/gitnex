@@ -19,7 +19,7 @@ import okhttp3.OkHttpClient;
 
 public class PicassoService {
 
-	private static PicassoService picassoService;
+	private static volatile PicassoService picassoService;
 	private final File cachePath;
 	private Picasso picasso;
 
@@ -40,12 +40,12 @@ public class PicassoService {
 					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
 
 			builder.downloader(new OkHttp3Downloader(okHttpClient.build()));
-			builder.listener((picasso, uri, exception) -> {
-
-				//Log.e("PicassoService", Objects.requireNonNull(uri.toString()));
-				//Log.e("PicassoService", exception.toString());
-
-			});
+//			builder.listener((picasso, uri, exception) -> {
+//
+//				Log.e("PicassoService", Objects.requireNonNull(uri.toString()));
+//				Log.e("PicassoService", exception.toString());
+//
+//			});
 
 			picasso = builder.memoryCache(new PicassoCache(cachePath, context)).build();
 
@@ -66,10 +66,15 @@ public class PicassoService {
 	public static synchronized PicassoService getInstance(Context context) {
 
 		if(picassoService == null) {
-			picassoService = new PicassoService(context);
+			synchronized(PicassoService.class) {
+				if(picassoService == null) {
+					picassoService = new PicassoService(context);
+				}
+			}
 		}
 
 		return picassoService;
+
 	}
 
 }

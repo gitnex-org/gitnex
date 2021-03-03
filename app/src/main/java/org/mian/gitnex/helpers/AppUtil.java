@@ -57,7 +57,7 @@ public class AppUtil {
 
 	public static boolean hasNetworkConnection(Context context) {
 
-		return NetworkStatusObserver.get(context).hasNetworkConnection();
+		return NetworkStatusObserver.getInstance(context).hasNetworkConnection();
 	}
 
 	public static int getAppBuildNo(Context context) {
