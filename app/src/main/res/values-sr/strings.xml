@@ -6,7 +6,7 @@
     <string name="navRepos">Репозиторијуми</string>
     <string name="navProfile">Профил</string>
     <string name="navSettings">Подешавања</string>
-    <string name="navOrgs">Организације</string>
+    <string name="navOrg">Организације</string>
     <string name="navAbout">О програму</string>
     <string name="navRate">Оцени GitNex</string>
     <string name="navLogout">Одјави ме</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторијум</string>
-    <string name="repoFullname">Репозиторијум са ORG</string>
+    <string name="repoFullName">Репозиторијум са ORG</string>
     <string name="repoDescription">Демо опис</string>
     <string name="noData">Ниједан репозиторијум није пронађен</string>
     <string name="orgName">Демо организација</string>
@@ -61,8 +61,8 @@
     <string name="passWord">Лозинка</string>
     <string name="btnLogin">Пријави ме</string>
     <string name="instanceUrl">URL инстанце</string>
-    <string name="navigation_drawer_open">Отвори навигацију</string>
-    <string name="navigation_drawer_close">Затвори навигацију</string>
+    <string name="navigationDrawerOpen">Отвори навигацију</string>
+    <string name="navigationDrawerClose">Затвори навигацију</string>
     <string name="logo">Пријави ме</string>
     <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1. Одабери одговарајући протокол (HTTPS или HTTP).\n2. Унеси URL инстанце, нпр. try.gitea.io.\n3. Ако користиш 2FA, унеси OTP код.\n4. Ако користиш HTTP протокол, унеси URL инстанце у формату korisnickoime@domen.com.</string>
@@ -101,14 +101,14 @@
     <string name="privateAvatar">При</string>
     <string name="removeContent">Уклони</string>
     <string name="genericApiStatusError">Сервер је вратио грешку: код\u0020</string>
-    <string name="title_activity_repo_detail">Активности</string>
-    <string name="tab_text_info">Детаљи</string>
-    <string name="tab_text_files">Фајлови</string>
-    <string name="tab_text_ml">Фазе</string>
-    <string name="tab_text_releases">Издања</string>
-    <string name="tab_text_branches">Гране</string>
-    <string name="tab_text_labels">Ознаке</string>
-    <string name="tab_text_collaborators">Сарадници</string>
+    <string name="titleActivityRepoDetail">Активности</string>
+    <string name="tabTextInfo">Детаљи</string>
+    <string name="tabTextFiles">Фајлови</string>
+    <string name="tabTextMl">Фазе</string>
+    <string name="tabTextReleases">Издања</string>
+    <string name="tabTextBranches">Гране</string>
+    <string name="tabTextLabels">Ознаке</string>
+    <string name="tabTextCollaborators">Сарадници</string>
     <string name="tabPullRequests">Пул захтеви</string>
     <string name="noDataIssueTab">Ниједан задатак није пронађен</string>
     <string name="infoTabRepoSize">Величина</string>
@@ -195,8 +195,8 @@
     <string name="settingsPdfModeHeaderText">PDF ноћни режим</string>
     <string name="fileViewerHeader">Прегледач фајлова</string>
     <string name="settingsCounterBadges">Беџеви</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Тема</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Изабери тему</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">Тема</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Изабери тему</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
@@ -242,7 +242,7 @@
     <string name="labelDeletePositiveButton">У реду</string>
     <string name="labelDeleteNegativeButton">Откажи</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">Активности</string>
+    <string name="titleActivityOrgDetail">Активности</string>
     <string name="orgTabRepos">Репозиторијуми</string>
     <string name="orgTabTeams">Тимови</string>
     <string name="orgTabMembers">Чланови</string>
@@ -321,14 +321,6 @@
     <string name="singleIssueSubscribe">Пријави се</string>
     <string name="singleIssueUnSubscribe">Одјави се</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">Одабери</string>
-    <string name="please_select_atleast">Одабери бар </string>
-    <string name="you_can_only_select_upto">Можеш одабрати највише </string>
-    <string name="option"> опцију</string>
-    <string name="options"> опције</string>
-    <string name="select_all">Одабери све</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Основни подаци</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Додај новог корисника</string>
@@ -405,6 +397,7 @@
     <!-- files -->
     <string name="noDataFilesTab">Ниједан фајл није пронађен</string>
     <string name="filesGenericError">Нешто је пошло наопако, покушај поново</string>
+    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">У реду</string>
@@ -453,7 +446,7 @@
     <string name="loginMethodText">Одабери начин за пријављивање. Имај у виду да је токен безбеднији него корисничко име и лозинка.</string>
     <string name="unauthorizedApiError">Грешка. Провери креденцијале и покушај поново.</string>
     <string name="loginTokenError">Token is required</string>
-    <string name="prDeletedFrok">Deleted Fork</string>
+    <string name="prDeletedFork">Deleted Fork</string>
     <string name="noDataPullRequests">Ниједан пул захтев није пронађен</string>
     <string name="prCreator">Аутор: \u0020</string>
     <string name="editPrText">Уреди пул захтев</string>
@@ -482,7 +475,7 @@
     <string name="downloadFile">Преузми овај фајл</string>
     <string name="waitLoadingDownloadFile">Сачекај да се фајл учита у меморију</string>
     <string name="downloadFileSaved">File saved successfully</string>
-    <string name="excludeFilesInFileviewer">Прегледач фајлова не подржава овај тип. Да ли желиш да преузмеш фајл?</string>
+    <string name="excludeFilesInFileViewer">Прегледач фајлова не подржава овај тип. Да ли желиш да преузмеш фајл?</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
     <string name="deleteFileText">Delete %1$s</string>
@@ -498,22 +491,22 @@
     <string name="commitCommittedBy">Аутор комита: %1$s</string>
     <string name="viewCommits">Прегледај комитове</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Провера сертификата</string>
-    <string name="mtm_accept_cert">Да ли желиш да прихватиш непознате сертификате?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
-    <string name="mtm_cert_expired">Сертификат је истекао.</string>
-    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
-    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
-    <string name="mtm_connect_anyway">Да ли ипак желиш да се повежеш?</string>
-    <string name="mtm_cert_details">Детаљи о сертификату:</string>
-    <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_abort">Abort</string>
+    <string name="mtmNotification">Провера сертификата</string>
+    <string name="mtmAcceptCert">Да ли желиш да прихватиш непознате сертификате?</string>
+    <string name="mtmTrustAnchor">The server certificate is not signed by a known Certificate Authority</string>
+    <string name="mtmCertExpired">Сертификат је истекао.</string>
+    <string name="mtmAcceptServerName">Accept Mismatching Server Name?</string>
+    <string name="mtmHostnameMismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtmConnectAnyway">Да ли ипак желиш да се повежеш?</string>
+    <string name="mtmCertDetails">Детаљи о сертификату:</string>
+    <string name="mtmDecisionAlways">Поуздано</string>
+    <string name="mtmDecisionAbort">Поништи</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
     <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscriptionError">Un-Subscription failed</string>
+    <string name="unSubscriptionError">Un-Subscription failed</string>
     <string name="closeMilestone">Затвори фазу</string>
     <string name="openMilestone">Отвори фазу</string>
     <string name="milestoneStatusUpdate">Фаза је ажурирана</string>

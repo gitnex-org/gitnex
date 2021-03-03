@@ -6,7 +6,7 @@
     <string name="navRepos">مخازن</string>
     <string name="navProfile">نمایه</string>
     <string name="navSettings">تنظیمات</string>
-    <string name="navOrgs">سازمان‌ها</string>
+    <string name="navOrg">سازمان‌ها</string>
     <string name="navAbout">درباره ما</string>
     <string name="navRate">به GitNex امتیاز دهید</string>
     <string name="navLogout">خروج از حساب کاربری</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">ایجاد درخواست ادغام جدید</string>
     <!-- page titles -->
     <string name="repoName">مخزن پیش نمایشی</string>
-    <string name="repoFullname">مخزن با ORG</string>
+    <string name="repoFullName">مخزن با ORG</string>
     <string name="repoDescription">توضیحات پیش نمایشی</string>
     <string name="noData">هیچ مخزنی یافت نشد</string>
     <string name="orgName">سازمان پیش نمایشی</string>
@@ -61,8 +61,8 @@
     <string name="passWord">گذرواژه</string>
     <string name="btnLogin">ورود به حساب کاربری</string>
     <string name="instanceUrl">URL نمونه</string>
-    <string name="navigation_drawer_open">بار کردن کشوی ناوبری</string>
-    <string name="navigation_drawer_close">بستن کشوی ناوبری</string>
+    <string name="navigationDrawerOpen">بار کردن کشوی ناوبری</string>
+    <string name="navigationDrawerClose">بستن کشوی ناوبری</string>
     <string name="logo">ورود به Gitea</string>
     <string name="protocol">پروتکل</string>
     <string name="urlInfoTooltip">1. پروتوکل صحیح را انتخاب کنید (http یا https)
@@ -104,14 +104,14 @@
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">حذف</string>
     <string name="genericApiStatusError">نمونه یک خطا اعلام کرد. کد\u0020</string>
-    <string name="title_activity_repo_detail">RepoDetailActivity</string>
-    <string name="tab_text_info">جزئیات</string>
-    <string name="tab_text_files">فایل ها</string>
-    <string name="tab_text_ml">نقاط عطف</string>
-    <string name="tab_text_releases">انتشارها</string>
-    <string name="tab_text_branches">شاخه‌ها</string>
-    <string name="tab_text_labels">برچسب‌ها</string>
-    <string name="tab_text_collaborators">همکاران</string>
+    <string name="titleActivityRepoDetail">RepoDetailActivity</string>
+    <string name="tabTextInfo">جزئیات</string>
+    <string name="tabTextFiles">فایل ها</string>
+    <string name="tabTextMl">نقاط عطف</string>
+    <string name="tabTextReleases">انتشارها</string>
+    <string name="tabTextBranches">شاخه‌ها</string>
+    <string name="tabTextLabels">برچسب‌ها</string>
+    <string name="tabTextCollaborators">همکاران</string>
     <string name="tabPullRequests">درخواست‌های ادغام</string>
     <string name="noDataIssueTab">هیچ مسئله‌ای یافت نشد</string>
     <string name="infoTabRepoSize">اندازه‌</string>
@@ -198,8 +198,8 @@
     <string name="settingsPdfModeHeaderText">حالت شب PDF</string>
     <string name="fileViewerHeader">نمایشگر پرونده</string>
     <string name="settingsCounterBadges">نشان‌های شمارشگر</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">پوسته کد منبع</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">انتخاب پوسته کد منبع</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">پوسته کد منبع</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">انتخاب پوسته کد منبع</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
@@ -245,7 +245,7 @@
     <string name="labelDeletePositiveButton">باشه</string>
     <string name="labelDeleteNegativeButton">لغو</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">OrgDetailActivity</string>
+    <string name="titleActivityOrgDetail">OrgDetailActivity</string>
     <string name="orgTabRepos">مخازن</string>
     <string name="orgTabTeams">تیم‌ها</string>
     <string name="orgTabMembers">اعضا</string>
@@ -324,14 +324,6 @@
     <string name="singleIssueSubscribe">مشترک شدن</string>
     <string name="singleIssueUnSubscribe">لغو اشتراک</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">ورودی‌ها را انتخاب کنید</string>
-    <string name="please_select_atleast">Please select at least </string>
-    <string name="you_can_only_select_upto">You can only select up to </string>
-    <string name="option"> گزینه</string>
-    <string name="options"> گزینه‌ها</string>
-    <string name="select_all">انتخاب همه</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Repository Meta</string>
     <!-- admin -->
     <string name="adminCreateNewUser">افزودن کاربر جدید</string>
@@ -408,6 +400,7 @@
     <!-- files -->
     <string name="noDataFilesTab">هیچ پرونده‌ای یافت نشد</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
+    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">پشتیبانی نمی‎شود</string>
     <!-- generic copy -->
     <string name="okButton">باشه</string>
@@ -456,7 +449,7 @@
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">توکن الزامی است</string>
-    <string name="prDeletedFrok">انشعاب پاک شده</string>
+    <string name="prDeletedFork">انشعاب پاک شده</string>
     <string name="noDataPullRequests">No pull requests found</string>
     <string name="prCreator">سازنده :\u0020</string>
     <string name="editPrText">ویرایش درخواست ادغام</string>
@@ -485,7 +478,7 @@
     <string name="downloadFile">بارگیری این پرونده</string>
     <string name="waitLoadingDownloadFile">لطفا منتظر بمانید تا پرونده در حافظه بارگذاری شود</string>
     <string name="downloadFileSaved">پرونده با موفقیت ذخیره شد</string>
-    <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="excludeFilesInFileViewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
     <string name="deleteFile">حذف این پرونده</string>
     <string name="editFile">ویرایش این پرونده</string>
     <string name="deleteFileText">حذف %1$s</string>
@@ -501,22 +494,22 @@
     <string name="commitCommittedBy">Committed by %1$s</string>
     <string name="viewCommits">View Commits</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Certificate Verification</string>
-    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
-    <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
-    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
-    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
-    <string name="mtm_cert_details">جزئیات گواهی:</string>
-    <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_abort">انصراف</string>
+    <string name="mtmNotification">Certificate Verification</string>
+    <string name="mtmAcceptCert">Accept Unknown Certificate?</string>
+    <string name="mtmTrustAnchor">The server certificate is not signed by a known Certificate Authority</string>
+    <string name="mtmCertExpired">The server certificate is expired.</string>
+    <string name="mtmAcceptServerName">Accept Mismatching Server Name?</string>
+    <string name="mtmHostnameMismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtmConnectAnyway">Do you want to connect anyway?</string>
+    <string name="mtmCertDetails">جزئیات گواهی:</string>
+    <string name="mtmDecisionAlways">اطمینان</string>
+    <string name="mtmDecisionAbort">انصراف</string>
     <string name="subscribedSuccessfully">با موفقیت مشترک شد</string>
     <string name="alreadySubscribed">You have already subscribed</string>
     <string name="subscriptionError">اشتراک شکست خورد</string>
     <string name="unsubscribedSuccessfully">اشتراک با موفقیت لغو شد</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscriptionError">لغو اشتراک شکست خورد</string>
+    <string name="unSubscriptionError">لغو اشتراک شکست خورد</string>
     <string name="closeMilestone">بستن نقطه عطف</string>
     <string name="openMilestone">باز کردن نقطه عطف</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>

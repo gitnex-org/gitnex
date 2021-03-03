@@ -6,7 +6,7 @@
     <string name="navRepos">仓库列表</string>
     <string name="navProfile">个人信息</string>
     <string name="navSettings">设置</string>
-    <string name="navOrgs">组织</string>
+    <string name="navOrg">组织</string>
     <string name="navAbout">关于</string>
     <string name="navRate">五星好评！</string>
     <string name="navLogout">退出</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">新拉取请求</string>
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
-    <string name="repoFullname">有组织的存储库</string>
+    <string name="repoFullName">有组织的存储库</string>
     <string name="repoDescription">演示描述</string>
     <string name="noData">没有任何仓库</string>
     <string name="orgName">演示组织</string>
@@ -61,8 +61,8 @@
     <string name="passWord">密码</string>
     <string name="btnLogin">登录</string>
     <string name="instanceUrl">Gitea访问地址</string>
-    <string name="navigation_drawer_open">打开导航栏</string>
-    <string name="navigation_drawer_close">关闭导航栏</string>
+    <string name="navigationDrawerOpen">打开导航栏</string>
+    <string name="navigationDrawerClose">关闭导航栏</string>
     <string name="logo">登录到 Gitea</string>
     <string name="protocol">协议</string>
     <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。 \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。</string>
@@ -101,14 +101,14 @@
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">移除</string>
     <string name="genericApiStatusError">实例返回了一个错误。代码\u0020</string>
-    <string name="title_activity_repo_detail">仓库详细信息</string>
-    <string name="tab_text_info">详情</string>
-    <string name="tab_text_files">文件</string>
-    <string name="tab_text_ml">里程碑</string>
-    <string name="tab_text_releases">版本发布</string>
-    <string name="tab_text_branches">分支</string>
-    <string name="tab_text_labels">标签</string>
-    <string name="tab_text_collaborators">协作者</string>
+    <string name="titleActivityRepoDetail">仓库详细信息</string>
+    <string name="tabTextInfo">详情</string>
+    <string name="tabTextFiles">文件</string>
+    <string name="tabTextMl">里程碑</string>
+    <string name="tabTextReleases">版本发布</string>
+    <string name="tabTextBranches">分支</string>
+    <string name="tabTextLabels">标签</string>
+    <string name="tabTextCollaborators">协作者</string>
     <string name="tabPullRequests">拉取请求</string>
     <string name="noDataIssueTab">没有工单</string>
     <string name="infoTabRepoSize">尺寸</string>
@@ -195,8 +195,8 @@
     <string name="settingsPdfModeHeaderText">PDF 夜间模式</string>
     <string name="fileViewerHeader">文件查看器</string>
     <string name="settingsCounterBadges">计数徽章</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">源代码主题</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">选择源代码主题</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">源代码主题</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">选择源代码主题</string>
     <string name="cacheSizeDataDialogHeader">数据缓存大小</string>
     <string name="cacheSizeDataSelectionHeaderText">数据缓存大小</string>
     <string name="cacheSizeImagesDialogHeader">图像缓存大小</string>
@@ -242,7 +242,7 @@
     <string name="labelDeletePositiveButton">确定</string>
     <string name="labelDeleteNegativeButton">取消</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">OrgDetail活动</string>
+    <string name="titleActivityOrgDetail">OrgDetail活动</string>
     <string name="orgTabRepos">仓库列表</string>
     <string name="orgTabTeams">团队</string>
     <string name="orgTabMembers">成员</string>
@@ -321,25 +321,17 @@
     <string name="singleIssueSubscribe">订阅</string>
     <string name="singleIssueUnSubscribe">取消订阅</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">选择条目</string>
-    <string name="please_select_atleast">请至少选择 </string>
-    <string name="you_can_only_select_upto">您只能最多选择 </string>
-    <string name="option"> 选项</string>
-    <string name="options"> 选项</string>
-    <string name="select_all">全选</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">仓库元数据</string>
     <!-- admin -->
     <string name="adminCreateNewUser">添加新用户</string>
     <string name="adminUsers">系统用户</string>
     <string name="userRoleAdmin">管理员</string>
-    <string name="adminCron">Cron Tasks</string>
-    <string name="adminCronScheduleHeader">Schedule</string>
-    <string name="adminCronNextRunHeader">Next Run</string>
-    <string name="adminCronLastRunHeader">Last Run</string>
-    <string name="adminCronExecutionHeader">Executions</string>
-    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
+    <string name="adminCron">Cron 任务</string>
+    <string name="adminCronScheduleHeader">排程</string>
+    <string name="adminCronNextRunHeader">下一次运行</string>
+    <string name="adminCronLastRunHeader">上一次运行</string>
+    <string name="adminCronExecutionHeader">执行</string>
+    <string name="adminCronTaskSuccessMsg">任务 %1$s 初始化成功</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">全名</string>
@@ -391,9 +383,9 @@
     <string name="newFileInvalidBranchName">分支名称无效，只能包含 &#8211;,&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">提交消息过长</string>
     <string name="newFileSuccessMessage">新文件已创建</string>
-    <string name="newFileBranches">Select or create a branch</string>
+    <string name="newFileBranches">选择或创建一个分支</string>
     <string name="newFileRequiredFields">需要文件名、内容和提交消息等字段</string>
-    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
+    <string name="newFileEmptyBranchMessage">留空以推送到默认分支</string>
     <string name="newFileRequiredFieldNewBranchName">如果未选择当前分支，新分支名称不能为空</string>
     <string name="strFilter">筛选器</string>
     <string name="strSwitchBranches">分支</string>
@@ -405,6 +397,7 @@
     <!-- files -->
     <string name="noDataFilesTab">找不到文件</string>
     <string name="filesGenericError">抱歉，此文件无法查看，因为API返回了错误</string>
+    <string name="fileTypeCannotBeEdited">不能编辑此类型的文件</string>
     <string name="notSupported">不受支持</string>
     <!-- generic copy -->
     <string name="okButton">确定</string>
@@ -453,7 +446,7 @@
     <string name="loginMethodText">建议您使用更安全的令牌方式进行登录。</string>
     <string name="unauthorizedApiError">令牌可能已失效，请检查后重试</string>
     <string name="loginTokenError">令牌是必需的。</string>
-    <string name="prDeletedFrok">已删除分叉</string>
+    <string name="prDeletedFork">已删除分叉</string>
     <string name="noDataPullRequests">未找到拉取请求</string>
     <string name="prCreator">创建者:\u0020</string>
     <string name="editPrText">编辑拉取请求</string>
@@ -482,7 +475,7 @@
     <string name="downloadFile">下载此文件</string>
     <string name="waitLoadingDownloadFile">请等待文件加载到内存</string>
     <string name="downloadFileSaved">文件保存成功</string>
-    <string name="excludeFilesInFileviewer">这个文件类型在文件查看器中不支持。从三个虚线菜单下载吗？</string>
+    <string name="excludeFilesInFileViewer">这个文件类型在文件查看器中不支持。从三个虚线菜单下载吗？</string>
     <string name="deleteFile">删除此文件</string>
     <string name="editFile">编辑此文件</string>
     <string name="deleteFileText">删除 %1$s</string>
@@ -498,22 +491,22 @@
     <string name="commitCommittedBy">由 %1$s提交</string>
     <string name="viewCommits">查看提交</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">证书验证</string>
-    <string name="mtm_accept_cert">接受未知证书？</string>
-    <string name="mtm_trust_anchor">服务器证书非经已知的证书颁发机构签署</string>
-    <string name="mtm_cert_expired">服务器证书已过期。</string>
-    <string name="mtm_accept_server_name">接受不匹配的服务器名称？</string>
-    <string name="mtm_hostname_mismatch">服务器无法认证为\&quot;%s\&quot;。证书仅有效于：</string>
-    <string name="mtm_connect_anyway">您仍然想要连接吗？</string>
-    <string name="mtm_cert_details">证书详情：</string>
-    <string name="mtm_decision_always">信任</string>
-    <string name="mtm_decision_abort">中止</string>
+    <string name="mtmNotification">证书验证</string>
+    <string name="mtmAcceptCert">接受未知证书？</string>
+    <string name="mtmTrustAnchor">服务器证书非经已知的证书颁发机构签署</string>
+    <string name="mtmCertExpired">服务器证书已过期。</string>
+    <string name="mtmAcceptServerName">接受不匹配服务器名称？</string>
+    <string name="mtmHostnameMismatch">服务器无法认证为\&quot;%s\&quot;。证书仅有效于：</string>
+    <string name="mtmConnectAnyway">您仍然想要连接吗？</string>
+    <string name="mtmCertDetails">证书详情：</string>
+    <string name="mtmDecisionAlways">信任</string>
+    <string name="mtmDecisionAbort">中止</string>
     <string name="subscribedSuccessfully">订阅成功</string>
     <string name="alreadySubscribed">您已经订阅</string>
     <string name="subscriptionError">订阅失败</string>
     <string name="unsubscribedSuccessfully">取消订阅成功</string>
     <string name="alreadyUnsubscribed">您已取消订阅</string>
-    <string name="unsubscriptionError">取消订阅失败</string>
+    <string name="unSubscriptionError">取消订阅失败</string>
     <string name="closeMilestone">关闭里程碑</string>
     <string name="openMilestone">打开里程碑</string>
     <string name="milestoneStatusUpdate">里程碑状态更新成功</string>

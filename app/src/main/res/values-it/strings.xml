@@ -6,7 +6,7 @@
     <string name="navRepos">Repositories</string>
     <string name="navProfile">Profilo</string>
     <string name="navSettings">Impostazioni</string>
-    <string name="navOrgs">Organizzazioni</string>
+    <string name="navOrg">Organizzazioni</string>
     <string name="navAbout">Info su</string>
     <string name="navRate">Valuta GitNex</string>
     <string name="navLogout">Esci</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Demo repo</string>
-    <string name="repoFullname">Repo con ORG</string>
+    <string name="repoFullName">Repo con ORG</string>
     <string name="repoDescription">Descrizione demo</string>
     <string name="noData">Nessuna repository trovata</string>
     <string name="orgName">Organizzazione demo</string>
@@ -61,8 +61,8 @@
     <string name="passWord">Password</string>
     <string name="btnLogin">LOGIN</string>
     <string name="instanceUrl">URL Istanza</string>
-    <string name="navigation_drawer_open">Apri panello Navigazione</string>
-    <string name="navigation_drawer_close">Chiudi panello Navigazione</string>
+    <string name="navigationDrawerOpen">Apri panello Navigazione</string>
+    <string name="navigationDrawerClose">Chiudi panello Navigazione</string>
     <string name="logo">Accedi a Gitea</string>
     <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1- Scegli il protocollo corretto(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
@@ -102,14 +102,14 @@ URL è richiesto</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Rimuovi</string>
     <string name="genericApiStatusError">L\'istanza ha restituito un errore. Codice\u0020</string>
-    <string name="title_activity_repo_detail">RepoDettaglioAttività</string>
-    <string name="tab_text_info">Dettagli</string>
-    <string name="tab_text_files">File</string>
-    <string name="tab_text_ml">Milestones</string>
-    <string name="tab_text_releases">Rilasci</string>
-    <string name="tab_text_branches">Branches</string>
-    <string name="tab_text_labels">Labels</string>
-    <string name="tab_text_collaborators">Collaboratori</string>
+    <string name="titleActivityRepoDetail">RepoDettaglioAttività</string>
+    <string name="tabTextInfo">Dettagli</string>
+    <string name="tabTextFiles">File</string>
+    <string name="tabTextMl">Milestones</string>
+    <string name="tabTextReleases">Rilasci</string>
+    <string name="tabTextBranches">Branches</string>
+    <string name="tabTextLabels">Labels</string>
+    <string name="tabTextCollaborators">Collaboratori</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Nessun problema trovato</string>
     <string name="infoTabRepoSize">Dimensione</string>
@@ -196,8 +196,8 @@ URL è richiesto</string>
     <string name="settingsPdfModeHeaderText">PDF Modalità Notturna</string>
     <string name="fileViewerHeader">Visualizzatore File</string>
     <string name="settingsCounterBadges">Contatori</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Tema Codice Sorgente</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Seleziona il tema del Codice Sorgente</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">Tema Codice Sorgente</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Seleziona il tema del Codice Sorgente</string>
     <string name="cacheSizeDataDialogHeader">Dimensione Cache Dati</string>
     <string name="cacheSizeDataSelectionHeaderText">Dimensione Cache Dati</string>
     <string name="cacheSizeImagesDialogHeader">Dimensione Cache Immagini</string>
@@ -243,7 +243,7 @@ URL è richiesto</string>
     <string name="labelDeletePositiveButton">OK</string>
     <string name="labelDeleteNegativeButton">Annullare</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">OrgDettaglioActivita</string>
+    <string name="titleActivityOrgDetail">OrgDettaglioActivita</string>
     <string name="orgTabRepos">I miei Repository</string>
     <string name="orgTabTeams">Team</string>
     <string name="orgTabMembers">Partecipanti</string>
@@ -323,14 +323,6 @@ autorizzazione</string>
     <string name="singleIssueSubscribe">Iscriviti</string>
     <string name="singleIssueUnSubscribe">Disiscriviti</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">Elementi selezionati</string>
-    <string name="please_select_atleast">Seleziona almeno </string>
-    <string name="you_can_only_select_upto">Puoi selezionare solo fino a </string>
-    <string name="option"> opzione</string>
-    <string name="options"> opzioni</string>
-    <string name="select_all">Seleziona tutti</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Meta repository</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Aggiungi nuovo utente</string>
@@ -407,6 +399,7 @@ autorizzazione</string>
     <!-- files -->
     <string name="noDataFilesTab">Nessun file trovato</string>
     <string name="filesGenericError">Spiacenti, questo file non può essere visto come l\'API ha restituito un errore</string>
+    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Non supportato</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
@@ -455,7 +448,7 @@ autorizzazione</string>
     <string name="loginMethodText">Scegli il tuo metodo di accesso preferito per accedere al tuo account. Il token è più sicuro!</string>
     <string name="unauthorizedApiError">L\'istanza ha restituito un errore - Non autorizzato. Controlla le tue credenziali e riprova</string>
     <string name="loginTokenError">Token is required</string>
-    <string name="prDeletedFrok">Fork Eliminato</string>
+    <string name="prDeletedFork">Fork Eliminato</string>
     <string name="noDataPullRequests">Nessuna richiesta pull request trovata</string>
     <string name="prCreator">Creatore:\u0020</string>
     <string name="editPrText">Modifica Pull Request</string>
@@ -484,7 +477,7 @@ autorizzazione</string>
     <string name="downloadFile">Scarica Questo File</string>
     <string name="waitLoadingDownloadFile">Attendere che il file venga caricato in memoria</string>
     <string name="downloadFileSaved">File salvato con successo</string>
-    <string name="excludeFilesInFileviewer">Questo tipo di file non è supportato nel visualizzatore di file. Scaricarlo invece dal menu con i tre punti?</string>
+    <string name="excludeFilesInFileViewer">Questo tipo di file non è supportato nel visualizzatore di file. Scaricarlo invece dal menu con i tre punti?</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
     <string name="deleteFileText">Delete %1$s</string>
@@ -500,22 +493,22 @@ autorizzazione</string>
     <string name="commitCommittedBy">Commit di %1$s</string>
     <string name="viewCommits">Visualizza Commit</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Verifica Del Certificato</string>
-    <string name="mtm_accept_cert">Accettare Certificato Sconosciuto?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
-    <string name="mtm_cert_expired">Il certificato del server è scaduto.</string>
-    <string name="mtm_accept_server_name">Accettare Nome Server Non Corrispondente?</string>
-    <string name="mtm_hostname_mismatch">Il server non può autenticarsi come \&quot;%s\&quot;. Il certificato è valido solo per:</string>
-    <string name="mtm_connect_anyway">Vuoi connetterti comunque?</string>
-    <string name="mtm_cert_details">Dettagli del certificato:</string>
-    <string name="mtm_decision_always">Fidati</string>
-    <string name="mtm_decision_abort">Annulla</string>
+    <string name="mtmNotification">Verifica Del Certificato</string>
+    <string name="mtmAcceptCert">Accettare Certificato Sconosciuto?</string>
+    <string name="mtmTrustAnchor">Il certificato del server non è firmato da un\'autorità di certificazione conosciuta</string>
+    <string name="mtmCertExpired">Il certificato del server è scaduto.</string>
+    <string name="mtmAcceptServerName">Accettare Nome Server Non Corrispondente?</string>
+    <string name="mtmHostnameMismatch">Il server non può autenticarsi come \&quot;%s\&quot;. Il certificato è valido solo per:</string>
+    <string name="mtmConnectAnyway">Vuoi connetterti comunque?</string>
+    <string name="mtmCertDetails">Dettagli del certificato:</string>
+    <string name="mtmDecisionAlways">Fidati</string>
+    <string name="mtmDecisionAbort">Annulla</string>
     <string name="subscribedSuccessfully">Iscritto con successo</string>
     <string name="alreadySubscribed">Ti sei già iscritto</string>
     <string name="subscriptionError">Sottoscrizione fallita</string>
     <string name="unsubscribedSuccessfully">Disiscritto con successo</string>
     <string name="alreadyUnsubscribed">Hai già annullato l\'iscrizione</string>
-    <string name="unsubscriptionError">Disiscrizione fallita</string>
+    <string name="unSubscriptionError">Disiscrizione fallita</string>
     <string name="closeMilestone">Chiudi Milestone</string>
     <string name="openMilestone">Apri Milestone</string>
     <string name="milestoneStatusUpdate">Stato del Milestone aggiornato con successo</string>

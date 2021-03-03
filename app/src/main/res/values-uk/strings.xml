@@ -6,7 +6,7 @@
     <string name="navRepos">Репозиторії</string>
     <string name="navProfile">Профіль</string>
     <string name="navSettings">Налаштування</string>
-    <string name="navOrgs">Організації</string>
+    <string name="navOrg">Організації</string>
     <string name="navAbout">Про додаток</string>
     <string name="navRate">Оцінити GitNex</string>
     <string name="navLogout">Вийти</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Демо-репозиторій</string>
-    <string name="repoFullname">Репозиторій з організацією</string>
+    <string name="repoFullName">Репозиторій з організацією</string>
     <string name="repoDescription">Демо опис</string>
     <string name="noData">Репозиторіїв не знайдено</string>
     <string name="orgName">Демо організація</string>
@@ -61,8 +61,8 @@
     <string name="passWord">Пароль</string>
     <string name="btnLogin">УВІЙТИ</string>
     <string name="instanceUrl">URL екземпляру</string>
-    <string name="navigation_drawer_open">Відкрити панель навігації</string>
-    <string name="navigation_drawer_close">Закрити панель навігації</string>
+    <string name="navigationDrawerOpen">Відкрити панель навігації</string>
+    <string name="navigationDrawerClose">Закрити панель навігації</string>
     <string name="logo">Увійти до Gitea</string>
     <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1. Оберіть правильний протокол (https або http). \n2. Введіть URL Gitea, наприклад: try.gitea.io. \n3. Якщо для вашого облікового запису увімкнено двофакторну аутентифікацію, введіть код OTP у відповідне поле. \n4. Для базової автентифікації HTTP використовуйте USERNAME@DOMAIN.COM в полі URL.</string>
@@ -101,14 +101,14 @@
     <string name="privateAvatar">Пр</string>
     <string name="removeContent">Видалити</string>
     <string name="genericApiStatusError">Екземпляр повернув помилку. Код\u0020</string>
-    <string name="title_activity_repo_detail">Активність</string>
-    <string name="tab_text_info">Подробиці</string>
-    <string name="tab_text_files">Файли</string>
-    <string name="tab_text_ml">Етапи</string>
-    <string name="tab_text_releases">Релізи</string>
-    <string name="tab_text_branches">Гілки</string>
-    <string name="tab_text_labels">Мітки</string>
-    <string name="tab_text_collaborators">Співавтори</string>
+    <string name="titleActivityRepoDetail">Активність</string>
+    <string name="tabTextInfo">Подробиці</string>
+    <string name="tabTextFiles">Файли</string>
+    <string name="tabTextMl">Етапи</string>
+    <string name="tabTextReleases">Релізи</string>
+    <string name="tabTextBranches">Гілки</string>
+    <string name="tabTextLabels">Мітки</string>
+    <string name="tabTextCollaborators">Співавтори</string>
     <string name="tabPullRequests">Запити на злиття</string>
     <string name="noDataIssueTab">Проблем не знайдено</string>
     <string name="infoTabRepoSize">Розмір</string>
@@ -195,8 +195,8 @@
     <string name="settingsPdfModeHeaderText">Нічний режим PDF</string>
     <string name="fileViewerHeader">Перегляд файлів</string>
     <string name="settingsCounterBadges">Кількість значків</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Тема вихідного коду</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Оберіть тему вихідного коду</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">Тема вихідного коду</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Оберіть тему вихідного коду</string>
     <string name="cacheSizeDataDialogHeader">Розмір кешу даних</string>
     <string name="cacheSizeDataSelectionHeaderText">Розмір кешу даних</string>
     <string name="cacheSizeImagesDialogHeader">Розмір кешу зображень</string>
@@ -242,7 +242,7 @@
     <string name="labelDeletePositiveButton">Так</string>
     <string name="labelDeleteNegativeButton">Скасувати</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">Активність організації</string>
+    <string name="titleActivityOrgDetail">Активність організації</string>
     <string name="orgTabRepos">Репозиторії</string>
     <string name="orgTabTeams">Команди</string>
     <string name="orgTabMembers">Учасники</string>
@@ -321,14 +321,6 @@
     <string name="singleIssueSubscribe">Підписатися</string>
     <string name="singleIssueUnSubscribe">Відписатися</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">Обрати записи</string>
-    <string name="please_select_atleast">Будь ласка, оберіть принаймні </string>
-    <string name="you_can_only_select_upto">Ви можете обрати до </string>
-    <string name="option"> параметр</string>
-    <string name="options"> параметри</string>
-    <string name="select_all">Вибрати все</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Метаінформація репозиторія</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Додати нового користувача</string>
@@ -405,6 +397,7 @@
     <!-- files -->
     <string name="noDataFilesTab">Файлів не знайдено</string>
     <string name="filesGenericError">Вибачте, цей файл неможливо переглянути, оскільки API повернув помилку</string>
+    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">ОК</string>
@@ -453,7 +446,7 @@
     <string name="loginMethodText">Оберіть бажаний метод входу для доступу до облікового запису. Токен є більш безпечним!</string>
     <string name="unauthorizedApiError">Екземпляр повернув помилку - не авторизовано. Перевірте облікові дані та спробуйте знову</string>
     <string name="loginTokenError">Token is required</string>
-    <string name="prDeletedFrok">Deleted Fork</string>
+    <string name="prDeletedFork">Deleted Fork</string>
     <string name="noDataPullRequests">Запитів на злиття не знайдено</string>
     <string name="prCreator">Автор :\u0020</string>
     <string name="editPrText">Редагувати запит на злиття</string>
@@ -482,7 +475,7 @@
     <string name="downloadFile">Завантажити цей файл</string>
     <string name="waitLoadingDownloadFile">Зачекайте, поки файл завантажиться</string>
     <string name="downloadFileSaved">Файл успішно збережений</string>
-    <string name="excludeFilesInFileviewer">Цей тип файлу не підтримується у переглядачі файлів. Завантажити його з меню?</string>
+    <string name="excludeFilesInFileViewer">Цей тип файлу не підтримується у переглядачі файлів. Завантажити його з меню?</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
     <string name="deleteFileText">Delete %1$s</string>
@@ -498,22 +491,22 @@
     <string name="commitCommittedBy">Коміт від %1$s</string>
     <string name="viewCommits">Перегляд змін</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Перевірка сертифіката</string>
-    <string name="mtm_accept_cert">Прийняти незнайомий сертифікат?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
-    <string name="mtm_cert_expired">Термін дії сертифіката сервера закінчився.</string>
-    <string name="mtm_accept_server_name">Ім\'я сервера не збігається, прийняти?</string>
-    <string name="mtm_hostname_mismatch">Сервер не може автентифікуватись як \&quot;%s\&quot;. Сертифікат дійсний тільки для:</string>
-    <string name="mtm_connect_anyway">Усе одно бажаєте підключитися?</string>
-    <string name="mtm_cert_details">Деталі сертифіката:</string>
-    <string name="mtm_decision_always">Довіряти</string>
-    <string name="mtm_decision_abort">Перервати</string>
+    <string name="mtmNotification">Перевірка сертифіката</string>
+    <string name="mtmAcceptCert">Прийняти незнайомий сертифікат?</string>
+    <string name="mtmTrustAnchor">Сертифікат сервера не підписано відомим центром сертифікації</string>
+    <string name="mtmCertExpired">Термін дії сертифіката сервера закінчився.</string>
+    <string name="mtmAcceptServerName">Ім\'я сервера не збігається, прийняти?</string>
+    <string name="mtmHostnameMismatch">Сервер не може автентифікуватись як \&quot;%s\&quot;. Сертифікат дійсний тільки для:</string>
+    <string name="mtmConnectAnyway">Усе одно бажаєте підключитися?</string>
+    <string name="mtmCertDetails">Деталі сертифіката:</string>
+    <string name="mtmDecisionAlways">Довіряти</string>
+    <string name="mtmDecisionAbort">Перервати</string>
     <string name="subscribedSuccessfully">Підписано успішно</string>
     <string name="alreadySubscribed">Ви вже підписалися</string>
     <string name="subscriptionError">Не вдалося підписатися</string>
     <string name="unsubscribedSuccessfully">Підписку успішно відмінено</string>
     <string name="alreadyUnsubscribed">Ви вже відписалися</string>
-    <string name="unsubscriptionError">Не вдалося відписатися</string>
+    <string name="unSubscriptionError">Не вдалося відписатися</string>
     <string name="closeMilestone">Закрити етап</string>
     <string name="openMilestone">Відкрити етап</string>
     <string name="milestoneStatusUpdate">Статус етапу успішно оновлено</string>
