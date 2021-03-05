@@ -65,6 +65,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
+		private String userLoginId;
 		private IssueComments issueComment;
 
 		private final ImageView avatar;
@@ -227,6 +228,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 			});
 
+			avatar.setOnClickListener(loginId -> {
+
+				Context context = loginId.getContext();
+
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+			});
+
 		}
 
 	}
@@ -310,6 +318,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		String timeFormat = tinyDB.getString("dateFormat");
 		IssueComments issueComment = issuesComments.get(position);
+
+		holder.userLoginId = issueComment.getUser().getLogin();
 
 		holder.issueComment = issueComment;
 		holder.author.setText(issueComment.getUser().getUsername());

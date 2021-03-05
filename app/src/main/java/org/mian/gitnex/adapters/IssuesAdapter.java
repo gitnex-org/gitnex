@@ -18,6 +18,7 @@ import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -101,6 +102,8 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
 
+		private String userLoginId;
+
 		private final TextView issueNumber;
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
@@ -118,9 +121,9 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			LinearLayout frameCommentsCount = itemView.findViewById(R.id.frameCommentsCount);
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
 
-			issueTitle.setOnClickListener(v -> {
+			issueTitle.setOnClickListener(title -> {
 
-				Context context = v.getContext();
+				Context context = title.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issueNumber.getText());
@@ -131,9 +134,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				context.startActivity(intent);
 
 			});
-			frameCommentsCount.setOnClickListener(v -> {
 
-				Context context = v.getContext();
+			frameCommentsCount.setOnClickListener(commentsCount -> {
+
+				Context context = commentsCount.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issueNumber.getText());
@@ -143,6 +147,13 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
 
+			});
+
+			issueAssigneeAvatar.setOnClickListener(loginId -> {
+
+				Context context = loginId.getContext();
+
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 			});
 
 		}
@@ -154,12 +165,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			final String locale = tinyDb.getString("locale");
 			final String timeFormat = tinyDb.getString("dateFormat");
 
-			if(!issuesModel.getUser().getFull_name().equals("")) {
-				issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getFull_name(), context));
-			}
-			else {
-				issueAssigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.issueCreator) + issuesModel.getUser().getLogin(), context));
-			}
+			userLoginId = issuesModel.getUser().getLogin();
 
 			PicassoService.getInstance(context).get().load(issuesModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
 

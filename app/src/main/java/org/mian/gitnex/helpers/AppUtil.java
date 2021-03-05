@@ -1,5 +1,7 @@
 package org.mian.gitnex.helpers;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -21,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -245,4 +248,14 @@ public class AppUtil {
 		return (int) (context.getResources().getDisplayMetrics().scaledDensity * sp);
 	}
 
+	public static void copyToClipboard(Context ctx, CharSequence data, String message) {
+
+		ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
+		assert clipboard != null;
+
+		ClipData clip = ClipData.newPlainText(data, data);
+		clipboard.setPrimaryClip(clip);
+
+		Toasty.info(ctx, message);
+	}
 }

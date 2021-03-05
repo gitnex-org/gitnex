@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.gitnex.tea4j.models.Collaborators;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import java.util.List;
 
@@ -21,21 +22,32 @@ import java.util.List;
 
 public class CollaboratorsAdapter extends BaseAdapter  {
 
-    private List<Collaborators> collaboratorsList;
-    private Context mCtx;
+    private final List<Collaborators> collaboratorsList;
+    private final Context mCtx;
 
-    private class ViewHolder {
+    private static class ViewHolder {
 
-        private ImageView collaboratorAvatar;
-        private TextView collaboratorName;
+	    private String userLoginId;
+
+        private final ImageView collaboratorAvatar;
+        private final TextView collaboratorName;
 
         ViewHolder(View v) {
+
             collaboratorAvatar  = v.findViewById(R.id.collaboratorAvatar);
             collaboratorName  = v.findViewById(R.id.collaboratorName);
+
+	        collaboratorAvatar.setOnClickListener(loginId -> {
+
+		        Context context = loginId.getContext();
+
+		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+	        });
         }
     }
 
     public CollaboratorsAdapter(Context mCtx, List<Collaborators> collaboratorsListMain) {
+
         this.mCtx = mCtx;
         this.collaboratorsList = collaboratorsListMain;
     }
@@ -62,23 +74,26 @@ public class CollaboratorsAdapter extends BaseAdapter  {
         ViewHolder viewHolder = null;
 
         if (finalView == null) {
+
             finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_collaborators, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
         else {
+
             viewHolder = (ViewHolder) finalView.getTag();
         }
 
         initData(viewHolder, position);
         return finalView;
-
     }
 
     private void initData(ViewHolder viewHolder, int position) {
 
         Collaborators currentItem = collaboratorsList.get(position);
         PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
+
+	    viewHolder.userLoginId = currentItem.getLogin();
 
         if(!currentItem.getFull_name().equals("")) {
 

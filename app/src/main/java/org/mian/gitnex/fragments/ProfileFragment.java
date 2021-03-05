@@ -25,6 +25,7 @@ import com.squareup.picasso.Callback;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
@@ -75,6 +76,11 @@ public class ProfileFragment extends Fragment {
 
 	    	userLanguage.setText(R.string.notSupported);
 	    }
+
+	    userAvatar.setOnClickListener(loginId -> {
+
+		    AppUtil.copyToClipboard(ctx, tinyDb.getString("userLogin"), ctx.getString(R.string.copyLoginIdToClipBoard, tinyDb.getString("userLogin")));
+	    });
 
 	    userFullName.setText(Html.fromHtml(tinyDb.getString("userFullname")));
 	    userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));

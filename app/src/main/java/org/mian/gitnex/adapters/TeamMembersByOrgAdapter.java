@@ -13,6 +13,7 @@ import android.widget.TextView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.List;
@@ -23,24 +24,34 @@ import java.util.List;
 
 public class TeamMembersByOrgAdapter extends BaseAdapter {
 
-    private List<UserInfo> teamMembersList;
-    private Context mCtx;
+    private final List<UserInfo> teamMembersList;
+    private final Context mCtx;
 
     private static class ViewHolder {
 
-        private ImageView memberAvatar;
-        private TextView memberName;
+	    private String userLoginId;
+
+        private final ImageView memberAvatar;
+        private final TextView memberName;
 
         ViewHolder(View v) {
+
             memberAvatar  = v.findViewById(R.id.memberAvatar);
             memberName  = v.findViewById(R.id.memberName);
+
+	        memberAvatar.setOnClickListener(loginId -> {
+
+		        Context context = loginId.getContext();
+
+		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+	        });
         }
     }
 
     public TeamMembersByOrgAdapter(Context mCtx, List<UserInfo> membersListMain) {
+
         this.mCtx = mCtx;
         this.teamMembersList = membersListMain;
-
     }
 
     @Override
@@ -65,23 +76,26 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         TeamMembersByOrgAdapter.ViewHolder viewHolder = null;
 
         if (finalView == null) {
+
             finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_members_by_team_by_org, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
         else {
+
             viewHolder = (TeamMembersByOrgAdapter.ViewHolder) finalView.getTag();
         }
 
         initData(viewHolder, position);
         return finalView;
-
     }
 
     private void initData(TeamMembersByOrgAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = teamMembersList.get(position);
         PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
+
+	    viewHolder.userLoginId = currentItem.getLogin();
 
         final TinyDB tinyDb = TinyDB.getInstance(mCtx);
         Typeface myTypeface;
@@ -112,6 +126,5 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         }
 
 	    viewHolder.memberName.setTypeface(myTypeface);
-
     }
 }

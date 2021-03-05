@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import java.util.List;
 
@@ -21,26 +22,36 @@ import java.util.List;
 
 public class ProfileFollowersAdapter extends RecyclerView.Adapter<ProfileFollowersAdapter.FollowersViewHolder> {
 
-    private List<UserInfo> followersList;
-    private Context mCtx;
+    private final List<UserInfo> followersList;
+    private final Context mCtx;
 
     static class FollowersViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView userAvatar;
-        private TextView userFullName;
-        private TextView userName;
+	    private String userLoginId;
+
+        private final ImageView userAvatar;
+        private final TextView userFullName;
+        private final TextView userName;
 
         private FollowersViewHolder(View itemView) {
+
             super(itemView);
 
             userAvatar = itemView.findViewById(R.id.userAvatar);
             userFullName = itemView.findViewById(R.id.userFullName);
             userName = itemView.findViewById(R.id.userName);
 
+	        userAvatar.setOnClickListener(loginId -> {
+
+		        Context context = loginId.getContext();
+
+		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+	        });
         }
     }
 
     public ProfileFollowersAdapter(Context mCtx, List<UserInfo> followersListMain) {
+
         this.mCtx = mCtx;
         this.followersList = followersListMain;
     }
@@ -48,14 +59,17 @@ public class ProfileFollowersAdapter extends RecyclerView.Adapter<ProfileFollowe
     @NonNull
     @Override
     public ProfileFollowersAdapter.FollowersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_followers, parent, false);
-        return new ProfileFollowersAdapter.FollowersViewHolder(v);
+        return new FollowersViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProfileFollowersAdapter.FollowersViewHolder holder, int position) {
 
         UserInfo currentItem = followersList.get(position);
+
+	    holder.userLoginId = currentItem.getLogin();
 
         if(!currentItem.getFullname().equals("")) {
 

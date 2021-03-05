@@ -17,6 +17,7 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -33,9 +34,9 @@ import java.util.Locale;
 
 public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapter.SearchViewHolder> {
 
-	private List<Issues> searchedList;
-	private Context mCtx;
-	private TinyDB tinyDb;
+	private final List<Issues> searchedList;
+	private final Context mCtx;
+	private final TinyDB tinyDb;
 
 	public SearchIssuesAdapter(List<Issues> dataList, Context mCtx) {
 
@@ -46,12 +47,14 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 
 	class SearchViewHolder extends RecyclerView.ViewHolder {
 
-		private TextView issueNumber;
-		private ImageView issueAssigneeAvatar;
-		private TextView issueTitle;
-		private TextView issueCreatedTime;
-		private TextView issueCommentsCount;
-		private TextView repoFullName;
+		private String userLoginId;
+
+		private final TextView issueNumber;
+		private final ImageView issueAssigneeAvatar;
+		private final TextView issueTitle;
+		private final TextView issueCreatedTime;
+		private final TextView issueCommentsCount;
+		private final TextView repoFullName;
 
 		private SearchViewHolder(View itemView) {
 
@@ -100,6 +103,13 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 
 				context.startActivity(intent);
 			});
+
+			issueAssigneeAvatar.setOnClickListener(loginId -> {
+
+				Context context = loginId.getContext();
+
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+			});
 		}
 
 	}
@@ -120,12 +130,7 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 		String locale = tinyDb.getString("locale");
 		String timeFormat = tinyDb.getString("dateFormat");
 
-		if(!currentItem.getUser().getFull_name().equals("")) {
-			holder.issueAssigneeAvatar.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.issueCreator) + currentItem.getUser().getFull_name(), mCtx));
-		}
-		else {
-			holder.issueAssigneeAvatar.setOnClickListener(new ClickListener(mCtx.getResources().getString(R.string.issueCreator) + currentItem.getUser().getLogin(), mCtx));
-		}
+		holder.userLoginId = currentItem.getUser().getLogin();
 
 		PicassoService
 			.getInstance(mCtx).get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueAssigneeAvatar);

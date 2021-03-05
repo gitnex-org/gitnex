@@ -733,4 +733,5 @@
     <string name="codeBlockWhiteOnGrey">White on Grey</string>
     <string name="codeBlockDarkOnWhite">Dark on White</string>
 
+    <string name="copyLoginIdToClipBoard">Login ID \'%s\' copied to clipboard</string>
 </resources>

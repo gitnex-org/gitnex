@@ -18,6 +18,7 @@ import org.gitnex.tea4j.models.PullRequests;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -98,6 +99,8 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	class PullRequestsHolder extends RecyclerView.ViewHolder {
 
+		private String userLoginId;
+
 		private final TextView prNumber;
 		private final TextView prMergeable;
 		private final TextView prHeadBranch;
@@ -142,6 +145,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				context.startActivity(intent);
 
 			});
+
 			frameCommentsCount.setOnClickListener(v -> {
 
 				Context context = v.getContext();
@@ -159,7 +163,13 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				tinyDb.putString("prForkFullName", prForkFullName.getText().toString());
 				tinyDb.putString("issueType", "Pull");
 				context.startActivity(intent);
+			});
 
+			assigneeAvatar.setOnClickListener(loginId -> {
+
+				Context context = loginId.getContext();
+
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 			});
 
 		}
@@ -171,19 +181,9 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			final String locale = tinyDb.getString("locale");
 			final String timeFormat = tinyDb.getString("dateFormat");
 
-			if(!prModel.getUser().getFull_name().equals("")) {
-				assigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.prCreator) + prModel.getUser().getFull_name(), context));
-			}
-			else {
-				assigneeAvatar.setOnClickListener(new ClickListener(context.getResources().getString(R.string.prCreator) + prModel.getUser().getLogin(), context));
-			}
+			userLoginId = prModel.getUser().getLogin();
 
-			if(prModel.getUser().getAvatar_url() != null) {
-				PicassoService.getInstance(context).get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
-			}
-			else {
-				PicassoService.getInstance(context).get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
-			}
+			PicassoService.getInstance(context).get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
 
 			String prNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + prModel.getNumber() + "</font>";
 			prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + EmojiParser.parseToUnicode(prModel.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));

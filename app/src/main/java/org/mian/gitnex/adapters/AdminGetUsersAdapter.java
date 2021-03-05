@@ -16,6 +16,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,19 +27,22 @@ import java.util.List;
 
 public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdapter.UsersViewHolder> implements Filterable {
 
-    private List<UserInfo> usersList;
-    private Context mCtx;
-    private List<UserInfo> usersListFull;
+    private final List<UserInfo> usersList;
+    private final Context mCtx;
+    private final List<UserInfo> usersListFull;
 
     static class UsersViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView userAvatar;
-        private TextView userFullName;
-        private TextView userEmail;
-        private ImageView userRole;
-        private TextView userName;
+	    private String userLoginId;
+
+        private final ImageView userAvatar;
+        private final TextView userFullName;
+        private final TextView userEmail;
+        private final ImageView userRole;
+        private final TextView userName;
 
         private UsersViewHolder(View itemView) {
+
             super(itemView);
 
             userAvatar = itemView.findViewById(R.id.userAvatar);
@@ -47,10 +51,17 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
             userEmail = itemView.findViewById(R.id.userEmail);
             userRole = itemView.findViewById(R.id.userRole);
 
+	        userAvatar.setOnClickListener(loginId -> {
+
+		        Context context = loginId.getContext();
+
+		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+	        });
         }
     }
 
     public AdminGetUsersAdapter(Context mCtx, List<UserInfo> usersListMain) {
+
         this.mCtx = mCtx;
         this.usersList = usersListMain;
         usersListFull = new ArrayList<>(usersList);
@@ -59,6 +70,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
     @NonNull
     @Override
     public AdminGetUsersAdapter.UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_admin_users, parent, false);
         return new AdminGetUsersAdapter.UsersViewHolder(v);
     }
@@ -67,6 +79,8 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
     public void onBindViewHolder(@NonNull AdminGetUsersAdapter.UsersViewHolder holder, int position) {
 
         UserInfo currentItem = usersList.get(position);
+
+	    holder.userLoginId = currentItem.getLogin();
 
         if(!currentItem.getFullname().equals("")) {
 
@@ -89,6 +103,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
         }
 
         if(currentItem.getIs_admin()) {
+
             holder.userRole.setVisibility(View.VISIBLE);
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
@@ -101,6 +116,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
             holder.userRole.setImageDrawable(drawable);
         }
         else {
+
             holder.userRole.setVisibility(View.GONE);
         }
 
@@ -117,14 +133,15 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
         return usersFilter;
     }
 
-    private Filter usersFilter = new Filter() {
+    private final Filter usersFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserInfo> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(usersListFull);
-            } else {
+            }
+            else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (UserInfo item : usersListFull) {
@@ -142,6 +159,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
+
             usersList.clear();
             usersList.addAll((List) results.values);
             notifyDataSetChanged();
