@@ -1,7 +1,9 @@
 package org.mian.gitnex.activities;
 
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.biometric.BiometricManager;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsSecurityBinding;
@@ -16,6 +20,8 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import java.io.File;
 import java.io.IOException;
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
 
 /**
  * Author M M Arif
@@ -53,6 +59,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 		LinearLayout cacheSizeImagesFrame = activitySettingsSecurityBinding.cacheSizeImagesSelectionFrame;
 		LinearLayout clearCacheFrame = activitySettingsSecurityBinding.clearCacheSelectionFrame;
 
+		SwitchMaterial switchBiometric = activitySettingsSecurityBinding.switchBiometric;
+
 		if(!tinyDB.getString("cacheSizeStr").isEmpty()) {
 
 			cacheSizeDataSelected.setText(tinyDB.getString("cacheSizeStr"));
@@ -72,6 +80,70 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 			cacheSizeImagesSelectedChoice = tinyDB.getInt("cacheSizeImagesId");
 		}
+
+		switchBiometric.setChecked(tinyDB.getBoolean("biometricStatus"));
+
+		// biometric switcher
+		switchBiometric.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+				if(isChecked) {
+
+					BiometricManager biometricManager = BiometricManager.from(ctx);
+					KeyguardManager keyguardManager = (KeyguardManager) ctx.getSystemService(Context.KEYGUARD_SERVICE);
+
+					if (!keyguardManager.isDeviceSecure()) {
+
+						switch(biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
+
+							case BiometricManager.BIOMETRIC_SUCCESS:
+
+								tinyDB.putBoolean("biometricStatus", true);
+								Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+								break;
+							case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+							case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+							case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+							case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+
+								tinyDB.putBoolean("biometricStatus", false);
+								switchBiometric.setChecked(false);
+								Toasty.error(appCtx, getResources().getString(R.string.biometricNotSupported));
+								break;
+							case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+
+								tinyDB.putBoolean("biometricStatus", false);
+								switchBiometric.setChecked(false);
+								Toasty.error(appCtx, getResources().getString(R.string.biometricNotAvailable));
+								break;
+							case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+
+								tinyDB.putBoolean("biometricStatus", false);
+								switchBiometric.setChecked(false);
+								Toasty.info(appCtx, getResources().getString(R.string.enrollBiometric));
+								break;
+						}
+					}
+					else {
+
+						tinyDB.putBoolean("biometricStatus", true);
+						Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					}
+				}
+				else {
+
+					tinyDB.putBoolean("biometricStatus", false);
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				}
+			}
+			else {
+
+				tinyDB.putBoolean("biometricStatus", false);
+				Toasty.success(appCtx, getResources().getString(R.string.biometricNotSupported));
+			}
+
+		});
 
 		// clear cache setter
 		File cacheDir = appCtx.getCacheDir();

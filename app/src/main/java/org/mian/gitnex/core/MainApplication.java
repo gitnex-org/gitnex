@@ -123,5 +123,12 @@ public class MainApplication extends Application {
 
 			tinyDB.putInt("pollingDelayMinutes", StaticGlobalVariables.defaultPollingDelay);
 		}
+
+		// disable biometric by default
+		if(tinyDB.getString("biometricStatusInit").isEmpty()) {
+
+			tinyDB.putBoolean("biometricStatus", false);
+			tinyDB.putString("biometricStatusInit", "yes");
+		}
 	}
 }

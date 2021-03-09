@@ -60,21 +60,23 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressLoadMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:visibility="gone"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
     <TextView

@@ -77,7 +77,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 		}
 
 		AppUtil.setAppLocale(getResources(), tinyDB.getString("locale"));
-
 	}
 
 }

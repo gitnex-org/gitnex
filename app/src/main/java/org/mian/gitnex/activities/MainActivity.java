@@ -18,6 +18,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -58,6 +60,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 import retrofit2.Call;
@@ -156,6 +159,43 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/manroperegular.ttf");
 				break;
+		}
+
+		// biometric auth
+		if(tinyDB.getBoolean("biometricStatus")) {
+
+			Executor executor = ContextCompat.getMainExecutor(this);
+
+			BiometricPrompt biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+
+				@Override
+				public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+
+					super.onAuthenticationError(errorCode, errString);
+
+					// Authentication error, close the app
+					if(errorCode == BiometricPrompt.ERROR_USER_CANCELED ||
+						errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+
+						finish();
+					}
+				}
+
+				// Authentication succeeded, continue to app
+				@Override public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) { super.onAuthenticationSucceeded(result); }
+
+				// Authentication failed, close the app
+				@Override public void onAuthenticationFailed() { super.onAuthenticationFailed(); }
+
+			});
+
+			BiometricPrompt.PromptInfo biometricPromptBuilder = new BiometricPrompt.PromptInfo.Builder()
+				.setTitle(getString(R.string.biometricAuthTitle))
+				.setSubtitle(getString(R.string.biometricAuthSubTitle))
+				.setNegativeButtonText(getString(R.string.cancelButton)).build();
+
+			biometricPrompt.authenticate(biometricPromptBuilder);
+
 		}
 
 		toolbarTitle.setTypeface(myTypeface);
