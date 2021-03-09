@@ -113,6 +113,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 		});
 
+		dialogTransferRepository.setCancelable(false);
 		dialogTransferRepository.show();
 	}
 
@@ -195,6 +196,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 		});
 
+		dialogDeleteRepository.setCancelable(false);
 		dialogDeleteRepository.show();
 	}
 
@@ -334,6 +336,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			propBinding.repoEnableMerge.isChecked(), propBinding.repoEnableRebase.isChecked(),
 			propBinding.repoEnableSquash.isChecked(), propBinding.repoEnableForceMerge.isChecked()));
 
+		dialogProp.setCancelable(false);
 		dialogProp.show();
 	}
 
