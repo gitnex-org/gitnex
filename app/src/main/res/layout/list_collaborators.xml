@@ -11,7 +11,7 @@
         android:id="@+id/collaboratorAvatar"
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:contentDescription="@string/tab_text_collaborators"
+        android:contentDescription="@string/tabTextCollaborators"
         android:src="@drawable/ic_person" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="60dp"
         android:gravity="top|center_horizontal"
         android:layout_marginTop="1dp"
-        android:text="@string/tab_text_collaborators"
+        android:text="@string/tabTextCollaborators"
         android:textSize="14sp"
         android:textColor="?attr/primaryTextColor" />
 

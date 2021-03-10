@@ -12,11 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.vdurmont.emoji.EmojiParser;
+import org.gitnex.tea4j.models.Commits;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.Commits;
 import java.util.List;
 import java.util.Locale;
 

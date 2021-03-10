@@ -42,11 +42,12 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         android:visibility="gone"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
@@ -81,6 +82,7 @@
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
+                android:singleLine="true"
                 android:imeOptions="actionSend"
                 android:inputType="text"
                 android:textSize="16sp" />

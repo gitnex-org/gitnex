@@ -48,7 +48,7 @@
                 android:id="@+id/tabItemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_info" />
+                android:text="@string/tabTextInfo" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem_repos"
@@ -60,7 +60,7 @@
                 android:id="@+id/tabItem_labels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_labels" />
+                android:text="@string/tabTextLabels" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem_teams"

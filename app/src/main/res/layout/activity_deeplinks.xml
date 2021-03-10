@@ -6,11 +6,12 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         android:layout_centerInParent="true"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
@@ -94,7 +95,7 @@
             android:id="@+id/organization"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="@string/navOrgs"
+            android:text="@string/navOrg"
             android:textColor="@color/btnTextColor"
             android:textSize="16sp"
             android:layout_marginTop="8dp" />

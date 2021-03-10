@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.models.Collaborators;
+import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.clients.PicassoService;
@@ -20,8 +23,6 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.Collaborators;
-import org.mian.gitnex.models.UserInfo;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -132,15 +133,17 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         holder.userNameMain.setText(currentItem.getUsername());
 
         if (!currentItem.getFullname().equals("")) {
-            holder.userFullName.setText(currentItem.getFullname());
-            holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+
+            holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
         }
         else {
+
             holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
-            holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
         }
 
-        if (!currentItem.getAvatar().equals("")) {
+	    holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+
+	    if (!currentItem.getAvatar().equals("")) {
             PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
         }
 

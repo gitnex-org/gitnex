@@ -6,7 +6,7 @@
     <string name="navRepos">Depolar</string>
     <string name="navProfile">Profil</string>
     <string name="navSettings">Ayarlar</string>
-    <string name="navOrgs">Organizasyonlar</string>
+    <string name="navOrg">Organizasyonlar</string>
     <string name="navAbout">Hakkında</string>
     <string name="navRate">GitNex\'i Puanla</string>
     <string name="navLogout">Çıkış Yap</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Demo deposu</string>
-    <string name="repoFullname">ORG ile Depo</string>
+    <string name="repoFullName">ORG ile Depo</string>
     <string name="repoDescription">Demo açıklaması</string>
     <string name="noData">Depo bulunamadı</string>
     <string name="orgName">Demo organizasyonu</string>
@@ -61,8 +61,8 @@
     <string name="passWord">Parola</string>
     <string name="btnLogin">OTURUM AÇ</string>
     <string name="instanceUrl">Örnek URL</string>
-    <string name="navigation_drawer_open">Gezinme Çekmecesini Aç</string>
-    <string name="navigation_drawer_close">Gezinme Çekmecesini Kapat</string>
+    <string name="navigationDrawerOpen">Gezinme Çekmecesini Aç</string>
+    <string name="navigationDrawerClose">Gezinme Çekmecesini Kapat</string>
     <string name="logo">Gitea\'ya Giriş Yap</string>
     <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1- Doğru protokolü seçin (https veya http). \n2- Gitea url girin, örneğin: try.gitea.io. \n3- Hesabınız için 2FA\'yı etkinleştirdiyseniz, kodu OTP Kodu alanına girin. \n4- HTTP temel kimlik doğrulaması için, URL alanında KULLANICIADI@DOMAIN.COM adresini kullanın.</string>
@@ -101,14 +101,14 @@
     <string name="privateAvatar">Gizli</string>
     <string name="removeContent">Kaldır</string>
     <string name="genericApiStatusError">Örnek bir hata döndürdü. Kod\u0020</string>
-    <string name="title_activity_repo_detail">DepoDetayEtkinliği</string>
-    <string name="tab_text_info">Ayrıntılar</string>
-    <string name="tab_text_files">Dosyalar</string>
-    <string name="tab_text_ml">Kilometre Taşları</string>
-    <string name="tab_text_releases">Sürümler</string>
-    <string name="tab_text_branches">Dallar</string>
-    <string name="tab_text_labels">Etiketler</string>
-    <string name="tab_text_collaborators">İşbirlikçiler</string>
+    <string name="titleActivityRepoDetail">DepoDetayEtkinliği</string>
+    <string name="tabTextInfo">Ayrıntılar</string>
+    <string name="tabTextFiles">Dosyalar</string>
+    <string name="tabTextMl">Kilometre Taşları</string>
+    <string name="tabTextReleases">Sürümler</string>
+    <string name="tabTextBranches">Dallar</string>
+    <string name="tabTextLabels">Etiketler</string>
+    <string name="tabTextCollaborators">İşbirlikçiler</string>
     <string name="tabPullRequests">İstekleri Çek</string>
     <string name="noDataIssueTab">Konu bulunamadı</string>
     <string name="infoTabRepoSize">Boyut</string>
@@ -195,8 +195,8 @@
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
@@ -242,7 +242,7 @@
     <string name="labelDeletePositiveButton">Tamam</string>
     <string name="labelDeleteNegativeButton">İptal</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">KuruluşDetayıEtkinliği</string>
+    <string name="titleActivityOrgDetail">KuruluşDetayıEtkinliği</string>
     <string name="orgTabRepos">Depolar</string>
     <string name="orgTabTeams">Takımlar</string>
     <string name="orgTabMembers">Üyeler</string>
@@ -321,19 +321,17 @@
     <string name="singleIssueSubscribe">Subscribe</string>
     <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">Öğeleri Seç</string>
-    <string name="please_select_atleast">Lütfen en azını seçin </string>
-    <string name="you_can_only_select_upto">Sadece en fazla şunu yapabilirsiniz </string>
-    <string name="option"> seçenek</string>
-    <string name="options"> seçenekler</string>
-    <string name="select_all">Tümünü seç</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Depo Meta</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Yeni Kullanıcı Ekle</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Yönetici</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Tam Ad</string>
@@ -385,10 +383,9 @@
     <string name="newFileInvalidBranchName">Geçersiz dal adı, yalnızca &#8211;, a&#8211;z, 0&#8211;9 içerebilir</string>
     <string name="newFileCommitMessageError">İşleme mesajı çok uzun</string>
     <string name="newFileSuccessMessage">Yeni dosya oluşturuldu</string>
-    <string name="newFileOldBranches">Dallar</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Dosya adı, içerik ve işleme mesajı gibi alanların doldurulması zorunludur</string>
-    <string name="newFileCurrentBranchMessage">Mevcut şubeyi seçmek yeni şubeyi devre dışı bırakacaktır</string>
-    <string name="newFileNewBranchMessage">ör: yeni-dal</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Geçerli dal seçilmemişse yeni dal adı boş bırakılamaz</string>
     <string name="strFilter">Filtre</string>
     <string name="strSwitchBranches">Branches</string>
@@ -400,6 +397,7 @@
     <!-- files -->
     <string name="noDataFilesTab">Dosya bulunamadı</string>
     <string name="filesGenericError">Üzgünüz, bu dosya API hata döndürdüğü için görüntülenemiyor</string>
+    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">Tamam</string>
@@ -448,7 +446,7 @@
     <string name="loginMethodText">Hesabınıza erişmek için tercih ettiğiniz giriş yöntemini seçin. Jeton daha güvenli!</string>
     <string name="unauthorizedApiError">Örnek bir hata döndürdü - Yetkisiz. Kimlik bilgilerinizi kontrol edin ve tekrar deneyin</string>
     <string name="loginTokenError">Token is required</string>
-    <string name="prDeletedFrok">Deleted Fork</string>
+    <string name="prDeletedFork">Deleted Fork</string>
     <string name="noDataPullRequests">Çekme isteği bulunamadı</string>
     <string name="prCreator">Yaratıcı :\u0020</string>
     <string name="editPrText">Çekme İsteğini Düzenle</string>
@@ -477,7 +475,7 @@
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
-    <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="excludeFilesInFileViewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
     <string name="deleteFileText">Delete %1$s</string>
@@ -493,22 +491,22 @@
     <string name="commitCommittedBy">Committed by %1$s</string>
     <string name="viewCommits">View Commits</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Certificate Verification</string>
-    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
-    <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
-    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
-    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
-    <string name="mtm_cert_details">Certificate details:</string>
-    <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_abort">Abort</string>
+    <string name="mtmNotification">Sertifika doğrulama</string>
+    <string name="mtmAcceptCert">Bilinmeyen sertifika kabul edilsin mi?</string>
+    <string name="mtmTrustAnchor">Sunucu sertifikası bilinen bir sertifika yetkilisi tarafından imzalanmamış</string>
+    <string name="mtmCertExpired">Bu sertifikasının süresi doldu.</string>
+    <string name="mtmAcceptServerName">Accept Mismatching Server Name?</string>
+    <string name="mtmHostnameMismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtmConnectAnyway">Do you want to connect anyway?</string>
+    <string name="mtmCertDetails">Certificate details:</string>
+    <string name="mtmDecisionAlways">Trust</string>
+    <string name="mtmDecisionAbort">Abort</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
     <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscriptionError">Un-Subscription failed</string>
+    <string name="unSubscriptionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>

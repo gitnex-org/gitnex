@@ -3,15 +3,15 @@ package org.mian.gitnex.actions;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
+import org.gitnex.tea4j.models.IssueComments;
+import org.gitnex.tea4j.models.Issues;
+import org.gitnex.tea4j.models.UpdateIssueState;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.IssueComments;
-import org.mian.gitnex.models.Issues;
-import org.mian.gitnex.models.UpdateIssueState;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -254,7 +254,7 @@ public class IssueActions {
 				}
 				else {
 
-					Toasty.error(ctx, ctx.getString(R.string.unsubscriptionError));
+					Toasty.error(ctx, ctx.getString(R.string.unSubscriptionError));
 
 				}
 

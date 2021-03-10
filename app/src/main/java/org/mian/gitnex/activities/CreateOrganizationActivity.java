@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import org.gitnex.tea4j.models.UserOrganizations;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateOrganizationBinding;
@@ -19,7 +20,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.UserOrganizations;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -94,8 +94,6 @@ public class CreateOrganizationActivity extends BaseActivity {
     private void processNewOrganization() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
-        TinyDB tinyDb = TinyDB.getInstance(appCtx);
 
         String newOrgName = orgName.getText().toString();
         String newOrgDesc = orgDesc.getText().toString();
@@ -119,7 +117,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 
             Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
         }
-        else if(!appUtil.checkStrings(newOrgName)) {
+        else if(!AppUtil.checkStrings(newOrgName)) {
 
             Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
         }

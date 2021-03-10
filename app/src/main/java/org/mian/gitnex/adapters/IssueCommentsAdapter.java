@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
+import org.gitnex.tea4j.models.IssueComments;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -29,7 +30,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.IssueComments;
 import org.mian.gitnex.views.ReactionList;
 import org.mian.gitnex.views.ReactionSpinner;
 import java.util.List;
@@ -65,6 +65,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
+		private String userLoginId;
 		private IssueComments issueComment;
 
 		private final ImageView avatar;
@@ -227,6 +228,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 			});
 
+			avatar.setOnClickListener(loginId -> {
+
+				Context context = loginId.getContext();
+
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+			});
+
 		}
 
 	}
@@ -310,6 +318,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		String timeFormat = tinyDB.getString("dateFormat");
 		IssueComments issueComment = issuesComments.get(position);
+
+		holder.userLoginId = issueComment.getUser().getLogin();
 
 		holder.issueComment = issueComment;
 		holder.author.setText(issueComment.getUser().getUsername());

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
+import org.gitnex.tea4j.models.Teams;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateTeamByOrgBinding;
@@ -20,7 +21,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.Teams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -224,7 +224,6 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
     private void processCreateTeam() {
 
-        AppUtil appUtil = new AppUtil();
         final TinyDB tinyDb = TinyDB.getInstance(appCtx);
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
@@ -248,7 +247,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             return;
         }
 
-        if(!appUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
+        if(!AppUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
 
             Toasty.warning(ctx, getString(R.string.teamNameError));
             return;
@@ -256,7 +255,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
         if(!newTeamDesc.equals("")) {
 
-            if(!appUtil.checkStrings(newTeamDesc)) {
+            if(!AppUtil.checkStrings(newTeamDesc)) {
 
                 Toasty.warning(ctx, getString(R.string.teamDescError));
                 return;

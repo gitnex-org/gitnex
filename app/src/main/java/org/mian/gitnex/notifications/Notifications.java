@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * Author opyale
  */
 
-public class NotificationsMaster {
+public class Notifications {
 
 	private static int notificationsSupported = -1;
 
@@ -30,12 +30,12 @@ public class NotificationsMaster {
 		}
 	}
 
-	public static void fireWorker(Context context) {
+	public static void stopWorker(Context context) {
 
 		WorkManager.getInstance(context).cancelAllWorkByTag(context.getPackageName());
 	}
 
-	public static void hireWorker(Context context) {
+	public static void startWorker(Context context) {
 
 		TinyDB tinyDB = TinyDB.getInstance(context);
 

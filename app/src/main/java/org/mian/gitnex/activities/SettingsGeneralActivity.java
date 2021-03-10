@@ -113,7 +113,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 		// home screen
 
 		// link handler
-		String[] defaultScreen_ = {getResources().getString(R.string.generalDeepLinkSelectedText), getResources().getString(R.string.navRepos), getResources().getString(R.string.navOrgs), getResources().getString(R.string.pageTitleNotifications), getResources().getString(R.string.navExplore)};
+		String[] defaultScreen_ = {getResources().getString(R.string.generalDeepLinkSelectedText), getResources().getString(R.string.navRepos), getResources().getString(R.string.navOrg), getResources().getString(R.string.pageTitleNotifications), getResources().getString(R.string.navExplore)};
 		defaultScreen = new ArrayList<>(Arrays.asList(defaultScreen_));
 
 		String[] linksArray = new String[defaultScreen.size()];
@@ -131,7 +131,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 		}
 		else if(defaultLinkHandlerScreenSelectedChoice == 2) {
 
-			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navOrgs));
+			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navOrg));
 		}
 		else if(defaultLinkHandlerScreenSelectedChoice == 3) {
 

@@ -15,6 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
+import org.gitnex.tea4j.models.Branches;
+import org.gitnex.tea4j.models.DeleteFile;
+import org.gitnex.tea4j.models.EditFile;
+import org.gitnex.tea4j.models.NewFile;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateFileBinding;
@@ -23,10 +27,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.Branches;
-import org.mian.gitnex.models.DeleteFile;
-import org.mian.gitnex.models.EditFile;
-import org.mian.gitnex.models.NewFile;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -150,7 +150,7 @@ public class CreateFileActivity extends BaseActivity {
 
         disableProcessButton();
 
-	    NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.get(ctx);
+	    NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 	    networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> newFileCreate.setEnabled(hasNetworkConnection));
 
 	    newFileCreate.setOnClickListener(createFileListener);
@@ -162,7 +162,6 @@ public class CreateFileActivity extends BaseActivity {
     private void processNewFile() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
 
         String newFileName_ = newFileName.getText().toString();
         String newFileContent_ = newFileContent.getText().toString();
@@ -181,7 +180,7 @@ public class CreateFileActivity extends BaseActivity {
             return;
         }
 
-	    if(!appUtil.checkStringsWithDash(newFileBranchName_)) {
+	    if(!AppUtil.checkStringsWithDash(newFileBranchName_)) {
 
 		    Toasty.error(ctx, getString(R.string.newFileInvalidBranchName));
 		    return;
@@ -198,7 +197,7 @@ public class CreateFileActivity extends BaseActivity {
             switch(fileAction) {
 
 	            case FILE_ACTION_CREATE:
-		            createNewFile(Authorization.get(ctx), repoOwner, repoName, newFileName_, appUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_);
+		            createNewFile(Authorization.get(ctx), repoOwner, repoName, newFileName_, AppUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_);
 		            break;
 
 	            case FILE_ACTION_DELETE:
@@ -207,7 +206,7 @@ public class CreateFileActivity extends BaseActivity {
 
 	            case FILE_ACTION_EDIT:
 		            editFile(Authorization.get(ctx), repoOwner, repoName, filePath,
-			            appUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_, fileSha);
+			            AppUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_, fileSha);
 	            	break;
 
             }

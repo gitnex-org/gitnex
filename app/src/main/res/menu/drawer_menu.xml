@@ -17,7 +17,7 @@
 
         <item android:id="@+id/nav_organizations"
             android:icon="@drawable/ic_organization"
-            android:title="@string/navOrgs" />
+            android:title="@string/navOrg" />
 
         <item android:id="@+id/nav_repositories"
             android:icon="@drawable/ic_repo"

@@ -2,12 +2,12 @@ package org.mian.gitnex.clients;
 
 import android.content.Context;
 import android.util.Log;
+import org.gitnex.tea4j.ApiInterface;
+import org.gitnex.tea4j.WebInterface;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FilesData;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
-import org.mian.gitnex.interfaces.ApiInterface;
-import org.mian.gitnex.interfaces.WebInterface;
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.Map;
@@ -96,30 +96,38 @@ public class RetrofitClient {
 	}
 
 	public static ApiInterface getApiInterface(Context context, String url) {
+
 		if(!apiInterfaces.containsKey(url)) {
+			synchronized(RetrofitClient.class) {
+				if(!apiInterfaces.containsKey(url)) {
 
-			ApiInterface apiInterface = createRetrofit(context, url)
-				.create(ApiInterface.class);
+					ApiInterface apiInterface = createRetrofit(context, url).create(ApiInterface.class);
+					apiInterfaces.put(url, apiInterface);
 
-			apiInterfaces.put(url, apiInterface);
-			return apiInterface;
-
+					return apiInterface;
+				}
+			}
 		}
 
 		return apiInterfaces.get(url);
+
 	}
 
 	public static WebInterface getWebInterface(Context context, String url) {
+
 		if(!webInterfaces.containsKey(url)) {
+			synchronized(RetrofitClient.class) {
+				if(!webInterfaces.containsKey(url)) {
 
-			WebInterface webInterface = createRetrofit(context, url)
-				.create(WebInterface.class);
+					WebInterface webInterface = createRetrofit(context, url).create(WebInterface.class);
+					webInterfaces.put(url, webInterface);
 
-			webInterfaces.put(url, webInterface);
-			return webInterface;
-
+					return webInterface;
+				}
+			}
 		}
 
 		return webInterfaces.get(url);
+
 	}
 }

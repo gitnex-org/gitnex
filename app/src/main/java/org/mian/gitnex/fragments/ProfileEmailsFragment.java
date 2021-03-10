@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import org.gitnex.tea4j.models.Emails;
 import org.mian.gitnex.adapters.ProfileEmailsAdapter;
 import org.mian.gitnex.databinding.FragmentProfileEmailsBinding;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.models.Emails;
 import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
 import java.util.List;
 

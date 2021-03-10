@@ -38,6 +38,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
     <!-- Light theme -->
 
@@ -79,6 +80,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
     <!-- Retro theme -->
 

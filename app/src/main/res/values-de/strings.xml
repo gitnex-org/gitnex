@@ -6,7 +6,7 @@
     <string name="navRepos">Repositories</string>
     <string name="navProfile">Profil</string>
     <string name="navSettings">Einstellungen</string>
-    <string name="navOrgs">Organisationen</string>
+    <string name="navOrg">Organisationen</string>
     <string name="navAbout">Über</string>
     <string name="navRate">Bewerte GitNex</string>
     <string name="navLogout">Ausloggen</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">Neuer Pull-Request</string>
     <!-- page titles -->
     <string name="repoName">Demo Repo</string>
-    <string name="repoFullname">Repo mit ORG</string>
+    <string name="repoFullName">Repo mit ORG</string>
     <string name="repoDescription">Demo Beschreibung</string>
     <string name="noData">Keine Repositories gefunden</string>
     <string name="orgName">Demo Organisation</string>
@@ -61,8 +61,8 @@
     <string name="passWord">Passwort</string>
     <string name="btnLogin">ANMELDEN</string>
     <string name="instanceUrl">Instanz Link</string>
-    <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
-    <string name="navigation_drawer_close">Navigationsleiste schließen</string>
+    <string name="navigationDrawerOpen">Navigationsleiste öffnen</string>
+    <string name="navigationDrawerClose">Navigationsleiste schließen</string>
     <string name="logo">In Gitea anmelden</string>
     <string name="protocol">Protokoll</string>
     <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld</string>
@@ -101,14 +101,14 @@
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Entfernen</string>
     <string name="genericApiStatusError">Die Instanz hat einen Fehler zurückgegeben. Code\u0020</string>
-    <string name="title_activity_repo_detail">Repo-Details Aktivität</string>
-    <string name="tab_text_info">Details</string>
-    <string name="tab_text_files">Dateien</string>
-    <string name="tab_text_ml">Meilensteine</string>
-    <string name="tab_text_releases">Releases</string>
-    <string name="tab_text_branches">Branches</string>
-    <string name="tab_text_labels">Labels</string>
-    <string name="tab_text_collaborators">Mitarbeiter</string>
+    <string name="titleActivityRepoDetail">Repo-Details Aktivität</string>
+    <string name="tabTextInfo">Details</string>
+    <string name="tabTextFiles">Dateien</string>
+    <string name="tabTextMl">Meilensteine</string>
+    <string name="tabTextReleases">Releases</string>
+    <string name="tabTextBranches">Branches</string>
+    <string name="tabTextLabels">Labels</string>
+    <string name="tabTextCollaborators">Mitarbeiter</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Keine Issues gefunden!</string>
     <string name="infoTabRepoSize">Größe</string>
@@ -195,8 +195,8 @@
     <string name="settingsPdfModeHeaderText">PDF Nachtmodus</string>
     <string name="fileViewerHeader">Dateibetrachter</string>
     <string name="settingsCounterBadges">Zähler für Tabs</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Quellcode-Theme</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Wähle dein Quellcode-Theme</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">Quellcode-Theme</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Wähle dein Quellcode-Theme</string>
     <string name="cacheSizeDataDialogHeader">Daten-Cache Größe</string>
     <string name="cacheSizeDataSelectionHeaderText">Daten-Cache Größe</string>
     <string name="cacheSizeImagesDialogHeader">Bilder-Cache Größe</string>
@@ -242,7 +242,7 @@
     <string name="labelDeletePositiveButton">Ok</string>
     <string name="labelDeleteNegativeButton">Abbrechen</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">OrgDetailActivity</string>
+    <string name="titleActivityOrgDetail">OrgDetailActivity</string>
     <string name="orgTabRepos">Repositories</string>
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Mitglieder</string>
@@ -321,19 +321,17 @@
     <string name="singleIssueSubscribe">Abonnieren</string>
     <string name="singleIssueUnSubscribe">De-Abonnieren</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">Einträge auswählen</string>
-    <string name="please_select_atleast">Du musst mindestens so viele auswählen: </string>
-    <string name="you_can_only_select_upto">Du kannst höchstens so viele auswählen: </string>
-    <string name="option"> Option</string>
-    <string name="options"> Optionen</string>
-    <string name="select_all">Alle auswählen</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Repository Informationen</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Neuen Benutzer erstellen</string>
     <string name="adminUsers">Systembenutzer</string>
     <string name="userRoleAdmin">Administrator</string>
+    <string name="adminCron">Cron-Jobs</string>
+    <string name="adminCronScheduleHeader">Termin planen</string>
+    <string name="adminCronNextRunHeader">Nächste Ausführung</string>
+    <string name="adminCronLastRunHeader">Zuletzt ausgeführt</string>
+    <string name="adminCronExecutionHeader">Ausführungen</string>
+    <string name="adminCronTaskSuccessMsg">Job %1$s wurde erfolgreich erstellt</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Ganzer Name</string>
@@ -385,10 +383,9 @@
     <string name="newFileInvalidBranchName">Der Branch-Name ist ungültig und sollte nur folgendes beinhalten &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Commit-Nachricht ist zu lang</string>
     <string name="newFileSuccessMessage">Neue Datei erstellt</string>
-    <string name="newFileOldBranches">Derzeitige Branches</string>
+    <string name="newFileBranches">Wähle oder Erstelle einen Branch</string>
     <string name="newFileRequiredFields">Felder wie Dateiname, Inhalt und Commit-Nachricht sind erforderlich.</string>
-    <string name="newFileCurrentBranchMessage">Das Auswählen des derzeitigen Branches wird \"neuer Branch-Name\" deaktivieren</string>
-    <string name="newFileNewBranchMessage">z.B.: neuer-branch</string>
+    <string name="newFileEmptyBranchMessage">Leer lassen, um zum Standart-Branch zu pushen</string>
     <string name="newFileRequiredFieldNewBranchName">Neuer Branch-Name kann nicht leer sein, wenn der derzeitige Branch nicht ausgewählt ist</string>
     <string name="strFilter">Filter</string>
     <string name="strSwitchBranches">Branches</string>
@@ -400,6 +397,7 @@
     <!-- files -->
     <string name="noDataFilesTab">Keine Dateien gefunden</string>
     <string name="filesGenericError">Leider kann diese Datei nicht angezeigt werden, da die API einen Fehler zurückgab</string>
+    <string name="fileTypeCannotBeEdited">Dateien dieses Typs können nicht editiert werden</string>
     <string name="notSupported">Nicht unterstützt</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
@@ -448,7 +446,7 @@
     <string name="loginMethodText">Wählen deine bevorzugte Login-Methode, um auf deinen Account zuzugreifen. Token ist sicherer!</string>
     <string name="unauthorizedApiError">Gitea hat einen Fehler zurückgegeben - Nicht autorisiert. Überprüfen Sie Ihre Anmeldeinformationen und versuchen Sie es erneut</string>
     <string name="loginTokenError">Token ist erforderlich</string>
-    <string name="prDeletedFrok">Gelöschter Fork</string>
+    <string name="prDeletedFork">Gelöschter Fork</string>
     <string name="noDataPullRequests">Keine Pull-Requests gefunden</string>
     <string name="prCreator">Ersteller:\u0020</string>
     <string name="editPrText">Bearbeite Pull-Request</string>
@@ -477,7 +475,7 @@
     <string name="downloadFile">Datei herunterladen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
-    <string name="excludeFilesInFileviewer">Dieser Dateityp wird nicht vom Datei-Viewer unterstützt. Du kannst sie stattdessen übers Menü herunterladen.</string>
+    <string name="excludeFilesInFileViewer">Dieser Dateityp wird nicht vom Datei-Viewer unterstützt. Du kannst sie stattdessen übers Menü herunterladen?</string>
     <string name="deleteFile">Diese Datei löschen</string>
     <string name="editFile">Diese Datei bearbeiten</string>
     <string name="deleteFileText">Lösche %1$s</string>
@@ -493,22 +491,22 @@
     <string name="commitCommittedBy">Committed von %1$s</string>
     <string name="viewCommits">Commits anzeigen</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Zertifikatsüberprüfung</string>
-    <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
-    <string name="mtm_trust_anchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert</string>
-    <string name="mtm_cert_expired">Das Server-Zertifikat ist abgelaufen.</string>
-    <string name="mtm_accept_server_name">Nicht übereinstimmender Hostname akzeptieren?</string>
-    <string name="mtm_hostname_mismatch">Server konnte sich nicht als \&quot;%s\&quot; authentifizieren. Das Zertifikat ist nur gültig für:</string>
-    <string name="mtm_connect_anyway">Möchtest du dich trotzdem verbinden?</string>
-    <string name="mtm_cert_details">Zertifikats-Details:</string>
-    <string name="mtm_decision_always">Vertrauen</string>
-    <string name="mtm_decision_abort">Abbrechen</string>
+    <string name="mtmNotification">Zertifikatsüberprüfung</string>
+    <string name="mtmAcceptCert">Unbekanntes Zertifikat akzeptieren?</string>
+    <string name="mtmTrustAnchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert</string>
+    <string name="mtmCertExpired">Das Server-Zertifikat ist abgelaufen.</string>
+    <string name="mtmAcceptServerName">Nicht übereinstimmender Hostname akzeptieren?</string>
+    <string name="mtmHostnameMismatch">Server konnte sich nicht als \&quot;%s\&quot; authentifizieren. Das Zertifikat ist nur gültig für:</string>
+    <string name="mtmConnectAnyway">Möchtest du dich trotzdem verbinden?</string>
+    <string name="mtmCertDetails">Zertifikats-Details:</string>
+    <string name="mtmDecisionAlways">Vertrauen</string>
+    <string name="mtmDecisionAbort">Abbrechen</string>
     <string name="subscribedSuccessfully">Erfolgreich abonniert</string>
     <string name="alreadySubscribed">Du hast bereits abonniert</string>
     <string name="subscriptionError">Abonnieren fehlgeschlagen</string>
     <string name="unsubscribedSuccessfully">Erfolgreich de-abonniert</string>
     <string name="alreadyUnsubscribed">Du hast bereits de-abonniert</string>
-    <string name="unsubscriptionError">De-Abonnieren fehlgeschlagen</string>
+    <string name="unSubscriptionError">De-Abonnieren fehlgeschlagen</string>
     <string name="closeMilestone">Meilenstein schließen</string>
     <string name="openMilestone">Meilenstein wieder öffnen</string>
     <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>

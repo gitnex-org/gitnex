@@ -48,13 +48,13 @@
                 android:id="@+id/tab_item_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_info" />
+                android:text="@string/tabTextInfo" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_files"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_files" />
+                android:text="@string/tabTextFiles" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_issues"
@@ -72,25 +72,25 @@
                 android:id="@+id/tab_item_releases"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_releases" />
+                android:text="@string/tabTextReleases" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_ml"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_ml" />
+                android:text="@string/tabTextMl" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_labels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_labels" />
+                android:text="@string/tabTextLabels" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_collaborators"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_text_collaborators" />
+                android:text="@string/tabTextCollaborators" />
 
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>

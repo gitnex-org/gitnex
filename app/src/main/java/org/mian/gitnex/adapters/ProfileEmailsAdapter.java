@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import org.gitnex.tea4j.models.Emails;
 import org.mian.gitnex.R;
-import org.mian.gitnex.models.Emails;
 import java.util.List;
 
 /**

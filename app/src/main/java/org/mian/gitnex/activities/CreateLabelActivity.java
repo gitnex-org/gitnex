@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import org.gitnex.tea4j.models.CreateLabel;
+import org.gitnex.tea4j.models.Labels;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateLabelBinding;
@@ -21,8 +23,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.CreateLabel;
-import org.mian.gitnex.models.Labels;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
 import java.util.Objects;
@@ -122,7 +122,7 @@ public class CreateLabelActivity extends BaseActivity {
     private void processUpdateLabel() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
+
         String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         final String repoOwner = parts[0];
@@ -152,7 +152,7 @@ public class CreateLabelActivity extends BaseActivity {
             return;
         }
 
-        if(!appUtil.checkStrings(updateLabelName)) {
+        if(!AppUtil.checkStrings(updateLabelName)) {
 
             Toasty.error(ctx, getString(R.string.labelNameError));
             return;
@@ -167,7 +167,6 @@ public class CreateLabelActivity extends BaseActivity {
     private void processCreateLabel() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
 
         String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
@@ -198,7 +197,7 @@ public class CreateLabelActivity extends BaseActivity {
             return;
         }
 
-        if(!appUtil.checkStrings(newLabelName)) {
+        if(!AppUtil.checkStrings(newLabelName)) {
 
             Toasty.error(ctx, getString(R.string.labelNameError));
             return;

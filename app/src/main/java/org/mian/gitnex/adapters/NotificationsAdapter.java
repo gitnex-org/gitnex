@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.NotificationThread;
 import java.util.List;
 
 /**

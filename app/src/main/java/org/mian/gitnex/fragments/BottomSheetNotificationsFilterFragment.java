@@ -23,8 +23,9 @@ public class BottomSheetNotificationsFilterFragment extends BottomSheetDialogFra
 	@Override
 	public void onAttach(@NonNull Context context) {
 
-		this.tinyDB = TinyDB.getInstance(context);
 		super.onAttach(context);
+
+		this.tinyDB = TinyDB.getInstance(context);
 
 	}
 

@@ -11,12 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.NotificationsActions;
 import org.mian.gitnex.databinding.BottomSheetNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.NotificationThread;
 
 /**
  * Author opyale
@@ -29,6 +29,8 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 	private OnOptionSelectedListener onOptionSelectedListener;
 
 	public void onAttach(Context context, NotificationThread notificationThread, OnOptionSelectedListener onOptionSelectedListener) {
+
+		super.onAttach(context);
 
 		this.context = context;
 		this.notificationThread = notificationThread;

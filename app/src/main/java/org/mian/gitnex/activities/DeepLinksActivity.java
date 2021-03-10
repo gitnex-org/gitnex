@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
 import org.apache.commons.lang3.StringUtils;
+import org.gitnex.tea4j.models.PullRequests;
+import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -17,8 +19,6 @@ import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityDeeplinksBinding;
 import org.mian.gitnex.helpers.UrlHelper;
-import org.mian.gitnex.models.PullRequests;
-import org.mian.gitnex.models.UserRepositories;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -78,6 +78,13 @@ public class DeepLinksActivity extends BaseActivity {
 			if(hostUri.toLowerCase().contains(Objects.requireNonNull(data.getHost().toLowerCase()))) {
 
 				accountFound = true;
+
+				tinyDB.putString("loginUid", userAccount.getUserName());
+				tinyDB.putString("userLogin", userAccount.getUserName());
+				tinyDB.putString(userAccount.getUserName() + "-token", userAccount.getToken());
+				tinyDB.putString("instanceUrl", userAccount.getInstanceUrl());
+				tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
+
 				break;
 			}
 		}
@@ -326,7 +333,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 							// pull was done from a deleted fork
 							tinyDB.putString("prIsFork", "true");
-							tinyDB.putString("prForkFullName", ctx.getString(R.string.prDeletedFrok));
+							tinyDB.putString("prForkFullName", ctx.getString(R.string.prDeletedFork));
 						}
 					}
 

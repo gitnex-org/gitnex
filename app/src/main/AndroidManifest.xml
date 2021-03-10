@@ -9,9 +9,10 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
+        android:name=".core.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
-        android:label="@string/app_name"
+        android:label="@string/appName"
         android:networkSecurityConfig="@xml/network_security_config"
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/app_logo_round"
@@ -64,7 +65,7 @@
         <activity
             android:name=".activities.OrganizationDetailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
-            android:label="@string/title_activity_org_detail"
+            android:label="@string/titleActivityOrgDetail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CreateLabelActivity"
@@ -82,7 +83,7 @@
         <activity
             android:name=".activities.RepoDetailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
-            android:label="@string/title_activity_repo_detail"
+            android:label="@string/titleActivityRepoDetail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MainActivity"

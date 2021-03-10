@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.adapters.ProfileFollowersAdapter;
 import org.mian.gitnex.databinding.FragmentProfileFollowersBinding;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.models.UserInfo;
 import org.mian.gitnex.viewmodels.ProfileFollowersViewModel;
 import java.util.List;
 

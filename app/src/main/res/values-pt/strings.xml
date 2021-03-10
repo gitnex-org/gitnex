@@ -6,7 +6,7 @@
     <string name="navRepos">Repositórios</string>
     <string name="navProfile">Perfil</string>
     <string name="navSettings">Configurações</string>
-    <string name="navOrgs">Organizações</string>
+    <string name="navOrg">Organizações</string>
     <string name="navAbout">Sobre</string>
     <string name="navRate">Avalie o GitNex</string>
     <string name="navLogout">Sair</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">Novo Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Repo demo</string>
-    <string name="repoFullname">Repo com ORG</string>
+    <string name="repoFullName">Repo com ORG</string>
     <string name="repoDescription">Descrição demo</string>
     <string name="noData">Nenhum repositório encontrado</string>
     <string name="orgName">Organização demo</string>
@@ -61,8 +61,8 @@
     <string name="passWord">Senha</string>
     <string name="btnLogin">ENTRAR</string>
     <string name="instanceUrl">URL da instância</string>
-    <string name="navigation_drawer_open">Abrir painel de navegação</string>
-    <string name="navigation_drawer_close">Fechar painel de navegação</string>
+    <string name="navigationDrawerOpen">Abrir painel de navegação</string>
+    <string name="navigationDrawerClose">Fechar painel de navegação</string>
     <string name="logo">Conectar no Gitea</string>
     <string name="protocol">Protocolo</string>
     <string name="urlInfoTooltip">1- Escolha o protocolo correto (https ou http). \n2- Insira a url do Gitea. Por exemplo: try.gitea.io. \n3 - Se você habilitou 2FA para sua conta, digite o código no campo de código OTP. \n4- Para autenticação básica HTTP use USUARIO@DOMINIO.COM no campo URL.</string>
@@ -101,14 +101,14 @@
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Remover</string>
     <string name="genericApiStatusError">A instância retornou um erro. Código\u0020</string>
-    <string name="title_activity_repo_detail">RepoDetailActivity</string>
-    <string name="tab_text_info">Detalhes</string>
-    <string name="tab_text_files">Arquivos</string>
-    <string name="tab_text_ml">Metas</string>
-    <string name="tab_text_releases">Versões</string>
-    <string name="tab_text_branches">Branches</string>
-    <string name="tab_text_labels">Marcadores</string>
-    <string name="tab_text_collaborators">Colaboradores</string>
+    <string name="titleActivityRepoDetail">RepoDetailActivity</string>
+    <string name="tabTextInfo">Detalhes</string>
+    <string name="tabTextFiles">Arquivos</string>
+    <string name="tabTextMl">Metas</string>
+    <string name="tabTextReleases">Versões</string>
+    <string name="tabTextBranches">Branches</string>
+    <string name="tabTextLabels">Marcadores</string>
+    <string name="tabTextCollaborators">Colaboradores</string>
     <string name="tabPullRequests">Pull requests</string>
     <string name="noDataIssueTab">Nenhum incidente encontrado</string>
     <string name="infoTabRepoSize">Tamanho</string>
@@ -195,8 +195,8 @@
     <string name="settingsPdfModeHeaderText">Modo noturno do PDF</string>
     <string name="fileViewerHeader">Visualizador de Arquivos</string>
     <string name="settingsCounterBadges">Contra-emblemas</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Tema do Código Fonte</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Escolha Tema do Código Fonte</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">Tema do Código Fonte</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Escolha Tema do Código Fonte</string>
     <string name="cacheSizeDataDialogHeader">Tamanho do Arquivo Cache</string>
     <string name="cacheSizeDataSelectionHeaderText">Tamanho do Arquivo Cache</string>
     <string name="cacheSizeImagesDialogHeader">Tamanho do Cache das Imagens</string>
@@ -242,7 +242,7 @@
     <string name="labelDeletePositiveButton">OK</string>
     <string name="labelDeleteNegativeButton">Cancelar</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">OrgDetailActivity</string>
+    <string name="titleActivityOrgDetail">OrgDetailActivity</string>
     <string name="orgTabRepos">Repositórios</string>
     <string name="orgTabTeams">Equipes</string>
     <string name="orgTabMembers">Membros</string>
@@ -321,19 +321,17 @@
     <string name="singleIssueSubscribe">Inscreva-se</string>
     <string name="singleIssueUnSubscribe">Anular inscrição</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">Selecionar</string>
-    <string name="please_select_atleast">Por favor, selecione pelo menos </string>
-    <string name="you_can_only_select_upto">Você só pode selecionar até </string>
-    <string name="option"> opção</string>
-    <string name="options"> opções</string>
-    <string name="select_all">Selecionar tudo</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Metadados do repositório</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Adicionar novo usuário</string>
     <string name="adminUsers">Usuários do Sistema</string>
     <string name="userRoleAdmin">Admin</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Nome completo</string>
@@ -385,10 +383,9 @@
     <string name="newFileInvalidBranchName">Nome de branch inválido só pode conter &#8211;, um&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Mensagem de commit muito longa</string>
     <string name="newFileSuccessMessage">Novo arquivo criado</string>
-    <string name="newFileOldBranches">Branches atuais</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Campos como nome de arquivo, conteúdo e mensagem de commit são necessários</string>
-    <string name="newFileCurrentBranchMessage">Selecionar branch atual irá desativar o novo branch</string>
-    <string name="newFileNewBranchMessage">ex.: nova-branch</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Novo nome do branch não pode estar vazio se o branch atual não estiver selecionado</string>
     <string name="strFilter">Filtro</string>
     <string name="strSwitchBranches">Filiais</string>
@@ -400,6 +397,7 @@
     <!-- files -->
     <string name="noDataFilesTab">Nenhum arquivo encontrado</string>
     <string name="filesGenericError">Desculpe, este arquivo não pode ser visto pois a API retornou um erro</string>
+    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Não suportado</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
@@ -448,7 +446,7 @@
     <string name="loginMethodText">Escolha seu método de login preferido para acessar sua conta. O token é mais seguro!</string>
     <string name="unauthorizedApiError">A instância retornou um erro - Não autorizado. Verifique suas credenciais e tente novamente</string>
     <string name="loginTokenError">Token é obrigatório</string>
-    <string name="prDeletedFrok">Fork excluído</string>
+    <string name="prDeletedFork">Fork excluído</string>
     <string name="noDataPullRequests">Nenhum pull request encontrado</string>
     <string name="prCreator">Criador:\u0020</string>
     <string name="editPrText">Editar Pull Request</string>
@@ -477,7 +475,7 @@
     <string name="downloadFile">Baixar este arquivo</string>
     <string name="waitLoadingDownloadFile">Aguarde que o arquivo seja carregado para a memória</string>
     <string name="downloadFileSaved">Arquivo salvo com êxito</string>
-    <string name="excludeFilesInFileviewer">Esse tipo de arquivo não é suportado no visualizador de arquivos. Baixe-o no menu de três pontos?</string>
+    <string name="excludeFilesInFileViewer">Esse tipo de arquivo não é suportado no visualizador de arquivos. Baixe-o no menu de três pontos?</string>
     <string name="deleteFile">Excluir Este Arquivo</string>
     <string name="editFile">Editar Este Arquivo</string>
     <string name="deleteFileText">Excluir %1$s</string>
@@ -493,22 +491,22 @@
     <string name="commitCommittedBy">Commit feito por %1$s</string>
     <string name="viewCommits">Ver Commits</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Certificado de Verificação</string>
-    <string name="mtm_accept_cert">Aceitar Certificado desconhecido?</string>
-    <string name="mtm_trust_anchor">O certificado do servidor não é assinado por uma Autoridade Certificadora conhecida</string>
-    <string name="mtm_cert_expired">O certificado do servidor expirou.</string>
-    <string name="mtm_accept_server_name">Aceitar o nome do servidor incompatível?</string>
-    <string name="mtm_hostname_mismatch">O servidor não pôde se autenticar como \&quot;%s\&quot;. O certificado é válido apenas para:</string>
-    <string name="mtm_connect_anyway">Deseja conectar mesmo assim?</string>
-    <string name="mtm_cert_details">Detalhes do certificado:</string>
-    <string name="mtm_decision_always">Confiança</string>
-    <string name="mtm_decision_abort">Anular</string>
+    <string name="mtmNotification">Certificado de Verificação</string>
+    <string name="mtmAcceptCert">Aceitar Certificado desconhecido?</string>
+    <string name="mtmTrustAnchor">O certificado do servidor não é assinado por uma Autoridade Certificadora conhecida</string>
+    <string name="mtmCertExpired">O certificado do servidor expirou.</string>
+    <string name="mtmAcceptServerName">Aceitar o nome do servidor incompatível?</string>
+    <string name="mtmHostnameMismatch">O servidor não pôde se autenticar como \&quot;%s\&quot;. O certificado é válido apenas para:</string>
+    <string name="mtmConnectAnyway">Deseja conectar mesmo assim?</string>
+    <string name="mtmCertDetails">Detalhes do certificado:</string>
+    <string name="mtmDecisionAlways">Confiança</string>
+    <string name="mtmDecisionAbort">Anular</string>
     <string name="subscribedSuccessfully">Inscrito com êxito</string>
     <string name="alreadySubscribed">Você já se inscreveu</string>
     <string name="subscriptionError">Falha na assinatura</string>
     <string name="unsubscribedSuccessfully">Subscrição anulada com êxito</string>
     <string name="alreadyUnsubscribed">Você já cancelou sua assinatura</string>
-    <string name="unsubscriptionError">Falha ao cancelar assinatura</string>
+    <string name="unSubscriptionError">Falha ao cancelar assinatura</string>
     <string name="closeMilestone">Fechar marco</string>
     <string name="openMilestone">Nova meta</string>
     <string name="milestoneStatusUpdate">Estado do Marco atualizado com êxito</string>

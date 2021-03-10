@@ -107,7 +107,7 @@
                 android:id="@+id/repoFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/repoFullname"
+                android:text="@string/repoFullName"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:textStyle="bold" />

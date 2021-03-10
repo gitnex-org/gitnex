@@ -59,7 +59,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/settingsFileviewerSourceCodeHeaderText"
+            android:text="@string/settingsFileViewerSourceCodeHeaderText"
             android:textColor="?attr/primaryTextColor"/>
 
         <TextView
@@ -69,7 +69,7 @@
             android:textSize="14sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/settingsFileviewerSourceCodeSelectedText"
+            android:text="@string/settingsFileViewerSourceCodeSelectedText"
             android:textColor="?attr/selectedTextColor"/>
 
     </LinearLayout>

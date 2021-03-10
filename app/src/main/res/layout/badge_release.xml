@@ -11,7 +11,7 @@
         android:gravity="center"
         android:textSize="16sp"
         app:textAllCaps="true"
-        android:text="@string/tab_text_releases"
+        android:text="@string/tabTextReleases"
         android:textColor="@color/lightGray" />
 
     <TextView

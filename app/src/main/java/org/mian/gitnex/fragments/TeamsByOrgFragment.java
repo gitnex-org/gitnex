@@ -22,12 +22,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import org.gitnex.tea4j.models.Teams;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.TeamsByOrgAdapter;
 import org.mian.gitnex.databinding.FragmentTeamsByOrgBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.Teams;
 import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
 import java.util.List;
 

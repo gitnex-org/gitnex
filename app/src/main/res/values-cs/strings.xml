@@ -6,7 +6,7 @@
     <string name="navRepos">Repozitáře</string>
     <string name="navProfile">Profil</string>
     <string name="navSettings">Nastavení</string>
-    <string name="navOrgs">Organizace</string>
+    <string name="navOrg">Organizace</string>
     <string name="navAbout">O aplikaci</string>
     <string name="navRate">Ohodnotit GitNex</string>
     <string name="navLogout">Odhlásit se</string>
@@ -41,7 +41,7 @@
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Demo repozitář</string>
-    <string name="repoFullname">Repo with ORG</string>
+    <string name="repoFullName">Repo with ORG</string>
     <string name="repoDescription">Demo popis</string>
     <string name="noData">Nebyly nalezeny žádné repozitáře</string>
     <string name="orgName">Demo organizace</string>
@@ -61,8 +61,8 @@
     <string name="passWord">Heslo</string>
     <string name="btnLogin">Přihlásit se</string>
     <string name="instanceUrl">URL instance</string>
-    <string name="navigation_drawer_open">Otevřít navigační menu</string>
-    <string name="navigation_drawer_close">Zavřít navigační menu</string>
+    <string name="navigationDrawerOpen">Otevřít navigační menu</string>
+    <string name="navigationDrawerClose">Zavřít navigační menu</string>
     <string name="logo">Přihlásit se do Gitea</string>
     <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1- Vyberte správný protokol (https nebo http). \n2- zadejte URL Gitea např.: try.gitea.io. \n3- Pokud jste pro svůj účet povolili 2FA, zadejte kód do pole OTP kód. \n4- Pro základní ověření HTTP použijte USERNAME@DOMAIN.COM v poli URL.</string>
@@ -101,14 +101,14 @@
     <string name="privateAvatar">Soukromý avatar</string>
     <string name="removeContent">Odebrat</string>
     <string name="genericApiStatusError">Instance vrátila chybu. Kód\u0020</string>
-    <string name="title_activity_repo_detail">Detailní aktivity repozitáře</string>
-    <string name="tab_text_info">Podrobnosti</string>
-    <string name="tab_text_files">Soubory</string>
-    <string name="tab_text_ml">Milníky</string>
-    <string name="tab_text_releases">Vydání</string>
-    <string name="tab_text_branches">Větve</string>
-    <string name="tab_text_labels">Štítky</string>
-    <string name="tab_text_collaborators">Spolupracovníci</string>
+    <string name="titleActivityRepoDetail">Detailní aktivity repozitáře</string>
+    <string name="tabTextInfo">Podrobnosti</string>
+    <string name="tabTextFiles">Soubory</string>
+    <string name="tabTextMl">Milníky</string>
+    <string name="tabTextReleases">Vydání</string>
+    <string name="tabTextBranches">Větve</string>
+    <string name="tabTextLabels">Štítky</string>
+    <string name="tabTextCollaborators">Spolupracovníci</string>
     <string name="tabPullRequests">Pull Requesty</string>
     <string name="noDataIssueTab">Nebyla nalezena žádná issue</string>
     <string name="infoTabRepoSize">Velikost</string>
@@ -195,8 +195,8 @@
     <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
     <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
-    <string name="settingsFileviewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="fileviewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">Source Code Theme</string>
+    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
@@ -242,7 +242,7 @@
     <string name="labelDeletePositiveButton">OK</string>
     <string name="labelDeleteNegativeButton">Cancel</string>
     <!-- org tabbed layout str -->
-    <string name="title_activity_org_detail">OrgDetailActivity</string>
+    <string name="titleActivityOrgDetail">OrgDetailActivity</string>
     <string name="orgTabRepos">Repositories</string>
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Members</string>
@@ -321,19 +321,17 @@
     <string name="singleIssueSubscribe">Subscribe</string>
     <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
-    <!-- multi select dialog -->
-    <string name="select_entry">Select Entries</string>
-    <string name="please_select_atleast">Please select at least </string>
-    <string name="you_can_only_select_upto">You can only select up to </string>
-    <string name="option"> option</string>
-    <string name="options"> options</string>
-    <string name="select_all">Select all</string>
-    <!-- multi select dialog -->
     <string name="repoMetaData">Repository Meta</string>
     <!-- admin -->
     <string name="adminCreateNewUser">Add New User</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Admin</string>
+    <string name="adminCron">Cron Tasks</string>
+    <string name="adminCronScheduleHeader">Schedule</string>
+    <string name="adminCronNextRunHeader">Next Run</string>
+    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronExecutionHeader">Executions</string>
+    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Full Name</string>
@@ -385,10 +383,9 @@
     <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Commit zpráva je příliš dlouhá</string>
     <string name="newFileSuccessMessage">New file created</string>
-    <string name="newFileOldBranches">Current Branches</string>
+    <string name="newFileBranches">Select or create a branch</string>
     <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
-    <string name="newFileCurrentBranchMessage">Selecting current branch will disable new branch</string>
-    <string name="newFileNewBranchMessage">e.g: new-branch</string>
+    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filter</string>
     <string name="strSwitchBranches">Branches</string>
@@ -400,6 +397,7 @@
     <!-- files -->
     <string name="noDataFilesTab">No files found</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
+    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
     <!-- generic copy -->
     <string name="okButton">OK</string>
@@ -448,7 +446,7 @@
     <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Token is required</string>
-    <string name="prDeletedFrok">Deleted Fork</string>
+    <string name="prDeletedFork">Deleted Fork</string>
     <string name="noDataPullRequests">No pull requests found</string>
     <string name="prCreator">Creator :\u0020</string>
     <string name="editPrText">Edit Pull Request</string>
@@ -477,7 +475,7 @@
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
-    <string name="excludeFilesInFileviewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="excludeFilesInFileViewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
     <string name="deleteFileText">Delete %1$s</string>
@@ -493,22 +491,22 @@
     <string name="commitCommittedBy">Commitnuto uživatelem %1$s</string>
     <string name="viewCommits">Zobrazit commity</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtm_notification">Certificate Verification</string>
-    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
-    <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority</string>
-    <string name="mtm_cert_expired">The server certificate is expired.</string>
-    <string name="mtm_accept_server_name">Accept Mismatching Server Name?</string>
-    <string name="mtm_hostname_mismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
-    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
-    <string name="mtm_cert_details">Certificate details:</string>
-    <string name="mtm_decision_always">Trust</string>
-    <string name="mtm_decision_abort">Abort</string>
+    <string name="mtmNotification">Certificate Verification</string>
+    <string name="mtmAcceptCert">Accept Unknown Certificate?</string>
+    <string name="mtmTrustAnchor">The server certificate is not signed by a known Certificate Authority</string>
+    <string name="mtmCertExpired">The server certificate is expired.</string>
+    <string name="mtmAcceptServerName">Accept Mismatching Server Name?</string>
+    <string name="mtmHostnameMismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
+    <string name="mtmConnectAnyway">Do you want to connect anyway?</string>
+    <string name="mtmCertDetails">Certificate details:</string>
+    <string name="mtmDecisionAlways">Trust</string>
+    <string name="mtmDecisionAbort">Abort</string>
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
     <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unsubscriptionError">Un-Subscription failed</string>
+    <string name="unSubscriptionError">Un-Subscription failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>

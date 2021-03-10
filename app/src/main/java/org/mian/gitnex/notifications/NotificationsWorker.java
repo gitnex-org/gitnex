@@ -15,13 +15,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.models.NotificationThread;
 import java.util.Date;
 import java.util.List;
 import retrofit2.Call;
@@ -36,8 +36,8 @@ public class NotificationsWorker extends Worker {
 	private static final int MAXIMUM_NOTIFICATIONS = 100;
 	private static final long[] VIBRATION_PATTERN = new long[]{ 1000, 1000 };
 
-	private Context context;
-	private TinyDB tinyDB;
+	private final Context context;
+	private final TinyDB tinyDB;
 
 	public NotificationsWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
 
@@ -157,7 +157,7 @@ public class NotificationsWorker extends Worker {
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-			NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.app_name),
+			NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.appName),
 				NotificationManager.IMPORTANCE_DEFAULT);
 
 			notificationChannel.setDescription(context.getString(R.string.notificationChannelDescription));

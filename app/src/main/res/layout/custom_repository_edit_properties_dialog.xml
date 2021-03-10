@@ -7,11 +7,12 @@
     android:background="@drawable/shape_custom_dialog"
     android:orientation="vertical">
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
     <androidx.core.widget.NestedScrollView
@@ -187,12 +188,13 @@
                 android:id="@+id/divider"
                 android:background="?attr/dividerColor" />
 
-            <com.google.android.material.progressindicator.ProgressIndicator
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/processingRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+                android:indeterminate="true"
+                style="@style/Widget.MaterialComponents.LinearProgressIndicator"
                 app:indicatorColor="?attr/progressIndicatorColor" />
 
             <RelativeLayout

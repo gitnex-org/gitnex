@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import org.gitnex.tea4j.models.Milestones;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateMilestoneBinding;
@@ -21,7 +22,6 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
-import org.mian.gitnex.models.Milestones;
 import java.util.Calendar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,7 +92,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     private void processNewMilestone() {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        AppUtil appUtil = new AppUtil();
+
         TinyDB tinyDb = TinyDB.getInstance(appCtx);
         String repoFullName = tinyDb.getString("repoFullName");
         String[] parts = repoFullName.split("/");

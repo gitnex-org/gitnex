@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import org.gitnex.tea4j.models.GiteaVersion;
+import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.models.UserTokens;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -24,9 +27,6 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
-import org.mian.gitnex.models.GiteaVersion;
-import org.mian.gitnex.models.UserInfo;
-import org.mian.gitnex.models.UserTokens;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -61,7 +61,7 @@ public class LoginActivity extends BaseActivity {
 		ActivityLoginBinding activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
 
-		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.get(ctx);
+		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 
 		loginButton = activityLoginBinding.loginButton;
 		instanceUrlET = activityLoginBinding.instanceUrl;

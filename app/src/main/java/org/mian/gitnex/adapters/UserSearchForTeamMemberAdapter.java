@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -16,7 +18,6 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.models.UserInfo;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,11 +104,15 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 		holder.teamId_.setText(String.valueOf(teamId));
 
 		if (!currentItem.getFullname().equals("")) {
-			holder.userFullName.setText(currentItem.getFullname());
+
+
+			holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
 		}
 		else {
+
 			holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 		}
+
 		holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
 		if (!currentItem.getAvatar().equals("")) {

@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class NetworkStatusObserver {
 
-	private static NetworkStatusObserver networkStatusObserver;
+	private static volatile NetworkStatusObserver networkStatusObserver;
 
 	private final AtomicBoolean hasNetworkConnection = new AtomicBoolean(false);
 	private final List<NetworkStatusListener> networkStatusListeners = new ArrayList<>();
@@ -98,12 +98,18 @@ public class NetworkStatusObserver {
 
 	public interface NetworkStatusListener { void onNetworkStatusChanged(boolean hasNetworkConnection); }
 
-	public static NetworkStatusObserver get(Context context) {
+	public static NetworkStatusObserver getInstance(Context context) {
+
 		if(networkStatusObserver == null) {
-			networkStatusObserver = new NetworkStatusObserver(context);
+			synchronized(NetworkStatusObserver.class) {
+				if(networkStatusObserver == null) {
+					networkStatusObserver = new NetworkStatusObserver(context);
+				}
+			}
 		}
 
 		return networkStatusObserver;
+
 	}
 
 }

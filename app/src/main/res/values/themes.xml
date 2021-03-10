@@ -38,6 +38,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
     <!-- Dark theme - default -->
 
@@ -78,6 +79,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
     <!-- Light theme -->
 
@@ -118,6 +120,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
     <!-- Retro theme -->
 
@@ -158,6 +161,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
     <!-- Pitch black theme -->
 
@@ -269,6 +273,11 @@
 
     <style name="AppThemeCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
         <item name="buttonTint">?attr/iconsColor</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
     <!-- Retro theme styles -->

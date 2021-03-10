@@ -42,12 +42,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

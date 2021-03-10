@@ -53,6 +53,8 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 	@Override
 	public void onAttach(@NonNull Context context) {
 
+		super.onAttach(context);
+
 		tinyDB = TinyDB.getInstance(context);
 		draftsApi = new DraftsApi(context);
 
@@ -60,7 +62,6 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
 		issueNumber = Integer.parseInt(tinyDB.getString("issueNumber"));
 
-		super.onAttach(context);
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -119,7 +120,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		comment.requestFocus();
 		comment.setOnTouchListener((v, event) -> {
 
-			BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetReplyLayoutBinding.getRoot().getParent());
+			BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetReplyLayoutBinding.getRoot().getParent());
 
 			switch(event.getAction()) {
 
