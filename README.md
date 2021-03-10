@@ -6,7 +6,7 @@
 
 GitNex is a free/paid, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
 
-GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. No trackers are used and source code is available here for anyone to audit.
+GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. **No trackers are used** and source code is available here for anyone to audit.
 
 ## Downloads
 [<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
@@ -52,10 +52,6 @@ We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your la
 ---|---|---|---
 <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="005.png" width="200"/> | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="006.png" width="200"/> | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="007.png" width="200"/>  | <img src="https://codeberg.org/gitnex/GitNex/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="008.png" width="200"/>
 
-
-## FAQ
-[Faq](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
-
 ## Links
 [Website](https://gitnex.com)
 
@@ -64,6 +60,10 @@ We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your la
 [Website Repository](https://gitlab.com/mmarif4u/gitnex-website)
 
 [Troubleshoot Guide](https://codeberg.org/gitnex/GitNex/wiki/Troubleshoot-Guide)
+
+[Faq](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
+
+[Release Blog](https://gitnex.codeberg.page)
 
 ## Thanks
 Thanks to all the open source libraries, contributors and donators.
@@ -91,3 +91,5 @@ Thanks to all the open source libraries, contributors and donators.
 - Mikaelhg/urlbuilder
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
+
+*All trademarks and logos are the properties of their respective owners.*
