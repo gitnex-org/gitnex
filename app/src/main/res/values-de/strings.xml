@@ -214,6 +214,7 @@
     <string name="generalDeepLinkDefaultScreenHintText">Wähle die Ansicht, welche geladen werden soll, wenn ein externer Link nicht handhabbar ist. Du wirst dann automatisch zu jener weitergeleitet.</string>
     <string name="generalDeepLinkSelectedText">N/V</string>
     <string name="linkSelectorDialogTitle">Wähle Standard Link Handhaber</string>
+    <string name="settingsBiometricHeader">Biometrische Unterstützung</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -328,9 +329,9 @@
     <string name="userRoleAdmin">Administrator</string>
     <string name="adminCron">Cron-Jobs</string>
     <string name="adminCronScheduleHeader">Termin planen</string>
-    <string name="adminCronNextRunHeader">Nächste Ausführung</string>
+    <string name="adminCronNextRunHeader">Nächster Durchlauf</string>
     <string name="adminCronLastRunHeader">Zuletzt ausgeführt</string>
-    <string name="adminCronExecutionHeader">Ausführungen</string>
+    <string name="adminCronExecutionHeader">Durchläufe</string>
     <string name="adminCronTaskSuccessMsg">Job %1$s wurde erfolgreich erstellt</string>
     <!-- admin -->
     <!-- create user -->
@@ -609,4 +610,10 @@
     <string name="codeBlockGreyOnBlack">Grau auf Schwarz</string>
     <string name="codeBlockWhiteOnGrey">Weiß auf Grau</string>
     <string name="codeBlockDarkOnWhite">Dunkel auf Weiß</string>
+    <string name="biometricAuthTitle">Biometrische Authentifizierung</string>
+    <string name="biometricAuthSubTitle">Entsperre mittels Biometrie</string>
+    <string name="biometricNotSupported">Keine biometrischen Funktionen verfügbar</string>
+    <string name="biometricNotAvailable">Biometrischen Funktionen zur zeit nicht verfügbar</string>
+    <string name="enrollBiometric">Biometrische Daten in den Telefoneinstellungen registrieren</string>
+    <string name="copyLoginIdToClipBoard">Login-ID \'%s\' in Zwischenablage kopiert</string>
 </resources>

@@ -217,6 +217,7 @@
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
+    <string name="settingsBiometricHeader">Biometric Support</string>
     <!-- settings -->
     <string name="noMoreData">اطلاعات بیشتری موجود نیست</string>
     <string name="createLabel">برچسب جدید</string>
@@ -612,4 +613,10 @@
     <string name="codeBlockGreyOnBlack">خاکستری روی سیاه</string>
     <string name="codeBlockWhiteOnGrey">سفید روی خاکستری</string>
     <string name="codeBlockDarkOnWhite">تیره روی سفید</string>
+    <string name="biometricAuthTitle">Biometric Authentication</string>
+    <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
+    <string name="biometricNotSupported">No biometric features available on this device</string>
+    <string name="biometricNotAvailable">Biometric features are currently unavailable</string>
+    <string name="enrollBiometric">Enroll biometric from phone settings</string>
+    <string name="copyLoginIdToClipBoard">Login ID \'%s\' copied to clipboard</string>
 </resources>
