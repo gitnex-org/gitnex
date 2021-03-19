@@ -214,6 +214,7 @@
     <string name="generalDeepLinkDefaultScreenHintText">Choisissez l\'écran à afficher si l\'application n\'est pas compatible avec le lien externe.</string>
     <string name="generalDeepLinkSelectedText">S/O</string>
     <string name="linkSelectorDialogTitle">Choix du gestionnaire de liens par défaut</string>
+    <string name="settingsBiometricHeader">Biométrie</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -609,4 +610,10 @@
     <string name="codeBlockGreyOnBlack">Gris sur noir</string>
     <string name="codeBlockWhiteOnGrey">Blanc sur gris</string>
     <string name="codeBlockDarkOnWhite">Sombre sur blanc</string>
+    <string name="biometricAuthTitle">Authentification biométrique</string>
+    <string name="biometricAuthSubTitle">Déverrouiller à l’aide de vos identifiants biométriques</string>
+    <string name="biometricNotSupported">Cet appareil ne permet pas la biométrie</string>
+    <string name="biometricNotAvailable">La biométrie n’est pas disponible pour le moment</string>
+    <string name="enrollBiometric">Paramétrer la biométrie dans les réglages de l\'appareil</string>
+    <string name="copyLoginIdToClipBoard">ID \'%s\' copié dans le presse-papier</string>
 </resources>

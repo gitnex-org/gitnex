@@ -215,6 +215,7 @@ URL è richiesto</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
+    <string name="settingsBiometricHeader">Biometric Support</string>
     <!-- settings -->
     <string name="noMoreData">Nessun altro dato disponibile</string>
     <string name="createLabel">Nuovo label</string>
@@ -611,4 +612,10 @@ autorizzazione</string>
     <string name="codeBlockGreyOnBlack">Grey on Black</string>
     <string name="codeBlockWhiteOnGrey">White on Grey</string>
     <string name="codeBlockDarkOnWhite">Dark on White</string>
+    <string name="biometricAuthTitle">Biometric Authentication</string>
+    <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
+    <string name="biometricNotSupported">No biometric features available on this device</string>
+    <string name="biometricNotAvailable">Biometric features are currently unavailable</string>
+    <string name="enrollBiometric">Enroll biometric from phone settings</string>
+    <string name="copyLoginIdToClipBoard">Login ID \'%s\' copied to clipboard</string>
 </resources>

@@ -214,6 +214,7 @@
     <string name="generalDeepLinkDefaultScreenHintText">如果应用无法处理外部链接，请选择应加载的屏幕。 它会自动把你重定向。</string>
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">选择默认链接处理程序屏幕</string>
+    <string name="settingsBiometricHeader">生物识别支持</string>
     <!-- settings -->
     <string name="noMoreData">没有更多可用数据</string>
     <string name="createLabel">创建标签</string>
@@ -609,4 +610,10 @@
     <string name="codeBlockGreyOnBlack">黑底灰字</string>
     <string name="codeBlockWhiteOnGrey">灰底白字</string>
     <string name="codeBlockDarkOnWhite">白底黑字</string>
+    <string name="biometricAuthTitle">生物特征认证</string>
+    <string name="biometricAuthSubTitle">使用你的生物特征凭证解锁</string>
+    <string name="biometricNotSupported">此设备无可用的生物特征功能</string>
+    <string name="biometricNotAvailable">生物特征功能当前不可用</string>
+    <string name="enrollBiometric">从手机设置中注册生物识别</string>
+    <string name="copyLoginIdToClipBoard">登录 ID \'%s\' 已复制到剪贴板</string>
 </resources>
