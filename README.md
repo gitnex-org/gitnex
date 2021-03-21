@@ -83,7 +83,6 @@ Thanks to all the open source libraries, contributors and donators.
 - [Pes8/android-material-color-picker-dialog](https://github.com/Pes8/android-material-color-picker-dialog)
 - [HamidrezaAmz/BreadcrumbsView](https://github.com/HamidrezaAmz/BreadcrumbsView)
 - [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)
-- [PDDStudio/highlightjs-android](https://github.com/PDDStudio/highlightjs-android)
 - [apache/commons](https://github.com/apache/commons-io)
 - [barteksc/AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
 - [ge0rg/MemorizingTrustManager](https://github.com/ge0rg/MemorizingTrustManager)

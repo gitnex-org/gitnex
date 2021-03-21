@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.core.MainGrammarLocator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import io.noties.markwon.AbstractMarkwonPlugin;
@@ -25,16 +26,11 @@ import io.noties.markwon.syntax.Prism4jThemeDarkula;
 import io.noties.markwon.syntax.Prism4jThemeDefault;
 import io.noties.markwon.syntax.SyntaxHighlightPlugin;
 import io.noties.prism4j.Prism4j;
-import io.noties.prism4j.annotations.PrismBundle;
 
 /**
  * @author opyale
  */
 
-@PrismBundle(
-	includeAll = true,
-	grammarLocatorClassName = ".CustomGrammarLocator"
-)
 public class Markdown {
 
 	private static final ExecutorService executorService = Executors.newCachedThreadPool();
@@ -65,12 +61,12 @@ public class Markdown {
 			Markwon.Builder builder = Markwon.builder(context)
 				.usePlugin(CorePlugin.create())
 				.usePlugin(HtmlPlugin.create())
-				.usePlugin(LinkifyPlugin.create())
+				.usePlugin(LinkifyPlugin.create(true))
 				.usePlugin(TablePlugin.create(context))
 				.usePlugin(TaskListPlugin.create(context))
 				.usePlugin(StrikethroughPlugin.create())
 				.usePlugin(PicassoImagesPlugin.create(PicassoService.getInstance(context).get()))
-				.usePlugin(SyntaxHighlightPlugin.create(new Prism4j(new CustomGrammarLocator()), prism4jTheme))
+				.usePlugin(SyntaxHighlightPlugin.create(new Prism4j(MainGrammarLocator.getInstance()), prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE))
 				.usePlugin(new AbstractMarkwonPlugin() {
 
 					@Override

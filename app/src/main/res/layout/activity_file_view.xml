@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -98,12 +99,12 @@
 
             </LinearLayout>
 
-            <org.mian.gitnex.helpers.highlightjs.HighlightJsView
+            <org.mian.gitnex.helpers.SyntaxHighlightedArea
                 android:id="@+id/contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <com.github.chrisbanes.photoview.PhotoView
                 android:id="@+id/photo_view"

@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Author M M Arif
@@ -293,6 +295,20 @@ public class AppUtil {
 	public static int getPixelsFromScaledDensity(Context context, int sp) {
 
 		return (int) (context.getResources().getDisplayMetrics().scaledDensity * sp);
+	}
+
+	public static int getLineCount(String s) {
+
+		int lines = 0;
+
+		Pattern pattern = Pattern.compile("(\r\n|\r|\n)");
+		Matcher matcher = pattern.matcher(s);
+
+		while(matcher.find())
+			lines++;
+
+		return lines;
+
 	}
 
 	public static void copyToClipboard(Context ctx, CharSequence data, String message) {

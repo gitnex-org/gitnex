@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -39,6 +40,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     	private Files file;
 
+    	private final LinearLayout fileFrame;
         private final ImageView fileTypeIs;
         private final TextView fileName;
         private final TextView fileInfo;
@@ -47,14 +49,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
             super(itemView);
 
+            fileFrame = itemView.findViewById(R.id.fileFrame);
             fileName = itemView.findViewById(R.id.fileName);
 	        fileTypeIs = itemView.findViewById(R.id.fileTypeIs);
             fileInfo = itemView.findViewById(R.id.fileInfo);
 
+	        fileFrame.setOnClickListener(v -> filesListener.onClickFile(file));
+
             //ImageView filesDropdownMenu = itemView.findViewById(R.id.filesDropdownMenu);
-
-            fileName.setOnClickListener(v -> filesListener.onClickFile(file));
-
 
             /*filesDropdownMenu.setOnClickListener(new View.OnClickListener() {
                 @Override

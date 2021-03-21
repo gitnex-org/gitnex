@@ -30,7 +30,6 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.highlightjs.models.Theme;
 import org.mian.gitnex.notifications.Notifications;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -163,20 +162,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 									binding.markdownFrame.setVisibility(View.GONE);
 									binding.pdfViewFrame.setVisibility(View.GONE);
 
-									switch(tinyDB.getInt("fileviewerSourceCodeThemeId")) {
-
-										case 1: binding.contents.setTheme(Theme.ARDUINO_LIGHT); break;
-										case 2: binding.contents.setTheme(Theme.GITHUB); break;
-										case 3: binding.contents.setTheme(Theme.FAR); break;
-										case 4: binding.contents.setTheme(Theme.IR_BLACK); break;
-										case 5: binding.contents.setTheme(Theme.ANDROID_STUDIO); break;
-
-										default: binding.contents.setTheme(Theme.MONOKAI_SUBLIME);
-
-									}
-
 									binding.contents.setVisibility(View.VISIBLE);
-									binding.contents.setContent(text);
+									binding.contents.setContent(text, fileExtension);
 
 								});
 								break;
