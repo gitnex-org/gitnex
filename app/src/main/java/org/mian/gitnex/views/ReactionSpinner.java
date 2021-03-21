@@ -18,6 +18,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -222,7 +223,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 		if(response.isSuccessful() && response.body() != null) {
 			allowedReactions.addAll(Arrays.asList(response.body().getAllowed_reactions()));
 		} else {
-			allowedReactions.addAll(Arrays.asList("+1", "-1", "laugh", "hooray", "confused", "heart", "rocket", "eyes"));
+			allowedReactions.addAll(Arrays.asList(Constants.fallbackReactions));
 		}
 
 		return allowedReactions;

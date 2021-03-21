@@ -27,7 +27,7 @@ import org.mian.gitnex.adapters.RepoForksAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityRepoForksBinding;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class RepoForksActivity extends BaseActivity {
 	private TextView noData;
 	private ProgressBar progressBar;
 	private String TAG = "RepositoryForks";
-	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private int pageSize = 1;
 
 	private RecyclerView recyclerView;
@@ -90,7 +90,7 @@ public class RepoForksActivity extends BaseActivity {
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12")) {
 
-			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
 		recyclerView = activityRepoForksBinding.recyclerView;

@@ -47,39 +47,35 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 
 	class SearchViewHolder extends RecyclerView.ViewHolder {
 
-		private String userLoginId;
+		private Issues issue;
 
-		private final TextView issueNumber;
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
 		private final TextView issueCommentsCount;
-		private final TextView repoFullName;
 
 		private SearchViewHolder(View itemView) {
 
 			super(itemView);
 
-			issueNumber = itemView.findViewById(R.id.issueNumber);
 			issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
 			issueTitle = itemView.findViewById(R.id.issueTitle);
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
-			repoFullName = itemView.findViewById(R.id.repoFullName);
 
 			issueTitle.setOnClickListener(v -> {
 
 				Context context = v.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", issueNumber.getText());
+				intent.putExtra("issueNumber", issue.getNumber());
 
-				tinyDb.putString("issueNumber", issueNumber.getText().toString());
+				tinyDb.putString("issueNumber", String.valueOf(issue.getNumber()));
 				tinyDb.putString("issueType", "Issue");
 
-				tinyDb.putString("repoFullName", repoFullName.getText().toString());
+				tinyDb.putString("repoFullName", issue.getRepository().getFull_name());
 
-				String[] parts = repoFullName.getText().toString().split("/");
+				String[] parts = issue.getRepository().getFull_name().split("/");
 				final String repoOwner = parts[0];
 				final String repoName = parts[1];
 
@@ -104,14 +100,13 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 				context.startActivity(intent);
 			});
 
-			issueAssigneeAvatar.setOnClickListener(loginId -> {
-
-				Context context = loginId.getContext();
+			issueAssigneeAvatar.setOnClickListener(v -> {
+				Context context = v.getContext();
+				String userLoginId = issue.getUser().getLogin();
 
 				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 			});
 		}
-
 	}
 
 	@NonNull
@@ -130,17 +125,19 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 		String locale = tinyDb.getString("locale");
 		String timeFormat = tinyDb.getString("dateFormat");
 
-		holder.userLoginId = currentItem.getUser().getLogin();
-
-		PicassoService
-			.getInstance(mCtx).get().load(currentItem.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.issueAssigneeAvatar);
+		PicassoService.getInstance(mCtx).get()
+			.load(currentItem.getUser().getAvatar_url())
+			.placeholder(R.drawable.loader_animated)
+			.transform(new RoundedTransformation(8, 0))
+			.resize(120, 120)
+			.centerCrop()
+			.into(holder.issueAssigneeAvatar);
 
 		String issueNumber_ = "<font color='" + ResourcesCompat.getColor(mCtx.getResources(), R.color.lightGray, null) + "'>" + currentItem.getRepository().getFull_name() + mCtx.getResources().getString(R.string.hash) + currentItem.getNumber() + "</font>";
-		holder.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + currentItem.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-		holder.issueNumber.setText(String.valueOf(currentItem.getNumber()));
+		holder.issue = currentItem;
+		holder.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + currentItem.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 		holder.issueCommentsCount.setText(String.valueOf(currentItem.getComments()));
-		holder.repoFullName.setText(currentItem.getRepository().getFull_name());
 
 		switch(timeFormat) {
 			case "pretty": {

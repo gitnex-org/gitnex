@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/commiter_avatar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:contentDescription="@string/generalImgContentText"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/commit_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textColor="?attr/primaryTextColor"
+                android:textStyle="bold"
+                tools:text="Voluptatem vero ad quia voluptatum quisquam. Nihil earum et praesentium." />
+
+            <TextView
+                android:id="@+id/commit_sha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="?attr/primaryTextColor"
+                app:drawableStartCompat="@drawable/ic_commit"
+                app:drawableTint="?attr/primaryTextColor"
+                tools:text="afcfb7c15a" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/dividerColor" />
+
+</LinearLayout>

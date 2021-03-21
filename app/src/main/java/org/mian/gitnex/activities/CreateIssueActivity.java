@@ -30,7 +30,7 @@ import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
@@ -51,7 +51,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private CustomLabelsSelectionDialogBinding labelsBinding;
 	private CustomAssigneesSelectionDialogBinding assigneesBinding;
     private View.OnClickListener onClickListener;
-    private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+    private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private Dialog dialogLabels;
 	private Dialog dialogAssignees;
 	private String labelsSetter;
@@ -93,7 +93,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         // require gitea 1.12 or higher
         if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
-            resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+            resultLimit = Constants.resultLimitNewGiteaInstances;
         }
 
 	    viewBinding.newIssueTitle.requestFocus();

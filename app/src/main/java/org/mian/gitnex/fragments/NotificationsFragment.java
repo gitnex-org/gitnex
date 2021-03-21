@@ -29,8 +29,8 @@ import org.mian.gitnex.adapters.NotificationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.InfiniteScrollListener;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.io.IOException;
@@ -83,7 +83,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		context = getContext();
 		tinyDB = TinyDB.getInstance(context);
 
-		pageResultLimit = StaticGlobalVariables.getCurrentResultLimit(context);
+		pageResultLimit = Constants.getCurrentResultLimit(context);
 		tinyDB.putString("notificationsFilterState", currentFilterMode);
 
 		markAllAsRead = fragmentNotificationsBinding.markAllAsRead;
@@ -204,7 +204,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		Call<List<NotificationThread>> call = RetrofitClient
 			.getApiInterface(context)
 			.getNotificationThreads(instanceToken, false, filter,
-				StaticGlobalVariables.defaultOldestTimestamp, "",
+				Constants.defaultOldestTimestamp, "",
 				pageCurrentIndex, pageResultLimit);
 
 		call.enqueue(new Callback<List<NotificationThread>>() {

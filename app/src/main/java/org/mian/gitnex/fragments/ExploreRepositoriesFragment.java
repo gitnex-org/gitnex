@@ -28,8 +28,8 @@ import org.mian.gitnex.databinding.CustomExploreRepositoriesDialogBinding;
 import org.mian.gitnex.databinding.FragmentExploreRepoBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.InfiniteScrollListener;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 		// if gitea is 1.12 or higher use the new limit
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			limit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+			limit = Constants.resultLimitNewGiteaInstances;
 		}
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ctx);
@@ -104,7 +104,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 					// if gitea is 1.12 or higher use the new limit
 					if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-						limit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+						limit = Constants.resultLimitNewGiteaInstances;
 					}
 					else {
 						limit = 10;
@@ -134,7 +134,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 			// if gitea is 1.12 or higher use the new limit
 			if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-				limit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+				limit = Constants.resultLimitNewGiteaInstances;
 			}
 			else {
 				limit = 10;
@@ -156,7 +156,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 		int apiCallDefaultLimit = 10;
 		// if gitea is 1.12 or higher use the new limit
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			apiCallDefaultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+			apiCallDefaultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
 		if(apiCallDefaultLimit > limit) {

@@ -13,15 +13,16 @@ import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.core.content.pm.PackageInfoCompat;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -31,36 +32,82 @@ import java.util.Objects;
 
 public class AppUtil {
 
-	public enum FileType { IMAGE, DOCUMENT, TEXT, UNKNOWN }
+	public enum FileType { IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, UNKNOWN }
 
-	private static final HashMap<List<String>, FileType> extensions = new HashMap<>();
+	private static final HashMap<String[], FileType> extensions = new HashMap<>();
 
 	// AppUtil should not be instantiated.
 	private AppUtil() {}
 
 	static {
 
-		extensions.put(Arrays.asList("jpg", "jpeg", "gif", "png", "ico"), FileType.IMAGE);
-		extensions.put(Arrays.asList("doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt", "ott", "odf", "ods", "ots", "exe", "jar", "odg", "otg", "odp", "otp", "bin", "dmg", "psd", "xcf", "pdf"), FileType.DOCUMENT);
-		extensions.put(Arrays.asList("txt", "md", "json", "java", "go", "php", "c", "cc", "cpp", "h", "cxx", "cyc", "m", "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript", "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt", "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs", "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js", "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat", "twig", "cvs", "cmake", "in", "info", "spec", "m4", "am", "dist", "pam", "hx", "ts"), FileType.TEXT);
+		extensions.put(new String[]{"jpg", "jpeg", "gif", "png", "ico", "tif", "tiff", "bmp"}, FileType.IMAGE);
+		extensions.put(new String[]{"mp3", "wav", "opus", "flac", "wma", "aac", "m4a", "oga", "mpc", "ogg"}, FileType.AUDIO);
+		extensions.put(new String[]{"mp4", "mkv", "avi", "mov", "wmv", "qt", "mts", "m2ts", "webm", "flv", "ogv", "amv", "mpg", "mpeg", "mpv", "m4v", "3gp", "wmv"}, FileType.VIDEO);
+		extensions.put(new String[]{"doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt", "ott", "odf", "ods", "ots", "odg", "otg", "odp", "otp", "bin", "psd", "xcf", "pdf"}, FileType.DOCUMENT);
+		extensions.put(new String[]{"exe", "msi", "jar", "dmg", "deb", "apk"}, FileType.EXECUTABLE);
+		extensions.put(new String[]{"txt", "md", "json", "java", "go", "php", "c", "cc", "cpp", "h", "cxx", "cyc", "m", "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript", "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt", "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs", "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js", "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat", "twig", "cvs", "cmake", "in", "info", "spec", "m4", "am", "dist", "pam", "hx", "ts", "kt", "kts"}, FileType.TEXT);
+
 	}
 
 	public static FileType getFileType(String extension) {
 
-		for(List<String> e : extensions.keySet()) {
+		if(extension != null && !extension.isEmpty()) {
+			for(String[] testExtensions : extensions.keySet()) {
+				for(String testExtension : testExtensions) {
 
-			if(e.contains(extension)) {
-
-				return extensions.get(e);
+					if(testExtension.equalsIgnoreCase(extension))
+						return extensions.get(testExtensions);
+				}
 			}
 		}
 
 		return FileType.UNKNOWN;
+
 	}
 
 	public static boolean hasNetworkConnection(Context context) {
 
 		return NetworkStatusObserver.getInstance(context).hasNetworkConnection();
+	}
+
+	public static void copyProgress(InputStream inputStream, OutputStream outputStream, long totalSize, ProgressListener progressListener) throws IOException {
+
+		byte[] buffer = new byte[4096];
+		int read;
+
+		long totalSteps = (long) Math.ceil((double) totalSize / buffer.length);
+		long stepsPerPercent = (long) Math.floor((double) totalSteps / 100);
+
+		short percent = 0;
+		long stepCount = 0;
+
+		progressListener.onActionStarted();
+
+		while((read = inputStream.read(buffer)) != -1) {
+
+			outputStream.write(buffer, 0, read);
+			stepCount++;
+
+			if(stepCount == stepsPerPercent) {
+				percent++;
+				if(percent <= 100) progressListener.onProgressChanged(percent);
+				stepCount = 0;
+			}
+		}
+
+		if(percent < 100) {
+			progressListener.onProgressChanged((short) 100);
+		}
+
+		progressListener.onActionFinished();
+	}
+
+	public interface ProgressListener {
+		default void onActionStarted() {}
+		default void onActionFinished() {}
+
+		void onProgressChanged(short progress);
 	}
 
 	public static int getAppBuildNo(Context context) {

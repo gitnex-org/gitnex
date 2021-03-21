@@ -64,20 +64,21 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/singleFileContentsFrame"
+                android:id="@+id/markdownFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/primaryBackgroundColor"
+                android:orientation="vertical"
                 android:padding="16dp"
-                android:orientation="vertical">
+                android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/singleFileContents"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"
-                        android:textIsSelectable="true" />
+                <TextView
+                    android:id="@+id/markdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textIsSelectable="true"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -86,7 +87,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/primaryBackgroundColor"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <com.github.barteksc.pdfviewer.PDFView
                     android:id="@+id/pdfView"
@@ -97,14 +99,14 @@
             </LinearLayout>
 
             <org.mian.gitnex.helpers.highlightjs.HighlightJsView
-                android:id="@+id/singleCodeContents"
+                android:id="@+id/contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:visibility="gone" />
 
             <com.github.chrisbanes.photoview.PhotoView
-                android:id="@+id/imageView"
+                android:id="@+id/photo_view"
                 android:visibility="gone"
                 android:padding="16dp"
                 android:layout_width="match_parent"

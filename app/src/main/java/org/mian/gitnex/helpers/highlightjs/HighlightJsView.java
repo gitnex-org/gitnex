@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-
 import org.mian.gitnex.helpers.highlightjs.models.Language;
 import org.mian.gitnex.helpers.highlightjs.models.Theme;
 import org.mian.gitnex.helpers.highlightjs.utils.SourceUtils;
@@ -24,6 +23,8 @@ public class HighlightJsView extends WebView {
 	private boolean zoomSupport = false;
     private boolean showLineNumbers = true;
     private TextWrap textWrap = TextWrap.NO_WRAP;
+
+    private String source = "";
 
     public HighlightJsView(Context context) {
 
@@ -63,11 +64,15 @@ public class HighlightJsView extends WebView {
 		getSettings().setSupportZoom(enable);
 	}
 
-    public void setSource(String source) {
+	public String getContent() {
+    	return source;
+	}
 
-        source = (source == null) ? " " : source;
+    public void setContent(String source) {
 
-        String html_content = SourceUtils.generateContent(source, theme.getName(), language.getName(), zoomSupport, showLineNumbers, textWrap);
+        this.source = (source == null) ? "" : source;
+
+        String html_content = SourceUtils.generateContent(this.source, theme.getName(), language.getName(), zoomSupport, showLineNumbers, textWrap);
         loadDataWithBaseURL("file:///android_asset/", html_content, "text/html", "utf-8", null);
 
     }

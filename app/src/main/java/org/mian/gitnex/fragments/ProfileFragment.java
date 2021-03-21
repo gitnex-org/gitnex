@@ -30,8 +30,7 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.Locale;
-import eightbitlab.com.blurview.BlurView;
-import eightbitlab.com.blurview.RenderScriptBlur;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 /**
  * Author M M Arif
@@ -54,7 +53,6 @@ public class ProfileFragment extends Fragment {
 
         TinyDB tinyDb = TinyDB.getInstance(getContext());
 
-	    BlurView blurView = v.findViewById(R.id.blurView);
         TextView userFullName = v.findViewById(R.id.userFullName);
 	    ImageView userAvatarBackground = v.findViewById(R.id.userAvatarBackground);
         ImageView userAvatar = v.findViewById(R.id.userAvatar);
@@ -77,10 +75,10 @@ public class ProfileFragment extends Fragment {
 	    	userLanguage.setText(R.string.notSupported);
 	    }
 
-	    userAvatar.setOnClickListener(loginId -> {
-
-		    AppUtil.copyToClipboard(ctx, tinyDb.getString("userLogin"), ctx.getString(R.string.copyLoginIdToClipBoard, tinyDb.getString("userLogin")));
-	    });
+	    userAvatar.setOnClickListener(loginId ->
+		    AppUtil.copyToClipboard(ctx,
+			    tinyDb.getString("userLogin"),
+			    ctx.getString(R.string.copyLoginIdToClipBoard, tinyDb.getString("userLogin"))));
 
 	    userFullName.setText(Html.fromHtml(tinyDb.getString("userFullname")));
 	    userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
@@ -94,12 +92,12 @@ public class ProfileFragment extends Fragment {
 
 	    PicassoService.getInstance(ctx).get()
 		    .load(tinyDb.getString("userAvatar"))
+		    .transform(new BlurTransformation(ctx))
 		    .into(userAvatarBackground, new Callback() {
 
 			    @Override
 			    public void onSuccess() {
-
-				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
+				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatar);
 
 				    userFullName.setTextColor(invertedColor);
 				    divider.setBackgroundColor(invertedColor);
@@ -107,19 +105,10 @@ public class ProfileFragment extends Fragment {
 				    userLanguage.setTextColor(invertedColor);
 
 				    ImageViewCompat.setImageTintList(userLanguageIcon, ColorStateList.valueOf(invertedColor));
-
-				    blurView.setupWith(aboutFrame)
-					    .setBlurAlgorithm(new RenderScriptBlur(ctx))
-					    .setBlurRadius(3)
-					    .setHasFixedTransformationMatrix(true);
-
 			    }
 
-			    @Override
-			    public void onError(Exception e) {}
-
+			    @Override public void onError(Exception e) {}
 		    });
-
 
         ProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
@@ -181,8 +170,6 @@ public class ProfileFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
 
-            Fragment fragment = null;
-
             switch (position) {
 
                 case 0: // followers
@@ -196,7 +183,7 @@ public class ProfileFragment extends Fragment {
 
             }
 
-            return fragment;
+            return null;
 
         }
 

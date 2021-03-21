@@ -21,7 +21,6 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.Objects;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -170,12 +169,12 @@ public class MergePullRequestActivity extends BaseActivity {
 
 		MergePullRequest mergePR = new MergePullRequest(Do, mergePRDT, mergeTitle);
 
-		Call<ResponseBody> call = RetrofitClient.getApiInterface(ctx).mergePullRequest(Authorization.get(ctx), repoOwner, repoName, prIndex, mergePR);
+		Call<Void> call = RetrofitClient.getApiInterface(ctx).mergePullRequest(Authorization.get(ctx), repoOwner, repoName, prIndex, mergePR);
 
-		call.enqueue(new Callback<ResponseBody>() {
+		call.enqueue(new Callback<Void>() {
 
 			@Override
-			public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 				if(response.code() == 200) {
 
@@ -244,7 +243,7 @@ public class MergePullRequestActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 				Log.e("onFailure", t.toString());
 				enableProcessButton();

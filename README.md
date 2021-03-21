@@ -69,26 +69,31 @@ We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your la
 Thanks to all the open source libraries, contributors and donators.
 
 #### Open source libraries
-- Retrofit
-- Gson
-- Okhttp
-- Picasso
-- Markwon
-- Prism4j
-- Prettytime
-- Amulyakhare/textdrawable
-- Vdurmont/emoji-java
-- Pes/materialcolorpicker
-- HamidrezaAmz/BreadcrumbsView
-- Chrisbanes/PhotoView
-- Pddstudio/highlightjs-android
-- Apache/commons-io
-- Caverock/androidsvg
-- Droidsonroids.gif/android-gif-drawable
-- Barteksc/androidPdfViewer
-- Ge0rg/memorizingTrustManager
-- Dimezis/blurView
-- Mikaelhg/urlbuilder
+- [square/retrofit](https://github.com/square/retrofit)
+- [google/gson](https://github.com/google/gson)
+- [square/okhttp](https://github.com/square/okhttp)
+- [square/picasso](https://github.com/square/picasso)
+- [wasabeef/picasso-transformations](https://github.com/wasabeef/picasso-transformations)
+- [cats-oss/android-gpuimage](https://github.com/cats-oss/android-gpuimage)
+- [noties/Markwon](https://github.com/noties/Markwon)
+- [noties/Prism4j](https://github.com/noties/Prism4j)
+- [ocpsoft/prettytime](https://github.com/ocpsoft/prettytime)
+- [amulyakhare/TextDrawable](https://github.com/amulyakhare/TextDrawable)
+- [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)
+- [Pes8/android-material-color-picker-dialog](https://github.com/Pes8/android-material-color-picker-dialog)
+- [HamidrezaAmz/BreadcrumbsView](https://github.com/HamidrezaAmz/BreadcrumbsView)
+- [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)
+- [PDDStudio/highlightjs-android](https://github.com/PDDStudio/highlightjs-android)
+- [apache/commons](https://github.com/apache/commons-io)
+- [barteksc/AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
+- [ge0rg/MemorizingTrustManager](https://github.com/ge0rg/MemorizingTrustManager)
+- [mikaelhg/urlbuilder](https://github.com/mikaelhg/urlbuilder)
+- [ACRA/acra](https://github.com/ACRA/acra)
+
+#### Icon sets
+- [feathericons/feather](https://github.com/feathericons/feather)
+- [primer/octicons](https://github.com/primer/octicons)
+- [google/material-design-icons](https://github.com/google/material-design-icons)
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
 

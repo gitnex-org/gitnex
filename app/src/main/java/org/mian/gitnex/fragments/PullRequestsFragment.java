@@ -28,7 +28,7 @@ import org.mian.gitnex.adapters.PullRequestsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentPullRequestsBinding;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
@@ -49,11 +49,11 @@ public class PullRequestsFragment extends Fragment {
 	private RecyclerView recyclerView;
 	private List<PullRequests> prList;
 	private PullRequestsAdapter adapter;
-	private String TAG = StaticGlobalVariables.tagPullRequestsList;
+	private String TAG = Constants.tagPullRequestsList;
 	private Context context;
-	private int pageSize = StaticGlobalVariables.prPageInit;
+	private int pageSize = Constants.prPageInit;
 	private TextView noData;
-	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private ProgressBar progressLoadMore;
 
 	@Nullable
@@ -77,7 +77,7 @@ public class PullRequestsFragment extends Fragment {
 
 		// if gitea is 1.12 or higher use the new limit
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
 		recyclerView = fragmentPullRequestsBinding.recyclerView;

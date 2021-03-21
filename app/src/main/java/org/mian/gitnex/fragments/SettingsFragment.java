@@ -71,6 +71,7 @@ public class SettingsFragment extends Fragment {
 		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(aboutApp -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit());
 
 		return fragmentSettingsBinding.getRoot();
+
 	}
 
 	public void rateThisApp() {

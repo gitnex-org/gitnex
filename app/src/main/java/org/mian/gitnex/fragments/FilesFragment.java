@@ -11,15 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.models.Files;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -31,7 +28,6 @@ import org.mian.gitnex.helpers.Path;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
-import moe.feng.common.view.breadcrumbs.BreadcrumbsView;
 import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 
@@ -41,15 +37,11 @@ import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 
 public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapterListener {
 
-	private ProgressBar mProgressBar;
-	private RecyclerView mRecyclerView;
-	private TextView noDataFiles;
-	private LinearLayout filesFrame;
+	private FragmentFilesBinding binding;
 
 	private static final String repoNameF = "param2";
 	private static final String repoOwnerF = "param1";
 	private static final String repoRefF = "param3";
-	private BreadcrumbsView mBreadcrumbsView;
 
 	private String repoName;
 	private String repoOwner;
@@ -92,28 +84,21 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentFilesBinding fragmentFilesBinding = FragmentFilesBinding.inflate(inflater, container, false);
+		binding = FragmentFilesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
-
-		noDataFiles = fragmentFilesBinding.noDataFiles;
-		filesFrame = fragmentFilesBinding.filesFrame;
 
 		filesAdapter = new FilesAdapter(getContext(), this);
 
-		mRecyclerView = fragmentFilesBinding.recyclerView;
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		mRecyclerView.setAdapter(filesAdapter);
+		binding.recyclerView.setHasFixedSize(true);
+		binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		binding.recyclerView.setAdapter(filesAdapter);
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		mRecyclerView.addItemDecoration(dividerItemDecoration);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		binding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-		mProgressBar = fragmentFilesBinding.progressBar;
-
-		mBreadcrumbsView = fragmentFilesBinding.breadcrumbsView;
-		mBreadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
+		binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
 		// noinspection unchecked
-		mBreadcrumbsView.setCallback(new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
+		binding.breadcrumbsView.setCallback(new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
 
 			@SuppressLint("SetTextI18n")
 			@Override
@@ -140,14 +125,14 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			path.clear();
 			ref = repoBranch;
-			mBreadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
+			binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
 			fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, repoBranch);
 
 		});
 
 		fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
 
-		return fragmentFilesBinding.getRoot();
+		return binding.getRoot();
 	}
 
 	@Override
@@ -157,40 +142,35 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 	}
 
 	@Override
-	public void onClickDir(String dirName) {
+	public void onClickFile(Files file) {
 
-		path.add(dirName);
-		mBreadcrumbsView.addItem(new BreadcrumbItem(Collections.singletonList(dirName)));
+		switch(file.getType()) {
 
-		fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, path.toString(), ref);
+			case "dir":
+				path.add(file.getName());
+				binding.breadcrumbsView.addItem(new BreadcrumbItem(Collections.singletonList(file.getName())));
 
-	}
+				fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, path.toString(), ref);
+				break;
 
-	@Override
-	public void onClickFile(String fileName) {
+			case "file":
+				Intent intent = new Intent(getContext(), FileViewActivity.class);
+				intent.putExtra("file", file);
 
-		Intent intent = new Intent(getContext(), FileViewActivity.class);
+				requireContext().startActivity(intent);
+				break;
 
-		if(path.size() != 0) {
-
-			intent.putExtra("singleFileName", path.toString() + "/" + fileName);
 		}
-		else {
-
-			intent.putExtra("singleFileName", fileName);
-		}
-
-		requireContext().startActivity(intent);
 	}
 
 	private void fetchDataAsync(String instanceToken, String owner, String repo, String ref) {
 
-		mRecyclerView.setVisibility(View.GONE);
-		mProgressBar.setVisibility(View.VISIBLE);
+		binding.recyclerView.setVisibility(View.GONE);
+		binding.progressBar.setVisibility(View.VISIBLE);
 
 		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel.getFilesList(instanceToken, owner, repo, ref, getContext(), mProgressBar, noDataFiles).observe(getViewLifecycleOwner(), filesListMain -> {
+		filesModel.getFilesList(instanceToken, owner, repo, ref, getContext(), binding.progressBar, binding.noDataFiles).observe(getViewLifecycleOwner(), filesListMain -> {
 
 			filesAdapter.getOriginalFiles().clear();
 			filesAdapter.getOriginalFiles().addAll(filesListMain);
@@ -198,16 +178,16 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			if(filesListMain.size() > 0) {
 
-				AppUtil.setMultiVisibility(View.VISIBLE, mRecyclerView, filesFrame);
-				noDataFiles.setVisibility(View.GONE);
+				AppUtil.setMultiVisibility(View.VISIBLE, binding.recyclerView, binding.filesFrame);
+				binding.noDataFiles.setVisibility(View.GONE);
 
 			}
 			else {
-				AppUtil.setMultiVisibility(View.VISIBLE, mRecyclerView, filesFrame, noDataFiles);
+				AppUtil.setMultiVisibility(View.VISIBLE, binding.recyclerView, binding.filesFrame, binding.noDataFiles);
 			}
 
-			filesFrame.setVisibility(View.VISIBLE);
-			mProgressBar.setVisibility(View.GONE);
+			binding.filesFrame.setVisibility(View.VISIBLE);
+			binding.progressBar.setVisibility(View.GONE);
 
 		});
 
@@ -215,12 +195,12 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 	private void fetchDataAsyncSub(String instanceToken, String owner, String repo, String filesDir, String ref) {
 
-		mRecyclerView.setVisibility(View.GONE);
-		mProgressBar.setVisibility(View.VISIBLE);
+		binding.recyclerView.setVisibility(View.GONE);
+		binding.progressBar.setVisibility(View.VISIBLE);
 
-		FilesViewModel filesModel2 = new ViewModelProvider(this).get(FilesViewModel.class);
+		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel2.getFilesList2(instanceToken, owner, repo, filesDir, ref, getContext(), mProgressBar, noDataFiles).observe(this, filesListMain2 -> {
+		filesModel.getFilesList2(instanceToken, owner, repo, filesDir, ref, getContext(), binding.progressBar, binding.noDataFiles).observe(this, filesListMain2 -> {
 
 			filesAdapter.getOriginalFiles().clear();
 			filesAdapter.getOriginalFiles().addAll(filesListMain2);
@@ -228,15 +208,15 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			if(filesListMain2.size() > 0) {
 
-				AppUtil.setMultiVisibility(View.VISIBLE, mRecyclerView, filesFrame);
-				noDataFiles.setVisibility(View.GONE);
+				AppUtil.setMultiVisibility(View.VISIBLE, binding.recyclerView, binding.filesFrame);
+				binding.noDataFiles.setVisibility(View.GONE);
 			}
 			else {
-				AppUtil.setMultiVisibility(View.VISIBLE, mRecyclerView, filesFrame, noDataFiles);
+				AppUtil.setMultiVisibility(View.VISIBLE, binding.recyclerView, binding.filesFrame, binding.noDataFiles);
 			}
 
-			filesFrame.setVisibility(View.VISIBLE);
-			mProgressBar.setVisibility(View.GONE);
+			binding.filesFrame.setVisibility(View.VISIBLE);
+			binding.progressBar.setVisibility(View.GONE);
 
 		});
 
@@ -259,7 +239,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 			@Override
 			public boolean onQueryTextChange(String newText) {
 
-				if(mRecyclerView.getAdapter() != null) {
+				if(binding.recyclerView.getAdapter() != null) {
 					filesAdapter.getFilter().filter(newText);
 				}
 

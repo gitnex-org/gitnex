@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -61,8 +60,7 @@ import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
-import eightbitlab.com.blurview.BlurView;
-import eightbitlab.com.blurview.RenderScriptBlur;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -73,12 +71,10 @@ import retrofit2.Callback;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetDraftsFragment.BottomSheetListener {
 
 	private DrawerLayout drawer;
-	private BlurView blurView;
 	private TextView userFullName;
 	private TextView userEmail;
 	private ImageView userAvatar;
 	private ImageView userAvatarBackground;
-	private ViewGroup navHeaderFrame;
 	private TextView toolbarTitle;
 	private Typeface myTypeface;
 
@@ -273,12 +269,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				String userFullNameNav = tinyDB.getString("userFullname");
 				String userAvatarNav = tinyDB.getString("userAvatar");
 
-				blurView = hView.findViewById(R.id.blurView);
 				userEmail = hView.findViewById(R.id.userEmail);
 				userFullName = hView.findViewById(R.id.userFullname);
 				userAvatar = hView.findViewById(R.id.userAvatar);
 				userAvatarBackground = hView.findViewById(R.id.userAvatarBackground);
-				navHeaderFrame = hView.findViewById(R.id.navHeaderFrame);
 
 				List<UserAccount> userAccountsList;
 				userAccountsList = new ArrayList<>();
@@ -323,24 +317,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 					PicassoService.getInstance(ctx).get()
 						.load(userAvatarNav)
+						.transform(new BlurTransformation(ctx))
 						.into(userAvatarBackground, new com.squareup.picasso.Callback() {
 
 							@Override
 							public void onSuccess() {
-
-								int textColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
+								int textColor = new ColorInverter().getImageViewContrastColor(userAvatar);
 
 								userFullName.setTextColor(textColor);
 								userEmail.setTextColor(textColor);
-
-								blurView.setupWith(navHeaderFrame)
-									.setBlurAlgorithm(new RenderScriptBlur(ctx))
-									.setBlurRadius(5)
-									.setHasFixedTransformationMatrix(false);
 							}
 
-							@Override
-							public void onError(Exception e) {}
+							@Override public void onError(Exception e) {}
 						});
 				}
 
@@ -350,6 +338,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_profile);
 					drawer.closeDrawers();
+
 				});
 
 				getNotificationsCount(instanceToken);
@@ -403,22 +392,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			switch(launchFragmentByHandler) {
 
 				case "repos":
-
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RepositoriesFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_repositories);
 					return;
-				case "org":
 
+				case "org":
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OrganizationsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_organizations);
 					return;
-				case "notification":
 
+				case "notification":
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_notifications);
 					return;
-				case "explore":
 
+				case "explore":
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_explore);
 					return;
@@ -438,49 +426,48 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			switch(tinyDB.getInt("homeScreenId")) {
 
 				case 1:
-
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StarredRepositoriesFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_starred_repos);
 					break;
-				case 2:
 
+				case 2:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleOrganizations));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OrganizationsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_organizations);
 					break;
-				case 3:
 
+				case 3:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleRepositories));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RepositoriesFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_repositories);
 					break;
-				case 4:
 
+				case 4:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_profile);
 					break;
-				case 5:
 
+				case 5:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_explore);
 					break;
-				case 6:
 
+				case 6:
 					toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_comments_draft);
 					break;
-				case 7:
 
+				case 7:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_notifications);
 					break;
-				default:
 
+				default:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleMyRepos));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyRepositoriesFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_home);

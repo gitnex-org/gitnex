@@ -113,7 +113,7 @@ public class ParseDiff {
 
 						// parse "-1,2 +2,3" and "-1 -3" and so on
 						int oldStart = 0, newStart = 0;
-						String diffPos[] = statsLine.split(" \\+");
+						String[] diffPos = statsLine.split(" \\+");
 						if(diffPos.length == 2) {
 							oldStart = Integer.parseInt(diffPos[0].split(",")[0]);
 							newStart = Integer.parseInt(diffPos[1].split(",")[0]);
