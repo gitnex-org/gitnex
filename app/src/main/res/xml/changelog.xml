@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="3.5.0-dev" versioncode="346">
-        <change>Under development</change>
+    <release version="3.5.0" versioncode="350">
+        <change>New: Render emoji in issue/pr titles, commit message and markdown files</change>
+        <change>New: Cron tasks (Admin only)</change>
+        <change>New: Biometric support to unlock the app</change>
+        <change>New: Switch to saved instance when coming from email/links</change>
+        <change>New: Copy user login id to clipboard</change>
+        <change>New: Progress notification for downloading files</change>
+        <change>New: Rewrite file viewer in native code to move away from traditional js to load files faster</change>
     </release>
 
 </changelog>
