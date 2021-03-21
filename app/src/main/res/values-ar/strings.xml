@@ -479,7 +479,7 @@
     <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
-    <string name="excludeFilesInFileViewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
     <string name="deleteFileText">Delete %1$s</string>
@@ -530,7 +530,7 @@
     <string name="draftSaved">Draft was saved automatically.</string>
     <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="fileViewerHintText">PDF mode, source code theme</string>
-    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
@@ -562,6 +562,8 @@
     <string name="chooseColorSelectorHeader">Choose Color</string>
     <string name="newMessages">New messages</string>
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
+    <string name="mainNotificationChannelName">Notifications</string>
+    <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -619,4 +621,13 @@
     <string name="biometricNotAvailable">Biometric features are currently unavailable</string>
     <string name="enrollBiometric">Enroll biometric from phone settings</string>
     <string name="copyLoginIdToClipBoard">Login ID \'%s\' copied to clipboard</string>
+    <!-- file viewer activity -->
+    <string name="fileViewerNotificationTitleStarted">Download in progress</string>
+    <string name="fileViewerNotificationDescriptionStarted">Downloading %s</string>
+    <string name="fileViewerNotificationTitleFinished">Download successful</string>
+    <string name="fileViewerNotificationDescriptionFinished">Downloaded %s</string>
+    <string name="fileViewerNotificationTitleFailed">Download failed</string>
+    <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
+    <string name="fileViewerNotificationChannelName">Download manager</string>
+    <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
 </resources>

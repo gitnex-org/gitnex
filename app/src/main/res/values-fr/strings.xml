@@ -476,7 +476,7 @@
     <string name="downloadFile">Télécharger ce fichier</string>
     <string name="waitLoadingDownloadFile">Chargement du fichier dans la mémoire</string>
     <string name="downloadFileSaved">Fichier sauvegardé avec succès</string>
-    <string name="excludeFilesInFileViewer">La visionneuse ne prend pas en charge ce type de fichier. Télécharger ce fichier ?</string>
+    <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">Supprimer ce fichier</string>
     <string name="editFile">Éditer ce fichier</string>
     <string name="deleteFileText">Supprimer %1$s</string>
@@ -527,7 +527,7 @@
     <string name="draftSaved">Brouillon sauvegardé automatiquement</string>
     <string name="appearanceHintText">Thèmes, polices, badges</string>
     <string name="fileViewerHintText">Mode PDF, couleurs du code source</string>
-    <string name="securityHintText">Certificats SSL, cache</string>
+    <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
@@ -559,6 +559,8 @@
     <string name="chooseColorSelectorHeader">Couleur</string>
     <string name="newMessages">Nouveaux messages</string>
     <string name="youHaveGotNewNotifications">Vous avez %d nouvelles notifications.</string>
+    <string name="mainNotificationChannelName">Notifications</string>
+    <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <string name="isRead">Lu</string>
     <string name="isUnread">Non lu</string>
     <string name="repoSettingsTitle">Paramètres du dépôt</string>
@@ -616,4 +618,13 @@
     <string name="biometricNotAvailable">La biométrie n’est pas disponible pour le moment</string>
     <string name="enrollBiometric">Paramétrer la biométrie dans les réglages de l\'appareil</string>
     <string name="copyLoginIdToClipBoard">ID \'%s\' copié dans le presse-papier</string>
+    <!-- file viewer activity -->
+    <string name="fileViewerNotificationTitleStarted">Download in progress</string>
+    <string name="fileViewerNotificationDescriptionStarted">Downloading %s</string>
+    <string name="fileViewerNotificationTitleFinished">Download successful</string>
+    <string name="fileViewerNotificationDescriptionFinished">Downloaded %s</string>
+    <string name="fileViewerNotificationTitleFailed">Download failed</string>
+    <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
+    <string name="fileViewerNotificationChannelName">Download manager</string>
+    <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
 </resources>
