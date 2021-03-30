@@ -93,22 +93,30 @@ public class SyntaxHighlightedArea extends LinearLayout {
 	}
 
 	public void setContent(@NonNull String source, @NonNull String extension) {
-		if(source.length() > 0) {
 
+		if(source.length() > 0) {
 			linesView.setLineCount(AppUtil.getLineCount(source));
 
-			MainGrammarLocator mainGrammarLocator = MainGrammarLocator.getInstance();
-			Prism4jSyntaxHighlight prism4jSyntaxHighlight = Prism4jSyntaxHighlight.create(new Prism4j(mainGrammarLocator), prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE);
+			try {
 
-			CharSequence highlightedSource = prism4jSyntaxHighlight.highlight(mainGrammarLocator.fromExtension(extension), source);
+				MainGrammarLocator mainGrammarLocator = MainGrammarLocator.getInstance();
+				Prism4j prism4j = new Prism4j(mainGrammarLocator);
 
-			if(highlightedSource.charAt(highlightedSource.length() - 1) == '\n') {
-				// Removes a line break which is probably added by Prism4j but not actually present in the source.
-				// This line should be altered in case this gets fixed.
-				sourceView.setText(highlightedSource.subSequence(0, highlightedSource.length() - 1));
-			}
-			else {
-				sourceView.setText(highlightedSource);
+				CharSequence highlightedSource = Prism4jSyntaxHighlight.create(prism4j, prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE)
+					.highlight(mainGrammarLocator.fromExtension(extension), source);
+
+				if(highlightedSource.charAt(highlightedSource.length() - 1) == '\n') {
+					// Removes a line break which is probably added by Prism4j but not actually present in the source.
+					// This line should be altered in case this gets fixed.
+					sourceView.setText(highlightedSource.subSequence(0, highlightedSource.length() - 1));
+				}
+				else {
+					sourceView.setText(highlightedSource);
+				}
+
+			} catch(Throwable ignored) {
+				// Fall back to plaintext if something fails
+				sourceView.setText(source);
 			}
 		}
 	}
