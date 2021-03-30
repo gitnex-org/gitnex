@@ -3,10 +3,20 @@ package org.mian.gitnex.activities;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import org.acra.ACRA;
+import org.acra.BuildConfig;
+import org.acra.ReportField;
+import org.acra.annotation.AcraCore;
+import org.acra.annotation.AcraNotification;
+import org.acra.config.CoreConfigurationBuilder;
+import org.acra.config.LimiterConfigurationBuilder;
+import org.acra.config.MailSenderConfigurationBuilder;
+import org.acra.data.StringFormat;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.notifications.Notifications;
 
 /**
  * Author M M Arif
@@ -77,6 +87,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 		}
 
 		AppUtil.setAppLocale(getResources(), tinyDB.getString("locale"));
+
+		Notifications.startWorker(appCtx);
 	}
 
 }
