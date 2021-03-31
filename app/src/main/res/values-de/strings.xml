@@ -476,7 +476,7 @@
     <string name="downloadFile">Datei herunterladen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
-    <string name="excludeFilesInFileViewer">Dieser Dateityp wird nicht vom Datei-Viewer unterstützt. Du kannst sie stattdessen übers Menü herunterladen?</string>
+    <string name="excludeFilesInFileViewer">Diese(r) Dateityp / Dateigröße wird vom Dateibetrachter nicht unterstützt. Du kannst es über das Menü herunterladen.</string>
     <string name="deleteFile">Diese Datei löschen</string>
     <string name="editFile">Diese Datei bearbeiten</string>
     <string name="deleteFileText">Lösche %1$s</string>
@@ -527,7 +527,7 @@
     <string name="draftSaved">Entwurf wurde automatisch gespeichert.</string>
     <string name="appearanceHintText">Themen, Schriften, Abzeichen</string>
     <string name="fileViewerHintText">PDF-Modus, Quellcode Theme</string>
-    <string name="securityHintText">SSL-Zertifikate, Cache</string>
+    <string name="securityHintText">Biometrische Authentifizierung, SSL-Zertifikate, Cache</string>
     <string name="languagesHintText">Sprachen</string>
     <string name="reportsHintText">Absturzberichte</string>
     <string name="rateAppHintText">Wenn dir GitNex gefällt, hinterlassen Feedback</string>
@@ -559,6 +559,8 @@
     <string name="chooseColorSelectorHeader">Farbe auswählen</string>
     <string name="newMessages">Neue Nachrichten</string>
     <string name="youHaveGotNewNotifications">Du hast %d neue Nachrichten.</string>
+    <string name="mainNotificationChannelName">Benachrichtigungen</string>
+    <string name="mainNotificationChannelDescription">Das ist der Haupt-Nachrichten-Kanal von GitNex.</string>
     <string name="isRead">Gelesen</string>
     <string name="isUnread">Ungelesen</string>
     <string name="repoSettingsTitle">Repository Einstellungen</string>
@@ -615,5 +617,14 @@
     <string name="biometricNotSupported">Keine biometrischen Funktionen verfügbar</string>
     <string name="biometricNotAvailable">Biometrischen Funktionen zur zeit nicht verfügbar</string>
     <string name="enrollBiometric">Biometrische Daten in den Telefoneinstellungen registrieren</string>
-    <string name="copyLoginIdToClipBoard">Login-ID \'%s\' in Zwischenablage kopiert</string>
+    <string name="copyLoginIdToClipBoard">Login ID \'%s\' in Zwischenablage kopiert</string>
+    <!-- file viewer activity -->
+    <string name="fileViewerNotificationTitleStarted">Download läuft</string>
+    <string name="fileViewerNotificationDescriptionStarted">Lade %s herunter</string>
+    <string name="fileViewerNotificationTitleFinished">Download erfolgreich</string>
+    <string name="fileViewerNotificationDescriptionFinished">%s heruntergeladen</string>
+    <string name="fileViewerNotificationTitleFailed">Download fehlgeschlagen</string>
+    <string name="fileViewerNotificationDescriptionFailed">Konnte %s nicht downloaden</string>
+    <string name="fileViewerNotificationChannelName">Download Manager</string>
+    <string name="fileViewerNotificationChannelDescription">Zeigt den Fortschritt laufender Downloads an</string>
 </resources>

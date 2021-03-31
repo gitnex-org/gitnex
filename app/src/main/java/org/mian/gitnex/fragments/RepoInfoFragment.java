@@ -8,10 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -42,36 +39,18 @@ import retrofit2.Callback;
 public class RepoInfoFragment extends Fragment {
 
 	private Context ctx;
-	private ProgressBar mProgressBar;
 	private LinearLayout pageContent;
 	private static String repoNameF = "param2";
 	private static String repoOwnerF = "param1";
 
+	private FragmentRepoInfoBinding binding;
+
 	private String repoName;
 	private String repoOwner;
-	private TextView repoMetaName;
-	private TextView repoMetaDescription;
-	private TextView repoMetaStars;
-	private TextView repoMetaPullRequests;
-	private LinearLayout repoMetaPullRequestsFrame;
-	private TextView repoMetaForks;
-	private TextView repoMetaSize;
-	private TextView repoMetaWatchers;
-	private TextView repoMetaCreatedAt;
-	private TextView repoMetaWebsite;
-	private Button repoAdditionalButton;
-	private TextView repoFileContents;
-	private LinearLayout repoMetaFrame;
-	private ImageView repoMetaDataExpandCollapse;
-	private ImageView repoFilenameExpandCollapse;
-	private LinearLayout fileContentsFrameHeader;
-	private LinearLayout fileContentsFrame;
 
 	private OnFragmentInteractionListener mListener;
 
-	public RepoInfoFragment() {
-
-	}
+	public RepoInfoFragment() {}
 
 	public static RepoInfoFragment newInstance(String param1, String param2) {
 		RepoInfoFragment fragment = new RepoInfoFragment();
@@ -94,44 +73,18 @@ public class RepoInfoFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentRepoInfoBinding fragmentRepoInfoBinding = FragmentRepoInfoBinding.inflate(inflater, container, false);
+		binding = FragmentRepoInfoBinding.inflate(inflater, container, false);
 
 		TinyDB tinyDb = TinyDB.getInstance(getContext());
 
-		final String locale = tinyDb.getString("locale");
-		final String timeFormat = tinyDb.getString("dateFormat");
+		ctx = getContext();
 
-		ctx = getActivity();
-
-		pageContent = fragmentRepoInfoBinding.repoInfoLayout;
+		pageContent = binding.repoInfoLayout;
 		pageContent.setVisibility(View.GONE);
 
-		mProgressBar = fragmentRepoInfoBinding.progressBar;
-		repoMetaName = fragmentRepoInfoBinding.repoMetaName;
-		repoMetaDescription = fragmentRepoInfoBinding.repoMetaDescription;
-		repoMetaStars = fragmentRepoInfoBinding.repoMetaStars;
-		repoMetaPullRequests = fragmentRepoInfoBinding.repoMetaPullRequests;
-		repoMetaPullRequestsFrame = fragmentRepoInfoBinding.repoMetaPullRequestsFrame;
-		repoMetaForks = fragmentRepoInfoBinding.repoMetaForks;
-		repoMetaSize = fragmentRepoInfoBinding.repoMetaSize;
-		repoMetaWatchers = fragmentRepoInfoBinding.repoMetaWatchers;
-		repoMetaCreatedAt = fragmentRepoInfoBinding.repoMetaCreatedAt;
-		repoMetaWebsite = fragmentRepoInfoBinding.repoMetaWebsite;
-		repoAdditionalButton = fragmentRepoInfoBinding.repoAdditionalButton;
-		repoFileContents = fragmentRepoInfoBinding.repoFileContents;
-		repoMetaFrame = fragmentRepoInfoBinding.repoMetaFrame;
-		LinearLayout repoMetaFrameHeader = fragmentRepoInfoBinding.repoMetaFrameHeader;
-		repoMetaDataExpandCollapse = fragmentRepoInfoBinding.repoMetaDataExpandCollapse;
-		repoFilenameExpandCollapse = fragmentRepoInfoBinding.repoFilenameExpandCollapse;
-		fileContentsFrameHeader = fragmentRepoInfoBinding.fileContentsFrameHeader;
-		fileContentsFrame = fragmentRepoInfoBinding.fileContentsFrame;
-		LinearLayout repoMetaStarsFrame = fragmentRepoInfoBinding.repoMetaStarsFrame;
-		LinearLayout repoMetaForksFrame = fragmentRepoInfoBinding.repoMetaForksFrame;
-		LinearLayout repoMetaWatchersFrame = fragmentRepoInfoBinding.repoMetaWatchersFrame;
+		binding.repoMetaFrame.setVisibility(View.GONE);
 
-		repoMetaFrame.setVisibility(View.GONE);
-
-		getRepoInfo(Authorization.get(getContext()), repoOwner, repoName, locale, timeFormat);
+		getRepoInfo(Authorization.get(getContext()), repoOwner, repoName, tinyDb.getString("locale"), tinyDb.getString("dateFormat"));
 		getFileContents(Authorization.get(getContext()), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
 
 		if(isExpandViewVisible()) {
@@ -142,27 +95,26 @@ public class RepoInfoFragment extends Fragment {
 			toggleExpandViewMeta();
 		}
 
-		fileContentsFrameHeader.setOnClickListener(v1 -> toggleExpandView());
+		binding.fileContentsFrameHeader.setOnClickListener(v1 -> toggleExpandView());
+		binding.repoMetaFrameHeader.setOnClickListener(v12 -> toggleExpandViewMeta());
 
-		repoMetaFrameHeader.setOnClickListener(v12 -> toggleExpandViewMeta());
-
-		repoMetaStarsFrame.setOnClickListener(metaStars -> {
+		binding.repoMetaStarsFrame.setOnClickListener(metaStars -> {
 
 			Intent intent = new Intent(ctx, RepoStargazersActivity.class);
 			intent.putExtra("repoFullNameForStars", repoOwner + "/" + repoName);
 			ctx.startActivity(intent);
 		});
 
-		repoMetaWatchersFrame.setOnClickListener(metaWatchers -> {
+		binding.repoMetaWatchersFrame.setOnClickListener(metaWatchers -> {
 
 			Intent intent = new Intent(ctx, RepoWatchersActivity.class);
 			intent.putExtra("repoFullNameForWatchers", repoOwner + "/" + repoName);
 			ctx.startActivity(intent);
 		});
 
-		repoMetaPullRequestsFrame.setOnClickListener(metaPR -> RepoDetailActivity.mViewPager.setCurrentItem(3));
+		binding.repoMetaPullRequestsFrame.setOnClickListener(metaPR -> RepoDetailActivity.mViewPager.setCurrentItem(3));
 
-		return fragmentRepoInfoBinding.getRoot();
+		return binding.getRoot();
 	}
 
 	public void onButtonPressed(Uri uri) {
@@ -183,42 +135,42 @@ public class RepoInfoFragment extends Fragment {
 
 	private void toggleExpandView() {
 
-		if (repoFileContents.getVisibility() == View.GONE) {
-			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
-			repoFileContents.setVisibility(View.VISIBLE);
+		if (binding.repoFileContents.getVisibility() == View.GONE) {
+			binding.repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
+			binding.repoFileContents.setVisibility(View.VISIBLE);
 			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-			//fileContentsFrame.startAnimation(slide_down);
+			//binding.fileContentsFrame.startAnimation(slide_down);
 		}
 		else {
-			repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
-			repoFileContents.setVisibility(View.GONE);
+			binding.repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
+			binding.repoFileContents.setVisibility(View.GONE);
 			//Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-			//fileContentsFrame.startAnimation(slide_up);
+			//binding.fileContentsFrame.startAnimation(slide_up);
 		}
 	}
 
 	private boolean isExpandViewVisible() {
-		return repoFileContents.getVisibility() == View.VISIBLE;
+		return binding.repoFileContents.getVisibility() == View.VISIBLE;
 	}
 
 	private void toggleExpandViewMeta() {
 
-		if (repoMetaFrame.getVisibility() == View.GONE) {
-			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
-			repoMetaFrame.setVisibility(View.VISIBLE);
+		if (binding.repoMetaFrame.getVisibility() == View.GONE) {
+			binding.repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
+			binding.repoMetaFrame.setVisibility(View.VISIBLE);
 			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-			//repoMetaFrame.startAnimation(slide_down);
+			//binding.repoMetaFrame.startAnimation(slide_down);
 		}
 		else {
-			repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
-			repoMetaFrame.setVisibility(View.GONE);
+			binding.repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
+			binding.repoMetaFrame.setVisibility(View.GONE);
 			//Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-			//repoMetaFrame.startAnimation(slide_up);
+			//binding.repoMetaFrame.startAnimation(slide_up);
 		}
 	}
 
 	private boolean isExpandViewMetaVisible() {
-		return repoMetaFrame.getVisibility() == View.VISIBLE;
+		return binding.repoMetaFrame.getVisibility() == View.VISIBLE;
 	}
 
 	private void getRepoInfo(String token, final String owner, String repo, final String locale, final String timeFormat) {
@@ -243,39 +195,39 @@ public class RepoInfoFragment extends Fragment {
 						if (response.code() == 200) {
 
 							assert repoInfo != null;
-							repoMetaName.setText(repoInfo.getName());
+							binding.repoMetaName.setText(repoInfo.getName());
 
 							if(!repoInfo.getDescription().isEmpty()) {
-								repoMetaDescription.setText(repoInfo.getDescription());
+								binding.repoMetaDescription.setText(repoInfo.getDescription());
 							}
 							else {
-								repoMetaDescription.setText(getString(R.string.noDataDescription));
+								binding.repoMetaDescription.setText(getString(R.string.noDataDescription));
 							}
 
-							repoMetaStars.setText(repoInfo.getStars_count());
+							binding.repoMetaStars.setText(repoInfo.getStars_count());
 
 							if(repoInfo.getOpen_pull_count() != null) {
-								repoMetaPullRequests.setText(repoInfo.getOpen_pull_count());
+								binding.repoMetaPullRequests.setText(repoInfo.getOpen_pull_count());
 							}
 							else {
-								repoMetaPullRequestsFrame.setVisibility(View.GONE);
+								binding.repoMetaPullRequestsFrame.setVisibility(View.GONE);
 							}
 
-							repoMetaForks.setText(repoInfo.getForks_count());
-							repoMetaWatchers.setText(repoInfo.getWatchers_count());
-							repoMetaSize.setText(FileUtils.byteCountToDisplaySize((int) (repoInfo.getSize() * 1024)));
+							binding.repoMetaForks.setText(repoInfo.getForks_count());
+							binding.repoMetaWatchers.setText(repoInfo.getWatchers_count());
+							binding.repoMetaSize.setText(FileUtils.byteCountToDisplaySize((int) repoInfo.getSize() * 1024));
 
-							repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
+							binding.repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
 							if(timeFormat.equals("pretty")) {
-								repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
+								binding.repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
 							}
 
 							String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdated_at(), new Locale(locale), timeFormat, ctx);
 
 							String website = (repoInfo.getWebsite().isEmpty()) ? getResources().getString(R.string.noDataWebsite) : repoInfo.getWebsite();
-							repoMetaWebsite.setText(website);
+							binding.repoMetaWebsite.setText(website);
 
-							repoAdditionalButton.setOnClickListener(v -> {
+							binding.repoAdditionalButton.setOnClickListener(v -> {
 
 								View view = LayoutInflater.from(ctx).inflate(R.layout.layout_repo_more_info, null);
 
@@ -334,7 +286,7 @@ public class RepoInfoFragment extends Fragment {
 
 							tinyDb.putString("repoHtmlUrl", repoInfo.getHtml_url());
 
-							mProgressBar.setVisibility(View.GONE);
+							binding.progressBar.setVisibility(View.GONE);
 							pageContent.setVisibility(View.VISIBLE);
 
 						}
@@ -369,39 +321,41 @@ public class RepoInfoFragment extends Fragment {
 
 				if (isAdded()) {
 
-					if (response.code() == 200) {
+					switch(response.code()) {
 
-						new Markdown(ctx, response.body(), repoFileContents);
+						case 200:
+							new Markdown(ctx, response.body(), binding.repoFileContents);
+							break;
 
-					} else if (response.code() == 401) {
-
-						AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
+						case 401:
+							AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 								getResources().getString(R.string.alertDialogTokenRevokedMessage),
 								getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
 								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+							break;
 
-					} else if (response.code() == 403) {
+						case 403:
+							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							break;
 
-						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						case 404:
+							binding.fileContentsFrameHeader.setVisibility(View.GONE);
+							binding.fileContentsFrame.setVisibility(View.GONE);
+							break;
 
-					} else if (response.code() == 404) {
-
-						fileContentsFrameHeader.setVisibility(View.GONE);
-						fileContentsFrame.setVisibility(View.GONE);
-
-					} else {
-
-						Toasty.error(getContext(), getString(R.string.genericError));
+						default:
+							Toasty.error(getContext(), getString(R.string.genericError));
+							break;
 
 					}
 				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
 				Log.e("onFailure", t.toString());
 			}
+
 		});
 
 	}

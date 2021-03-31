@@ -7,7 +7,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import java.io.IOException;
 import java.util.Date;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 /**
@@ -35,7 +34,7 @@ public class NotificationsActions {
 
 	public void setNotificationStatus(NotificationThread notificationThread, NotificationStatus notificationStatus) throws IOException {
 
-		Call<ResponseBody> call = RetrofitClient.getApiInterface(context)
+		Call<Void> call = RetrofitClient.getApiInterface(context)
 			.markNotificationThreadAsRead(instanceToken, notificationThread.getId(), notificationStatus.name());
 
 		if(!call.execute().isSuccessful()) {
@@ -46,7 +45,7 @@ public class NotificationsActions {
 
 	public boolean setAllNotificationsRead(Date date) throws IOException {
 
-		Call<ResponseBody> call = RetrofitClient.getApiInterface(context)
+		Call<Void> call = RetrofitClient.getApiInterface(context)
 			.markNotificationThreadsAsRead(instanceToken, AppUtil.getTimestampFromDate(context, date), true,
 				new String[]{"unread", "pinned"}, "read");
 

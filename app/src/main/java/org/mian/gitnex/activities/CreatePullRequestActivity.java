@@ -24,13 +24,12 @@ import org.mian.gitnex.databinding.ActivityCreatePrBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -43,7 +42,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	private View.OnClickListener onClickListener;
 	private ActivityCreatePrBinding viewBinding;
 	private CustomLabelsSelectionDialogBinding labelsBinding;
-	private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private Dialog dialogLabels;
 	private String labelsSetter;
 	private List<Integer> labelsIds = new ArrayList<>();
@@ -80,7 +79,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		// require gitea 1.12 or higher
 		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
-			resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
 		viewBinding.prBody.setOnTouchListener((touchView, motionEvent) -> {
@@ -165,14 +164,14 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		CreatePullRequest createPullRequest = new CreatePullRequest(prTitle, prDescription, loginUid, mergeInto, pullFrom, milestoneId, dueDate, assignees, labelsIds);
 
-		Call<ResponseBody> transferCall = RetrofitClient
+		Call<Void> transferCall = RetrofitClient
 			.getApiInterface(appCtx)
 			.createPullRequest(instanceToken, repoOwner, repoName, createPullRequest);
 
-		transferCall.enqueue(new Callback<ResponseBody>() {
+		transferCall.enqueue(new Callback<Void>() {
 
 			@Override
-			public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 				disableProcessButton();
 
@@ -199,7 +198,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 				enableProcessButton();
 				Toasty.error(ctx, getString(R.string.genericServerResponseError));

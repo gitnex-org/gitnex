@@ -102,9 +102,8 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
 
-		private String userLoginId;
+		private Issues issue;
 
-		private final TextView issueNumber;
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
@@ -114,7 +113,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			super(itemView);
 
-			issueNumber = itemView.findViewById(R.id.issueNumber);
 			issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
 			issueTitle = itemView.findViewById(R.id.issueTitle);
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
@@ -126,10 +124,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				Context context = title.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", issueNumber.getText());
+				intent.putExtra("issueNumber", issue.getNumber());
 
 				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("issueNumber", issueNumber.getText().toString());
+				tinyDb.putString("issueNumber", String.valueOf(issue.getNumber()));
 				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
 
@@ -140,18 +138,18 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				Context context = commentsCount.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", issueNumber.getText());
+				intent.putExtra("issueNumber", issue.getNumber());
 
 				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("issueNumber", issueNumber.getText().toString());
+				tinyDb.putString("issueNumber", String.valueOf(issue.getNumber()));
 				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
 
 			});
 
-			issueAssigneeAvatar.setOnClickListener(loginId -> {
-
-				Context context = loginId.getContext();
+			issueAssigneeAvatar.setOnClickListener(v -> {
+				Context context = v.getContext();
+				String userLoginId = issue.getUser().getLogin();
 
 				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 			});
@@ -159,40 +157,44 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(Issues issuesModel) {
+		void bindData(Issues issue) {
 
-			final TinyDB tinyDb = TinyDB.getInstance(context);
-			final String locale = tinyDb.getString("locale");
-			final String timeFormat = tinyDb.getString("dateFormat");
+			TinyDB tinyDb = TinyDB.getInstance(context);
+			String locale = tinyDb.getString("locale");
+			String timeFormat = tinyDb.getString("dateFormat");
 
-			userLoginId = issuesModel.getUser().getLogin();
+			PicassoService.getInstance(context).get()
+				.load(issue.getUser().getAvatar_url())
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(8, 0))
+				.resize(120, 120)
+				.centerCrop()
+				.into(issueAssigneeAvatar);
 
-			PicassoService.getInstance(context).get().load(issuesModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(issueAssigneeAvatar);
+			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + issue.getNumber() + "</font>";
+			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(issue.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + issuesModel.getNumber() + "</font>";
-			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(issuesModel.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
-
-			issueNumber.setText(String.valueOf(issuesModel.getNumber()));
-			issueCommentsCount.setText(String.valueOf(issuesModel.getComments()));
+			this.issue = issue;
+			this.issueCommentsCount.setText(String.valueOf(issue.getComments()));
 
 			switch(timeFormat) {
 				case "pretty": {
 					PrettyTime prettyTime = new PrettyTime(new Locale(locale));
-					String createdTime = prettyTime.format(issuesModel.getCreated_at());
-					issueCreatedTime.setText(createdTime);
-					issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issuesModel.getCreated_at()), context));
+					String createdTime = prettyTime.format(issue.getCreated_at());
+					this.issueCreatedTime.setText(createdTime);
+					this.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreated_at()), context));
 					break;
 				}
 				case "normal": {
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-					String createdTime = formatter.format(issuesModel.getCreated_at());
-					issueCreatedTime.setText(createdTime);
+					String createdTime = formatter.format(issue.getCreated_at());
+					this.issueCreatedTime.setText(createdTime);
 					break;
 				}
 				case "normal1": {
 					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
-					String createdTime = formatter.format(issuesModel.getCreated_at());
-					issueCreatedTime.setText(createdTime);
+					String createdTime = formatter.format(issue.getCreated_at());
+					this.issueCreatedTime.setText(createdTime);
 					break;
 				}
 			}

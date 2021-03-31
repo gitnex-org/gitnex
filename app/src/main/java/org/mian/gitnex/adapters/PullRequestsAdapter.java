@@ -67,15 +67,11 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			isLoading = true;
 			loadMoreListener.onLoadMore();
-
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
-
 			((PullRequestsAdapter.PullRequestsHolder) holder).bindData(prList.get(position));
-
 		}
-
 	}
 
 	@Override
@@ -87,7 +83,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		else {
 			return 1;
 		}
-
 	}
 
 	@Override
@@ -99,13 +94,8 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	class PullRequestsHolder extends RecyclerView.ViewHolder {
 
-		private String userLoginId;
+		private PullRequests pullRequest;
 
-		private final TextView prNumber;
-		private final TextView prMergeable;
-		private final TextView prHeadBranch;
-		private final TextView prIsFork;
-		private final TextView prForkFullName;
 		private final ImageView assigneeAvatar;
 		private final TextView prTitle;
 		private final TextView prCreatedTime;
@@ -115,11 +105,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			super(itemView);
 
-			prNumber = itemView.findViewById(R.id.prNumber);
-			prMergeable = itemView.findViewById(R.id.prMergeable);
-			prHeadBranch = itemView.findViewById(R.id.prHeadBranch);
-			prIsFork = itemView.findViewById(R.id.prIsFork);
-			prForkFullName = itemView.findViewById(R.id.prForkFullName);
 			assigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
 			prTitle = itemView.findViewById(R.id.prTitle);
 			prCommentsCount = itemView.findViewById(R.id.prCommentsCount);
@@ -131,16 +116,25 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				Context context = v.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", prNumber.getText());
-				intent.putExtra("prMergeable", prMergeable.getText());
-				intent.putExtra("prHeadBranch", prHeadBranch.getText());
+				intent.putExtra("issueNumber", pullRequest.getNumber());
+				intent.putExtra("prMergeable", pullRequest.isMergeable());
+				intent.putExtra("prHeadBranch", pullRequest.getHead().getRef());
 
 				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("issueNumber", prNumber.getText().toString());
-				tinyDb.putString("prMergeable", prMergeable.getText().toString());
-				tinyDb.putString("prHeadBranch", prHeadBranch.getText().toString());
-				tinyDb.putString("prIsFork", prIsFork.getText().toString());
-				tinyDb.putString("prForkFullName", prForkFullName.getText().toString());
+				tinyDb.putString("issueNumber", String.valueOf(pullRequest.getNumber()));
+				tinyDb.putString("prMergeable", String.valueOf(pullRequest.isMergeable()));
+				tinyDb.putString("prHeadBranch", pullRequest.getHead().getRef());
+
+				if(pullRequest.getHead() != null && pullRequest.getHead().getRepo() != null) {
+					tinyDb.putString("prIsFork", String.valueOf(pullRequest.getHead().getRepo().isFork()));
+					tinyDb.putString("prForkFullName", pullRequest.getHead().getRepo().getFull_name());
+				}
+				else {
+					// pull was done from a deleted fork
+					tinyDb.putString("prIsFork", "true");
+					tinyDb.putString("prForkFullName", context.getString(R.string.prDeletedFork));
+				}
+
 				tinyDb.putString("issueType", "Pull");
 				context.startActivity(intent);
 
@@ -151,23 +145,33 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				Context context = v.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", prNumber.getText());
-				intent.putExtra("prMergeable", prMergeable.getText());
-				intent.putExtra("prHeadBranch", prHeadBranch.getText());
+				intent.putExtra("issueNumber", pullRequest.getNumber());
+				intent.putExtra("prMergeable", pullRequest.isMergeable());
+				intent.putExtra("prHeadBranch", pullRequest.getHead().getRef());
 
 				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("issueNumber", prNumber.getText().toString());
-				tinyDb.putString("prMergeable", prMergeable.getText().toString());
-				tinyDb.putString("prHeadBranch", prHeadBranch.getText().toString());
-				tinyDb.putString("prIsFork", prIsFork.getText().toString());
-				tinyDb.putString("prForkFullName", prForkFullName.getText().toString());
+				tinyDb.putString("issueNumber", String.valueOf(pullRequest.getNumber()));
+				tinyDb.putString("prMergeable", String.valueOf(pullRequest.isMergeable()));
+				tinyDb.putString("prHeadBranch", pullRequest.getHead().getRef());
+
+				if(pullRequest.getHead() != null && pullRequest.getHead().getRepo() != null) {
+					tinyDb.putString("prIsFork", String.valueOf(pullRequest.getHead().getRepo().isFork()));
+					tinyDb.putString("prForkFullName", pullRequest.getHead().getRepo().getFull_name());
+				}
+				else {
+					// pull was done from a deleted fork
+					tinyDb.putString("prIsFork", "true");
+					tinyDb.putString("prForkFullName", context.getString(R.string.prDeletedFork));
+				}
+
 				tinyDb.putString("issueType", "Pull");
 				context.startActivity(intent);
+
 			});
 
-			assigneeAvatar.setOnClickListener(loginId -> {
-
-				Context context = loginId.getContext();
+			assigneeAvatar.setOnClickListener(v -> {
+				Context context = v.getContext();
+				String userLoginId = pullRequest.getUser().getLogin();
 
 				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 			});
@@ -175,43 +179,32 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(PullRequests prModel) {
+		void bindData(PullRequests pullRequest) {
 
-			final TinyDB tinyDb = TinyDB.getInstance(context);
-			final String locale = tinyDb.getString("locale");
-			final String timeFormat = tinyDb.getString("dateFormat");
+			TinyDB tinyDb = TinyDB.getInstance(context);
+			String locale = tinyDb.getString("locale");
+			String timeFormat = tinyDb.getString("dateFormat");
 
-			userLoginId = prModel.getUser().getLogin();
+			PicassoService.getInstance(context).get()
+				.load(pullRequest.getUser().getAvatar_url())
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(8, 0))
+				.resize(120, 120)
+				.centerCrop()
+				.into(this.assigneeAvatar);
 
-			PicassoService.getInstance(context).get().load(prModel.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(assigneeAvatar);
+			this.pullRequest = pullRequest;
 
-			String prNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + prModel.getNumber() + "</font>";
-			prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + EmojiParser.parseToUnicode(prModel.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
+			String prNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + pullRequest.getNumber() + "</font>";
 
-			prNumber.setText(String.valueOf(prModel.getNumber()));
-			prMergeable.setText(String.valueOf(prModel.isMergeable()));
-			if(prModel.getHead() != null) {
-				prHeadBranch.setText(prModel.getHead().getRef());
-				if(prModel.getHead().getRepo() != null) {
-					prIsFork.setText(String.valueOf(prModel.getHead().getRepo().isFork()));
-					prForkFullName.setText(prModel.getHead().getRepo().getFull_name());
-				}
-				else {
-					// pull was done from a deleted fork
-					prIsFork.setText("true");
-					prForkFullName.setText(context.getString(R.string.prDeletedFork));
-				}
-			}
-			prCommentsCount.setText(String.valueOf(prModel.getComments()));
-
-			prCreatedTime.setText(TimeHelper.formatTime(prModel.getCreated_at(), new Locale(locale), timeFormat, context));
+			this.prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + EmojiParser.parseToUnicode(pullRequest.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
+			this.prCommentsCount.setText(String.valueOf(pullRequest.getComments()));
+			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreated_at(), new Locale(locale), timeFormat, context));
 
 			if(timeFormat.equals("pretty")) {
-				prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(prModel.getCreated_at()), context));
+				this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreated_at()), context));
 			}
-
 		}
-
 	}
 
 	static class LoadHolder extends RecyclerView.ViewHolder {

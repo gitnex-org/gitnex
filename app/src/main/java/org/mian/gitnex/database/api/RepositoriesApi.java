@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import org.mian.gitnex.database.dao.RepositoriesDao;
 import org.mian.gitnex.database.db.GitnexDatabase;
 import org.mian.gitnex.database.models.Repository;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import java.util.List;
 
 /**
@@ -47,7 +47,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
+			Log.e(Constants.repositoriesApi, e.toString());
 		}
 
 		return repositoryId;
@@ -63,7 +63,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
+			Log.e(Constants.repositoriesApi, e.toString());
 		}
 
 		return repository;
@@ -89,7 +89,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
+			Log.e(Constants.repositoriesApi, e.toString());
 		}
 
 		return checkRepository;
@@ -105,7 +105,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
+			Log.e(Constants.repositoriesApi, e.toString());
 		}
 
 		return repository;
@@ -121,7 +121,7 @@ public class RepositoriesApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.repositoriesApi, e.toString());
+			Log.e(Constants.repositoriesApi, e.toString());
 		}
 
 		return repository;

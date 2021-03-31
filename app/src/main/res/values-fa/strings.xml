@@ -479,7 +479,7 @@
     <string name="downloadFile">بارگیری این پرونده</string>
     <string name="waitLoadingDownloadFile">لطفا منتظر بمانید تا پرونده در حافظه بارگذاری شود</string>
     <string name="downloadFileSaved">پرونده با موفقیت ذخیره شد</string>
-    <string name="excludeFilesInFileViewer">This file type is not supported in file viewer. Download it instead from the three dotted menu?</string>
+    <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">حذف این پرونده</string>
     <string name="editFile">ویرایش این پرونده</string>
     <string name="deleteFileText">حذف %1$s</string>
@@ -530,7 +530,7 @@
     <string name="draftSaved">پیش نویس خودکار ذخیره شد.</string>
     <string name="appearanceHintText">پوسته‌ها، فونت‌ها، نشانگرها</string>
     <string name="fileViewerHintText">حالت PDF، پوسته کد منبع</string>
-    <string name="securityHintText">SSL certificates, cache</string>
+    <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">زبان‌ها</string>
     <string name="reportsHintText">گزارش‌های خرابی</string>
     <string name="rateAppHintText">اگر GitNex را می‌پسندید می‌توانید به آن امتیاز دهید</string>
@@ -562,6 +562,8 @@
     <string name="chooseColorSelectorHeader">انتخاب رنگ</string>
     <string name="newMessages">پیام‌های جدید</string>
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
+    <string name="mainNotificationChannelName">Notifications</string>
+    <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <string name="isRead">خوانده شده</string>
     <string name="isUnread">خوانده نشده</string>
     <string name="repoSettingsTitle">تنظیمات مخزن</string>
@@ -619,4 +621,13 @@
     <string name="biometricNotAvailable">Biometric features are currently unavailable</string>
     <string name="enrollBiometric">Enroll biometric from phone settings</string>
     <string name="copyLoginIdToClipBoard">Login ID \'%s\' copied to clipboard</string>
+    <!-- file viewer activity -->
+    <string name="fileViewerNotificationTitleStarted">Download in progress</string>
+    <string name="fileViewerNotificationDescriptionStarted">Downloading %s</string>
+    <string name="fileViewerNotificationTitleFinished">Download successful</string>
+    <string name="fileViewerNotificationDescriptionFinished">Downloaded %s</string>
+    <string name="fileViewerNotificationTitleFailed">Download failed</string>
+    <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
+    <string name="fileViewerNotificationChannelName">Download manager</string>
+    <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
 </resources>

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import org.mian.gitnex.database.dao.UserAccountsDao;
 import org.mian.gitnex.database.db.GitnexDatabase;
 import org.mian.gitnex.database.models.UserAccount;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import java.util.List;
 
 /**
@@ -50,7 +50,7 @@ public class UserAccountsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
+			Log.e(Constants.userAccountsApi, e.toString());
 		}
 
 		return accountId;
@@ -81,7 +81,7 @@ public class UserAccountsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
+			Log.e(Constants.userAccountsApi, e.toString());
 		}
 
 		return userAccount;
@@ -97,7 +97,7 @@ public class UserAccountsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
+			Log.e(Constants.userAccountsApi, e.toString());
 		}
 
 		return checkAccount;
@@ -118,7 +118,7 @@ public class UserAccountsApi {
 		}
 		catch(InterruptedException e) {
 
-			Log.e(StaticGlobalVariables.userAccountsApi, e.toString());
+			Log.e(Constants.userAccountsApi, e.toString());
 		}
 
 		return userAccounts;

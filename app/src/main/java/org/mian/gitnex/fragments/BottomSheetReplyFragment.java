@@ -25,7 +25,7 @@ import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.Objects;
@@ -266,11 +266,11 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			String draftType;
 			if(tinyDB.getString("issueType").equalsIgnoreCase("Issue")) {
 
-				draftType = StaticGlobalVariables.draftTypeIssue;
+				draftType = Constants.draftTypeIssue;
 			}
 			else if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
 
-				draftType = StaticGlobalVariables.draftTypePull;
+				draftType = Constants.draftTypePull;
 			}
 			else {
 

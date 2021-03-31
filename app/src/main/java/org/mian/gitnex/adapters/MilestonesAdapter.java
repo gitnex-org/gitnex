@@ -18,8 +18,8 @@ import org.gitnex.tea4j.models.Milestones;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.MilestoneActions;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import java.text.DateFormat;
@@ -41,7 +41,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false;
 	private boolean isMoreDataAvailable = true;
-	private String TAG = StaticGlobalVariables.tagMilestonesAdapter;
+	private String TAG = Constants.tagMilestonesAdapter;
 
 	public MilestonesAdapter(Context context, List<Milestones> dataListMain) {
 

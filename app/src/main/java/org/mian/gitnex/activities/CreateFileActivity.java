@@ -8,10 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
@@ -38,22 +34,16 @@ import retrofit2.Callback;
 
 public class CreateFileActivity extends BaseActivity {
 
-    public ImageView closeActivity;
-    private View.OnClickListener onClickListener;
-    private Button newFileCreate;
-
-    private EditText newFileName;
-    private EditText newFileContent;
-    private EditText newFileCommitMessage;
-    private AutoCompleteTextView newFileBranches;
-	private String filePath;
-	private String fileSha;
+	private ActivityCreateFileBinding binding;
 
 	public static final int FILE_ACTION_CREATE = 0;
 	public static final int FILE_ACTION_DELETE = 1;
 	public static final int FILE_ACTION_EDIT = 2;
 
 	private int fileAction = FILE_ACTION_CREATE;
+
+	private String filePath;
+	private String fileSha;
 
     private final List<String> branches = new ArrayList<>();
 
@@ -66,154 +56,127 @@ public class CreateFileActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
-	    ActivityCreateFileBinding activityCreateFileBinding = ActivityCreateFileBinding.inflate(getLayoutInflater());
-	    setContentView(activityCreateFileBinding.getRoot());
-
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        binding = ActivityCreateFileBinding.inflate(getLayoutInflater());
+	    setContentView(binding.getRoot());
 
         String repoFullName = tinyDB.getString("repoFullName");
         String[] parts = repoFullName.split("/");
         repoOwner = parts[0];
         repoName = parts[1];
 
-        closeActivity = activityCreateFileBinding.close;
-        newFileName = activityCreateFileBinding.newFileName;
-        newFileContent = activityCreateFileBinding.newFileContent;
-        newFileCommitMessage = activityCreateFileBinding.newFileCommitMessage;
-	    TextView toolbarTitle = activityCreateFileBinding.toolbarTitle;
+	    TextView toolbarTitle = binding.toolbarTitle;
 
-        newFileName.requestFocus();
-        assert imm != null;
-        imm.showSoftInput(newFileName, InputMethodManager.SHOW_IMPLICIT);
+        binding.newFileName.requestFocus();
 
-        initCloseListener();
+	    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert inputMethodManager != null;
+        inputMethodManager.showSoftInput(binding.newFileName, InputMethodManager.SHOW_IMPLICIT);
 
-        closeActivity.setOnClickListener(onClickListener);
-
-        newFileCreate = activityCreateFileBinding.newFileCreate;
-	    newFileContent.setOnTouchListener((touchView, motionEvent) -> {
+	    binding.close.setOnClickListener(view -> finish());
+	    binding.newFileContent.setOnTouchListener((touchView, motionEvent) -> {
 
 		    touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
-		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 &&
+			    (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
 
 			    touchView.getParent().requestDisallowInterceptTouchEvent(false);
 		    }
+
 		    return false;
+
 	    });
 
 	    if(getIntent().getStringExtra("filePath") != null && getIntent().getIntExtra("fileAction", FILE_ACTION_DELETE) == FILE_ACTION_DELETE) {
 
 		    fileAction = getIntent().getIntExtra("fileAction", FILE_ACTION_DELETE);
-
 		    filePath = getIntent().getStringExtra("filePath");
-		    String fileContents = getIntent().getStringExtra("fileContents");
 		    fileSha = getIntent().getStringExtra("fileSha");
 
 		    toolbarTitle.setText(getString(R.string.deleteFileText, filePath));
 
-		    newFileCreate.setText(R.string.deleteFile);
-		    newFileName.setText(filePath);
-		    newFileName.setEnabled(false);
-		    newFileName.setFocusable(false);
+		    binding.newFileCreate.setText(R.string.deleteFile);
 
-		    newFileContent.setText(fileContents);
-		    newFileContent.setEnabled(false);
-		    newFileContent.setFocusable(false);
+		    binding.newFileNameLayout.setVisibility(View.GONE);
+		    binding.newFileContentLayout.setVisibility(View.GONE);
 
 	    }
 
 	    if(getIntent().getStringExtra("filePath") != null && getIntent().getIntExtra("fileAction", FILE_ACTION_EDIT) == FILE_ACTION_EDIT) {
 
 		    fileAction = getIntent().getIntExtra("fileAction", FILE_ACTION_EDIT);
-
 		    filePath = getIntent().getStringExtra("filePath");
-		    String fileContents = getIntent().getStringExtra("fileContents");
 		    fileSha = getIntent().getStringExtra("fileSha");
 
 		    toolbarTitle.setText(getString(R.string.editFileText, filePath));
 
-		    newFileCreate.setText(R.string.editFile);
-		    newFileName.setText(filePath);
-		    newFileName.setEnabled(false);
-		    newFileName.setFocusable(false);
+		    binding.newFileCreate.setText(R.string.editFile);
+		    binding.newFileName.setText(filePath);
+		    binding.newFileName.setEnabled(false);
+		    binding.newFileName.setFocusable(false);
 
-		    newFileContent.setText(fileContents);
+		    binding.newFileContent.setText(getIntent().getStringExtra("fileContents"));
 
 	    }
 
-        initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
-
-        newFileBranches = activityCreateFileBinding.newFileBranches;
         getBranches(repoOwner, repoName);
 
         disableProcessButton();
 
 	    NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
-	    networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> newFileCreate.setEnabled(hasNetworkConnection));
+	    networkStatusObserver.registerNetworkStatusListener(binding.newFileCreate::setEnabled);
 
-	    newFileCreate.setOnClickListener(createFileListener);
+	    binding.newFileCreate.setOnClickListener(v -> processNewFile());
 
     }
 
-    private final View.OnClickListener createFileListener = v -> processNewFile();
-
     private void processNewFile() {
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+        String newFileName = binding.newFileName.getText() != null ? binding.newFileName.getText().toString() : "";
+        String newFileContent = binding.newFileContent.getText() != null ? binding.newFileContent.getText().toString() : "";
+        String newFileBranchName = binding.newFileBranches.getText() != null ? binding.newFileBranches.getText().toString() : "";
+        String newFileCommitMessage = binding.newFileCommitMessage.getText() != null ? binding.newFileCommitMessage.getText().toString() : "";
 
-        String newFileName_ = newFileName.getText().toString();
-        String newFileContent_ = newFileContent.getText().toString();
-        String newFileBranchName_ = newFileBranches.getText().toString();
-        String newFileCommitMessage_ = newFileCommitMessage.getText().toString();
-
-        if(!connToInternet) {
-
+        if(!AppUtil.hasNetworkConnection(appCtx)) {
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
         }
 
-        if(newFileName_.equals("") || newFileContent_.equals("") || newFileCommitMessage_.equals("")) {
-
+        if(((newFileName.isEmpty() || newFileContent.isEmpty()) && fileAction != FILE_ACTION_DELETE) || newFileCommitMessage.isEmpty()) {
             Toasty.error(ctx, getString(R.string.newFileRequiredFields));
             return;
         }
 
-	    if(!AppUtil.checkStringsWithDash(newFileBranchName_)) {
-
+	    if(!AppUtil.checkStringsWithDash(newFileBranchName)) {
 		    Toasty.error(ctx, getString(R.string.newFileInvalidBranchName));
 		    return;
 	    }
 
-        if(newFileCommitMessage_.length() > 255) {
-
+        if(newFileCommitMessage.length() > 255) {
             Toasty.warning(ctx, getString(R.string.newFileCommitMessageError));
+            return;
         }
-        else {
 
-            disableProcessButton();
+        disableProcessButton();
 
-            switch(fileAction) {
+        switch(fileAction) {
 
-	            case FILE_ACTION_CREATE:
-		            createNewFile(Authorization.get(ctx), repoOwner, repoName, newFileName_, AppUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_);
-		            break;
+            case FILE_ACTION_CREATE:
+	            createNewFile(repoOwner, repoName, newFileName, AppUtil.encodeBase64(newFileContent), newFileCommitMessage, newFileBranchName);
+	            break;
 
-	            case FILE_ACTION_DELETE:
-		            deleteFile(Authorization.get(ctx), repoOwner, repoName, filePath, newFileCommitMessage_, newFileBranchName_, fileSha);
-		            break;
+            case FILE_ACTION_DELETE:
+	            deleteFile(repoOwner, repoName, filePath, newFileCommitMessage, newFileBranchName, fileSha);
+	            break;
 
-	            case FILE_ACTION_EDIT:
-		            editFile(Authorization.get(ctx), repoOwner, repoName, filePath,
-			            AppUtil.encodeBase64(newFileContent_), newFileCommitMessage_, newFileBranchName_, fileSha);
-	            	break;
+            case FILE_ACTION_EDIT:
+	            editFile(repoOwner, repoName, filePath, AppUtil.encodeBase64(newFileContent), newFileCommitMessage, newFileBranchName, fileSha);
+                break;
 
-            }
         }
     }
 
-    private void createNewFile(final String token, String repoOwner, String repoName, String fileName, String fileContent, String fileCommitMessage, String branchName) {
+    private void createNewFile(String repoOwner, String repoName, String fileName, String fileContent, String fileCommitMessage, String branchName) {
 
         NewFile createNewFileJsonStr = branches.contains(branchName) ?
 	        new NewFile(branchName, fileContent, fileCommitMessage, "") :
@@ -221,7 +184,7 @@ public class CreateFileActivity extends BaseActivity {
 
         Call<JsonElement> call = RetrofitClient
                 .getApiInterface(ctx)
-                .createNewFile(token, repoOwner, repoName, fileName, createNewFileJsonStr);
+                .createNewFile(Authorization.get(ctx), repoOwner, repoName, fileName, createNewFileJsonStr);
 
         call.enqueue(new Callback<JsonElement>() {
 
@@ -268,7 +231,7 @@ public class CreateFileActivity extends BaseActivity {
 
     }
 
-	private void deleteFile(final String token, String repoOwner, String repoName, String fileName, String fileCommitMessage, String branchName, String fileSha) {
+	private void deleteFile(String repoOwner, String repoName, String fileName, String fileCommitMessage, String branchName, String fileSha) {
 
     	DeleteFile deleteFileJsonStr = branches.contains(branchName) ?
 		    new DeleteFile(branchName, fileCommitMessage, "", fileSha) :
@@ -276,42 +239,42 @@ public class CreateFileActivity extends BaseActivity {
 
 		Call<JsonElement> call = RetrofitClient
 			.getApiInterface(ctx)
-			.deleteFile(token, repoOwner, repoName, fileName, deleteFileJsonStr);
+			.deleteFile(Authorization.get(ctx), repoOwner, repoName, fileName, deleteFileJsonStr);
 
 		call.enqueue(new Callback<JsonElement>() {
 
 			@Override
 			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-				if(response.code() == 200) {
+				switch(response.code()) {
 
-					enableProcessButton();
-					Toasty.info(ctx, getString(R.string.deleteFileMessage, tinyDB.getString("repoBranch")));
-					getIntent().removeExtra("filePath");
-					getIntent().removeExtra("fileSha");
-					getIntent().removeExtra("fileContents");
-					finish();
-				}
-				else if(response.code() == 401) {
+					case 200:
+						enableProcessButton();
+						Toasty.info(ctx, getString(R.string.deleteFileMessage, tinyDB.getString("repoBranch")));
+						getIntent().removeExtra("filePath");
+						getIntent().removeExtra("fileSha");
+						getIntent().removeExtra("fileContents");
+						finish();
+						break;
 
-					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-						getResources().getString(R.string.alertDialogTokenRevokedMessage),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-				}
-				else {
+					case 401:
+						enableProcessButton();
+						AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
+							getResources().getString(R.string.alertDialogTokenRevokedMessage),
+							getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+							getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+						break;
 
-					if(response.code() == 404) {
-
+					case 404:
 						enableProcessButton();
 						Toasty.info(ctx, getString(R.string.apiNotFound));
-					}
-					else {
+						break;
 
+					default:
 						enableProcessButton();
 						Toasty.info(ctx, getString(R.string.genericError));
-					}
+						break;
+
 				}
 			}
 
@@ -325,7 +288,7 @@ public class CreateFileActivity extends BaseActivity {
 
 	}
 
-	private void editFile(final String token, String repoOwner, String repoName, String fileName, String fileContent, String fileCommitMessage, String branchName, String fileSha) {
+	private void editFile(String repoOwner, String repoName, String fileName, String fileContent, String fileCommitMessage, String branchName, String fileSha) {
 
 		EditFile editFileJsonStr = branches.contains(branchName) ?
 			new EditFile(branchName, fileCommitMessage, "", fileSha, fileContent) :
@@ -333,7 +296,7 @@ public class CreateFileActivity extends BaseActivity {
 
 		Call<JsonElement> call = RetrofitClient
 			.getApiInterface(ctx)
-			.editFile(token, repoOwner, repoName, fileName, editFileJsonStr);
+			.editFile(Authorization.get(ctx), repoOwner, repoName, fileName, editFileJsonStr);
 
 		call.enqueue(new Callback<JsonElement>() {
 
@@ -402,8 +365,8 @@ public class CreateFileActivity extends BaseActivity {
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateFileActivity.this, R.layout.list_spinner_items, branches);
 
-                    newFileBranches.setAdapter(adapter);
-                    newFileBranches.setText(tinyDB.getString("repoBranch"), false);
+	                binding.newFileBranches.setAdapter(adapter);
+	                binding.newFileBranches.setText(tinyDB.getString("repoBranch"), false);
 
 	                enableProcessButton();
 
@@ -419,19 +382,7 @@ public class CreateFileActivity extends BaseActivity {
 
     }
 
-    private void initCloseListener() {
-
-        onClickListener = view -> finish();
-    }
-
-    private void disableProcessButton() {
-
-        newFileCreate.setEnabled(false);
-    }
-
-    private void enableProcessButton() {
-
-        newFileCreate.setEnabled(true);
-    }
+    private void disableProcessButton() { binding.newFileCreate.setEnabled(false); }
+    private void enableProcessButton() { binding.newFileCreate.setEnabled(true); }
 
 }

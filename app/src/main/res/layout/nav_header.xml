@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navHeaderFrame"
     android:layout_width="match_parent"
     android:layout_height="200dp">
@@ -10,106 +11,79 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/generalImgContentText"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <eightbitlab.com.blurview.BlurView
-        android:id="@+id/blurView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:blurOverlayColor="@color/blurColor">
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:paddingTop="16dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/userAvatar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:contentDescription="@string/generalImgContentText"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/navRecyclerViewUserAccounts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/userAvatar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxHeight="24dp"
-                    android:maxWidth="24dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="5dp"
-                    android:contentDescription="@string/generalImgContentText"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingEnd="25dp"
-                    android:paddingStart="15dp"
-                    android:paddingTop="6dp"
-                    android:orientation="horizontal">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/navRecyclerViewUserAccounts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:reverseLayout="true"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:baselineAligned="false">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".82"
-                    android:orientation="vertical"
-                    android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:id="@+id/userFullname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:textSize="18sp"
-                        android:textIsSelectable="true"
-                        android:textColor="@color/colorWhite"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="5dp" />
-
-                    <TextView
-                        android:id="@+id/userEmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textIsSelectable="true"
-                        android:textColor="@color/colorWhite"
-                        android:gravity="start"
-                        android:layout_gravity="center_vertical"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="5dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:background="?attr/dividerColor" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:reverseLayout="true" />
 
         </LinearLayout>
 
-    </eightbitlab.com.blurview.BlurView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:baselineAligned="false"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/userFullname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textIsSelectable="true"
+                android:textSize="18sp"
+                tools:text="Test user" />
+
+            <TextView
+                android:id="@+id/userEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="start"
+                android:textColor="@color/colorWhite"
+                android:textIsSelectable="true"
+                android:textSize="14sp"
+                tools:text="example@example.com" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:background="?attr/dividerColor" />
 
 </RelativeLayout>

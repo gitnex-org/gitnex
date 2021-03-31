@@ -7,6 +7,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.notifications.Notifications;
 
 /**
  * Author M M Arif
@@ -77,6 +78,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 		}
 
 		AppUtil.setAppLocale(getResources(), tinyDB.getString("locale"));
+
+		Notifications.startWorker(appCtx);
 	}
 
 }

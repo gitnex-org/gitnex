@@ -14,8 +14,8 @@ import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.FontsOverride;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.notifications.Notifications;
 
@@ -28,7 +28,9 @@ import org.mian.gitnex.notifications.Notifications;
 	resTitle = R.string.crashTitle,
 	resChannelName = R.string.setCrashReports,
 	resText = R.string.crashMessage)
-@AcraCore(reportContent = { ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.STACK_TRACE })
+@AcraCore(reportContent = {
+	ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
+	ReportField.STACK_TRACE, ReportField.AVAILABLE_MEM_SIZE, ReportField.BRAND })
 
 public class MainApplication extends Application {
 
@@ -69,20 +71,26 @@ public class MainApplication extends Application {
 
 		}
 
+		Notifications.createChannels(appCtx);
+	}
+
+	@Override
+	protected void attachBaseContext(Context context) {
+		super.attachBaseContext(context);
+
+		tinyDB = TinyDB.getInstance(context);
+
 		if(tinyDB.getBoolean("crashReportingEnabled")) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);
 
 			ACRABuilder.setBuildConfigClass(BuildConfig.class).setReportFormat(StringFormat.KEY_VALUE_LIST);
-			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setReportAsFile(true).setMailTo(getResources().getString(R.string.appEmail)).setSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil.getAppBuildNo(getApplicationContext()))).setEnabled(true);
+			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setReportAsFile(true).setMailTo(getResources().getString(R.string.appEmail)).setSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil
+				.getAppBuildNo(context))).setEnabled(true);
 			ACRABuilder.getPluginConfigurationBuilder(LimiterConfigurationBuilder.class).setEnabled(true);
 
 			ACRA.init(this, ACRABuilder);
-
 		}
-
-		Notifications.startWorker(appCtx);
-
 	}
 
 	private void setDefaults() {
@@ -121,7 +129,7 @@ public class MainApplication extends Application {
 		// setting default polling delay
 		if(tinyDB.getInt("pollingDelayMinutes", 0) <= 0) {
 
-			tinyDB.putInt("pollingDelayMinutes", StaticGlobalVariables.defaultPollingDelay);
+			tinyDB.putInt("pollingDelayMinutes", Constants.defaultPollingDelay);
 		}
 
 		// disable biometric by default

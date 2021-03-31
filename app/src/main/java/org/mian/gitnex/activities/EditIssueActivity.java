@@ -27,7 +27,7 @@ import org.mian.gitnex.databinding.ActivityEditIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import java.text.DateFormat;
@@ -45,7 +45,7 @@ import retrofit2.Callback;
 public class EditIssueActivity extends BaseActivity implements View.OnClickListener {
 
     private View.OnClickListener onClickListener;
-    private int resultLimit = StaticGlobalVariables.resultLimitOldGiteaInstances;
+    private int resultLimit = Constants.resultLimitOldGiteaInstances;
 
     private EditText editIssueTitle;
     private EditText editIssueDescription;
@@ -93,7 +93,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         // if gitea is 1.12 or higher use the new limit
         if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 
-            resultLimit = StaticGlobalVariables.resultLimitNewGiteaInstances;
+            resultLimit = Constants.resultLimitNewGiteaInstances;
         }
 
         editIssueTitle.requestFocus();

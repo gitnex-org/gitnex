@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsNotificationsBinding;
-import org.mian.gitnex.helpers.StaticGlobalVariables;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.notifications.Notifications;
 
@@ -33,7 +33,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 		viewBinding.close.setOnClickListener(onClickListener);
 
-		viewBinding.pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), tinyDB.getInt("pollingDelayMinutes", StaticGlobalVariables.defaultPollingDelay)));
+		viewBinding.pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay)));
 		viewBinding.chooseColorState.setCardBackgroundColor(tinyDB.getInt("notificationsLightColor", Color.GREEN));
 
 		viewBinding.enableNotificationsMode.setChecked(tinyDB.getBoolean("notificationsEnabled", true));
@@ -52,9 +52,9 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.pollingDelayFrame.setOnClickListener(v -> {
 
 			NumberPicker numberPicker = new NumberPicker(ctx);
-			numberPicker.setMinValue(StaticGlobalVariables.minimumPollingDelay);
-			numberPicker.setMaxValue(StaticGlobalVariables.maximumPollingDelay);
-			numberPicker.setValue(tinyDB.getInt("pollingDelayMinutes", StaticGlobalVariables.defaultPollingDelay));
+			numberPicker.setMinValue(Constants.minimumPollingDelay);
+			numberPicker.setMaxValue(Constants.maximumPollingDelay);
+			numberPicker.setValue(tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay));
 			numberPicker.setWrapSelectorWheel(true);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
@@ -76,6 +76,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
 			builder.setView(numberPicker);
 			builder.create().show();
+
 		});
 
 		// lights switcher

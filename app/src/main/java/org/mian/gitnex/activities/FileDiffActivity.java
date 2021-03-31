@@ -1,13 +1,11 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import org.gitnex.tea4j.models.FileDiffView;
 import org.mian.gitnex.R;
@@ -15,6 +13,7 @@ import org.mian.gitnex.adapters.FilesDiffAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityFileDiffBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -23,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Author M M Arif
@@ -52,8 +51,6 @@ public class FileDiffActivity extends BaseActivity {
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
 		final String repoName = parts[1];
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 		ImageView closeActivity = activityFileDiffBinding.close;
 		toolbarTitle = activityFileDiffBinding.toolbarTitle;
@@ -71,79 +68,68 @@ public class FileDiffActivity extends BaseActivity {
 		String pullIndex = tinyDb.getString("issueNumber");
 
 		boolean apiCall = !new Version(tinyDb.getString("giteaVersion")).less("1.13.0");
-		getPullDiffContent(repoOwner, repoName, pullIndex, instanceToken, apiCall);
+		getPullDiffContent(repoOwner, repoName, pullIndex, apiCall);
 
 	}
 
-	private void getPullDiffContent(String owner, String repo, String pullIndex, String token, boolean apiCall) {
+	private void getPullDiffContent(String owner, String repo, String pullIndex, boolean apiCall) {
 
-		Call<ResponseBody> call;
-		if(apiCall) {
+		Thread thread = new Thread(() -> {
 
-			call = RetrofitClient.getApiInterface(ctx).getPullDiffContent(token, owner, repo, pullIndex);
-		}
-		else {
+			Call<ResponseBody> call = apiCall ?
+				RetrofitClient.getApiInterface(ctx).getPullDiffContent(Authorization.get(ctx), owner, repo, pullIndex) :
+				RetrofitClient.getWebInterface(ctx).getPullDiffContent(Authorization.getWeb(ctx), owner, repo, pullIndex);
 
-			call = RetrofitClient.getWebInterface(ctx).getPullDiffContent(owner, repo, pullIndex);
-		}
+			try {
 
-		call.enqueue(new Callback<ResponseBody>() {
+				Response<ResponseBody> response = call.execute();
+				assert response.body() != null;
 
-			@Override
-			public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
+				switch(response.code()) {
 
-				if(response.code() == 200) {
+					case 200:
+						List<FileDiffView> fileDiffViews = ParseDiff.getFileDiffViewArray(response.body().string());
 
-					try {
+						int filesCount = fileDiffViews.size();
 
-						assert response.body() != null;
+						String toolbarTitleText = (filesCount > 1) ?
+							getResources().getString(R.string.fileDiffViewHeader, Integer.toString(filesCount)) :
+							getResources().getString(R.string.fileDiffViewHeaderSingle, Integer.toString(filesCount));
 
-						List<FileDiffView> fileContentsArray = ParseDiff.getFileDiffViewArray(response.body().string());
+						FilesDiffAdapter adapter = new FilesDiffAdapter(ctx, getSupportFragmentManager(), fileDiffViews);
 
-						int filesCount = fileContentsArray.size();
-						if(filesCount > 1) {
+						runOnUiThread(() -> {
+							toolbarTitle.setText(toolbarTitleText);
+							mListView.setAdapter(adapter);
+							mProgressBar.setVisibility(View.GONE);
+						});
+						break;
 
-							toolbarTitle.setText(getResources().getString(R.string.fileDiffViewHeader, Integer.toString(filesCount)));
-						}
-						else {
+					case 401:
+						AlertDialogs.authorizationTokenRevokedDialog(ctx,
+							getString(R.string.alertDialogTokenRevokedTitle),
+							getString(R.string.alertDialogTokenRevokedMessage),
+							getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
+							getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+						break;
 
-							toolbarTitle.setText(getResources().getString(R.string.fileDiffViewHeaderSingle, Integer.toString(filesCount)));
-						}
+					case 403:
+						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						break;
 
-						FilesDiffAdapter adapter = new FilesDiffAdapter(ctx, getSupportFragmentManager(), fileContentsArray);
-						mListView.setAdapter(adapter);
+					case 404:
+						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+						break;
 
-						mProgressBar.setVisibility(View.GONE);
-					}
-					catch(IOException e) {
+					default:
+						Toasty.error(ctx, getString(R.string.labelGeneralError));
 
-						e.printStackTrace();
-					}
 				}
-				else if(response.code() == 401) {
+			} catch(IOException ignored) {}
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
-				}
-				else if(response.code() == 403) {
-
-					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-				}
-				else if(response.code() == 404) {
-
-					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-				}
-				else {
-
-					Toasty.error(ctx, getString(R.string.labelGeneralError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
-			}
 		});
+
+		thread.start();
 
 	}
 
@@ -153,6 +139,7 @@ public class FileDiffActivity extends BaseActivity {
 
 			getIntent().removeExtra("singleFileName");
 			finish();
+
 		};
 	}
 

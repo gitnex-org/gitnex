@@ -15,7 +15,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
 import org.mian.gitnex.activities.SettingsDraftsActivity;
-import org.mian.gitnex.activities.SettingsFileViewerActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsNotificationsActivity;
 import org.mian.gitnex.activities.SettingsReportsActivity;
@@ -54,8 +53,6 @@ public class SettingsFragment extends Fragment {
 
 		fragmentSettingsBinding.appearanceFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
-		fragmentSettingsBinding.fileViewerFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsFileViewerActivity.class)));
-
 		fragmentSettingsBinding.draftsFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsDraftsActivity.class)));
 
 		fragmentSettingsBinding.securityFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
@@ -71,6 +68,7 @@ public class SettingsFragment extends Fragment {
 		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(aboutApp -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit());
 
 		return fragmentSettingsBinding.getRoot();
+
 	}
 
 	public void rateThisApp() {

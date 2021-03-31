@@ -23,4 +23,12 @@ public class Authorization {
 		return  "token " + tinyDb.getString(loginUid + "-token");
 
 	}
+
+	public static String getWeb(Context context) {
+
+		TinyDB tinyDb = TinyDB.getInstance(context);
+		return Credentials.basic("", tinyDb.getString(tinyDb.getString("loginUid") + "-token"));
+
+	}
+
 }
