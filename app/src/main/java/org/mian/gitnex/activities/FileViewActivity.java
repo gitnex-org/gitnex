@@ -240,23 +240,23 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 					switch(response.code()) {
 
 						case 401:
-							AlertDialogs.authorizationTokenRevokedDialog(ctx,
+							runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx,
 								getResources().getString(R.string.alertDialogTokenRevokedTitle),
 								getResources().getString(R.string.alertDialogTokenRevokedMessage),
 								getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton)));
 							break;
 
 						case 403:
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							runOnUiThread(() -> Toasty.error(ctx, ctx.getString(R.string.authorizeError)));
 							break;
 
 						case 404:
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							runOnUiThread(() -> Toasty.warning(ctx, ctx.getString(R.string.apiNotFound)));
 							break;
 
 						default:
-							Toasty.error(ctx, getString(R.string.labelGeneralError));
+							runOnUiThread(() -> Toasty.error(ctx, getString(R.string.labelGeneralError)));
 
 					}
 				}
