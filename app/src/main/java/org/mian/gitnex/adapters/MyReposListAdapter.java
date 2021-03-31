@@ -292,7 +292,7 @@ public class MyReposListAdapter extends RecyclerView.Adapter<MyReposListAdapter.
 		}
 		holder.repoFullName.setText(currentItem.getFullName());
 		if(currentItem.getPrivateFlag()) {
-			holder.repoPrivatePublic.setImageResource(R.drawable.ic_lock);
+			holder.repoPrivatePublic.setVisibility(View.VISIBLE);
 			holder.repoType.setText(R.string.strPrivate);
 		}
 		else {
