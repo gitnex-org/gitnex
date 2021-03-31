@@ -322,7 +322,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 							@Override
 							public void onSuccess() {
-								int textColor = new ColorInverter().getImageViewContrastColor(userAvatar);
+								int textColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
 
 								userFullName.setTextColor(textColor);
 								userEmail.setTextColor(textColor);

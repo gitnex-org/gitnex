@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
 
 			    @Override
 			    public void onSuccess() {
-				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatar);
+				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
 
 				    userFullName.setTextColor(invertedColor);
 				    divider.setBackgroundColor(invertedColor);
