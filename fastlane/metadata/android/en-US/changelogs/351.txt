@@ -1,0 +1,13 @@
+3.5.1
+
+Update: Translation updates
+Bugfix: Fix crash on profile view
+Bugfix: Fix empty tags in file viewer (temporary fix, upstream issue)
+Bugfix: Fix sending logs on crash
+Bugfix: Fix workmanager errors
+Bugfix: Fix private repo icon
+Bugfix: Fix launch toast messages on UI thread
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Blog: https://gitnex.codeberg.page/posts/350.html
