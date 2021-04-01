@@ -476,7 +476,7 @@
     <string name="downloadFile">下载此文件</string>
     <string name="waitLoadingDownloadFile">请等待文件加载到内存</string>
     <string name="downloadFileSaved">文件保存成功</string>
-    <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
+    <string name="excludeFilesInFileViewer">文件查看器不支持此文件类型/大小。你可以从菜单下载。</string>
     <string name="deleteFile">删除此文件</string>
     <string name="editFile">编辑此文件</string>
     <string name="deleteFileText">删除 %1$s</string>
@@ -527,7 +527,7 @@
     <string name="draftSaved">草稿已自动保存。</string>
     <string name="appearanceHintText">主题、字体、徽章</string>
     <string name="fileViewerHintText">PDF 模式，源代码主题</string>
-    <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
+    <string name="securityHintText">生物特征认证、SSL证书、缓存</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
     <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
@@ -559,8 +559,8 @@
     <string name="chooseColorSelectorHeader">选择颜色</string>
     <string name="newMessages">新消息</string>
     <string name="youHaveGotNewNotifications">您有%d条新通知</string>
-    <string name="mainNotificationChannelName">Notifications</string>
-    <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
+    <string name="mainNotificationChannelName">通知</string>
+    <string name="mainNotificationChannelDescription">这是 GitNex 的主通知通道。</string>
     <string name="isRead">已读</string>
     <string name="isUnread">未读</string>
     <string name="repoSettingsTitle">存储库设置</string>
@@ -619,12 +619,12 @@
     <string name="enrollBiometric">从手机设置中注册生物识别</string>
     <string name="copyLoginIdToClipBoard">登录 ID \'%s\' 已复制到剪贴板</string>
     <!-- file viewer activity -->
-    <string name="fileViewerNotificationTitleStarted">Download in progress</string>
-    <string name="fileViewerNotificationDescriptionStarted">Downloading %s</string>
-    <string name="fileViewerNotificationTitleFinished">Download successful</string>
-    <string name="fileViewerNotificationDescriptionFinished">Downloaded %s</string>
-    <string name="fileViewerNotificationTitleFailed">Download failed</string>
-    <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
-    <string name="fileViewerNotificationChannelName">Download manager</string>
-    <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
+    <string name="fileViewerNotificationTitleStarted">正在下载</string>
+    <string name="fileViewerNotificationDescriptionStarted">正在下载 %s</string>
+    <string name="fileViewerNotificationTitleFinished">下载成功</string>
+    <string name="fileViewerNotificationDescriptionFinished">已下载 %s</string>
+    <string name="fileViewerNotificationTitleFailed">下载失败</string>
+    <string name="fileViewerNotificationDescriptionFailed">无法下载 %s</string>
+    <string name="fileViewerNotificationChannelName">下载管理器</string>
+    <string name="fileViewerNotificationChannelDescription">显示当前下载的进度</string>
 </resources>
