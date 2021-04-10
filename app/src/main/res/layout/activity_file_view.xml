@@ -83,22 +83,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/pdfViewFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/primaryBackgroundColor"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <com.github.barteksc.pdfviewer.PDFView
-                    android:id="@+id/pdfView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/primaryBackgroundColor" />
-
-            </LinearLayout>
-
             <org.mian.gitnex.helpers.views.SyntaxHighlightedArea
                 android:id="@+id/contents"
                 android:layout_width="match_parent"

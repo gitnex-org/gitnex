@@ -84,7 +84,6 @@ Thanks to all the open source libraries, contributors and donators.
 - [HamidrezaAmz/BreadcrumbsView](https://github.com/HamidrezaAmz/BreadcrumbsView)
 - [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)
 - [apache/commons](https://github.com/apache/commons-io)
-- [barteksc/AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
 - [ge0rg/MemorizingTrustManager](https://github.com/ge0rg/MemorizingTrustManager)
 - [mikaelhg/urlbuilder](https://github.com/mikaelhg/urlbuilder)
 - [ACRA/acra](https://github.com/ACRA/acra)
