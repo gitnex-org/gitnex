@@ -305,7 +305,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 			if(!tinyDB.getBoolean("enableMarkdownInFileView")) {
 
-				new Markdown(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
+				Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
 
 				binding.contents.setVisibility(View.GONE);
 				binding.markdownFrame.setVisibility(View.VISIBLE);

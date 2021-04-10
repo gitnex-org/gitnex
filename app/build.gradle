@@ -112,5 +112,6 @@ dependencies {
     implementation "org.codeberg.gitnex:tea4j:1.0.5"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
     implementation 'androidx.biometric:biometric:1.1.0'
+    implementation 'com.github.chrisvest:stormpot:2.4.1'
 
 }

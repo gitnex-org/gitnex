@@ -332,7 +332,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			.centerCrop()
 			.into(holder.avatar);
 
-		new Markdown(ctx, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment);
+		Markdown.render(ctx, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment);
 
 		StringBuilder informationBuilder = null;
 		if(issueComment.getCreated_at() != null) {
@@ -349,9 +349,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			}
 
 			if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
-
 				if(informationBuilder != null) {
-
 					informationBuilder.append(ctx.getString(R.string.colorfulBulletSpan)).append(ctx.getString(R.string.modifiedText));
 				}
 			}

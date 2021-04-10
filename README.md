@@ -88,6 +88,7 @@ Thanks to all the open source libraries, contributors and donators.
 - [ge0rg/MemorizingTrustManager](https://github.com/ge0rg/MemorizingTrustManager)
 - [mikaelhg/urlbuilder](https://github.com/mikaelhg/urlbuilder)
 - [ACRA/acra](https://github.com/ACRA/acra)
+- [chrisvest/stormpot](https://github.com/chrisvest/stormpot)
 
 #### Icon sets
 - [feathericons/feather](https://github.com/feathericons/feather)

@@ -127,7 +127,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 	    holder.repoInfo.setText(headTitle);
 	    holder.draftWithRepository = currentItem;
 
-	    new Markdown(mCtx, currentItem.getDraftText(), holder.draftText);
+	    Markdown.render(mCtx, currentItem.getDraftText(), holder.draftText);
 
 	    if(!currentItem.getCommentId().equalsIgnoreCase("new")) {
 		    holder.editCommentStatus.setVisibility(View.VISIBLE);
