@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -93,6 +94,14 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 		Toolbar toolbar = findViewById(R.id.toolbar);
 
 		TextView toolbarTitle = findViewById(R.id.toolbar_title);
+		ImageView repoTypeToolbar = findViewById(R.id.repoTypeToolbar);
+
+		if(tinyDB.getString("repoType").equalsIgnoreCase("private")) {
+			repoTypeToolbar.setVisibility(View.VISIBLE);
+		}
+		else {
+			repoTypeToolbar.setVisibility(View.GONE);
+		}
 		toolbarTitle.setText(repositoryName);
 
 		setSupportActionBar(toolbar);
@@ -267,46 +276,49 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 		int id = item.getItemId();
 
-		switch(id) {
+		if(id == android.R.id.home) {
 
-			case android.R.id.home:
-				finish();
-				return true;
-
-			case R.id.repoMenu:
-				BottomSheetRepoFragment bottomSheet = new BottomSheetRepoFragment();
-				bottomSheet.show(getSupportFragmentManager(), "repoBottomSheet");
-				return true;
-
-			case R.id.filter:
-				BottomSheetIssuesFilterFragment filterBottomSheet = new BottomSheetIssuesFilterFragment();
-				filterBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuBottomSheet");
-				return true;
-
-			case R.id.filterPr:
-				BottomSheetPullRequestFilterFragment filterPrBottomSheet = new BottomSheetPullRequestFilterFragment();
-				filterPrBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuPrBottomSheet");
-				return true;
-
-			case R.id.filterMilestone:
-				BottomSheetMilestonesFilterFragment filterMilestoneBottomSheet = new BottomSheetMilestonesFilterFragment();
-				filterMilestoneBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
-				return true;
-
-			case R.id.switchBranches:
-				chooseBranch();
-				return true;
-
-			case R.id.branchCommits:
-				Intent intent = new Intent(ctx, CommitsActivity.class);
-				intent.putExtra("branchName", tinyDB.getString("repoBranch"));
-				ctx.startActivity(intent);
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(item);
-
+			finish();
+			return true;
 		}
+		else if(id == R.id.repoMenu) {
+
+			BottomSheetRepoFragment bottomSheet = new BottomSheetRepoFragment();
+			bottomSheet.show(getSupportFragmentManager(), "repoBottomSheet");
+			return true;
+		}
+		else if(id == R.id.filter) {
+
+			BottomSheetIssuesFilterFragment filterBottomSheet = new BottomSheetIssuesFilterFragment();
+			filterBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuBottomSheet");
+			return true;
+		}
+		else if(id == R.id.filterPr) {
+
+			BottomSheetPullRequestFilterFragment filterPrBottomSheet = new BottomSheetPullRequestFilterFragment();
+			filterPrBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuPrBottomSheet");
+			return true;
+		}
+		else if(id == R.id.filterMilestone) {
+
+			BottomSheetMilestonesFilterFragment filterMilestoneBottomSheet = new BottomSheetMilestonesFilterFragment();
+			filterMilestoneBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
+			return true;
+		}
+		else if(id == R.id.switchBranches) {
+
+			chooseBranch();
+			return true;
+		}
+		else if(id == R.id.branchCommits) {
+
+			Intent intent = new Intent(ctx, CommitsActivity.class);
+			intent.putExtra("branchName", tinyDB.getString("repoBranch"));
+			ctx.startActivity(intent);
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 
 	}
 
