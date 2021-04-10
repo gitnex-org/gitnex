@@ -15,7 +15,6 @@ import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.NotificationCompat;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.models.Files;
@@ -45,8 +44,6 @@ import retrofit2.Response;
 public class FileViewActivity extends BaseActivity implements BottomSheetFileViewerFragment.BottomSheetListener {
 
 	private ActivityFileViewBinding binding;
-	private Boolean pdfNightMode;
-
 	private Files file;
 
 	@Override
@@ -55,8 +52,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 		super.onCreate(savedInstanceState);
 
 		binding = ActivityFileViewBinding.inflate(getLayoutInflater());
-		setContentView(binding.getRoot());
 
+		setContentView(binding.getRoot());
 		setSupportActionBar(binding.toolbar);
 
 		tinyDB.putBoolean("enableMarkdownInFileView", false);
@@ -84,7 +81,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 		super.onResume();
 
 		if(tinyDB.getBoolean("fileModified")) {
-
 			String repoFullName = tinyDB.getString("repoFullName");
 			String repoBranch = tinyDB.getString("repoBranch");
 			String[] parts = repoFullName.split("/");
@@ -93,7 +89,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 			getSingleFileContents(repoOwner, repoName, file.getPath(), repoBranch);
 			tinyDB.putBoolean("fileModified", false);
-
 		}
 	}
 
@@ -116,7 +111,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 					if(responseBody != null) {
 
 						runOnUiThread(() -> binding.progressBar.setVisibility(View.GONE));
-
 						String fileExtension = FileUtils.getExtension(filename);
 
 						boolean processable = false;
@@ -133,14 +127,11 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 									byte[] pictureBytes = responseBody.bytes();
 
 									runOnUiThread(() -> {
-
 										binding.contents.setVisibility(View.GONE);
-										binding.pdfViewFrame.setVisibility(View.GONE);
 										binding.markdownFrame.setVisibility(View.GONE);
 
 										binding.photoView.setVisibility(View.VISIBLE);
 										binding.photoView.setImageBitmap(Images.scaleImage(pictureBytes, 1920));
-
 									});
 								}
 								break;
@@ -153,78 +144,31 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 								}
 
 								processable = true;
-
 								String text = responseBody.string();
 
 								runOnUiThread(() -> {
-
 									binding.photoView.setVisibility(View.GONE);
 									binding.markdownFrame.setVisibility(View.GONE);
-									binding.pdfViewFrame.setVisibility(View.GONE);
 
 									binding.contents.setVisibility(View.VISIBLE);
 									binding.contents.setContent(text, fileExtension);
-
 								});
-								break;
-
-							case DOCUMENT:
-
-								if(fileExtension.equalsIgnoreCase("pdf")) {
-
-									processable = true;
-
-									byte[] documentBytes = responseBody.bytes();
-
-									runOnUiThread(() -> {
-
-										binding.photoView.setVisibility(View.GONE);
-										binding.markdownFrame.setVisibility(View.GONE);
-										binding.contents.setVisibility(View.GONE);
-
-										pdfNightMode = tinyDB.getBoolean("enablePdfMode");
-
-										binding.pdfViewFrame.setVisibility(View.VISIBLE);
-										binding.pdfView.fromBytes(documentBytes)
-											.enableSwipe(true)
-											.swipeHorizontal(false)
-											.enableDoubletap(true)
-											.defaultPage(0)
-											.enableAnnotationRendering(false)
-											.password(null)
-											.scrollHandle(null)
-											.enableAntialiasing(true)
-											.spacing(0)
-											.autoSpacing(true)
-											.pageFitPolicy(FitPolicy.WIDTH)
-											.fitEachPage(true)
-											.pageSnap(false)
-											.pageFling(true)
-											.nightMode(pdfNightMode).load();
-
-									});
-								}
-
 								break;
 
 						}
 
 						if(!processable) { // While the file could still be non-binary,
 							// it's better we don't show it (to prevent any crashes and/or unwanted behavior) and let the user download it instead.
-
 							responseBody.close();
 
 							runOnUiThread(() -> {
-
 								binding.photoView.setVisibility(View.GONE);
 								binding.contents.setVisibility(View.GONE);
-								binding.pdfViewFrame.setVisibility(View.GONE);
 
 								binding.markdownFrame.setVisibility(View.VISIBLE);
 								binding.markdown.setText(getString(R.string.excludeFilesInFileViewer));
 								binding.markdown.setGravity(Gravity.CENTER);
 								binding.markdown.setTypeface(null, Typeface.BOLD);
-
 							});
 						}
 					} else {
@@ -233,7 +177,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 							binding.markdown.setText("");
 							binding.progressBar.setVisibility(View.GONE);
 						});
-
 					}
 				} else {
 
@@ -304,27 +247,22 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 		} else if(id == R.id.markdown) {
 
 			if(!tinyDB.getBoolean("enableMarkdownInFileView")) {
-
 				Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
 
 				binding.contents.setVisibility(View.GONE);
 				binding.markdownFrame.setVisibility(View.VISIBLE);
 
 				tinyDB.putBoolean("enableMarkdownInFileView", true);
-
 			} else {
-
 				binding.markdownFrame.setVisibility(View.GONE);
 				binding.contents.setVisibility(View.VISIBLE);
 
 				tinyDB.putBoolean("enableMarkdownInFileView", false);
-
 			}
 
 			return true;
 
 		} else {
-
 			return super.onOptionsItemSelected(item);
 		}
 	}
@@ -333,19 +271,16 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 	public void onButtonClicked(String text) {
 
 		if("downloadFile".equals(text)) {
-
 			requestFileDownload();
 		}
 
 		if("deleteFile".equals(text)) {
-
 			Intent intent = new Intent(ctx, CreateFileActivity.class);
 			intent.putExtra("fileAction", CreateFileActivity.FILE_ACTION_DELETE);
 			intent.putExtra("filePath", file.getPath());
 			intent.putExtra("fileSha", file.getSha());
 
 			ctx.startActivity(intent);
-
 		}
 
 		if("editFile".equals(text)) {
@@ -363,7 +298,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 				ctx.startActivity(intent);
 
 			} else {
-
 				Toasty.error(ctx, getString(R.string.fileTypeCannotBeEdited));
 			}
 		}
