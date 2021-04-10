@@ -165,11 +165,11 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			milestoneId.setText(String.valueOf(dataModel.getId()));
 			milestoneStatus.setText(dataModel.getState());
 
-			new Markdown(context, dataModel.getTitle(), msTitle);
+			Markdown.render(context, dataModel.getTitle(), msTitle);
 
 			if(!dataModel.getDescription().equals("")) {
 
-				new Markdown(context, EmojiParser.parseToUnicode(dataModel.getDescription()), msDescription);
+				Markdown.render(context, EmojiParser.parseToUnicode(dataModel.getDescription()), msDescription);
 			}
 			else {
 

@@ -37,8 +37,8 @@
     <string name="pageTitleNewFile">Nuovo File</string>
     <string name="pageTitleExplore">Esplora</string>
     <string name="pageTitleAdministration">Amministrazione Gitea</string>
-    <string name="pageTitleUserAccounts">Manage Accounts</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleUserAccounts">Gestione Account</string>
+    <string name="pageTitleNewPullRequest">Nuova Pull Request</string>
     <!-- page titles -->
     <string name="repoName">Demo repo</string>
     <string name="repoFullName">Repo con ORG</string>
@@ -64,10 +64,10 @@
     <string name="navigationDrawerOpen">Apri panello Navigazione</string>
     <string name="navigationDrawerClose">Chiudi panello Navigazione</string>
     <string name="logo">Accedi a Gitea</string>
-    <string name="protocol">Protocol</string>
+    <string name="protocol">Protocollo</string>
     <string name="urlInfoTooltip">1- Scegli il protocollo corretto(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
-    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
-    <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
+    <string name="malformedUrl">Impossibile connettersi all\'host. Controlla l\'URL o la porta per eventuali errori</string>
+    <string name="protocolError">Non si consiglia di utilizzare il protocollo HTTP a meno che non si stia testando sulla rete locale</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">Istanza 
 URL è richiesto</string>
@@ -107,8 +107,8 @@ URL è richiesto</string>
     <string name="tabTextFiles">File</string>
     <string name="tabTextMl">Milestones</string>
     <string name="tabTextReleases">Rilasci</string>
-    <string name="tabTextBranches">Branches</string>
-    <string name="tabTextLabels">Labels</string>
+    <string name="tabTextBranches">Rami</string>
+    <string name="tabTextLabels">Etichette</string>
     <string name="tabTextCollaborators">Collaboratori</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Nessun problema trovato</string>
@@ -209,13 +209,13 @@ URL è richiesto</string>
     <string name="draftsHintText">Bozze dei commenti</string>
     <string name="settingsEnableCommentsDeletionText">Abilita Eliminazione Bozze</string>
     <string name="settingsEnableCommentsDeletionHintText">Elimina la bozza del commento quando viene pubblicato</string>
-    <string name="settingsGeneralHeader">General</string>
+    <string name="settingsGeneralHeader">Generale</string>
     <string name="generalHintText">Home screen, default link handler</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
-    <string name="settingsBiometricHeader">Biometric Support</string>
+    <string name="settingsBiometricHeader">Sblocco biometrico</string>
     <!-- settings -->
     <string name="noMoreData">Nessun altro dato disponibile</string>
     <string name="createLabel">Nuovo label</string>
@@ -287,7 +287,7 @@ autorizzazione</string>
     <string name="editCommentUpdatedText">Commento aggiornato</string>
     <string name="issueCommentShare">Condividi Commento</string>
     <string name="deleteCommentSuccess">Commento eliminato con successo</string>
-    <string name="copyCommentText">Copy Comment</string>
+    <string name="copyCommentText">Copia commento</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Aggiungi/Rimuovi collaboratore</string>
@@ -305,7 +305,7 @@ autorizzazione</string>
     <string name="profileEmailButton">Salva</string>
     <string name="profileEmailTitle">Indirizzo Email</string>
     <string name="emailAddedText">New email added successfully</string>
-    <string name="emailErrorEmpty">Email address is empty</string>
+    <string name="emailErrorEmpty">L\'indirizzo email è vuoto</string>
     <string name="emailErrorInvalid">Indirizzo email non valido</string>
     <string name="emailErrorInUse">Indirizzo email già in uso</string>
     <string name="emailTypeText">Primario</string>
@@ -331,8 +331,8 @@ autorizzazione</string>
     <string name="userRoleAdmin">Amministratore</string>
     <string name="adminCron">Cron Tasks</string>
     <string name="adminCronScheduleHeader">Schedule</string>
-    <string name="adminCronNextRunHeader">Next Run</string>
-    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCronNextRunHeader">Prossima esecuzione</string>
+    <string name="adminCronLastRunHeader">Ultima esecuzione</string>
     <string name="adminCronExecutionHeader">Executions</string>
     <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
@@ -429,7 +429,7 @@ autorizzazione</string>
     <string name="isOpen">Apri</string>
     <string name="isClosed">Chiuso</string>
     <string name="genericServerResponseError">Al momento non possiamo raggiungere il server, controlla lo stato del tuo server e riprova</string>
-    <string name="genericCopyUrl">Copy URL</string>
+    <string name="genericCopyUrl">Copia l\'URL</string>
     <!-- generic copy -->
     <string name="exploreTextBoxHint">Esplora i repository</string>
     <string name="starRepository">Repository star</string>
@@ -479,9 +479,9 @@ autorizzazione</string>
     <string name="waitLoadingDownloadFile">Attendere che il file venga caricato in memoria</string>
     <string name="downloadFileSaved">File salvato con successo</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
-    <string name="deleteFile">Delete This File</string>
+    <string name="deleteFile">Elimina questo file</string>
     <string name="editFile">Edit This File</string>
-    <string name="deleteFileText">Delete %1$s</string>
+    <string name="deleteFileText">Elimina %1$s</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">Edit %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
@@ -555,21 +555,21 @@ autorizzazione</string>
     <string name="pinNotification">Fissa Notifica</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
-    <string name="enableNotificationsHeaderText">Enable Notifications</string>
+    <string name="enableNotificationsHeaderText">Abilita le notifiche</string>
     <string name="enableLightsHeaderText">Enable Light</string>
-    <string name="enableVibrationHeaderText">Enable Vibration</string>
-    <string name="chooseColorSelectorHeader">Choose Color</string>
-    <string name="newMessages">New messages</string>
+    <string name="enableVibrationHeaderText">Abilita la vibrazione</string>
+    <string name="chooseColorSelectorHeader">Scegli il colore</string>
+    <string name="newMessages">Nuovi messaggi</string>
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
-    <string name="mainNotificationChannelName">Notifications</string>
+    <string name="mainNotificationChannelName">Notifiche</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <string name="isRead">Letto</string>
     <string name="isUnread">Non letto</string>
-    <string name="repoSettingsTitle">Repository Settings</string>
-    <string name="repoSettingsEditProperties">Edit Properties</string>
-    <string name="repoSettingsDelete">Delete Repository</string>
+    <string name="repoSettingsTitle">Impostazioni del repository</string>
+    <string name="repoSettingsEditProperties">Modifica le proprietà</string>
+    <string name="repoSettingsDelete">Elimina repository</string>
     <string name="repoSettingsDeleteHint">Be careful, this operation CANNOT be undone!</string>
-    <string name="repoPropertiesTemplate">Set as Template</string>
+    <string name="repoPropertiesTemplate">Usa come modello</string>
     <string name="repoPropertiesEnableIssues">Enable Issues</string>
     <string name="repoPropertiesExternalIssuesUrl">External Issue Tracker Url</string>
     <string name="repoPropertiesEnableWiki">Enable Wiki</string>
@@ -613,8 +613,8 @@ autorizzazione</string>
     <string name="codeBlockWhiteOnBlack">White on Black</string>
     <string name="codeBlockGreyOnBlack">Grey on Black</string>
     <string name="codeBlockWhiteOnGrey">White on Grey</string>
-    <string name="codeBlockDarkOnWhite">Dark on White</string>
-    <string name="biometricAuthTitle">Biometric Authentication</string>
+    <string name="codeBlockDarkOnWhite">Nero su bianco</string>
+    <string name="biometricAuthTitle">Autenticazione biometrica</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
     <string name="biometricNotAvailable">Biometric features are currently unavailable</string>

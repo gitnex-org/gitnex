@@ -129,7 +129,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    }
 
         if(!currentItem.getBody().equals("")) {
-	        new Markdown(mCtx, currentItem.getBody(), holder.releaseBodyContent);
+	        Markdown.render(mCtx, currentItem.getBody(), holder.releaseBodyContent);
         }
         else {
 	        holder.releaseBodyContent.setText(R.string.noReleaseBodyContent);

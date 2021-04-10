@@ -582,7 +582,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(singleIssue.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 					String cleanIssueDescription = singleIssue.getBody().trim();
 
-					new Markdown(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription);
+					Markdown.render(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription);
 
 					RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams) viewBinding.issueDescription.getLayoutParams();
 
