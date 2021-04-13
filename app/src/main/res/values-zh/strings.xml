@@ -557,7 +557,7 @@
     <string name="enableLightsHeaderText">启用 Light</string>
     <string name="enableVibrationHeaderText">启用振动</string>
     <string name="chooseColorSelectorHeader">选择颜色</string>
-    <string name="newMessages">新消息</string>
+    <string name="newMessages">New messages for %s</string>
     <string name="youHaveGotNewNotifications">您有%d条新通知</string>
     <string name="mainNotificationChannelName">通知</string>
     <string name="mainNotificationChannelDescription">这是 GitNex 的主通知通道。</string>

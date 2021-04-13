@@ -69,7 +69,7 @@
     <string name="malformedUrl">Impossibile connettersi all\'host. Controlla l\'URL o la porta per eventuali errori</string>
     <string name="protocolError">Non si consiglia di utilizzare il protocollo HTTP a meno che non si stia testando sulla rete locale</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
-    <string name="emptyFieldURL">Istanza 
+    <string name="emptyFieldURL">Istanza
 URL è richiesto</string>
     <string name="emptyFieldUsername">Nome utente obbligatorio</string>
     <string name="emptyFieldPassword">Password obbligatoria</string>
@@ -274,7 +274,7 @@ URL è richiesto</string>
     <string name="newTeamPermissionAdmin">I membri possono inviare i repository del team e aggiungere loro collaboratori</string>
     <string name="teamNameEmpty">Inserisci il nome del team</string>
     <string name="teamNameError">Il nome del team deve contenere solo caratteri alfanumerici, trattino (-), trattino basso (_) e punto (.)</string>
-    <string name="teamPermissionEmpty">Seleziona 
+    <string name="teamPermissionEmpty">Seleziona
 autorizzazione</string>
     <string name="teamDescError">La descrizione del team contiene caratteri non validi</string>
     <string name="teamDescLimit">La descrizione del team ha più di 100 caratteri</string>
@@ -559,7 +559,7 @@ autorizzazione</string>
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Abilita la vibrazione</string>
     <string name="chooseColorSelectorHeader">Scegli il colore</string>
-    <string name="newMessages">Nuovi messaggi</string>
+    <string name="newMessages">New messages for %s</string>
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifiche</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>

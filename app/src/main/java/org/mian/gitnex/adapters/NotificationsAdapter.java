@@ -13,6 +13,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.TinyDB;
@@ -87,8 +88,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
 		if(notificationThread.isPinned()) {
 			holder.pinned.setVisibility(View.VISIBLE);
-		}
-		else {
+		} else {
 			holder.pinned.setVisibility(View.GONE);
 		}
 
@@ -123,17 +123,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 			final String repoName = parts[1];
 
 			int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-			RepositoriesApi repositoryData = new RepositoriesApi(context);
+			RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
 			Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 
 			if(count == 0) {
-
 				long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
 				tinyDb.putLong("repositoryId", id);
-			}
-			else {
-
+			} else {
 				Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
 				tinyDb.putLong("repositoryId", data.getRepositoryId());
 			}

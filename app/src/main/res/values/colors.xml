@@ -57,5 +57,6 @@
 
     <color name="pitchBlackThemeBackground">#050505</color>
     <color name="pitchBlackThemeTextColor">#d2d2d2</color>
+    <color name="pitchBlackThemeDividerColor">#0E0E0E</color>
     <color name="pitchBlackThemeGeneralBackgroundColor">#151515</color>
 </resources>

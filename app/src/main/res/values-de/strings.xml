@@ -557,7 +557,7 @@
     <string name="enableLightsHeaderText">Aktiviere Hell</string>
     <string name="enableVibrationHeaderText">Vibration aktivieren</string>
     <string name="chooseColorSelectorHeader">Farbe auswählen</string>
-    <string name="newMessages">Neue Nachrichten</string>
+    <string name="newMessages">Neue Nachrichten für %s</string>
     <string name="youHaveGotNewNotifications">Du hast %d neue Nachrichten.</string>
     <string name="mainNotificationChannelName">Benachrichtigungen</string>
     <string name="mainNotificationChannelDescription">Das ist der Haupt-Nachrichten-Kanal von GitNex.</string>

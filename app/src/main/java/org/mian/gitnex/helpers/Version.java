@@ -50,7 +50,7 @@ public class Version {
 		final Pattern pattern_number_dot_number = Pattern.compile("^\\d+(\\.(\\d)+)*");
 
 		if(!valid(raw)) {
-			throw new IllegalArgumentException("Invalid version format");
+			throw new IllegalArgumentException("Invalid version format: " + raw);
 		}
 
 		if(raw.charAt(0) == 'v' || raw.charAt(0) == 'V') {

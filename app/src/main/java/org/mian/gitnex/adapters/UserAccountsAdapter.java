@@ -14,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppUtil;
@@ -63,7 +64,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 					.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, which) -> {
 
 						updateLayoutByPosition(getAdapterPosition());
-						UserAccountsApi userAccountsApi = new UserAccountsApi(context);
+						UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
 						userAccountsApi.deleteAccount(Integer.parseInt(String.valueOf(accountId)));
 					}).setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
 					.show();
@@ -71,25 +72,19 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 
 			itemView.setOnClickListener(switchAccount -> {
 
-				UserAccountsApi userAccountsApi = new UserAccountsApi(context);
-				UserAccount userAccount = userAccountsApi.getAccountData(accountName);
+				UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
+				UserAccount userAccount = userAccountsApi.getAccountByName(accountName);
 
-				if(tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
+				if(AppUtil.switchToAccount(context, userAccount)) {
 
 					String url = UrlBuilder.fromString(userAccount.getInstanceUrl())
 						.withPath("/")
 						.toString();
 
-					tinyDB.putString("loginUid", userAccount.getUserName());
-					tinyDB.putString("userLogin", userAccount.getUserName());
-					tinyDB.putString(userAccount.getUserName() + "-token", userAccount.getToken());
-					tinyDB.putString("instanceUrl", userAccount.getInstanceUrl());
-					tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
-
 					Toasty.success(context,  context.getResources().getString(R.string.switchAccountSuccess, userAccount.getUserName(), url));
 					((Activity) context).recreate();
-				}
 
+				}
 			});
 
 		}

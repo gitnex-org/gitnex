@@ -21,6 +21,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
@@ -96,7 +97,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
                 final String repoName = parts[1];
 
                 int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-                RepositoriesApi repositoryData = new RepositoriesApi(context);
+                RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
                 //RepositoriesRepository.deleteRepositoriesByAccount(currentActiveAccountId);
                 Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);

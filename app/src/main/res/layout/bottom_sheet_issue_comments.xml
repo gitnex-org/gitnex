@@ -30,11 +30,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/menuEditText"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/menuEditText"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_edit" />
 
             <TextView
@@ -42,11 +45,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/menuDeleteText"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/menuDeleteText"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_delete" />
 
             <TextView
@@ -54,11 +60,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/menuQuoteText"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/menuQuoteText"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_comment" />
 
             <TextView
@@ -66,11 +75,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/copyCommentText"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/copyCommentText"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_copy" />
 
             <TextView
@@ -78,11 +90,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/issueCommentShare"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/issueCommentShare"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_share" />
 
             <TextView
@@ -90,11 +105,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/genericCopyUrl"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/genericCopyUrl"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_link" />
 
         </LinearLayout>

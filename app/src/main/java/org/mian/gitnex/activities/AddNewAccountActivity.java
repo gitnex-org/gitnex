@@ -12,6 +12,7 @@ import org.gitnex.tea4j.models.GiteaVersion;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.databinding.ActivityAddNewAccountBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -114,9 +115,7 @@ public class AddNewAccountActivity extends BaseActivity {
 	private void versionCheck(final String instanceUrl, final String loginToken) {
 
 		Call<GiteaVersion> callVersion;
-
 		callVersion = RetrofitClient.getApiInterface(ctx).getGiteaVersionWithToken("token " + loginToken);
-
 		callVersion.enqueue(new Callback<GiteaVersion>() {
 
 			@Override
@@ -205,14 +204,15 @@ public class AddNewAccountActivity extends BaseActivity {
 						assert userDetails != null;
 						// insert new account to db if does not exist
 						String accountName = userDetails.getUsername() + "@" + instanceUrl;
-						UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
-						int checkAccount = userAccountsApi.getCount(accountName);
+						UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
+						boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
 
-						if(checkAccount == 0) {
+						if(!userAccountExists) {
 
-							userAccountsApi.insertNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
+							userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
 							Toasty.success(ctx, getResources().getString(R.string.accountAddedMessage));
 							finish();
+
 						}
 						else {
 

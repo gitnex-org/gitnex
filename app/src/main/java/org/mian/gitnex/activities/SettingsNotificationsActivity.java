@@ -43,7 +43,13 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.enableNotificationsMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
 			tinyDB.putBoolean("notificationsEnabled", isChecked);
-			if(!isChecked) Notifications.stopWorker(ctx);
+
+			if(isChecked) {
+				Notifications.startWorker(ctx);
+			} else {
+				Notifications.stopWorker(ctx);
+			}
+
 			Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
 
 		});

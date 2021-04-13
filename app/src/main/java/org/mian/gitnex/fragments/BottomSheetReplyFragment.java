@@ -24,6 +24,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.ActionResult;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -57,7 +58,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		super.onAttach(context);
 
 		tinyDB = TinyDB.getInstance(context);
-		draftsApi = new DraftsApi(context);
+		draftsApi = BaseApi.getInstance(context, DraftsApi.class);
 
 		repositoryId = (int) tinyDB.getLong("repositoryId", 0);
 		currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
@@ -281,7 +282,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			}
 			else {
 
-				DraftsApi.updateDraft(text, (int) draftId, "TODO");
+				draftsApi.updateDraft(text, (int) draftId, "TODO");
 			}
 
 			draftsHint.setVisibility(View.VISIBLE);

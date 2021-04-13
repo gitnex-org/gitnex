@@ -1,6 +1,7 @@
 package org.mian.gitnex.helpers;
 
 import android.content.Context;
+import org.mian.gitnex.database.models.UserAccount;
 import okhttp3.Credentials;
 
 /**
@@ -24,11 +25,14 @@ public class Authorization {
 
 	}
 
+	public static String get(UserAccount userAccount) {
+		return "token " + userAccount.getToken();
+	}
+
 	public static String getWeb(Context context) {
 
 		TinyDB tinyDb = TinyDB.getInstance(context);
 		return Credentials.basic("", tinyDb.getString(tinyDb.getString("loginUid") + "-token"));
-
 	}
 
 }

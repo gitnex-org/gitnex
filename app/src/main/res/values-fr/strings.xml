@@ -557,7 +557,7 @@
     <string name="enableLightsHeaderText">Activer le témoin lumineux</string>
     <string name="enableVibrationHeaderText">Activer le vibreur</string>
     <string name="chooseColorSelectorHeader">Couleur</string>
-    <string name="newMessages">Nouveaux messages</string>
+    <string name="newMessages">New messages for %s</string>
     <string name="youHaveGotNewNotifications">Vous avez %d nouvelles notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">Le canal de notifications principal de GitNex.</string>

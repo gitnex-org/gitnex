@@ -673,7 +673,7 @@
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Enable Vibration</string>
     <string name="chooseColorSelectorHeader">Choose Color</string>
-    <string name="newMessages">New messages</string>
+    <string name="newMessages">New messages for %s</string>
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>

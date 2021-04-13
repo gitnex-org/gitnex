@@ -20,7 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricPrompt;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -34,6 +33,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserAccountsNavAdapter;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityMainBinding;
@@ -90,37 +90,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(activityMainBinding.getRoot());
 
-		tinyDB.putBoolean("noConnection", false);
-
-		String currentVersion = tinyDB.getString("giteaVersion");
-
 		Intent mainIntent = getIntent();
-		String launchFragment = mainIntent.getStringExtra("launchFragment");
+
+		// DO NOT MOVE
+		if(mainIntent.hasExtra("switchAccountId") &&
+			AppUtil.switchToAccount(ctx, BaseApi.getInstance(ctx, UserAccountsApi.class)
+				.getAccountById(mainIntent.getIntExtra("switchAccountId", 0)))) {
+
+			mainIntent.removeExtra("switchAccountId");
+			recreate();
+			return;
+
+		}
+		// DO NOT MOVE
+
+		tinyDB.putBoolean("noConnection", false);
 
 		loginUid = tinyDB.getString("loginUid");
 		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
-
-		if(tinyDB.getString("dateFormat").isEmpty()) {
-
-			tinyDB.putString("dateFormat", "pretty");
-		}
-
-		if(tinyDB.getString("codeBlockStr").isEmpty()) {
-
-			tinyDB.putInt("codeBlockColor", ResourcesCompat.getColor(getResources(), R.color.colorLightGreen, null));
-			tinyDB.putInt("codeBlockBackground", ResourcesCompat.getColor(getResources(), R.color.black, null));
-		}
-
-		if(tinyDB.getString("enableCounterIssueBadgeInit").isEmpty()) {
-
-			tinyDB.putBoolean("enableCounterIssueBadge", true);
-		}
-
-		if(tinyDB.getString("homeScreenStr").isEmpty()) {
-
-			tinyDB.putString("homeScreenStr", "yes");
-			tinyDB.putInt("homeScreenId", 0);
-		}
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -130,9 +117,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			return;
 		}
 
-		if(tinyDB.getInt("currentActiveAccountId") <= 0) {
-
-			AlertDialogs.forceLogoutDialog(ctx, getResources().getString(R.string.forceLogoutDialogHeader), getResources().getString(R.string.forceLogoutDialogDescription), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+		if(tinyDB.getInt("currentActiveAccountId", -1) <= 0) {
+			AlertDialogs.forceLogoutDialog(ctx,
+				getResources().getString(R.string.forceLogoutDialogHeader),
+				getResources().getString(R.string.forceLogoutDialogDescription), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
 		}
 
 		Toolbar toolbar = activityMainBinding.toolbar;
@@ -141,17 +129,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		switch(tinyDB.getInt("customFontId", -1)) {
 
 			case 0:
-
 				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/roboto.ttf");
 				break;
-			case 2:
 
+			case 2:
 				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/sourcecodeproregular.ttf");
 				break;
-			default:
 
+			default:
 				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/manroperegular.ttf");
 				break;
+
 		}
 
 		// biometric auth
@@ -198,43 +186,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		Fragment fragmentById = fm.findFragmentById(R.id.fragment_container);
 
 		if(fragmentById instanceof SettingsFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleSettings));
 		}
 		else if(fragmentById instanceof MyRepositoriesFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleMyRepos));
 		}
 		else if(fragmentById instanceof StarredRepositoriesFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));
 		}
 		else if(fragmentById instanceof OrganizationsFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleOrganizations));
 		}
 		else if(fragmentById instanceof ExploreFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
 		}
 		else if(fragmentById instanceof NotificationsFragment) {
-
 			toolbarTitle.setText(R.string.pageTitleNotifications);
 		}
 		else if(fragmentById instanceof ProfileFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
 		}
 		else if(fragmentById instanceof DraftsFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 		}
 		else if(fragmentById instanceof AdministrationFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
 		}
 		else if(fragmentById instanceof UserAccountsFragment) {
-
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleUserAccounts));
 		}
 
@@ -275,7 +253,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				List<UserAccount> userAccountsList = new ArrayList<>();
 				UserAccountsApi userAccountsApi;
-				userAccountsApi = new UserAccountsApi(ctx);
+				userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
 
 				RecyclerView navRecyclerViewUserAccounts = hView.findViewById(R.id.userAccounts);
 				UserAccountsNavAdapter adapterUserAccounts;
@@ -294,12 +272,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				userFullName.setTypeface(myTypeface);
 
 				if(!userEmailNav.equals("")) {
-
 					userEmail.setText(userEmailNav);
 				}
 
 				if(!userFullNameNav.equals("")) {
-
 					userFullName.setText(Html.fromHtml(userFullNameNav));
 				}
 
@@ -347,7 +323,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
 				navigationView.getMenu().findItem(R.id.nav_administration).setVisible(tinyDB.getBoolean("userIsAdmin"));
-				navigationView.getMenu().findItem(R.id.nav_notifications).setVisible(new Version(currentVersion).higherOrEqual("1.12.3"));
+				navigationView.getMenu().findItem(R.id.nav_notifications).setVisible(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.3"));
+
 			}
 
 			@Override
@@ -361,6 +338,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		toggle.syncState();
 		toolbar.setNavigationIcon(R.drawable.ic_menu);
 
+		String launchFragment = mainIntent.getStringExtra("launchFragment");
+
 		if(launchFragment != null) {
 
 			mainIntent.removeExtra("launchFragment");
@@ -368,13 +347,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			switch(launchFragment) {
 
 				case "drafts":
-
 					toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DraftsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_comments_draft);
 					return;
-				case "notifications":
 
+				case "notifications":
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_notifications);
@@ -415,9 +393,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		if(savedInstanceState == null) {
 
 			if(!new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.3")) {
-
 				if(tinyDB.getInt("homeScreenId") == 7) {
-
 					tinyDB.putInt("homeScreenId", 0);
 				}
 			}
@@ -658,29 +634,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 	private void giteaVersion() {
 
-		final TinyDB tinyDb = TinyDB.getInstance(appCtx);
-
-		final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
-
-		Call<GiteaVersion> callVersion = RetrofitClient.getApiInterface(ctx).getGiteaVersionWithToken(token);
-
+		Call<GiteaVersion> callVersion = RetrofitClient.getApiInterface(ctx).getGiteaVersionWithToken(Authorization.get(ctx));
 		callVersion.enqueue(new Callback<GiteaVersion>() {
 
 			@Override
 			public void onResponse(@NonNull final Call<GiteaVersion> callVersion, @NonNull retrofit2.Response<GiteaVersion> responseVersion) {
 
-				if(responseVersion.code() == 200) {
+				if(responseVersion.code() == 200 && responseVersion.body() != null) {
+					String version = responseVersion.body().getVersion();
 
-					GiteaVersion version = responseVersion.body();
-					assert version != null;
-
-					tinyDb.putString("giteaVersion", version.getVersion());
+					tinyDB.putString("giteaVersion", version);
+					BaseApi.getInstance(ctx, UserAccountsApi.class).updateServerVersion(version, tinyDB.getInt("currentActiveAccountId"));
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NonNull Throwable t) {
-
 				Log.e("onFailure-version", t.toString());
 			}
 		});

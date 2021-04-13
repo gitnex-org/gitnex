@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -30,24 +31,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/openFileDiffText"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/openFileDiffText"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:visibility="gone"
-                android:padding="12dp"
-                app:drawableStartCompat="@drawable/ic_file" />
+                app:drawableStartCompat="@drawable/ic_file"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/mergePullRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/mergePullRequestText"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/mergePullRequestText"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_pull_request" />
 
             <TextView
@@ -55,11 +63,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/editIssue"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/editIssue"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_edit" />
 
             <TextView
@@ -67,11 +78,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/addRemoveAssignees"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/addRemoveAssignees"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_person_add" />
 
             <TextView
@@ -79,11 +93,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/singleIssueEditLabels"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/singleIssueEditLabels"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_label" />
 
             <TextView
@@ -91,11 +108,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/singleIssueSubscribe"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/singleIssueSubscribe"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_unwatch" />
 
             <TextView
@@ -103,13 +123,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
                 android:text="@string/singleIssueUnSubscribe"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:visibility="gone"
-                android:padding="12dp"
-                app:drawableStartCompat="@drawable/ic_watchers" />
+                app:drawableStartCompat="@drawable/ic_watchers"
+                tools:visibility="visible" />
 
             <View
                 android:layout_width="match_parent"
@@ -124,11 +148,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
                 android:text="@string/shareIssue"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_share" />
 
             <TextView
@@ -136,11 +163,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
                 android:text="@string/copyIssueUrl"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_copy" />
 
             <View
@@ -156,11 +186,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/closeIssue"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/closeIssue"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_issue_closed" />
 
             <TextView
@@ -168,13 +201,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/reOpenIssue"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/reOpenIssue"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:visibility="gone"
-                android:padding="12dp"
-                app:drawableStartCompat="@drawable/ic_reopen" />
+                app:drawableStartCompat="@drawable/ic_reopen"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

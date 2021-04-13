@@ -15,6 +15,7 @@ import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
@@ -80,7 +81,7 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 				final String repoName = parts[1];
 
 				int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-				RepositoriesApi repositoryData = new RepositoriesApi(context);
+				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
 				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 

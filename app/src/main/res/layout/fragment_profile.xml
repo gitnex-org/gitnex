@@ -94,17 +94,18 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
-            app:tabMode="scrollable"
-            app:tabTextAppearance="@style/customTabLayout"
             android:layout_width="match_parent"
-            app:tabTextColor="?attr/primaryTextColor"
+            android:layout_height="wrap_content"
             android:background="?attr/primaryBackgroundColor"
             app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
-            android:layout_height="wrap_content">
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/customTabLayout"
+            app:tabTextColor="?attr/primaryTextColor">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/profileTabFollowers"
