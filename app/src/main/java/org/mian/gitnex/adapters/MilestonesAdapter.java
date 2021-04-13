@@ -35,19 +35,17 @@ import java.util.Locale;
 
 public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private Context context;
+	private final Context context;
 	private final int TYPE_LOAD = 0;
 	private List<Milestones> dataList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false;
 	private boolean isMoreDataAvailable = true;
-	private String TAG = Constants.tagMilestonesAdapter;
 
-	public MilestonesAdapter(Context context, List<Milestones> dataListMain) {
+	public MilestonesAdapter(Context ctx, List<Milestones> dataListMain) {
 
-		this.context = context;
+		this.context = ctx;
 		this.dataList = dataListMain;
-
 	}
 
 	@NonNull
@@ -62,7 +60,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		else {
 			return new MilestonesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
 		}
-
 	}
 
 	@Override
@@ -72,33 +69,29 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			isLoading = true;
 			loadMoreListener.onLoadMore();
-
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
 
 			((MilestonesAdapter.DataHolder) holder).bindData(dataList.get(position));
-
 		}
-
 	}
 
 	class DataHolder extends RecyclerView.ViewHolder {
 
-		private TextView milestoneId;
-		private TextView msTitle;
-		private TextView msDescription;
-		private TextView msOpenIssues;
-		private TextView msClosedIssues;
-		private TextView msDueDate;
-		private ProgressBar msProgress;
-		private TextView milestoneStatus;
+		private Milestones milestones;
+
+		private final TextView msTitle;
+		private final TextView msDescription;
+		private final TextView msOpenIssues;
+		private final TextView msClosedIssues;
+		private final TextView msDueDate;
+		private final ProgressBar msProgress;
 
 		DataHolder(View itemView) {
 
 			super(itemView);
 
-			milestoneId = itemView.findViewById(R.id.milestoneId);
 			msTitle = itemView.findViewById(R.id.milestoneTitle);
 			msDescription = itemView.findViewById(R.id.milestoneDescription);
 			msOpenIssues = itemView.findViewById(R.id.milestoneIssuesOpen);
@@ -106,12 +99,11 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			msDueDate = itemView.findViewById(R.id.milestoneDueDate);
 			msProgress = itemView.findViewById(R.id.milestoneProgress);
 			ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
-			milestoneStatus = itemView.findViewById(R.id.milestoneStatus);
 
 			milestonesMenu.setOnClickListener(v -> {
 
 				Context ctx = v.getContext();
-				int milestoneId_ = Integer.parseInt(milestoneId.getText().toString());
+				int milestoneId_ = Integer.parseInt(String.valueOf(milestones.getId()));
 
 				@SuppressLint("InflateParams") View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_milestones_in_list, null);
 
@@ -122,17 +114,15 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 				dialog.setContentView(view);
 				dialog.show();
 
-				if(milestoneStatus.getText().toString().equals("open")) {
+				if(milestones.getState().equals("open")) {
 
 					closeMilestone.setVisibility(View.VISIBLE);
 					openMilestone.setVisibility(View.GONE);
-
 				}
 				else {
 
 					closeMilestone.setVisibility(View.GONE);
 					openMilestone.setVisibility(View.VISIBLE);
-
 				}
 
 				closeMilestone.setOnClickListener(v12 -> {
@@ -140,7 +130,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 					MilestoneActions.closeMilestone(ctx, milestoneId_);
 					dialog.dismiss();
 					updateAdapter(getAdapterPosition());
-
 				});
 
 				openMilestone.setOnClickListener(v12 -> {
@@ -148,7 +137,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 					MilestoneActions.openMilestone(ctx, milestoneId_);
 					dialog.dismiss();
 					updateAdapter(getAdapterPosition());
-
 				});
 
 			});
@@ -158,12 +146,10 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		@SuppressLint("SetTextI18n")
 		void bindData(Milestones dataModel) {
 
+			this.milestones = dataModel;
 			final TinyDB tinyDb = TinyDB.getInstance(context);
 			final String locale = tinyDb.getString("locale");
 			final String timeFormat = tinyDb.getString("dateFormat");
-
-			milestoneId.setText(String.valueOf(dataModel.getId()));
-			milestoneStatus.setText(dataModel.getState());
 
 			Markdown.render(context, dataModel.getTitle(), msTitle);
 
@@ -185,14 +171,12 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 					msProgress.setProgress(100);
 					msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, 100), context));
-
 				}
 				else {
 
 					int msCompletion = 100 * dataModel.getClosed_issues() / (dataModel.getOpen_issues() + dataModel.getClosed_issues());
 					msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, msCompletion), context));
 					msProgress.setProgress(msCompletion);
-
 				}
 
 			}
@@ -200,11 +184,11 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 				msProgress.setProgress(0);
 				msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, 0), context));
-
 			}
 
 			if(dataModel.getDue_on() != null) {
 
+				String TAG = Constants.tagMilestonesAdapter;
 				if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
 
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
@@ -226,7 +210,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 					msDueDate.setText(dueDate);
 					msDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToast(dataModel.getDue_on()), context));
-
 				}
 				else if(timeFormat.equals("normal1")) {
 
@@ -244,7 +227,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 					assert date1 != null;
 					String dueDate = formatter.format(date1);
 					msDueDate.setText(dueDate);
-
 				}
 
 			}
@@ -262,7 +244,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		dataList.remove(position);
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, dataList.size());
-
 	}
 
 	@Override
@@ -274,14 +255,12 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		else {
 			return 1;
 		}
-
 	}
 
 	@Override
 	public int getItemCount() {
 
 		return dataList.size();
-
 	}
 
 	static class LoadHolder extends RecyclerView.ViewHolder {
@@ -290,32 +269,27 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			super(itemView);
 		}
-
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 
 		isMoreDataAvailable = moreDataAvailable;
-
 	}
 
 	public void notifyDataChanged() {
 
 		notifyDataSetChanged();
 		isLoading = false;
-
 	}
 
 	public interface OnLoadMoreListener {
 
 		void onLoadMore();
-
 	}
 
 	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
 
 		this.loadMoreListener = loadMoreListener;
-
 	}
 
 	public void updateList(List<Milestones> list) {

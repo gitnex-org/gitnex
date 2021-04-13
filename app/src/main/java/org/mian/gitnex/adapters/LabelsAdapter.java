@@ -20,7 +20,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ColorInverter;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,21 +28,17 @@ import java.util.List;
 
 public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder>  {
 
-    private List<Labels> labelsList;
-    final private Context mCtx;
-    private ArrayList<Integer> labelsArray = new ArrayList<>();
+    private final List<Labels> labelsList;
     private static String type;
 	private static String orgName;
 
     static class LabelsViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView labelTitle;
-        private TextView labelId;
-        private TextView labelColor;
+    	private Labels labels;
 
-        private CardView labelView;
-        private ImageView labelIcon;
-        private TextView labelName;
+        private final CardView labelView;
+        private final ImageView labelIcon;
+        private final TextView labelName;
 
         private LabelsViewHolder(View itemView) {
             super(itemView);
@@ -52,9 +47,6 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
             labelIcon = itemView.findViewById(R.id.labelIcon);
             labelName = itemView.findViewById(R.id.labelName);
             ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
-            labelTitle = itemView.findViewById(R.id.labelTitle);
-            labelId = itemView.findViewById(R.id.labelId);
-            labelColor = itemView.findViewById(R.id.labelColor);
 
             labelsOptionsMenu.setOnClickListener(v -> {
 
@@ -67,7 +59,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
                 TextView labelMenuDelete = view.findViewById(R.id.labelMenuDelete);
                 TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
 
-                bottomSheetHeader.setText(labelTitle.getText());
+                bottomSheetHeader.setText(labels.getName());
                 BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(view);
                 dialog.show();
@@ -75,27 +67,25 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
                 labelMenuEdit.setOnClickListener(editLabel -> {
 
                     Intent intent = new Intent(context, CreateLabelActivity.class);
-                    intent.putExtra("labelId", labelId.getText());
-                    intent.putExtra("labelTitle", labelTitle.getText());
-                    intent.putExtra("labelColor", labelColor.getText());
+                    intent.putExtra("labelId", String.valueOf(labels.getId()));
+                    intent.putExtra("labelTitle", labels.getName());
+                    intent.putExtra("labelColor", labels.getColor());
                     intent.putExtra("labelAction", "edit");
 	                intent.putExtra("type", type);
 	                intent.putExtra("orgName", orgName);
                     context.startActivity(intent);
                     dialog.dismiss();
-
                 });
 
                 labelMenuDelete.setOnClickListener(deleteLabel -> {
 
-                    AlertDialogs.labelDeleteDialog(context, labelTitle.getText().toString(), labelId.getText().toString(),
+                    AlertDialogs.labelDeleteDialog(context, labels.getName(), String.valueOf(labels.getId()),
                             context.getResources().getString(R.string.labelDeleteTitle),
                             context.getResources().getString(R.string.labelDeleteMessage),
                             context.getResources().getString(R.string.labelDeleteTitle),
                             context.getResources().getString(R.string.labelDeleteNegativeButton),
 	                        type, orgName);
                     dialog.dismiss();
-
                 });
 
             });
@@ -103,10 +93,9 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         }
     }
 
-    public LabelsAdapter(Context mCtx, List<Labels> labelsMain, String type, String orgName) {
+    public LabelsAdapter(Context ctx, List<Labels> labelsMain, String type, String orgName) {
 
-        this.mCtx = mCtx;
-        this.labelsList = labelsMain;
+	    this.labelsList = labelsMain;
         LabelsAdapter.type = type;
         LabelsAdapter.orgName = orgName;
     }
@@ -122,10 +111,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
     public void onBindViewHolder(@NonNull LabelsAdapter.LabelsViewHolder holder, int position) {
 
         Labels currentItem = labelsList.get(position);
-
-        holder.labelTitle.setText(currentItem.getName());
-        holder.labelId.setText(String.valueOf(currentItem.getId()));
-        holder.labelColor.setText(currentItem.getColor());
+	    holder.labels = currentItem;
 
         String labelColor = currentItem.getColor();
         String labelName = currentItem.getName();
@@ -138,7 +124,6 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         holder.labelName.setTextColor(contrastColor);
         holder.labelName.setText(labelName);
         holder.labelView.setCardBackgroundColor(color);
-
     }
 
     @Override

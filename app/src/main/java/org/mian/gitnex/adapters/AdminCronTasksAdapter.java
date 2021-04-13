@@ -31,17 +31,13 @@ import retrofit2.Callback;
 public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAdapter.CronTasksViewHolder> {
 
 	private final List<CronTasks> tasksList;
-	private final Context mCtx;
 	private static TinyDB tinyDb;
 
 	static class CronTasksViewHolder extends RecyclerView.ViewHolder {
 
 		private CronTasks cronTasks;
 
-		private final ImageView runTask;
 		private final TextView taskName;
-		private final LinearLayout cronTasksInfo;
-		private final LinearLayout cronTasksRun;
 
 		private CronTasksViewHolder(View itemView) {
 
@@ -51,10 +47,10 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			final String locale = tinyDb.getString("locale");
 			final String timeFormat = tinyDb.getString("dateFormat");
 
-			runTask = itemView.findViewById(R.id.runTask);
+			ImageView runTask = itemView.findViewById(R.id.runTask);
 			taskName = itemView.findViewById(R.id.taskName);
-			cronTasksInfo = itemView.findViewById(R.id.cronTasksInfo);
-			cronTasksRun = itemView.findViewById(R.id.cronTasksRun);
+			LinearLayout cronTasksInfo = itemView.findViewById(R.id.cronTasksInfo);
+			LinearLayout cronTasksRun = itemView.findViewById(R.id.cronTasksRun);
 
 			cronTasksInfo.setOnClickListener(taskInfo -> {
 
@@ -96,10 +92,9 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 		}
 	}
 
-	public AdminCronTasksAdapter(Context mCtx, List<CronTasks> tasksListMain) {
+	public AdminCronTasksAdapter(Context ctx, List<CronTasks> tasksListMain) {
 
-		tinyDb = TinyDB.getInstance(mCtx);
-		this.mCtx = mCtx;
+		tinyDb = TinyDB.getInstance(ctx);
 		this.tasksList = tasksListMain;
 	}
 

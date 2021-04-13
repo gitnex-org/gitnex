@@ -40,8 +40,8 @@ public class RepoInfoFragment extends Fragment {
 
 	private Context ctx;
 	private LinearLayout pageContent;
-	private static String repoNameF = "param2";
-	private static String repoOwnerF = "param1";
+	private static final String repoNameF = "param2";
+	private static final String repoOwnerF = "param1";
 
 	private FragmentRepoInfoBinding binding;
 
@@ -282,6 +282,13 @@ public class RepoInfoFragment extends Fragment {
 							}
 							else {
 								tinyDb.putBoolean("hasPullRequests", false);
+							}
+
+							if(repoInfo.isArchived()) {
+								binding.repoIsArchived.setVisibility(View.VISIBLE);
+							}
+							else {
+								binding.repoIsArchived.setVisibility(View.GONE);
 							}
 
 							tinyDb.putString("repoHtmlUrl", repoInfo.getHtml_url());

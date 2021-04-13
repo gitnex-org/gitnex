@@ -22,44 +22,41 @@ import java.util.List;
 
 public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.OrgTeamsViewHolder> implements Filterable {
 
-    private List<Teams> teamList;
-    private Context mCtx;
-    private List<Teams> teamListFull;
+    private final List<Teams> teamList;
+    private final Context context;
+    private final List<Teams> teamListFull;
 
     static class OrgTeamsViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView teamTitle;
-        private TextView teamId;
-        private TextView teamDescription;
-        private TextView teamPermission;
+    	private Teams teams;
+
+        private final TextView teamTitle;
+        private final TextView teamDescription;
+        private final TextView teamPermission;
 
         private OrgTeamsViewHolder(View itemView) {
+
             super(itemView);
             teamTitle = itemView.findViewById(R.id.teamTitle);
-            teamId = itemView.findViewById(R.id.teamId);
             teamDescription = itemView.findViewById(R.id.teamDescription);
             teamPermission = itemView.findViewById(R.id.teamPermission);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            itemView.setOnClickListener(v -> {
 
-                    Context context = v.getContext();
+                Context context = v.getContext();
 
-                    Intent intent = new Intent(context, OrganizationTeamMembersActivity.class);
-                    intent.putExtra("teamTitle", teamTitle.getText().toString());
-                    intent.putExtra("teamId", teamId.getText().toString());
-                    context.startActivity(intent);
-
-                }
+                Intent intent = new Intent(context, OrganizationTeamMembersActivity.class);
+                intent.putExtra("teamTitle", teams.getName());
+                intent.putExtra("teamId", String.valueOf(teams.getId()));
+                context.startActivity(intent);
             });
 
         }
 
     }
 
-    public TeamsByOrgAdapter(Context mCtx, List<Teams> teamListMain) {
-        this.mCtx = mCtx;
+    public TeamsByOrgAdapter(Context ctx, List<Teams> teamListMain) {
+        this.context = ctx;
         this.teamList = teamListMain;
         teamListFull = new ArrayList<>(teamList);
     }
@@ -75,8 +72,10 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
     public void onBindViewHolder(@NonNull TeamsByOrgAdapter.OrgTeamsViewHolder holder, int position) {
 
         Teams currentItem = teamList.get(position);
-        holder.teamId.setText(String.valueOf(currentItem.getId()));
+
+        holder.teams = currentItem;
         holder.teamTitle.setText(currentItem.getName());
+
         if (!currentItem.getDescription().equals("")) {
             holder.teamDescription.setVisibility(View.VISIBLE);
             holder.teamDescription.setText(currentItem.getDescription());
@@ -85,8 +84,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
             holder.teamDescription.setVisibility(View.GONE);
             holder.teamDescription.setText("");
         }
-        holder.teamPermission.setText(mCtx.getResources().getString(R.string.teamPermission, currentItem.getPermission()));
-
+        holder.teamPermission.setText(context.getResources().getString(R.string.teamPermission, currentItem.getPermission()));
     }
 
     @Override
@@ -99,7 +97,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
         return orgTeamsFilter;
     }
 
-    private Filter orgTeamsFilter = new Filter() {
+    private final Filter orgTeamsFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Teams> filteredList = new ArrayList<>();

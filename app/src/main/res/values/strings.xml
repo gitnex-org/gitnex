@@ -646,6 +646,7 @@
     <string name="aboutAppHintText">App version, build, user gitea version</string>
 
     <string name="archivedRepository">Archived</string>
+    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
 
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
@@ -754,4 +755,5 @@
     <string name="fileViewerNotificationChannelName">Download manager</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
 
+    <string name="lastUpdatedAt">Updated %s</string>
 </resources>

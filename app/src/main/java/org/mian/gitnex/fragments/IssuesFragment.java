@@ -168,7 +168,6 @@ public class IssuesFragment extends Fragment {
 
 			loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 			tinyDb.putBoolean("resumeIssues", false);
-
 		}
 
 	}
@@ -191,14 +190,12 @@ public class IssuesFragment extends Fragment {
 						issuesList.addAll(response.body());
 						adapter.notifyDataChanged();
 						noDataIssues.setVisibility(View.GONE);
-
 					}
 					else {
 
 						issuesList.clear();
 						adapter.notifyDataChanged();
 						noDataIssues.setVisibility(View.VISIBLE);
-
 					}
 
 					mProgressBar.setVisibility(View.GONE);
@@ -208,7 +205,6 @@ public class IssuesFragment extends Fragment {
 
 					noDataIssues.setVisibility(View.VISIBLE);
 					mProgressBar.setVisibility(View.GONE);
-
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
@@ -311,7 +307,6 @@ public class IssuesFragment extends Fragment {
 
 				filter(newText);
 				return false;
-
 			}
 
 		});

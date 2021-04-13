@@ -1,7 +1,6 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
@@ -34,84 +34,69 @@ import retrofit2.Response;
 
 public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.UserSearchViewHolder> {
 
-    private List<UserInfo> usersSearchList;
-    private Context mCtx;
+    private final List<UserInfo> usersSearchList;
+    private final Context context;
 
-    public UserSearchAdapter(List<UserInfo> dataList, Context mCtx) {
-        this.mCtx = mCtx;
+    public UserSearchAdapter(List<UserInfo> dataList, Context ctx) {
+        this.context = ctx;
         this.usersSearchList = dataList;
     }
 
     static class UserSearchViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView userAvatar;
-        private TextView userFullName;
-        private TextView userName;
-        private TextView userNameMain;
-        private ImageView addCollaboratorButtonAdd;
-        private ImageView addCollaboratorButtonRemove;
+	    private UserInfo userInfo;
 
-        private String[] permissionList = {"Read", "Write", "Admin"};
+        private final ImageView userAvatar;
+        private final TextView userFullName;
+        private final TextView userName;
+        private final ImageView addCollaboratorButtonAdd;
+        private final ImageView addCollaboratorButtonRemove;
+
+        private final String[] permissionList = {"Read", "Write", "Admin"};
         final private int permissionSelectedChoice = 0;
 
         private UserSearchViewHolder(View itemView) {
+
             super(itemView);
             userAvatar = itemView.findViewById(R.id.userAvatar);
             userFullName = itemView.findViewById(R.id.userFullName);
             userName = itemView.findViewById(R.id.userName);
-            userNameMain = itemView.findViewById(R.id.userNameMain);
             addCollaboratorButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
             addCollaboratorButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
 
-            addCollaboratorButtonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            addCollaboratorButtonAdd.setOnClickListener(v -> {
 
-                    final Context context = v.getContext();
+                final Context context = v.getContext();
 
-                    AlertDialog.Builder pBuilder = new AlertDialog.Builder(context);
+                AlertDialog.Builder pBuilder = new AlertDialog.Builder(context);
 
-                    pBuilder.setTitle(R.string.newTeamPermission);
-                    pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                pBuilder.setTitle(R.string.newTeamPermission);
+                pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
 
-                            }
-                        })
-                            .setCancelable(false)
-                            .setNegativeButton(R.string.cancelButton, null)
-                            .setPositiveButton(R.string.addButton, new DialogInterface.OnClickListener() {
+                })
+                        .setCancelable(false)
+                        .setNegativeButton(R.string.cancelButton, null)
+                        .setPositiveButton(R.string.addButton, (dialog, which) -> {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                            ListView lw = ((AlertDialog)dialog).getListView();
+                            Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                                    ListView lw = ((AlertDialog)dialog).getListView();
-                                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getUsername());
+                        });
 
-                                    CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userNameMain.getText().toString());
-
-                                }
-                            });
-
-                    AlertDialog pDialog = pBuilder.create();
-                    pDialog.show();
-
-                }
+                AlertDialog pDialog = pBuilder.create();
+                pDialog.show();
             });
 
-            addCollaboratorButtonRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            addCollaboratorButtonRemove.setOnClickListener(v -> {
 
-                    Context context = v.getContext();
+                Context context = v.getContext();
 
-                    AlertDialogs.collaboratorRemoveDialog(context, userNameMain.getText().toString(),
-                            context.getResources().getString(R.string.removeCollaboratorTitle),
-                            context.getResources().getString(R.string.removeCollaboratorMessage),
-                            context.getResources().getString(R.string.removeButton),
-                            context.getResources().getString(R.string.cancelButton), "fa");
-
-                }
+                AlertDialogs.collaboratorRemoveDialog(context, userInfo.getUsername(),
+                        context.getResources().getString(R.string.removeCollaboratorTitle),
+                        context.getResources().getString(R.string.removeCollaboratorMessage),
+                        context.getResources().getString(R.string.removeButton),
+                        context.getResources().getString(R.string.cancelButton), "fa");
             });
 
         }
@@ -128,9 +113,9 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
     @Override
     public void onBindViewHolder(@NonNull final UserSearchAdapter.UserSearchViewHolder holder, int position) {
 
-        final UserInfo currentItem = usersSearchList.get(position);
-
-        holder.userNameMain.setText(currentItem.getUsername());
+        UserInfo currentItem = usersSearchList.get(position);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+	    holder.userInfo = currentItem;
 
         if (!currentItem.getFullname().equals("")) {
 
@@ -138,18 +123,18 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         }
         else {
 
-            holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+            holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
         }
 
-	    holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+	    holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
 
 	    if (!currentItem.getAvatar().equals("")) {
-            PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+            PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
         }
 
         if(getItemCount() > 0) {
 
-            TinyDB tinyDb = TinyDB.getInstance(mCtx);
+            TinyDB tinyDb = TinyDB.getInstance(context);
             final String loginUid = tinyDb.getString("loginUid");
             String repoFullName = tinyDb.getString("repoFullName");
             String[] parts = repoFullName.split("/");
@@ -157,8 +142,8 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
             final String repoName = parts[1];
 
             Call<Collaborators> call = RetrofitClient
-                    .getApiInterface(mCtx)
-                    .checkRepoCollaborator(Authorization.get(mCtx), repoOwner, repoName, currentItem.getUsername());
+                    .getApiInterface(context)
+                    .checkRepoCollaborator(Authorization.get(context), repoOwner, repoName, currentItem.getUsername());
 
             call.enqueue(new Callback<Collaborators>() {
 

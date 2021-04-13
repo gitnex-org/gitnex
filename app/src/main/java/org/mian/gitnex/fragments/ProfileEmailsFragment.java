@@ -74,11 +74,10 @@ public class ProfileEmailsFragment extends Fragment {
         noDataEmails = fragmentProfileEmailsBinding.noDataEmails;
         mRecyclerView = fragmentProfileEmailsBinding.recyclerView;
 
+	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         mProgressBar = fragmentProfileEmailsBinding.progressBar;

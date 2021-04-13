@@ -2,4 +2,6 @@
     <dimen name="tooltipCornor">5dp</dimen>
     <dimen name="close_button_size">26dp</dimen>
     <dimen name="fab_padding">15dp</dimen>
+
+    <dimen name="list_avatar_size">24dp</dimen>
 </resources>

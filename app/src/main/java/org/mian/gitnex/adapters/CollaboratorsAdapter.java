@@ -23,7 +23,7 @@ import java.util.List;
 public class CollaboratorsAdapter extends BaseAdapter  {
 
     private final List<Collaborators> collaboratorsList;
-    private final Context mCtx;
+    private final Context context;
 
     private static class ViewHolder {
 
@@ -46,9 +46,9 @@ public class CollaboratorsAdapter extends BaseAdapter  {
         }
     }
 
-    public CollaboratorsAdapter(Context mCtx, List<Collaborators> collaboratorsListMain) {
+    public CollaboratorsAdapter(Context ctx, List<Collaborators> collaboratorsListMain) {
 
-        this.mCtx = mCtx;
+        this.context = ctx;
         this.collaboratorsList = collaboratorsListMain;
     }
 
@@ -75,7 +75,7 @@ public class CollaboratorsAdapter extends BaseAdapter  {
 
         if (finalView == null) {
 
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_collaborators, null);
+            finalView = LayoutInflater.from(context).inflate(R.layout.list_collaborators, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
@@ -90,8 +90,10 @@ public class CollaboratorsAdapter extends BaseAdapter  {
 
     private void initData(ViewHolder viewHolder, int position) {
 
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+
         Collaborators currentItem = collaboratorsList.get(position);
-        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
+        PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
 
 	    viewHolder.userLoginId = currentItem.getLogin();
 

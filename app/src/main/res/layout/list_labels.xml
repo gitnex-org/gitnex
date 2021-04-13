@@ -6,28 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="horizontal"
-    android:padding="10dp">
-
-    <TextView
-        android:id="@+id/labelTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/labelId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/labelColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:visibility="gone" />
+    android:padding="16dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/labelView"
@@ -52,17 +31,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:contentDescription="@string/generalImgContentText"
-                android:tint="@color/colorWhite"
+                app:tint="@color/colorWhite"
                 app:srcCompat="@drawable/ic_label" />
 
             <TextView
                 android:id="@+id/labelName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:textColor="@color/colorWhite"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -79,7 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:contentDescription="@string/labelMenuContentDesc"
-        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"
         android:src="@drawable/ic_dotted_menu_horizontal" />
 
 </LinearLayout>

@@ -23,7 +23,7 @@ import java.util.List;
 public class ProfileFollowingAdapter extends RecyclerView.Adapter<ProfileFollowingAdapter.FollowingViewHolder> {
 
     private final List<UserInfo> followingList;
-    private final Context mCtx;
+    private final Context context;
 
     static class FollowingViewHolder extends RecyclerView.ViewHolder {
 
@@ -50,9 +50,9 @@ public class ProfileFollowingAdapter extends RecyclerView.Adapter<ProfileFollowi
         }
     }
 
-    public ProfileFollowingAdapter(Context mCtx, List<UserInfo> followingListMain) {
+    public ProfileFollowingAdapter(Context ctx, List<UserInfo> followingListMain) {
 
-        this.mCtx = mCtx;
+        this.context = ctx;
         this.followingList = followingListMain;
     }
 
@@ -68,21 +68,20 @@ public class ProfileFollowingAdapter extends RecyclerView.Adapter<ProfileFollowi
     public void onBindViewHolder(@NonNull ProfileFollowingAdapter.FollowingViewHolder holder, int position) {
 
         UserInfo currentItem = followingList.get(position);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 	    holder.userLoginId = currentItem.getLogin();
 
         if(!currentItem.getFullname().equals("")) {
-
             holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
-            holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+            holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
         }
         else {
-
-            holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+            holder.userFullName.setText(currentItem.getUsername());
             holder.userName.setVisibility(View.GONE);
         }
 
-        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+        PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
     }
 
     @Override

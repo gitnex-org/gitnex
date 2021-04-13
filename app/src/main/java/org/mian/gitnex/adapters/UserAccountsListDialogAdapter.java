@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.List;
@@ -23,18 +24,17 @@ import io.mikael.urlbuilder.UrlBuilder;
 
 public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 
-	private final Context mCtx;
+	private final Context context;
 	private final TinyDB tinyDB;
 	private final List<UserAccount> userAccounts;
 
-	public UserAccountsListDialogAdapter(@NonNull Context mCtx, int resource, @NonNull List<UserAccount> userAccounts) {
+	public UserAccountsListDialogAdapter(@NonNull Context ctx, int resource, @NonNull List<UserAccount> userAccounts) {
 
-		super(mCtx, resource, userAccounts);
+		super(ctx, resource, userAccounts);
 
-		tinyDB = TinyDB.getInstance(mCtx);
+		tinyDB = TinyDB.getInstance(ctx);
 		this.userAccounts = userAccounts;
-		this.mCtx = mCtx;
-
+		this.context = ctx;
 	}
 
 	@NonNull
@@ -42,7 +42,7 @@ public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
 		if(convertView == null) {
-			convertView = LayoutInflater.from(mCtx).inflate(R.layout.custom_user_accounts_list, parent, false);
+			convertView = LayoutInflater.from(context).inflate(R.layout.custom_user_accounts_list, parent, false);
 		}
 
 		ImageView profileImage = convertView.findViewById(R.id.profileImage);
@@ -51,6 +51,7 @@ public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 		ImageView activeAccount = convertView.findViewById(R.id.activeAccount);
 
 		UserAccount currentItem = userAccounts.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		String url = UrlBuilder.fromString(currentItem.getInstanceUrl())
 			.withPath("/")
@@ -67,7 +68,7 @@ public class UserAccountsListDialogAdapter extends ArrayAdapter<UserAccount> {
 		}
 
 		PicassoService
-			.getInstance(mCtx).get().load(url + "img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(profileImage);
+			.getInstance(context).get().load(url + "img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(profileImage);
 
 		return convertView;
 

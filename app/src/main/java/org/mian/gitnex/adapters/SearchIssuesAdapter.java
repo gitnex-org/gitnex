@@ -35,14 +35,14 @@ import java.util.Locale;
 public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapter.SearchViewHolder> {
 
 	private final List<Issues> searchedList;
-	private final Context mCtx;
+	private final Context context;
 	private final TinyDB tinyDb;
 
-	public SearchIssuesAdapter(List<Issues> dataList, Context mCtx) {
+	public SearchIssuesAdapter(List<Issues> dataList, Context ctx) {
 
-		this.mCtx = mCtx;
+		this.context = ctx;
 		this.searchedList = dataList;
-		this.tinyDb = TinyDB.getInstance(mCtx);
+		this.tinyDb = TinyDB.getInstance(context);
 	}
 
 	class SearchViewHolder extends RecyclerView.ViewHolder {
@@ -63,7 +63,7 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
 
-			issueTitle.setOnClickListener(v -> {
+			itemView.setOnClickListener(v -> {
 
 				Context context = v.getContext();
 
@@ -121,19 +121,20 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 	public void onBindViewHolder(@NonNull final SearchIssuesAdapter.SearchViewHolder holder, int position) {
 
 		Issues currentItem = searchedList.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		String locale = tinyDb.getString("locale");
 		String timeFormat = tinyDb.getString("dateFormat");
 
-		PicassoService.getInstance(mCtx).get()
+		PicassoService.getInstance(context).get()
 			.load(currentItem.getUser().getAvatar_url())
 			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(8, 0))
+			.transform(new RoundedTransformation(imgRadius, 0))
 			.resize(120, 120)
 			.centerCrop()
 			.into(holder.issueAssigneeAvatar);
 
-		String issueNumber_ = "<font color='" + ResourcesCompat.getColor(mCtx.getResources(), R.color.lightGray, null) + "'>" + currentItem.getRepository().getFull_name() + mCtx.getResources().getString(R.string.hash) + currentItem.getNumber() + "</font>";
+		String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + currentItem.getRepository().getFull_name() + context.getResources().getString(R.string.hash) + currentItem.getNumber() + "</font>";
 
 		holder.issue = currentItem;
 		holder.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + currentItem.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
@@ -144,17 +145,17 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 				PrettyTime prettyTime = new PrettyTime(new Locale(locale));
 				String createdTime = prettyTime.format(currentItem.getCreated_at());
 				holder.issueCreatedTime.setText(createdTime);
-				holder.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), mCtx));
+				holder.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), context));
 				break;
 			}
 			case "normal": {
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + mCtx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
 				String createdTime = formatter.format(currentItem.getCreated_at());
 				holder.issueCreatedTime.setText(createdTime);
 				break;
 			}
 			case "normal1": {
-				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + mCtx.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
 				String createdTime = formatter.format(currentItem.getCreated_at());
 				holder.issueCreatedTime.setText(createdTime);
 				break;

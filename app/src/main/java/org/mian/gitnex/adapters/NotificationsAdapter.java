@@ -24,11 +24,11 @@ import java.util.List;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.NotificationsViewHolder> {
 
-	private Context context;
-	private List<NotificationThread> notificationThreads;
-	private OnMoreClickedListener onMoreClickedListener;
-	private OnNotificationClickedListener onNotificationClickedListener;
-	private TinyDB tinyDb;
+	private final Context context;
+	private final List<NotificationThread> notificationThreads;
+	private final OnMoreClickedListener onMoreClickedListener;
+	private final OnNotificationClickedListener onNotificationClickedListener;
+	private final TinyDB tinyDb;
 
 	public NotificationsAdapter(Context context, List<NotificationThread> notificationThreads, OnMoreClickedListener onMoreClickedListener, OnNotificationClickedListener onNotificationClickedListener) {
 
@@ -37,19 +37,18 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 		this.notificationThreads = notificationThreads;
 		this.onMoreClickedListener = onMoreClickedListener;
 		this.onNotificationClickedListener = onNotificationClickedListener;
-
 	}
 
 	static class NotificationsViewHolder extends RecyclerView.ViewHolder {
 
-		private LinearLayout frame;
-		private TextView subject;
-		private TextView repository;
-		private ImageView typePr;
-		private ImageView typeIssue;
-		private ImageView typeUnknown;
-		private ImageView pinned;
-		private ImageView more;
+		private final LinearLayout frame;
+		private final TextView subject;
+		private final TextView repository;
+		private final ImageView typePr;
+		private final ImageView typeIssue;
+		private final ImageView typeUnknown;
+		private final ImageView pinned;
+		private final ImageView more;
 
 		public NotificationsViewHolder(@NonNull View itemView) {
 
@@ -63,7 +62,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 			typeUnknown = itemView.findViewById(R.id.typeUnknown);
 			pinned = itemView.findViewById(R.id.pinned);
 			more = itemView.findViewById(R.id.more);
-
 		}
 	}
 
@@ -73,7 +71,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
 		View v = LayoutInflater.from(context).inflate(R.layout.list_notifications, parent, false);
 		return new NotificationsAdapter.NotificationsViewHolder(v);
-
 	}
 
 	@Override
@@ -134,18 +131,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
 				long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
 				tinyDb.putLong("repositoryId", id);
-
 			}
 			else {
 
 				Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
 				tinyDb.putLong("repositoryId", data.getRepositoryId());
-
 			}
 		});
 
 		holder.more.setOnClickListener(v -> onMoreClickedListener.onMoreClicked(notificationThread));
-
 	}
 
 	@Override

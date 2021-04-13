@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricPrompt;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -71,10 +72,6 @@ import retrofit2.Callback;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetDraftsFragment.BottomSheetListener {
 
 	private DrawerLayout drawer;
-	private TextView userFullName;
-	private TextView userEmail;
-	private ImageView userAvatar;
-	private ImageView userAvatarBackground;
 	private TextView toolbarTitle;
 	private Typeface myTypeface;
 
@@ -256,6 +253,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		drawer.addDrawerListener(toggle);
 		drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
 
+
 			@Override
 			public void onDrawerOpened(@NonNull View drawerView) {
 
@@ -269,27 +267,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				String userFullNameNav = tinyDB.getString("userFullname");
 				String userAvatarNav = tinyDB.getString("userAvatar");
 
-				userEmail = hView.findViewById(R.id.userEmail);
-				userFullName = hView.findViewById(R.id.userFullname);
-				userAvatar = hView.findViewById(R.id.userAvatar);
-				userAvatarBackground = hView.findViewById(R.id.userAvatarBackground);
+				TextView userEmail = hView.findViewById(R.id.userEmail);
+				TextView userFullName = hView.findViewById(R.id.userFullname);
+				ImageView userAvatar = hView.findViewById(R.id.userAvatar);
+				ImageView userAvatarBackground = hView.findViewById(R.id.userAvatarBackground);
+				CardView navRecyclerViewFrame = hView.findViewById(R.id.userAccountsFrame);
 
-				List<UserAccount> userAccountsList;
-				userAccountsList = new ArrayList<>();
+				List<UserAccount> userAccountsList = new ArrayList<>();
 				UserAccountsApi userAccountsApi;
 				userAccountsApi = new UserAccountsApi(ctx);
 
-				RecyclerView navRecyclerViewUserAccounts = hView.findViewById(R.id.navRecyclerViewUserAccounts);
+				RecyclerView navRecyclerViewUserAccounts = hView.findViewById(R.id.userAccounts);
 				UserAccountsNavAdapter adapterUserAccounts;
 
 				adapterUserAccounts = new UserAccountsNavAdapter(ctx, userAccountsList, drawer, toolbarTitle);
 
 				userAccountsApi.getAllAccounts().observe((AppCompatActivity) ctx, userAccounts -> {
-
 					if(userAccounts.size() > 0) {
-
 						userAccountsList.addAll(userAccounts);
 						navRecyclerViewUserAccounts.setAdapter(adapterUserAccounts);
+						navRecyclerViewFrame.setVisibility(View.VISIBLE);
 					}
 				});
 
@@ -308,10 +305,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				if(!userAvatarNav.equals("")) {
 
+					int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 3);
+
 					PicassoService.getInstance(ctx).get()
 						.load(userAvatarNav)
 						.placeholder(R.drawable.loader_animated)
-						.transform(new RoundedTransformation(8, 0))
+						.transform(new RoundedTransformation(avatarRadius, 0))
 						.resize(160, 160)
 						.centerCrop().into(userAvatar);
 

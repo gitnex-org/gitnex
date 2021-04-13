@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.Collaborators;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdapter.AssigneesViewHolder> {
 
-	private final Context mCtx;
+	private final Context context;
 	private final List<Collaborators> assigneesList;
 	private List<String> assigneesStrings = new ArrayList<>();
 	private List<String> currentAssignees;
@@ -36,9 +37,9 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		void assigneesInterface(List<String> data);
 	}
 
-	public AssigneesListAdapter(Context mCtx, List<Collaborators> dataMain, AssigneesListAdapterListener assigneesListener, List<String> currentAssignees) {
+	public AssigneesListAdapter(Context ctx, List<Collaborators> dataMain, AssigneesListAdapterListener assigneesListener, List<String> currentAssignees) {
 
-		this.mCtx = mCtx;
+		this.context = ctx;
 		this.assigneesList = dataMain;
 		this.assigneesListener = assigneesListener;
 		this.currentAssignees = currentAssignees;
@@ -73,6 +74,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 	public void onBindViewHolder(@NonNull AssigneesListAdapter.AssigneesViewHolder holder, int position) {
 
 		Collaborators currentItem = assigneesList.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		if(currentItem.getFull_name().equals("")) {
 
@@ -83,7 +85,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 			holder.assigneesName.setText(Html.fromHtml(currentItem.getFull_name()));
 		}
 		PicassoService
-			.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(holder.assigneesAvatar);
+			.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(holder.assigneesAvatar);
 
 		for(int i = 0; i < assigneesList.size(); i++) {
 

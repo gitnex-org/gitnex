@@ -8,17 +8,11 @@
     android:paddingEnd="20dp"
     android:background="?attr/primaryBackgroundColor" >
 
-    <TextView
-        android:id="@+id/teamId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
     <ImageView
         android:id="@+id/userAvatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="15dp"
+        android:layout_width="@dimen/list_avatar_size"
+        android:layout_height="@dimen/list_avatar_size"
+        android:layout_marginEnd="10dp"
         android:contentDescription="@string/generalImgContentText"
         android:src="@drawable/ic_android" />
 
@@ -36,7 +30,8 @@
                 android:layout_marginBottom="5dp"
                 android:text="@string/userName"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/userName"
@@ -45,15 +40,9 @@
                 android:layout_marginBottom="5dp"
                 android:text="@string/addCollaboratorViewUserDesc"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/userNameMain"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/frameAddCollaborator"
@@ -69,8 +58,8 @@
 
         <ImageView
             android:id="@+id/addCollaboratorButtonAdd"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_gravity="end"
             android:contentDescription="@string/addNewContent"
             android:background="@drawable/shape_circle"
@@ -80,8 +69,8 @@
 
         <ImageView
             android:id="@+id/addCollaboratorButtonRemove"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_gravity="end"
             android:contentDescription="@string/removeContent"
             android:background="@drawable/shape_circle_red"

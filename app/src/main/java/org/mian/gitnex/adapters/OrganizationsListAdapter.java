@@ -16,6 +16,7 @@ import org.gitnex.tea4j.models.UserOrganizations;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.ArrayList;
@@ -27,42 +28,42 @@ import java.util.List;
 
 public class OrganizationsListAdapter extends RecyclerView.Adapter<OrganizationsListAdapter.OrganizationsViewHolder> implements Filterable {
 
-    private List<UserOrganizations> orgList;
-    private Context mCtx;
-    private List<UserOrganizations> orgListFull;
+    private final List<UserOrganizations> orgList;
+    private final Context context;
+    private final List<UserOrganizations> orgListFull;
 
     static class OrganizationsViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView image;
-        private TextView mTextView1;
-        private TextView mTextView2;
-        private TextView organizationId;
+    	private UserOrganizations userOrganizations;
+
+        private final ImageView image;
+        private final TextView orgName;
+        private final TextView orgDescription;
 
         private OrganizationsViewHolder(View itemView) {
             super(itemView);
-            mTextView1 = itemView.findViewById(R.id.orgUsername);
-            mTextView2 = itemView.findViewById(R.id.orgDescription);
+	        orgName = itemView.findViewById(R.id.orgName);
+	        orgDescription = itemView.findViewById(R.id.orgDescription);
             image = itemView.findViewById(R.id.imageAvatar);
-            organizationId = itemView.findViewById(R.id.organizationId);
 
             itemView.setOnClickListener(v -> {
 
                 Context context = v.getContext();
                 Intent intent = new Intent(context, OrganizationDetailActivity.class);
-                intent.putExtra("orgName", mTextView1.getText().toString());
+                intent.putExtra("orgName", userOrganizations.getUsername());
 
                 TinyDB tinyDb = TinyDB.getInstance(context);
-                tinyDb.putString("orgName", mTextView1.getText().toString());
-                tinyDb.putString("organizationId", organizationId.getText().toString());
+                tinyDb.putString("orgName", userOrganizations.getUsername());
+                tinyDb.putString("organizationId", String.valueOf(userOrganizations.getId()));
                 tinyDb.putBoolean("organizationAction", true);
                 context.startActivity(intent);
             });
         }
     }
 
-    public OrganizationsListAdapter(Context mCtx, List<UserOrganizations> orgsListMain) {
+    public OrganizationsListAdapter(Context ctx, List<UserOrganizations> orgsListMain) {
 
-        this.mCtx = mCtx;
+        this.context = ctx;
         this.orgList = orgsListMain;
         orgListFull = new ArrayList<>(orgList);
     }
@@ -80,16 +81,16 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
     public void onBindViewHolder(@NonNull OrganizationsViewHolder holder, int position) {
 
         UserOrganizations currentItem = orgList.get(position);
-        holder.mTextView2.setVisibility(View.GONE);
-        holder.organizationId.setText(Integer.toString(currentItem.getId()));
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.image);
-        holder.mTextView1.setText(currentItem.getUsername());
+	    holder.userOrganizations = currentItem;
+	    holder.orgName.setText(currentItem.getUsername());
+
+        PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.image);
 
         if (!currentItem.getDescription().equals("")) {
 
-            holder.mTextView2.setVisibility(View.VISIBLE);
-            holder.mTextView2.setText(currentItem.getDescription());
+            holder.orgDescription.setText(currentItem.getDescription());
         }
     }
 

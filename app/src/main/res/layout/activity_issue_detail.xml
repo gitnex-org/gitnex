@@ -96,9 +96,9 @@
 
                         <ImageView
                             android:id="@+id/assigneeAvatar"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginEnd="15dp"
+                            android:layout_width="@dimen/list_avatar_size"
+                            android:layout_height="@dimen/list_avatar_size"
+                            android:layout_marginEnd="10dp"
                             android:contentDescription="@string/generalImgContentText" />
 
                         <TextView
@@ -109,7 +109,7 @@
                             android:gravity="start"
                             android:textColor="?attr/primaryTextColor"
                             android:textIsSelectable="true"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
                         <RelativeLayout
                             android:id="@+id/msdueFrame"
@@ -174,7 +174,7 @@
                             android:autoLink="web"
                             android:textColorLink="@color/lightBlue"
                             android:textIsSelectable="true"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <HorizontalScrollView
                             android:layout_below="@+id/issueDescription"
@@ -212,7 +212,7 @@
                                 android:text="@string/createdText"
                                 android:visibility="gone"
                                 android:textColor="?attr/hintColor"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/issueModified"
@@ -220,7 +220,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="?attr/hintColor"
                                 android:layout_toEndOf="@+id/issueCreatedTime"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:visibility="gone"
                                 android:text="@string/modifiedText" />
 

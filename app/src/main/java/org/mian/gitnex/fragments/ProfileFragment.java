@@ -83,9 +83,11 @@ public class ProfileFragment extends Fragment {
 	    userFullName.setText(Html.fromHtml(tinyDb.getString("userFullname")));
 	    userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
 
+	    int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 3);
+
 	    PicassoService.getInstance(ctx).get()
 		    .load(tinyDb.getString("userAvatar"))
-		    .transform(new RoundedTransformation(8, 0))
+		    .transform(new RoundedTransformation(avatarRadius, 0))
 		    .placeholder(R.drawable.loader_animated)
 		    .resize(120, 120)
 		    .centerCrop().into(userAvatar);

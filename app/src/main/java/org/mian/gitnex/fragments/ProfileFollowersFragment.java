@@ -10,20 +10,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.adapters.ProfileFollowersAdapter;
 import org.mian.gitnex.databinding.FragmentProfileFollowersBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.ProfileFollowersViewModel;
-import java.util.List;
 
 /**
  * Author M M Arif
@@ -75,11 +71,10 @@ public class ProfileFollowersFragment extends Fragment {
         noDataFollowers = fragmentProfileFollowersBinding.noDataFollowers;
         mRecyclerView = fragmentProfileFollowersBinding.recyclerView;
 
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
+	    mRecyclerView.setHasFixedSize(true);
+	    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         mProgressBar = fragmentProfileFollowersBinding.progressBar;
@@ -100,21 +95,21 @@ public class ProfileFollowersFragment extends Fragment {
 
         ProfileFollowersViewModel pfModel = new ViewModelProvider(this).get(ProfileFollowersViewModel.class);
 
-        pfModel.getFollowersList(instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
-            @Override
-            public void onChanged(@Nullable List<UserInfo> pfListMain) {
-                adapter = new ProfileFollowersAdapter(getContext(), pfListMain);
-                if(adapter.getItemCount() > 0) {
-                    mRecyclerView.setAdapter(adapter);
-                    noDataFollowers.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mRecyclerView.setAdapter(adapter);
-                    noDataFollowers.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
+        pfModel.getFollowersList(instanceToken, getContext()).observe(getViewLifecycleOwner(), pfListMain -> {
+
+            adapter = new ProfileFollowersAdapter(getContext(), pfListMain);
+
+            if(adapter.getItemCount() > 0) {
+                mRecyclerView.setAdapter(adapter);
+                noDataFollowers.setVisibility(View.GONE);
             }
+            else {
+                adapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(adapter);
+                noDataFollowers.setVisibility(View.VISIBLE);
+            }
+
+            mProgressBar.setVisibility(View.GONE);
         });
 
     }

@@ -10,8 +10,8 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         app:srcCompat="@drawable/ic_download"
         android:contentDescription="@string/generalImgContentText" />
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="14sp"
+        android:textSize="12sp"
         tools:text="Source code (ZIP)" />
 
 </LinearLayout>

@@ -27,7 +27,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 	private final List<Files> originalFiles = new ArrayList<>();
 	private final List<Files> alteredFiles = new ArrayList<>();
 
-    private final Context mCtx;
+    private final Context context;
 
     private final FilesAdapterListener filesListener;
 
@@ -40,8 +40,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     	private Files file;
 
-    	private final LinearLayout fileFrame;
-        private final ImageView fileTypeIs;
+		private final ImageView fileTypeIs;
         private final TextView fileName;
         private final TextView fileInfo;
 
@@ -49,7 +48,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
             super(itemView);
 
-            fileFrame = itemView.findViewById(R.id.fileFrame);
+	        LinearLayout fileFrame = itemView.findViewById(R.id.fileFrame);
             fileName = itemView.findViewById(R.id.fileName);
 	        fileTypeIs = itemView.findViewById(R.id.fileTypeIs);
             fileInfo = itemView.findViewById(R.id.fileInfo);
@@ -124,11 +123,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         }
     }
 
-    public FilesAdapter(Context mCtx, FilesAdapterListener filesListener) {
+    public FilesAdapter(Context ctx, FilesAdapterListener filesListener) {
 
-        this.mCtx = mCtx;
+        this.context = ctx;
         this.filesListener = filesListener;
-
     }
 
 	public List<Files> getOriginalFiles() {
@@ -141,7 +139,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 	    alteredFiles.addAll(originalFiles);
 
     	notifyDataSetChanged();
-
     }
 
     @NonNull
@@ -162,28 +159,28 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         switch(currentItem.getType()) {
 
 	        case "file":
-		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_file));
+		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_file));
 		        holder.fileInfo.setVisibility(View.VISIBLE);
 		        holder.fileInfo.setText(FileUtils.byteCountToDisplaySize(currentItem.getSize()));
 	        	break;
 
 	        case "dir":
-		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_directory));
+		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_directory));
 		        holder.fileInfo.setVisibility(View.GONE);
 	        	break;
 
 	        case "submodule":
-		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_submodule));
+		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_submodule));
 		        holder.fileInfo.setVisibility(View.GONE);
 	        	break;
 
 	        case "symlink":
-		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_symlink));
+		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_symlink));
 		        holder.fileInfo.setVisibility(View.GONE);
 		        break;
 
 	        default:
-		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(mCtx, R.drawable.ic_question));
+		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_question));
 
         }
     }

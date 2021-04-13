@@ -22,11 +22,11 @@ import java.util.List;
 public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.LabelsViewHolder> {
 
 	private List<Integer> currentLabelsIds;
-	private List<Labels> labels;
-	private List<String> labelsStrings = new ArrayList<>();
+	private final List<Labels> labels;
+	private final List<String> labelsStrings = new ArrayList<>();
 	private List<Integer> labelsIds = new ArrayList<>();
 
-	private LabelsListAdapterListener labelsListener;
+	private final LabelsListAdapterListener labelsListener;
 
 	public interface LabelsListAdapterListener {
 
@@ -43,9 +43,9 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 
 	static class LabelsViewHolder extends RecyclerView.ViewHolder {
 
-		private CheckBox labelSelection;
-		private TextView labelText;
-		private ImageView labelColor;
+		private final CheckBox labelSelection;
+		private final TextView labelText;
+		private final ImageView labelColor;
 
 		private LabelsViewHolder(View itemView) {
 

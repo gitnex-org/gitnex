@@ -44,7 +44,7 @@ import retrofit2.Callback;
 
 public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdapter.IssueCommentViewHolder> {
 
-	private final Context ctx;
+	private final Context context;
 	private final TinyDB tinyDB;
 	private final Bundle bundle;
 	private final List<IssueComments> issuesComments;
@@ -53,14 +53,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, BottomSheetReplyFragment.OnInteractedListener onInteractedListener) {
 
-		this.ctx = ctx;
+		this.context = ctx;
 		this.bundle = bundle;
 		this.issuesComments = issuesCommentsMain;
 		this.fragmentManager = fragmentManager;
 		this.onInteractedListener = onInteractedListener;
 
 		tinyDB = TinyDB.getInstance(ctx);
-
 	}
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
@@ -318,39 +317,40 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		String timeFormat = tinyDB.getString("dateFormat");
 		IssueComments issueComment = issuesComments.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		holder.userLoginId = issueComment.getUser().getLogin();
 
 		holder.issueComment = issueComment;
 		holder.author.setText(issueComment.getUser().getUsername());
 
-		PicassoService.getInstance(ctx).get()
+		PicassoService.getInstance(context).get()
 			.load(issueComment.getUser().getAvatar_url())
 			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(4, 0))
-			.resize(AppUtil.getPixelsFromDensity(ctx, 35), AppUtil.getPixelsFromDensity(ctx, 35))
+			.transform(new RoundedTransformation(imgRadius, 0))
+			.resize(AppUtil.getPixelsFromDensity(context, 35), AppUtil.getPixelsFromDensity(context, 35))
 			.centerCrop()
 			.into(holder.avatar);
 
-		Markdown.render(ctx, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment);
+		Markdown.render(context, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment);
 
 		StringBuilder informationBuilder = null;
 		if(issueComment.getCreated_at() != null) {
 
 			if(timeFormat.equals("pretty")) {
 
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", ctx));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", context));
 				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()));
 
 			}
 			else if(timeFormat.equals("normal")) {
 
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "normal", ctx));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "normal", context));
 			}
 
 			if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
 				if(informationBuilder != null) {
-					informationBuilder.append(ctx.getString(R.string.colorfulBulletSpan)).append(ctx.getString(R.string.modifiedText));
+					informationBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
 				}
 			}
 		}
@@ -361,7 +361,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		bundle1.putAll(bundle);
 		bundle1.putInt("commentId", issueComment.getId());
 
-		ReactionList reactionList = new ReactionList(ctx, bundle1);
+		ReactionList reactionList = new ReactionList(context, bundle1);
 
 		holder.commentReactionBadges.addView(reactionList);
 		reactionList.setOnReactionAddedListener(() -> {
