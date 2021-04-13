@@ -25,7 +25,7 @@ import java.util.List;
 public class TeamMembersByOrgAdapter extends BaseAdapter {
 
     private final List<UserInfo> teamMembersList;
-    private final Context mCtx;
+    private final Context context;
 
     private static class ViewHolder {
 
@@ -48,9 +48,9 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
         }
     }
 
-    public TeamMembersByOrgAdapter(Context mCtx, List<UserInfo> membersListMain) {
+    public TeamMembersByOrgAdapter(Context ctx, List<UserInfo> membersListMain) {
 
-        this.mCtx = mCtx;
+        this.context = ctx;
         this.teamMembersList = membersListMain;
     }
 
@@ -77,7 +77,7 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
 
         if (finalView == null) {
 
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_members_by_team_by_org, null);
+            finalView = LayoutInflater.from(context).inflate(R.layout.list_members_by_team_by_org, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
@@ -93,25 +93,27 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
     private void initData(TeamMembersByOrgAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = teamMembersList.get(position);
-        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+
+        PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
 
 	    viewHolder.userLoginId = currentItem.getLogin();
 
-        final TinyDB tinyDb = TinyDB.getInstance(mCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(context);
         Typeface myTypeface;
 
         switch(tinyDb.getInt("customFontId", -1)) {
 
             case 0:
-                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
+                myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
                 break;
 
             case 2:
-                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/sourcecodeproregular.ttf");
+                myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf");
                 break;
 
             default:
-                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/manroperegular.ttf");
+                myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/manroperegular.ttf");
                 break;
 
         }

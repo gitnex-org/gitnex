@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.Releases;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -30,25 +30,24 @@ import java.util.Locale;
 
 public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.ReleasesViewHolder> {
 
-    private List<Releases> releasesList;
-    private Context mCtx;
+    private final List<Releases> releasesList;
+    private final Context context;
 
 	static class ReleasesViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView releaseType;
-        private TextView releaseName;
-        private ImageView authorAvatar;
-        private TextView authorName;
-        private TextView releaseTag;
-        private TextView releaseCommitSha;
-        private TextView releaseDate;
-        private TextView releaseBodyContent;
-        private LinearLayout downloadFrame;
-        private RelativeLayout downloads;
-        private TextView releaseZipDownload;
-	    private TextView releaseTarDownload;
-	    private ImageView downloadDropdownIcon;
-	    private RecyclerView downloadList;
+        private final TextView releaseType;
+        private final TextView releaseName;
+        private final ImageView authorAvatar;
+        private final TextView authorName;
+        private final TextView releaseTag;
+		private final TextView releaseDate;
+        private final TextView releaseBodyContent;
+        private final LinearLayout downloadFrame;
+        private final LinearLayout downloads;
+        private final TextView releaseZipDownload;
+	    private final TextView releaseTarDownload;
+	    private final ImageView downloadDropdownIcon;
+	    private final RecyclerView downloadList;
 
         private ReleasesViewHolder(View itemView) {
 
@@ -59,7 +58,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	        authorAvatar = itemView.findViewById(R.id.authorAvatar);
 	        authorName = itemView.findViewById(R.id.authorName);
 	        releaseTag = itemView.findViewById(R.id.releaseTag);
-	        releaseCommitSha = itemView.findViewById(R.id.releaseCommitSha);
+	        TextView releaseCommitSha = itemView.findViewById(R.id.releaseCommitSha);
 	        releaseDate = itemView.findViewById(R.id.releaseDate);
 	        releaseBodyContent = itemView.findViewById(R.id.releaseBodyContent);
 	        downloadFrame = itemView.findViewById(R.id.downloadFrame);
@@ -71,12 +70,11 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 	        downloadList.setHasFixedSize(true);
 	        downloadList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-
         }
     }
 
-    public ReleasesAdapter(Context mCtx, List<Releases> releasesMain) {
-        this.mCtx = mCtx;
+    public ReleasesAdapter(Context ctx, List<Releases> releasesMain) {
+        this.context = ctx;
         this.releasesList = releasesMain;
     }
 
@@ -90,9 +88,10 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
     @Override
     public void onBindViewHolder(@NonNull ReleasesAdapter.ReleasesViewHolder holder, int position) {
 
-        final TinyDB tinyDb = TinyDB.getInstance(mCtx);
+        final TinyDB tinyDb = TinyDB.getInstance(context);
 	    final String locale = tinyDb.getString("locale");
 	    final String timeFormat = tinyDb.getString("dateFormat");
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
         Releases currentItem = releasesList.get(position);
 
@@ -111,25 +110,25 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    }
 
 	    if(currentItem.getAuthor().getAvatar_url() != null) {
-		    PicassoService.getInstance(mCtx).get().load(currentItem.getAuthor().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.authorAvatar);
+		    PicassoService.getInstance(context).get().load(currentItem.getAuthor().getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.authorAvatar);
 	    }
 
-	    holder.authorName.setText(mCtx.getResources().getString(R.string.releasePublishedBy, currentItem.getAuthor().getUsername()));
+	    holder.authorName.setText(context.getResources().getString(R.string.releasePublishedBy, currentItem.getAuthor().getUsername()));
 
 	    if(currentItem.getTag_name() != null) {
 	    	holder.releaseTag.setText(currentItem.getTag_name());
 	    }
 
 	    if(currentItem.getPublished_at() != null) {
-		    holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublished_at(), new Locale(locale), timeFormat, mCtx));
+		    holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublished_at(), new Locale(locale), timeFormat, context));
 	    }
 
 	    if(timeFormat.equals("pretty")) {
-		    holder.releaseDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublished_at()), mCtx));
+		    holder.releaseDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublished_at()), context));
 	    }
 
         if(!currentItem.getBody().equals("")) {
-	        Markdown.render(mCtx, currentItem.getBody(), holder.releaseBodyContent);
+	        Markdown.render(context, currentItem.getBody(), holder.releaseBodyContent);
         }
         else {
 	        holder.releaseBodyContent.setText(R.string.noReleaseBodyContent);
@@ -141,28 +140,25 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 			    holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_down);
 			    holder.downloads.setVisibility(View.VISIBLE);
-
 		    }
 		    else {
 
 			    holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_right);
 			    holder.downloads.setVisibility(View.GONE);
-
 		    }
 
 	    });
 
         holder.releaseZipDownload.setText(
-                HtmlCompat.fromHtml("<a href='" + currentItem.getZipball_url() + "'>" + mCtx.getResources().getString(R.string.zipArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
+                HtmlCompat.fromHtml("<a href='" + currentItem.getZipball_url() + "'>" + context.getResources().getString(R.string.zipArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
         holder.releaseZipDownload.setMovementMethod(LinkMovementMethod.getInstance());
 
         holder.releaseTarDownload.setText(
-                HtmlCompat.fromHtml("<a href='" + currentItem.getTarball_url() + "'>" + mCtx.getResources().getString(R.string.tarArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
+                HtmlCompat.fromHtml("<a href='" + currentItem.getTarball_url() + "'>" + context.getResources().getString(R.string.tarArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
         holder.releaseTarDownload.setMovementMethod(LinkMovementMethod.getInstance());
 
 	    ReleasesDownloadsAdapter adapter = new ReleasesDownloadsAdapter(currentItem.getAssets());
 	    holder.downloadList.setAdapter(adapter);
-
     }
 
     @Override

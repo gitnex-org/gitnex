@@ -45,7 +45,7 @@ public class Markdown {
 
 	private static final int MAX_POOL_SIZE = 45;
 	private static final int MAX_THREAD_KEEP_ALIVE_SECONDS = 120;
-	private static final int MAX_CLAIM_TIMEOUT_SECONDS = 5;
+	private static final int MAX_CLAIM_TIMEOUT_SECONDS = 120;
 
 	private static final Timeout timeout = new Timeout(MAX_CLAIM_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 

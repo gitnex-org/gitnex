@@ -26,6 +26,9 @@
                 android:layout_marginLeft="15dp"
                 android:gravity="center_vertical"
                 android:contentDescription="@string/close"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:focusable="true"
+                android:clickable="true"
                 android:src="@drawable/ic_arrow_back" />
 
             <TextView

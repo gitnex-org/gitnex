@@ -560,7 +560,7 @@
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">فعال‌سازی لرزش</string>
     <string name="chooseColorSelectorHeader">انتخاب رنگ</string>
-    <string name="newMessages">پیام‌های جدید</string>
+    <string name="newMessages">New messages for %s</string>
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>

@@ -9,29 +9,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.gitnex.tea4j.models.WatchInfo;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.OpenRepoInBrowserActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.activities.RepoForksActivity;
-import org.mian.gitnex.activities.RepoStargazersActivity;
-import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.ocpsoft.prettytime.PrettyTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -41,7 +43,7 @@ import retrofit2.Callback;
 
 public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private Context ctx;
+	private final Context context;
 	private final int TYPE_LOAD = 0;
 	private List<UserRepositories> forksList;
 	private OnLoadMoreListener loadMoreListener;
@@ -50,16 +52,15 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	public RepoForksAdapter(Context ctx, List<UserRepositories> forksListMain) {
 
-		this.ctx = ctx;
+		this.context = ctx;
 		this.forksList = forksListMain;
-
 	}
 
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-		LayoutInflater inflater = LayoutInflater.from(ctx);
+		LayoutInflater inflater = LayoutInflater.from(context);
 
 		if(viewType == TYPE_LOAD) {
 			return new RepoForksAdapter.ForksHolder(inflater.inflate(R.layout.list_repositories, parent, false));
@@ -67,7 +68,6 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		else {
 			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
 		}
-
 	}
 
 	@Override
@@ -77,15 +77,12 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			isLoading = true;
 			loadMoreListener.onLoadMore();
-
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
 
 			((RepoForksAdapter.ForksHolder) holder).bindData(forksList.get(position));
-
 		}
-
 	}
 
 	@Override
@@ -97,57 +94,51 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		else {
 			return 1;
 		}
-
 	}
 
 	@Override
 	public int getItemCount() {
 
 		return forksList.size();
-
 	}
 
 	class ForksHolder extends RecyclerView.ViewHolder {
 
-		private ImageView image;
-		private TextView repoName;
-		private TextView repoDescription;
-		private TextView fullName;
+		private UserRepositories userRepositories;
+
+		private final ImageView image;
+		private final TextView repoName;
+		private final TextView orgName;
+		private final TextView repoDescription;
 		private CheckBox isRepoAdmin;
-		private ImageView repoPrivatePublic;
-		private TextView repoStars;
-		private TextView repoForks;
-		private TextView repoOpenIssuesCount;
-		private TextView repoType;
-		private LinearLayout archiveRepo;
-		private TextView repoBranch;
-		private ImageView reposDropdownMenu;
+		private final TextView repoStars;
+		private final TextView repoLastUpdated;
 
 		ForksHolder(View itemView) {
 
 			super(itemView);
-
 			repoName = itemView.findViewById(R.id.repoName);
+			orgName = itemView.findViewById(R.id.orgName);
 			repoDescription = itemView.findViewById(R.id.repoDescription);
 			isRepoAdmin = itemView.findViewById(R.id.repoIsAdmin);
 			image = itemView.findViewById(R.id.imageAvatar);
-			fullName = itemView.findViewById(R.id.repoFullName);
-			repoPrivatePublic = itemView.findViewById(R.id.imageRepoType);
 			repoStars = itemView.findViewById(R.id.repoStars);
-			repoForks = itemView.findViewById(R.id.repoForks);
-			repoOpenIssuesCount = itemView.findViewById(R.id.repoOpenIssuesCount);
-			reposDropdownMenu = itemView.findViewById(R.id.reposDropdownMenu);
-			repoType = itemView.findViewById(R.id.repoType);
-			archiveRepo = itemView.findViewById(R.id.archiveRepoFrame);
-			repoBranch = itemView.findViewById(R.id.repoBranch);
-
+			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
 		}
 
 		@SuppressLint("SetTextI18n")
 		void bindData(UserRepositories forksModel) {
 
-			repoDescription.setVisibility(View.GONE);
-			repoBranch.setText(forksModel.getDefault_branch());
+			TinyDB tinyDb = TinyDB.getInstance(context);
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+
+			String locale = tinyDb.getString("locale");
+			String timeFormat = tinyDb.getString("dateFormat");
+			this.userRepositories = forksModel;
+			orgName.setText(forksModel.getFullName().split("/")[0]);
+			repoName.setText(forksModel.getFullName().split("/")[1]);
+			repoStars.setText(forksModel.getStars_count());
+
 
 			ColorGenerator generator = ColorGenerator.MATERIAL;
 			int color = generator.getColor(forksModel.getName());
@@ -158,8 +149,8 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			if(forksModel.getAvatar_url() != null) {
 				if(!forksModel.getAvatar_url().equals("")) {
-					PicassoService.getInstance(ctx).get().load(forksModel.getAvatar_url()).placeholder(R.drawable.loader_animated)
-						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(image);
+					PicassoService.getInstance(context).get().load(forksModel.getAvatar_url()).placeholder(R.drawable.loader_animated)
+						.transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
 				}
 				else {
 					image.setImageDrawable(drawable);
@@ -169,61 +160,68 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				image.setImageDrawable(drawable);
 			}
 
-			repoName.setText(forksModel.getName());
+			if(forksModel.getUpdated_at() != null) {
+
+				switch(timeFormat) {
+					case "pretty": {
+						PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+						String createdTime = prettyTime.format(forksModel.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(forksModel.getUpdated_at()), context));
+						break;
+					}
+					case "normal": {
+						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+						String createdTime = formatter.format(forksModel.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						break;
+					}
+					case "normal1": {
+						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+						String createdTime = formatter.format(forksModel.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						break;
+					}
+				}
+			}
+			else {
+				repoLastUpdated.setVisibility(View.GONE);
+			}
 
 			if(!forksModel.getDescription().equals("")) {
-				repoDescription.setVisibility(View.VISIBLE);
 				repoDescription.setText(forksModel.getDescription());
 			}
-			fullName.setText(forksModel.getFullName());
-
-			if(forksModel.getPrivateFlag()) {
-				repoPrivatePublic.setImageResource(R.drawable.ic_lock);
-				repoType.setText(R.string.strPrivate);
-			}
-			else {
-				repoPrivatePublic.setVisibility(View.GONE);
-				repoType.setText(R.string.strPublic);
-			}
-
-			repoStars.setText(forksModel.getStars_count());
-			repoForks.setText(forksModel.getForks_count());
-			repoOpenIssuesCount.setText(forksModel.getOpen_issues_count());
 
 			if(isRepoAdmin == null) {
-				isRepoAdmin = new CheckBox(ctx);
+				isRepoAdmin = new CheckBox(context);
 			}
 			isRepoAdmin.setChecked(forksModel.getPermissions().isAdmin());
-
-			if(forksModel.isArchived()) {
-				archiveRepo.setVisibility(View.VISIBLE);
-			}
-			else {
-				archiveRepo.setVisibility(View.GONE);
-			}
 
 			itemView.setOnClickListener(v -> {
 
 				Context context = v.getContext();
-				TextView repoFullName = v.findViewById(R.id.repoFullName);
-				TextView repoType_ = v.findViewById(R.id.repoType);
 
 				Intent intent = new Intent(context, RepoDetailActivity.class);
-				intent.putExtra("repoFullName", repoFullName.getText().toString());
+				intent.putExtra("repoFullName", userRepositories.getFullName());
 
-				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("repoFullName", repoFullName.getText().toString());
-				tinyDb.putString("repoType", repoType_.getText().toString());
+				tinyDb.putString("repoFullName", userRepositories.getFullName());
 				//tinyDb.putBoolean("resumeIssues", true);
 				tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
-				tinyDb.putString("repoBranch", repoBranch.getText().toString());
+				tinyDb.putString("repoBranch", userRepositories.getDefault_branch());
 
-				String[] parts = repoFullName.getText().toString().split("/");
+				if(userRepositories.getPrivateFlag()) {
+					tinyDb.putString("repoType", context.getResources().getString(R.string.strPrivate));
+				}
+				else {
+					tinyDb.putString("repoType", context.getResources().getString(R.string.strPublic));
+				}
+
+				String[] parts = userRepositories.getFullName().split("/");
 				final String repoOwner = parts[0];
 				final String repoName = parts[1];
 
 				int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-				RepositoriesApi repositoryData = new RepositoriesApi(context);
+				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
 				//RepositoriesRepository.deleteRepositoriesByAccount(currentActiveAccountId);
 				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
@@ -232,13 +230,11 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 					long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
 					tinyDb.putLong("repositoryId", id);
-
 				}
 				else {
 
 					Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
 					tinyDb.putLong("repositoryId", data.getRepositoryId());
-
 				}
 
 				//store if user is watching this repo
@@ -291,63 +287,6 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				context.startActivity(intent);
 
 			});
-
-			reposDropdownMenu.setOnClickListener(v -> {
-
-				final Context context = v.getContext();
-
-				@SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_repository_in_list, null);
-
-				TextView repoOpenInBrowser = view.findViewById(R.id.repoOpenInBrowser);
-				TextView repoStargazers = view.findViewById(R.id.repoStargazers);
-				TextView repoWatchers = view.findViewById(R.id.repoWatchers);
-				TextView repoForksList = view.findViewById(R.id.repoForksList);
-				TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
-
-				bottomSheetHeader
-					.setText(String.format("%s / %s", fullName.getText().toString().split("/")[0], fullName.getText().toString().split("/")[1]));
-				BottomSheetDialog dialog = new BottomSheetDialog(context);
-				dialog.setContentView(view);
-				dialog.show();
-
-				repoOpenInBrowser.setOnClickListener(openInBrowser -> {
-
-					Intent intentOpenInBrowser = new Intent(context, OpenRepoInBrowserActivity.class);
-					intentOpenInBrowser.putExtra("repoFullNameBrowser", fullName.getText());
-					context.startActivity(intentOpenInBrowser);
-					dialog.dismiss();
-
-				});
-
-				repoStargazers.setOnClickListener(stargazers -> {
-
-					Intent intent = new Intent(context, RepoStargazersActivity.class);
-					intent.putExtra("repoFullNameForStars", fullName.getText());
-					context.startActivity(intent);
-					dialog.dismiss();
-
-				});
-
-				repoWatchers.setOnClickListener(watchers -> {
-
-					Intent intentW = new Intent(context, RepoWatchersActivity.class);
-					intentW.putExtra("repoFullNameForWatchers", fullName.getText());
-					context.startActivity(intentW);
-					dialog.dismiss();
-
-				});
-
-				repoForksList.setOnClickListener(watchers -> {
-
-					Intent intentW = new Intent(context, RepoForksActivity.class);
-					intentW.putExtra("repoFullNameForForks", fullName.getText());
-					context.startActivity(intentW);
-					dialog.dismiss();
-
-				});
-
-			});
-
 		}
 
 	}
@@ -358,32 +297,27 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			super(itemView);
 		}
-
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 
 		isMoreDataAvailable = moreDataAvailable;
-
 	}
 
 	public void notifyDataChanged() {
 
 		notifyDataSetChanged();
 		isLoading = false;
-
 	}
 
 	public interface OnLoadMoreListener {
 
 		void onLoadMore();
-
 	}
 
 	public void setLoadMoreListener(RepoForksAdapter.OnLoadMoreListener loadMoreListener) {
 
 		this.loadMoreListener = loadMoreListener;
-
 	}
 
 	public void updateList(List<UserRepositories> list) {

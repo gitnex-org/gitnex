@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/avatar"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/list_avatar_size"
+            android:layout_height="@dimen/list_avatar_size"
             android:layout_weight="0"
             android:contentDescription="@string/generalImgContentText"
             tools:srcCompat="@tools:sample/avatars" />
@@ -38,7 +38,7 @@
                 android:ellipsize="middle"
                 android:singleLine="true"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -48,7 +48,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="?attr/hintColor"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <ImageView
@@ -71,14 +71,14 @@
         android:textIsSelectable="true"
         android:autoLink="web"
         android:textColorLink="@color/lightBlue"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <LinearLayout
         android:id="@+id/commentReactionBadges"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal" />
 
 </LinearLayout>

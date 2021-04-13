@@ -1,30 +1,22 @@
 package org.mian.gitnex.database.api;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.lifecycle.LiveData;
 import org.mian.gitnex.database.dao.RepositoriesDao;
-import org.mian.gitnex.database.db.GitnexDatabase;
 import org.mian.gitnex.database.models.Repository;
-import org.mian.gitnex.helpers.Constants;
 import java.util.List;
 
 /**
  * Author M M Arif
  */
 
-public class RepositoriesApi {
+public class RepositoriesApi extends BaseApi {
 
-	private static RepositoriesDao repositoriesDao;
-	private static long repositoryId;
-	private static Repository repository;
-	private static Integer checkRepository;
+	private final RepositoriesDao repositoriesDao;
 
-	public RepositoriesApi(Context context) {
-
-		GitnexDatabase db;
-		db = GitnexDatabase.getDatabaseInstance(context);
-		repositoriesDao = db.repositoriesDao();
+	RepositoriesApi(Context context) {
+		super(context);
+		repositoriesDao = gitnexDatabase.repositoriesDao();
 	}
 
 	public long insertRepository(int repoAccountId, String repositoryOwner, String repositoryName) {
@@ -38,108 +30,43 @@ public class RepositoriesApi {
 	}
 
 	public long insertRepositoryAsyncTask(Repository repository) {
-
-		try {
-
-			Thread thread = new Thread(() -> repositoryId = repositoriesDao.newRepository(repository));
-			thread.start();
-			thread.join();
-		}
-		catch(InterruptedException e) {
-
-			Log.e(Constants.repositoriesApi, e.toString());
-		}
-
-		return repositoryId;
+		return repositoriesDao.newRepository(repository);
 	}
 
 	public Repository getRepository(int repoAccountId, String repositoryOwner, String repositoryName) {
-
-		try {
-
-			Thread thread = new Thread(() -> repository = repositoriesDao.getSingleRepositoryDao(repoAccountId, repositoryOwner, repositoryName));
-			thread.start();
-			thread.join();
-		}
-		catch(InterruptedException e) {
-
-			Log.e(Constants.repositoriesApi, e.toString());
-		}
-
-		return repository;
+		return repositoriesDao.getSingleRepositoryDao(repoAccountId, repositoryOwner, repositoryName);
 	}
 
 	public LiveData<List<Repository>> getAllRepositories() {
-
 		return repositoriesDao.fetchAllRepositories();
 	}
 
 	public LiveData<List<Repository>> getAllRepositoriesByAccount(int repoAccountId) {
-
 		return repositoriesDao.getAllRepositoriesByAccountDao(repoAccountId);
 	}
 
 	public Integer checkRepository(int repoAccountId, String repositoryOwner, String repositoryName) {
-
-		try {
-
-			Thread thread = new Thread(() -> checkRepository = repositoriesDao.checkRepositoryDao(repoAccountId, repositoryOwner, repositoryName));
-			thread.start();
-			thread.join();
-		}
-		catch(InterruptedException e) {
-
-			Log.e(Constants.repositoriesApi, e.toString());
-		}
-
-		return checkRepository;
+		return repositoriesDao.checkRepositoryDao(repoAccountId, repositoryOwner, repositoryName);
 	}
 
 	public Repository fetchRepositoryById(int repositoryId) {
-
-		try {
-
-			Thread thread = new Thread(() -> repository = repositoriesDao.fetchRepositoryByIdDao(repositoryId));
-			thread.start();
-			thread.join();
-		}
-		catch(InterruptedException e) {
-
-			Log.e(Constants.repositoriesApi, e.toString());
-		}
-
-		return repository;
+		return repositoriesDao.fetchRepositoryByIdDao(repositoryId);
 	}
 
 	public Repository fetchRepositoryByAccountIdByRepositoryId(int repositoryId, int repoAccountId) {
-
-		try {
-
-			Thread thread = new Thread(() -> repository = repositoriesDao.fetchRepositoryByAccountIdByRepositoryIdDao(repositoryId, repoAccountId));
-			thread.start();
-			thread.join();
-		}
-		catch(InterruptedException e) {
-
-			Log.e(Constants.repositoriesApi, e.toString());
-		}
-
-		return repository;
+		return repositoriesDao.fetchRepositoryByAccountIdByRepositoryIdDao(repositoryId, repoAccountId);
 	}
 
-	public static void updateRepositoryOwnerAndName(String repositoryOwner, String repositoryName, int repositoryId) {
-
-		new Thread(() -> repositoriesDao.updateRepositoryOwnerAndName(repositoryOwner, repositoryName, repositoryId)).start();
+	public void updateRepositoryOwnerAndName(String repositoryOwner, String repositoryName, int repositoryId) {
+		executorService.execute(() -> repositoriesDao.updateRepositoryOwnerAndName(repositoryOwner, repositoryName, repositoryId));
 	}
 
-	public static void deleteRepositoriesByAccount(final int repoAccountId) {
-
-		new Thread(() -> repositoriesDao.deleteRepositoriesByAccount(repoAccountId)).start();
+	public void deleteRepositoriesByAccount(final int repoAccountId) {
+		executorService.execute(() -> repositoriesDao.deleteRepositoriesByAccount(repoAccountId));
 	}
 
-	public static void deleteRepository(final int repositoryId) {
-
-		new Thread(() -> repositoriesDao.deleteRepository(repositoryId)).start();
+	public void deleteRepository(final int repositoryId) {
+		executorService.execute(() -> repositoriesDao.deleteRepository(repositoryId));
 	}
 
 }

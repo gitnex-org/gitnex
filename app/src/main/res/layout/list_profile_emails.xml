@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
-    android:background="?attr/primaryBackgroundColor" >
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    tools:ignore="UseCompoundDrawables">
 
     <TextView
         android:id="@+id/userEmail"
@@ -18,12 +20,11 @@
         android:id="@+id/emailPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/userEmail"
         android:layout_gravity="start"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@string/emailTypeText"
         android:paddingStart="20dp"
         android:paddingEnd="2dp"
-        android:contentDescription="@string/emailTypeText"
-        android:src="@drawable/ic_verified_user" />
+        tools:src="@drawable/ic_verified_user" />
 
-</RelativeLayout>
+</LinearLayout>

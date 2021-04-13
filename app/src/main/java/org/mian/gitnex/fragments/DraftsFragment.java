@@ -22,6 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.DraftsAdapter;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.database.models.DraftWithRepository;
 import org.mian.gitnex.databinding.FragmentDraftsBinding;
@@ -59,7 +60,7 @@ public class DraftsFragment extends Fragment {
         TinyDB tinyDb = TinyDB.getInstance(ctx);
 
 	    draftsList_ = new ArrayList<>();
-        draftsApi = new DraftsApi(ctx);
+        draftsApi = BaseApi.getInstance(ctx, DraftsApi.class);
 
         noData = fragmentDraftsBinding.noData;
         mRecyclerView = fragmentDraftsBinding.recyclerView;
@@ -123,7 +124,7 @@ public class DraftsFragment extends Fragment {
 
     	if(draftsList_.size() > 0) {
 
-		    DraftsApi.deleteAllDrafts(accountId);
+		    BaseApi.getInstance(ctx, DraftsApi.class).deleteAllDrafts(accountId);
 		    draftsList_.clear();
 		    adapter.notifyDataSetChanged();
 		    Toasty.success(ctx, getResources().getString(R.string.draftsDeleteSuccess));

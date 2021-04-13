@@ -14,6 +14,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
@@ -29,25 +30,25 @@ import retrofit2.Response;
 
 public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSearchForTeamMemberAdapter.UserSearchViewHolder> {
 
-	private List<UserInfo> usersSearchList;
-	private Context mCtx;
-	private int teamId;
+	private final List<UserInfo> usersSearchList;
+	private final Context context;
+	private static int teamId;
 
-	public UserSearchForTeamMemberAdapter(List<UserInfo> dataList, Context mCtx, int teamId) {
-		this.mCtx = mCtx;
+	public UserSearchForTeamMemberAdapter(List<UserInfo> dataList, Context ctx, int teamId) {
+		this.context = ctx;
 		this.usersSearchList = dataList;
-		this.teamId = teamId;
+		UserSearchForTeamMemberAdapter.teamId = teamId;
 	}
 
 	static class UserSearchViewHolder extends RecyclerView.ViewHolder {
 
-		private ImageView userAvatar;
-		private TextView userFullName;
-		private TextView userName;
-		private TextView userNameMain;
-		private ImageView addMemberButtonAdd;
-		private ImageView addMemberButtonRemove;
-		private TextView teamId_;
+		private UserInfo userInfo;
+
+		private final ImageView userAvatar;
+		private final TextView userFullName;
+		private final TextView userName;
+		private final ImageView addMemberButtonAdd;
+		private final ImageView addMemberButtonRemove;
 
 		private UserSearchViewHolder(View itemView) {
 
@@ -55,35 +56,30 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 			userAvatar = itemView.findViewById(R.id.userAvatar);
 			userFullName = itemView.findViewById(R.id.userFullName);
 			userName = itemView.findViewById(R.id.userName);
-			userNameMain = itemView.findViewById(R.id.userNameMain);
 			addMemberButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
 			addMemberButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
-			teamId_ = itemView.findViewById(R.id.teamId);
 
 			addMemberButtonAdd.setOnClickListener(v -> {
 
 				Context context = v.getContext();
 
-				AlertDialogs.addMemberDialog(context, userNameMain.getText().toString(),
+				AlertDialogs.addMemberDialog(context, userInfo.getLogin(),
 						context.getResources().getString(R.string.addTeamMemberTitle),
 						context.getResources().getString(R.string.addTeamMemberMessage),
 						context.getResources().getString(R.string.addButton),
-						context.getResources().getString(R.string.cancelButton), Integer.parseInt(teamId_.getText().toString()));
-
+						context.getResources().getString(R.string.cancelButton), Integer.parseInt(String.valueOf(teamId)));
 			});
 
 			addMemberButtonRemove.setOnClickListener(v -> {
 
 				Context context = v.getContext();
 
-				AlertDialogs.removeMemberDialog(context, userNameMain.getText().toString(),
+				AlertDialogs.removeMemberDialog(context, userInfo.getLogin(),
 						context.getResources().getString(R.string.removeTeamMemberTitle),
 						context.getResources().getString(R.string.removeTeamMemberMessage),
 						context.getResources().getString(R.string.removeButton),
-						context.getResources().getString(R.string.cancelButton), Integer.parseInt(teamId_.getText().toString()));
-
+						context.getResources().getString(R.string.cancelButton), Integer.parseInt(String.valueOf(teamId)));
 			});
-
 		}
 
 	}
@@ -98,39 +94,36 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 	@Override
 	public void onBindViewHolder(@NonNull final UserSearchForTeamMemberAdapter.UserSearchViewHolder holder, int position) {
 
-		final UserInfo currentItem = usersSearchList.get(position);
-
-		holder.userNameMain.setText(currentItem.getLogin());
-		holder.teamId_.setText(String.valueOf(teamId));
+		UserInfo currentItem = usersSearchList.get(position);
+		holder.userInfo = currentItem;
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		if (!currentItem.getFullname().equals("")) {
-
 
 			holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
 		}
 		else {
 
-			holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
+			holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 		}
 
-		holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
+		holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
 		if (!currentItem.getAvatar().equals("")) {
-			PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+			PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
 		}
 
 		if(getItemCount() > 0) {
 
-			TinyDB tinyDb = TinyDB.getInstance(mCtx);
+			TinyDB tinyDb = TinyDB.getInstance(context);
 			final String loginUid = tinyDb.getString("loginUid");
 			String repoFullName = tinyDb.getString("repoFullName");
 			String[] parts = repoFullName.split("/");
 			final String repoOwner = parts[0];
-			final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
 			Call<UserInfo> call = RetrofitClient
-					.getApiInterface(mCtx)
-					.checkTeamMember(Authorization.get(mCtx), teamId, currentItem.getLogin());
+					.getApiInterface(context)
+					.checkTeamMember(Authorization.get(context), teamId, currentItem.getLogin());
 
 			call.enqueue(new Callback<UserInfo>() {
 
@@ -167,8 +160,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 				@Override
 				public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
 
-					Toasty.error(mCtx, mCtx.getResources().getString(R.string.genericServerResponseError));
-
+					Toasty.error(context, context.getResources().getString(R.string.genericServerResponseError));
 				}
 
 			});

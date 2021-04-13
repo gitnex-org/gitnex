@@ -150,7 +150,7 @@
         <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
         <item name="hintColor">@color/hintColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
-        <item name="dividerColor">@color/hintColor</item>
+        <item name="dividerColor">@color/pitchBlackThemeDividerColor</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@color/darkGreen</item>

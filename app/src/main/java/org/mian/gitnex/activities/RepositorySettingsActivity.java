@@ -14,6 +14,7 @@ import org.gitnex.tea4j.models.RepositoryTransfer;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.databinding.ActivityRepositorySettingsBinding;
 import org.mian.gitnex.databinding.CustomRepositoryDeleteDialogBinding;
@@ -139,7 +140,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
 
 					finish();
-					RepositoriesApi.deleteRepository((int) tinyDB.getLong("repositoryId", 0));
+					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository((int) tinyDB.getLong("repositoryId", 0));
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -220,7 +221,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
 
 					finish();
-					RepositoriesApi.deleteRepository((int) tinyDB.getLong("repositoryId", 0));
+					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository((int) tinyDB.getLong("repositoryId", 0));
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -383,7 +384,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					if(!repositoryName.equals(repoName)) {
 
 						finish();
-						RepositoriesApi.updateRepositoryOwnerAndName(repositoryOwner, repoName, (int) tinyDB.getLong("repositoryId", 0));
+						BaseApi.getInstance(ctx, RepositoriesApi.class).updateRepositoryOwnerAndName(repositoryOwner, repoName, (int) tinyDB.getLong("repositoryId", 0));
 						Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 						RepositorySettingsActivity.this.startActivity(intent);
 					}

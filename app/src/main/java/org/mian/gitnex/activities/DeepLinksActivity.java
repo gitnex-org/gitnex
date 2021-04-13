@@ -13,11 +13,13 @@ import org.gitnex.tea4j.models.PullRequests;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityDeeplinksBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.UrlHelper;
 import java.net.URI;
 import java.util.List;
@@ -65,7 +67,7 @@ public class DeepLinksActivity extends BaseActivity {
 		}
 
 		// check for the links(URI) to be in the db
-		UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
+		UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
 		List<UserAccount> userAccounts = userAccountsApi.usersAccounts();
 
 		for(UserAccount userAccount : userAccounts) {
@@ -79,13 +81,9 @@ public class DeepLinksActivity extends BaseActivity {
 
 				accountFound = true;
 
-				tinyDB.putString("loginUid", userAccount.getUserName());
-				tinyDB.putString("userLogin", userAccount.getUserName());
-				tinyDB.putString(userAccount.getUserName() + "-token", userAccount.getToken());
-				tinyDB.putString("instanceUrl", userAccount.getInstanceUrl());
-				tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
-
+				AppUtil.switchToAccount(ctx, userAccount);
 				break;
+
 			}
 		}
 
@@ -112,7 +110,7 @@ public class DeepLinksActivity extends BaseActivity {
 						final String repoName = restOfUrl[restOfUrl.length - 3];
 
 						int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-						RepositoriesApi repositoryData = new RepositoriesApi(ctx);
+						RepositoriesApi repositoryData = BaseApi.getInstance(ctx, RepositoriesApi.class);
 
 						Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 
@@ -344,7 +342,7 @@ public class DeepLinksActivity extends BaseActivity {
 					tinyDB.putString("repoFullName", repoOwner + "/" + repoName);
 
 					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-					RepositoriesApi repositoryData = new RepositoriesApi(ctx);
+					RepositoriesApi repositoryData = BaseApi.getInstance(ctx, RepositoriesApi.class);
 
 					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 
@@ -415,7 +413,7 @@ public class DeepLinksActivity extends BaseActivity {
 					tinyDB.putString("repoBranch", repoInfo.getDefault_branch());
 
 					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-					RepositoriesApi repositoryData = new RepositoriesApi(ctx);
+					RepositoriesApi repositoryData = BaseApi.getInstance(ctx, RepositoriesApi.class);
 
 					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 

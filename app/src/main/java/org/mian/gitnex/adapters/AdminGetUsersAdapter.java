@@ -28,7 +28,7 @@ import java.util.List;
 public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdapter.UsersViewHolder> implements Filterable {
 
     private final List<UserInfo> usersList;
-    private final Context mCtx;
+    private final Context context;
     private final List<UserInfo> usersListFull;
 
     static class UsersViewHolder extends RecyclerView.ViewHolder {
@@ -60,9 +60,9 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
         }
     }
 
-    public AdminGetUsersAdapter(Context mCtx, List<UserInfo> usersListMain) {
+    public AdminGetUsersAdapter(Context ctx, List<UserInfo> usersListMain) {
 
-        this.mCtx = mCtx;
+        this.context = ctx;
         this.usersList = usersListMain;
         usersListFull = new ArrayList<>(usersList);
     }
@@ -79,17 +79,18 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
     public void onBindViewHolder(@NonNull AdminGetUsersAdapter.UsersViewHolder holder, int position) {
 
         UserInfo currentItem = usersList.get(position);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 	    holder.userLoginId = currentItem.getLogin();
 
         if(!currentItem.getFullname().equals("")) {
 
             holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
-            holder.userName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+            holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
         }
         else {
 
-            holder.userFullName.setText(mCtx.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+            holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
             holder.userName.setVisibility(View.GONE);
         }
 
@@ -107,12 +108,12 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
             holder.userRole.setVisibility(View.VISIBLE);
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
-                    .textColor(ResourcesCompat.getColor(mCtx.getResources(), R.color.colorWhite, null))
+                    .textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null))
                     .fontSize(44)
                     .width(180)
                     .height(60)
                     .endConfig()
-                    .buildRoundRect(mCtx.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(mCtx.getResources(), R.color.releasePre, null), 8);
+                    .buildRoundRect(context.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null), 8);
             holder.userRole.setImageDrawable(drawable);
         }
         else {
@@ -120,7 +121,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
             holder.userRole.setVisibility(View.GONE);
         }
 
-        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+        PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
     }
 
     @Override

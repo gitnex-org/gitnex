@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.List;
@@ -22,13 +23,13 @@ import java.util.List;
 
 public class RepoWatchersAdapter extends BaseAdapter {
 
-    private List<UserInfo> watchersList;
-    private Context mCtx;
+    private final List<UserInfo> watchersList;
+    private final Context context;
 
     private static class ViewHolder {
 
-        private ImageView memberAvatar;
-        private TextView memberName;
+        private final ImageView memberAvatar;
+        private final TextView memberName;
 
         ViewHolder(View v) {
             memberAvatar  = v.findViewById(R.id.memberAvatar);
@@ -36,8 +37,8 @@ public class RepoWatchersAdapter extends BaseAdapter {
         }
     }
 
-    public RepoWatchersAdapter(Context mCtx, List<UserInfo> membersListMain) {
-        this.mCtx = mCtx;
+    public RepoWatchersAdapter(Context ctx, List<UserInfo> membersListMain) {
+        this.context = ctx;
         this.watchersList = membersListMain;
     }
 
@@ -63,7 +64,7 @@ public class RepoWatchersAdapter extends BaseAdapter {
         RepoWatchersAdapter.ViewHolder viewHolder;
 
         if (finalView == null) {
-            finalView = LayoutInflater.from(mCtx).inflate(R.layout.list_repo_watchers, null);
+            finalView = LayoutInflater.from(context).inflate(R.layout.list_repo_watchers, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
@@ -79,23 +80,25 @@ public class RepoWatchersAdapter extends BaseAdapter {
     private void initData(RepoWatchersAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = watchersList.get(position);
-        PicassoService.getInstance(mCtx).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-        final TinyDB tinyDb = TinyDB.getInstance(mCtx);
+        PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);
+
+        final TinyDB tinyDb = TinyDB.getInstance(context);
         Typeface myTypeface;
 
         switch(tinyDb.getInt("customFontId", -1)) {
 
             case 0:
-                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/roboto.ttf");
+                myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
                 break;
 
             case 2:
-                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/sourcecodeproregular.ttf");
+                myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf");
                 break;
 
             default:
-                myTypeface = Typeface.createFromAsset(mCtx.getAssets(), "fonts/manroperegular.ttf");
+                myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/manroperegular.ttf");
                 break;
 
         }

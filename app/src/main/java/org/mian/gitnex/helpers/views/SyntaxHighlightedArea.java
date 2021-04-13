@@ -1,5 +1,6 @@
 package org.mian.gitnex.helpers.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -36,19 +37,16 @@ public class SyntaxHighlightedArea extends LinearLayout {
 	private LinesView linesView;
 
 	public SyntaxHighlightedArea(@NonNull Context context) {
-
 		super(context);
 		setup();
 	}
 
 	public SyntaxHighlightedArea(@NonNull Context context, @Nullable AttributeSet attrs) {
-
 		super(context, attrs);
 		setup();
 	}
 
 	public SyntaxHighlightedArea(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-
 		super(context, attrs, defStyleAttr);
 		setup();
 	}
@@ -62,9 +60,10 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		sourceView = new TextView(getContext());
 
 		sourceView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		sourceView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		sourceView.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/sourcecodeproregular.ttf"));
+		sourceView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		sourceView.setTextColor(prism4jTheme.textColor());
+		sourceView.setTextIsSelectable(true);
 
 		int padding = AppUtil.getPixelsFromDensity(getContext(), 5);
 		sourceView.setPadding(padding, 0, padding, 0);
@@ -97,34 +96,57 @@ public class SyntaxHighlightedArea extends LinearLayout {
 	public void setContent(@NonNull String source, @NonNull String extension) {
 
 		if(source.length() > 0) {
-			linesView.setLineCount(AppUtil.getLineCount(source));
 
-			try {
+			Thread highlightingThread = new Thread(() -> {
 
-				MainGrammarLocator mainGrammarLocator = MainGrammarLocator.getInstance();
-				Prism4j prism4j = new Prism4j(mainGrammarLocator);
+				try {
 
-				CharSequence highlightedSource = Prism4jSyntaxHighlight.create(prism4j, prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE)
-					.highlight(mainGrammarLocator.fromExtension(extension), source);
+					MainGrammarLocator mainGrammarLocator = MainGrammarLocator.getInstance();
 
-				if(highlightedSource.charAt(highlightedSource.length() - 1) == '\n') {
-					// Removes a line break which is probably added by Prism4j but not actually present in the source.
-					// This line should be altered in case this gets fixed.
-					sourceView.setText(highlightedSource.subSequence(0, highlightedSource.length() - 1));
+					CharSequence highlightedSource = Prism4jSyntaxHighlight
+						.create(new Prism4j(mainGrammarLocator), prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE)
+						.highlight(mainGrammarLocator.fromExtension(extension), source);
+
+					getActivity().runOnUiThread(() -> {
+						if(highlightedSource.charAt(highlightedSource.length() - 1) == '\n') {
+							// Removes a line break which is probably added by Prism4j but not actually present in the source.
+							// This line should be altered in case this gets fixed.
+							sourceView.setText(highlightedSource.subSequence(0, highlightedSource.length() - 1));
+						} else {
+							sourceView.setText(highlightedSource);
+						}
+					});
+
+				} catch(Throwable ignored) {
+					// Fall back to plaintext if something fails
+					getActivity().runOnUiThread(() -> sourceView.setText(source));
 				}
-				else {
-					sourceView.setText(highlightedSource);
-				}
 
-			} catch(Throwable ignored) {
-				// Fall back to plaintext if something fails
-				sourceView.setText(source);
-			}
+			});
+
+			Thread lineCountingThread = new Thread(() -> {
+
+				long lineCount = AppUtil.getLineCount(source);
+
+				try {
+					highlightingThread.join();
+				} catch(InterruptedException ignored) {}
+
+				getActivity().runOnUiThread(() -> linesView.setLineCount(lineCount));
+
+			});
+
+			highlightingThread.start();
+			lineCountingThread.start();
+
 		}
 	}
 
-    public String getContent() {
+	private Activity getActivity() {
+		return (Activity) getContext();
+	}
 
+    public String getContent() {
 		return sourceView.getText().toString();
     }
 
@@ -137,27 +159,31 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		@ColorInt private int textColor;
 		@ColorInt private int lineColor;
 
-		private int lineCount;
+		private long lineCount;
 
 	    public LinesView(Context context) {
 	    	super(context);
 	    }
 
-		public void setLineCount(int lineCount) {
+		public void setLineCount(long lineCount) {
 			this.lineCount = lineCount;
+			requestLayout();
 		}
 
 		@Override
 		public void setBackgroundColor(@ColorInt int backgroundColor) {
 			this.backgroundColor = backgroundColor;
+			invalidate();
 		}
 
 		public void setTextColor(@ColorInt int textColor) {
 			this.textColor = textColor;
+			invalidate();
 		}
 
 		public void setLineColor(@ColorInt int lineColor) {
 			this.lineColor = lineColor;
+			invalidate();
 		}
 
 		public Paint getPaint() {

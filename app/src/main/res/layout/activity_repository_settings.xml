@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,6 +11,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -22,10 +24,13 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/close_button_size"
                 android:layout_height="@dimen/close_button_size"
-                android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"
+                android:layout_marginRight="15dp"
                 android:contentDescription="@string/close"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:gravity="center_vertical"
+                android:focusable="true"
+                android:clickable="true"
                 android:src="@drawable/ic_arrow_back" />
 
             <TextView
@@ -33,9 +38,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@string/repoSettingsTitle"
                 android:textColor="?attr/primaryTextColor"
-                android:maxLines="1"
                 android:textSize="20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -56,11 +61,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/repoSettingsEditProperties"
+                android:background="?android:attr/selectableItemBackground"
                 android:drawablePadding="32dp"
+                android:padding="16dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:text="@string/repoSettingsEditProperties"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="16dp"
                 app:drawableStartCompat="@drawable/ic_edit" />
 
             <View
@@ -72,21 +80,25 @@
                 android:id="@+id/transferOwnerFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/transferRepositoryOwnership"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/repoSettingsTransferOwnership"
                     android:drawablePadding="32dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/repoSettingsTransferOwnership"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
-                    android:paddingTop="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     app:drawableStartCompat="@drawable/ic_arrow_up" />
 
                 <TextView
@@ -94,12 +106,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:paddingStart="72dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
                     android:text="@string/repoSettingsTransferOwnershipHint"
                     android:textColor="?attr/hintColor"
-                    android:textSize="12sp"
-                    android:paddingBottom="16dp"
-                    android:paddingStart="72dp"
-                    android:paddingEnd="16dp" />
+                    android:textSize="12sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -110,8 +122,11 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="vertical"
+                android:focusable="true"
+                android:clickable="true"
                 android:paddingBottom="16dp">
 
                 <TextView
@@ -119,13 +134,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/repoSettingsDelete"
                     android:drawablePadding="32dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/repoSettingsDelete"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
-                    android:paddingTop="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     app:drawableStartCompat="@drawable/ic_delete" />
 
                 <TextView
@@ -133,11 +148,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:paddingStart="72dp"
+                    android:paddingEnd="16dp"
                     android:text="@string/repoSettingsDeleteHint"
                     android:textColor="?attr/hintColor"
-                    android:textSize="12sp"
-                    android:paddingStart="72dp"
-                    android:paddingEnd="16dp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 

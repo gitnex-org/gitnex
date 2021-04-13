@@ -54,7 +54,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 		COLOR_NORMAL = AppUtil.getColorFromAttribute(context, R.attr.primaryBackgroundColor);
 		COLOR_SELECTED = AppUtil.getColorFromAttribute(context, R.attr.diffSelectedColor);
 		COLOR_FONT = AppUtil.getColorFromAttribute(context, R.attr.inputTextColor);
-
 	}
 
 	@Override
@@ -94,7 +93,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 
 			diffStats.setVisibility(View.GONE);
 			diffLines.addView(getMessageView(context.getResources().getString(R.string.binaryFileError)));
-
 		}
 		else {
 
@@ -168,7 +166,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 
 						}
 
-
 						diffTextView.setOnClickListener(v -> {
 
 							if(((DiffTextView) v).getCurrentBackgroundColor() != COLOR_SELECTED) {
@@ -197,7 +194,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 
 									stringBuilder.append(((DiffTextView) view).getText());
 									stringBuilder.append("\n");
-
 								}
 
 								stringBuilder.append("```\n\n");
@@ -209,7 +205,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 								bundle.putBoolean("cursorToEnd", true);
 
 								BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
-
 							}
 
 							return true;
@@ -226,7 +221,6 @@ public class FilesDiffAdapter extends BaseAdapter {
 			else {
 
 				diffLines.addView(getMessageView(context.getResources().getString(R.string.fileTooLarge)));
-
 			}
 
 		}
@@ -248,13 +242,11 @@ public class FilesDiffAdapter extends BaseAdapter {
 		textView.setText(message);
 
 		return textView;
-
 	}
 
 	private String[] getLines(String content) {
 
 		return content.split("\\R");
-
 	}
 
 }

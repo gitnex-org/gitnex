@@ -56,6 +56,11 @@ public class Constants {
 	public static final String mainNotificationChannelId = "main_channel";
 	public static final String downloadNotificationChannelId = "dl_channel";
 
+	public static final long[] defaultVibrationPattern = new long[] { 1000, 1000 };
+
 	public static final String[] fallbackReactions = new String[]{"+1", "-1", "laugh", "hooray", "confused", "heart", "rocket", "eyes"};
+
+	// work managers
+	public static final String notificationsWorkerId  = "notifications_worker";
 
 }

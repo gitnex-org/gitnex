@@ -3,6 +3,7 @@ package org.mian.gitnex.core;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import androidx.core.content.res.ResourcesCompat;
 import org.acra.ACRA;
 import org.acra.BuildConfig;
 import org.acra.ReportField;
@@ -34,7 +35,6 @@ import org.mian.gitnex.notifications.Notifications;
 
 public class MainApplication extends Application {
 
-	private Context appCtx;
 	private TinyDB tinyDB;
 
 	@Override
@@ -42,7 +42,7 @@ public class MainApplication extends Application {
 
 		super.onCreate();
 
-		appCtx = getApplicationContext();
+		Context appCtx = getApplicationContext();
 		tinyDB = TinyDB.getInstance(appCtx);
 
 		setDefaults();
@@ -76,6 +76,7 @@ public class MainApplication extends Application {
 
 	@Override
 	protected void attachBaseContext(Context context) {
+
 		super.attachBaseContext(context);
 
 		tinyDB = TinyDB.getInstance(context);
@@ -97,46 +98,59 @@ public class MainApplication extends Application {
 
 		// enabling counter badges by default
 		if(tinyDB.getString("enableCounterBadgesInit").isEmpty()) {
-
 			tinyDB.putBoolean("enableCounterBadges", true);
 			tinyDB.putString("enableCounterBadgesInit", "yes");
 		}
 
 		// enable crash reports by default
 		if(tinyDB.getString("crashReportingEnabledInit").isEmpty()) {
-
 			tinyDB.putBoolean("crashReportingEnabled", true);
 			tinyDB.putString("crashReportingEnabledInit", "yes");
 		}
 
 		// default cache setter
 		if(tinyDB.getString("cacheSizeStr").isEmpty()) {
-
 			tinyDB.putString("cacheSizeStr", getResources().getString(R.string.cacheSizeDataSelectionSelectedText));
 		}
 		if(tinyDB.getString("cacheSizeImagesStr").isEmpty()) {
-
 			tinyDB.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
 		}
 
 		// enable comment drafts by default
 		if(tinyDB.getString("draftsCommentsDeletionEnabledInit").isEmpty()) {
-
 			tinyDB.putBoolean("draftsCommentsDeletionEnabled", true);
 			tinyDB.putString("draftsCommentsDeletionEnabledInit", "yes");
 		}
 
 		// setting default polling delay
 		if(tinyDB.getInt("pollingDelayMinutes", 0) <= 0) {
-
 			tinyDB.putInt("pollingDelayMinutes", Constants.defaultPollingDelay);
 		}
 
 		// disable biometric by default
 		if(tinyDB.getString("biometricStatusInit").isEmpty()) {
-
 			tinyDB.putBoolean("biometricStatus", false);
 			tinyDB.putString("biometricStatusInit", "yes");
 		}
+
+		// set default date format
+		if(tinyDB.getString("dateFormat").isEmpty()) {
+			tinyDB.putString("dateFormat", "pretty");
+		}
+
+		if(tinyDB.getString("codeBlockStr").isEmpty()) {
+			tinyDB.putInt("codeBlockColor", ResourcesCompat.getColor(getResources(), R.color.colorLightGreen, null));
+			tinyDB.putInt("codeBlockBackground", ResourcesCompat.getColor(getResources(), R.color.black, null));
+		}
+
+		if(tinyDB.getString("enableCounterIssueBadgeInit").isEmpty()) {
+			tinyDB.putBoolean("enableCounterIssueBadge", true);
+		}
+
+		if(tinyDB.getString("homeScreenStr").isEmpty()) {
+			tinyDB.putString("homeScreenStr", "yes");
+			tinyDB.putInt("homeScreenId", 0);
+		}
+
 	}
 }

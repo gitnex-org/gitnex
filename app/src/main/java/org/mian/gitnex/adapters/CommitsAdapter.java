@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final Context ctx;
+    private final Context context;
     private final int TYPE_LOAD = 0;
     private List<Commits> commitsList;
     private CommitsAdapter.OnLoadMoreListener loadMoreListener;
@@ -35,7 +35,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public CommitsAdapter(Context ctx, List<Commits> commitsListMain) {
 
-        this.ctx = ctx;
+        this.context = ctx;
         this.commitsList = commitsListMain;
 
     }
@@ -44,7 +44,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        LayoutInflater inflater = LayoutInflater.from(ctx);
+        LayoutInflater inflater = LayoutInflater.from(context);
 
         if(viewType == TYPE_LOAD) {
             return new CommitsHolder(inflater.inflate(R.layout.list_commits, parent, false));
@@ -52,7 +52,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         else {
             return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
         }
-
     }
 
     @Override
@@ -62,13 +61,11 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             isLoading = true;
             loadMoreListener.onLoadMore();
-
         }
 
         if(getItemViewType(position) == TYPE_LOAD) {
 
             ((CommitsHolder) holder).bindData(commitsList.get(position));
-
         }
 
     }
@@ -82,14 +79,12 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         else {
             return 1;
         }
-
     }
 
     @Override
     public int getItemCount() {
 
         return commitsList.size();
-
     }
 
     class CommitsHolder extends RecyclerView.ViewHolder {
@@ -107,27 +102,25 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             commitCommitter = itemView.findViewById(R.id.commitCommitterVw);
             commitDate = itemView.findViewById(R.id.commitDateVw);
             commitHtmlUrl = itemView.findViewById(R.id.commitHtmlUrlVw);
-
         }
 
         @SuppressLint("SetTextI18n")
         void bindData(Commits commitsModel) {
 
-            final TinyDB tinyDb = TinyDB.getInstance(ctx);
+            final TinyDB tinyDb = TinyDB.getInstance(context);
             final String locale = tinyDb.getString("locale");
             final String timeFormat = tinyDb.getString("dateFormat");
 
             commitTitle.setText(EmojiParser.parseToUnicode(commitsModel.getCommit().getMessage()));
-            commitCommitter.setText(ctx.getString(R.string.commitCommittedBy, commitsModel.getCommit().getCommitter().getName()));
+            commitCommitter.setText(context.getString(R.string.commitCommittedBy, commitsModel.getCommit().getCommitter().getName()));
 
-            commitDate.setText(TimeHelper.formatTime(commitsModel.getCommit().getCommitter().getDate(), new Locale(locale), timeFormat, ctx));
+            commitDate.setText(TimeHelper.formatTime(commitsModel.getCommit().getCommitter().getDate(), new Locale(locale), timeFormat, context));
 
             if(timeFormat.equals("pretty")) {
-                commitDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(commitsModel.getCommit().getCommitter().getDate()), ctx));
+                commitDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(commitsModel.getCommit().getCommitter().getDate()), context));
             }
 
-            commitHtmlUrl.setOnClickListener(v -> ctx.startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(commitsModel.getHtml_url()))));
-
+            commitHtmlUrl.setOnClickListener(v -> context.startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(commitsModel.getHtml_url()))));
         }
 
     }
@@ -138,32 +131,27 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             super(itemView);
         }
-
     }
 
     public void setMoreDataAvailable(boolean moreDataAvailable) {
 
         isMoreDataAvailable = moreDataAvailable;
-
     }
 
     public void notifyDataChanged() {
 
         notifyDataSetChanged();
         isLoading = false;
-
     }
 
     public interface OnLoadMoreListener {
 
         void onLoadMore();
-
     }
 
     public void setLoadMoreListener(CommitsAdapter.OnLoadMoreListener loadMoreListener) {
 
         this.loadMoreListener = loadMoreListener;
-
     }
 
     public void updateList(List<Commits> list) {

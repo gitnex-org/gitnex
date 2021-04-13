@@ -10,6 +10,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -22,10 +23,13 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/close_button_size"
                 android:layout_height="@dimen/close_button_size"
-                android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"
+                android:layout_marginRight="15dp"
                 android:contentDescription="@string/close"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:focusable="true"
+                android:clickable="true"
                 android:src="@drawable/ic_close" />
 
             <TextView
@@ -33,9 +37,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@string/settingsLanguageHeaderText"
                 android:textColor="?attr/primaryTextColor"
-                android:maxLines="1"
                 android:textSize="20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -46,41 +50,44 @@
         android:id="@+id/langFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:background="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/tvLanguageHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsLanguageSelectorHeader"
-            android:textColor="?attr/primaryTextColor"/>
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvLanguageSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsLanguageSelectedHeaderDefault"
-            android:textColor="?attr/selectedTextColor"/>
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/helpTranslate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:layout_marginStart="44dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
             android:autoLink="web"
-            android:layout_marginTop="20dp"
             android:text="@string/settingsHelpTranslateText"
-            android:textColor="@color/lightBlue"/>
+            android:textColor="@color/lightBlue"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

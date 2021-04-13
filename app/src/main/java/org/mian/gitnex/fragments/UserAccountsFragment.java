@@ -18,6 +18,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewAccountActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.FragmentUserAccountsBinding;
@@ -48,7 +49,7 @@ public class UserAccountsFragment extends Fragment {
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleUserAccounts));
 
 		userAccountsList = new ArrayList<>();
-		userAccountsApi = new UserAccountsApi(ctx);
+		userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
 
 		mRecyclerView = fragmentUserAccountsBinding.recyclerView;
 		final SwipeRefreshLayout swipeRefresh = fragmentUserAccountsBinding.pullToRefresh;

@@ -15,19 +15,22 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/createNewUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/adminCreateNewUser"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/adminCreateNewUser"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_person_add" />
 
         </LinearLayout>

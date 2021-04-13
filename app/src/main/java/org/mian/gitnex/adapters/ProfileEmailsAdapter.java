@@ -20,13 +20,13 @@ import java.util.List;
 
 public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdapter.EmailsViewHolder> {
 
-    private List<Emails> emailsList;
-    private Context mCtx;
+    private final List<Emails> emailsList;
+    private final Context context;
 
     static class EmailsViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView emailPrimary;
-        private TextView userEmail;
+        private final ImageView emailPrimary;
+        private final TextView userEmail;
 
         private EmailsViewHolder(View itemView) {
             super(itemView);
@@ -37,8 +37,8 @@ public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdap
         }
     }
 
-    public ProfileEmailsAdapter(Context mCtx, List<Emails> emailsListMain) {
-        this.mCtx = mCtx;
+    public ProfileEmailsAdapter(Context ctx, List<Emails> emailsListMain) {
+        this.context = ctx;
         this.emailsList = emailsListMain;
     }
 
@@ -59,12 +59,12 @@ public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdap
         if(currentItem.getPrimary()) {
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
-                    .textColor(ResourcesCompat.getColor(mCtx.getResources(), R.color.colorWhite, null))
+                    .textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null))
                     .fontSize(36)
                     .width(220)
                     .height(60)
                     .endConfig()
-                    .buildRoundRect(mCtx.getResources().getString(R.string.emailTypeText), ResourcesCompat.getColor(mCtx.getResources(), R.color.tooltipBackground, null), 8);
+                    .buildRoundRect(context.getResources().getString(R.string.emailTypeText), ResourcesCompat.getColor(context.getResources(), R.color.tooltipBackground, null), 8);
             holder.emailPrimary.setImageDrawable(drawable);
         }
         else {

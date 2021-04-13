@@ -646,6 +646,7 @@
     <string name="aboutAppHintText">App version, build, user gitea version</string>
 
     <string name="archivedRepository">Archived</string>
+    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
 
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
@@ -672,7 +673,7 @@
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Enable Vibration</string>
     <string name="chooseColorSelectorHeader">Choose Color</string>
-    <string name="newMessages">New messages</string>
+    <string name="newMessages">New messages for %s</string>
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
@@ -756,4 +757,5 @@
     <string name="fileViewerNotificationChannelName">Download manager</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
 
+    <string name="lastUpdatedAt">Updated %s</string>
 </resources>

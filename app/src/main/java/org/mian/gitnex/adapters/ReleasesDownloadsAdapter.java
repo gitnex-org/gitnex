@@ -18,18 +18,16 @@ import java.util.List;
 
 public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder> {
 
-	private List<Releases.assetsObject> releasesDownloadsList;
+	private final List<Releases.assetsObject> releasesDownloadsList;
 
 	static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
 
-		private TextView downloadName;
+		private final TextView downloadName;
 
 		private ReleasesDownloadsViewHolder(View itemView) {
 
 			super(itemView);
-
 			downloadName = itemView.findViewById(R.id.downloadName);
-
 		}
 	}
 
@@ -57,7 +55,6 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 			holder.downloadName.setMovementMethod(LinkMovementMethod.getInstance());
 
 		}
-
 	}
 
 	@Override

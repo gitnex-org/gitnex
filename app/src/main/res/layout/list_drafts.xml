@@ -5,11 +5,10 @@
     android:id="@+id/layoutDraftsFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:layout_margin="10dp"
-    android:background="?attr/primaryBackgroundColor"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:focusable="true"
     tools:context=".activities.MainActivity">
 
     <LinearLayout

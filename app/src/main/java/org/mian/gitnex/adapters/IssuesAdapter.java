@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -41,11 +40,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public IssuesAdapter(Context context, List<Issues> issuesListMain) {
+	public IssuesAdapter(Context ctx, List<Issues> issuesListMain) {
 
-		this.context = context;
+		this.context = ctx;
 		this.issuesList = issuesListMain;
-
 	}
 
 	@NonNull
@@ -60,7 +58,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		else {
 			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
 		}
-
 	}
 
 	@Override
@@ -70,15 +67,12 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			isLoading = true;
 			loadMoreListener.onLoadMore();
-
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
 
 			((IssuesHolder) holder).bindData(issuesList.get(position));
-
 		}
-
 	}
 
 	@Override
@@ -90,14 +84,12 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		else {
 			return 1;
 		}
-
 	}
 
 	@Override
 	public int getItemCount() {
 
 		return issuesList.size();
-
 	}
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
@@ -112,30 +104,14 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		IssuesHolder(View itemView) {
 
 			super(itemView);
-
 			issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
 			issueTitle = itemView.findViewById(R.id.issueTitle);
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
-			LinearLayout frameCommentsCount = itemView.findViewById(R.id.frameCommentsCount);
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
 
-			issueTitle.setOnClickListener(title -> {
+			itemView.setOnClickListener(layoutView -> {
 
-				Context context = title.getContext();
-
-				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", issue.getNumber());
-
-				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("issueNumber", String.valueOf(issue.getNumber()));
-				tinyDb.putString("issueType", "Issue");
-				context.startActivity(intent);
-
-			});
-
-			frameCommentsCount.setOnClickListener(commentsCount -> {
-
-				Context context = commentsCount.getContext();
+				Context context = layoutView.getContext();
 
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issue.getNumber());
@@ -144,7 +120,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				tinyDb.putString("issueNumber", String.valueOf(issue.getNumber()));
 				tinyDb.putString("issueType", "Issue");
 				context.startActivity(intent);
-
 			});
 
 			issueAssigneeAvatar.setOnClickListener(v -> {
@@ -163,10 +138,12 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			String locale = tinyDb.getString("locale");
 			String timeFormat = tinyDb.getString("dateFormat");
 
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+
 			PicassoService.getInstance(context).get()
 				.load(issue.getUser().getAvatar_url())
 				.placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(8, 0))
+				.transform(new RoundedTransformation(imgRadius, 0))
 				.resize(120, 120)
 				.centerCrop()
 				.into(issueAssigneeAvatar);
@@ -209,32 +186,27 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			super(itemView);
 		}
-
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 
 		isMoreDataAvailable = moreDataAvailable;
-
 	}
 
 	public void notifyDataChanged() {
 
 		notifyDataSetChanged();
 		isLoading = false;
-
 	}
 
 	public interface OnLoadMoreListener {
 
 		void onLoadMore();
-
 	}
 
 	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
 
 		this.loadMoreListener = loadMoreListener;
-
 	}
 
 	public void updateList(List<Issues> list) {

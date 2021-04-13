@@ -23,6 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
                 android:padding="12dp"
                 android:text="@string/pageTitleNewFile"
@@ -35,6 +38,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
                 android:padding="12dp"
                 android:text="@string/pageTitleCreateNewIssue"
@@ -47,6 +53,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
                 android:padding="12dp"
                 android:text="@string/pageTitleNewPullRequest"
@@ -59,11 +68,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/pageTitleCreateMilestone"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/pageTitleCreateMilestone"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_milestone" />
 
             <TextView
@@ -71,11 +83,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/createLabel"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/createLabel"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_label" />
 
             <TextView
@@ -83,11 +98,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/createRelease"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/createRelease"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_release" />
 
             <View
@@ -115,11 +133,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/addCollaboratorTitle"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/addCollaboratorTitle"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_person_add" />
 
             <TextView
@@ -127,11 +148,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/starRepository"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/starRepository"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_star_unfilled" />
 
             <TextView
@@ -139,11 +163,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/unStarRepository"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/unStarRepository"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_star" />
 
             <TextView
@@ -151,11 +178,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/watchRepository"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/watchRepository"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_unwatch" />
 
             <TextView
@@ -163,11 +193,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/unWatchRepository"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/unWatchRepository"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_watchers" />
 
             <View
@@ -183,11 +216,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
                 android:text="@string/genericCopyUrl"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_copy" />
 
             <TextView
@@ -195,11 +231,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
                 android:text="@string/shareRepository"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_share" />
 
             <TextView
@@ -207,11 +246,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
                 android:text="@string/openWebRepo"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_browser" />
 
             <View
@@ -228,11 +270,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:drawablePadding="24dp"
+                android:padding="12dp"
                 android:text="@string/navSettings"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
-                android:padding="12dp"
                 app:drawableStartCompat="@drawable/ic_settings" />
 
         </LinearLayout>

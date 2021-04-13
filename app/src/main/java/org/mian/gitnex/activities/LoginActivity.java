@@ -17,6 +17,7 @@ import org.gitnex.tea4j.models.UserInfo;
 import org.gitnex.tea4j.models.UserTokens;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityLoginBinding;
@@ -358,19 +359,19 @@ public class LoginActivity extends BaseActivity {
 
 						// insert new account to db if does not exist
 						String accountName = userDetails.getUsername() + "@" + TinyDB.getInstance(ctx).getString("instanceUrl");
-						UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
-						int checkAccount = userAccountsApi.getCount(accountName);
+						UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
+						boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
 						long accountId;
 
-						if(checkAccount == 0) {
+						if(!userAccountExists) {
 
-							accountId = userAccountsApi.insertNewAccount(accountName, TinyDB.getInstance(ctx).getString("instanceUrl"), userDetails.getUsername(), loginToken, "");
+							accountId = userAccountsApi.createNewAccount(accountName, TinyDB.getInstance(ctx).getString("instanceUrl"), userDetails.getUsername(), loginToken, "");
 							tinyDB.putInt("currentActiveAccountId", (int) accountId);
 						}
 						else {
 
 							userAccountsApi.updateTokenByAccountName(accountName, loginToken);
-							UserAccount data = userAccountsApi.getAccountData(accountName);
+							UserAccount data = userAccountsApi.getAccountByName(accountName);
 							tinyDB.putInt("currentActiveAccountId", data.getAccountId());
 						}
 
@@ -546,20 +547,20 @@ public class LoginActivity extends BaseActivity {
 
 										// insert new account to db if does not exist
 										String accountName = userDetails.getUsername() + "@" + TinyDB.getInstance(ctx).getString("instanceUrl");
-										UserAccountsApi userAccountsApi = new UserAccountsApi(ctx);
-										int checkAccount = userAccountsApi.getCount(accountName);
+										UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
+										boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
 										long accountId;
 
-										if(checkAccount == 0) {
+										if(!userAccountExists) {
 
 											accountId = userAccountsApi
-												.insertNewAccount(accountName, TinyDB.getInstance(ctx).getString("instanceUrl"), userDetails.getUsername(), newToken.getSha1(), "");
+												.createNewAccount(accountName, TinyDB.getInstance(ctx).getString("instanceUrl"), userDetails.getUsername(), newToken.getSha1(), "");
 											tinyDB.putInt("currentActiveAccountId", (int) accountId);
 										}
 										else {
 
 											userAccountsApi.updateTokenByAccountName(accountName, newToken.getSha1());
-											UserAccount data = userAccountsApi.getAccountData(accountName);
+											UserAccount data = userAccountsApi.getAccountByName(accountName);
 											tinyDB.putInt("currentActiveAccountId", data.getAccountId());
 										}
 

@@ -15,22 +15,25 @@ import java.util.List;
 public interface UserAccountsDao {
 
     @Insert
-    long newAccount(UserAccount userAccounts);
+    long createAccount(UserAccount userAccounts);
 
     @Query("SELECT * FROM UserAccounts ORDER BY accountId ASC")
-    LiveData<List<UserAccount>> fetchAllAccounts();
+    LiveData<List<UserAccount>> getAllAccounts();
 
 	@Query("SELECT * FROM UserAccounts ORDER BY accountId ASC")
 	List<UserAccount> userAccounts();
 
-    @Query("SELECT COUNT(accountId) FROM UserAccounts WHERE accountName = :accountName")
-    Integer getCount(String accountName);
+    @Query("SELECT COUNT(accountId) FROM UserAccounts")
+    Integer getCount();
 
-    @Query("SELECT * FROM UserAccounts WHERE accountName = :accountName")
-    UserAccount fetchRowByAccount_(String accountName);
+    @Query("SELECT COUNT(accountId) FROM UserAccounts WHERE accountName = :accountName LIMIT 1")
+    Boolean userAccountExists(String accountName);
 
-    @Query("SELECT * FROM UserAccounts WHERE accountId = :accountId")
-    UserAccount fetchRowByAccountId(int accountId);
+    @Query("SELECT * FROM UserAccounts WHERE accountName = :accountName LIMIT 1")
+    UserAccount getAccountByName(String accountName);
+
+    @Query("SELECT * FROM UserAccounts WHERE accountId = :accountId LIMIT 1")
+    UserAccount getAccountById(int accountId);
 
     @Query("UPDATE UserAccounts SET serverVersion = :serverVersion WHERE accountId = :accountId")
     void updateServerVersion(String serverVersion, int accountId);

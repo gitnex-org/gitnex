@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutSettingsNotifications"
-    android:orientation="vertical"
-    android:background="?attr/primaryBackgroundColor">
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <androidx.appcompat.widget.Toolbar
@@ -27,10 +26,13 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/close_button_size"
                 android:layout_height="@dimen/close_button_size"
-                android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"
+                android:layout_marginRight="15dp"
                 android:contentDescription="@string/close"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:focusable="true"
+                android:clickable="true"
                 android:src="@drawable/ic_close" />
 
             <TextView
@@ -38,9 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@string/pageTitleNotifications"
                 android:textColor="?attr/primaryTextColor"
-                android:maxLines="1"
                 android:textSize="20sp" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -51,8 +53,9 @@
         android:id="@+id/enableNotificationsFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/enableNotificationsHeader"
@@ -66,15 +69,15 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableNotificationsMode"
-            android:layout_toEndOf="@+id/enableNotificationsHeader"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:switchMinWidth="56dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_toEndOf="@+id/enableNotificationsHeader"
+            android:gravity="end"
             android:paddingStart="0dp"
             android:paddingEnd="25dp"
-            android:layout_alignParentEnd="true"
-            android:gravity="end"
-            android:layout_gravity="end" />
+            android:switchMinWidth="56dp" />
 
     </RelativeLayout>
 
@@ -82,29 +85,32 @@
         android:id="@+id/pollingDelayFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:background="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/pollingDelayHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/notificationsPollingHeaderText"
-            android:textColor="?attr/primaryTextColor" />
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/pollingDelaySelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="4dp"
             android:text="@string/pollingDelaySelectedText"
-            android:textColor="?attr/selectedTextColor" />
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -112,30 +118,31 @@
         android:id="@+id/enableLightsFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/enableLightsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
             android:text="@string/enableLightsHeaderText"
-            android:textColor="?attr/primaryTextColor" />
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableLightsMode"
-            android:layout_toEndOf="@+id/enableLightsHeader"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:switchMinWidth="56dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_toEndOf="@+id/enableLightsHeader"
+            android:gravity="end"
             android:paddingStart="0dp"
             android:paddingEnd="25dp"
-            android:layout_alignParentEnd="true"
-            android:gravity="end"
-            android:layout_gravity="end" />
+            android:switchMinWidth="56dp" />
 
     </RelativeLayout>
 
@@ -143,24 +150,25 @@
         android:id="@+id/chooseColorFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/chooseColorHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
             android:text="@string/chooseColorSelectorHeader"
-            android:textColor="?attr/primaryTextColor" />
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/chooseColorState"
-            android:layout_alignEnd="@id/chooseColorHeader"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignEnd="@id/chooseColorHeader"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="30dp"
             android:gravity="end"
@@ -173,30 +181,31 @@
         android:id="@+id/enableVibrationFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/enableVibrationHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
             android:text="@string/enableVibrationHeaderText"
-            android:textColor="?attr/primaryTextColor" />
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableVibrationMode"
-            android:layout_toEndOf="@+id/enableVibrationHeader"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:switchMinWidth="56dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_toEndOf="@+id/enableVibrationHeader"
+            android:gravity="end"
             android:paddingStart="0dp"
             android:paddingEnd="25dp"
-            android:layout_alignParentEnd="true"
-            android:gravity="end"
-            android:layout_gravity="end" />
+            android:switchMinWidth="56dp" />
 
     </RelativeLayout>
 

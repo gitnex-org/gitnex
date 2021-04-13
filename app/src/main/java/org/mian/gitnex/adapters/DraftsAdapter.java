@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.database.models.DraftWithRepository;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
@@ -33,7 +34,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
     private List<DraftWithRepository> draftsList;
     private final FragmentManager fragmentManager;
-    private final Context mCtx;
+    private final Context context;
 
     class DraftsViewHolder extends RecyclerView.ViewHolder {
 
@@ -56,7 +57,8 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
                 int getDraftId = draftWithRepository.getDraftId();
                 deleteDraft(getAdapterPosition());
-	            DraftsApi draftsApi = new DraftsApi(mCtx);
+
+	            DraftsApi draftsApi = BaseApi.getInstance(context, DraftsApi.class);
 	            draftsApi.deleteSingleDraft(getDraftId);
 
             });
@@ -76,24 +78,23 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 	                bundle.putString("commentAction", "edit");
                 }
 
-                TinyDB tinyDb = TinyDB.getInstance(mCtx);
+                TinyDB tinyDb = TinyDB.getInstance(context);
                 tinyDb.putString("issueNumber", String.valueOf(draftWithRepository.getIssueId()));
                 tinyDb.putLong("repositoryId", draftWithRepository.getRepositoryId());
 		        tinyDb.putString("issueType", draftWithRepository.getIssueType());
 		        tinyDb.putString("repoFullName", draftWithRepository.getRepositoryOwner() + "/" + draftWithRepository.getRepositoryName());
 
 		        BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(bundle);
-		        bottomSheetReplyFragment.setOnInteractedListener(() -> mCtx.startActivity(new Intent(mCtx, IssueDetailActivity.class)));
+		        bottomSheetReplyFragment.setOnInteractedListener(() -> context.startActivity(new Intent(context, IssueDetailActivity.class)));
 		        bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
-
             });
 
         }
 
     }
 
-    public DraftsAdapter(Context mCtx, FragmentManager fragmentManager, List<DraftWithRepository> draftsListMain) {
-        this.mCtx = mCtx;
+    public DraftsAdapter(Context ctx, FragmentManager fragmentManager, List<DraftWithRepository> draftsListMain) {
+        this.context = ctx;
         this.fragmentManager = fragmentManager;
         this.draftsList = draftsListMain;
     }
@@ -103,8 +104,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
         draftsList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, draftsList.size());
-        Toasty.success(mCtx, mCtx.getResources().getString(R.string.draftsSingleDeleteSuccess));
-
+        Toasty.success(context, context.getResources().getString(R.string.draftsSingleDeleteSuccess));
     }
 
     @NonNull
@@ -120,14 +120,14 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
         DraftWithRepository currentItem = draftsList.get(position);
 
-	    String issueNumber = "<font color='" + ResourcesCompat.getColor(mCtx.getResources(), R.color.lightGray, null) + "'>" + mCtx.getResources().getString(R.string.hash) + currentItem.getIssueId() + "</font>";
+	    String issueNumber = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + currentItem.getIssueId() + "</font>";
 	    Spanned headTitle = HtmlCompat
 		    .fromHtml(issueNumber + " " + currentItem.getRepositoryOwner() + " / " + currentItem.getRepositoryName(), HtmlCompat.FROM_HTML_MODE_LEGACY);
 
 	    holder.repoInfo.setText(headTitle);
 	    holder.draftWithRepository = currentItem;
 
-	    Markdown.render(mCtx, currentItem.getDraftText(), holder.draftText);
+	    Markdown.render(context, currentItem.getDraftText(), holder.draftText);
 
 	    if(!currentItem.getCommentId().equalsIgnoreCase("new")) {
 		    holder.editCommentStatus.setVisibility(View.VISIBLE);

@@ -13,7 +13,6 @@ import androidx.work.WorkManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,8 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Notifications {
-
-	private static int notificationsSupported = -1;
 
 	public static int uniqueNotificationId(Context context) {
 
@@ -51,7 +48,7 @@ public class Notifications {
 			mainChannel.setDescription(context.getString(R.string.mainNotificationChannelDescription));
 
 			if(tinyDB.getBoolean("notificationsEnableVibration", true)) {
-				mainChannel.setVibrationPattern(new long[] { 1000, 1000 });
+				mainChannel.setVibrationPattern(Constants.defaultVibrationPattern);
 				mainChannel.enableVibration(true);
 			} else {
 				mainChannel.enableVibration(false);
@@ -75,7 +72,7 @@ public class Notifications {
 
 	public static void stopWorker(Context context) {
 
-		WorkManager.getInstance(context).cancelAllWorkByTag(context.getPackageName());
+		WorkManager.getInstance(context).cancelAllWorkByTag(Constants.notificationsWorkerId);
 	}
 
 	public static void startWorker(Context context) {
@@ -84,42 +81,25 @@ public class Notifications {
 
 		if(tinyDB.getBoolean("notificationsEnabled", true)) {
 
-			if(notificationsSupported == -1) checkVersion(tinyDB);
+			Constraints.Builder constraints = new Constraints.Builder()
+				.setRequiredNetworkType(NetworkType.CONNECTED)
+				.setRequiresBatteryNotLow(false)
+				.setRequiresStorageNotLow(false)
+				.setRequiresCharging(false);
 
-			if(notificationsSupported == 1) {
-
-				Constraints.Builder constraints = new Constraints.Builder()
-					.setRequiredNetworkType(NetworkType.CONNECTED)
-					.setRequiresBatteryNotLow(false)
-					.setRequiresStorageNotLow(false)
-					.setRequiresCharging(false);
-
-				if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-					constraints.setRequiresDeviceIdle(false);
-				}
-
-				int pollingDelayMinutes = Math.max(tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay), 15);
-
-				PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationsWorker.class, pollingDelayMinutes, TimeUnit.MINUTES)
-					.setConstraints(constraints.build())
-					.addTag(context.getPackageName())
-					.build();
-
-				WorkManager.getInstance(context).enqueueUniquePeriodicWork(context.getPackageName(), ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest);
-
+			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				constraints.setRequiresDeviceIdle(false);
 			}
+
+			int pollingDelayMinutes = Math.max(tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay), 15);
+
+			PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationsWorker.class, pollingDelayMinutes, TimeUnit.MINUTES)
+				.setConstraints(constraints.build())
+				.addTag(Constants.notificationsWorkerId)
+				.build();
+
+			WorkManager.getInstance(context).enqueueUniquePeriodicWork(Constants.notificationsWorkerId, ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest);
+
 		}
 	}
-
-	private static void checkVersion(TinyDB tinyDB) {
-
-		String currentVersion = tinyDB.getString("giteaVersion");
-
-		if(tinyDB.getBoolean("loggedInMode") && !currentVersion.isEmpty()) {
-
-			notificationsSupported = new Version(currentVersion).higherOrEqual("1.12.3") ? 1 : 0;
-		}
-	}
-
 }
