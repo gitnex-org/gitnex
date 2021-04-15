@@ -310,7 +310,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_issue_comments, parent, false);
 		return new IssueCommentsAdapter.IssueCommentViewHolder(v);
-
 	}
 	@Override
 	public void onBindViewHolder(@NonNull IssueCommentsAdapter.IssueCommentViewHolder holder, int position) {

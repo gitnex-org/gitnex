@@ -71,9 +71,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 	private FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone;
 	private FragmentRefreshListenerFiles fragmentRefreshListenerFiles;
 
-	private String loginUid;
-	private String instanceToken;
-
 	private String repositoryOwner;
 	private String repositoryName;
 
@@ -107,9 +104,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 		setSupportActionBar(toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repositoryName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		loginUid = tinyDB.getString("loginUid");
-		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
 
 		tinyDB.putString("repoIssuesState", "open");
 		tinyDB.putString("repoPrState", "open");
@@ -433,7 +427,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 
 		Call<List<Branches>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getBranches(instanceToken, repositoryOwner, repositoryName);
+			.getBranches(Authorization.get(ctx), repositoryOwner, repositoryName);
 
 		call.enqueue(new Callback<List<Branches>>() {
 

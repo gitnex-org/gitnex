@@ -83,6 +83,7 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 				int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
 				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
+				assert repositoryData != null;
 				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 
 				if(count == 0) {

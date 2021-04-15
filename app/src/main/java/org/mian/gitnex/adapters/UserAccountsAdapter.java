@@ -65,6 +65,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 
 						updateLayoutByPosition(getAdapterPosition());
 						UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
+						assert userAccountsApi != null;
 						userAccountsApi.deleteAccount(Integer.parseInt(String.valueOf(accountId)));
 					}).setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
 					.show();
@@ -73,6 +74,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 			itemView.setOnClickListener(switchAccount -> {
 
 				UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
+				assert userAccountsApi != null;
 				UserAccount userAccount = userAccountsApi.getAccountByName(accountName);
 
 				if(AppUtil.switchToAccount(context, userAccount)) {

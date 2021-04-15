@@ -231,7 +231,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		drawer.addDrawerListener(toggle);
 		drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
 
-
 			@Override
 			public void onDrawerOpened(@NonNull View drawerView) {
 
