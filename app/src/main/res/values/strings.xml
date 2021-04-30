@@ -101,7 +101,6 @@
     <string name="protocolEmptyError">Protocol is required</string>
 
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
-    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
 
     <string name="repoNameErrorEmpty">Repository name is empty</string>
     <string name="repoNameErrorInvalid">Repository name is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -177,7 +176,7 @@
     <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="screamingInFearEmoticon" translatable="false">😱</string>
 
-    <string name="generalImgContentText">Avatar</string>
+    <string name="generalImgContentText">Image</string>
 
     <string name="noDataMilestonesTab">No milestones found</string>
 
@@ -236,7 +235,7 @@
     <string name="settingsDateTimeHeaderDefault">Pretty</string>
     <string name="settingsLanguageSelectorDialogTitle">Choose Language</string>
     <string name="settingsTimeSelectorDialogTitle">Choose Time Format</string>
-    <string name="settingsHelpTranslateText">Help us translate GitNex to your language</string>
+    <string name="settingsHelpTranslateText">Translate GitNex via Crodwin</string>
     <string name="codeBlockSelectedText" translatable="false">Green - Black</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
@@ -249,12 +248,9 @@
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
     <string name="themeSelectionSelectedText" translatable="false">Dark</string>
-    <string name="settingsPdfModeHeaderText">PDF Night Mode</string>
-    <string name="fileViewerHeader">File Viewer</string>
     <string name="settingsCounterBadges">Counter Badges</string>
     <string name="settingsFileViewerSourceCodeHeaderText">Source Code Theme</string>
     <string name="settingsFileViewerSourceCodeSelectedText" translatable="false">Sublime</string>
-    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Select Source Code Theme</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeDataSelectionSelectedText" translatable="false">50 MB</string>
@@ -480,7 +476,7 @@
 
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
-    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
+    <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
 
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
 
@@ -638,7 +634,6 @@
     <string name="draftSaved">Draft was saved automatically.</string>
 
     <string name="appearanceHintText">Themes, fonts, badges</string>
-    <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
@@ -729,12 +724,6 @@
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
-
-    <string name="codeBlockGreenOnBlack">Green on Black</string>
-    <string name="codeBlockWhiteOnBlack">White on Black</string>
-    <string name="codeBlockGreyOnBlack">Grey on Black</string>
-    <string name="codeBlockWhiteOnGrey">White on Grey</string>
-    <string name="codeBlockDarkOnWhite">Dark on White</string>
 
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>

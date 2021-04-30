@@ -156,11 +156,11 @@
 
             <ImageView
                 android:id="@+id/milestonesMenu"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
-                android:layout_weight=".10"
                 android:contentDescription="@string/menuContentDesc"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitEnd"
                 android:src="@drawable/ic_dotted_menu_horizontal" />
 

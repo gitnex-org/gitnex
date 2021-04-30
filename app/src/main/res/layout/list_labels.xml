@@ -58,8 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:contentDescription="@string/labelMenuContentDesc"
-        android:paddingStart="10dp"
-        android:paddingEnd="0dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_dotted_menu_horizontal" />
 
 </LinearLayout>

@@ -57,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_weight="0"
-            android:contentDescription="@string/generalImgContentText"
+            android:contentDescription="@string/menuContentDesc"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
 
     </LinearLayout>

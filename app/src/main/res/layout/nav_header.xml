@@ -49,8 +49,8 @@
                     app:cardBackgroundColor="?attr/primaryBackgroundColor"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:contentPaddingLeft="5dp"
-                    app:contentPaddingRight="5dp"
+                    app:contentPaddingLeft="8dp"
+                    app:contentPaddingRight="8dp"
                     tools:visibility="visible">
 
                     <androidx.recyclerview.widget.RecyclerView
