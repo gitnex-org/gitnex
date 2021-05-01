@@ -45,7 +45,7 @@ public class RepoForksActivity extends BaseActivity {
 	private View.OnClickListener onClickListener;
 	private TextView noData;
 	private ProgressBar progressBar;
-	private String TAG = "RepositoryForks";
+	private final String TAG = "RepositoryForks";
 	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private int pageSize = 1;
 

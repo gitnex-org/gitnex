@@ -100,7 +100,8 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
                 RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
                 //RepositoriesRepository.deleteRepositoriesByAccount(currentActiveAccountId);
-                Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
+	            assert repositoryData != null;
+	            Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 
                 if(count == 0) {
 
@@ -194,7 +195,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getColor(currentItem.getName());
-        String firstCharacter = String.valueOf(currentItem.getName().charAt(0));
+        String firstCharacter = String.valueOf(currentItem.getFullName().charAt(0));
 
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
@@ -247,6 +248,9 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 
 	    if(!currentItem.getDescription().equals("")) {
 		    holder.repoDescription.setText(currentItem.getDescription());
+	    }
+	    else {
+		    holder.repoDescription.setText(context.getString(R.string.noDataDescription));
 	    }
 
 	    if(holder.isRepoAdmin == null) {

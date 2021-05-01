@@ -59,6 +59,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
                 deleteDraft(getAdapterPosition());
 
 	            DraftsApi draftsApi = BaseApi.getInstance(context, DraftsApi.class);
+	            assert draftsApi != null;
 	            draftsApi.deleteSingleDraft(getDraftId);
 
             });

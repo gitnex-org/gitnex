@@ -18,6 +18,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/repoIsArchived"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:text="@string/archivedRepositoryMessage"
+                android:background="@drawable/shape_archived"
+                android:padding="6dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/colorWhite" />
+
             <LinearLayout
                 android:id="@+id/repoMetaFrameHeader"
                 android:layout_width="match_parent"
@@ -46,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:layout_gravity="center_vertical|end"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/issueDescriptionEmpty"
                     app:srcCompat="@drawable/ic_chevron_down"/>
 
@@ -56,18 +69,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/repoIsArchived"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center"
-                    android:text="@string/archivedRepositoryMessage"
-                    android:background="@drawable/shape_archived"
-                    android:padding="5dp"
-                    android:layout_marginBottom="8dp"
-                    android:textColor="@color/colorWhite" />
 
                 <TextView
                     android:id="@+id/repoMetaName"
@@ -369,6 +370,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:layout_gravity="center_vertical|end"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/issueDescriptionEmpty"
                     app:srcCompat="@drawable/ic_chevron_up"/>
 

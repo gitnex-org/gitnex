@@ -24,6 +24,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:padding="16dp"
+                android:background="?android:attr/selectableItemBackground"
                 app:drawableStartCompat="@drawable/ic_people" />
 
             <View
@@ -43,6 +44,7 @@
                 android:textSize="16sp"
                 android:padding="16dp"
                 android:visibility="gone"
+                android:background="?android:attr/selectableItemBackground"
                 app:drawableStartCompat="@drawable/ic_tasks" />
 
         </LinearLayout>

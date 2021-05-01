@@ -37,7 +37,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         this.context = ctx;
         this.commitsList = commitsListMain;
-
     }
 
     @NonNull
@@ -67,7 +66,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             ((CommitsHolder) holder).bindData(commitsList.get(position));
         }
-
     }
 
     @Override

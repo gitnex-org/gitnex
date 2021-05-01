@@ -142,7 +142,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			ColorGenerator generator = ColorGenerator.MATERIAL;
 			int color = generator.getColor(forksModel.getName());
-			String firstCharacter = String.valueOf(forksModel.getName().charAt(0));
+			String firstCharacter = String.valueOf(forksModel.getFullName().charAt(0));
 
 			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28)
 				.endConfig().buildRoundRect(firstCharacter, color, 3);
@@ -191,6 +191,9 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			if(!forksModel.getDescription().equals("")) {
 				repoDescription.setText(forksModel.getDescription());
 			}
+			else {
+				repoDescription.setText(context.getString(R.string.noDataDescription));
+			}
 
 			if(isRepoAdmin == null) {
 				isRepoAdmin = new CheckBox(context);
@@ -224,6 +227,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
 				//RepositoriesRepository.deleteRepositoriesByAccount(currentActiveAccountId);
+				assert repositoryData != null;
 				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
 
 				if(count == 0) {
