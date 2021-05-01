@@ -7,7 +7,7 @@ on_setup:
   image: tutum/curl
   stage: .pre
   only:
-    - master
+    - main
     - tags
   variables:
     INSTANCE: "https://codeberg.org"
@@ -20,7 +20,7 @@ build:
   image: nextcloudci/android:android-54
   stage: build
   only:
-    - master
+    - main
     - tags
   script:
     - ./gradlew assembleFreeRelease
@@ -33,7 +33,7 @@ sign:
   image: nextcloudci/android:android-54
   stage: sign
   only:
-    - master
+    - main
     - tags
   variables:
     OUTPUT: "signed.apk"
@@ -50,7 +50,7 @@ latest:
   image: tutum/curl
   stage: publish
   only:
-    - master
+    - main
     - tags
   variables:
     WEBDAV_USERNAME: "GitNexBot"
@@ -75,7 +75,7 @@ on_success:
   image: tutum/curl
   stage: .post
   only:
-    - master
+    - main
     - tags
   variables:
     INSTANCE: "https://codeberg.org"
@@ -89,7 +89,7 @@ on_failure:
   image: tutum/curl
   stage: .post
   only:
-    - master
+    - main
     - tags
   variables:
     INSTANCE: "https://codeberg.org"

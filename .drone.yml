@@ -15,8 +15,8 @@ steps:
     image: zosiab/eclint:latest
     depends_on: [ clone ]
     commands:
-      - git pull origin master
-      - eclint check $(git diff --name-only origin/master)
+      - git pull origin main
+      - eclint check $(git diff --name-only origin/main)
 
   # This may be used in the future, because it makes of intellij's native code inspection/formatting capabilities.
   # Additional information: https://www.jetbrains.com/help/idea/command-line-formatter.html
@@ -54,7 +54,7 @@ trigger:
   event:
     - push
   branch:
-    - master
+    - main
 
 ---
 kind: pipeline
@@ -101,4 +101,4 @@ trigger:
   event:
     - push
   branch:
-    - master
+    - main
