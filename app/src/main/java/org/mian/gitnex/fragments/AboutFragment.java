@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
@@ -13,6 +14,7 @@ import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.databinding.FragmentAboutBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
+import java.util.Objects;
 
 /**
  * Author M M Arif
@@ -30,7 +32,21 @@ public class AboutFragment extends Fragment {
 	    viewBinding.userServerVersion.setText(tinyDb.getString("giteaVersion"));
 	    viewBinding.appBuild.setText(String.valueOf(AppUtil.getAppBuildNo(requireContext())));
 
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleAbout));
+		Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).hide();
+
+		viewBinding.close.setOnClickListener(v15 -> {
+			requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+			Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
+		});
+
+		OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+			@Override
+			public void handleOnBackPressed() {
+				requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+				Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
+			}
+		};
+		requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
 		viewBinding.donationLinkPatreon.setOnClickListener(v12 -> {
 
