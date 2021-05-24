@@ -4,7 +4,9 @@ stages:
   - publish
 
 on_setup:
-  image: tutum/curl
+  image:
+    name: curlimages/curl:7.76.1
+    entrypoint: ["/bin/sh", "-c"]
   stage: .pre
   only:
     - main
@@ -47,7 +49,9 @@ sign:
     expire_in: 15 minutes
 
 latest:
-  image: tutum/curl
+  image:
+    name: curlimages/curl:7.76.1
+    entrypoint: ["/bin/sh", "-c"]
   stage: publish
   only:
     - main
@@ -60,7 +64,9 @@ latest:
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" "$PLUGIN_DESTINATION"
 
 release:
-  image: tutum/curl
+  image:
+    name: curlimages/curl:7.76.1
+    entrypoint: ["/bin/sh", "-c"]
   stage: publish
   only:
     - tags
@@ -72,7 +78,9 @@ release:
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/releases/'"$CI_COMMIT_REF_NAME"'.apk'
 
 on_success:
-  image: tutum/curl
+  image:
+    name: curlimages/curl:7.76.1
+    entrypoint: ["/bin/sh", "-c"]
   stage: .post
   only:
     - main
@@ -86,7 +94,9 @@ on_success:
   when: on_success
 
 on_failure:
-  image: tutum/curl
+  image:
+    name: curlimages/curl:7.76.1
+    entrypoint: ["/bin/sh", "-c"]
   stage: .post
   only:
     - main
