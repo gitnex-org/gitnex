@@ -235,7 +235,7 @@
     <string name="settingsDateTimeHeaderDefault">Pretty</string>
     <string name="settingsLanguageSelectorDialogTitle">Choose Language</string>
     <string name="settingsTimeSelectorDialogTitle">Choose Time Format</string>
-    <string name="settingsHelpTranslateText">Translate GitNex via Crodwin</string>
+    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockSelectedText" translatable="false">Green - Black</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
