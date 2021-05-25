@@ -9,7 +9,7 @@ GitNex is a free/paid, open-source Android client for Git repository management 
 GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. **No trackers are used** and source code is available here for anyone to audit.
 
 ## Downloads
-[<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/main/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
+[<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
 [<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE)
 

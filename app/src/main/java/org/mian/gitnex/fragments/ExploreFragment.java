@@ -24,9 +24,6 @@ import org.mian.gitnex.helpers.TinyDB;
 
 public class ExploreFragment extends Fragment {
 
-	private Context ctx;
-	private TinyDB tinyDB;
-
 	private int tabsCount;
 	public ViewPager mViewPager;
 
@@ -36,8 +33,8 @@ public class ExploreFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_explore, container, false);
 
-		ctx = getContext();
-		tinyDB = TinyDB.getInstance(ctx);
+		Context ctx = getContext();
+		TinyDB tinyDB = TinyDB.getInstance(ctx);
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navExplore));
 
@@ -111,7 +108,11 @@ public class ExploreFragment extends Fragment {
 					break;
 
 				case 1: // Issues
-					fragment = new SearchIssuesFragment();
+					fragment = new ExploreIssuesFragment();
+					break;
+
+				case 2: // Organizations
+					fragment = new ExplorePublicOrganizationsFragment();
 					break;
 			}
 

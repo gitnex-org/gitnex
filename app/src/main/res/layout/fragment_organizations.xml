@@ -27,6 +27,15 @@
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressLoadMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        app:indicatorColor="?attr/progressIndicatorColor" />
+
     <TextView
         android:id="@+id/noDataOrg"
         android:layout_width="match_parent"

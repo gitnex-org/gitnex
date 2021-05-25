@@ -30,6 +30,7 @@ public class Constants {
 	public static final String replyToIssueActivity = "ReplyToIssueActivity";
 	public static final String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
 	public static final String userAccountsApi = "UserAccountsApi";
+	public static final String publicOrganizations = "PublicOrganizations";
 
 	// issues variables
 	public static final int issuesPageInit = 1;
@@ -50,6 +51,9 @@ public class Constants {
 	public static final int minimumPollingDelay = 1;
 	public static final int defaultPollingDelay = 15;
 	public static final int maximumPollingDelay = 720;
+
+	// public organizations
+	public static final int publicOrganizationsPageInit = 1;
 
 	public static final int maximumFileViewerSize = 3 * 1024 * 1024;
 
