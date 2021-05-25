@@ -42,10 +42,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:maxLines="1"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:text="@string/commentButtonText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="20sp" />
+                    android:textSize="14sp" />
 
                 <ImageButton
                     android:id="@+id/drafts"
