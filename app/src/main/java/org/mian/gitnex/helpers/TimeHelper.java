@@ -43,7 +43,7 @@ public class TimeHelper {
 		switch(timeFormat) {
 
 			case "pretty": {
-				PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
+				PrettyTime prettyTime = new PrettyTime(locale);
 				return prettyTime.format(date);
 			}
 

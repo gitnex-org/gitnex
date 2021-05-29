@@ -89,7 +89,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
     public void onBindViewHolder(@NonNull ReleasesAdapter.ReleasesViewHolder holder, int position) {
 
         final TinyDB tinyDb = TinyDB.getInstance(context);
-	    final String locale = tinyDb.getString("locale");
+	    final String locale = context.getResources().getConfiguration().locale.getLanguage();
 	    final String timeFormat = tinyDb.getString("dateFormat");
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 

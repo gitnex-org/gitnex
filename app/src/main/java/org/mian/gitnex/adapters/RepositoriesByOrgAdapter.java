@@ -186,7 +186,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 	    UserRepositories currentItem = reposList.get(position);
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-	    String locale = tinyDb.getString("locale");
+	    String locale = context.getResources().getConfiguration().locale.getLanguage();
 	    String timeFormat = tinyDb.getString("dateFormat");
 	    holder.userRepositories = currentItem;
 	    holder.orgName.setText(currentItem.getFullName().split("/")[0]);

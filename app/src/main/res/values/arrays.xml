@@ -1,0 +1,23 @@
+<resources>
+    <string-array name="languages">
+        <item>en</item>
+        <item>ar</item>
+        <item>zh</item>
+        <item>cs</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>it</item>
+        <item>lv</item>
+        <item>fa</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ru</item>
+        <item>ru</item>
+        <item>sr</item>
+        <item>es</item>
+        <item>tr</item>
+        <item>uk</item>
+    </string-array>
+
+</resources>

@@ -8,6 +8,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.notifications.Notifications;
+import java.util.Locale;
 
 /**
  * Author M M Arif
@@ -77,7 +78,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 		}
 
-		AppUtil.setAppLocale(getResources(), tinyDB.getString("locale"));
+		String locale = tinyDB.getString("locale");
+		if (locale.isEmpty()) {
+			AppUtil.setAppLocale(getResources(), Locale.getDefault().getLanguage());
+		}
+		else {
+			AppUtil.setAppLocale(getResources(), locale);
+		}
 
 		Notifications.startWorker(appCtx);
 	}

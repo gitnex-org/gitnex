@@ -44,7 +44,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			super(itemView);
 			Context ctx = itemView.getContext();
 
-			final String locale = tinyDb.getString("locale");
+			final String locale = ctx.getResources().getConfiguration().locale.getLanguage();
 			final String timeFormat = tinyDb.getString("dateFormat");
 
 			ImageView runTask = itemView.findViewById(R.id.runTask);

@@ -569,7 +569,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					}
 
 					TinyDB tinyDb = TinyDB.getInstance(appCtx);
-					final String locale = tinyDb.getString("locale");
+					final String locale = getResources().getConfiguration().locale.getLanguage();
 					final String timeFormat = tinyDb.getString("dateFormat");
 					tinyDb.putString("issueState", singleIssue.getState());
 					tinyDb.putString("issueTitle", singleIssue.getTitle());

@@ -135,7 +135,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		void bindData(Issues issue) {
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
-			String locale = tinyDb.getString("locale");
+			String locale = context.getResources().getConfiguration().locale.getLanguage();
 			String timeFormat = tinyDb.getString("dateFormat");
 
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);

@@ -147,7 +147,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		void bindData(PullRequests pullRequest) {
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
-			String locale = tinyDb.getString("locale");
+			String locale = context.getResources().getConfiguration().locale.getLanguage();
 			String timeFormat = tinyDb.getString("dateFormat");
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 

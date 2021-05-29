@@ -125,7 +125,7 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 		Issues currentItem = searchedList.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		String locale = tinyDb.getString("locale");
+		String locale = context.getResources().getConfiguration().locale.getLanguage();
 		String timeFormat = tinyDb.getString("dateFormat");
 
 		PicassoService.getInstance(context).get()

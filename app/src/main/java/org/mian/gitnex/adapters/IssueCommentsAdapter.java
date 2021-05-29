@@ -338,13 +338,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 			if(timeFormat.equals("pretty")) {
 
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", context));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), context.getResources().getConfiguration().locale, "pretty", context));
 				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()));
 
 			}
 			else if(timeFormat.equals("normal")) {
 
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "normal", context));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), context.getResources().getConfiguration().locale, "normal", context));
 			}
 
 			if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {

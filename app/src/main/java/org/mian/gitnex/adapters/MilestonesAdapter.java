@@ -148,7 +148,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			this.milestones = dataModel;
 			final TinyDB tinyDb = TinyDB.getInstance(context);
-			final String locale = tinyDb.getString("locale");
+			final String locale = context.getResources().getConfiguration().locale.getLanguage();
 			final String timeFormat = tinyDb.getString("dateFormat");
 
 			Markdown.render(context, dataModel.getTitle(), msTitle);

@@ -152,5 +152,10 @@ public class MainApplication extends Application {
 			tinyDB.putInt("homeScreenId", 0);
 		}
 
+		if(tinyDB.getString("localeStr").isEmpty()) {
+			tinyDB.putString("localeStr", getString(R.string.settingsLanguageSystem));
+			tinyDB.putInt("langId", 0);
+		}
+
 	}
 }

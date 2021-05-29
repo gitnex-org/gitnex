@@ -223,6 +223,7 @@
 
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Translation</string>
+    <string name="settingsLanguageSystem">System</string>
     <string name="settingsSecurityHeader">Security</string>
     <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
     <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>

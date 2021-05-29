@@ -84,7 +84,7 @@ public class RepoInfoFragment extends Fragment {
 
 		binding.repoMetaFrame.setVisibility(View.GONE);
 
-		getRepoInfo(Authorization.get(getContext()), repoOwner, repoName, tinyDb.getString("locale"), tinyDb.getString("dateFormat"));
+		getRepoInfo(Authorization.get(getContext()), repoOwner, repoName, getResources().getConfiguration().locale, tinyDb.getString("dateFormat"));
 		getFileContents(Authorization.get(getContext()), repoOwner, repoName, getResources().getString(R.string.defaultFilename));
 
 		if(isExpandViewVisible()) {
@@ -173,7 +173,7 @@ public class RepoInfoFragment extends Fragment {
 		return binding.repoMetaFrame.getVisibility() == View.VISIBLE;
 	}
 
-	private void getRepoInfo(String token, final String owner, String repo, final String locale, final String timeFormat) {
+	private void getRepoInfo(String token, final String owner, String repo, final Locale locale, final String timeFormat) {
 
 		final TinyDB tinyDb = TinyDB.getInstance(getContext());
 
@@ -217,12 +217,12 @@ public class RepoInfoFragment extends Fragment {
 							binding.repoMetaWatchers.setText(repoInfo.getWatchers_count());
 							binding.repoMetaSize.setText(FileUtils.byteCountToDisplaySize((int) repoInfo.getSize() * 1024));
 
-							binding.repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), new Locale(locale), timeFormat, ctx));
+							binding.repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreated_at(), locale, timeFormat, ctx));
 							if(timeFormat.equals("pretty")) {
 								binding.repoMetaCreatedAt.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreated_at()), ctx));
 							}
 
-							String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdated_at(), new Locale(locale), timeFormat, ctx);
+							String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdated_at(), locale, timeFormat, ctx);
 
 							String website = (repoInfo.getWebsite().isEmpty()) ? getResources().getString(R.string.noDataWebsite) : repoInfo.getWebsite();
 							binding.repoMetaWebsite.setText(website);
