@@ -147,7 +147,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		void bindData(PullRequests pullRequest) {
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
-			String locale = context.getResources().getConfiguration().locale.getLanguage();
+			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat");
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
@@ -165,7 +165,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			this.prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + EmojiParser.parseToUnicode(pullRequest.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 			this.prCommentsCount.setText(String.valueOf(pullRequest.getComments()));
-			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreated_at(), new Locale(locale), timeFormat, context));
+			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreated_at(), locale, timeFormat, context));
 
 			if(timeFormat.equals("pretty")) {
 				this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreated_at()), context));

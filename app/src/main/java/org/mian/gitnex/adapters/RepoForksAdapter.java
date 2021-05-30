@@ -132,7 +132,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			TinyDB tinyDb = TinyDB.getInstance(context);
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-			String locale = context.getResources().getConfiguration().locale.getLanguage();
+			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat");
 			this.userRepositories = forksModel;
 			orgName.setText(forksModel.getFullName().split("/")[0]);
@@ -164,20 +164,20 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 				switch(timeFormat) {
 					case "pretty": {
-						PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+						PrettyTime prettyTime = new PrettyTime(locale);
 						String createdTime = prettyTime.format(forksModel.getUpdated_at());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(forksModel.getUpdated_at()), context));
 						break;
 					}
 					case "normal": {
-						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 						String createdTime = formatter.format(forksModel.getUpdated_at());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 						break;
 					}
 					case "normal1": {
-						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 						String createdTime = formatter.format(forksModel.getUpdated_at());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 						break;

@@ -23,7 +23,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class PublicOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ExplorePublicOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
 	private final int TYPE_LOAD = 0;
@@ -31,7 +31,7 @@ public class PublicOrganizationsAdapter extends RecyclerView.Adapter<RecyclerVie
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public PublicOrganizationsAdapter(Context ctx, List<Organization> organizationsListMain) {
+	public ExplorePublicOrganizationsAdapter(Context ctx, List<Organization> organizationsListMain) {
 		this.context = ctx;
 		this.organizationsList = organizationsListMain;
 	}
@@ -41,10 +41,10 @@ public class PublicOrganizationsAdapter extends RecyclerView.Adapter<RecyclerVie
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		if(viewType == TYPE_LOAD) {
-			return new PublicOrganizationsAdapter.OrganizationsHolder(inflater.inflate(R.layout.list_organizations, parent, false));
+			return new ExplorePublicOrganizationsAdapter.OrganizationsHolder(inflater.inflate(R.layout.list_organizations, parent, false));
 		}
 		else {
-			return new PublicOrganizationsAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+			return new ExplorePublicOrganizationsAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
 		}
 	}
 
@@ -56,7 +56,7 @@ public class PublicOrganizationsAdapter extends RecyclerView.Adapter<RecyclerVie
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
-			((PublicOrganizationsAdapter.OrganizationsHolder) holder).bindData(organizationsList.get(position));
+			((ExplorePublicOrganizationsAdapter.OrganizationsHolder) holder).bindData(organizationsList.get(position));
 		}
 	}
 

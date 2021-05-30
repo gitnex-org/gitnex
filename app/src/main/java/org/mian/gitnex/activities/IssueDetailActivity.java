@@ -569,7 +569,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					}
 
 					TinyDB tinyDb = TinyDB.getInstance(appCtx);
-					final String locale = getResources().getConfiguration().locale.getLanguage();
+					final Locale locale = getResources().getConfiguration().locale;
 					final String timeFormat = tinyDb.getString("dateFormat");
 					tinyDb.putString("issueState", singleIssue.getState());
 					tinyDb.putString("issueTitle", singleIssue.getTitle());
@@ -660,7 +660,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 						if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
 
-							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
+							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
 							viewBinding.issueDueDate
@@ -668,7 +668,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						}
 						else if(timeFormat.equals("normal1")) {
 
-							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
+							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", locale);
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
 						}
@@ -714,7 +714,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 
-					viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), new Locale(locale), timeFormat, ctx));
+					viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), locale, timeFormat, ctx));
 					viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
 
 					if(timeFormat.equals("pretty")) {

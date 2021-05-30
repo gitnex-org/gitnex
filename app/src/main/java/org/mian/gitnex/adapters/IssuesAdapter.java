@@ -135,7 +135,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		void bindData(Issues issue) {
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
-			String locale = context.getResources().getConfiguration().locale.getLanguage();
+			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat");
 
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
@@ -156,20 +156,20 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			switch(timeFormat) {
 				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+					PrettyTime prettyTime = new PrettyTime(locale);
 					String createdTime = prettyTime.format(issue.getCreated_at());
 					this.issueCreatedTime.setText(createdTime);
 					this.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreated_at()), context));
 					break;
 				}
 				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 					String createdTime = formatter.format(issue.getCreated_at());
 					this.issueCreatedTime.setText(createdTime);
 					break;
 				}
 				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 					String createdTime = formatter.format(issue.getCreated_at());
 					this.issueCreatedTime.setText(createdTime);
 					break;

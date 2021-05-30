@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.Issues;
-import org.mian.gitnex.adapters.SearchIssuesAdapter;
+import org.mian.gitnex.adapters.ExploreIssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentSearchIssuesBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class ExploreIssuesFragment extends Fragment {
 
 	private FragmentSearchIssuesBinding viewBinding;
-	private SearchIssuesAdapter adapter;
+	private ExploreIssuesAdapter adapter;
 	private List<Issues> dataList;
 	Context ctx;
 
@@ -48,7 +48,7 @@ public class ExploreIssuesFragment extends Fragment {
 		ctx = getContext();
 
 		dataList = new ArrayList<>();
-		adapter = new SearchIssuesAdapter(dataList, ctx);
+		adapter = new ExploreIssuesAdapter(dataList, ctx);
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ctx);
 

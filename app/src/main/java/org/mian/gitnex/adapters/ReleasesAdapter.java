@@ -89,7 +89,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
     public void onBindViewHolder(@NonNull ReleasesAdapter.ReleasesViewHolder holder, int position) {
 
         final TinyDB tinyDb = TinyDB.getInstance(context);
-	    final String locale = context.getResources().getConfiguration().locale.getLanguage();
+	    final Locale locale = context.getResources().getConfiguration().locale;
 	    final String timeFormat = tinyDb.getString("dateFormat");
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
@@ -120,7 +120,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    }
 
 	    if(currentItem.getPublished_at() != null) {
-		    holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublished_at(), new Locale(locale), timeFormat, context));
+		    holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublished_at(), locale, timeFormat, context));
 	    }
 
 	    if(timeFormat.equals("pretty")) {

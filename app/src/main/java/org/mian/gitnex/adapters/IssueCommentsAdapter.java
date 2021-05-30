@@ -50,6 +50,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	private final List<IssueComments> issuesComments;
 	private final FragmentManager fragmentManager;
 	private final BottomSheetReplyFragment.OnInteractedListener onInteractedListener;
+	private final Locale locale;
 
 	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, BottomSheetReplyFragment.OnInteractedListener onInteractedListener) {
 
@@ -58,8 +59,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		this.issuesComments = issuesCommentsMain;
 		this.fragmentManager = fragmentManager;
 		this.onInteractedListener = onInteractedListener;
-
 		tinyDB = TinyDB.getInstance(ctx);
+		locale = ctx.getResources().getConfiguration().locale;
 	}
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
@@ -119,18 +120,15 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				ReactionSpinner reactionSpinner = new ReactionSpinner(ctx, bundle1);
 				reactionSpinner.setOnInteractedListener(() -> {
-
 					tinyDB.putBoolean("commentEdited", true);
 
 					onInteractedListener.onInteracted();
 					dialog.dismiss();
-
 				});
 
 				linearLayout.addView(reactionSpinner);
 
 				commentMenuEdit.setOnClickListener(v1 -> {
-
 					Bundle bundle = new Bundle();
 					bundle.putInt("commentId", issueComment.getId());
 					bundle.putString("commentAction", "edit");
@@ -141,11 +139,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
 
 					dialog.dismiss();
-
 				});
 
 				commentShare.setOnClickListener(v1 -> {
-
 					// get comment Url
 					CharSequence commentUrl = issueComment.getHtml_url();
 
@@ -158,11 +154,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					ctx.startActivity(Intent.createChooser(sharingIntent, intentHeader));
 
 					dialog.dismiss();
-
 				});
 
 				issueCommentCopyUrl.setOnClickListener(v1 -> {
-
 					// comment Url
 					CharSequence commentUrl = issueComment.getHtml_url();
 
@@ -174,23 +168,19 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 					dialog.dismiss();
 					Toasty.success(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
-
 				});
 
 				commentMenuQuote.setOnClickListener(v1 -> {
-
 					StringBuilder stringBuilder = new StringBuilder();
 					String commenterName = issueComment.getUser().getUsername();
 
 					if(!commenterName.equals(tinyDB.getString("userLogin"))) {
-
 						stringBuilder.append("@").append(commenterName).append("\n\n");
 					}
 
 					String[] lines = issueComment.getBody().split("\\R");
 
 					for(String line : lines) {
-
 						stringBuilder.append(">").append(line).append("\n");
 					}
 
@@ -202,11 +192,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 					dialog.dismiss();
 					BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
-
 				});
 
 				commentMenuCopy.setOnClickListener(v1 -> {
-
 					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
 
@@ -215,14 +203,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 					dialog.dismiss();
 					Toasty.success(ctx, ctx.getString(R.string.copyIssueCommentToastMsg));
-
 				});
 
 				commentMenuDelete.setOnClickListener(v1 -> {
-
 					deleteIssueComment(ctx, issueComment.getId(), getAdapterPosition());
 					dialog.dismiss();
-
 				});
 
 			});
@@ -230,12 +215,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			avatar.setOnClickListener(loginId -> {
 
 				Context context = loginId.getContext();
-
 				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 			});
-
 		}
-
 	}
 
 	private void updateAdapter(int position) {
@@ -243,7 +225,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		issuesComments.remove(position);
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, issuesComments.size());
-
 	}
 
 	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
@@ -337,14 +318,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		if(issueComment.getCreated_at() != null) {
 
 			if(timeFormat.equals("pretty")) {
-
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), context.getResources().getConfiguration().locale, "pretty", context));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), locale, "pretty", context));
 				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()));
-
 			}
 			else if(timeFormat.equals("normal")) {
-
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), context.getResources().getConfiguration().locale, "normal", context));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), locale, "normal", context));
 			}
 
 			if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
@@ -374,7 +352,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	@Override
 	public int getItemCount() {
-
 		return issuesComments.size();
 	}
 

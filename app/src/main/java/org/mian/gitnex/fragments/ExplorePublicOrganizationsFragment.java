@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.Organization;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.PublicOrganizationsAdapter;
+import org.mian.gitnex.adapters.ExplorePublicOrganizationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Authorization;
@@ -37,7 +37,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 
 	private FragmentOrganizationsBinding fragmentPublicOrgBinding;
 	private List<Organization> organizationsList;
-	private PublicOrganizationsAdapter adapter;
+	private ExplorePublicOrganizationsAdapter adapter;
 	private Context context;
 	private int pageSize;
 	private final String TAG = Constants.publicOrganizations;
@@ -68,7 +68,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 			adapter.notifyDataChanged();
 		}, 200));
 
-		adapter = new PublicOrganizationsAdapter(getContext(), organizationsList);
+		adapter = new ExplorePublicOrganizationsAdapter(getContext(), organizationsList);
 		adapter.setLoadMoreListener(() -> fragmentPublicOrgBinding.recyclerView.post(() -> {
 			if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (organizationsList.size() + resultLimit) / resultLimit;

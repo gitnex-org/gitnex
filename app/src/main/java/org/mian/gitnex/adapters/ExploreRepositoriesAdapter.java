@@ -122,45 +122,32 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 					final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
 					WatchInfo watch = new WatchInfo();
-
 					Call<WatchInfo> call;
-
 					call = RetrofitClient.getApiInterface(context).checkRepoWatchStatus(token, repoOwner, repoName);
 
 					call.enqueue(new Callback<WatchInfo>() {
-
 						@Override
 						public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
 
 							if(response.isSuccessful()) {
-
 								assert response.body() != null;
 								tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
-
-							} else {
-
-								tinyDb.putBoolean("repoWatch", false);
-
-								if(response.code() != 404) {
-
-									Toasty.error(context, context.getString(R.string.genericApiStatusError));
-
-								}
-
 							}
-
+							else {
+								tinyDb.putBoolean("repoWatch", false);
+								if(response.code() != 404) {
+									Toasty.error(context, context.getString(R.string.genericApiStatusError));
+								}
+							}
 						}
 
 						@Override
 						public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
-
 							tinyDb.putBoolean("repoWatch", false);
 							Toasty.error(context, context.getString(R.string.genericApiStatusError));
 						}
 					});
-
 				}
-
 				context.startActivity(intent);
 
 			});

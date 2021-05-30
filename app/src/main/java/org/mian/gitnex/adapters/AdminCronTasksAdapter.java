@@ -44,7 +44,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			super(itemView);
 			Context ctx = itemView.getContext();
 
-			final String locale = ctx.getResources().getConfiguration().locale.getLanguage();
+			final Locale locale = ctx.getResources().getConfiguration().locale;
 			final String timeFormat = tinyDb.getString("dateFormat");
 
 			ImageView runTask = itemView.findViewById(R.id.runTask);
@@ -58,10 +58,10 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 				String lastRun = "";
 
 				if(cronTasks.getNext() != null) {
-					nextRun = TimeHelper.formatTime(cronTasks.getNext(), new Locale(locale), timeFormat, ctx);
+					nextRun = TimeHelper.formatTime(cronTasks.getNext(), locale, timeFormat, ctx);
 				}
 				if(cronTasks.getPrev() != null) {
-					lastRun = TimeHelper.formatTime(cronTasks.getPrev(), new Locale(locale), timeFormat, ctx);
+					lastRun = TimeHelper.formatTime(cronTasks.getPrev(), locale, timeFormat, ctx);
 				}
 
 				View view = LayoutInflater.from(ctx).inflate(R.layout.layout_cron_task_info, null);
