@@ -19,4 +19,53 @@
         <item>tr</item>
         <item>uk</item>
     </string-array>
+
+    <string-array name="timeFormats">
+        <item>@string/settingsDateTimeHeaderDefault</item>
+        <item>@string/settingsDateTimeNormal</item>
+    </string-array>
+
+    <string-array name="fonts">
+        <item>Roboto</item>
+        <item>Manrope</item>
+        <item>Source Code Pro</item>
+    </string-array>
+
+    <string-array name="themes">
+        <item>Dark</item>
+        <item>Light</item>
+        <item>Auto (Light/Dark)</item>
+        <item>Retro</item>
+        <item>Auto (Retro/Dark)</item>
+        <item>Pitch Black</item>
+    </string-array>
+
+    <string-array name="appDefaultHomeScreen">
+        <item>@string/pageTitleMyRepos</item>
+        <item>@string/pageTitleStarredRepos</item>
+        <item>@string/pageTitleOrganizations</item>
+        <item>@string/pageTitleRepositories</item>
+        <item>@string/pageTitleProfile</item>
+        <item>@string/pageTitleExplore</item>
+        <item>@string/titleDrafts</item>
+    </string-array>
+
+    <string-array name="appDefaultHomeScreenNew">
+        <item>@string/pageTitleMyRepos</item>
+        <item>@string/pageTitleStarredRepos</item>
+        <item>@string/pageTitleOrganizations</item>
+        <item>@string/pageTitleRepositories</item>
+        <item>@string/pageTitleProfile</item>
+        <item>@string/pageTitleExplore</item>
+        <item>@string/titleDrafts</item>
+        <item>@string/pageTitleNotifications</item>
+    </string-array>
+
+    <string-array name="linkHandlerDefaultScreen">
+        <item>@string/generalDeepLinkSelectedText</item>
+        <item>@string/navRepos</item>
+        <item>@string/navOrg</item>
+        <item>@string/pageTitleNotifications</item>
+        <item>@string/navExplore</item>
+    </string-array>
 </resources>

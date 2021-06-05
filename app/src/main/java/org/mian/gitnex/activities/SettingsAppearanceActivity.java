@@ -19,13 +19,13 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
 
-	private static final String[] timeList = {"Pretty", "Normal"};
+	private static String[] timeList;
 	private static int timeSelectedChoice = 0;
 
-	private static final String[] customFontList = {"Roboto", "Manrope", "Source Code Pro"};
+	private static String[] customFontList;
 	private static int customFontSelectedChoice = 0;
 
-	private static final String[] themeList = {"Dark", "Light", "Auto (Light / Dark)", "Retro", "Auto (Retro / Dark)", "Pitch Black"};
+	private static String[] themeList;
 	private static int themeSelectedChoice = 0;
 
 	@Override
@@ -47,6 +47,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		LinearLayout themeFrame = activitySettingsAppearanceBinding.themeSelectionFrame;
 
 		SwitchMaterial counterBadgesSwitch = activitySettingsAppearanceBinding.switchCounterBadge;
+
+		timeList = getResources().getStringArray(R.array.timeFormats);
+		customFontList = getResources().getStringArray(R.array.fonts);
+		themeList = getResources().getStringArray(R.array.themes);
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
@@ -157,13 +161,13 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				tinyDB.putString("timeStr", timeList[i]);
 				tinyDB.putInt("timeId", i);
 
-				if("Normal".equals(timeList[i])) {
-
-					tinyDB.putString("dateFormat", "normal");
-				}
-				else {
-
-					tinyDB.putString("dateFormat", "pretty");
+				switch(i) {
+					case 0:
+						tinyDB.putString("dateFormat", "pretty");
+						break;
+					case 1:
+						tinyDB.putString("dateFormat", "normal");
+						break;
 				}
 
 				dialogInterfaceTime.dismiss();

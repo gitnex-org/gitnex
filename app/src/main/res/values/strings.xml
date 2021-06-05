@@ -233,6 +233,7 @@
     <string name="settingsLanguageSelectedHeaderDefault">English</string>
     <string name="settingsAppearanceHeader">Appearance</string>
     <string name="settingsDateTimeHeaderDefault">Pretty</string>
+    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Choose Language</string>
     <string name="settingsTimeSelectorDialogTitle">Choose Time Format</string>
     <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
