@@ -47,7 +47,7 @@ public class SettingsFragment extends Fragment {
 
 		ctx = getContext();
 		tinyDB = TinyDB.getInstance(ctx);
-		aboutAppDialog = new Dialog(ctx);
+		aboutAppDialog = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navSettings));
 

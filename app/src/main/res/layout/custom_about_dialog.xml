@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
+    android:scrollbars="none"
     android:layout_width="wrap_content">
 
     <RelativeLayout android:layout_width="match_parent"
@@ -62,8 +63,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="?attr/primaryTextColor" />
@@ -81,8 +82,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textIsSelectable="true"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
                     android:textSize="14sp"
                     android:textColor="?attr/primaryTextColor" />
                 <!-- user server version -->
@@ -94,8 +95,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="?attr/primaryTextColor" />
@@ -114,8 +115,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/supportTextPatreon"
                     android:textColor="@color/lightBlue"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
                     android:textSize="14sp"
                     android:autoLink="web"
                     android:textColorLink="@color/lightBlue" />
@@ -128,8 +129,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="?attr/primaryTextColor" />
@@ -151,8 +152,8 @@
                     android:text="@string/translateWithCrowdin"
                     android:textColor="@color/lightBlue"
                     android:textColorLink="@color/lightBlue"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
                     android:textSize="14sp"
                     android:visibility="visible" />
                 <!-- translate -->
@@ -174,7 +175,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
@@ -202,4 +203,4 @@
 
     </RelativeLayout>
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>
