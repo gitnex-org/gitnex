@@ -13,17 +13,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
+import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.views.ReactionSpinner;
 import java.util.Objects;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -50,6 +57,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		TextView copyIssueUrl = bottomSheetSingleIssueBinding.copyIssueUrl;
 		TextView openFilesDiff = bottomSheetSingleIssueBinding.openFilesDiff;
 		TextView mergePullRequest = bottomSheetSingleIssueBinding.mergePullRequest;
+		TextView deletePullRequestBranch = bottomSheetSingleIssueBinding.deletePrHeadBranch;
 		TextView shareIssue = bottomSheetSingleIssueBinding.shareIssue;
 		TextView subscribeIssue = bottomSheetSingleIssueBinding.subscribeIssue;
 		TextView unsubscribeIssue = bottomSheetSingleIssueBinding.unsubscribeIssue;
@@ -85,9 +93,11 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 			if(tinyDB.getBoolean("prMerged") || tinyDB.getString("repoPrState").equals("closed")) {
 				mergePullRequest.setVisibility(View.GONE);
+				deletePullRequestBranch.setVisibility(View.VISIBLE);
 			}
 			else {
 				mergePullRequest.setVisibility(View.VISIBLE);
+				deletePullRequestBranch.setVisibility(View.GONE);
 			}
 
 			if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.13.0")) {
@@ -104,11 +114,18 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		else {
 
 			mergePullRequest.setVisibility(View.GONE);
+			deletePullRequestBranch.setVisibility(View.GONE);
 		}
 
 		mergePullRequest.setOnClickListener(v13 -> {
 
 			startActivity(new Intent(ctx, MergePullRequestActivity.class));
+			dismiss();
+		});
+
+		deletePullRequestBranch.setOnClickListener(v -> {
+
+			PullRequestActions.deleteHeadBranch(ctx, parts[0], parts[1], tinyDB.getString("prHeadBranch"), true);
 			dismiss();
 		});
 

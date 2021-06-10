@@ -31,10 +31,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
 
-	private static final String[] cacheSizeDataList = {"50 MB", "100 MB", "250 MB", "500 MB", "1 GB"};
+	private static String[] cacheSizeDataList;
 	private static int cacheSizeDataSelectedChoice = 0;
 
-	private static final String[] cacheSizeImagesList = {"50 MB", "100 MB", "250 MB", "500 MB", "1 GB"};
+	private static String[] cacheSizeImagesList;
 	private static int cacheSizeImagesSelectedChoice = 0;
 
 	@Override
@@ -60,6 +60,9 @@ public class SettingsSecurityActivity extends BaseActivity {
 		LinearLayout clearCacheFrame = activitySettingsSecurityBinding.clearCacheSelectionFrame;
 
 		SwitchMaterial switchBiometric = activitySettingsSecurityBinding.switchBiometric;
+
+		cacheSizeDataList = getResources().getStringArray(R.array.cacheSizeList);
+		cacheSizeImagesList = getResources().getStringArray(R.array.cacheSizeList);
 
 		if(!tinyDB.getString("cacheSizeStr").isEmpty()) {
 

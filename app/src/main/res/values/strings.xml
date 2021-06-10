@@ -556,6 +556,10 @@
     <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
     <string name="openFileDiffText">Files Changed</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
+    <string name="deletePrHeadBranch">Delete head branch</string>
+    <string name="deleteBranchSuccess">Branch deleted successfully</string>
+    <string name="deleteBranchError">Could not delete branch</string>
+    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
     <string name="mergePullRequestButtonText">Merge</string>
     <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>

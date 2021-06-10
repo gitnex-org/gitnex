@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import org.gitnex.tea4j.models.MergePullRequest;
 import org.gitnex.tea4j.models.MergePullRequestSpinner;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityMergePullRequestBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -187,7 +188,7 @@ public class MergePullRequestActivity extends BaseActivity {
 							final String repoOwner = parts[0];
 							final String repoName = parts[1];
 
-							deleteBranchFunction(repoOwner, repoName);
+							PullRequestActions.deleteHeadBranch(ctx, repoOwner, repoName, tinyDB.getString("prHeadBranch"), false);
 
 							Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
 							tinyDB.putBoolean("prMerged", true);
@@ -201,7 +202,7 @@ public class MergePullRequestActivity extends BaseActivity {
 							final String repoOwner = parts[0];
 							final String repoName = parts[1];
 
-							deleteBranchFunction(repoOwner, repoName);
+							PullRequestActions.deleteHeadBranch(ctx, repoOwner, repoName, tinyDB.getString("prHeadBranch"), false);
 
 							Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
 							tinyDB.putBoolean("prMerged", true);
@@ -244,36 +245,6 @@ public class MergePullRequestActivity extends BaseActivity {
 
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
-				enableProcessButton();
-			}
-
-		});
-
-	}
-
-	private void deleteBranchFunction(String repoOwner, String repoName) {
-
-		String branchName = tinyDB.getString("prHeadBranch");
-
-		Call<JsonElement> call = RetrofitClient
-				.getApiInterface(ctx)
-				.deleteBranch(Authorization.get(ctx), repoOwner, repoName, branchName);
-
-		call.enqueue(new Callback<JsonElement>() {
-
-			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
-
-				if(response.code() == 204) {
-
-					Log.i("deleteBranch", "Branch deleted successfully");
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
 				Log.e("onFailure", t.toString());
 				enableProcessButton();
