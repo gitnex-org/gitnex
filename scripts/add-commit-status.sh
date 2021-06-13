@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Environment variables which have to be set in order for this to work properly
 # @author opyale
