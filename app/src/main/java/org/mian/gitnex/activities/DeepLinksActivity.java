@@ -100,6 +100,7 @@ public class DeepLinksActivity extends BaseActivity {
 					if(!Objects.requireNonNull(data.getLastPathSegment()).contains("issues") & StringUtils.isNumeric(data.getLastPathSegment())) {
 
 						issueIntent.putExtra("issueNumber", data.getLastPathSegment());
+						issueIntent.putExtra("openedFromLink", "true");
 
 						tinyDB.putString("issueNumber", data.getLastPathSegment());
 						tinyDB.putString("issueType", "Issue");
@@ -316,6 +317,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 					issueIntent.putExtra("issueNumber", index);
 					issueIntent.putExtra("prMergeable", prInfo.isMergeable());
+					issueIntent.putExtra("openedFromLink", "true");
 
 					if(prInfo.getHead() != null) {
 
