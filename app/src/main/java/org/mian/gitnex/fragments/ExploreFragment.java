@@ -84,6 +84,10 @@ public class ExploreFragment extends Fragment {
 		SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
+		if(requireActivity().getIntent().getBooleanExtra("exploreOrgs", false)) {
+			mViewPager.setCurrentItem(2);
+		}
+
 		return view;
 
 	}

@@ -232,13 +232,84 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 			mainIntent.removeExtra("goToSection");
 			mainIntent.removeExtra("goToSectionType");
 
-			if(goToSectionType.equals("issue")) {
-
-				RepoDetailActivity.mViewPager.setCurrentItem(2);
-			}
-			else if(goToSectionType.equals("pull")) {
-
-				RepoDetailActivity.mViewPager.setCurrentItem(3);
+			switch(goToSectionType) {
+				case "branchesList":
+					RepoDetailActivity.mViewPager.setCurrentItem(1);
+					chooseBranch();
+					break;
+				case "branch":
+					RepoDetailActivity.mViewPager.setCurrentItem(1);
+					String selectedBranch = mainIntent.getStringExtra("selectedBranch");
+					tinyDB.putString("repoBranch", selectedBranch);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(selectedBranch);
+					}
+					break;
+				case "file":
+					RepoDetailActivity.mViewPager.setCurrentItem(1);
+					String branch1 = mainIntent.getStringExtra("branch");
+					tinyDB.putString("repoBranch", branch1);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(branch1);
+					}
+					Intent intent = new Intent(ctx, FileViewActivity.class);
+					intent.putExtra("file", mainIntent.getSerializableExtra("file"));
+					startActivity(intent);
+					break;
+				case "dir":
+					RepoDetailActivity.mViewPager.setCurrentItem(1);
+					String branch2 = mainIntent.getStringExtra("branch");
+					tinyDB.putString("repoBranch", branch2);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(branch2);
+					}
+					//((SectionsPagerAdapter) Objects.requireNonNull(RepoDetailActivity.mViewPager.getAdapter())).getItem(1);
+					break;
+				case "commitsList":
+					RepoDetailActivity.mViewPager.setCurrentItem(1);
+					String branch = mainIntent.getStringExtra("branchName");
+					tinyDB.putString("repoBranch", branch);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(branch);
+					}
+					Intent intent1 = new Intent(ctx, CommitsActivity.class);
+					intent1.putExtra("branchName", branch);
+					ctx.startActivity(intent1);
+					break;
+				case "issue":
+					RepoDetailActivity.mViewPager.setCurrentItem(2);
+					break;
+				case "issueNew":
+					RepoDetailActivity.mViewPager.setCurrentItem(2);
+					startActivity(new Intent(RepoDetailActivity.this, CreateIssueActivity.class));
+					break;
+				case "pull":
+					RepoDetailActivity.mViewPager.setCurrentItem(3);
+					break;
+				case "pullNew":
+					RepoDetailActivity.mViewPager.setCurrentItem(3);
+					startActivity(new Intent(RepoDetailActivity.this, CreatePullRequestActivity.class));
+					break;
+				case "releases":
+					RepoDetailActivity.mViewPager.setCurrentItem(4);
+					break;
+				case "newRelease":
+					RepoDetailActivity.mViewPager.setCurrentItem(4);
+					startActivity(new Intent(RepoDetailActivity.this, CreateReleaseActivity.class));
+					break;
+				case "milestones":
+					RepoDetailActivity.mViewPager.setCurrentItem(5);
+					break;
+				case "milestonesNew":
+					RepoDetailActivity.mViewPager.setCurrentItem(5);
+					startActivity(new Intent(RepoDetailActivity.this, CreateMilestoneActivity.class));
+					break;
+				case "labels":
+					RepoDetailActivity.mViewPager.setCurrentItem(6);
+					break;
+				case "settings":
+					startActivity(new Intent(RepoDetailActivity.this, RepositorySettingsActivity.class));
+					break;
 			}
 		}
 

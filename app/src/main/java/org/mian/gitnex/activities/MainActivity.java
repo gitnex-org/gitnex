@@ -380,12 +380,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				case "notification":
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_notifications);
+					setActionBarTitle(getResources().getString(R.string.pageTitleNotifications));
 					return;
 
 				case "explore":
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_explore);
 					return;
+
+				case "profile":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_profile);
+					return;
+
+				case "admin":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdministrationFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_administration);
+					return;
+
 			}
 		}
 

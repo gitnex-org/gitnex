@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import org.gitnex.tea4j.models.IssueComments;
 import org.gitnex.tea4j.models.Releases;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.databinding.FragmentReleasesBinding;
@@ -41,6 +42,7 @@ public class ReleasesFragment extends Fragment {
 
     private String repoName;
     private String repoOwner;
+    private String releaseTag;
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,6 +65,7 @@ public class ReleasesFragment extends Fragment {
             repoName = getArguments().getString(repoNameF);
             repoOwner = getArguments().getString(repoOwnerF);
         }
+        releaseTag = requireActivity().getIntent().getStringExtra("releaseTagName");
     }
 
     @Override
@@ -137,6 +140,13 @@ public class ReleasesFragment extends Fragment {
                 adapter = new ReleasesAdapter(getContext(), releasesListMain);
                 if(adapter.getItemCount() > 0) {
                     mRecyclerView.setAdapter(adapter);
+	                if(releasesListMain != null && releaseTag != null) {
+		                int index = getReleaseIndex(releaseTag, releasesListMain);
+		                releaseTag = null;
+		                if(index != -1) {
+			                mRecyclerView.scrollToPosition(index);
+		                }
+	                }
                     noDataReleases.setVisibility(View.GONE);
                 }
                 else {
@@ -149,5 +159,14 @@ public class ReleasesFragment extends Fragment {
         });
 
     }
+
+	private static int getReleaseIndex(String tag, List<Releases> releases) {
+		for (Releases release : releases) {
+			if(release.getTag_name().equals(tag)) {
+				return releases.indexOf(release);
+			}
+		}
+		return -1;
+	}
 
 }

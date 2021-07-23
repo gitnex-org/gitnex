@@ -130,7 +130,17 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		});
 
-		fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
+		String dir = requireActivity().getIntent().getStringExtra("dir");
+		if(dir != null) {
+			fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, dir, ref);
+			for(String segment: dir.split("/")) {
+				binding.breadcrumbsView.addItem(new BreadcrumbItem(Collections.singletonList(segment)));
+				path.add(segment);
+			}
+		}
+		else {
+			fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
+		}
 
 		return binding.getRoot();
 	}

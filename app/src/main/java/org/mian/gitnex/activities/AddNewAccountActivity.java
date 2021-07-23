@@ -49,6 +49,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);
+		viewBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
 
 		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
 
