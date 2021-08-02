@@ -29,7 +29,7 @@ import retrofit2.Callback;
 
 public class OrganizationInfoFragment extends Fragment {
 
-    private Context ctx = getContext();
+    private Context ctx;
     private ProgressBar mProgressBar;
     private static String orgNameF = "param1";
 
@@ -66,6 +66,8 @@ public class OrganizationInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         FragmentOrganizationInfoBinding fragmentOrganizationInfoBinding = FragmentOrganizationInfoBinding.inflate(inflater, container, false);
+
+	    ctx = getContext();
 
         mProgressBar = fragmentOrganizationInfoBinding.progressBar;
         orgAvatar = fragmentOrganizationInfoBinding.orgAvatar;

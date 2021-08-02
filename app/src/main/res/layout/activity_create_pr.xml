@@ -10,6 +10,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -29,7 +30,7 @@
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:focusable="true"
                 android:clickable="true"
-                android:src="@drawable/ic_arrow_back" />
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbarTitle"

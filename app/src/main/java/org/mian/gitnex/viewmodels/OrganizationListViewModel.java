@@ -35,7 +35,7 @@ public class OrganizationListViewModel extends ViewModel {
 
         Call<List<UserOrganizations>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getUserOrgs(token);
+                .getUserOrgs(token, 1, 50);
 
         call.enqueue(new Callback<List<UserOrganizations>>() {
 

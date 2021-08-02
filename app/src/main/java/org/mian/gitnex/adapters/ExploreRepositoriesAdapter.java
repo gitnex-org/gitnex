@@ -122,45 +122,32 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 					final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
 
 					WatchInfo watch = new WatchInfo();
-
 					Call<WatchInfo> call;
-
 					call = RetrofitClient.getApiInterface(context).checkRepoWatchStatus(token, repoOwner, repoName);
 
 					call.enqueue(new Callback<WatchInfo>() {
-
 						@Override
 						public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
 
 							if(response.isSuccessful()) {
-
 								assert response.body() != null;
 								tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
-
-							} else {
-
-								tinyDb.putBoolean("repoWatch", false);
-
-								if(response.code() != 404) {
-
-									Toasty.error(context, context.getString(R.string.genericApiStatusError));
-
-								}
-
 							}
-
+							else {
+								tinyDb.putBoolean("repoWatch", false);
+								if(response.code() != 404) {
+									Toasty.error(context, context.getString(R.string.genericApiStatusError));
+								}
+							}
 						}
 
 						@Override
 						public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
-
 							tinyDb.putBoolean("repoWatch", false);
 							Toasty.error(context, context.getString(R.string.genericApiStatusError));
 						}
 					});
-
 				}
-
 				context.startActivity(intent);
 
 			});
@@ -183,7 +170,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 		UserRepositories currentItem = reposList.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		String locale = tinyDb.getString("locale");
+		Locale locale = context.getResources().getConfiguration().locale;
 		String timeFormat = tinyDb.getString("dateFormat");
 		holder.userRepositories = currentItem;
 		holder.orgName.setText(currentItem.getFullName().split("/")[0]);
@@ -212,20 +199,20 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 
 			switch(timeFormat) {
 				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+					PrettyTime prettyTime = new PrettyTime(locale);
 					String createdTime = prettyTime.format(currentItem.getUpdated_at());
 					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 					holder.repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getUpdated_at()), context));
 					break;
 				}
 				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 					String createdTime = formatter.format(currentItem.getUpdated_at());
 					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 					break;
 				}
 				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 					String createdTime = formatter.format(currentItem.getUpdated_at());
 					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 					break;

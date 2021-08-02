@@ -1,6 +1,7 @@
 package org.mian.gitnex.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -195,6 +196,10 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		getSingleIssue(repoOwner, repoName, issueIndex);
 		fetchDataAsync(repoOwner, repoName, issueIndex);
+
+		if(getIntent().getStringExtra("openPrDiff") != null && getIntent().getStringExtra("openPrDiff").equals("true")) {
+			startActivity(new Intent(ctx, FileDiffActivity.class));
+		}
 
 	}
 
@@ -434,6 +439,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		if(id == android.R.id.home) {
 
+			if(getIntent().getStringExtra("openedFromLink") != null && getIntent().getStringExtra("openedFromLink").equals("true")) {
+				Intent intent = new Intent(ctx, RepoDetailActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
 			finish();
 			return true;
 		}
@@ -569,7 +579,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					}
 
 					TinyDB tinyDb = TinyDB.getInstance(appCtx);
-					final String locale = tinyDb.getString("locale");
+					final Locale locale = getResources().getConfiguration().locale;
 					final String timeFormat = tinyDb.getString("dateFormat");
 					tinyDb.putString("issueState", singleIssue.getState());
 					tinyDb.putString("issueTitle", singleIssue.getTitle());
@@ -581,6 +591,17 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						.getString(R.string.hash) + singleIssue.getNumber() + "</font>";
 					viewBinding.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(singleIssue.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 					String cleanIssueDescription = singleIssue.getBody().trim();
+
+					viewBinding.assigneeAvatar.setOnClickListener(loginId -> {
+						Intent intent = new Intent(ctx, ProfileActivity.class);
+						intent.putExtra("username", singleIssue.getUser().getLogin());
+						ctx.startActivity(intent);
+					});
+
+					viewBinding.assigneeAvatar.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(ctx, singleIssue.getUser().getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, singleIssue.getUser().getLogin()));
+						return true;
+					});
 
 					Markdown.render(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription);
 
@@ -603,7 +624,20 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 							viewBinding.frameAssignees.addView(assigneesView);
 							assigneesView.setLayoutParams(params1);
-							if(!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
+
+							int finalI = i;
+							assigneesView.setOnClickListener(loginId -> {
+								Intent intent = new Intent(ctx, ProfileActivity.class);
+								intent.putExtra("username", singleIssue.getAssignees().get(finalI).getLogin());
+								ctx.startActivity(intent);
+							});
+
+							assigneesView.setOnLongClickListener(loginId -> {
+								AppUtil.copyToClipboard(ctx, singleIssue.getAssignees().get(finalI).getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, singleIssue.getAssignees().get(finalI).getLogin()));
+								return true;
+							});
+
+							/*if(!singleIssue.getAssignees().get(i).getFull_name().equals("")) {
 
 								assigneesView.setOnClickListener(
 									new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getFull_name()), ctx));
@@ -612,7 +646,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 								assigneesView.setOnClickListener(
 									new ClickListener(getString(R.string.assignedTo, singleIssue.getAssignees().get(i).getLogin()), ctx));
-							}
+							}*/
 						}
 					}
 					else {
@@ -660,7 +694,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 						if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
 
-							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
+							DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
 							viewBinding.issueDueDate
@@ -668,7 +702,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						}
 						else if(timeFormat.equals("normal1")) {
 
-							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
+							DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", locale);
 							String dueDate = formatter.format(singleIssue.getDue_date());
 							viewBinding.issueDueDate.setText(dueDate);
 						}
@@ -714,7 +748,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						viewBinding.issueDescription.setLayoutParams(paramsDesc);
 					}
 
-					viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), new Locale(locale), timeFormat, ctx));
+					viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(singleIssue.getCreated_at(), locale, timeFormat, ctx));
 					viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
 
 					if(timeFormat.equals("pretty")) {
@@ -750,7 +784,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						viewBinding.issueMilestone.setVisibility(View.GONE);
 					}
 
-					if(!singleIssue.getUser().getFull_name().equals("")) {
+					/*if(!singleIssue.getUser().getFull_name().equals("")) {
 
 						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getFull_name(), ctx));
@@ -759,7 +793,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 						viewBinding.assigneeAvatar.setOnClickListener(
 							new ClickListener(ctx.getResources().getString(R.string.issueCreator) + singleIssue.getUser().getLogin(), ctx));
-					}
+					}*/
 
 					viewBinding.progressBar.setVisibility(View.GONE);
 				}

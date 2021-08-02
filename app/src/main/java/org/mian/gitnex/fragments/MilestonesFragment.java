@@ -48,6 +48,8 @@ public class MilestonesFragment extends Fragment {
     private String TAG = Constants.tagMilestonesFragment;
     private int resultLimit = Constants.resultLimitOldGiteaInstances;
 
+    private String milestoneId;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -62,6 +64,9 @@ public class MilestonesFragment extends Fragment {
         final String repoName = parts[1];
         final String loginUid = tinyDb.getString("loginUid");
         final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+
+        milestoneId = requireActivity().getIntent().getStringExtra("milestoneId");
+        requireActivity().getIntent().removeExtra("milestoneId");
 
         viewBinding.recyclerView.setHasFixedSize(true);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -188,6 +193,10 @@ public class MilestonesFragment extends Fragment {
                         adapter.notifyDataChanged();
                         viewBinding.noDataMilestone.setVisibility(View.GONE);
 
+                        if(milestoneId != null) {
+                        	viewBinding.recyclerView.scrollToPosition(getMilestoneIndex(Integer.parseInt(milestoneId), response.body()));
+                        }
+
                     }
                     else {
 
@@ -215,6 +224,15 @@ public class MilestonesFragment extends Fragment {
         });
 
     }
+
+	private static int getMilestoneIndex(int milestoneId, List<Milestones> milestones) {
+		for (Milestones milestone : milestones) {
+			if(milestone.getId() == milestoneId) {
+				return milestones.indexOf(milestone);
+			}
+		}
+		return -1;
+	}
 
     private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String milestoneState) {
 

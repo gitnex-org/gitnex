@@ -215,7 +215,7 @@ public class CreateRepoActivity extends BaseActivity {
 
         Call<List<OrgOwner>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getOrgOwners(instanceToken);
+                .getOrgOwners(instanceToken, 1, 50);
 
         call.enqueue(new Callback<List<OrgOwner>>() {
 

@@ -30,7 +30,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class ProfileEmailActivity extends BaseActivity {
+public class MyProfileEmailActivity extends BaseActivity {
 
     private View.OnClickListener onClickListener;
     private EditText userEmail;

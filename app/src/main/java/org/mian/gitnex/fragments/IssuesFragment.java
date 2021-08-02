@@ -29,8 +29,8 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,7 @@ import retrofit2.Response;
 
 public class IssuesFragment extends Fragment {
 
+	private FragmentIssuesBinding fragmentIssuesBinding;
 	private Menu menu;
 	private RecyclerView recyclerView;
 	private List<Issues> issuesList;
@@ -51,18 +52,17 @@ public class IssuesFragment extends Fragment {
 	private Context context;
 	private int pageSize = Constants.issuesPageInit;
 	private ProgressBar mProgressBar;
-	private String TAG = Constants.tagIssuesList;
+	private final String TAG = Constants.tagIssuesList;
 	private TextView noDataIssues;
 	private int resultLimit = Constants.resultLimitOldGiteaInstances;
-	private String requestType = Constants.issuesRequestType;
+	private final String requestType = Constants.issuesRequestType;
 	private ProgressBar progressLoadMore;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		FragmentIssuesBinding fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
-
+		fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 		context = getContext();
 
@@ -89,23 +89,17 @@ public class IssuesFragment extends Fragment {
 		noDataIssues = fragmentIssuesBinding.noDataIssues;
 
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
 			swipeRefresh.setRefreshing(false);
 			loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 			adapter.notifyDataChanged();
-
 		}, 200));
 
 		adapter = new IssuesAdapter(getContext(), issuesList);
 		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
-
 			if(issuesList.size() == resultLimit || pageSize == resultLimit) {
-
 				int page = (issuesList.size() + resultLimit) / resultLimit;
 				loadMore(Authorization.get(getContext()), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
-
 			}
-
 		}));
 
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
@@ -129,12 +123,9 @@ public class IssuesFragment extends Fragment {
 			adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
 
 				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
-
 					int page = (issuesList.size() + resultLimit) / resultLimit;
 					loadMore(Authorization.get(getContext()), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
-
 				}
-
 			}));
 
 			tinyDb.putString("repoIssuesState", issueState);
@@ -144,13 +135,11 @@ public class IssuesFragment extends Fragment {
 
 			loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, issueState);
 			recyclerView.setAdapter(adapter);
-
 		});
 
 		loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 
 		return fragmentIssuesBinding.getRoot();
-
 	}
 
 	@Override
@@ -165,11 +154,9 @@ public class IssuesFragment extends Fragment {
 		final String repoName = parts[1];
 
 		if(tinyDb.getBoolean("resumeIssues")) {
-
 			loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
 			tinyDb.putBoolean("resumeIssues", false);
 		}
-
 	}
 
 	private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType, String issueState) {
@@ -177,49 +164,38 @@ public class IssuesFragment extends Fragment {
 		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, 1, resultLimit, requestType, issueState);
 
 		call.enqueue(new Callback<List<Issues>>() {
-
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
 				if(response.code() == 200) {
-
 					assert response.body() != null;
 					if(response.body().size() > 0) {
-
 						issuesList.clear();
 						issuesList.addAll(response.body());
 						adapter.notifyDataChanged();
 						noDataIssues.setVisibility(View.GONE);
 					}
 					else {
-
 						issuesList.clear();
 						adapter.notifyDataChanged();
 						noDataIssues.setVisibility(View.VISIBLE);
 					}
-
 					mProgressBar.setVisibility(View.GONE);
-
 				}
 				else if(response.code() == 404) {
-
 					noDataIssues.setVisibility(View.VISIBLE);
 					mProgressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
 				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
-
 				Log.e(TAG, t.toString());
 			}
-
 		});
-
 	}
 
 	private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState) {
@@ -232,44 +208,29 @@ public class IssuesFragment extends Fragment {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
-
 				if(response.code() == 200) {
-
 					List<Issues> result = response.body();
-
 					assert result != null;
 					if(result.size() > 0) {
-
 						pageSize = result.size();
 						issuesList.addAll(result);
-
 					}
 					else {
-
-						Toasty.warning(context, getString(R.string.noMoreData));
+						SnackBar.info(context, fragmentIssuesBinding.getRoot(), getString(R.string.noMoreData));
 						adapter.setMoreDataAvailable(false);
-
 					}
-
 					adapter.notifyDataChanged();
 					progressLoadMore.setVisibility(View.GONE);
-
 				}
 				else {
-
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
-
 				Log.e(TAG, t.toString());
-
 			}
-
 		});
 	}
 
@@ -298,19 +259,15 @@ public class IssuesFragment extends Fragment {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-
 				return false;
 			}
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
-
 				filter(newText);
 				return false;
 			}
-
 		});
-
 	}
 
 	private void filter(String text) {
@@ -328,5 +285,4 @@ public class IssuesFragment extends Fragment {
 
 		adapter.updateList(arr);
 	}
-
 }

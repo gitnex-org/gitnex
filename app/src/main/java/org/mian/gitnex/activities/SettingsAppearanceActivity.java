@@ -1,14 +1,20 @@
 package org.mian.gitnex.activities;
 
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.TimePicker;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -19,13 +25,13 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
 
-	private static final String[] timeList = {"Pretty", "Normal"};
+	private static String[] timeList;
 	private static int timeSelectedChoice = 0;
 
-	private static final String[] customFontList = {"Roboto", "Manrope", "Source Code Pro"};
+	private static String[] customFontList;
 	private static int customFontSelectedChoice = 0;
 
-	private static final String[] themeList = {"Dark", "Light", "Auto (Light / Dark)", "Retro", "Auto (Retro / Dark)", "Pitch Black"};
+	private static String[] themeList;
 	private static int themeSelectedChoice = 0;
 
 	@Override
@@ -38,48 +44,51 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		ImageView closeActivity = activitySettingsAppearanceBinding.close;
 
-		final TextView tvDateTimeSelected = activitySettingsAppearanceBinding.tvDateTimeSelected; // setter for time
-		final TextView customFontSelected = activitySettingsAppearanceBinding.customFontSelected; // setter for custom font
-		final TextView themeSelected = activitySettingsAppearanceBinding.themeSelected; // setter for theme
-
 		LinearLayout timeFrame = activitySettingsAppearanceBinding.timeFrame;
 		LinearLayout customFontFrame = activitySettingsAppearanceBinding.customFontFrame;
 		LinearLayout themeFrame = activitySettingsAppearanceBinding.themeSelectionFrame;
+		LinearLayout lightTimeFrame = activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame;
+		LinearLayout darkTimeFrame = activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame;
 
 		SwitchMaterial counterBadgesSwitch = activitySettingsAppearanceBinding.switchCounterBadge;
+
+		timeList = getResources().getStringArray(R.array.timeFormats);
+		customFontList = getResources().getStringArray(R.array.fonts);
+		themeList = getResources().getStringArray(R.array.themes);
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		if(!tinyDB.getString("timeStr").isEmpty()) {
+		String lightMinute = String.valueOf(tinyDB.getInt("lightThemeTimeMinute"));
+		String lightHour = String.valueOf(tinyDB.getInt("lightThemeTimeHour"));
+		if(lightMinute.length() == 1) lightMinute = "0" + lightMinute;
+		if(lightHour.length() == 1) lightHour = "0" + lightHour;
 
-			tvDateTimeSelected.setText(tinyDB.getString("timeStr"));
+		String darkMinute = String.valueOf(tinyDB.getInt("darkThemeTimeMinute"));
+		String darkHour = String.valueOf(tinyDB.getInt("darkThemeTimeHour"));
+		if(darkMinute.length() == 1) darkMinute = "0" + darkMinute;
+		if(darkHour.length() == 1) darkHour = "0" + darkHour;
+
+		activitySettingsAppearanceBinding.lightThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, lightHour,
+			lightMinute));
+		activitySettingsAppearanceBinding.darkThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, darkHour,
+			darkMinute));
+		activitySettingsAppearanceBinding.tvDateTimeSelected.setText(tinyDB.getString("timeStr"));
+		activitySettingsAppearanceBinding.customFontSelected.setText(tinyDB.getString("customFontStr", "Manrope"));
+		activitySettingsAppearanceBinding.themeSelected.setText(tinyDB.getString("themeStr", "Dark"));
+
+		if(tinyDB.getString("themeStr").startsWith("Auto")) {
+			darkTimeFrame.setVisibility(View.VISIBLE);
+			lightTimeFrame.setVisibility(View.VISIBLE);
+		}
+		else {
+			darkTimeFrame.setVisibility(View.GONE);
+			lightTimeFrame.setVisibility(View.GONE);
 		}
 
-		if(!tinyDB.getString("customFontStr").isEmpty()) {
-
-			customFontSelected.setText(tinyDB.getString("customFontStr"));
-		}
-
-		if(!tinyDB.getString("themeStr").isEmpty()) {
-
-			themeSelected.setText(tinyDB.getString("themeStr"));
-		}
-
-		if(timeSelectedChoice == 0) {
-
-			timeSelectedChoice = tinyDB.getInt("timeId");
-		}
-
-		if(customFontSelectedChoice == 0) {
-
-			customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
-		}
-
-		if(themeSelectedChoice == 0) {
-
-			themeSelectedChoice = tinyDB.getInt("themeId");
-		}
+		timeSelectedChoice = tinyDB.getInt("timeId");
+		customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
+		themeSelectedChoice = tinyDB.getInt("themeId");
 
 		counterBadgesSwitch.setChecked(tinyDB.getBoolean("enableCounterBadges"));
 
@@ -101,7 +110,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			tsBuilder.setSingleChoiceItems(themeList, themeSelectedChoice, (dialogInterfaceTheme, i) -> {
 
 				themeSelectedChoice = i;
-				themeSelected.setText(themeList[i]);
+				activitySettingsAppearanceBinding.themeSelected.setText(themeList[i]);
 				tinyDB.putString("themeStr", themeList[i]);
 				tinyDB.putInt("themeId", i);
 
@@ -116,6 +125,16 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			cfDialog.show();
 		});
 
+		lightTimeFrame.setOnClickListener(view -> {
+			LightTimePicker timePicker = new LightTimePicker();
+	        timePicker.show(getSupportFragmentManager(), "timePicker");
+		});
+
+		darkTimeFrame.setOnClickListener(view -> {
+			DarkTimePicker timePicker = new DarkTimePicker();
+	        timePicker.show(getSupportFragmentManager(), "timePicker");
+		});
+
 		// custom font dialog
 		customFontFrame.setOnClickListener(view -> {
 
@@ -127,7 +146,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			cfBuilder.setSingleChoiceItems(customFontList, customFontSelectedChoice, (dialogInterfaceCustomFont, i) -> {
 
 				customFontSelectedChoice = i;
-				customFontSelected.setText(customFontList[i]);
+				activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[i]);
 				tinyDB.putString("customFontStr", customFontList[i]);
 				tinyDB.putInt("customFontId", i);
 
@@ -153,17 +172,17 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			tBuilder.setSingleChoiceItems(timeList, timeSelectedChoice, (dialogInterfaceTime, i) -> {
 
 				timeSelectedChoice = i;
-				tvDateTimeSelected.setText(timeList[i]);
+				activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[i]);
 				tinyDB.putString("timeStr", timeList[i]);
 				tinyDB.putInt("timeId", i);
 
-				if("Normal".equals(timeList[i])) {
-
-					tinyDB.putString("dateFormat", "normal");
-				}
-				else {
-
-					tinyDB.putString("dateFormat", "pretty");
+				switch(i) {
+					case 0:
+						tinyDB.putString("dateFormat", "pretty");
+						break;
+					case 1:
+						tinyDB.putString("dateFormat", "normal");
+						break;
 				}
 
 				dialogInterfaceTime.dismiss();
@@ -178,6 +197,56 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
+	}
+
+	public static class LightTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+		TinyDB db = TinyDB.getInstance(getContext());
+
+		@NotNull
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			int hour = db.getInt("lightThemeTimeHour");
+			int minute = db.getInt("lightThemeTimeMinute");
+
+			return new TimePickerDialog(getActivity(), this, hour, minute, true);
+		}
+
+		@Override
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			db.putInt("lightThemeTimeHour", hourOfDay);
+			db.putInt("lightThemeTimeMinute", minute);
+			db.putBoolean("refreshParent", true);
+			requireActivity().overridePendingTransition(0, 0);
+			this.dismiss();
+			Toasty.success(requireActivity().getApplicationContext(), requireContext().getResources().getString(R.string.settingsSave));
+			requireActivity().recreate();
+		}
+	}
+
+	public static class DarkTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+		TinyDB db = TinyDB.getInstance(getContext());
+
+		@NotNull
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			int hour = db.getInt("darkThemeTimeHour");
+			int minute = db.getInt("darkThemeTimeMinute");
+
+			return new TimePickerDialog(getActivity(), this, hour, minute, true);
+		}
+
+		@Override
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			db.putInt("darkThemeTimeHour", hourOfDay);
+			db.putInt("darkThemeTimeMinute", minute);
+			db.putBoolean("refreshParent", true);
+			requireActivity().overridePendingTransition(0, 0);
+			this.dismiss();
+			Toasty.success(requireActivity().getApplicationContext(), requireContext().getResources().getString(R.string.settingsSave));
+			requireActivity().recreate();
+		}
 	}
 
 }

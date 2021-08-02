@@ -42,39 +42,23 @@ public class FilesViewModel extends ViewModel {
                 .getFiles(token, owner, repo, ref);
 
         call.enqueue(new Callback<List<Files>>() {
-
             @Override
             public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
 
-                if (response.code() == 200) {
-
-	                assert response.body() != null;
-
-	                if(response.body().size() > 0) {
-
-		                Collections.sort(response.body(), (byType1, byType2) -> byType1.getType().compareTo(byType2.getType()));
-	                    filesList.postValue(response.body());
-	                }
-	                else {
-
-		                progressBar.setVisibility(View.GONE);
-		                noDataFiles.setVisibility(View.VISIBLE);
-	                }
+	            if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+	                Collections.sort(response.body(), (byType1, byType2) -> byType1.getType().compareTo(byType2.getType()));
+                    filesList.postValue(response.body());
                 }
                 else {
-
 	                progressBar.setVisibility(View.GONE);
 	                noDataFiles.setVisibility(View.VISIBLE);
                 }
-
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
-
 	            Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
             }
-
         });
     }
 
@@ -93,27 +77,14 @@ public class FilesViewModel extends ViewModel {
                 .getDirFiles(token, owner, repo, filesDir, ref);
 
         call.enqueue(new Callback<List<Files>>() {
-
             @Override
             public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
 
-                if (response.code() == 200) {
-
-	                assert response.body() != null;
-
-	                if(response.body().size() > 0) {
-
-		                Collections.sort(response.body(), (byType1, byType2) -> byType1.getType().compareTo(byType2.getType()));
-		                filesList2.postValue(response.body());
-	                }
-	                else {
-
-		                progressBar.setVisibility(View.GONE);
-		                noDataFiles.setVisibility(View.VISIBLE);
-	                }
+	            if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+	                Collections.sort(response.body(), (byType1, byType2) -> byType1.getType().compareTo(byType2.getType()));
+	                filesList2.postValue(response.body());
                 }
                 else {
-
 	                progressBar.setVisibility(View.GONE);
 	                noDataFiles.setVisibility(View.VISIBLE);
                 }
@@ -121,10 +92,8 @@ public class FilesViewModel extends ViewModel {
 
             @Override
             public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
-
 	            Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
             }
-
         });
     }
 

@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -40,7 +42,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 		UserSearchForTeamMemberAdapter.teamId = teamId;
 	}
 
-	static class UserSearchViewHolder extends RecyclerView.ViewHolder {
+	class UserSearchViewHolder extends RecyclerView.ViewHolder {
 
 		private UserInfo userInfo;
 
@@ -60,9 +62,6 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 			addMemberButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
 
 			addMemberButtonAdd.setOnClickListener(v -> {
-
-				Context context = v.getContext();
-
 				AlertDialogs.addMemberDialog(context, userInfo.getLogin(),
 						context.getResources().getString(R.string.addTeamMemberTitle),
 						context.getResources().getString(R.string.addTeamMemberMessage),
@@ -71,14 +70,22 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 			});
 
 			addMemberButtonRemove.setOnClickListener(v -> {
-
-				Context context = v.getContext();
-
 				AlertDialogs.removeMemberDialog(context, userInfo.getLogin(),
 						context.getResources().getString(R.string.removeTeamMemberTitle),
 						context.getResources().getString(R.string.removeTeamMemberMessage),
 						context.getResources().getString(R.string.removeButton),
 						context.getResources().getString(R.string.cancelButton), Integer.parseInt(String.valueOf(teamId)));
+			});
+
+			userAvatar.setOnClickListener(loginId -> {
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userInfo.getLogin());
+				context.startActivity(intent);
+			});
+
+			userAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
+				return true;
 			});
 		}
 

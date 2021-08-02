@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.activities.ProfileEmailActivity;
+import org.mian.gitnex.activities.MyProfileEmailActivity;
 import org.mian.gitnex.databinding.BottomSheetProfileBinding;
 
 /**
  * Author M M Arif
  */
 
-public class BottomSheetProfileFragment extends BottomSheetDialogFragment {
+public class BottomSheetMyProfileFragment extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
@@ -25,7 +25,7 @@ public class BottomSheetProfileFragment extends BottomSheetDialogFragment {
 
 	    bottomSheetProfileBinding.addNewEmailAddress.setOnClickListener(v1 -> {
 
-            startActivity(new Intent(getContext(), ProfileEmailActivity.class));
+            startActivity(new Intent(getContext(), MyProfileEmailActivity.class));
             dismiss();
         });
 

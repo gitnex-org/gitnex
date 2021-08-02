@@ -22,7 +22,7 @@
             android:id="@+id/toolbar"
             app:titleTextColor="?attr/primaryTextColor"
             android:theme="@style/Widget.AppCompat.SearchView"
-            android:elevation="4dp">
+            android:elevation="0dp">
 
             <TextView
                 android:layout_width="match_parent"

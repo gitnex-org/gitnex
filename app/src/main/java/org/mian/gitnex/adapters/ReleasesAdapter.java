@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.Releases;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
@@ -34,6 +36,8 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
     private final Context context;
 
 	static class ReleasesViewHolder extends RecyclerView.ViewHolder {
+
+		private Releases releases;
 
         private final TextView releaseType;
         private final TextView releaseName;
@@ -70,6 +74,14 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 	        downloadList.setHasFixedSize(true);
 	        downloadList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+
+	        authorAvatar.setOnClickListener(loginId -> {
+		        Context context = loginId.getContext();
+
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", releases.getAuthor().getLogin());
+		        context.startActivity(intent);
+	        });
         }
     }
 
@@ -89,11 +101,12 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
     public void onBindViewHolder(@NonNull ReleasesAdapter.ReleasesViewHolder holder, int position) {
 
         final TinyDB tinyDb = TinyDB.getInstance(context);
-	    final String locale = tinyDb.getString("locale");
+	    final Locale locale = context.getResources().getConfiguration().locale;
 	    final String timeFormat = tinyDb.getString("dateFormat");
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
         Releases currentItem = releasesList.get(position);
+        holder.releases = currentItem;
 
 	    holder.releaseName.setText(currentItem.getName());
 
@@ -120,7 +133,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    }
 
 	    if(currentItem.getPublished_at() != null) {
-		    holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublished_at(), new Locale(locale), timeFormat, context));
+		    holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublished_at(), locale, timeFormat, context));
 	    }
 
 	    if(timeFormat.equals("pretty")) {

@@ -57,13 +57,11 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
-
             isLoading = true;
             loadMoreListener.onLoadMore();
         }
 
         if(getItemViewType(position) == TYPE_LOAD) {
-
             ((CommitsHolder) holder).bindData(commitsList.get(position));
         }
     }
@@ -106,18 +104,16 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void bindData(Commits commitsModel) {
 
             final TinyDB tinyDb = TinyDB.getInstance(context);
-            final String locale = tinyDb.getString("locale");
+	        Locale locale = context.getResources().getConfiguration().locale;
             final String timeFormat = tinyDb.getString("dateFormat");
 
             commitTitle.setText(EmojiParser.parseToUnicode(commitsModel.getCommit().getMessage()));
             commitCommitter.setText(context.getString(R.string.commitCommittedBy, commitsModel.getCommit().getCommitter().getName()));
-
-            commitDate.setText(TimeHelper.formatTime(commitsModel.getCommit().getCommitter().getDate(), new Locale(locale), timeFormat, context));
+            commitDate.setText(TimeHelper.formatTime(commitsModel.getCommit().getCommitter().getDate(), locale, timeFormat, context));
 
             if(timeFormat.equals("pretty")) {
                 commitDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(commitsModel.getCommit().getCommitter().getDate()), context));
             }
-
             commitHtmlUrl.setOnClickListener(v -> context.startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(commitsModel.getHtml_url()))));
         }
 
@@ -126,36 +122,29 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     static class LoadHolder extends RecyclerView.ViewHolder {
 
         LoadHolder(View itemView) {
-
             super(itemView);
         }
     }
 
     public void setMoreDataAvailable(boolean moreDataAvailable) {
-
         isMoreDataAvailable = moreDataAvailable;
     }
 
     public void notifyDataChanged() {
-
         notifyDataSetChanged();
         isLoading = false;
     }
 
     public interface OnLoadMoreListener {
-
         void onLoadMore();
     }
 
     public void setLoadMoreListener(CommitsAdapter.OnLoadMoreListener loadMoreListener) {
-
         this.loadMoreListener = loadMoreListener;
     }
 
     public void updateList(List<Commits> list) {
-
         commitsList = list;
         notifyDataSetChanged();
     }
-
 }

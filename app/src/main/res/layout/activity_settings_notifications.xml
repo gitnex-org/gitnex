@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        app:elevation="0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <androidx.appcompat.widget.Toolbar

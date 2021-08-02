@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -95,12 +96,15 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		notificationsActions = new NotificationsActions(context);
 		notificationsAdapter = new NotificationsAdapter(context, notificationThreads, this, this);
 
+		RecyclerView recyclerView = fragmentNotificationsBinding.notifications;
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
 
-		RecyclerView recyclerView = fragmentNotificationsBinding.notifications;
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(linearLayoutManager);
 		recyclerView.setAdapter(notificationsAdapter);
+		recyclerView.addItemDecoration(dividerItemDecoration);
 		recyclerView.addOnScrollListener(new InfiniteScrollListener(pageResultLimit, linearLayoutManager) {
 
 			@Override
@@ -249,6 +253,10 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 				if(notificationThreads.isEmpty()) {
 
 					noDataNotifications.setVisibility(View.VISIBLE);
+					markAllAsRead.setVisibility(View.GONE);
+				}
+				else {
+					markAllAsRead.setVisibility(View.VISIBLE);
 				}
 			}
 		});

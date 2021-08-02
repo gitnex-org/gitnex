@@ -261,53 +261,20 @@ public class ExploreRepositoriesFragment extends Fragment {
 		dialogFilterOptions.setContentView(view);
 
 		filterBinding.includeTopic.setOnClickListener(includeTopic -> {
-
-			if(filterBinding.includeTopic.isChecked()) {
-
-				tinyDb.putBoolean("exploreRepoIncludeTopic", true);
-			}
-			else {
-
-				tinyDb.putBoolean("exploreRepoIncludeTopic", false);
-			}
+			tinyDb.putBoolean("exploreRepoIncludeTopic", filterBinding.includeTopic.isChecked());
 		});
 
 		filterBinding.includeDesc.setOnClickListener(includeDesc -> {
-
-			if(filterBinding.includeDesc.isChecked()) {
-
-				tinyDb.putBoolean("exploreRepoIncludeDescription", true);
-			}
-			else {
-
-				tinyDb.putBoolean("exploreRepoIncludeDescription", false);
-			}
+			tinyDb.putBoolean("exploreRepoIncludeDescription", filterBinding.includeDesc.isChecked());
 		});
 
 		filterBinding.includeTemplate.setOnClickListener(includeTemplate -> {
-
-			if(filterBinding.includeTemplate.isChecked()) {
-
-				tinyDb.putBoolean("exploreRepoIncludeTemplate", true);
-			}
-			else {
-
-				tinyDb.putBoolean("exploreRepoIncludeTemplate", false);
-			}
+			tinyDb.putBoolean("exploreRepoIncludeTemplate", filterBinding.includeTemplate.isChecked());
 		});
 
 		filterBinding.onlyArchived.setOnClickListener(onlyArchived -> {
-
-			if(filterBinding.onlyArchived.isChecked()) {
-
-				tinyDb.putBoolean("exploreRepoOnlyArchived", true);
-			}
-			else {
-
-				tinyDb.putBoolean("exploreRepoOnlyArchived", false);
-			}
+			tinyDb.putBoolean("exploreRepoOnlyArchived", filterBinding.onlyArchived.isChecked());
 		});
-
 
 		filterBinding.includeTopic.setChecked(tinyDb.getBoolean("exploreRepoIncludeTopic"));
 		filterBinding.includeDesc.setChecked(tinyDb.getBoolean("exploreRepoIncludeDescription"));

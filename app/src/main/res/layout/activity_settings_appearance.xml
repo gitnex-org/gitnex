@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="?attr/primaryBackgroundColor">
 
@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        app:elevation="0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -75,6 +76,72 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="24dp"
             android:text="@string/themeSelectionSelectedText"
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lightThemeTimeSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/lightThemeTimeHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/settingsLightThemeTimeSelectorHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/lightThemeSelectedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/settingsThemeTimeSelectedHint"
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/darkThemeTimeSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/darkThemeTimeHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/settingsDarkThemeTimeSelectorHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/darkThemeSelectedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/settingsThemeTimeSelectedHint"
             android:textColor="?attr/selectedTextColor"
             android:textSize="14sp" />
 

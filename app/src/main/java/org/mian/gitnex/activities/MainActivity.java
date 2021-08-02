@@ -44,7 +44,7 @@ import org.mian.gitnex.fragments.ExploreFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
-import org.mian.gitnex.fragments.ProfileFragment;
+import org.mian.gitnex.fragments.MyProfileFragment;
 import org.mian.gitnex.fragments.RepositoriesFragment;
 import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else if(fragmentById instanceof NotificationsFragment) {
 			toolbarTitle.setText(R.string.pageTitleNotifications);
 		}
-		else if(fragmentById instanceof ProfileFragment) {
+		else if(fragmentById instanceof MyProfileFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
 		}
 		else if(fragmentById instanceof DraftsFragment) {
@@ -309,7 +309,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				userAvatar.setOnClickListener(v -> {
 
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProfileFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_profile);
 					drawer.closeDrawers();
 
@@ -380,12 +380,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				case "notification":
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_notifications);
+					setActionBarTitle(getResources().getString(R.string.pageTitleNotifications));
 					return;
 
 				case "explore":
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_explore);
 					return;
+
+				case "profile":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProfileFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_profile);
+					return;
+
+				case "admin":
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdministrationFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_administration);
+					return;
+
 			}
 		}
 
@@ -419,7 +431,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				case 4:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProfileFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_profile);
 					break;
 
@@ -557,7 +569,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else if(id == R.id.nav_profile) {
 
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleProfile));
-			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProfileFragment()).commit();
 		}
 		else if(id == R.id.nav_repositories) {
 

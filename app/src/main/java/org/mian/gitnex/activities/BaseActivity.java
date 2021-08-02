@@ -8,6 +8,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.notifications.Notifications;
+import java.util.Locale;
 
 /**
  * Author M M Arif
@@ -37,7 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 				break;
 			case 2:
 
-				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
+				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour"), tinyDB.getInt("lightThemeTimeHour"), tinyDB.getInt("darkThemeTimeMinute"), tinyDB.getInt("lightThemeTimeMinute"))) {
 
 					tinyDB.putString("currentTheme", "dark");
 					setTheme(R.style.AppTheme);
@@ -54,7 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 				setTheme(R.style.AppThemeRetro);
 				break;
 			case 4:
-				if(TimeHelper.timeBetweenHours(18, 6)) { // 6pm to 6am
+				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour"), tinyDB.getInt("lightThemeTimeHour"), tinyDB.getInt("darkThemeTimeMinute"), tinyDB.getInt("lightThemeTimeMinute"))) {
 
 					tinyDB.putString("currentTheme", "dark");
 					setTheme(R.style.AppTheme);
@@ -77,7 +78,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 		}
 
-		AppUtil.setAppLocale(getResources(), tinyDB.getString("locale"));
+		String locale = tinyDB.getString("locale");
+		if (locale.isEmpty()) {
+			AppUtil.setAppLocale(getResources(), Locale.getDefault().getLanguage());
+		}
+		else {
+			AppUtil.setAppLocale(getResources(), locale);
+		}
 
 		Notifications.startWorker(appCtx);
 	}

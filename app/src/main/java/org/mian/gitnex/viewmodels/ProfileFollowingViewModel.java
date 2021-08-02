@@ -33,7 +33,7 @@ public class ProfileFollowingViewModel extends ViewModel {
 
         Call<List<UserInfo>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getFollowing(token);
+                .getFollowing(token, 1, 50);
 
         call.enqueue(new Callback<List<UserInfo>>() {
 

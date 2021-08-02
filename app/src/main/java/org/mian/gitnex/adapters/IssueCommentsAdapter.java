@@ -20,6 +20,7 @@ import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.IssueComments;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
@@ -50,6 +51,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	private final List<IssueComments> issuesComments;
 	private final FragmentManager fragmentManager;
 	private final BottomSheetReplyFragment.OnInteractedListener onInteractedListener;
+	private final Locale locale;
 
 	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, BottomSheetReplyFragment.OnInteractedListener onInteractedListener) {
 
@@ -58,8 +60,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		this.issuesComments = issuesCommentsMain;
 		this.fragmentManager = fragmentManager;
 		this.onInteractedListener = onInteractedListener;
-
 		tinyDB = TinyDB.getInstance(ctx);
+		locale = ctx.getResources().getConfiguration().locale;
 	}
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
@@ -86,10 +88,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 			menu.setOnClickListener(v -> {
 
-				final Context ctx = v.getContext();
 				final String loginUid = tinyDB.getString("loginUid");
 
-				@SuppressLint("InflateParams") View vw = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_issue_comments, null);
+				@SuppressLint("InflateParams") View vw = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_issue_comments, null);
 
 				TextView commentMenuEdit = vw.findViewById(R.id.commentMenuEdit);
 				TextView commentShare = vw.findViewById(R.id.issueCommentShare);
@@ -107,7 +108,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					commentMenuCopy.setVisibility(View.GONE);
 				}
 
-				BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+				BottomSheetDialog dialog = new BottomSheetDialog(context);
 				dialog.setContentView(vw);
 				dialog.show();
 
@@ -117,20 +118,17 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				bundle1.putAll(bundle);
 				bundle1.putInt("commentId", issueComment.getId());
 
-				ReactionSpinner reactionSpinner = new ReactionSpinner(ctx, bundle1);
+				ReactionSpinner reactionSpinner = new ReactionSpinner(context, bundle1);
 				reactionSpinner.setOnInteractedListener(() -> {
-
 					tinyDB.putBoolean("commentEdited", true);
 
 					onInteractedListener.onInteracted();
 					dialog.dismiss();
-
 				});
 
 				linearLayout.addView(reactionSpinner);
 
 				commentMenuEdit.setOnClickListener(v1 -> {
-
 					Bundle bundle = new Bundle();
 					bundle.putInt("commentId", issueComment.getId());
 					bundle.putString("commentAction", "edit");
@@ -141,56 +139,48 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
 
 					dialog.dismiss();
-
 				});
 
 				commentShare.setOnClickListener(v1 -> {
-
 					// get comment Url
 					CharSequence commentUrl = issueComment.getHtml_url();
 
 					// share issue comment
 					Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 					sharingIntent.setType("text/plain");
-					String intentHeader = tinyDB.getString("issueNumber") + ctx.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + tinyDB.getString("issueTitle");
+					String intentHeader = tinyDB.getString("issueNumber") + context.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + tinyDB.getString("issueTitle");
 					sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, intentHeader);
 					sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, commentUrl);
-					ctx.startActivity(Intent.createChooser(sharingIntent, intentHeader));
+					context.startActivity(Intent.createChooser(sharingIntent, intentHeader));
 
 					dialog.dismiss();
-
 				});
 
 				issueCommentCopyUrl.setOnClickListener(v1 -> {
-
 					// comment Url
 					CharSequence commentUrl = issueComment.getHtml_url();
 
-					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(context).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
 
 					ClipData clip = ClipData.newPlainText(commentUrl, commentUrl);
 					clipboard.setPrimaryClip(clip);
 
 					dialog.dismiss();
-					Toasty.success(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
-
+					Toasty.success(context, context.getString(R.string.copyIssueUrlToastMsg));
 				});
 
 				commentMenuQuote.setOnClickListener(v1 -> {
-
 					StringBuilder stringBuilder = new StringBuilder();
 					String commenterName = issueComment.getUser().getUsername();
 
 					if(!commenterName.equals(tinyDB.getString("userLogin"))) {
-
 						stringBuilder.append("@").append(commenterName).append("\n\n");
 					}
 
 					String[] lines = issueComment.getBody().split("\\R");
 
 					for(String line : lines) {
-
 						stringBuilder.append(">").append(line).append("\n");
 					}
 
@@ -202,40 +192,37 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 					dialog.dismiss();
 					BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
-
 				});
 
 				commentMenuCopy.setOnClickListener(v1 -> {
-
-					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(context).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
 
 					ClipData clip = ClipData.newPlainText("Comment on issue #" + tinyDB.getString("issueNumber"), issueComment.getBody());
 					clipboard.setPrimaryClip(clip);
 
 					dialog.dismiss();
-					Toasty.success(ctx, ctx.getString(R.string.copyIssueCommentToastMsg));
-
+					Toasty.success(context, context.getString(R.string.copyIssueCommentToastMsg));
 				});
 
 				commentMenuDelete.setOnClickListener(v1 -> {
-
-					deleteIssueComment(ctx, issueComment.getId(), getAdapterPosition());
+					deleteIssueComment(context, issueComment.getId(), getAdapterPosition());
 					dialog.dismiss();
-
 				});
 
 			});
 
 			avatar.setOnClickListener(loginId -> {
-
-				Context context = loginId.getContext();
-
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userLoginId);
+				context.startActivity(intent);
 			});
 
+			avatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				return true;
+			});
 		}
-
 	}
 
 	private void updateAdapter(int position) {
@@ -243,7 +230,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		issuesComments.remove(position);
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, issuesComments.size());
-
 	}
 
 	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
@@ -337,14 +323,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		if(issueComment.getCreated_at() != null) {
 
 			if(timeFormat.equals("pretty")) {
-
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "pretty", context));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), locale, "pretty", context));
 				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()));
-
 			}
 			else if(timeFormat.equals("normal")) {
-
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), Locale.getDefault(), "normal", context));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), locale, "normal", context));
 			}
 
 			if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
@@ -374,7 +357,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	@Override
 	public int getItemCount() {
-
 		return issuesComments.size();
 	}
 

@@ -40,6 +40,16 @@ public class AdministrationFragment extends Fragment {
 
 		fragmentAdministrationBinding.adminCron.setOnClickListener(v1 -> startActivity(new Intent(getContext(), AdminCronTasksActivity.class)));
 
+		String action = requireActivity().getIntent().getStringExtra("giteaAdminAction");
+		if(action != null) {
+			if(action.equals("users")) {
+				startActivity(new Intent(getContext(), AdminGetUsersActivity.class));
+			}
+			else if(action.equals("monitor")) {
+				startActivity(new Intent(getContext(), AdminCronTasksActivity.class));
+			}
+		}
+
 		return fragmentAdministrationBinding.getRoot();
 
 	}

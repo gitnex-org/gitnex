@@ -152,5 +152,20 @@ public class MainApplication extends Application {
 			tinyDB.putInt("homeScreenId", 0);
 		}
 
+		if(tinyDB.getString("localeStr").isEmpty()) {
+			tinyDB.putString("localeStr", getString(R.string.settingsLanguageSystem));
+			tinyDB.putInt("langId", 0);
+		}
+
+		if(tinyDB.getInt("darkThemeTimeHour", 100) == 100) {
+			tinyDB.putInt("lightThemeTimeHour", 6);
+			tinyDB.putInt("lightThemeTimeMinute", 0);
+			tinyDB.putInt("darkThemeTimeHour", 18);
+			tinyDB.putInt("darkThemeTimeMinute", 0);
+		}
+
+		if(tinyDB.getString("timeStr").isEmpty()) {
+			tinyDB.putString("timeStr", getString(R.string.settingsDateTimeHeaderDefault));
+		}
 	}
 }

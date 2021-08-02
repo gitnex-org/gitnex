@@ -148,10 +148,18 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 
 								runOnUiThread(() -> {
 									binding.photoView.setVisibility(View.GONE);
-									binding.markdownFrame.setVisibility(View.GONE);
 
-									binding.contents.setVisibility(View.VISIBLE);
 									binding.contents.setContent(text, fileExtension);
+
+									if(tinyDB.getBoolean("enableMarkdownInFileView")) {
+										Markdown.render(ctx, EmojiParser.parseToUnicode(text), binding.markdown);
+
+										binding.contents.setVisibility(View.GONE);
+										binding.markdownFrame.setVisibility(View.VISIBLE);
+									} else {
+										binding.markdownFrame.setVisibility(View.GONE);
+										binding.contents.setVisibility(View.VISIBLE);
+									}
 								});
 								break;
 

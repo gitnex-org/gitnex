@@ -29,7 +29,7 @@ It is documented in the Wiki: [Code-Standards](https://codeberg.org/gitnex/GitNe
 2. Clone the forked repository from your namespace to your local machine.
 3. Create a new branch and work on your feature, enhancement or patch.
 4. Push your commits to your forked version.
-5. You can now create a PR using the web interface against **master** branch.
+5. You can now create a PR using the web interface against **main** branch.
 
 For more information, click [here](http://makeapullrequest.com/).
 

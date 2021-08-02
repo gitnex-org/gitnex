@@ -18,7 +18,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdapter.EmailsViewHolder> {
+public class MyProfileEmailsAdapter extends RecyclerView.Adapter<MyProfileEmailsAdapter.EmailsViewHolder> {
 
     private final List<Emails> emailsList;
     private final Context context;
@@ -37,20 +37,20 @@ public class ProfileEmailsAdapter extends RecyclerView.Adapter<ProfileEmailsAdap
         }
     }
 
-    public ProfileEmailsAdapter(Context ctx, List<Emails> emailsListMain) {
+    public MyProfileEmailsAdapter(Context ctx, List<Emails> emailsListMain) {
         this.context = ctx;
         this.emailsList = emailsListMain;
     }
 
     @NonNull
     @Override
-    public ProfileEmailsAdapter.EmailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyProfileEmailsAdapter.EmailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_emails, parent, false);
-        return new ProfileEmailsAdapter.EmailsViewHolder(v);
+        return new MyProfileEmailsAdapter.EmailsViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileEmailsAdapter.EmailsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyProfileEmailsAdapter.EmailsViewHolder holder, int position) {
 
         Emails currentItem = emailsList.get(position);
 

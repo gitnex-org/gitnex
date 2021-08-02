@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -33,13 +34,13 @@ import java.util.Locale;
  * Author M M Arif
  */
 
-public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapter.SearchViewHolder> {
+public class ExploreIssuesAdapter extends RecyclerView.Adapter<ExploreIssuesAdapter.SearchViewHolder> {
 
 	private final List<Issues> searchedList;
 	private final Context context;
 	private final TinyDB tinyDb;
 
-	public SearchIssuesAdapter(List<Issues> dataList, Context ctx) {
+	public ExploreIssuesAdapter(List<Issues> dataList, Context ctx) {
 
 		this.context = ctx;
 		this.searchedList = dataList;
@@ -49,7 +50,6 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 	class SearchViewHolder extends RecyclerView.ViewHolder {
 
 		private Issues issue;
-
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
@@ -65,9 +65,6 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
 
 			itemView.setOnClickListener(v -> {
-
-				Context context = v.getContext();
-
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issue.getNumber());
 
@@ -90,42 +87,44 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 
 					long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
 					tinyDb.putLong("repositoryId", id);
-
 				}
 				else {
 
 					Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
 					tinyDb.putLong("repositoryId", data.getRepositoryId());
-
 				}
 
 				context.startActivity(intent);
 			});
 
 			issueAssigneeAvatar.setOnClickListener(v -> {
-				Context context = v.getContext();
-				String userLoginId = issue.getUser().getLogin();
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", issue.getUser().getLogin());
+				context.startActivity(intent);
+			});
 
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+			issueAssigneeAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, issue.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issue.getUser().getLogin()));
+				return true;
 			});
 		}
 	}
 
 	@NonNull
 	@Override
-	public SearchIssuesAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	public ExploreIssuesAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_issues, parent, false);
-		return new SearchIssuesAdapter.SearchViewHolder(v);
+		return new ExploreIssuesAdapter.SearchViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull final SearchIssuesAdapter.SearchViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final ExploreIssuesAdapter.SearchViewHolder holder, int position) {
 
 		Issues currentItem = searchedList.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		String locale = tinyDb.getString("locale");
+		Locale locale = context.getResources().getConfiguration().locale;
 		String timeFormat = tinyDb.getString("dateFormat");
 
 		PicassoService.getInstance(context).get()
@@ -144,20 +143,20 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 
 		switch(timeFormat) {
 			case "pretty": {
-				PrettyTime prettyTime = new PrettyTime(new Locale(locale));
+				PrettyTime prettyTime = new PrettyTime(locale);
 				String createdTime = prettyTime.format(currentItem.getCreated_at());
 				holder.issueCreatedTime.setText(createdTime);
 				holder.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), context));
 				break;
 			}
 			case "normal": {
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 				String createdTime = formatter.format(currentItem.getCreated_at());
 				holder.issueCreatedTime.setText(createdTime);
 				break;
 			}
 			case "normal1": {
-				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", new Locale(locale));
+				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
 				String createdTime = formatter.format(currentItem.getCreated_at());
 				holder.issueCreatedTime.setText(createdTime);
 				break;
@@ -167,12 +166,10 @@ public class SearchIssuesAdapter extends RecyclerView.Adapter<SearchIssuesAdapte
 
 	@Override
 	public int getItemCount() {
-
 		return searchedList.size();
 	}
 
 	public void notifyDataChanged() {
-
 		notifyDataSetChanged();
 	}
 }

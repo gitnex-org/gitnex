@@ -7,8 +7,7 @@
     <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
     <string name="commitPage" translatable="false">Your Gitea Version</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
-    <string name="appVersion" translatable="false">Version</string>
-    <string name="appBuild" translatable="false">Build</string>
+    <string name="appVersionBuild" translatable="false">%s / %d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tool Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
     <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
     <string name="crashReportEmailSubject" translatable="false">[GitNex] - Crash Report #%1$d</string>
@@ -223,6 +222,7 @@
 
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Translation</string>
+    <string name="settingsLanguageSystem">System</string>
     <string name="settingsSecurityHeader">Security</string>
     <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
     <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
@@ -233,9 +233,13 @@
     <string name="settingsLanguageSelectedHeaderDefault">English</string>
     <string name="settingsAppearanceHeader">Appearance</string>
     <string name="settingsDateTimeHeaderDefault">Pretty</string>
+    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Choose Language</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
+    <string name="settingsThemeTimeSelectedHint" translatable="false">%s:%s</string>
     <string name="settingsTimeSelectorDialogTitle">Choose Time Format</string>
-    <string name="settingsHelpTranslateText">Translate GitNex via Crodwin</string>
+    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockSelectedText" translatable="false">Green - Black</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
@@ -555,6 +559,10 @@
     <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
     <string name="openFileDiffText">Files Changed</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
+    <string name="deletePrHeadBranch">Delete head branch</string>
+    <string name="deleteBranchSuccess">Branch deleted successfully</string>
+    <string name="deleteBranchError">Could not delete branch</string>
+    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
     <string name="mergePullRequestButtonText">Merge</string>
     <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
@@ -747,4 +755,5 @@
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
 
     <string name="lastUpdatedAt">Updated %s</string>
+    <string name="joined">Joined</string>
 </resources>

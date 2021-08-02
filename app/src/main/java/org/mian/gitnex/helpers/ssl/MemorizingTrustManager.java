@@ -424,16 +424,16 @@ public class MemorizingTrustManager implements X509TrustManager {
 		}
 	}
 
-	private static void certDetails(StringBuilder stringBuilder, X509Certificate c) {
+	private void certDetails(StringBuilder stringBuilder, X509Certificate c) {
 
-		SimpleDateFormat validityDateFormater = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		SimpleDateFormat validityDateFormatter = new SimpleDateFormat("yyyy-MM-dd", context.getResources().getConfiguration().locale);
 
 		stringBuilder.append("\n")
 				.append(c.getSubjectDN().toString())
 				.append("\n")
-				.append(validityDateFormater.format(c.getNotBefore()))
+				.append(validityDateFormatter.format(c.getNotBefore()))
 				.append(" - ")
-				.append(validityDateFormater.format(c.getNotAfter()))
+				.append(validityDateFormatter.format(c.getNotAfter()))
 				.append("\nSHA-256: ")
 				.append(certHash(c, "SHA-256"))
 				.append("\nSHA-1: ")

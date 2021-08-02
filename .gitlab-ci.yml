@@ -4,10 +4,10 @@ stages:
   - publish
 
 on_setup:
-  image: tutum/curl
+  image: curlimages/curl:7.77.0
   stage: .pre
   only:
-    - master
+    - main
     - tags
   variables:
     INSTANCE: "https://codeberg.org"
@@ -20,7 +20,7 @@ build:
   image: nextcloudci/android:android-54
   stage: build
   only:
-    - master
+    - main
     - tags
   script:
     - ./gradlew assembleFreeRelease
@@ -33,7 +33,7 @@ sign:
   image: nextcloudci/android:android-54
   stage: sign
   only:
-    - master
+    - main
     - tags
   variables:
     OUTPUT: "signed.apk"
@@ -47,10 +47,10 @@ sign:
     expire_in: 15 minutes
 
 latest:
-  image: tutum/curl
+  image: curlimages/curl:7.77.0
   stage: publish
   only:
-    - master
+    - main
     - tags
   variables:
     WEBDAV_USERNAME: "GitNexBot"
@@ -60,7 +60,7 @@ latest:
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" "$PLUGIN_DESTINATION"
 
 release:
-  image: tutum/curl
+  image: curlimages/curl:7.77.0
   stage: publish
   only:
     - tags
@@ -72,10 +72,10 @@ release:
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/releases/'"$CI_COMMIT_REF_NAME"'.apk'
 
 on_success:
-  image: tutum/curl
+  image: curlimages/curl:7.77.0
   stage: .post
   only:
-    - master
+    - main
     - tags
   variables:
     INSTANCE: "https://codeberg.org"
@@ -86,10 +86,10 @@ on_success:
   when: on_success
 
 on_failure:
-  image: tutum/curl
+  image: curlimages/curl:7.77.0
   stage: .post
   only:
-    - master
+    - main
     - tags
   variables:
     INSTANCE: "https://codeberg.org"

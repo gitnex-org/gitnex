@@ -77,6 +77,8 @@ public class LoginActivity extends BaseActivity {
 
 		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 
+		instanceUrlET.setText(getIntent().getStringExtra("instanceUrl"));
+
 		protocolSpinner.setAdapter(adapterProtocols);
 		protocolSpinner.setSelection(0);
 		protocolSpinner.setOnItemClickListener((parent, view, position, id) -> {

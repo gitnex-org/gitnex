@@ -23,7 +23,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 	private List<String> homeScreenList;
 	private static int homeScreenSelectedChoice = 0;
 
-	private List<String> defaultScreen;
+	private List<String> linkHandlerDefaultScreen;
 	private static int defaultLinkHandlerScreenSelectedChoice = 0;
 
 	@Override
@@ -38,20 +38,16 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.close.setOnClickListener(onClickListener);
 
 		// home screen
-		String[] homeDefaultScreen_ = {getResources().getString(R.string.pageTitleMyRepos), getResources().getString(R.string.pageTitleStarredRepos), getResources().getString(R.string.pageTitleOrganizations),
-			getResources().getString(R.string.pageTitleRepositories), getResources().getString(R.string.pageTitleProfile), getResources().getString(R.string.pageTitleExplore),
-			getResources().getString(R.string.titleDrafts)};
+		String[] appHomeDefaultScreen = getResources().getStringArray(R.array.appDefaultHomeScreen);
 
-		String[] homeDefaultScreenNew = {getResources().getString(R.string.pageTitleMyRepos), getResources().getString(R.string.pageTitleStarredRepos), getResources().getString(R.string.pageTitleOrganizations),
-			getResources().getString(R.string.pageTitleRepositories), getResources().getString(R.string.pageTitleProfile), getResources().getString(R.string.pageTitleExplore),
-			getResources().getString(R.string.titleDrafts), getResources().getString(R.string.pageTitleNotifications)};
+		String[] appHomeDefaultScreenNew = getResources().getStringArray(R.array.appDefaultHomeScreenNew);
 
 		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.3")) {
 
-			homeDefaultScreen_ = homeDefaultScreenNew;
+			appHomeDefaultScreen = appHomeDefaultScreenNew;
 		}
 
-		homeScreenList = new ArrayList<>(Arrays.asList(homeDefaultScreen_));
+		homeScreenList = new ArrayList<>(Arrays.asList(appHomeDefaultScreen));
 		String[] homeScreenArray = new String[homeScreenList.size()];
 		homeScreenList.toArray(homeScreenArray);
 
@@ -113,34 +109,14 @@ public class SettingsGeneralActivity extends BaseActivity {
 		// home screen
 
 		// link handler
-		String[] defaultScreen_ = {getResources().getString(R.string.generalDeepLinkSelectedText), getResources().getString(R.string.navRepos), getResources().getString(R.string.navOrg), getResources().getString(R.string.pageTitleNotifications), getResources().getString(R.string.navExplore)};
-		defaultScreen = new ArrayList<>(Arrays.asList(defaultScreen_));
+		String[] linkHandlerDefaultScreenList = getResources().getStringArray(R.array.linkHandlerDefaultScreen);
+		linkHandlerDefaultScreen = new ArrayList<>(Arrays.asList(linkHandlerDefaultScreenList));
 
-		String[] linksArray = new String[defaultScreen.size()];
-		defaultScreen.toArray(linksArray);
+		String[] linksArray = new String[linkHandlerDefaultScreen.size()];
+		linkHandlerDefaultScreen.toArray(linksArray);
 
-		if(defaultLinkHandlerScreenSelectedChoice == 0) {
-
-			defaultLinkHandlerScreenSelectedChoice = tinyDB.getInt("defaultScreenId");
-			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.generalDeepLinkSelectedText));
-		}
-
-		if(defaultLinkHandlerScreenSelectedChoice == 1) {
-
-			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navRepos));
-		}
-		else if(defaultLinkHandlerScreenSelectedChoice == 2) {
-
-			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navOrg));
-		}
-		else if(defaultLinkHandlerScreenSelectedChoice == 3) {
-
-			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.pageTitleNotifications));
-		}
-		else if(defaultLinkHandlerScreenSelectedChoice == 4) {
-
-			viewBinding.generalDeepLinkSelected.setText(getResources().getString(R.string.navExplore));
-		}
+		defaultLinkHandlerScreenSelectedChoice = tinyDB.getInt("defaultScreenId");
+		viewBinding.generalDeepLinkSelected.setText(linksArray[defaultLinkHandlerScreenSelectedChoice]);
 
 		viewBinding.setDefaultLinkHandler.setOnClickListener(setDefaultLinkHandler -> {
 

@@ -31,7 +31,7 @@
 <!-- Screenshots and stacktrace's can go here. -->
 <br><br>
 
-- [ ] I carefully read the [contribution guidelines](https://codeberg.org/GitNex/GitNex/src/branch/master/CONTRIBUTING.md).
+- [ ] I carefully read the [contribution guidelines](https://codeberg.org/GitNex/GitNex/src/branch/main/CONTRIBUTING.md).
 <br>
 
 #### Thank you for your time.

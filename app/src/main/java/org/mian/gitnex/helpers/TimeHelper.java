@@ -43,7 +43,7 @@ public class TimeHelper {
 		switch(timeFormat) {
 
 			case "pretty": {
-				PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
+				PrettyTime prettyTime = new PrettyTime(locale);
 				return prettyTime.format(date);
 			}
 
@@ -69,17 +69,17 @@ public class TimeHelper {
 
 	}
 
-	public static boolean timeBetweenHours(int fromHour, int toHour) {
+	public static boolean timeBetweenHours(int fromHour, int toHour, int fromMinute, int toMinute) {
 
 		Calendar cal = Calendar.getInstance();
 
 		Calendar from = Calendar.getInstance();
 		from.set(Calendar.HOUR_OF_DAY, fromHour);
-		from.set(Calendar.MINUTE, 0);
+		from.set(Calendar.MINUTE, fromMinute);
 
 		Calendar to = Calendar.getInstance();
 		to.set(Calendar.HOUR_OF_DAY, toHour);
-		to.set(Calendar.MINUTE, 0);
+		to.set(Calendar.MINUTE, toMinute);
 
 		if(to.before(from)) {
 			if(cal.after(to)) {

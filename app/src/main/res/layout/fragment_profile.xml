@@ -2,13 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/aboutFrame"
+        android:id="@+id/profileFrame"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:gravity="top"
@@ -61,11 +62,11 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/colorWhite" />
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/userLanguageIcon"
@@ -103,7 +104,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/primaryBackgroundColor"
             app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
-            app:tabMode="scrollable"
+            app:tabMode="auto"
             app:tabTextAppearance="@style/customTabLayout"
             app:tabTextColor="?attr/primaryTextColor">
 

@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -20,12 +22,12 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class ProfileFollowersAdapter extends RecyclerView.Adapter<ProfileFollowersAdapter.FollowersViewHolder> {
+public class MyProfileFollowingAdapter extends RecyclerView.Adapter<MyProfileFollowingAdapter.FollowingViewHolder> {
 
-    private final List<UserInfo> followersList;
+    private final List<UserInfo> followingList;
     private final Context context;
 
-    static class FollowersViewHolder extends RecyclerView.ViewHolder {
+    class FollowingViewHolder extends RecyclerView.ViewHolder {
 
 	    private String userLoginId;
 
@@ -33,7 +35,7 @@ public class ProfileFollowersAdapter extends RecyclerView.Adapter<ProfileFollowe
         private final TextView userFullName;
         private final TextView userName;
 
-        private FollowersViewHolder(View itemView) {
+        private FollowingViewHolder(View itemView) {
 
             super(itemView);
 
@@ -41,33 +43,37 @@ public class ProfileFollowersAdapter extends RecyclerView.Adapter<ProfileFollowe
             userFullName = itemView.findViewById(R.id.userFullName);
             userName = itemView.findViewById(R.id.userName);
 
-	        userAvatar.setOnClickListener(loginId -> {
+	        itemView.setOnClickListener(loginId -> {
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", userLoginId);
+		        context.startActivity(intent);
+	        });
 
-		        Context context = loginId.getContext();
-
+	        itemView.setOnLongClickListener(loginId -> {
 		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+		        return true;
 	        });
         }
     }
 
-    public ProfileFollowersAdapter(Context ctx, List<UserInfo> followersListMain) {
+    public MyProfileFollowingAdapter(Context ctx, List<UserInfo> followingListMain) {
 
         this.context = ctx;
-        this.followersList = followersListMain;
+        this.followingList = followingListMain;
     }
 
     @NonNull
     @Override
-    public ProfileFollowersAdapter.FollowersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyProfileFollowingAdapter.FollowingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_followers, parent, false);
-        return new FollowersViewHolder(v);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_followers_following, parent, false);
+        return new FollowingViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileFollowersAdapter.FollowersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyProfileFollowingAdapter.FollowingViewHolder holder, int position) {
 
-        UserInfo currentItem = followersList.get(position);
+        UserInfo currentItem = followingList.get(position);
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 	    holder.userLoginId = currentItem.getLogin();
@@ -86,9 +92,8 @@ public class ProfileFollowersAdapter extends RecyclerView.Adapter<ProfileFollowe
 
     @Override
     public int getItemCount() {
-        return followersList.size();
+        return followingList.size();
     }
 
+
 }
-
-
