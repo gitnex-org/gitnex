@@ -157,5 +157,15 @@ public class MainApplication extends Application {
 			tinyDB.putInt("langId", 0);
 		}
 
+		if(tinyDB.getInt("darkThemeTimeHour", 100) == 100) {
+			tinyDB.putInt("lightThemeTimeHour", 6);
+			tinyDB.putInt("lightThemeTimeMinute", 0);
+			tinyDB.putInt("darkThemeTimeHour", 18);
+			tinyDB.putInt("darkThemeTimeMinute", 0);
+		}
+
+		if(tinyDB.getString("timeStr").isEmpty()) {
+			tinyDB.putString("timeStr", getString(R.string.settingsDateTimeHeaderDefault));
+		}
 	}
 }

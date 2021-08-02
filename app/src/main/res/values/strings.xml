@@ -235,6 +235,9 @@
     <string name="settingsDateTimeHeaderDefault">Pretty</string>
     <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Choose Language</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
+    <string name="settingsThemeTimeSelectedHint" translatable="false">%s:%s</string>
     <string name="settingsTimeSelectorDialogTitle">Choose Time Format</string>
     <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockSelectedText" translatable="false">Green - Black</string>

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Dark theme - default -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -39,6 +39,7 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:listDivider">@drawable/shape_list_divider</item>
     </style>
     <!-- Dark theme - default -->
 
