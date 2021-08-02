@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -31,7 +33,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
     private final Context context;
     private final List<UserInfo> usersListFull;
 
-    static class UsersViewHolder extends RecyclerView.ViewHolder {
+    class UsersViewHolder extends RecyclerView.ViewHolder {
 
 	    private String userLoginId;
 
@@ -52,10 +54,14 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
             userRole = itemView.findViewById(R.id.userRole);
 
 	        userAvatar.setOnClickListener(loginId -> {
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", userLoginId);
+		        context.startActivity(intent);
+	        });
 
-		        Context context = loginId.getContext();
-
+	        userAvatar.setOnLongClickListener(loginId -> {
 		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+		        return true;
 	        });
         }
     }

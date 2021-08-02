@@ -36,7 +36,7 @@ import jp.wasabeef.picasso.transformations.BlurTransformation;
  * Author M M Arif
  */
 
-public class ProfileFragment extends Fragment {
+public class MyProfileFragment extends Fragment {
 
     private Context ctx;
 
@@ -61,18 +61,14 @@ public class ProfileFragment extends Fragment {
         TextView userLanguage = v.findViewById(R.id.userLanguage);
         ImageView userLanguageIcon = v.findViewById(R.id.userLanguageIcon);
 
-	    ViewGroup aboutFrame = v.findViewById(R.id.aboutFrame);
-
 	    String[] userLanguageCodes = tinyDb.getString("userLang").split("-");
 
 	    if(userLanguageCodes.length >= 2) {
-
 		    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
 		    userLanguage.setText(locale.getDisplayLanguage());
 	    }
 	    else {
-
-	    	userLanguage.setText(R.string.notSupported);
+	    	userLanguage.setText(getResources().getConfiguration().locale.getDisplayLanguage());
 	    }
 
 	    userAvatar.setOnClickListener(loginId ->
@@ -112,7 +108,7 @@ public class ProfileFragment extends Fragment {
 			    @Override public void onError(Exception e) {}
 		    });
 
-        ProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        MyProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         ViewPager mViewPager = v.findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -159,7 +155,6 @@ public class ProfileFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         return v;
-
     }
 
     public static class SectionsPagerAdapter extends FragmentStatePagerAdapter {
@@ -175,25 +170,23 @@ public class ProfileFragment extends Fragment {
             switch (position) {
 
                 case 0: // followers
-                    return ProfileFollowersFragment.newInstance("repoOwner", "repoName");
+                    return MyProfileFollowersFragment.newInstance("repoOwner", "repoName");
 
                 case 1: // following
-                    return ProfileFollowingFragment.newInstance("repoOwner", "repoName");
+                    return MyProfileFollowingFragment.newInstance("repoOwner", "repoName");
 
                 case 2: // emails
-                    return ProfileEmailsFragment.newInstance("repoOwner", "repoName");
+                    return MyProfileEmailsFragment.newInstance("repoOwner", "repoName");
 
             }
 
             return null;
-
         }
 
         @Override
         public int getCount() {
             return 3;
         }
-
     }
 
     @Override
@@ -202,7 +195,6 @@ public class ProfileFragment extends Fragment {
         menu.clear();
         requireActivity().getMenuInflater().inflate(R.menu.profile_dotted_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
     }
 
     @Override
@@ -210,21 +202,18 @@ public class ProfileFragment extends Fragment {
 
         int id = item.getItemId();
 
-        switch (id) {
-
-            case android.R.id.home:
-                ((MainActivity)ctx).finish();
-                return true;
-
-            case R.id.profileMenu:
-                BottomSheetProfileFragment bottomSheet = new BottomSheetProfileFragment();
-                bottomSheet.show(getChildFragmentManager(), "profileBottomSheet");
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
+	    if(id == android.R.id.home) {
+		    ((MainActivity)ctx).finish();
+		    return true;
+	    }
+	    else if(id == R.id.profileMenu) {
+		    BottomSheetMyProfileFragment bottomSheet = new BottomSheetMyProfileFragment();
+		    bottomSheet.show(getChildFragmentManager(), "profileBottomSheet");
+		    return true;
+	    }
+	    else {
+		    return super.onOptionsItemSelected(item);
+	    }
     }
 
 }

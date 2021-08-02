@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.Releases;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
@@ -34,6 +36,8 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
     private final Context context;
 
 	static class ReleasesViewHolder extends RecyclerView.ViewHolder {
+
+		private Releases releases;
 
         private final TextView releaseType;
         private final TextView releaseName;
@@ -70,6 +74,14 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 	        downloadList.setHasFixedSize(true);
 	        downloadList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+
+	        authorAvatar.setOnClickListener(loginId -> {
+		        Context context = loginId.getContext();
+
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", releases.getAuthor().getLogin());
+		        context.startActivity(intent);
+	        });
         }
     }
 
@@ -94,6 +106,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
         Releases currentItem = releasesList.get(position);
+        holder.releases = currentItem;
 
 	    holder.releaseName.setText(currentItem.getName());
 

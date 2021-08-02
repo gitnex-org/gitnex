@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -26,7 +28,9 @@ public class RepoStargazersAdapter extends BaseAdapter {
     private final List<UserInfo> stargazersList;
     private final Context context;
 
-    private static class ViewHolder {
+    private class ViewHolder {
+
+    	private UserInfo userInfo;
 
         private final ImageView memberAvatar;
         private final TextView memberName;
@@ -34,6 +38,17 @@ public class RepoStargazersAdapter extends BaseAdapter {
         ViewHolder(View v) {
             memberAvatar  = v.findViewById(R.id.memberAvatar);
             memberName  = v.findViewById(R.id.memberName);
+
+	        memberAvatar.setOnClickListener(loginId -> {
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", userInfo.getLogin());
+		        context.startActivity(intent);
+	        });
+
+	        memberAvatar.setOnLongClickListener(loginId -> {
+		        AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
+		        return true;
+	        });
         }
     }
 
@@ -80,6 +95,7 @@ public class RepoStargazersAdapter extends BaseAdapter {
     private void initData(RepoStargazersAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = stargazersList.get(position);
+        viewHolder.userInfo = currentItem;
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
         PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.memberAvatar);

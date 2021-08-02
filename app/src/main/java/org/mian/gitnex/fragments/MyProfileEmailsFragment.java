@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.models.Emails;
-import org.mian.gitnex.adapters.ProfileEmailsAdapter;
+import org.mian.gitnex.adapters.MyProfileEmailsAdapter;
 import org.mian.gitnex.databinding.FragmentProfileEmailsBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
@@ -28,10 +28,10 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class ProfileEmailsFragment extends Fragment {
+public class MyProfileEmailsFragment extends Fragment {
 
     private ProgressBar mProgressBar;
-    private ProfileEmailsAdapter adapter;
+    private MyProfileEmailsAdapter adapter;
     private RecyclerView mRecyclerView;
     private TextView noDataEmails;
     private static String repoNameF = "param2";
@@ -42,11 +42,11 @@ public class ProfileEmailsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileEmailsFragment() {
+    public MyProfileEmailsFragment() {
     }
 
-    public static ProfileEmailsFragment newInstance(String param1, String param2) {
-        ProfileEmailsFragment fragment = new ProfileEmailsFragment();
+    public static MyProfileEmailsFragment newInstance(String param1, String param2) {
+        MyProfileEmailsFragment fragment = new MyProfileEmailsFragment();
         Bundle args = new Bundle();
         args.putString(repoOwnerF, param1);
         args.putString(repoNameF, param2);
@@ -102,7 +102,7 @@ public class ProfileEmailsFragment extends Fragment {
         profileEmailModel.getEmailsList(instanceToken, getContext()).observe(getViewLifecycleOwner(), new Observer<List<Emails>>() {
             @Override
             public void onChanged(@Nullable List<Emails> emailsListMain) {
-                adapter = new ProfileEmailsAdapter(getContext(), emailsListMain);
+                adapter = new MyProfileEmailsAdapter(getContext(), emailsListMain);
                 if(adapter.getItemCount() > 0) {
                     mRecyclerView.setAdapter(adapter);
                     noDataEmails.setVisibility(View.GONE);

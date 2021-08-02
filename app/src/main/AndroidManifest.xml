@@ -51,7 +51,7 @@
             android:name=".activities.CreateNewUserActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
-            android:name=".activities.ProfileEmailActivity"
+            android:name=".activities.MyProfileEmailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.AddCollaboratorToRepositoryActivity"
@@ -123,7 +123,7 @@
             android:name=".activities.SettingsAppearanceActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
-            android:name=".activities.SettingsFileViewerActivity"
+            android:name=".activities.ProfileActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.SettingsSecurityActivity"

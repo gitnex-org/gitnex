@@ -27,7 +27,6 @@ public class Constants {
 	public static final String tagMilestonesAdapter = "MilestonesAdapter";
 	public static final String draftsApi = "DraftsApi";
 	public static final String repositoriesApi = "RepositoriesApi";
-	public static final String replyToIssueActivity = "ReplyToIssueActivity";
 	public static final String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
 	public static final String userAccountsApi = "UserAccountsApi";
 	public static final String publicOrganizations = "PublicOrganizations";

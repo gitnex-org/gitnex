@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.adapters.ProfileFollowingAdapter;
-import org.mian.gitnex.databinding.FragmentProfileFollowingBinding;
+import org.mian.gitnex.adapters.MyProfileFollowingAdapter;
+import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.ProfileFollowingViewModel;
@@ -26,25 +26,25 @@ import org.mian.gitnex.viewmodels.ProfileFollowingViewModel;
  * Author M M Arif
  */
 
-public class ProfileFollowingFragment extends Fragment {
+public class MyProfileFollowingFragment extends Fragment {
 
     private ProgressBar mProgressBar;
-    private ProfileFollowingAdapter adapter;
+    private MyProfileFollowingAdapter adapter;
     private RecyclerView mRecyclerView;
     private TextView noDataFollowing;
-    private static String repoNameF = "param2";
-    private static String repoOwnerF = "param1";
+    private static final String repoNameF = "param2";
+    private static final String repoOwnerF = "param1";
 
     private String repoName;
     private String repoOwner;
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileFollowingFragment() {
+    public MyProfileFollowingFragment() {
     }
 
-    public static ProfileFollowingFragment newInstance(String param1, String param2) {
-        ProfileFollowingFragment fragment = new ProfileFollowingFragment();
+    public static MyProfileFollowingFragment newInstance(String param1, String param2) {
+        MyProfileFollowingFragment fragment = new MyProfileFollowingFragment();
         Bundle args = new Bundle();
         args.putString(repoOwnerF, param1);
         args.putString(repoNameF, param2);
@@ -65,14 +65,14 @@ public class ProfileFollowingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-	    FragmentProfileFollowingBinding fragmentProfileFollowingBinding = FragmentProfileFollowingBinding.inflate(inflater, container, false);
+	    FragmentProfileFollowersFollowingBinding fragmentProfileFollowersFollowingBinding = FragmentProfileFollowersFollowingBinding.inflate(inflater, container, false);
 
         TinyDB tinyDb = TinyDB.getInstance(getContext());
 
-        final SwipeRefreshLayout swipeRefresh = fragmentProfileFollowingBinding.pullToRefresh;
+        final SwipeRefreshLayout swipeRefresh = fragmentProfileFollowersFollowingBinding.pullToRefresh;
 
-        noDataFollowing = fragmentProfileFollowingBinding.noDataFollowing;
-        mRecyclerView = fragmentProfileFollowingBinding.recyclerView;
+        noDataFollowing = fragmentProfileFollowersFollowingBinding.noData;
+        mRecyclerView = fragmentProfileFollowersFollowingBinding.recyclerView;
 
 	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
 
@@ -80,7 +80,7 @@ public class ProfileFollowingFragment extends Fragment {
 	    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = fragmentProfileFollowingBinding.progressBar;
+        mProgressBar = fragmentProfileFollowersFollowingBinding.progressBar;
 
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -91,7 +91,7 @@ public class ProfileFollowingFragment extends Fragment {
 
         fetchDataAsync(Authorization.get(getContext()));
 
-        return fragmentProfileFollowingBinding.getRoot();
+        return fragmentProfileFollowersFollowingBinding.getRoot();
     }
 
     private void fetchDataAsync(String instanceToken) {
@@ -100,7 +100,7 @@ public class ProfileFollowingFragment extends Fragment {
 
         pfModel.getFollowingList(instanceToken, getContext()).observe(getViewLifecycleOwner(), pfListMain -> {
 
-            adapter = new ProfileFollowingAdapter(getContext(), pfListMain);
+            adapter = new MyProfileFollowingAdapter(getContext(), pfListMain);
 
             if(adapter.getItemCount() > 0) {
                 mRecyclerView.setAdapter(adapter);

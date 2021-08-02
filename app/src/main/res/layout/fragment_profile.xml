@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/aboutFrame"
+        android:id="@+id/profileFrame"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:gravity="top"

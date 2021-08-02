@@ -16,6 +16,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.PullRequests;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
@@ -38,7 +39,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
 	public PullRequestsAdapter(Context context, List<PullRequests> prListMain) {
-
 		this.context = context;
 		this.prList = prListMain;
 	}
@@ -84,7 +84,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	@Override
 	public int getItemCount() {
-
 		return prList.size();
 	}
 
@@ -106,9 +105,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			prCreatedTime = itemView.findViewById(R.id.prCreatedTime);
 
 			itemView.setOnClickListener(v -> {
-
-				Context context = v.getContext();
-
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", pullRequest.getNumber());
 				intent.putExtra("prMergeable", pullRequest.isMergeable());
@@ -135,12 +131,15 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			});
 
 			assigneeAvatar.setOnClickListener(v -> {
-				Context context = v.getContext();
-				String userLoginId = pullRequest.getUser().getLogin();
-
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", pullRequest.getUser().getLogin());
+				context.startActivity(intent);
 			});
 
+			assigneeAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, pullRequest.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, pullRequest.getUser().getLogin()));
+				return true;
+			});
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -176,38 +175,30 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	static class LoadHolder extends RecyclerView.ViewHolder {
 
 		LoadHolder(View itemView) {
-
 			super(itemView);
 		}
 
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
-
 		isMoreDataAvailable = moreDataAvailable;
-
 	}
 
 	public void notifyDataChanged() {
-
 		notifyDataSetChanged();
 		isLoading = false;
 	}
 
 	public interface OnLoadMoreListener {
-
 		void onLoadMore();
 	}
 
 	public void setLoadMoreListener(PullRequestsAdapter.OnLoadMoreListener loadMoreListener) {
-
 		this.loadMoreListener = loadMoreListener;
 	}
 
 	public void updateList(List<PullRequests> list) {
-
 		prList = list;
 		notifyDataSetChanged();
 	}
-
 }

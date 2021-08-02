@@ -753,4 +753,5 @@
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
 
     <string name="lastUpdatedAt">Updated %s</string>
+    <string name="joined">Joined</string>
 </resources>

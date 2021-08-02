@@ -1,6 +1,7 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import org.gitnex.tea4j.models.Collaborators;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -42,7 +44,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         this.usersSearchList = dataList;
     }
 
-    static class UserSearchViewHolder extends RecyclerView.ViewHolder {
+    class UserSearchViewHolder extends RecyclerView.ViewHolder {
 
 	    private UserInfo userInfo;
 
@@ -65,9 +67,6 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
             addCollaboratorButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
 
             addCollaboratorButtonAdd.setOnClickListener(v -> {
-
-                final Context context = v.getContext();
-
                 AlertDialog.Builder pBuilder = new AlertDialog.Builder(context);
 
                 pBuilder.setTitle(R.string.newTeamPermission);
@@ -89,9 +88,6 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
             });
 
             addCollaboratorButtonRemove.setOnClickListener(v -> {
-
-                Context context = v.getContext();
-
                 AlertDialogs.collaboratorRemoveDialog(context, userInfo.getUsername(),
                         context.getResources().getString(R.string.removeCollaboratorTitle),
                         context.getResources().getString(R.string.removeCollaboratorMessage),
@@ -99,6 +95,16 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
                         context.getResources().getString(R.string.cancelButton), "fa");
             });
 
+	        userAvatar.setOnClickListener(loginId -> {
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", userInfo.getLogin());
+		        context.startActivity(intent);
+	        });
+
+	        userAvatar.setOnLongClickListener(loginId -> {
+		        AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
+		        return true;
+	        });
         }
 
     }

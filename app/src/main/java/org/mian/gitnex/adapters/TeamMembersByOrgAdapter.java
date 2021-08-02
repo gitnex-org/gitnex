@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -27,7 +29,7 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
     private final List<UserInfo> teamMembersList;
     private final Context context;
 
-    private static class ViewHolder {
+    private class ViewHolder {
 
 	    private String userLoginId;
 
@@ -40,10 +42,14 @@ public class TeamMembersByOrgAdapter extends BaseAdapter {
             memberName  = v.findViewById(R.id.memberName);
 
 	        memberAvatar.setOnClickListener(loginId -> {
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", userLoginId);
+		        context.startActivity(intent);
+	        });
 
-		        Context context = loginId.getContext();
-
+	        memberAvatar.setOnLongClickListener(loginId -> {
 		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+		        return true;
 	        });
         }
     }

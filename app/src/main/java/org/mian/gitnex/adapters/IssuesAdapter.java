@@ -16,6 +16,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
@@ -110,9 +111,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
 
 			itemView.setOnClickListener(layoutView -> {
-
-				Context context = layoutView.getContext();
-
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issue.getNumber());
 
@@ -123,12 +121,15 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			});
 
 			issueAssigneeAvatar.setOnClickListener(v -> {
-				Context context = v.getContext();
-				String userLoginId = issue.getUser().getLogin();
-
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", issue.getUser().getLogin());
+				context.startActivity(intent);
 			});
 
+			issueAssigneeAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, issue.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issue.getUser().getLogin()));
+				return true;
+			});
 		}
 
 		@SuppressLint("SetTextI18n")
