@@ -45,6 +45,8 @@ public class MainApplication extends Application {
 		Context appCtx = getApplicationContext();
 		tinyDB = TinyDB.getInstance(appCtx);
 
+		tinyDB.putBoolean("biometricLifeCycle", false);
+
 		setDefaults();
 
 		switch(tinyDB.getInt("customFontId", -1)) {
