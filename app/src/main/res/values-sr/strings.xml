@@ -74,7 +74,6 @@
     <string name="emptyFieldPassword">Лозинка је обавезна</string>
     <string name="protocolEmptyError">Protocol is required</string>
     <string name="checkNetConnection">Не могу да приступим мрежи, провери интернет конекцију</string>
-    <string name="netConnectionIsBack">Yay, We have Internet connection!</string>
     <string name="repoNameErrorEmpty">Назив репозиторијума је обавезан</string>
     <string name="repoNameErrorInvalid">Назив репозиторијума није валидан [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Назив репозиторијума садржи резервисане речи</string>
@@ -133,7 +132,7 @@
     <string name="commentSuccess">Коментар је послат</string>
     <string name="commentError">Нешто је пошло наопако, покушај поново</string>
     <string name="featureDeprecated">This function will be removed in the future</string>
-    <string name="generalImgContentText">Аватар</string>
+    <string name="generalImgContentText">Image</string>
     <string name="noDataMilestonesTab">Ниједна фаза није пронађена</string>
     <string name="commitAuthor">Аутор комита: %1$s</string>
     <string name="releaseDownloadText">Преузимања</string>
@@ -170,6 +169,7 @@
     <string name="noLabelsFound">Ниједна ознака није пронађена</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Превод</string>
+    <string name="settingsLanguageSystem">System</string>
     <string name="settingsSecurityHeader">Безбедност</string>
     <string name="settingsCertsSelectorHeader">Избриши сертификате</string>
     <string name="settingsCertsPopupTitle">Да ли желиш да избришеш сертификате?</string>
@@ -180,9 +180,12 @@
     <string name="settingsLanguageSelectedHeaderDefault">Енглески</string>
     <string name="settingsAppearanceHeader">Изглед</string>
     <string name="settingsDateTimeHeaderDefault">Релативно</string>
+    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Одабери језик</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
     <string name="settingsTimeSelectorDialogTitle">Одабери формат</string>
-    <string name="settingsHelpTranslateText">Преведи GitNex на свој језик</string>
+    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockHeaderText">Формат кода</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Одабери формат кода</string>
     <string name="settingsHomeScreenHeaderText">Почетни екран</string>
@@ -192,11 +195,8 @@
     <string name="settingsCustomFontSelectorDialogTitle">Одабери фонт</string>
     <string name="themeSelectorDialogTitle">Одабери тему</string>
     <string name="themeSelectionHeaderText">Тема</string>
-    <string name="settingsPdfModeHeaderText">PDF ноћни режим</string>
-    <string name="fileViewerHeader">Прегледач фајлова</string>
     <string name="settingsCounterBadges">Беџеви</string>
     <string name="settingsFileViewerSourceCodeHeaderText">Тема</string>
-    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Изабери тему</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
@@ -393,7 +393,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Копирај URL проблема</string>
     <string name="copyIssueUrlToastMsg">URL је копиран</string>
-    <string name="copyIssueCommentToastMsg">Copied comment to clipboard</string>
+    <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 завршен</string>
     <!-- files -->
     <string name="noDataFilesTab">Ниједан фајл није пронађен</string>
@@ -458,6 +458,10 @@
     <string name="fileDiffViewHeaderSingle">%1$s фајл је измењен</string>
     <string name="openFileDiffText">Фајлови су измењени</string>
     <string name="mergePullRequestText">Обједини пул захтев</string>
+    <string name="deletePrHeadBranch">Delete head branch</string>
+    <string name="deleteBranchSuccess">Branch deleted successfully</string>
+    <string name="deleteBranchError">Could not delete branch</string>
+    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
     <string name="mergePullRequestButtonText">Обједини</string>
     <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Спајање може бити неуспешно уколико немаш ауторизацију</string>
@@ -526,13 +530,13 @@
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
     <string name="draftSaved">Draft was saved automatically.</string>
     <string name="appearanceHintText">Themes, fonts, badges</string>
-    <string name="fileViewerHintText">PDF mode, source code theme</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user gitea version</string>
     <string name="archivedRepository">Archived</string>
+    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
@@ -607,11 +611,6 @@
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
-    <string name="codeBlockGreenOnBlack">Green on Black</string>
-    <string name="codeBlockWhiteOnBlack">White on Black</string>
-    <string name="codeBlockGreyOnBlack">Grey on Black</string>
-    <string name="codeBlockWhiteOnGrey">White on Grey</string>
-    <string name="codeBlockDarkOnWhite">Dark on White</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -627,4 +626,6 @@
     <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
     <string name="fileViewerNotificationChannelName">Download manager</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
+    <string name="lastUpdatedAt">Updated %s</string>
+    <string name="joined">Joined</string>
 </resources>

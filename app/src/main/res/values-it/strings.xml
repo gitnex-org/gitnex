@@ -12,7 +12,7 @@
     <string name="navLogout">Esci</string>
     <string name="navExplore">Esplora</string>
     <string name="navAdministration">Amministrazione</string>
-    <string name="navSearchIssuesPulls">Search Issues</string>
+    <string name="navSearchIssuesPulls">Cerca segnalazioni</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Info su</string>
@@ -68,14 +68,13 @@
     <string name="urlInfoTooltip">1- Scegli il protocollo corretto(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Impossibile connettersi all\'host. Controlla l\'URL o la porta per eventuali errori</string>
     <string name="protocolError">Non si consiglia di utilizzare il protocollo HTTP a meno che non si stia testando sulla rete locale</string>
-    <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
-    <string name="emptyFieldURL">Istanza
+    <string name="malformedJson">È stato ricevuto JSON non valido. La risposta del server non ha avuto successo</string>
+    <string name="emptyFieldURL">Istanza 
 URL è richiesto</string>
     <string name="emptyFieldUsername">Nome utente obbligatorio</string>
     <string name="emptyFieldPassword">Password obbligatoria</string>
     <string name="protocolEmptyError">Protocol is required</string>
     <string name="checkNetConnection">Errore di connessione. Controllare la connessione Internet</string>
-    <string name="netConnectionIsBack">Yay, la connessione ad Internet funziona!</string>
     <string name="repoNameErrorEmpty">Il nome del repository è vuoto</string>
     <string name="repoNameErrorInvalid">Nome del repository non è valido. [a&#8211;z A&#8211;Z 0&#8211;char@@9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Il nome del repository è riservato</string>
@@ -134,7 +133,7 @@ URL è richiesto</string>
     <string name="commentSuccess">Commento pubblicato</string>
     <string name="commentError">Qualcosa è andato storto, riprova</string>
     <string name="featureDeprecated">This function will be removed in the future</string>
-    <string name="generalImgContentText">Avatar</string>
+    <string name="generalImgContentText">Image</string>
     <string name="noDataMilestonesTab">Nessun milestone trovato</string>
     <string name="commitAuthor">Autore commit: %1$s</string>
     <string name="releaseDownloadText">Download</string>
@@ -171,6 +170,7 @@ URL è richiesto</string>
     <string name="noLabelsFound">Nessun label trovato</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduzione</string>
+    <string name="settingsLanguageSystem">System</string>
     <string name="settingsSecurityHeader">Sicurezza</string>
     <string name="settingsCertsSelectorHeader">Elimina Certificati Attendibili</string>
     <string name="settingsCertsPopupTitle">Eliminare i Certificati Attendibili?</string>
@@ -181,9 +181,12 @@ URL è richiesto</string>
     <string name="settingsLanguageSelectedHeaderDefault">Inglese</string>
     <string name="settingsAppearanceHeader">Aspetto</string>
     <string name="settingsDateTimeHeaderDefault">Bella</string>
+    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Scegli la lingua</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
     <string name="settingsTimeSelectorDialogTitle">Scegli il formato dell\'ora</string>
-    <string name="settingsHelpTranslateText">Aiutaci a tradurre GitNex nella tua lingua</string>
+    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockHeaderText">Colore blocco codice</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Selezione di colore blocco code</string>
     <string name="settingsHomeScreenHeaderText">Schermata Home</string>
@@ -193,11 +196,8 @@ URL è richiesto</string>
     <string name="settingsCustomFontSelectorDialogTitle">Scegli un Font</string>
     <string name="themeSelectorDialogTitle">Seleziona il tema dell\'app</string>
     <string name="themeSelectionHeaderText">Tema</string>
-    <string name="settingsPdfModeHeaderText">PDF Modalità Notturna</string>
-    <string name="fileViewerHeader">Visualizzatore File</string>
     <string name="settingsCounterBadges">Contatori</string>
     <string name="settingsFileViewerSourceCodeHeaderText">Tema Codice Sorgente</string>
-    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Seleziona il tema del Codice Sorgente</string>
     <string name="cacheSizeDataDialogHeader">Dimensione Cache Dati</string>
     <string name="cacheSizeDataSelectionHeaderText">Dimensione Cache Dati</string>
     <string name="cacheSizeImagesDialogHeader">Dimensione Cache Immagini</string>
@@ -274,7 +274,7 @@ URL è richiesto</string>
     <string name="newTeamPermissionAdmin">I membri possono inviare i repository del team e aggiungere loro collaboratori</string>
     <string name="teamNameEmpty">Inserisci il nome del team</string>
     <string name="teamNameError">Il nome del team deve contenere solo caratteri alfanumerici, trattino (-), trattino basso (_) e punto (.)</string>
-    <string name="teamPermissionEmpty">Seleziona
+    <string name="teamPermissionEmpty">Seleziona 
 autorizzazione</string>
     <string name="teamDescError">La descrizione del team contiene caratteri non validi</string>
     <string name="teamDescLimit">La descrizione del team ha più di 100 caratteri</string>
@@ -395,7 +395,7 @@ autorizzazione</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copia URL Problema</string>
     <string name="copyIssueUrlToastMsg">URL copiato negli appunti</string>
-    <string name="copyIssueCommentToastMsg">Commento copiato negli appunti</string>
+    <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 completato</string>
     <!-- files -->
     <string name="noDataFilesTab">Nessun file trovato</string>
@@ -460,6 +460,10 @@ autorizzazione</string>
     <string name="fileDiffViewHeaderSingle">%1$s File modificati</string>
     <string name="openFileDiffText">File modificati</string>
     <string name="mergePullRequestText">Unisci Pull Request</string>
+    <string name="deletePrHeadBranch">Delete head branch</string>
+    <string name="deleteBranchSuccess">Branch deleted successfully</string>
+    <string name="deleteBranchError">Could not delete branch</string>
+    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
     <string name="mergePullRequestButtonText">Unisci</string>
     <string name="deleteBranchAfterMerge">Cancella branch dopo il merge</string>
     <string name="mergeNoteText">L\'merge fallire se non sei autorizzato a unire questa Pull Request.</string>
@@ -483,7 +487,7 @@ autorizzazione</string>
     <string name="editFile">Edit This File</string>
     <string name="deleteFileText">Elimina %1$s</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
-    <string name="editFileText">Edit %1$s</string>
+    <string name="editFileText">Modifica %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Dimensione</string>
     <string name="shareIssue">Condividi Issue</string>
@@ -528,20 +532,20 @@ autorizzazione</string>
     <string name="deleteAllDraftsDialogMessage">Questo eliminerà tutte le bozze per questo account. \n\nProcedi con la cancellazione?</string>
     <string name="draftSaved">Draft was saved automatically.</string>
     <string name="appearanceHintText">Themes, fonts, badges</string>
-    <string name="fileViewerHintText">Modalità PDF, tema codice sorgente</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Lingue</string>
     <string name="reportsHintText">Rapporti crash</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user gitea version</string>
     <string name="archivedRepository">Archiviato</string>
+    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Account eliminato con successo</string>
-    <string name="removeAccountPopupTitle">Remove Account</string>
+    <string name="removeAccountPopupTitle">Rimuovi l\'account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
-    <string name="addNewAccount">New Account</string>
-    <string name="addNewAccountText">Add New Account</string>
-    <string name="accountAlreadyExistsError">Account already exists in the app</string>
-    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="addNewAccount">Nuovo account</string>
+    <string name="addNewAccountText">Aggiungere un nuovo account</string>
+    <string name="accountAlreadyExistsError">L\'account esiste già</string>
+    <string name="accountAddedMessage">Account aggiunto con successo</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifiche</string>
@@ -572,8 +576,8 @@ autorizzazione</string>
     <string name="repoPropertiesTemplate">Usa come modello</string>
     <string name="repoPropertiesEnableIssues">Enable Issues</string>
     <string name="repoPropertiesExternalIssuesUrl">External Issue Tracker Url</string>
-    <string name="repoPropertiesEnableWiki">Enable Wiki</string>
-    <string name="repoPropertiesExternalWikiUrl">External Wiki Url</string>
+    <string name="repoPropertiesEnableWiki">Abilita il wiki</string>
+    <string name="repoPropertiesExternalWikiUrl">URL Wiki esterno</string>
     <string name="repoPropertiesEnablePr">Enable Pull Requests</string>
     <string name="repoPropertiesEnableTimeTracker">Enable Time Tracker</string>
     <string name="repoPropertiesEnableMergeCommits">Enable Merge Commits</string>
@@ -609,11 +613,6 @@ autorizzazione</string>
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
-    <string name="codeBlockGreenOnBlack">Green on Black</string>
-    <string name="codeBlockWhiteOnBlack">White on Black</string>
-    <string name="codeBlockGreyOnBlack">Grey on Black</string>
-    <string name="codeBlockWhiteOnGrey">White on Grey</string>
-    <string name="codeBlockDarkOnWhite">Nero su bianco</string>
     <string name="biometricAuthTitle">Autenticazione biometrica</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -629,4 +628,6 @@ autorizzazione</string>
     <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
     <string name="fileViewerNotificationChannelName">Download manager</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
+    <string name="lastUpdatedAt">Updated %s</string>
+    <string name="joined">Joined</string>
 </resources>
