@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.0.0" versioncode="400">
-        <change>New: Revamped UI across the whole app</change>
-        <change>Explore public organizations</change>
-        <change>Users profile view with details, repositories, starred repositories, organizations, followers, following</change>
-        <change>Notifications for all accounts</change>
-        <change>New dialog popup for About App</change>
-        <change>Delete head branch after PR is merged</change>
-        <change>Time selection for changing dark theme</change>
-        <change>More deep linking for other endpoints like user profile, organizations, issues, pr, releases etc</change>
+    <release version="4.1.0-dev" versioncode="405">
+        <change>Under development</change>
     </release>
 
 </changelog>
