@@ -74,7 +74,6 @@
     <string name="emptyFieldPassword">A senha é necessária</string>
     <string name="protocolEmptyError">Protocol is required</string>
     <string name="checkNetConnection">Não é possível acessar a rede, por favor, verifique sua conexão com a Internet</string>
-    <string name="netConnectionIsBack">Opa, temos conexão com a Internet!</string>
     <string name="repoNameErrorEmpty">Nome do repositório está vazio</string>
     <string name="repoNameErrorInvalid">O nome do repositório não é válido. [um&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">O nome do repositório está reservado</string>
@@ -133,7 +132,7 @@
     <string name="commentSuccess">Comentário publicado</string>
     <string name="commentError">Algo deu errado, por favor, tente de novo</string>
     <string name="featureDeprecated">Esta funcionalidade será removida no futuro</string>
-    <string name="generalImgContentText">Avatar</string>
+    <string name="generalImgContentText">Image</string>
     <string name="noDataMilestonesTab">Nenhuma meta encontrada</string>
     <string name="commitAuthor">Autor do commit: %1$s</string>
     <string name="releaseDownloadText">Downloads</string>
@@ -170,6 +169,7 @@
     <string name="noLabelsFound">Nenhuma marcador encontrado</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Tradução</string>
+    <string name="settingsLanguageSystem">System</string>
     <string name="settingsSecurityHeader">Segurança</string>
     <string name="settingsCertsSelectorHeader">Excluir Certificados Confiáveis</string>
     <string name="settingsCertsPopupTitle">Excluir Certificados Confiáveis?</string>
@@ -180,9 +180,12 @@
     <string name="settingsLanguageSelectedHeaderDefault">Português (Brasil)</string>
     <string name="settingsAppearanceHeader">Aparência</string>
     <string name="settingsDateTimeHeaderDefault">Bonito</string>
+    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Escolha o idioma</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
     <string name="settingsTimeSelectorDialogTitle">Escolha o formato da hora</string>
-    <string name="settingsHelpTranslateText">Ajude a traduzir o GitNex para o seu idioma</string>
+    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockHeaderText">Cor do bloco de código</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Seletor de cores do bloco de código</string>
     <string name="settingsHomeScreenHeaderText">Tela inicial</string>
@@ -192,11 +195,8 @@
     <string name="settingsCustomFontSelectorDialogTitle">Escolha fonte</string>
     <string name="themeSelectorDialogTitle">Selecione o tema</string>
     <string name="themeSelectionHeaderText">Tema</string>
-    <string name="settingsPdfModeHeaderText">Modo noturno do PDF</string>
-    <string name="fileViewerHeader">Visualizador de Arquivos</string>
     <string name="settingsCounterBadges">Contra-emblemas</string>
     <string name="settingsFileViewerSourceCodeHeaderText">Tema do Código Fonte</string>
-    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Escolha Tema do Código Fonte</string>
     <string name="cacheSizeDataDialogHeader">Tamanho do Arquivo Cache</string>
     <string name="cacheSizeDataSelectionHeaderText">Tamanho do Arquivo Cache</string>
     <string name="cacheSizeImagesDialogHeader">Tamanho do Cache das Imagens</string>
@@ -393,7 +393,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copiar URL do incidente</string>
     <string name="copyIssueUrlToastMsg">URL copiada para a área de transferência</string>
-    <string name="copyIssueCommentToastMsg">Comentário copiado para área de transferência</string>
+    <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 concluída</string>
     <!-- files -->
     <string name="noDataFilesTab">Nenhum arquivo encontrado</string>
@@ -458,6 +458,10 @@
     <string name="fileDiffViewHeaderSingle">%1$s Arquivo Alterado</string>
     <string name="openFileDiffText">Arquivos alterados</string>
     <string name="mergePullRequestText">Aplicar merge do Pull Request</string>
+    <string name="deletePrHeadBranch">Delete head branch</string>
+    <string name="deleteBranchSuccess">Branch deleted successfully</string>
+    <string name="deleteBranchError">Could not delete branch</string>
+    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
     <string name="mergePullRequestButtonText">Aplicar merge</string>
     <string name="deleteBranchAfterMerge">Excluir o branch após o Merge</string>
     <string name="mergeNoteText">A aplicação do merge pode falhar se você não está autorizado a aplicar este Pull Request.</string>
@@ -526,13 +530,13 @@
     <string name="deleteAllDraftsDialogMessage">Isso vai excluir todos os rascunhos para essa conta. \n\nProsseguir com a exclusão?</string>
     <string name="draftSaved">O rascunho foi salvo automaticamente.</string>
     <string name="appearanceHintText">Themes, fonts, badges</string>
-    <string name="fileViewerHintText">Modo PDF, tema do código fonte</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Idiomas</string>
     <string name="reportsHintText">Relatórios de erros</string>
     <string name="rateAppHintText">Se você gosta do GitNex você pode dar um joinha</string>
     <string name="aboutAppHintText">App version, build, user gitea version</string>
     <string name="archivedRepository">Arquivado</string>
+    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Conta excluída com êxito</string>
     <string name="removeAccountPopupTitle">Excluir Conta</string>
     <string name="removeAccountPopupMessage">Tem certeza de que deseja excluir esta conta do aplicativo?\n\nIsso excluirá todos os dados relacionados a esta conta apenas no app.</string>
@@ -607,11 +611,6 @@
     <string name="accountDoesNotExist">Parece que a conta para a URI %1$s não existe no aplicativo. Você pode adicionar uma tocando no botão de Adicionar Uma Conta.</string>
     <string name="launchApp">Ir para o Aplicativo</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
-    <string name="codeBlockGreenOnBlack">Green on Black</string>
-    <string name="codeBlockWhiteOnBlack">White on Black</string>
-    <string name="codeBlockGreyOnBlack">Grey on Black</string>
-    <string name="codeBlockWhiteOnGrey">White on Grey</string>
-    <string name="codeBlockDarkOnWhite">Dark on White</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -627,4 +626,6 @@
     <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
     <string name="fileViewerNotificationChannelName">Download manager</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
+    <string name="lastUpdatedAt">Updated %s</string>
+    <string name="joined">Joined</string>
 </resources>

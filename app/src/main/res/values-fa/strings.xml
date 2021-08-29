@@ -77,7 +77,6 @@
     <string name="emptyFieldPassword">گذرواژه الزامی است</string>
     <string name="protocolEmptyError">پروتکل الزامی است</string>
     <string name="checkNetConnection">عدم دسترسی به شبکه، لطفا اتصال اینترنت خود را بررسی کنید</string>
-    <string name="netConnectionIsBack">جانمی، دوباره اتصال اینترنت داریم!</string>
     <string name="repoNameErrorEmpty">نام مخزن خالی است</string>
     <string name="repoNameErrorInvalid">نام مخزن اشتباه است. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -136,7 +135,7 @@
     <string name="commentSuccess">دیدگاه منتشر شد</string>
     <string name="commentError">مشکلی پیش آمد. لطفا دوباره تلاش کنید</string>
     <string name="featureDeprecated">این عملگر در آینده حذف خواهد شد</string>
-    <string name="generalImgContentText">چهرک</string>
+    <string name="generalImgContentText">Image</string>
     <string name="noDataMilestonesTab">هیچ نقطه عطفی یافت نشد</string>
     <string name="commitAuthor">Commit author: %1$s</string>
     <string name="releaseDownloadText">بارگیری‌ها</string>
@@ -173,6 +172,7 @@
     <string name="noLabelsFound">برچسبی پیدا نشد</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">ترجمه</string>
+    <string name="settingsLanguageSystem">System</string>
     <string name="settingsSecurityHeader">امنیت</string>
     <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
     <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
@@ -183,9 +183,12 @@
     <string name="settingsLanguageSelectedHeaderDefault">انگلیسی</string>
     <string name="settingsAppearanceHeader">ظاهر</string>
     <string name="settingsDateTimeHeaderDefault">زیبا</string>
+    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">انتخاب زبان</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
     <string name="settingsTimeSelectorDialogTitle">قالب زمان را انتخاب کنید</string>
-    <string name="settingsHelpTranslateText">به ما در ترجمه GitNex به زبان خود کمک کنید</string>
+    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
     <string name="settingsHomeScreenHeaderText">صفحه اصلی</string>
@@ -195,11 +198,8 @@
     <string name="settingsCustomFontSelectorDialogTitle">انتخاب فونت</string>
     <string name="themeSelectorDialogTitle">انتخاب پوسته برنامه</string>
     <string name="themeSelectionHeaderText">پوسته</string>
-    <string name="settingsPdfModeHeaderText">حالت شب PDF</string>
-    <string name="fileViewerHeader">نمایشگر پرونده</string>
     <string name="settingsCounterBadges">نشان‌های شمارشگر</string>
     <string name="settingsFileViewerSourceCodeHeaderText">پوسته کد منبع</string>
-    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">انتخاب پوسته کد منبع</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
@@ -396,7 +396,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">روگیری نشانی مسئله</string>
     <string name="copyIssueUrlToastMsg">نشانی به کلیپ‌بورد روگیری شد</string>
-    <string name="copyIssueCommentToastMsg">دیدگاه به کلیپ‌بورد روگیری شد</string>
+    <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 کامل شد</string>
     <!-- files -->
     <string name="noDataFilesTab">هیچ پرونده‌ای یافت نشد</string>
@@ -461,6 +461,10 @@
     <string name="fileDiffViewHeaderSingle">%1$s پرونده تغییر یافت</string>
     <string name="openFileDiffText">پرونده‌های تغییر یافته</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
+    <string name="deletePrHeadBranch">Delete head branch</string>
+    <string name="deleteBranchSuccess">Branch deleted successfully</string>
+    <string name="deleteBranchError">Could not delete branch</string>
+    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
     <string name="mergePullRequestButtonText">ادغام</string>
     <string name="deleteBranchAfterMerge">حذف شاخه بعد از ادغام</string>
     <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
@@ -529,13 +533,13 @@
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
     <string name="draftSaved">پیش نویس خودکار ذخیره شد.</string>
     <string name="appearanceHintText">پوسته‌ها، فونت‌ها، نشانگرها</string>
-    <string name="fileViewerHintText">حالت PDF، پوسته کد منبع</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">زبان‌ها</string>
     <string name="reportsHintText">گزارش‌های خرابی</string>
     <string name="rateAppHintText">اگر GitNex را می‌پسندید می‌توانید به آن امتیاز دهید</string>
     <string name="aboutAppHintText">نگارش برنامه، ساختن، نگارش gitea کاربر</string>
     <string name="archivedRepository">بایگانی شده</string>
+    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">حساب کاربری با موفقیت حذف شد</string>
     <string name="removeAccountPopupTitle">حذف حساب</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
@@ -610,11 +614,6 @@
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">برو به برنامه</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
-    <string name="codeBlockGreenOnBlack">سبز روی سیاه</string>
-    <string name="codeBlockWhiteOnBlack">سفید روی سیاه</string>
-    <string name="codeBlockGreyOnBlack">خاکستری روی سیاه</string>
-    <string name="codeBlockWhiteOnGrey">سفید روی خاکستری</string>
-    <string name="codeBlockDarkOnWhite">تیره روی سفید</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -630,4 +629,6 @@
     <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
     <string name="fileViewerNotificationChannelName">Download manager</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
+    <string name="lastUpdatedAt">Updated %s</string>
+    <string name="joined">Joined</string>
 </resources>

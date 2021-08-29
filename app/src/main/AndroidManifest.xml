@@ -88,7 +88,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation">
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -173,7 +174,8 @@
             android:name=".activities.DeepLinksActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:noHistory="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -74,7 +74,6 @@
     <string name="emptyFieldPassword">未填写 密码</string>
     <string name="protocolEmptyError">协议是必需的</string>
     <string name="checkNetConnection">无法连接，请检查您的网络情况</string>
-    <string name="netConnectionIsBack">有网了，奥力给！</string>
     <string name="repoNameErrorEmpty">仓库名称为空</string>
     <string name="repoNameErrorInvalid">仓库名称无效。[a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">仓库名称已保留</string>
@@ -133,7 +132,7 @@
     <string name="commentSuccess">评论已发表</string>
     <string name="commentError">出错了，请重试</string>
     <string name="featureDeprecated">该功能今后将被移除</string>
-    <string name="generalImgContentText">头像</string>
+    <string name="generalImgContentText">图片</string>
     <string name="noDataMilestonesTab">未发现里程碑</string>
     <string name="commitAuthor">提交作者： %1$s</string>
     <string name="releaseDownloadText">下载</string>
@@ -170,6 +169,7 @@
     <string name="noLabelsFound">未找到标签</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">翻译</string>
+    <string name="settingsLanguageSystem">系统</string>
     <string name="settingsSecurityHeader">安全</string>
     <string name="settingsCertsSelectorHeader">删除信任的证书</string>
     <string name="settingsCertsPopupTitle">删除信任的证书吗？</string>
@@ -180,9 +180,12 @@
     <string name="settingsLanguageSelectedHeaderDefault">英语</string>
     <string name="settingsAppearanceHeader">外观</string>
     <string name="settingsDateTimeHeaderDefault">推算时间</string>
+    <string name="settingsDateTimeNormal">普通</string>
     <string name="settingsLanguageSelectorDialogTitle">选择语言</string>
+    <string name="settingsLightThemeTimeSelectorHeader">浅色主题切换时间</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">深色主题切换时间</string>
     <string name="settingsTimeSelectorDialogTitle">选择日期格式</string>
-    <string name="settingsHelpTranslateText">帮助我们翻译 GitNex 成您的语言</string>
+    <string name="settingsHelpTranslateText">通过 Crowdin 翻译 GitNex</string>
     <string name="codeBlockHeaderText">代码块颜色</string>
     <string name="settingsCodeBlockSelectorDialogTitle">代码块颜色选择器</string>
     <string name="settingsHomeScreenHeaderText">主屏幕</string>
@@ -192,11 +195,8 @@
     <string name="settingsCustomFontSelectorDialogTitle">选择字体</string>
     <string name="themeSelectorDialogTitle">选择应用主题</string>
     <string name="themeSelectionHeaderText">主题</string>
-    <string name="settingsPdfModeHeaderText">PDF 夜间模式</string>
-    <string name="fileViewerHeader">文件查看器</string>
     <string name="settingsCounterBadges">计数徽章</string>
     <string name="settingsFileViewerSourceCodeHeaderText">源代码主题</string>
-    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">选择源代码主题</string>
     <string name="cacheSizeDataDialogHeader">数据缓存大小</string>
     <string name="cacheSizeDataSelectionHeaderText">数据缓存大小</string>
     <string name="cacheSizeImagesDialogHeader">图像缓存大小</string>
@@ -458,6 +458,10 @@
     <string name="fileDiffViewHeaderSingle">%1$s 文件已更改</string>
     <string name="openFileDiffText">文件已更改</string>
     <string name="mergePullRequestText">合并拉取请求</string>
+    <string name="deletePrHeadBranch">删除 head 分支</string>
+    <string name="deleteBranchSuccess">已成功删除分支</string>
+    <string name="deleteBranchError">无法删除分支</string>
+    <string name="deleteBranchErrorNotFound">分支不存在</string>
     <string name="mergePullRequestButtonText">合并</string>
     <string name="deleteBranchAfterMerge">合并后删除分支</string>
     <string name="mergeNoteText">如果您没有被授权合并此拉取请求，合并可能失败。</string>
@@ -526,13 +530,13 @@
     <string name="deleteAllDraftsDialogMessage">这将删除此帐户的所有草稿。 \n\n继续删除？</string>
     <string name="draftSaved">草稿已自动保存。</string>
     <string name="appearanceHintText">主题、字体、徽章</string>
-    <string name="fileViewerHintText">PDF 模式，源代码主题</string>
     <string name="securityHintText">生物特征认证、SSL证书、缓存</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
     <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
     <string name="aboutAppHintText">应用程序版本、构建、用户gitea版本</string>
     <string name="archivedRepository">已存档</string>
+    <string name="archivedRepositoryMessage">此代码库已存档。您可以查看文件，但不能推送或打开issues/合并请求。</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
     <string name="removeAccountPopupTitle">删除账户</string>
     <string name="removeAccountPopupMessage">您确定要从应用中删除此帐户吗？\n\n这将仅移除应用程序上与此账户相关的所有数据。</string>
@@ -557,7 +561,7 @@
     <string name="enableLightsHeaderText">启用 Light</string>
     <string name="enableVibrationHeaderText">启用振动</string>
     <string name="chooseColorSelectorHeader">选择颜色</string>
-    <string name="newMessages">New messages for %s</string>
+    <string name="newMessages">%s 的新消息</string>
     <string name="youHaveGotNewNotifications">您有%d条新通知</string>
     <string name="mainNotificationChannelName">通知</string>
     <string name="mainNotificationChannelDescription">这是 GitNex 的主通知通道。</string>
@@ -607,11 +611,6 @@
     <string name="accountDoesNotExist">似乎应用程序中并不存在URI%1$s的账户。您可以通过点击添加新帐户按钮来添加一个。</string>
     <string name="launchApp">前往应用</string>
     <string name="noActionText">GitNex无法处理所请求的资源，您可以在项目代码库中发起一个问题，提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。</string>
-    <string name="codeBlockGreenOnBlack">黑底绿字</string>
-    <string name="codeBlockWhiteOnBlack">黑底白字</string>
-    <string name="codeBlockGreyOnBlack">黑底灰字</string>
-    <string name="codeBlockWhiteOnGrey">灰底白字</string>
-    <string name="codeBlockDarkOnWhite">白底黑字</string>
     <string name="biometricAuthTitle">生物特征认证</string>
     <string name="biometricAuthSubTitle">使用你的生物特征凭证解锁</string>
     <string name="biometricNotSupported">此设备无可用的生物特征功能</string>
@@ -627,4 +626,6 @@
     <string name="fileViewerNotificationDescriptionFailed">无法下载 %s</string>
     <string name="fileViewerNotificationChannelName">下载管理器</string>
     <string name="fileViewerNotificationChannelDescription">显示当前下载的进度</string>
+    <string name="lastUpdatedAt">更新于 %s</string>
+    <string name="joined">已加入</string>
 </resources>

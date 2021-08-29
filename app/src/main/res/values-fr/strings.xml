@@ -74,7 +74,6 @@
     <string name="emptyFieldPassword">Mot de passe requis</string>
     <string name="protocolEmptyError">Le protocole est requis</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
-    <string name="netConnectionIsBack">On a Internet, youpi !</string>
     <string name="repoNameErrorEmpty">Nom manquant</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Ce nom de dépôt est réservé</string>
@@ -133,7 +132,7 @@
     <string name="commentSuccess">Commentaire publié</string>
     <string name="commentError">Une erreur s’est produite, veuillez réessayer</string>
     <string name="featureDeprecated">Cette fonction sera prochainement supprimée</string>
-    <string name="generalImgContentText">Avatar</string>
+    <string name="generalImgContentText">Image</string>
     <string name="noDataMilestonesTab">Aucun jalon</string>
     <string name="commitAuthor">Auteur de la révision : %1$s</string>
     <string name="releaseDownloadText">Télécharger</string>
@@ -170,6 +169,7 @@
     <string name="noLabelsFound">Aucune étiquette</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduction</string>
+    <string name="settingsLanguageSystem">Système</string>
     <string name="settingsSecurityHeader">Sécurité</string>
     <string name="settingsCertsSelectorHeader">Supprimer les certificats</string>
     <string name="settingsCertsPopupTitle">Supprimer les certificats ?</string>
@@ -180,9 +180,12 @@
     <string name="settingsLanguageSelectedHeaderDefault">Français</string>
     <string name="settingsAppearanceHeader">Apparence</string>
     <string name="settingsDateTimeHeaderDefault">Relatif</string>
+    <string name="settingsDateTimeNormal">Normale</string>
     <string name="settingsLanguageSelectorDialogTitle">Langue</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Heure de passage au thème clair</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Heure de passage au thème sombre</string>
     <string name="settingsTimeSelectorDialogTitle">Format de date</string>
-    <string name="settingsHelpTranslateText">Aidez-nous à traduire GitNex</string>
+    <string name="settingsHelpTranslateText">Traduire GitNex avec Crowdin</string>
     <string name="codeBlockHeaderText">Couleur du code</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Couleur du code</string>
     <string name="settingsHomeScreenHeaderText">Écran d’accueil</string>
@@ -192,11 +195,8 @@
     <string name="settingsCustomFontSelectorDialogTitle">Police</string>
     <string name="themeSelectorDialogTitle">Thème de l’application</string>
     <string name="themeSelectionHeaderText">Thème de l’application</string>
-    <string name="settingsPdfModeHeaderText">PDF mode nuit</string>
-    <string name="fileViewerHeader">Visionneuse de fichiers</string>
     <string name="settingsCounterBadges">Compteurs</string>
     <string name="settingsFileViewerSourceCodeHeaderText">Couleurs du code source</string>
-    <string name="fileViewerSourceCodeThemeSelectorDialogTitle">Couleurs du code source</string>
     <string name="cacheSizeDataDialogHeader">Cache des données</string>
     <string name="cacheSizeDataSelectionHeaderText">Cache des données</string>
     <string name="cacheSizeImagesDialogHeader">Cache des images</string>
@@ -458,6 +458,10 @@
     <string name="fileDiffViewHeaderSingle">%1$s fichier modifié</string>
     <string name="openFileDiffText">Fichiers modifiés</string>
     <string name="mergePullRequestText">Fusionner la demande de tirage</string>
+    <string name="deletePrHeadBranch">Supprimer la branche courante</string>
+    <string name="deleteBranchSuccess">Branche supprimée</string>
+    <string name="deleteBranchError">Impossible de supprimer la branche</string>
+    <string name="deleteBranchErrorNotFound">La branche n’existe pas</string>
     <string name="mergePullRequestButtonText">Fusionner</string>
     <string name="deleteBranchAfterMerge">Supprimer la branche après la fusion</string>
     <string name="mergeNoteText">La fusion peut échouer si vous n’êtes pas autorisé à fusionner cette demande de tirage.</string>
@@ -526,13 +530,13 @@
     <string name="deleteAllDraftsDialogMessage">Tous les brouillons du compte seront supprimés.\n\nContinuer ?</string>
     <string name="draftSaved">Brouillon sauvegardé automatiquement</string>
     <string name="appearanceHintText">Thèmes, polices, badges</string>
-    <string name="fileViewerHintText">Mode PDF, couleurs du code source</string>
     <string name="securityHintText">Biométrie, certificats SSL, cache</string>
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
     <string name="aboutAppHintText">app, build, gitea</string>
     <string name="archivedRepository">Archivé</string>
+    <string name="archivedRepositoryMessage">Ce dépôt est archivé. Les fichiers sont accessibles, mais aucune modification n’est possible.</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
     <string name="removeAccountPopupTitle">Supprimer le compte</string>
     <string name="removeAccountPopupMessage">Êtes-vous sûr de vouloir supprimer ce compte de l’application ?\n\nSeules les données de l’application seront supprimées.</string>
@@ -557,7 +561,7 @@
     <string name="enableLightsHeaderText">Activer le témoin lumineux</string>
     <string name="enableVibrationHeaderText">Activer le vibreur</string>
     <string name="chooseColorSelectorHeader">Couleur</string>
-    <string name="newMessages">New messages for %s</string>
+    <string name="newMessages">Nouveau message pour %s</string>
     <string name="youHaveGotNewNotifications">Vous avez %d nouvelles notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">Le canal de notifications principal de GitNex.</string>
@@ -607,11 +611,6 @@
     <string name="accountDoesNotExist">Ce compte associé à l\'URI %1$s n\'existe pas dans l\'application. Vous pouvez l\'ajouter en appuyant sur Ajouter un nouveau compte.</string>
     <string name="launchApp">Lancer l’app</string>
     <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet. Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessus.</string>
-    <string name="codeBlockGreenOnBlack">Vert sur noir</string>
-    <string name="codeBlockWhiteOnBlack">Blanc sur noir</string>
-    <string name="codeBlockGreyOnBlack">Gris sur noir</string>
-    <string name="codeBlockWhiteOnGrey">Blanc sur gris</string>
-    <string name="codeBlockDarkOnWhite">Sombre sur blanc</string>
     <string name="biometricAuthTitle">Authentification biométrique</string>
     <string name="biometricAuthSubTitle">Déverrouiller à l’aide de vos identifiants biométriques</string>
     <string name="biometricNotSupported">Cet appareil ne permet pas la biométrie</string>
@@ -627,4 +626,6 @@
     <string name="fileViewerNotificationDescriptionFailed">Impossible de télécharger %s</string>
     <string name="fileViewerNotificationChannelName">Gestionnaire de téléchargement</string>
     <string name="fileViewerNotificationChannelDescription">Indique la progression des téléchargements</string>
+    <string name="lastUpdatedAt">%s mis à jour</string>
+    <string name="joined">Inscrit</string>
 </resources>

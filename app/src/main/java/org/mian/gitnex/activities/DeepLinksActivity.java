@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.models.Files;
 import org.gitnex.tea4j.models.Organization;
 import org.gitnex.tea4j.models.PullRequests;
+import org.gitnex.tea4j.models.UserInfo;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
@@ -63,8 +64,7 @@ public class DeepLinksActivity extends BaseActivity {
 		issueIntent = new Intent(ctx, IssueDetailActivity.class);
 		repoIntent = new Intent(ctx, RepoDetailActivity.class);
 		orgIntent = new Intent(ctx, OrganizationDetailActivity.class);
-		// TODO: enable if UserProfile Activity exist
-		//userIntent = new Intent(ctx, ProfileActivity.class)
+		userIntent = new Intent(ctx, ProfileActivity.class);
 
 		Intent intent = getIntent();
 		Uri data = intent.getData();
@@ -273,12 +273,12 @@ public class DeepLinksActivity extends BaseActivity {
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
 						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "newRelease"), 500);
 				}
-				else if(data.getPathSegments().get(2).equals("releases") && data.getPathSegments().get(3).equals("tag") && data.getPathSegments().size() == 5) { // release
-					repoIntent.putExtra("releaseTagName", data.getLastPathSegment());
+				else if(data.getPathSegments().get(2).equals("releases")) { // releases
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
 						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "releases"), 500);
 				}
-				else if(data.getPathSegments().get(2).equals("releases")) { // releases
+				else if(data.getPathSegments().get(2).equals("releases") && data.getPathSegments().get(3).equals("tag") && data.getPathSegments().size() == 5) { // release
+					repoIntent.putExtra("releaseTagName", data.getLastPathSegment());
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
 						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "releases"), 500);
 				}
@@ -557,9 +557,7 @@ public class DeepLinksActivity extends BaseActivity {
 	}
 
 	private void getUser(String url, String instanceToken, String userName) {
-		// TODO: enable if UserProfile Activity exist
-		showNoActionButtons();
-		/*Call<UserInfo> call = RetrofitClient.getApiInterface(ctx, url).getUserProfile(instanceToken, userName);
+		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx, url).getUserProfile(instanceToken, userName);
 
 		call.enqueue(new Callback<UserInfo>() {
 
@@ -569,13 +567,12 @@ public class DeepLinksActivity extends BaseActivity {
 					assert response.body() != null;
 					userIntent.putExtra("username", response.body().getLogin());
 					ctx.startActivity(userIntent);
-					finish();
 				}
 				else {
 					Log.e("getUser-code", String.valueOf(response.code()));
 					ctx.startActivity(mainIntent);
-					finish();
 				}
+				finish();
 			}
 
 			@Override
@@ -584,7 +581,7 @@ public class DeepLinksActivity extends BaseActivity {
 				ctx.startActivity(mainIntent);
 				finish();
 			}
-		});*/
+		});
 	}
 
 	private void getFile(String url, String instanceToken, String owner, String repo, String filePath, String branch) {
