@@ -3,6 +3,7 @@ package org.mian.gitnex.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +16,31 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.fragments.BottomSheetUserProfileFragment;
 import org.mian.gitnex.fragments.profile.DetailFragment;
 import org.mian.gitnex.fragments.profile.FollowersFragment;
 import org.mian.gitnex.fragments.profile.FollowingFragment;
 import org.mian.gitnex.fragments.profile.OrganizationsFragment;
 import org.mian.gitnex.fragments.profile.RepositoriesFragment;
 import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
+import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.Objects;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Author M M Arif
  */
 
-public class ProfileActivity extends BaseActivity {
+public class ProfileActivity extends BaseActivity implements BottomSheetUserProfileFragment.BottomSheetListener {
 
 	private String username;
+	private boolean following;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +103,84 @@ public class ProfileActivity extends BaseActivity {
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
 			}
+
+			if(!username.equals(tinyDB.getString("userLogin"))) {
+				checkFollowStatus();
+			}
 		}
+	}
+
+	@Override
+	public void onButtonClicked(String text) {
+		if(text.equals("follow")) {
+			followUnfollow();
+		}
+	}
+
+	private void checkFollowStatus() {
+		RetrofitClient.getApiInterface(this).checkFollowing(Authorization.get(this), username).enqueue(new Callback<JsonElement>() {
+
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
+				if(response.code() == 204) {
+					following = true;
+				}
+				else if(response.code() == 404) {
+					following = false;
+				}
+				else {
+					following = false;
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+				following = false;
+			}
+		});
+	}
+
+	private void followUnfollow() {
+		Call<JsonElement> call;
+		if (following) {
+			call = RetrofitClient.getApiInterface(this).unfollowUser(Authorization.get(this), username);
+		}
+		else {
+			call = RetrofitClient.getApiInterface(this).followUser(Authorization.get(this), username);
+		}
+
+		call.enqueue(new Callback<JsonElement>() {
+
+			@Override
+			public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
+				if (response.isSuccessful()) {
+					following = !following;
+					if (following) {
+						Toasty.success(ProfileActivity.this, String.format(getString(R.string.nowFollowUser), username));
+					}
+					else {
+						Toasty.success(ProfileActivity.this, String.format(getString(R.string.unfollowedUser), username));
+					}
+				} else {
+					if (following) {
+						Toasty.error(ProfileActivity.this, getString(R.string.unfollowingFailed));
+					}
+					else {
+						Toasty.error(ProfileActivity.this, getString(R.string.followingFailed));
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+				if (following) {
+					Toasty.error(ProfileActivity.this, getString(R.string.unfollowingFailed));
+				}
+				else {
+					Toasty.error(ProfileActivity.this, getString(R.string.followingFailed));
+				}
+			}
+		});
 	}
 
 	public class ViewPagerAdapter extends FragmentStateAdapter {
@@ -136,8 +222,21 @@ public class ProfileActivity extends BaseActivity {
 			finish();
 			return true;
 		}
+		else if(id == R.id.genericMenu) {
+			new BottomSheetUserProfileFragment(following).show(getSupportFragmentManager(), "userProfileBottomSheet");
+			return true;
+		}
 		else {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		if(!username.equals(tinyDB.getString("userLogin"))) {
+			getMenuInflater().inflate(R.menu.generic_nav_dotted_menu, menu);
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+
 }
