@@ -274,13 +274,14 @@ public class DeepLinksActivity extends BaseActivity {
 						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "newRelease"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("releases")) { // releases
-					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "releases"), 500);
-				}
-				else if(data.getPathSegments().get(2).equals("releases") && data.getPathSegments().get(3).equals("tag") && data.getPathSegments().size() == 5) { // release
-					repoIntent.putExtra("releaseTagName", data.getLastPathSegment());
-					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "releases"), 500);
+					if(data.getPathSegments().size() == 5) {
+						if(data.getPathSegments().get(2).equals("releases") && data.getPathSegments().get(3).equals("tag")) {
+							repoIntent.putExtra("releaseTagName", data.getLastPathSegment());
+						}
+					}
+					new Handler(Looper.getMainLooper()).postDelayed(
+						() -> goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1),
+							"releases"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("labels")) { // labels
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
