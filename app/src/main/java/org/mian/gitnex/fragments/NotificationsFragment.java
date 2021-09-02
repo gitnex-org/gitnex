@@ -250,13 +250,16 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 				AppUtil.setMultiVisibility(View.GONE, loadingMoreView, progressBar);
 				pullToRefresh.setRefreshing(false);
 
-				if(notificationThreads.isEmpty()) {
+				if(currentFilterMode.equalsIgnoreCase("unread")) {
 
-					noDataNotifications.setVisibility(View.VISIBLE);
-					markAllAsRead.setVisibility(View.GONE);
-				}
-				else {
-					markAllAsRead.setVisibility(View.VISIBLE);
+					if(notificationThreads.isEmpty()) {
+
+						noDataNotifications.setVisibility(View.VISIBLE);
+						markAllAsRead.setVisibility(View.GONE);
+					}
+					else {
+						markAllAsRead.setVisibility(View.VISIBLE);
+					}
 				}
 			}
 		});
