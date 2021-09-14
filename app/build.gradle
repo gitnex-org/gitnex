@@ -109,7 +109,7 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
     implementation "io.mikael:urlbuilder:2.0.9"
     implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
-    implementation "org.codeberg.gitnex:tea4j:1.0.18"
+    implementation "org.codeberg.gitnex:tea4j:1.0.20"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.github.chrisvest:stormpot:2.4.2'

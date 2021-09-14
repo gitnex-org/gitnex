@@ -558,6 +558,7 @@
     <string name="fileDiffViewHeader">%1$s Files Changed</string>
     <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
     <string name="openFileDiffText">Files Changed</string>
+    <string name="updatePullRequestText">Update Pull Request</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -760,4 +761,9 @@
     <string name="nowFollowUser">You now follow @%s</string>
     <string name="unfollowingFailed">Couldn\'t unfollow user</string>
     <string name="followingFailed">Couldn\'t follow user</string>
+    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
+    <string name="updatePrSuccess">Pull Request updated successfully</string>
+    <string name="updateStrategyMerge">Merge</string>
+    <string name="updateStrategyRebase">Rebase</string>
+    <string name="selectUpdateStrategy">Select Update Strategy</string>
 </resources>

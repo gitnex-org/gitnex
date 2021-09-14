@@ -59,6 +59,21 @@
                 app:drawableStartCompat="@drawable/ic_pull_request" />
 
             <TextView
+                android:id="@+id/updatePullRequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
+                android:drawablePadding="24dp"
+                android:padding="12dp"
+                android:text="@string/updatePullRequestText"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_update" />
+
+            <TextView
                 android:id="@+id/deletePrHeadBranch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

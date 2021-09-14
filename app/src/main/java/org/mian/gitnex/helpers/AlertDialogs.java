@@ -1,10 +1,15 @@
 package org.mian.gitnex.helpers;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
+import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.actions.TeamActions;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.LoginActivity;
@@ -110,6 +115,29 @@ public class AlertDialogs {
                 .setPositiveButton(positiveButton, (dialog, whichButton) -> TeamActions.removeTeamMember(context, userNameMain, teamId))
                 .setNeutralButton(negativeButton, null).show();
 
+    }
+
+    public static void selectPullUpdateStrategy(Context context, String repoOwner, String repo, String issueNumber) {
+    	Dialog dialog = new Dialog(context, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+
+	    if (dialog.getWindow() != null) {
+		    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+	    }
+
+    	dialog.setContentView(R.layout.custom_pr_update_strategy_dialog);
+    	Button mergeBtn = dialog.findViewById(R.id.updatePullMerge);
+    	Button rebaseBtn = dialog.findViewById(R.id.updatePullRebase);
+    	Button cancelBtn = dialog.findViewById(R.id.cancelPullUpdate);
+    	mergeBtn.setOnClickListener((v) -> {
+    		PullRequestActions.updatePr(context, repoOwner, repo, issueNumber, false);
+    		dialog.dismiss();
+	    });
+	    rebaseBtn.setOnClickListener((v) -> {
+		    PullRequestActions.updatePr(context, repoOwner, repo, issueNumber, true);
+		    dialog.dismiss();
+	    });
+	    cancelBtn.setOnClickListener((v) -> dialog.dismiss());
+	    dialog.show();
     }
 
 }
