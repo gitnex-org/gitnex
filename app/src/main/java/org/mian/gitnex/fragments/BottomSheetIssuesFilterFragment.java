@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetIssuesFilterBinding;
+import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Version;
 
 /**
  * Author M M Arif
@@ -23,6 +25,15 @@ public class BottomSheetIssuesFilterFragment extends BottomSheetDialogFragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 		BottomSheetIssuesFilterBinding bottomSheetIssuesFilterBinding = BottomSheetIssuesFilterBinding.inflate(inflater, container, false);
+		TinyDB tinyDb = TinyDB.getInstance(getContext());
+
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.14.0")) {
+			bottomSheetIssuesFilterBinding.filterByMilestone.setVisibility(View.VISIBLE);
+			bottomSheetIssuesFilterBinding.filterByMilestone.setOnClickListener(v1 -> {
+				bmListener.onButtonClicked("filterByMilestone");
+				dismiss();
+			});
+		}
 
 		bottomSheetIssuesFilterBinding.openIssues.setOnClickListener(v1 -> {
 			bmListener.onButtonClicked("openIssues");

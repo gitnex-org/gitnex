@@ -110,7 +110,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 	public void loadUserSearchList(String searchKeyword, String teamId) {
 
-		Call<UserSearch> call = RetrofitClient.getApiInterface(ctx).getUserBySearch(Authorization.get(ctx), searchKeyword, 10);
+		Call<UserSearch> call = RetrofitClient.getApiInterface(ctx).getUserBySearch(Authorization.get(ctx), searchKeyword, 10, 1);
 
 		mProgressBar.setVisibility(View.VISIBLE);
 

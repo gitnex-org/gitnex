@@ -203,6 +203,7 @@
     <string name="milestoneNoDescription">No description</string>
     <string name="milestoneIssueStatusOpen">%1$d Open</string>
     <string name="milestoneIssueStatusClosed">%1$d Closed</string>
+    <string name="selectMilestone">Select Milestone</string>
 
     <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
     <string name="newIssueSelectLabelsListTitle">Select Labels</string>

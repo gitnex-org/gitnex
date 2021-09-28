@@ -12,15 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -45,18 +41,16 @@ import retrofit2.Response;
 public class IssuesFragment extends Fragment {
 
 	private FragmentIssuesBinding fragmentIssuesBinding;
+	private Context context;
+
 	private Menu menu;
-	private RecyclerView recyclerView;
 	private List<Issues> issuesList;
 	private IssuesAdapter adapter;
-	private Context context;
+
 	private int pageSize = Constants.issuesPageInit;
-	private ProgressBar mProgressBar;
 	private final String TAG = Constants.tagIssuesList;
-	private TextView noDataIssues;
 	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private final String requestType = Constants.issuesRequestType;
-	private ProgressBar progressLoadMore;
 
 	@Nullable
 	@Override
@@ -66,7 +60,7 @@ public class IssuesFragment extends Fragment {
 		setHasOptionsMenu(true);
 		context = getContext();
 
-		TinyDB tinyDb = TinyDB.getInstance(getContext());
+		TinyDB tinyDb = TinyDB.getInstance(context);
 		String repoFullName = tinyDb.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
 		final String repoOwner = parts[0];
@@ -74,39 +68,32 @@ public class IssuesFragment extends Fragment {
 		final String loginUid = tinyDb.getString("loginUid");
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-		final SwipeRefreshLayout swipeRefresh = fragmentIssuesBinding.pullToRefresh;
-
 		// if gitea is 1.12 or higher use the new limit
 		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
 			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
-		recyclerView = fragmentIssuesBinding.recyclerView;
 		issuesList = new ArrayList<>();
 
-		progressLoadMore = fragmentIssuesBinding.progressLoadMore;
-		mProgressBar = fragmentIssuesBinding.progressBar;
-		noDataIssues = fragmentIssuesBinding.noDataIssues;
-
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-			swipeRefresh.setRefreshing(false);
-			loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
+			loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), "");
 			adapter.notifyDataChanged();
 		}, 200));
 
-		adapter = new IssuesAdapter(getContext(), issuesList);
-		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+		adapter = new IssuesAdapter(context, issuesList);
+		adapter.setLoadMoreListener(() -> fragmentIssuesBinding.recyclerView.post(() -> {
 			if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (issuesList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.get(getContext()), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+				loadMore(Authorization.get(context), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"), "");
 			}
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		recyclerView.setHasFixedSize(true);
-		recyclerView.addItemDecoration(dividerItemDecoration);
-		recyclerView.setLayoutManager(new LinearLayoutManager(context));
-		recyclerView.setAdapter(adapter);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentIssuesBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
+		fragmentIssuesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+		fragmentIssuesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+		fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 
 		((RepoDetailActivity) requireActivity()).setFragmentRefreshListener(issueState -> {
 
@@ -119,25 +106,47 @@ public class IssuesFragment extends Fragment {
 
 			issuesList.clear();
 
-			adapter = new IssuesAdapter(getContext(), issuesList);
-			adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+			adapter = new IssuesAdapter(context, issuesList);
+			adapter.setLoadMoreListener(() -> fragmentIssuesBinding.recyclerView.post(() -> {
 
 				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 					int page = (issuesList.size() + resultLimit) / resultLimit;
-					loadMore(Authorization.get(getContext()), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+					loadMore(Authorization.get(context), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"), "");
 				}
 			}));
 
 			tinyDb.putString("repoIssuesState", issueState);
 
-			mProgressBar.setVisibility(View.VISIBLE);
-			noDataIssues.setVisibility(View.GONE);
+			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
+			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, issueState);
-			recyclerView.setAdapter(adapter);
+			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, issueState, "");
+			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
-		loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerFilterIssuesByMilestone(filterIssueByMilestone -> {
+
+			issuesList.clear();
+
+			adapter = new IssuesAdapter(context, issuesList);
+			adapter.setLoadMoreListener(() -> fragmentIssuesBinding.recyclerView.post(() -> {
+
+				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
+					int page = (issuesList.size() + resultLimit) / resultLimit;
+					loadMore(Authorization.get(context), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
+				}
+			}));
+
+			tinyDb.putString("issueMilestoneFilterId", filterIssueByMilestone);
+
+			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
+			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
+
+			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
+			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+		});
+
+		loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
 
 		return fragmentIssuesBinding.getRoot();
 	}
@@ -146,7 +155,7 @@ public class IssuesFragment extends Fragment {
 	public void onResume() {
 
 		super.onResume();
-		TinyDB tinyDb = TinyDB.getInstance(getContext());
+		TinyDB tinyDb = TinyDB.getInstance(context);
 
 		String repoFullName = tinyDb.getString("repoFullName");
 		String[] parts = repoFullName.split("/");
@@ -154,14 +163,14 @@ public class IssuesFragment extends Fragment {
 		final String repoName = parts[1];
 
 		if(tinyDb.getBoolean("resumeIssues")) {
-			loadInitial(Authorization.get(getContext()), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"));
+			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
 			tinyDb.putBoolean("resumeIssues", false);
 		}
 	}
 
-	private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType, String issueState) {
+	private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType, String issueState, String filterByMilestone) {
 
-		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, 1, resultLimit, requestType, issueState);
+		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, 1, resultLimit, requestType, issueState, filterByMilestone);
 
 		call.enqueue(new Callback<List<Issues>>() {
 			@Override
@@ -173,18 +182,18 @@ public class IssuesFragment extends Fragment {
 						issuesList.clear();
 						issuesList.addAll(response.body());
 						adapter.notifyDataChanged();
-						noDataIssues.setVisibility(View.GONE);
+						fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 					}
 					else {
 						issuesList.clear();
 						adapter.notifyDataChanged();
-						noDataIssues.setVisibility(View.VISIBLE);
+						fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
 					}
-					mProgressBar.setVisibility(View.GONE);
+					fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 				}
 				else if(response.code() == 404) {
-					noDataIssues.setVisibility(View.VISIBLE);
-					mProgressBar.setVisibility(View.GONE);
+					fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
+					fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
@@ -198,11 +207,11 @@ public class IssuesFragment extends Fragment {
 		});
 	}
 
-	private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState) {
+	private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState, String filterByMilestone) {
 
-		progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentIssuesBinding.progressLoadMore.setVisibility(View.VISIBLE);
 
-		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState);
+		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState, filterByMilestone);
 
 		call.enqueue(new Callback<List<Issues>>() {
 
@@ -220,7 +229,7 @@ public class IssuesFragment extends Fragment {
 						adapter.setMoreDataAvailable(false);
 					}
 					adapter.notifyDataChanged();
-					progressLoadMore.setVisibility(View.GONE);
+					fragmentIssuesBinding.progressLoadMore.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
