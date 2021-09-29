@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -34,31 +35,69 @@ import java.util.Locale;
  * Author M M Arif
  */
 
-public class ExploreIssuesAdapter extends RecyclerView.Adapter<ExploreIssuesAdapter.SearchViewHolder> {
+public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private final List<Issues> searchedList;
 	private final Context context;
+	private final int TYPE_LOAD = 0;
+	private List<Issues> searchedList;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final TinyDB tinyDb;
 
 	public ExploreIssuesAdapter(List<Issues> dataList, Context ctx) {
-
 		this.context = ctx;
 		this.searchedList = dataList;
 		this.tinyDb = TinyDB.getInstance(context);
 	}
 
-	class SearchViewHolder extends RecyclerView.ViewHolder {
+	@NonNull
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		if(viewType == TYPE_LOAD) {
+			return new ExploreIssuesAdapter.IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
+		}
+		else {
+			return new ExploreIssuesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+		}
+	}
 
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
+
+		if(getItemViewType(position) == TYPE_LOAD) {
+			((ExploreIssuesAdapter.IssuesHolder) holder).bindData(searchedList.get(position));
+		}
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		if(searchedList.get(position).getTitle() != null) {
+			return TYPE_LOAD;
+		}
+		else {
+			return 1;
+		}
+	}
+
+	@Override
+	public int getItemCount() {
+		return searchedList.size();
+	}
+
+	class IssuesHolder extends RecyclerView.ViewHolder {
 		private Issues issue;
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
 		private final TextView issueCommentsCount;
 
-		private SearchViewHolder(View itemView) {
-
+		IssuesHolder(View itemView) {
 			super(itemView);
-
 			issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
 			issueTitle = itemView.findViewById(R.id.issueTitle);
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
@@ -108,68 +147,79 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<ExploreIssuesAdap
 				return true;
 			});
 		}
-	}
 
-	@NonNull
-	@Override
-	public ExploreIssuesAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		@SuppressLint("SetTextI18n")
+		void bindData(Issues issue) {
+			this.issue = issue;
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_issues, parent, false);
-		return new ExploreIssuesAdapter.SearchViewHolder(v);
-	}
+			Locale locale = context.getResources().getConfiguration().locale;
+			String timeFormat = tinyDb.getString("dateFormat");
 
-	@Override
-	public void onBindViewHolder(@NonNull final ExploreIssuesAdapter.SearchViewHolder holder, int position) {
+			PicassoService.getInstance(context).get()
+				.load(issue.getUser().getAvatar_url())
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(imgRadius, 0))
+				.resize(120, 120)
+				.centerCrop()
+				.into(issueAssigneeAvatar);
 
-		Issues currentItem = searchedList.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + issue.getRepository().getFull_name() + context.getResources().getString(R.string.hash) + issue.getNumber() + "</font>";
 
-		Locale locale = context.getResources().getConfiguration().locale;
-		String timeFormat = tinyDb.getString("dateFormat");
+			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + issue.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
+			issueCommentsCount.setText(String.valueOf(issue.getComments()));
 
-		PicassoService.getInstance(context).get()
-			.load(currentItem.getUser().getAvatar_url())
-			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(imgRadius, 0))
-			.resize(120, 120)
-			.centerCrop()
-			.into(holder.issueAssigneeAvatar);
-
-		String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + currentItem.getRepository().getFull_name() + context.getResources().getString(R.string.hash) + currentItem.getNumber() + "</font>";
-
-		holder.issue = currentItem;
-		holder.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + currentItem.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-		holder.issueCommentsCount.setText(String.valueOf(currentItem.getComments()));
-
-		switch(timeFormat) {
-			case "pretty": {
-				PrettyTime prettyTime = new PrettyTime(locale);
-				String createdTime = prettyTime.format(currentItem.getCreated_at());
-				holder.issueCreatedTime.setText(createdTime);
-				holder.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getCreated_at()), context));
-				break;
+			switch(timeFormat) {
+				case "pretty": {
+					PrettyTime prettyTime = new PrettyTime(locale);
+					String createdTime = prettyTime.format(issue.getCreated_at());
+					issueCreatedTime.setText(createdTime);
+					issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreated_at()), context));
+					break;
+				}
+				case "normal": {
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+					String createdTime = formatter.format(issue.getCreated_at());
+					issueCreatedTime.setText(createdTime);
+					break;
+				}
+				case "normal1": {
+					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+					String createdTime = formatter.format(issue.getCreated_at());
+					issueCreatedTime.setText(createdTime);
+					break;
+				}
 			}
-			case "normal": {
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-				String createdTime = formatter.format(currentItem.getCreated_at());
-				holder.issueCreatedTime.setText(createdTime);
-				break;
-			}
-			case "normal1": {
-				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-				String createdTime = formatter.format(currentItem.getCreated_at());
-				holder.issueCreatedTime.setText(createdTime);
-				break;
-			}
+
 		}
 	}
 
-	@Override
-	public int getItemCount() {
-		return searchedList.size();
+	static class LoadHolder extends RecyclerView.ViewHolder {
+		LoadHolder(View itemView) {
+			super(itemView);
+		}
 	}
 
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
+		isLoading = false;
+	}
+
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<Issues> list) {
+		searchedList = list;
+		notifyDataChanged();
 	}
 }

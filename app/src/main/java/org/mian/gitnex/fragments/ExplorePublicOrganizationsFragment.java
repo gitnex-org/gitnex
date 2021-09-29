@@ -22,7 +22,6 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -41,7 +40,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 	private Context context;
 	private int pageSize;
 	private final String TAG = Constants.publicOrganizations;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 
 	@Nullable
 	@Override
@@ -54,10 +53,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 		final String loginUid = tinyDb.getString("loginUid");
 		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-		// if gitea is 1.12 or higher use the new limit
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
+		resultLimit = Constants.getCurrentResultLimit(context);
 
 		fragmentPublicOrgBinding.addNewOrganization.setVisibility(View.GONE);
 		organizationsList = new ArrayList<>();

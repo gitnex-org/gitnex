@@ -149,6 +149,7 @@ public class DetailFragment extends Fragment {
 							break;
 					}
 				}
+				binding.progressBar.setVisibility(View.GONE);
 			}
 
 			@Override

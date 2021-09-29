@@ -25,9 +25,7 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -47,7 +45,7 @@ public class OrganizationsFragment extends Fragment {
 	private OrganizationsAdapter adapter;
 
 	private int pageSize;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 
 	private static final String usernameBundle = "";
 	private String username;
@@ -78,13 +76,7 @@ public class OrganizationsFragment extends Fragment {
 		setHasOptionsMenu(true);
 		context = getContext();
 
-		TinyDB tinyDb = TinyDB.getInstance(context);
-
-		// if gitea is 1.12 or higher use the new limit
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
-
+		resultLimit = Constants.getCurrentResultLimit(context);
 		organizationsList = new ArrayList<>();
 
 		fragmentOrganizationsBinding.addNewOrganization.setVisibility(View.GONE);

@@ -16,7 +16,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notifications"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="?attr/primaryBackgroundColor"
+            android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

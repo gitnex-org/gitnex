@@ -13,6 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+            app:indicatorColor="?attr/progressIndicatorColor" />
+
         <RelativeLayout
             android:id="@+id/profileFrame"
             android:layout_width="match_parent"

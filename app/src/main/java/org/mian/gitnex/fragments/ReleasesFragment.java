@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.gitnex.tea4j.models.IssueComments;
 import org.gitnex.tea4j.models.Releases;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.databinding.FragmentReleasesBinding;
