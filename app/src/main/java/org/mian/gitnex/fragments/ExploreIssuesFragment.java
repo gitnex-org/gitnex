@@ -136,7 +136,7 @@ public class ExploreIssuesFragment extends Fragment {
 
 	private void loadMore(String searchKeyword, int resultLimit, int page) {
 
-		viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<Issues>> call = RetrofitClient.getApiInterface(context)
 			.queryIssues(Authorization.get(getContext()), searchKeyword, "issues", "open", resultLimit, page);
 		call.enqueue(new Callback<List<Issues>>() {
@@ -154,7 +154,7 @@ public class ExploreIssuesFragment extends Fragment {
 						adapter.setMoreDataAvailable(false);
 					}
 					adapter.notifyDataChanged();
-					viewBinding.loadingMoreView.setVisibility(View.GONE);
+					viewBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));

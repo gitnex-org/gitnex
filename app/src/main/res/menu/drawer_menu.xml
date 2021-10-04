@@ -32,7 +32,7 @@
 
         <item android:id="@+id/nav_explore"
             android:icon="@drawable/ic_search"
-            android:title="@string/navExplore" />
+            android:title="@string/pageTitleExplore" />
 
         <item android:id="@+id/nav_comments_draft"
             android:icon="@drawable/ic_drafts"

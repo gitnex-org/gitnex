@@ -16,40 +16,20 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabsExplore"
-            app:tabMode="auto"
             app:tabTextAppearance="@style/customTabLayout"
-            android:layout_width="match_parent"
-            android:background="?attr/primaryBackgroundColor"
+            app:tabMode="scrollable"
             app:tabTextColor="?attr/primaryTextColor"
+            android:background="?attr/primaryBackgroundColor"
             app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabExploreRepositories"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pageTitleRepositories" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabExploreIssues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pageTitleIssues" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabExplorePublicOrganizations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pageTitleOrganizations" />
-
-        </com.google.android.material.tabs.TabLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/containerExplore"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

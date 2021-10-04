@@ -215,7 +215,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 			new String[]{"pinned", "read"} :
 			new String[]{"pinned", "unread"};
 
-		viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<NotificationThread>> call = RetrofitClient.getApiInterface(context)
 			.getNotificationThreads(instanceToken, false, filter,
 				Constants.defaultOldestTimestamp, "",
@@ -236,7 +236,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 						notificationsAdapter.setMoreDataAvailable(false);
 					}
 					notificationsAdapter.notifyDataChanged();
-					viewBinding.loadingMoreView.setVisibility(View.GONE);
+					viewBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
@@ -254,7 +254,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 	private void onCleanup() {
 
-		AppUtil.setMultiVisibility(View.GONE, viewBinding.loadingMoreView, viewBinding.progressBar);
+		AppUtil.setMultiVisibility(View.GONE, viewBinding.progressBar, viewBinding.progressBar);
 		viewBinding.pullToRefresh.setRefreshing(false);
 
 		if(currentFilterMode.equalsIgnoreCase("unread")) {

@@ -122,7 +122,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 
 	private void loadMore(String token, int page, int resultLimit) {
 
-		fragmentPublicOrgBinding.progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentPublicOrgBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<Organization>> call = RetrofitClient.getApiInterface(context).getAllOrgs(token, page, resultLimit);
 		call.enqueue(new Callback<List<Organization>>() {
 			@Override
@@ -140,7 +140,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 						}
 					}
 					adapter.notifyDataChanged();
-					fragmentPublicOrgBinding.progressLoadMore.setVisibility(View.GONE);
+					fragmentPublicOrgBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));

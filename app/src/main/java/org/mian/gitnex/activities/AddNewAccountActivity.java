@@ -143,7 +143,7 @@ public class AddNewAccountActivity extends BaseActivity {
 							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setIcon(R.drawable.ic_warning)
 							.setCancelable(true);
 
-						alertDialogBuilder.setNegativeButton(getString(R.string.cancelButton), (dialog, which) -> {
+						alertDialogBuilder.setNeutralButton(getString(R.string.cancelButton), (dialog, which) -> {
 
 							dialog.dismiss();
 						});

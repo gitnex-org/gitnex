@@ -20,7 +20,7 @@ public class Constants {
 
 	// tags
 	public static final String tagMilestonesFragment = "MilestonesFragment";
-	public static final String tagPullRequestsList = "PullRequestsListFragment";
+	public static final String tagPullRequestsList = "PullRequestFragment";
 	public static final String tagIssuesList = "IssuesListFragment";
 	public static final String tagMilestonesAdapter = "MilestonesAdapter";
 	public static final String draftsApi = "DraftsApi";
@@ -28,6 +28,7 @@ public class Constants {
 	public static final String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
 	public static final String userAccountsApi = "UserAccountsApi";
 	public static final String publicOrganizations = "PublicOrganizations";
+	public static final String exploreUsers = "ExploreUsers";
 	public static final String exploreIssues = "ExploreIssues";
 	public static final String exploreRepositories = "ExploreRepositories";
 	public static final String tagNotifications = "TagNotifications";

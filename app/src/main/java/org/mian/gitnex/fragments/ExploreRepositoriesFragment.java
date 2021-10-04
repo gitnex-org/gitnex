@@ -165,7 +165,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 	private void loadMore(String searchKeyword, boolean exploreRepoIncludeTopic, boolean exploreRepoIncludeDescription, boolean exploreRepoIncludeTemplate, boolean exploreRepoOnlyArchived, int resultLimit, int page) {
 
-		viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<ExploreRepositories> call = RetrofitClient.getApiInterface(context)
 			.queryRepos(Authorization.get(getContext()), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, resultLimit, page);
 		call.enqueue(new Callback<ExploreRepositories>() {
@@ -183,7 +183,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 						adapter.setMoreDataAvailable(false);
 					}
 					adapter.notifyDataChanged();
-					viewBinding.loadingMoreView.setVisibility(View.GONE);
+					viewBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));

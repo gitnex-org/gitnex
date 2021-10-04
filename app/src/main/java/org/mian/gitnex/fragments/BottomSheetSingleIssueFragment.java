@@ -5,6 +5,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +15,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.FileDiffActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.views.ReactionSpinner;
 import java.util.Objects;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -74,6 +71,12 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		bundle1.putString("repoName", parts[1]);
 		bundle1.putInt("issueId", Integer.parseInt(tinyDB.getString("issueNumber")));
 
+		TextView loadReactions = new TextView(ctx);
+		loadReactions.setText(Objects.requireNonNull(ctx).getString(R.string.genericWaitFor));
+		loadReactions.setGravity(Gravity.CENTER);
+		loadReactions.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160));
+		linearLayout.addView(loadReactions);
+
 		ReactionSpinner reactionSpinner = new ReactionSpinner(ctx, bundle1);
 		reactionSpinner.setOnInteractedListener(() -> {
 
@@ -81,10 +84,14 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 			bmListener.onButtonClicked("onResume");
 			dismiss();
-
 		});
 
-		linearLayout.addView(reactionSpinner);
+		Handler handler = new Handler();
+		handler.postDelayed(() -> {
+			linearLayout.removeView(loadReactions);
+			reactionSpinner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160));
+			linearLayout.addView(reactionSpinner);
+		}, 2500);
 
 		if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
 

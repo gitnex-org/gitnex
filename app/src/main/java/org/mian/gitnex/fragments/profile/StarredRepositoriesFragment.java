@@ -166,7 +166,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
 	private void loadMore(String token, String username, int page, int resultLimit) {
 
-		fragmentRepositoriesBinding.progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 
 		Call<List<UserRepositories>> call = RetrofitClient
 			.getApiInterface(context)
@@ -192,7 +192,7 @@ public class StarredRepositoriesFragment extends Fragment {
 								adapter.setMoreDataAvailable(false);
 							}
 							adapter.notifyDataChanged();
-							fragmentRepositoriesBinding.progressLoadMore.setVisibility(View.GONE);
+							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
 							break;
 
 						case 401:

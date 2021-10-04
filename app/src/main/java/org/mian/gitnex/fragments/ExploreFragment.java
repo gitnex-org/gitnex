@@ -10,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.helpers.TinyDB;
@@ -24,9 +24,6 @@ import org.mian.gitnex.helpers.TinyDB;
 
 public class ExploreFragment extends Fragment {
 
-	private int tabsCount;
-	public ViewPager mViewPager;
-
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,101 +33,81 @@ public class ExploreFragment extends Fragment {
 		Context ctx = getContext();
 		TinyDB tinyDB = TinyDB.getInstance(ctx);
 
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navExplore));
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleExplore));
 
+		ViewPager2 viewPager = view.findViewById(R.id.containerExplore);
+		viewPager.setOffscreenPageLimit(1);
 		TabLayout tabLayout = view.findViewById(R.id.tabsExplore);
 
-		ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
-		tabsCount = viewGroup.getChildCount();
+		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
 
 		Typeface myTypeface;
 
 		switch(tinyDB.getInt("customFontId", -1)) {
 
 			case 0:
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
+				myTypeface = Typeface.createFromAsset(ctx != null ? ctx.getAssets() : null, "fonts/roboto.ttf");
 				break;
 
 			case 2:
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
+				myTypeface = Typeface.createFromAsset(ctx != null ? ctx.getAssets() : null, "fonts/sourcecodeproregular.ttf");
 				break;
 
 			default:
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
+				myTypeface = Typeface.createFromAsset(ctx != null ? ctx.getAssets() : null, "fonts/manroperegular.ttf");
 				break;
-
 		}
 
-		for(int j = 0; j < tabsCount; j++) {
+		viewPager.setAdapter(new ViewPagerAdapter(this));
 
-			ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
+		String[] tabTitles = {getResources().getString(R.string.pageTitleRepositories), getResources().getString(R.string.pageTitleIssues), getResources().getString(R.string.pageTitleOrganizations), getResources().getString(R.string.pageTitleUsers)};
+		new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
+
+		for (int j = 0; j < tabTitles.length; j++) {
+
+			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
 
-			for(int i = 0; i < tabChildCount; i++) {
-
+			for (int i = 0; i < tabChildCount; i++) {
 				View tabViewChild = vgTab.getChildAt(i);
-
-				if(tabViewChild instanceof TextView) {
+				if (tabViewChild instanceof TextView) {
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
 			}
 		}
 
-		mViewPager = view.findViewById(R.id.containerExplore);
-
-		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-		SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		if(requireActivity().getIntent().getBooleanExtra("exploreOrgs", false)) {
-			mViewPager.setCurrentItem(2);
-		}
-
 		return view;
-
 	}
 
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	public static class ViewPagerAdapter extends FragmentStateAdapter {
 
-		SectionsPagerAdapter(FragmentManager fm) {
-
-			super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-		}
+		public ViewPagerAdapter(@NonNull ExploreFragment fa) { super(fa); }
 
 		@NonNull
 		@Override
-		public Fragment getItem(int position) {
-
+		public Fragment createFragment(int position) {
 			Fragment fragment = null;
-
 			switch(position) {
-
 				case 0: // Repositories
 					fragment = new ExploreRepositoriesFragment();
 					break;
-
 				case 1: // Issues
 					fragment = new ExploreIssuesFragment();
 					break;
-
 				case 2: // Organizations
 					fragment = new ExplorePublicOrganizationsFragment();
 					break;
+				case 3: // Users
+					fragment = new ExploreUsersFragment();
+					break;
 			}
-
 			assert fragment != null;
 			return fragment;
-
 		}
 
 		@Override
-		public int getCount() {
-
-			return tabsCount;
+		public int getItemCount() {
+			return 4;
 		}
-
 	}
-
 }

@@ -280,7 +280,7 @@ public class LoginActivity extends BaseActivity {
 							.setIcon(R.drawable.ic_warning)
 							.setCancelable(true);
 
-						alertDialogBuilder.setNegativeButton(getString(R.string.cancelButton), (dialog, which) -> {
+						alertDialogBuilder.setNeutralButton(getString(R.string.cancelButton), (dialog, which) -> {
 
 							dialog.dismiss();
 							enableProcessButton();

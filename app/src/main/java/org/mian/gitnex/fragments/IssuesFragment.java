@@ -142,7 +142,7 @@ public class IssuesFragment extends Fragment {
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
+			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), filterIssueByMilestone);
 			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
@@ -209,7 +209,7 @@ public class IssuesFragment extends Fragment {
 
 	private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState, String filterByMilestone) {
 
-		fragmentIssuesBinding.progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 
 		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState, filterByMilestone);
 
@@ -229,7 +229,7 @@ public class IssuesFragment extends Fragment {
 						adapter.setMoreDataAvailable(false);
 					}
 					adapter.notifyDataChanged();
-					fragmentIssuesBinding.progressLoadMore.setVisibility(View.GONE);
+					fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
@@ -287,7 +287,7 @@ public class IssuesFragment extends Fragment {
 			if(d == null || d.getTitle() == null || d.getBody() == null) {
 				continue;
 			}
-			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text)) {
+			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text) || d.getNumber() == Integer.parseInt(text)) {
 				arr.add(d);
 			}
 		}

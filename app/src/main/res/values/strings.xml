@@ -28,9 +28,7 @@
     <string name="navAbout">About</string>
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">Logout</string>
-    <string name="navExplore">Explore</string>
     <string name="navAdministration">Administration</string>
-    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
 
     <!-- page titles -->
@@ -58,6 +56,7 @@
     <string name="pageTitleAdministration">Gitea Administration</string>
     <string name="pageTitleUserAccounts">Manage Accounts</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
 
     <string name="repoName">Demo repo</string>
@@ -525,8 +524,11 @@
     <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
+    <string name="genericWaitFor">Hold on ☕</string>
     <!-- generic copy -->
 
+    <string name="exploreUsers">Explore users</string>
+    <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
     <string name="starRepository">Star Repository</string>
     <string name="unStarRepository">Unstar Repository</string>
@@ -539,7 +541,7 @@
     <string name="titleDrafts">Drafts</string>
     <string name="filesBreadcrumbRoot" translatable="false">Root</string>
 
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
@@ -664,7 +666,7 @@
 
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
-    <string name="noDataNotifications">No notifications found</string>
+    <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>

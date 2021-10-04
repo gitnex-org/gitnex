@@ -12,14 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.models.PullRequests;
 import org.mian.gitnex.R;
@@ -31,7 +28,6 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -44,24 +40,21 @@ import retrofit2.Response;
 
 public class PullRequestsFragment extends Fragment {
 
+	private FragmentPullRequestsBinding fragmentPullRequestsBinding;
 	private Menu menu;
-	private ProgressBar mProgressBar;
-	private RecyclerView recyclerView;
+
 	private List<PullRequests> prList;
 	private PullRequestsAdapter adapter;
-	private String TAG = Constants.tagPullRequestsList;
+	private final String TAG = Constants.tagPullRequestsList;
 	private Context context;
 	private int pageSize = Constants.prPageInit;
-	private TextView noData;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
-	private ProgressBar progressLoadMore;
+	private int resultLimit;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		FragmentPullRequestsBinding fragmentPullRequestsBinding = FragmentPullRequestsBinding.inflate(inflater, container, false);
-
+		fragmentPullRequestsBinding = FragmentPullRequestsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 		context = getContext();
 
@@ -75,43 +68,30 @@ public class PullRequestsFragment extends Fragment {
 
 		final SwipeRefreshLayout swipeRefresh = fragmentPullRequestsBinding.pullToRefresh;
 
-		// if gitea is 1.12 or higher use the new limit
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
-
-		recyclerView = fragmentPullRequestsBinding.recyclerView;
+		resultLimit = Constants.getCurrentResultLimit(context);
 		prList = new ArrayList<>();
 
-		progressLoadMore = fragmentPullRequestsBinding.progressLoadMore;
-		mProgressBar = fragmentPullRequestsBinding.progressBar;
-		noData = fragmentPullRequestsBinding.noData;
-
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
 			swipeRefresh.setRefreshing(false);
 			loadInitial(instanceToken, repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);
 			adapter.notifyDataChanged();
-
 		}, 200));
 
 		adapter = new PullRequestsAdapter(getContext(), prList);
-		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+		adapter.setLoadMoreListener(() -> fragmentPullRequestsBinding.recyclerView.post(() -> {
 
 			if(prList.size() == resultLimit || pageSize == resultLimit) {
-
 				int page = (prList.size() + resultLimit) / resultLimit;
 				loadMore(Authorization.get(getContext()), repoOwner, repoName, page, tinyDb.getString("repoPrState"), resultLimit);
-
 			}
 
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		recyclerView.setHasFixedSize(true);
-		recyclerView.addItemDecoration(dividerItemDecoration);
-		recyclerView.setLayoutManager(new LinearLayoutManager(context));
-		recyclerView.setAdapter(adapter);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentPullRequestsBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		fragmentPullRequestsBinding.recyclerView.setHasFixedSize(true);
+		fragmentPullRequestsBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+		fragmentPullRequestsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+		fragmentPullRequestsBinding.recyclerView.setAdapter(adapter);
 
 		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerPr(prState -> {
 
@@ -125,31 +105,27 @@ public class PullRequestsFragment extends Fragment {
 			prList.clear();
 
 			adapter = new PullRequestsAdapter(context, prList);
-			adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+			adapter.setLoadMoreListener(() -> fragmentPullRequestsBinding.recyclerView.post(() -> {
 
 				if(prList.size() == resultLimit || pageSize == resultLimit) {
-
 					int page = (prList.size() + resultLimit) / resultLimit;
 					loadMore(Authorization.get(getContext()), repoOwner, repoName, page, tinyDb.getString("repoPrState"), resultLimit);
-
 				}
 
 			}));
 
 			tinyDb.putString("repoPrState", prState);
 
-			mProgressBar.setVisibility(View.VISIBLE);
-			noData.setVisibility(View.GONE);
+			fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
+			fragmentPullRequestsBinding.noData.setVisibility(View.GONE);
 
 			loadInitial(Authorization.get(context), repoOwner, repoName, pageSize, prState, resultLimit);
-			recyclerView.setAdapter(adapter);
-
+			fragmentPullRequestsBinding.recyclerView.setAdapter(adapter);
 		});
 
 		loadInitial(Authorization.get(getContext()), repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);
 
 		return fragmentPullRequestsBinding.getRoot();
-
 	}
 
 	@Override
@@ -164,13 +140,10 @@ public class PullRequestsFragment extends Fragment {
 		final String repoName = parts[1];
 
 		if(tinyDb.getBoolean("resumePullRequests")) {
-
 			loadInitial(Authorization.get(getContext()), repoOwner, repoName, pageSize, tinyDb.getString("repoPrState"), resultLimit);
 			tinyDb.putBoolean("resumePullRequests", false);
 			tinyDb.putBoolean("prMerged", false);
-
 		}
-
 	}
 
 	private void loadInitial(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
@@ -186,38 +159,26 @@ public class PullRequestsFragment extends Fragment {
 
 					assert response.body() != null;
 					if(response.body().size() > 0) {
-
 						prList.clear();
 						prList.addAll(response.body());
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.GONE);
-
+						fragmentPullRequestsBinding.noData.setVisibility(View.GONE);
 					}
 					else {
-
 						prList.clear();
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.VISIBLE);
-
+						fragmentPullRequestsBinding.noData.setVisibility(View.VISIBLE);
 					}
-
-					mProgressBar.setVisibility(View.GONE);
-
+					fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
 				}
 				else if(response.code() == 404) {
-
-					noData.setVisibility(View.VISIBLE);
-					mProgressBar.setVisibility(View.GONE);
-
+					fragmentPullRequestsBinding.noData.setVisibility(View.VISIBLE);
+					fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
-
 					Log.i(TAG, String.valueOf(response.code()));
-
 				}
-
 				Log.i(TAG, String.valueOf(response.code()));
-
 			}
 
 			@Override
@@ -225,14 +186,12 @@ public class PullRequestsFragment extends Fragment {
 
 				Log.e(TAG, t.toString());
 			}
-
 		});
-
 	}
 
 	private void loadMore(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
 
-		progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
 
 		Call<List<PullRequests>> call = RetrofitClient.getApiInterface(context).getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
 
@@ -245,42 +204,30 @@ public class PullRequestsFragment extends Fragment {
 
 					//remove loading view
 					prList.remove(prList.size() - 1);
-
 					List<PullRequests> result = response.body();
 
 					assert result != null;
 					if(result.size() > 0) {
-
 						pageSize = result.size();
 						prList.addAll(result);
-
 					}
 					else {
-
 						Toasty.info(context, getString(R.string.noMoreData));
 						adapter.setMoreDataAvailable(false);
-
 					}
-
 					adapter.notifyDataChanged();
-					progressLoadMore.setVisibility(View.GONE);
-
+					fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
-
 					Log.e(TAG, String.valueOf(response.code()));
-
 				}
 
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<PullRequests>> call, @NonNull Throwable t) {
-
 				Log.e(TAG, t.toString());
-
 			}
-
 		});
 	}
 
@@ -309,20 +256,15 @@ public class PullRequestsFragment extends Fragment {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-
 				return false;
 			}
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
-
 				filter(newText);
 				return false;
-
 			}
-
 		});
-
 	}
 
 	private void filter(String text) {
@@ -333,12 +275,10 @@ public class PullRequestsFragment extends Fragment {
 			if(d == null || d.getTitle() == null || d.getBody() == null) {
 				continue;
 			}
-			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text)) {
+			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text) || d.getNumber() == Integer.parseInt(text)) {
 				arr.add(d);
 			}
 		}
-
 		adapter.updateList(arr);
 	}
-
 }

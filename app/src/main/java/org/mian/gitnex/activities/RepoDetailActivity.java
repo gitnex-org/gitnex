@@ -542,28 +542,22 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 						tinyDB.putString("issueMilestoneFilterId", milestonesList.get(i));
 
 						if(getFragmentRefreshListenerFilterIssuesByMilestone() != null) {
-
 							getFragmentRefreshListenerFilterIssuesByMilestone().onRefresh(milestonesList.get(i));
 						}
 						dialogInterface.dismiss();
 					});
+
 					pBuilder.setNeutralButton(R.string.cancelButton, null);
-
 					pBuilder.create().show();
-
 				}
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Milestones>> call, @NonNull Throwable t) {
-
 				progressDialog.hide();
 				Log.e("onFailure", t.toString());
 			}
-
 		});
-
 	}
 
 	private void chooseBranch() {
@@ -594,7 +588,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 						branchesList.add(branches.getName());
 
 						if(tinyDB.getString("repoBranch").equals(branches.getName())) {
-
 							selectedBranch = i;
 						}
 					}
@@ -607,25 +600,22 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetRepoF
 						tinyDB.putString("repoBranch", branchesList.get(i));
 
 						if(getFragmentRefreshListenerFiles() != null) {
-
 							getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
 						}
 						dialogInterface.dismiss();
 					});
-					pBuilder.setNeutralButton(R.string.cancelButton, null);
 
+					pBuilder.setNeutralButton(R.string.cancelButton, null);
 					pBuilder.create().show();
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Branches>> call, @NonNull Throwable t) {
-
 				progressDialog.hide();
 				Log.e("onFailure", t.toString());
 			}
 		});
-
 	}
 
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {

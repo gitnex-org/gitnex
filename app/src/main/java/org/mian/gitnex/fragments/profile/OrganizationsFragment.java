@@ -166,7 +166,7 @@ public class OrganizationsFragment extends Fragment {
 
 	private void loadMore(String token, String username, int page, int resultLimit) {
 
-		fragmentOrganizationsBinding.progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
 
 		Call<List<UserOrganizations>> call = RetrofitClient
 			.getApiInterface(context)
@@ -192,7 +192,7 @@ public class OrganizationsFragment extends Fragment {
 								adapter.setMoreDataAvailable(false);
 							}
 							adapter.notifyDataChanged();
-							fragmentOrganizationsBinding.progressLoadMore.setVisibility(View.GONE);
+							fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
 							break;
 
 						case 401:

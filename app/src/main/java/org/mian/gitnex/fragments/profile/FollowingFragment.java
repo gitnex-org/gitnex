@@ -164,7 +164,7 @@ public class FollowingFragment extends Fragment {
 
 	private void loadMore(String token, String username, int page, int resultLimit) {
 
-		fragmentProfileFollowersFollowingBinding.progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.VISIBLE);
 
 		Call<List<UserInfo>> call = RetrofitClient
 			.getApiInterface(context)
@@ -190,7 +190,7 @@ public class FollowingFragment extends Fragment {
 								adapter.setMoreDataAvailable(false);
 							}
 							adapter.notifyDataChanged();
-							fragmentProfileFollowersFollowingBinding.progressLoadMore.setVisibility(View.GONE);
+							fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.GONE);
 							break;
 
 						case 401:

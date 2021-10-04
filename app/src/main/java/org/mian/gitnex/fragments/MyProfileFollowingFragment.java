@@ -115,7 +115,7 @@ public class MyProfileFollowingFragment extends Fragment {
 
 	private void loadMore(int resultLimit, int page) {
 
-		viewBinding.progressLoadMore.setVisibility(View.VISIBLE);
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<UserInfo>> call = RetrofitClient.getApiInterface(context)
 			.getFollowing(Authorization.get(getContext()), page, resultLimit);
 		call.enqueue(new Callback<List<UserInfo>>() {
@@ -133,7 +133,7 @@ public class MyProfileFollowingFragment extends Fragment {
 						adapter.setMoreDataAvailable(false);
 					}
 					adapter.notifyDataChanged();
-					viewBinding.progressLoadMore.setVisibility(View.GONE);
+					viewBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
