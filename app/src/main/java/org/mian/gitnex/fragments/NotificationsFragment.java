@@ -331,6 +331,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
 
 			Intent intent = new Intent(context, IssueDetailActivity.class);
+			intent.putExtra("openedFromLink", "true");
 			String issueUrl = notificationThread.getSubject().getUrl();
 			tinyDB.putString("issueNumber", issueUrl.substring(issueUrl.lastIndexOf("/") + 1));
 			tinyDB.putString("issueType", notificationThread.getSubject().getType());

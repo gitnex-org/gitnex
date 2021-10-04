@@ -106,6 +106,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			itemView.setOnClickListener(v -> {
 				Intent intent = new Intent(context, IssueDetailActivity.class);
 				intent.putExtra("issueNumber", issue.getNumber());
+				intent.putExtra("openedFromLink", "true");
 
 				tinyDb.putString("issueNumber", String.valueOf(issue.getNumber()));
 				tinyDb.putString("issueType", "Issue");
