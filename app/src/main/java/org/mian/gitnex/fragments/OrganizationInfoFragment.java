@@ -19,6 +19,7 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationInfoBinding;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -112,7 +113,7 @@ public class OrganizationInfoFragment extends Fragment {
 	                    .centerCrop().into(orgAvatar);
 
 	                if(!orgInfo.getDescription().isEmpty()) {
-		                orgDescInfo.setText(orgInfo.getDescription());
+		                Markdown.render(ctx, orgInfo.getDescription(), orgDescInfo);
 	                }
 	                else {
 		                orgDescInfo.setText(getString(R.string.noDataDescription));

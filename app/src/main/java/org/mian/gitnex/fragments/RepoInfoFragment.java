@@ -42,7 +42,6 @@ public class RepoInfoFragment extends Fragment {
 	private LinearLayout pageContent;
 	private static final String repoNameF = "param2";
 	private static final String repoOwnerF = "param1";
-	private Locale locale;
 
 	private FragmentRepoInfoBinding binding;
 
@@ -77,7 +76,7 @@ public class RepoInfoFragment extends Fragment {
 		binding = FragmentRepoInfoBinding.inflate(inflater, container, false);
 		TinyDB tinyDb = TinyDB.getInstance(getContext());
 		ctx = getContext();
-		locale = getResources().getConfiguration().locale;
+		Locale locale = getResources().getConfiguration().locale;
 
 		pageContent = binding.repoInfoLayout;
 		pageContent.setVisibility(View.GONE);
@@ -198,7 +197,7 @@ public class RepoInfoFragment extends Fragment {
 							binding.repoMetaName.setText(repoInfo.getName());
 
 							if(!repoInfo.getDescription().isEmpty()) {
-								binding.repoMetaDescription.setText(repoInfo.getDescription());
+								Markdown.render(ctx, repoInfo.getDescription(), binding.repoMetaDescription);
 							}
 							else {
 								binding.repoMetaDescription.setText(getString(R.string.noDataDescription));

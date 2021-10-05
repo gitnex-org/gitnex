@@ -13,7 +13,6 @@
         android:id="@+id/orgInfoFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
@@ -43,6 +42,8 @@
         android:layout_height="wrap_content"
         android:text="@string/noDataDescription"
         android:textColor="?attr/primaryTextColor"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
         android:textSize="15sp" />
 
 </LinearLayout>

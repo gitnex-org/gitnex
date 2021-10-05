@@ -112,9 +112,14 @@ public class ExplorePublicOrganizationsAdapter extends RecyclerView.Adapter<Recy
 		        .resize(120, 120)
 		        .centerCrop()
 		        .into(image);
-	        if (!organization.getDescription().equals("")) {
-	            orgDescription.setText(organization.getDescription());
-	        }
+
+			if(!organization.getDescription().equals("")) {
+				orgDescription.setVisibility(View.VISIBLE);
+				orgDescription.setText(organization.getDescription());
+			}
+			else {
+				orgDescription.setVisibility(View.GONE);
+			}
 		}
 	}
 

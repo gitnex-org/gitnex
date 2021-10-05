@@ -105,6 +105,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 		private CheckBox isRepoAdmin;
 		private final TextView repoStars;
 		private final TextView repoLastUpdated;
+		private final View spacerView;
 
 		RepositoriesHolder(View itemView) {
 			super(itemView);
@@ -115,6 +116,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			image = itemView.findViewById(R.id.imageAvatar);
 			repoStars = itemView.findViewById(R.id.repoStars);
 			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
+			spacerView = itemView.findViewById(R.id.spacerView);
 
 			itemView.setOnClickListener(v -> {
 
@@ -252,10 +254,13 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			}
 
 			if(!userRepositories.getDescription().equals("")) {
+				repoDescription.setVisibility(View.VISIBLE);
 				repoDescription.setText(userRepositories.getDescription());
+				spacerView.setVisibility(View.GONE);
 			}
 			else {
-				repoDescription.setText(context.getString(R.string.noDataDescription));
+				repoDescription.setVisibility(View.GONE);
+				spacerView.setVisibility(View.VISIBLE);
 			}
 
 			if(isRepoAdmin == null) {

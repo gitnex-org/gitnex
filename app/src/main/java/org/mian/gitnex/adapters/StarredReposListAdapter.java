@@ -60,6 +60,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
 	    private CheckBox isRepoAdmin;
 	    private final TextView repoStars;
 	    private final TextView repoLastUpdated;
+	    private final View spacerView;
 
         private StarredReposViewHolder(View itemView) {
 
@@ -71,6 +72,7 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
 	        image = itemView.findViewById(R.id.imageAvatar);
 	        repoStars = itemView.findViewById(R.id.repoStars);
 	        repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
+	        spacerView = itemView.findViewById(R.id.spacerView);
 
             itemView.setOnClickListener(v -> {
 
@@ -248,10 +250,13 @@ public class StarredReposListAdapter extends RecyclerView.Adapter<StarredReposLi
         }
 
 	    if(!currentItem.getDescription().equals("")) {
+		    holder.repoDescription.setVisibility(View.VISIBLE);
 		    holder.repoDescription.setText(currentItem.getDescription());
+		    holder.spacerView.setVisibility(View.GONE);
 	    }
 	    else {
-		    holder.repoDescription.setText(context.getString(R.string.noDataDescription));
+		    holder.repoDescription.setVisibility(View.GONE);
+		    holder.spacerView.setVisibility(View.VISIBLE);
 	    }
 
 	    if(holder.isRepoAdmin == null) {
