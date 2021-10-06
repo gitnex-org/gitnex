@@ -10,9 +10,7 @@
     <string name="navAbout">О програму</string>
     <string name="navRate">Оцени GitNex</string>
     <string name="navLogout">Одјави ме</string>
-    <string name="navExplore">Претражи репозиторијуме</string>
     <string name="navAdministration">Administration</string>
-    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">О програму</string>
@@ -39,6 +37,7 @@
     <string name="pageTitleAdministration">Gitea Administration</string>
     <string name="pageTitleUserAccounts">Manage Accounts</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторијум</string>
     <string name="repoFullName">Репозиторијум са ORG</string>
@@ -152,6 +151,7 @@
     <string name="milestoneNoDescription">No description</string>
     <string name="milestoneIssueStatusOpen">%1$d Open</string>
     <string name="milestoneIssueStatusClosed">%1$d Closed</string>
+    <string name="selectMilestone">Select Milestone</string>
     <string name="newIssueSelectAssigneesListTitle">Додели задатак</string>
     <string name="newIssueSelectLabelsListTitle">Одабери ознаке</string>
     <string name="newIssueTitle">Наслов</string>
@@ -428,7 +428,10 @@
     <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
+    <string name="genericWaitFor">Hold on ☕</string>
     <!-- generic copy -->
+    <string name="exploreUsers">Explore users</string>
+    <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Претражи репозиторијуме</string>
     <string name="starRepository">Додај у омиљене</string>
     <string name="unStarRepository">Уклони из омиљених</string>
@@ -439,7 +442,7 @@
     <string name="watchRepositorySuccess">Сад пратиш овај репозиторијум</string>
     <string name="unWatchRepositorySuccess">Више не пратиш овај репозиторијум</string>
     <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">Нова верзија програма Gitea је детектована! Ажурирај GitNex!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Верзија програма Gitea коју тренутно користиш није подржана</string>
@@ -457,6 +460,7 @@
     <string name="fileDiffViewHeader">%1$s фајлова је измењено</string>
     <string name="fileDiffViewHeaderSingle">%1$s фајл је измењен</string>
     <string name="openFileDiffText">Фајлови су измењени</string>
+    <string name="updatePullRequestText">Update Pull Request</string>
     <string name="mergePullRequestText">Обједини пул захтев</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -547,7 +551,7 @@
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
-    <string name="noDataNotifications">No notifications found</string>
+    <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
@@ -628,4 +632,15 @@
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
     <string name="lastUpdatedAt">Updated %s</string>
     <string name="joined">Joined</string>
+    <string name="userFollow">Follow</string>
+    <string name="unfollowUser">Unfollow</string>
+    <string name="unfollowedUser">Unfollowed @%s</string>
+    <string name="nowFollowUser">You now follow @%s</string>
+    <string name="unfollowingFailed">Couldn\'t unfollow user</string>
+    <string name="followingFailed">Couldn\'t follow user</string>
+    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
+    <string name="updatePrSuccess">Pull Request updated successfully</string>
+    <string name="updateStrategyMerge">Merge</string>
+    <string name="updateStrategyRebase">Rebase</string>
+    <string name="selectUpdateStrategy">Select Update Strategy</string>
 </resources>

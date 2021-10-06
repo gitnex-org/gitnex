@@ -10,9 +10,7 @@
     <string name="navAbout">À propos</string>
     <string name="navRate">Noter GitNex</string>
     <string name="navLogout">Déconnexion</string>
-    <string name="navExplore">Explorer</string>
     <string name="navAdministration">Administration</string>
-    <string name="navSearchIssuesPulls">Rechercher des tickets</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">À propos</string>
@@ -39,6 +37,7 @@
     <string name="pageTitleAdministration">Administration de Gitea</string>
     <string name="pageTitleUserAccounts">Gestion des comptes</string>
     <string name="pageTitleNewPullRequest">Nouvelle demande de tirage</string>
+    <string name="pageTitleUsers">Utilisateurs</string>
     <!-- page titles -->
     <string name="repoName">Dépôt de démonstration</string>
     <string name="repoFullName">Nom complet du dépôt</string>
@@ -152,6 +151,7 @@
     <string name="milestoneNoDescription">Pas de description</string>
     <string name="milestoneIssueStatusOpen">%1$d ouvert</string>
     <string name="milestoneIssueStatusClosed">%1$d fermé</string>
+    <string name="selectMilestone">Sélectionner un jalon</string>
     <string name="newIssueSelectAssigneesListTitle">Assignés</string>
     <string name="newIssueSelectLabelsListTitle">Sélectionner des étiquettes</string>
     <string name="newIssueTitle">Titre</string>
@@ -428,7 +428,10 @@
     <string name="isClosed">Fermé</string>
     <string name="genericServerResponseError">Impossible de se connecter au serveur pour le moment, veuillez vérifier son statut puis réessayer</string>
     <string name="genericCopyUrl">Copier l’URL</string>
+    <string name="genericWaitFor">Attendez un instant ☕</string>
     <!-- generic copy -->
+    <string name="exploreUsers">Voir les utilisateurs</string>
+    <string name="exploreIssues">Voir les tickets</string>
     <string name="exploreTextBoxHint">Explorer les dépôts</string>
     <string name="starRepository">Ajouter aux favoris</string>
     <string name="unStarRepository">Retirer des favoris</string>
@@ -439,7 +442,7 @@
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
     <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
     <string name="titleDrafts">Brouillons</string>
-    <string name="versionUnsupportedOld">Ancienne version de Gitea détectée (%1$s). Faire la mise à jour vers la dernière version stable est fortement recommandé.</string>
+    <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous continuez, l’application peut ne pas fonctionner correctement.</string>
     <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
     <string name="versionUnknown">Aucun serveur Gitea détecté !</string>
     <string name="versionAlertDialogHeader">Version de Gitea non prise en charge</string>
@@ -457,6 +460,7 @@
     <string name="fileDiffViewHeader">%1$s fichiers modifiés</string>
     <string name="fileDiffViewHeaderSingle">%1$s fichier modifié</string>
     <string name="openFileDiffText">Fichiers modifiés</string>
+    <string name="updatePullRequestText">Mettre à jour la demande de tirage</string>
     <string name="mergePullRequestText">Fusionner la demande de tirage</string>
     <string name="deletePrHeadBranch">Supprimer la branche courante</string>
     <string name="deleteBranchSuccess">Branche supprimée</string>
@@ -547,7 +551,7 @@
     <string name="switchAccountSuccess">Passé au compte : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
-    <string name="noDataNotifications">Aucune notification</string>
+    <string name="noDataNotifications">C’est parti 🚀</string>
     <string name="notificationsPollingHeaderText">Période de scrutation</string>
     <string name="pollingDelaySelectedText">%d minutes</string>
     <string name="pollingDelayDialogHeaderText">Période de scrutation</string>
@@ -628,4 +632,15 @@
     <string name="fileViewerNotificationChannelDescription">Indique la progression des téléchargements</string>
     <string name="lastUpdatedAt">%s mis à jour</string>
     <string name="joined">Inscrit</string>
+    <string name="userFollow">Suivre</string>
+    <string name="unfollowUser">Ne plus suivre</string>
+    <string name="unfollowedUser">Vous ne suivez plus %s</string>
+    <string name="nowFollowUser">Vous suivez @%s</string>
+    <string name="unfollowingFailed">Impossible de ne plus suivre l’utilisateur</string>
+    <string name="followingFailed">Impossible de suivre l’utilisateur</string>
+    <string name="updatePrConflict">La requête de tirage est en conflit avec la branche principale. Veuillez résoudre ce conflit, puis réessayez.</string>
+    <string name="updatePrSuccess">Requête de tirage créée</string>
+    <string name="updateStrategyMerge">Fusionner</string>
+    <string name="updateStrategyRebase">Rebaser</string>
+    <string name="selectUpdateStrategy">Stratégie de mise à jour</string>
 </resources>

@@ -10,9 +10,7 @@
     <string name="navAbout">Über</string>
     <string name="navRate">Bewerte GitNex</string>
     <string name="navLogout">Ausloggen</string>
-    <string name="navExplore">Erkunden</string>
     <string name="navAdministration">Administration</string>
-    <string name="navSearchIssuesPulls">Issues Suche</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Über</string>
@@ -39,6 +37,7 @@
     <string name="pageTitleAdministration">Gitea-Administration</string>
     <string name="pageTitleUserAccounts">Konten verwalten</string>
     <string name="pageTitleNewPullRequest">Neuer Pull-Request</string>
+    <string name="pageTitleUsers">Benutzer</string>
     <!-- page titles -->
     <string name="repoName">Demo Repo</string>
     <string name="repoFullName">Repo mit ORG</string>
@@ -111,10 +110,10 @@
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">Keine Issues gefunden!</string>
     <string name="infoTabRepoSize">Größe</string>
-    <string name="infoTabRepoDefaultBranch">Standard Branch</string>
-    <string name="infoTabRepoSshUrl">SSH Link</string>
+    <string name="infoTabRepoDefaultBranch">Standard-Branch</string>
+    <string name="infoTabRepoSshUrl">SSH-URL</string>
     <string name="infoTabRepoCloneUrl">Klon-URL</string>
-    <string name="infoTabRepoRepoUrl">Repository Link</string>
+    <string name="infoTabRepoRepoUrl">Repo-URL</string>
     <string name="infoTabRepoForksCount">Anzahl an Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
@@ -139,7 +138,7 @@
     <string name="noDataReleasesTab">Kein Release gefunden!</string>
     <string name="releasePublishedBy">Veröffentlicht von @%1$s</string>
     <string name="noReleaseBodyContent">Veröffentlichungshinweise werden vom Herausgeber nicht zur Verfügung gestellt.</string>
-    <string name="noDataCollaboratorTab">Kein Zuständiger gefunden!</string>
+    <string name="noDataCollaboratorTab">Keine Mitarbeiter gefunden</string>
     <string name="newMilestoneTitle">Titel</string>
     <string name="newMilestoneDescription">Beschreibung</string>
     <string name="newMilestoneDueDate">Fälligkeitsdatum</string>
@@ -152,6 +151,7 @@
     <string name="milestoneNoDescription">Keine Beschreibung</string>
     <string name="milestoneIssueStatusOpen">%1$d offen</string>
     <string name="milestoneIssueStatusClosed">%1$d geschlossen</string>
+    <string name="selectMilestone">Meilensteine auswählen</string>
     <string name="newIssueSelectAssigneesListTitle">Wählen Sie Zuständige aus</string>
     <string name="newIssueSelectLabelsListTitle">Label auswählen</string>
     <string name="newIssueTitle">Titel</string>
@@ -197,10 +197,10 @@
     <string name="themeSelectionHeaderText">Design</string>
     <string name="settingsCounterBadges">Zähler für Tabs</string>
     <string name="settingsFileViewerSourceCodeHeaderText">Quellcode-Design</string>
-    <string name="cacheSizeDataDialogHeader">Daten-Cache Größe</string>
-    <string name="cacheSizeDataSelectionHeaderText">Daten-Cache Größe</string>
-    <string name="cacheSizeImagesDialogHeader">Bilder-Cache Größe</string>
-    <string name="cacheSizeImagesSelectionHeaderText">Bilder-Cache Größe</string>
+    <string name="cacheSizeDataDialogHeader">Größe des Daten-Caches</string>
+    <string name="cacheSizeDataSelectionHeaderText">Größe des Daten-Caches</string>
+    <string name="cacheSizeImagesDialogHeader">Größe des Bilder-Caches</string>
+    <string name="cacheSizeImagesSelectionHeaderText">Größe des Bilder-Caches</string>
     <string name="clearCacheSelectionHeaderText">Cache löschen</string>
     <string name="clearCacheDialogHeader">Cache löschen?</string>
     <string name="clearCacheDialogMessage">Dadurch werden alle Cache-Daten einschließlich Dateien und Bilder gelöscht.\n\nMit dem Löschen fortfahren?</string>
@@ -220,7 +220,7 @@
     <string name="createLabel">Label erstellen</string>
     <string name="menuTitleText">Repo-Menü</string>
     <string name="labelName">Beschriftung</string>
-    <string name="labelColor">Label Farbe</string>
+    <string name="labelColor">Farbe des Labels</string>
     <string name="labelEmptyError">Name des Namens ist leer.</string>
     <string name="labelNameError">Label Name ist ungültig.</string>
     <string name="labelCreated">Label wurde erfolgreich erstellt!</string>
@@ -268,7 +268,7 @@
     <string name="newTeamDesc">Beschreibung des Teams</string>
     <string name="newTeamPermission">Berechtigung</string>
     <string name="newTeamAccessControls">Zugriffsrechte</string>
-    <string name="newTeamPermissionRead">Mitglieder können Team Repositorys einsehen und klonen.</string>
+    <string name="newTeamPermissionRead">Mitglieder können Team-Repositorys einsehen und klonen</string>
     <string name="newTeamPermissionWrite">Mitglieder können auf Team-Repositories lesen und schreiben.</string>
     <string name="newTeamPermissionAdmin">Mitglieder können auf Team-Repositories lesen, schreiben und Teilnehmer hinzufügen.</string>
     <string name="teamNameEmpty">Bitte geben Sie den Teamnamen ein.</string>
@@ -326,7 +326,7 @@
     <!-- admin -->
     <string name="adminCreateNewUser">Neuen Benutzer erstellen</string>
     <string name="adminUsers">Systembenutzer</string>
-    <string name="userRoleAdmin">Administrator</string>
+    <string name="userRoleAdmin">Admin</string>
     <string name="adminCron">Cron-Jobs</string>
     <string name="adminCronScheduleHeader">Termin planen</string>
     <string name="adminCronNextRunHeader">Nächster Durchlauf</string>
@@ -365,7 +365,7 @@
     <string name="loginOTP">OTP-Code (optional)</string>
     <string name="otpMessage">Gib den Otp-Code ein, wenn 2FA eingeschaltet ist</string>
     <string name="openWebRepo">Öffne mit Browser</string>
-    <string name="repoStargazersInMenu">Favorisierer</string>
+    <string name="repoStargazersInMenu">Favorisiert von</string>
     <string name="repoWatchersInMenu">Beobachter</string>
     <string name="noDataWebsite">Keine Webseite gefunden</string>
     <string name="noDataDescription">Keine Beschreibung gefunden</string>
@@ -428,7 +428,10 @@
     <string name="isClosed">Geschlossen</string>
     <string name="genericServerResponseError">Wir können den Server im Moment nicht erreichen. Bitte überprüfen Sie Ihren Serverstatus und versuchen Sie es erneut</string>
     <string name="genericCopyUrl">Link kopieren</string>
+    <string name="genericWaitFor">Laden ... ☕</string>
     <!-- generic copy -->
+    <string name="exploreUsers">Benutzer erkunden</string>
+    <string name="exploreIssues">Issues erkunden</string>
     <string name="exploreTextBoxHint">Repositories entdecken</string>
     <string name="starRepository">Repository favorisieren</string>
     <string name="unStarRepository">Repository nicht mehr favorisieren</string>
@@ -439,7 +442,7 @@
     <string name="watchRepositorySuccess">Repository zur Merkliste hinzugefügt</string>
     <string name="unWatchRepositorySuccess">Repository von der Merkliste entfernt</string>
     <string name="titleDrafts">Entwürfe</string>
-    <string name="versionUnsupportedOld">Nicht unterstützte alte Version(%1$s) von Gitea erkannt. Bitte aktualisieren Sie auf die neueste stabile Version. Wenn Sie fortfahren, funktioniert die App möglicherweise nicht ordnungsgemäß</string>
+    <string name="versionUnsupportedOld">Nicht unterstützte alte Version(%1$s) von Gitea erkannt. Bitte aktualisieren Sie auf die neueste stabile Version. Wenn Sie fortfahren, funktioniert die App möglicherweise nicht ordnungsgemäß.</string>
     <string name="versionUnsupportedNew">Neue Gitea-Version erkannt! Bitte UPDATE GitNex!</string>
     <string name="versionUnknown">Keine Gitea erkannt!</string>
     <string name="versionAlertDialogHeader">Nicht unterstützte Version von Gitea</string>
@@ -450,15 +453,16 @@
     <string name="prDeletedFork">Gelöschter Fork</string>
     <string name="noDataPullRequests">Keine Pull-Requests gefunden</string>
     <string name="prCreator">Ersteller:\u0020</string>
-    <string name="editPrText">Bearbeite Pull-Request</string>
+    <string name="editPrText">Pull-Request bearbeiten</string>
     <string name="copyPrUrlText">Pull-Request URL kopieren</string>
     <string name="editPrNavHeader">Bearbeite Pull-Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull-Request aktualisiert</string>
     <string name="fileDiffViewHeader">%1$s Dateien geändert</string>
     <string name="fileDiffViewHeaderSingle">%1$s Dateien geändert</string>
-    <string name="openFileDiffText">Diff Anzeigen</string>
+    <string name="openFileDiffText">Diff anzeigen</string>
+    <string name="updatePullRequestText">Pull Request aktualisieren</string>
     <string name="mergePullRequestText">Pull-Request zusammenführen</string>
-    <string name="deletePrHeadBranch">Ziel-Branch löschen</string>
+    <string name="deletePrHeadBranch">Quell-Branch löschen</string>
     <string name="deleteBranchSuccess">Branch erfolgreich gelöscht</string>
     <string name="deleteBranchError">Branch konnte nicht gelöscht werden</string>
     <string name="deleteBranchErrorNotFound">Branch existiert nicht</string>
@@ -547,7 +551,7 @@
     <string name="switchAccountSuccess">Auf Konto umgeschaltet: %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Benachrichtigungen</string>
-    <string name="noDataNotifications">Keine Benachrichtigungen gefunden</string>
+    <string name="noDataNotifications">Keine Nachrichten 🚀</string>
     <string name="notificationsPollingHeaderText">Benachrichtigungsverzögerung</string>
     <string name="pollingDelaySelectedText">%d Minuten</string>
     <string name="pollingDelayDialogHeaderText">Abfrageverzögerung auswählen</string>
@@ -588,7 +592,7 @@
     <string name="repoDeletionSuccess">Repository erfolgreich gelöscht</string>
     <string name="repoSettingsTransferOwnership">Besitz übertragen</string>
     <string name="repoSettingsTransferOwnershipHint">Dieses Repository an einen Benutzer oder eine Organisation übertragen, für die Sie Admin Rechte haben</string>
-    <string name="repoSettingsTransferOwnershipDescription">Dinge, die vor der Übertragung bekannt sind:\n\n- Du verlierst den Zugriff auf das Projekt, wenn es an einen Benutzer übertragen wird.\n- Du behälst den Zugriff auf das Projekt, wenn es an eine Organisation übertragen wird, die du (mit-)besitzt.\n\nGeben den Repository-Namen als Bestätigung ein</string>
+    <string name="repoSettingsTransferOwnershipDescription">Dinge, die vor der Übertragung bekannt sein sollten:\n\n- Du verlierst den Zugriff auf das Projekt, wenn es an einen Benutzer übertragen wird.\n- Du behälst den Zugriff auf das Projekt, wenn es an eine Organisation übertragen wird, die du (mit-)besitzt.\n\nGib den Repository-Namen als Bestätigung ein</string>
     <string name="repoTransferText">Übertragung durchführen</string>
     <string name="repoTransferOwnerText">Neuer Besitzer</string>
     <string name="repoTransferSuccess">Repository erfolgreich übertragen</string>
@@ -628,4 +632,15 @@
     <string name="fileViewerNotificationChannelDescription">Zeigt den Fortschritt laufender Downloads an</string>
     <string name="lastUpdatedAt">Aktualisiert %s</string>
     <string name="joined">Beigetreten</string>
+    <string name="userFollow">Folgen</string>
+    <string name="unfollowUser">Nicht mehr folgen</string>
+    <string name="unfollowedUser">Du folgst @%s nicht mehr</string>
+    <string name="nowFollowUser">Du folgst @%s</string>
+    <string name="unfollowingFailed">Benutzer konnte nicht entfolgt werden</string>
+    <string name="followingFailed">Nutzer konnte nicht gefolgt werden</string>
+    <string name="updatePrConflict">Der Pull Request enthält Konflikte. Bitte behebe diese und versuche es erneut.</string>
+    <string name="updatePrSuccess">Pull Request erfolgreich aktualisiert</string>
+    <string name="updateStrategyMerge">Merge</string>
+    <string name="updateStrategyRebase">Rebase</string>
+    <string name="selectUpdateStrategy">Update-Strategie auswählen</string>
 </resources>

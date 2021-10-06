@@ -10,9 +10,7 @@
     <string name="navAbout">Info su</string>
     <string name="navRate">Valuta GitNex</string>
     <string name="navLogout">Esci</string>
-    <string name="navExplore">Esplora</string>
     <string name="navAdministration">Amministrazione</string>
-    <string name="navSearchIssuesPulls">Cerca segnalazioni</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Info su</string>
@@ -39,6 +37,7 @@
     <string name="pageTitleAdministration">Amministrazione Gitea</string>
     <string name="pageTitleUserAccounts">Gestione Account</string>
     <string name="pageTitleNewPullRequest">Nuova Pull Request</string>
+    <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
     <string name="repoName">Demo repo</string>
     <string name="repoFullName">Repo con ORG</string>
@@ -153,6 +152,7 @@ URL è richiesto</string>
     <string name="milestoneNoDescription">Nessuna descrizione</string>
     <string name="milestoneIssueStatusOpen">%1$d Aperto</string>
     <string name="milestoneIssueStatusClosed">%1$d Chiuso</string>
+    <string name="selectMilestone">Select Milestone</string>
     <string name="newIssueSelectAssigneesListTitle">Seleziona Assegnatari</string>
     <string name="newIssueSelectLabelsListTitle">Seleziona labels</string>
     <string name="newIssueTitle">Titolo</string>
@@ -430,7 +430,10 @@ autorizzazione</string>
     <string name="isClosed">Chiuso</string>
     <string name="genericServerResponseError">Al momento non possiamo raggiungere il server, controlla lo stato del tuo server e riprova</string>
     <string name="genericCopyUrl">Copia l\'URL</string>
+    <string name="genericWaitFor">Hold on ☕</string>
     <!-- generic copy -->
+    <string name="exploreUsers">Explore users</string>
+    <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Esplora i repository</string>
     <string name="starRepository">Repository star</string>
     <string name="unStarRepository">Unstar Repository</string>
@@ -441,7 +444,7 @@ autorizzazione</string>
     <string name="watchRepositorySuccess">Repository aggiunto alla watch list</string>
     <string name="unWatchRepositorySuccess">Repository rimosso dalla watchlist</string>
     <string name="titleDrafts">Bozze</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">Nuova versione di Gitea rilevata! Si prega di AGGIORNARE GitNex!</string>
     <string name="versionUnknown">Nessun Gitea rilevato!</string>
     <string name="versionAlertDialogHeader">Versione non supportata di Gitea</string>
@@ -459,6 +462,7 @@ autorizzazione</string>
     <string name="fileDiffViewHeader">%1$s File modificati</string>
     <string name="fileDiffViewHeaderSingle">%1$s File modificati</string>
     <string name="openFileDiffText">File modificati</string>
+    <string name="updatePullRequestText">Update Pull Request</string>
     <string name="mergePullRequestText">Unisci Pull Request</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -549,7 +553,7 @@ autorizzazione</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifiche</string>
-    <string name="noDataNotifications">Nessuna notifica trovata</string>
+    <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Intervallo di ricerca notifiche</string>
     <string name="pollingDelaySelectedText">%d Minuti</string>
     <string name="pollingDelayDialogHeaderText">Seleziona l\'intervallo per la ricerca</string>
@@ -630,4 +634,15 @@ autorizzazione</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
     <string name="lastUpdatedAt">Updated %s</string>
     <string name="joined">Joined</string>
+    <string name="userFollow">Follow</string>
+    <string name="unfollowUser">Unfollow</string>
+    <string name="unfollowedUser">Unfollowed @%s</string>
+    <string name="nowFollowUser">You now follow @%s</string>
+    <string name="unfollowingFailed">Couldn\'t unfollow user</string>
+    <string name="followingFailed">Couldn\'t follow user</string>
+    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
+    <string name="updatePrSuccess">Pull Request updated successfully</string>
+    <string name="updateStrategyMerge">Merge</string>
+    <string name="updateStrategyRebase">Rebase</string>
+    <string name="selectUpdateStrategy">Select Update Strategy</string>
 </resources>
