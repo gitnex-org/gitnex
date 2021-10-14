@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -590,7 +589,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					String issueNumber_ = "<font color='" + ResourcesCompat.getColor(getResources(), R.color.lightGray, null) + "'>" + appCtx.getResources()
 						.getString(R.string.hash) + singleIssue.getNumber() + "</font>";
 					viewBinding.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(singleIssue.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
-					String cleanIssueDescription = singleIssue.getBody().trim();
+					String cleanIssueDescription = singleIssue.getBody().trim().replace("\n", "<br/>");
 
 					viewBinding.assigneeAvatar.setOnClickListener(loginId -> {
 						Intent intent = new Intent(ctx, ProfileActivity.class);
