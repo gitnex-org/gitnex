@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.1.0" versioncode="410">
-        <change>New: Follow/unfollow a user</change>
-        <change>New: Explore users</change>
-        <change>New: Update pull request (merge, rebase)</change>
-        <change>New: Filter issues by milestone</change>
-        <change>Improvement: Scroll to release tag via link handler</change>
-        <change>Improvement: Search issue/pr by Id</change>
-        <change>Improvement: Hide profile picture when scrolling</change>
-        <change>Improvement: Render markdown in repository and organization descriptions</change>
-        <change>Bugfix: Fix showing mark as read button for read notifications</change>
+    <release version="4.2.0" versioncode="415">
+        <change>Under development</change>
     </release>
 
 </changelog>
