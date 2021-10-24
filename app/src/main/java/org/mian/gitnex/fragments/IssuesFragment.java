@@ -287,7 +287,7 @@ public class IssuesFragment extends Fragment {
 			if(d == null || d.getTitle() == null || d.getBody() == null) {
 				continue;
 			}
-			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text) || d.getNumber() == Integer.parseInt(text)) {
+			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text) || String.valueOf(d.getNumber()).startsWith(text)) {
 				arr.add(d);
 			}
 		}
