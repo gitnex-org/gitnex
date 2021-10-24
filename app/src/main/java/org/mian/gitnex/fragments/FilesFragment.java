@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -119,6 +120,24 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			@Override public void onNavigateNewLocation(BreadcrumbItem newItem, int changedPosition) {}
 
+		});
+
+		requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+
+			@Override
+			public void handleOnBackPressed() {
+				if(path.size() == 0 || RepoDetailActivity.mViewPager.getCurrentItem() != 1) {
+					requireActivity().finish();
+					return;
+				}
+				path.remove(path.size() - 1);
+				binding.breadcrumbsView.removeLastItem();
+				if(path.size() == 0) {
+					fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
+				} else {
+					fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, path.toString(), ref);
+				}
+			}
 		});
 
 		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerFiles(repoBranch -> {
