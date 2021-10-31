@@ -30,7 +30,7 @@ build:
     expire_in: 15 minutes
 
 sign:
-  image: nextcloudci/android:android-54
+  image: nextcloudci/android8:android-61
   stage: sign
   only:
     - main
