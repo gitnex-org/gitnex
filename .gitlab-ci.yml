@@ -17,7 +17,7 @@ on_setup:
     - ./scripts/add-commit-status.sh
 
 build:
-  image: nextcloudci/android:android-54
+  image: nextcloudci/android8:android-61
   stage: build
   only:
     - main
