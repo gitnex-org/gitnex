@@ -175,15 +175,17 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 								binding.contents.setVisibility(View.GONE);
 
 								binding.markdownFrame.setVisibility(View.VISIBLE);
-								binding.markdown.setText(getString(R.string.excludeFilesInFileViewer));
-								binding.markdown.setGravity(Gravity.CENTER);
-								binding.markdown.setTypeface(null, Typeface.BOLD);
+								binding.markdown.setVisibility(View.GONE);
+								binding.markdownTv.setVisibility(View.VISIBLE);
+								binding.markdownTv.setText(getString(R.string.excludeFilesInFileViewer));
+								binding.markdownTv.setGravity(Gravity.CENTER);
+								binding.markdownTv.setTypeface(null, Typeface.BOLD);
 							});
 						}
 					} else {
 
 						runOnUiThread(() -> {
-							binding.markdown.setText("");
+							binding.markdownTv.setText("");
 							binding.progressBar.setVisibility(View.GONE);
 						});
 					}
@@ -256,7 +258,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		} else if(id == R.id.markdown) {
 
 			if(!tinyDB.getBoolean("enableMarkdownInFileView")) {
-				Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
+				if(binding.markdown.getAdapter() == null) {
+					Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
+				}
 
 				binding.contents.setVisibility(View.GONE);
 				binding.markdownFrame.setVisibility(View.VISIBLE);

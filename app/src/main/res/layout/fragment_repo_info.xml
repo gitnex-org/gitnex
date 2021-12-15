@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:orientation="vertical"
         android:background="?attr/primaryBackgroundColor"
         android:layout_width="match_parent"
@@ -385,7 +385,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/repoFileContents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -397,7 +397,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"

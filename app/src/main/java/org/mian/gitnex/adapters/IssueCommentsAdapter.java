@@ -74,7 +74,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		private final ImageView avatar;
 		private final TextView author;
 		private final TextView information;
-		private final TextView comment;
+		private final RecyclerView comment;
 		private final LinearLayout commentReactionBadges;
 
 		private IssueCommentViewHolder(View view) {

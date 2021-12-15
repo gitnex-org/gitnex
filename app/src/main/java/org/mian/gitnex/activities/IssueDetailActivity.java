@@ -23,6 +23,7 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -143,7 +144,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-			viewBinding.scrollViewComments.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+			viewBinding.scrollViewComments.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
 				if((scrollY - oldScrollY) > 0 && viewBinding.addNewComment.isShown()) {
 					viewBinding.addNewComment.setVisibility(View.GONE);
@@ -590,7 +591,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					String issueNumber_ = "<font color='" + ResourcesCompat.getColor(getResources(), R.color.lightGray, null) + "'>" + appCtx.getResources()
 						.getString(R.string.hash) + singleIssue.getNumber() + "</font>";
 					viewBinding.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(singleIssue.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
-					String cleanIssueDescription = singleIssue.getBody().trim().replace("\n", "<br/>");
+					String cleanIssueDescription = singleIssue.getBody().trim();
 
 					viewBinding.assigneeAvatar.setOnClickListener(loginId -> {
 						Intent intent = new Intent(ctx, ProfileActivity.class);
