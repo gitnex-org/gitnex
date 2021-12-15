@@ -37,24 +37,28 @@
                 app:srcCompat="@drawable/ic_issue" />
 
             <ImageView
+                android:id="@+id/typeRepo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:contentDescription="@string/generalImgContentText"
+                app:srcCompat="@drawable/ic_repo" />
+
+            <ImageView
+                android:id="@+id/typeCommit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:contentDescription="@string/generalImgContentText"
+                app:srcCompat="@drawable/ic_commit" />
+
+            <ImageView
                 android:id="@+id/typeUnknown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:contentDescription="@string/generalImgContentText"
                 app:srcCompat="@drawable/ic_question" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/pinned"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_pin" />
 
         </LinearLayout>
 
@@ -81,14 +85,45 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/more"
+            android:id="@+id/pinnedVertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
             android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/generalImgContentText"
-            app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
+            app:srcCompat="@drawable/ic_pin" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/pinned"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:layout_gravity="top"
+                android:layout_marginStart="10dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/generalImgContentText"
+                app:srcCompat="@drawable/ic_pin" />
+
+            <ImageView
+                android:id="@+id/more"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="10dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/generalImgContentText"
+                app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -24,6 +24,7 @@ import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.NotificationsActions;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.NotificationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentNotificationsBinding;
@@ -335,6 +336,11 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 			String issueUrl = notificationThread.getSubject().getUrl();
 			tinyDB.putString("issueNumber", issueUrl.substring(issueUrl.lastIndexOf("/") + 1));
 			tinyDB.putString("issueType", notificationThread.getSubject().getType());
+			tinyDB.putString("repoFullName", notificationThread.getRepository().getFullName());
+
+			startActivity(intent);
+		} else if(notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
+			Intent intent = new Intent(context, RepoDetailActivity.class);
 			tinyDB.putString("repoFullName", notificationThread.getRepository().getFullName());
 
 			startActivity(intent);

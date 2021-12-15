@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.database.api.BaseApi;
@@ -90,8 +91,10 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private final TextView repository;
 		private final ImageView typePr;
 		private final ImageView typeIssue;
+		private final ImageView typeRepo;
+		private final ImageView typeCommit;
 		private final ImageView typeUnknown;
-		private final ImageView pinned;
+		private ImageView pinned;
 		private final ImageView more;
 
 		NotificationsHolder(View itemView) {
@@ -102,6 +105,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			repository = itemView.findViewById(R.id.repository);
 			typePr = itemView.findViewById(R.id.typePr);
 			typeIssue = itemView.findViewById(R.id.typeIssue);
+			typeRepo = itemView.findViewById(R.id.typeRepo);
+			typeCommit = itemView.findViewById(R.id.typeCommit);
 			typeUnknown = itemView.findViewById(R.id.typeUnknown);
 			pinned = itemView.findViewById(R.id.pinned);
 			more = itemView.findViewById(R.id.more);
@@ -111,10 +116,20 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		void bindData(NotificationThread notificationThread) {
 
 			String url = notificationThread.getSubject().getUrl();
-			String subjectId = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + url.substring(url.lastIndexOf("/") + 1) + "</font>";
+			String subjectId = "";
+
+			if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
+				subjectId = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + url.substring(url.lastIndexOf("/") + 1) + "</font>";
+			}
 
 			subject.setText(HtmlCompat.fromHtml(subjectId + " " + notificationThread.getSubject().getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-			repository.setText(notificationThread.getRepository().getFullName());
+			if(!notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
+				repository.setText(notificationThread.getRepository().getFullName());
+			} else {
+				repository.setVisibility(View.GONE);
+				pinned.setVisibility(View.GONE);
+				pinned = itemView.findViewById(R.id.pinnedVertical);
+			}
 
 			if(notificationThread.isPinned()) {
 				pinned.setVisibility(View.VISIBLE);
@@ -127,15 +142,35 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				case "Pull":
 					typePr.setVisibility(View.VISIBLE);
 					typeIssue.setVisibility(View.GONE);
+					typeRepo.setVisibility(View.GONE);
+					typeCommit.setVisibility(View.GONE);
 					typeUnknown.setVisibility(View.GONE);
 					break;
 				case "Issue":
 					typePr.setVisibility(View.GONE);
+					typeRepo.setVisibility(View.GONE);
+					typeCommit.setVisibility(View.GONE);
 					typeIssue.setVisibility(View.VISIBLE);
 					typeUnknown.setVisibility(View.GONE);
 					break;
+				case "Repository":
+					typeUnknown.setVisibility(View.GONE);
+					typeIssue.setVisibility(View.GONE);
+					typePr.setVisibility(View.GONE);
+					typeRepo.setVisibility(View.VISIBLE);
+					typeCommit.setVisibility(View.GONE);
+					break;
+				case "Commit":
+					typeUnknown.setVisibility(View.GONE);
+					typeIssue.setVisibility(View.GONE);
+					typePr.setVisibility(View.GONE);
+					typeRepo.setVisibility(View.GONE);
+					typeCommit.setVisibility(View.VISIBLE);
+					break;
 				default:
 					typePr.setVisibility(View.GONE);
+					typeRepo.setVisibility(View.GONE);
+					typeCommit.setVisibility(View.GONE);
 					typeIssue.setVisibility(View.GONE);
 					typeUnknown.setVisibility(View.VISIBLE);
 					break;
