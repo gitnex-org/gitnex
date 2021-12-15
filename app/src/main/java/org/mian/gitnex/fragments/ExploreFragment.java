@@ -60,7 +60,7 @@ public class ExploreFragment extends Fragment {
 
 		viewPager.setAdapter(new ViewPagerAdapter(this));
 
-		String[] tabTitles = {getResources().getString(R.string.pageTitleRepositories), getResources().getString(R.string.pageTitleIssues), getResources().getString(R.string.pageTitleOrganizations), getResources().getString(R.string.pageTitleUsers)};
+		String[] tabTitles = {getResources().getString(R.string.navRepos), getResources().getString(R.string.pageTitleIssues), getResources().getString(R.string.navOrg), getResources().getString(R.string.pageTitleUsers)};
 		new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
 
 		for (int j = 0; j < tabTitles.length; j++) {

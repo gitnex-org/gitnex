@@ -65,7 +65,6 @@
         <activity
             android:name=".activities.OrganizationDetailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
-            android:label="@string/titleActivityOrgDetail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CreateLabelActivity"
@@ -83,7 +82,6 @@
         <activity
             android:name=".activities.RepoDetailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
-            android:label="@string/titleActivityRepoDetail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MainActivity"

@@ -82,8 +82,8 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
                     AlertDialogs.labelDeleteDialog(context, labels.getName(), String.valueOf(labels.getId()),
                             context.getResources().getString(R.string.labelDeleteTitle),
                             context.getResources().getString(R.string.labelDeleteMessage),
-                            context.getResources().getString(R.string.labelDeleteTitle),
-                            context.getResources().getString(R.string.labelDeleteNegativeButton),
+                            context.getResources().getString(R.string.menuDeleteText),
+                            context.getResources().getString(R.string.cancelButton),
 	                        type, orgName);
                     dialog.dismiss();
                 });

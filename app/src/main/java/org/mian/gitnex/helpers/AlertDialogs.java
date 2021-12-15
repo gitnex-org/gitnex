@@ -70,7 +70,7 @@ public class AlertDialogs {
     public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton, String type, String orgName) {
 
         new AlertDialog.Builder(context)
-            .setTitle(title + labelTitle)
+            .setTitle(String.format(title, labelTitle))
             .setMessage(message)
             .setIcon(R.drawable.ic_delete)
             .setPositiveButton(positiveButton, (dialog, whichButton) -> {

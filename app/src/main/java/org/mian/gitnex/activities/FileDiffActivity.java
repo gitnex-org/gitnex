@@ -109,8 +109,8 @@ public class FileDiffActivity extends BaseActivity {
 						runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx,
 							getString(R.string.alertDialogTokenRevokedTitle),
 							getString(R.string.alertDialogTokenRevokedMessage),
-							getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-							getString(R.string.alertDialogTokenRevokedCopyPositiveButton)));
+							getString(R.string.cancelButton),
+							getString(R.string.navLogout)));
 						break;
 
 					case 403:

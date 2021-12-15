@@ -84,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="8dp"
-            android:text="@string/profileEmailButton"
+            android:text="@string/saveButton"
             android:textColor="@color/btnTextColor" />
 
     </LinearLayout>

@@ -57,8 +57,8 @@ public class CollaboratorActions {
 
                     AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
                             context.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+                            context.getResources().getString(R.string.cancelButton),
+                            context.getResources().getString(R.string.navLogout));
 
                 }
                 else if(response.code() == 403) {
@@ -121,8 +121,8 @@ public class CollaboratorActions {
 
                     AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
                             context.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+                            context.getResources().getString(R.string.cancelButton),
+                            context.getResources().getString(R.string.navLogout));
 
                 }
                 else if(response.code() == 403) {

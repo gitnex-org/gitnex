@@ -138,8 +138,8 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 					case 401:
 						AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getString(R.string.alertDialogTokenRevokedTitle),
 							ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+							ctx.getResources().getString(R.string.cancelButton),
+							ctx.getResources().getString(R.string.navLogout));
 						break;
 
 					case 403:

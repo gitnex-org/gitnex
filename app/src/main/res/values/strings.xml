@@ -32,14 +32,8 @@
     <!-- menu items -->
 
     <!-- page titles -->
-    <string name="pageTitleAbout">About</string>
-    <string name="pageTitleMyRepos">My Repositories</string>
-    <string name="pageTitleRepositories">Repositories</string>
-    <string name="pageTitleProfile">Profile</string>
     <string name="pageTitleNewRepo">New Repository</string>
-    <string name="pageTitleOrganizations">Organizations</string>
     <string name="pageTitleIssues">Issues</string>
-    <string name="pageTitleSettings">Settings</string>
     <string name="pageTitleCreateOrganization">New Organization</string>
     <string name="pageTitleCreateMilestone">New Milestone</string>
     <string name="pageTitleCreateNewIssue">New Issue</string>
@@ -47,7 +41,6 @@
     <string name="pageTitleCredits">Credits</string>
     <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Update Label</string>
-    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Starred Repositories</string>
     <string name="pageTitleCreateTeam">New Team</string>
     <string name="pageTitleAddEmail">Add Email Address</string>
@@ -60,12 +53,10 @@
     <!-- page titles -->
 
     <string name="repoName">Demo repo</string>
-    <string name="repoFullName">Repo with ORG</string>
     <string name="repoDescription">Demo description</string>
     <string name="noData">No repositories found</string>
 
     <string name="orgName">Demo organization</string>
-    <string name="orgDescription">Demo description</string>
     <string name="noDataOrg">No organizations found</string>
 
     <string name="newCreateButtonCopy">Create</string>
@@ -133,7 +124,6 @@
     <string name="removeContent">Remove</string>
 
     <string name="genericApiStatusError">Instance has returned an error. Code\u0020</string>
-    <string name="titleActivityRepoDetail">RepoDetailActivity</string>
     <string name="tabTextInfo">Details</string>
     <string name="tabTextFiles">Files</string>
     <string name="tabTextMl">Milestones</string>
@@ -292,8 +282,6 @@
 
     <string name="noDataLabelsTab">No labels found</string>
     <string name="labelMenuContentDesc">Desc</string>
-    <string name="labelMenuEdit">Edit</string>
-    <string name="labelMenuDelete">Delete</string>
     <string name="labelDeleteText">Label deleted</string>
     <string name="labelDeleteErrorText">Something went wrong, please try again</string>
 
@@ -302,15 +290,10 @@
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="alertDialogTokenRevokedCopyNegativeButton">Cancel</string>
-    <string name="alertDialogTokenRevokedCopyPositiveButton">Logout</string>
-    <string name="labelDeleteTitle">Delete\u0020</string>
+    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
-    <string name="labelDeletePositiveButton">OK</string>
-    <string name="labelDeleteNegativeButton">Cancel</string>
 
     <!-- org tabbed layout str -->
-    <string name="titleActivityOrgDetail">OrgDetailActivity</string>
     <string name="orgTabRepos">Repositories</string>
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Members</string>
@@ -352,7 +335,6 @@
 
     <!-- issue comments -->
     <string name="editCommentTitle">Edit Comment</string>
-    <string name="editCommentButtonText">Edit</string>
     <string name="editCommentUpdatedText">Comment updated</string>
     <string name="issueCommentShare">Share Comment</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
@@ -373,7 +355,6 @@
     <string name="profileTabFollowers">Followers</string>
     <string name="profileTabFollowing">Following</string>
     <string name="profileCreateNewEmailAddress">Add Email Address</string>
-    <string name="profileEmailButton">Save</string>
     <string name="profileEmailTitle">Email Address</string>
     <string name="emailAddedText">New email added successfully</string>
     <string name="emailErrorEmpty">Email address is empty</string>

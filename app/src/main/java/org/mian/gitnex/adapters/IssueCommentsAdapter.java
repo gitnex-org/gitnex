@@ -276,8 +276,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					case 401:
 						AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
 							ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+							ctx.getResources().getString(R.string.cancelButton),
+							ctx.getResources().getString(R.string.navLogout));
 						break;
 
 					case 403:

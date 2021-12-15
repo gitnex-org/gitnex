@@ -203,8 +203,8 @@ public class CreateFileActivity extends BaseActivity {
 			            enableProcessButton();
 			            AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 				            getResources().getString(R.string.alertDialogTokenRevokedMessage),
-				            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-				            getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+				            getResources().getString(R.string.cancelButton),
+				            getResources().getString(R.string.navLogout));
 		            	break;
 
 		            case 404:
@@ -261,8 +261,8 @@ public class CreateFileActivity extends BaseActivity {
 						enableProcessButton();
 						AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 							getResources().getString(R.string.alertDialogTokenRevokedMessage),
-							getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-							getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+							getResources().getString(R.string.cancelButton),
+							getResources().getString(R.string.navLogout));
 						break;
 
 					case 404:
@@ -319,8 +319,8 @@ public class CreateFileActivity extends BaseActivity {
 						enableProcessButton();
 						AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 							getResources().getString(R.string.alertDialogTokenRevokedMessage),
-							getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-							getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+							getResources().getString(R.string.cancelButton),
+							getResources().getString(R.string.navLogout));
 						break;
 
 					case 404:

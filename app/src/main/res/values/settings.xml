@@ -41,21 +41,21 @@
     </string-array>
 
     <string-array name="appDefaultHomeScreen">
-        <item>@string/pageTitleMyRepos</item>
+        <item>@string/navMyRepos</item>
         <item>@string/pageTitleStarredRepos</item>
-        <item>@string/pageTitleOrganizations</item>
-        <item>@string/pageTitleRepositories</item>
-        <item>@string/pageTitleProfile</item>
+        <item>@string/navOrg</item>
+        <item>@string/navRepos</item>
+        <item>@string/navProfile</item>
         <item>@string/pageTitleExplore</item>
         <item>@string/titleDrafts</item>
     </string-array>
 
     <string-array name="appDefaultHomeScreenNew">
-        <item>@string/pageTitleMyRepos</item>
+        <item>@string/navMyRepos</item>
         <item>@string/pageTitleStarredRepos</item>
-        <item>@string/pageTitleOrganizations</item>
-        <item>@string/pageTitleRepositories</item>
-        <item>@string/pageTitleProfile</item>
+        <item>@string/navOrg</item>
+        <item>@string/navRepos</item>
+        <item>@string/navProfile</item>
         <item>@string/pageTitleExplore</item>
         <item>@string/titleDrafts</item>
         <item>@string/pageTitleNotifications</item>
