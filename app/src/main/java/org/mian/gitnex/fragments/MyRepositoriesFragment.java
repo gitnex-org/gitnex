@@ -25,7 +25,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.MyReposListAdapter;
+import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentMyRepositoriesBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
@@ -41,7 +41,7 @@ public class MyRepositoriesFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
-    private MyReposListAdapter adapter;
+    private ReposListAdapter adapter;
     private ExtendedFloatingActionButton createNewRepo;
     private TextView noDataMyRepo;
 
@@ -158,7 +158,7 @@ public class MyRepositoriesFragment extends Fragment {
         myRepoModel.getCurrentUserRepositories(instanceToken, userLogin, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
 	        myReposListMain -> {
 
-	            adapter = new MyReposListAdapter(getContext(), myReposListMain);
+	            adapter = new ReposListAdapter(getContext(), myReposListMain);
 	            if(adapter.getItemCount() > 0) {
 	                mRecyclerView.setAdapter(adapter);
 	                noDataMyRepo.setVisibility(View.GONE);

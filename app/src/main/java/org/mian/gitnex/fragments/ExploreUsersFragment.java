@@ -17,14 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.UserInfo;
 import org.gitnex.tea4j.models.UserSearch;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.ExploreUsersAdapter;
+import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentExploreUsersBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +40,7 @@ public class ExploreUsersFragment extends Fragment {
 	private Context context;
 
 	private List<UserInfo> usersList;
-	private ExploreUsersAdapter adapter;
+	private UsersAdapter adapter;
 	private int pageSize;
 	private final String TAG = Constants.exploreUsers;
 	private int resultLimit;
@@ -56,7 +54,7 @@ public class ExploreUsersFragment extends Fragment {
 		resultLimit = Constants.getCurrentResultLimit(context);
 
 		usersList = new ArrayList<>();
-		adapter = new ExploreUsersAdapter(context, usersList);
+		adapter = new UsersAdapter(usersList, context);
 
 		viewBinding.searchKeyword.setOnEditorActionListener((v1, actionId, event) -> {
 			if(actionId == EditorInfo.IME_ACTION_SEND) {

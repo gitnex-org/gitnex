@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetOrganizationTeamsBinding;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -17,7 +18,7 @@ import org.mian.gitnex.databinding.BottomSheetOrganizationTeamsBinding;
 
 public class BottomSheetOrganizationTeamsFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetOrganizationTeamsFragment.BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
 	@Nullable
 	@Override
@@ -36,16 +37,12 @@ public class BottomSheetOrganizationTeamsFragment extends BottomSheetDialogFragm
 
 	}
 
-	public interface BottomSheetListener {
-		void onButtonClicked(String text);
-	}
-
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 
 		try {
-			bmListener = (BottomSheetOrganizationTeamsFragment.BottomSheetListener) context;
+			bmListener = (BottomSheetListener) context;
 		}
 		catch (ClassCastException e) {
 			Log.e("BsOrganizationTeams", e.toString());

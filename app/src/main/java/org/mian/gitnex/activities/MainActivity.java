@@ -56,6 +56,7 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.ArrayList;
 import java.util.List;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
@@ -66,7 +67,7 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetDraftsFragment.BottomSheetListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetListener {
 
 	private DrawerLayout drawer;
 	private TextView toolbarTitle;

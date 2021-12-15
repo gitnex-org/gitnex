@@ -25,7 +25,7 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class MembersByOrgAdapter extends BaseAdapter implements Filterable {
+public class UserGridAdapter extends BaseAdapter implements Filterable {
 
     private final List<UserInfo> membersList;
     private final Context context;
@@ -40,23 +40,23 @@ public class MembersByOrgAdapter extends BaseAdapter implements Filterable {
 
         ViewHolder(View v) {
 
-            memberAvatar  = v.findViewById(R.id.memberAvatar);
-            memberName  = v.findViewById(R.id.memberName);
+            memberAvatar = v.findViewById(R.id.userAvatarImageView);
+            memberName = v.findViewById(R.id.userNameTv);
 
-	        memberAvatar.setOnClickListener(loginId -> {
+	        v.setOnClickListener(loginId -> {
 		        Intent intent = new Intent(context, ProfileActivity.class);
 		        intent.putExtra("username", userLoginId);
 		        context.startActivity(intent);
 	        });
 
-	        memberAvatar.setOnLongClickListener(loginId -> {
+	        v.setOnLongClickListener(loginId -> {
 		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 		        return true;
 	        });
         }
     }
 
-    public MembersByOrgAdapter(Context ctx, List<UserInfo> membersListMain) {
+    public UserGridAdapter(Context ctx, List<UserInfo> membersListMain) {
 
         this.context = ctx;
         this.membersList = membersListMain;
@@ -82,24 +82,24 @@ public class MembersByOrgAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View finalView, ViewGroup parent) {
 
-        MembersByOrgAdapter.ViewHolder viewHolder = null;
+        UserGridAdapter.ViewHolder viewHolder = null;
 
         if (finalView == null) {
 
-            finalView = LayoutInflater.from(context).inflate(R.layout.list_members_by_org, null);
+            finalView = LayoutInflater.from(context).inflate(R.layout.list_users_grid, null);
             viewHolder = new ViewHolder(finalView);
             finalView.setTag(viewHolder);
         }
         else {
 
-            viewHolder = (MembersByOrgAdapter.ViewHolder) finalView.getTag();
+            viewHolder = (UserGridAdapter.ViewHolder) finalView.getTag();
         }
 
         initData(viewHolder, position);
         return finalView;
     }
 
-    private void initData(MembersByOrgAdapter.ViewHolder viewHolder, int position) {
+    private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
 
         UserInfo currentItem = membersList.get(position);
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);

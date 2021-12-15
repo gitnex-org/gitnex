@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetIssuesFilterBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -18,7 +19,7 @@ import org.mian.gitnex.helpers.Version;
 
 public class BottomSheetIssuesFilterFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetIssuesFilterFragment.BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
 	@Nullable
 	@Override
@@ -48,19 +49,13 @@ public class BottomSheetIssuesFilterFragment extends BottomSheetDialogFragment {
 		return bottomSheetIssuesFilterBinding.getRoot();
 	}
 
-	public interface BottomSheetListener {
-
-		void onButtonClicked(String text);
-
-	}
-
 	@Override
 	public void onAttach(@NonNull Context context) {
 
 		super.onAttach(context);
 
 		try {
-			bmListener = (BottomSheetIssuesFilterFragment.BottomSheetListener) context;
+			bmListener = (BottomSheetListener) context;
 		}
 		catch(ClassCastException e) {
 			throw new ClassCastException(context.toString() + " must implement BottomSheetListener");

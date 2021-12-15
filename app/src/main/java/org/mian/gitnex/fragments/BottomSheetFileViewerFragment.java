@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetFileViewerBinding;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -16,7 +17,7 @@ import org.mian.gitnex.databinding.BottomSheetFileViewerBinding;
 
 public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
 
-    private BottomSheetFileViewerFragment.BottomSheetListener bmListener;
+    private BottomSheetListener bmListener;
 
     @Nullable
     @Override
@@ -45,17 +46,13 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
         return bottomSheetFileViewerBinding.getRoot();
     }
 
-    public interface BottomSheetListener {
-        void onButtonClicked(String text);
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
 
-            bmListener = (BottomSheetFileViewerFragment.BottomSheetListener) context;
+            bmListener = (BottomSheetListener) context;
         }
         catch (ClassCastException e) {
 

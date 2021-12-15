@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.RepoStargazersAdapter;
+import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoStargazersBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
@@ -21,7 +21,7 @@ public class RepoStargazersActivity extends BaseActivity {
 
     private TextView noDataStargazers;
     private View.OnClickListener onClickListener;
-    private RepoStargazersAdapter adapter;
+    private UserGridAdapter adapter;
     private GridView mGridView;
     private ProgressBar mProgressBar;
 
@@ -58,7 +58,7 @@ public class RepoStargazersActivity extends BaseActivity {
 
         repoStargazersModel.getRepoStargazers(instanceToken, repoOwner, repoName, ctx).observe(this, stargazersListMain -> {
 
-            adapter = new RepoStargazersAdapter(ctx, stargazersListMain);
+            adapter = new UserGridAdapter(ctx, stargazersListMain);
 
             if(adapter.getCount() > 0) {
 

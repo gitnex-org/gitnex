@@ -26,6 +26,7 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.views.ReactionSpinner;
 import java.util.Objects;
 
@@ -261,11 +262,6 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		}
 
 		return bottomSheetSingleIssueBinding.getRoot();
-	}
-
-	public interface BottomSheetListener {
-
-		void onButtonClicked(String text);
 	}
 
 	@Override

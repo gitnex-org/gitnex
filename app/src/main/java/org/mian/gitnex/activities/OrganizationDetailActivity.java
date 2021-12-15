@@ -27,6 +27,7 @@ import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
 import org.mian.gitnex.fragments.TeamsByOrgFragment;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
 
@@ -34,7 +35,7 @@ import io.mikael.urlbuilder.UrlBuilder;
  * Author M M Arif
  */
 
-public class OrganizationDetailActivity extends BaseActivity implements BottomSheetOrganizationFragment.BottomSheetListener {
+public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

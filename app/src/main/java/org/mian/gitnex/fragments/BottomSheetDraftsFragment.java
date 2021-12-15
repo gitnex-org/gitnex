@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetDraftsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -19,7 +20,7 @@ import org.mian.gitnex.helpers.Constants;
 public class BottomSheetDraftsFragment extends BottomSheetDialogFragment {
 
 	private String TAG = Constants.tagDraftsBottomSheet;
-	private BottomSheetDraftsFragment.BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
 	@Nullable
 	@Override
@@ -37,16 +38,12 @@ public class BottomSheetDraftsFragment extends BottomSheetDialogFragment {
 		return bottomSheetDraftsBinding.getRoot();
 	}
 
-	public interface BottomSheetListener {
-		void onButtonClicked(String text);
-	}
-
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 
 		try {
-			bmListener = (BottomSheetDraftsFragment.BottomSheetListener) context;
+			bmListener = (BottomSheetListener) context;
 		}
 		catch (ClassCastException e) {
 			Log.e(TAG, e.toString());

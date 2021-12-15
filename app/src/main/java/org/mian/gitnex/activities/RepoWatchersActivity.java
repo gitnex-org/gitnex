@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.RepoWatchersAdapter;
+import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoWatchersBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
@@ -21,7 +21,7 @@ public class RepoWatchersActivity extends BaseActivity {
 
     private TextView noDataWatchers;
     private View.OnClickListener onClickListener;
-    private RepoWatchersAdapter adapter;
+    private UserGridAdapter adapter;
     private GridView mGridView;
     private ProgressBar mProgressBar;
 
@@ -58,7 +58,7 @@ public class RepoWatchersActivity extends BaseActivity {
 
         repoWatchersModel.getRepoWatchers(instanceToken, repoOwner, repoName, ctx).observe(this, watchersListMain -> {
 
-            adapter = new RepoWatchersAdapter(ctx, watchersListMain);
+            adapter = new UserGridAdapter(ctx, watchersListMain);
 
             if(adapter.getCount() > 0) {
 

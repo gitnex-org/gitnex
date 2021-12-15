@@ -1,4 +1,4 @@
-package org.mian.gitnex.adapters.profile;
+package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -23,49 +23,46 @@ import java.util.List;
  * Author M M Arif
  */
 
-public class FollowersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
 	private final int TYPE_LOAD = 0;
-	private List<UserInfo> usersList;
+	private List<UserInfo> followersList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public FollowersAdapter(Context ctx, List<UserInfo> usersListMain) {
+	public UsersAdapter(List<UserInfo> dataList, Context ctx) {
 		this.context = ctx;
-		this.usersList = usersListMain;
+		this.followersList = dataList;
 	}
 
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
 		LayoutInflater inflater = LayoutInflater.from(context);
-
 		if(viewType == TYPE_LOAD) {
-			return new UsersHolder(inflater.inflate(R.layout.list_profile_followers_following, parent, false));
+			return new UsersAdapter.UsersHolder(inflater.inflate(R.layout.list_users, parent, false));
 		}
 		else {
-			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+			return new UsersAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
 		}
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.onLoadMore();
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
-			((UsersHolder) holder).bindData(usersList.get(position));
+			((UsersAdapter.UsersHolder) holder).bindData(followersList.get(position));
 		}
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(usersList.get(position).getUsername() != null) {
+		if(followersList.get(position).getUsername() != null) {
 			return TYPE_LOAD;
 		}
 		else {
@@ -75,21 +72,17 @@ public class FollowersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	@Override
 	public int getItemCount() {
-		return usersList.size();
+		return followersList.size();
 	}
 
 	class UsersHolder extends RecyclerView.ViewHolder {
-
 		private UserInfo userInfo;
-
 		private final ImageView userAvatar;
 		private final TextView userFullName;
 		private final TextView userName;
 
 		UsersHolder(View itemView) {
-
 			super(itemView);
-			Context context = itemView.getContext();
 
 			userAvatar = itemView.findViewById(R.id.userAvatar);
 			userFullName = itemView.findViewById(R.id.userFullName);
@@ -109,11 +102,8 @@ public class FollowersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 		@SuppressLint("SetTextI18n")
 		void bindData(UserInfo userInfo) {
-
 			this.userInfo = userInfo;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
-
-			//Locale locale = context.getResources().getConfiguration().locale;
 
 			if(!userInfo.getFullname().equals("")) {
 				userFullName.setText(Html.fromHtml(userInfo.getFullname()));
@@ -124,14 +114,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				userName.setVisibility(View.GONE);
 			}
 
-			PicassoService.getInstance(context)
-				.get()
-				.load(userInfo.getAvatar())
-				.placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0))
-				.resize(120, 120)
-				.centerCrop()
-				.into(userAvatar);
+			PicassoService.getInstance(context).get().load(userInfo.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
 		}
 	}
 
@@ -145,6 +128,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		isMoreDataAvailable = moreDataAvailable;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
@@ -159,8 +143,9 @@ public class FollowersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 	public void updateList(List<UserInfo> list) {
-		usersList = list;
-		notifyDataSetChanged();
+		followersList = list;
+		notifyDataChanged();
 	}
-
 }
+
+

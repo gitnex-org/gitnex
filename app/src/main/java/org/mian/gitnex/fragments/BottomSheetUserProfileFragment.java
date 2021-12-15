@@ -12,6 +12,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetUserProfileBinding;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Template Author M M Arif
@@ -26,7 +27,7 @@ public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {
 		this.following = following;
 	}
 
-    private BottomSheetUserProfileFragment.BottomSheetListener bmListener;
+    private BottomSheetListener bmListener;
 
     @Nullable
     @Override
@@ -51,16 +52,12 @@ public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {
         return bottomSheetUserProfileBinding.getRoot();
     }
 
-    public interface BottomSheetListener {
-        void onButtonClicked(String text);
-    }
-
-    @Override
+	@Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
-            bmListener = (BottomSheetUserProfileFragment.BottomSheetListener) context;
+            bmListener = (BottomSheetListener) context;
         }
         catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement BottomSheetListener");

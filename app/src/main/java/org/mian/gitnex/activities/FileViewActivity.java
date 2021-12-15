@@ -30,6 +30,7 @@ import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.notifications.Notifications;
+import org.mian.gitnex.structs.BottomSheetListener;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class FileViewActivity extends BaseActivity implements BottomSheetFileViewerFragment.BottomSheetListener {
+public class FileViewActivity extends BaseActivity implements BottomSheetListener {
 
 	private ActivityFileViewBinding binding;
 	private Files file;

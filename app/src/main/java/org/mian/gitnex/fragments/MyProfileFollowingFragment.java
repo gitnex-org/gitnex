@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.MyProfileFollowingAdapter;
+import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
 import org.mian.gitnex.helpers.Authorization;
@@ -36,7 +36,7 @@ public class MyProfileFollowingFragment extends Fragment {
 	private Context context;
 
 	private List<UserInfo> dataList;
-	private MyProfileFollowingAdapter adapter;
+	private UsersAdapter adapter;
 	private int pageSize;
 	private final String TAG = Constants.tagFollowing;
 	private int resultLimit;
@@ -48,7 +48,7 @@ public class MyProfileFollowingFragment extends Fragment {
 		context = getContext();
 
 		dataList = new ArrayList<>();
-		adapter = new MyProfileFollowingAdapter(dataList, context);
+		adapter = new UsersAdapter(dataList, context);
 		resultLimit = Constants.getCurrentResultLimit(context);
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {

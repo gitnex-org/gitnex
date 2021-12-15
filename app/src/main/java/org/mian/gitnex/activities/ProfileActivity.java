@@ -28,6 +28,7 @@ import org.mian.gitnex.fragments.profile.RepositoriesFragment;
 import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +38,7 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class ProfileActivity extends BaseActivity implements BottomSheetUserProfileFragment.BottomSheetListener {
+public class ProfileActivity extends BaseActivity implements BottomSheetListener {
 
 	private String username;
 	private boolean following;

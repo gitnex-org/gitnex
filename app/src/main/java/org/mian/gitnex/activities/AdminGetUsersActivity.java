@@ -25,13 +25,14 @@ import org.mian.gitnex.databinding.ActivityAdminGetUsersBinding;
 import org.mian.gitnex.fragments.BottomSheetAdminUsersFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 
 /**
  * Author M M Arif
  */
 
-public class AdminGetUsersActivity extends BaseActivity implements BottomSheetAdminUsersFragment.BottomSheetListener {
+public class AdminGetUsersActivity extends BaseActivity implements BottomSheetListener {
 
     private View.OnClickListener onClickListener;
     private AdminGetUsersAdapter adapter;

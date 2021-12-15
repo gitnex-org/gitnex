@@ -25,7 +25,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.StarredReposListAdapter;
+import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentStarredRepositoriesBinding;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.TinyDB;
@@ -41,7 +41,7 @@ public class StarredRepositoriesFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
-    private StarredReposListAdapter adapter;
+    private ReposListAdapter adapter;
     private ExtendedFloatingActionButton createNewRepo;
     private TextView noData;
     private int pageSize = 1;
@@ -149,7 +149,7 @@ public class StarredRepositoriesFragment extends Fragment {
         starredRepoModel.getUserStarredRepositories(instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
 	        starredReposListMain -> {
 
-	            adapter = new StarredReposListAdapter(getContext(), starredReposListMain);
+	            adapter = new ReposListAdapter(getContext(), starredReposListMain);
 	            if(adapter.getItemCount() > 0) {
 	                mRecyclerView.setAdapter(adapter);
 	                noData.setVisibility(View.GONE);
