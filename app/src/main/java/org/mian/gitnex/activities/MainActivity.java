@@ -46,7 +46,6 @@ import org.mian.gitnex.fragments.MyProfileFragment;
 import org.mian.gitnex.fragments.RepositoriesFragment;
 import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
-import org.mian.gitnex.fragments.UserAccountsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -173,9 +172,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else if(fragmentById instanceof AdministrationFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
 		}
-		else if(fragmentById instanceof UserAccountsFragment) {
-			toolbarTitle.setText(getResources().getString(R.string.pageTitleUserAccounts));
-		}
 
 		getNotificationsCount(instanceToken);
 
@@ -218,7 +214,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				RecyclerView navRecyclerViewUserAccounts = hView.findViewById(R.id.userAccounts);
 				UserAccountsNavAdapter adapterUserAccounts;
 
-				adapterUserAccounts = new UserAccountsNavAdapter(ctx, userAccountsList, drawer, toolbarTitle);
+				adapterUserAccounts = new UserAccountsNavAdapter(ctx, userAccountsList, drawer);
 
 				userAccountsApi.getAllAccounts().observe((AppCompatActivity) ctx, userAccounts -> {
 					if(userAccounts.size() > 0) {
