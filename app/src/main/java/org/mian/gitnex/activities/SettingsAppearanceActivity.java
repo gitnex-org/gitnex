@@ -98,6 +98,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			tinyDB.putBoolean("enableCounterBadges", isChecked);
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
+		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(v -> counterBadgesSwitch.setChecked(!counterBadgesSwitch.isChecked()));
 
 		// theme selection dialog
 		themeFrame.setOnClickListener(view -> {

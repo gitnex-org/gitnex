@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Commits;
 import org.mian.gitnex.R;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -114,7 +115,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if(timeFormat.equals("pretty")) {
                 commitDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(commitsModel.getCommit().getCommitter().getDate()), context));
             }
-            commitHtmlUrl.setOnClickListener(v -> context.startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(commitsModel.getHtml_url()))));
+            commitHtmlUrl.setOnClickListener(v -> AppUtil.openUrlInBrowser(context, commitsModel.getHtml_url()));
         }
 
     }

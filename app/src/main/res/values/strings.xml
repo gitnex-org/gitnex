@@ -750,4 +750,5 @@
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
     <string name="userAvatar">Avatar</string>
+    <string name="useCustomTabs">Use Custom Tabs</string>
 </resources>

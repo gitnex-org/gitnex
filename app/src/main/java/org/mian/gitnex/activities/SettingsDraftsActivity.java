@@ -36,6 +36,8 @@ public class SettingsDraftsActivity extends BaseActivity {
 			tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
+		activitySettingsDraftsBinding.enableDraftsCommentsDeletion.setOnClickListener(
+			v -> activitySettingsDraftsBinding.commentsDeletionSwitch.setChecked(!activitySettingsDraftsBinding.commentsDeletionSwitch.isChecked()));
 
 	}
 

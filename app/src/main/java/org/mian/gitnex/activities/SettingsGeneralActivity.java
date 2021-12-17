@@ -2,7 +2,9 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
 import org.mian.gitnex.helpers.Toasty;
@@ -139,6 +141,15 @@ public class SettingsGeneralActivity extends BaseActivity {
 			dlDialog.show();
 		});
 		// link handler
+
+		// custom tabs
+		viewBinding.switchTabs.setChecked(tinyDB.getBoolean("useCustomTabs"));
+		viewBinding.switchTabs.setOnCheckedChangeListener((buttonView, isChecked) -> {
+			tinyDB.putBoolean("useCustomTabs", isChecked);
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+		});
+		viewBinding.customTabsFrame.setOnClickListener(v -> viewBinding.switchTabs.setChecked(!viewBinding.switchTabs.isChecked()));
+		// custom tabs
 	}
 
 	private void initCloseListener() { onClickListener = view -> finish(); }

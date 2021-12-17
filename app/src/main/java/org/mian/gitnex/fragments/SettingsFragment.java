@@ -91,27 +91,15 @@ public class SettingsFragment extends Fragment {
 		aboutAppDialogBinding.userServerVersion.setText(tinyDB.getString("giteaVersion"));
 
 		aboutAppDialogBinding.donationLinkPatreon.setOnClickListener(v12 -> {
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_VIEW);
-			intent.addCategory(Intent.CATEGORY_BROWSABLE);
-			intent.setData(Uri.parse(getResources().getString(R.string.supportLinkPatreon)));
-			startActivity(intent);
+			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.supportLinkPatreon));
 		});
 
 		aboutAppDialogBinding.translateLink.setOnClickListener(v13 -> {
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_VIEW);
-			intent.addCategory(Intent.CATEGORY_BROWSABLE);
-			intent.setData(Uri.parse(getResources().getString(R.string.crowdInLink)));
-			startActivity(intent);
+			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.crowdInLink));
 		});
 
 		aboutAppDialogBinding.appWebsite.setOnClickListener(v14 -> {
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_VIEW);
-			intent.addCategory(Intent.CATEGORY_BROWSABLE);
-			intent.setData(Uri.parse(getResources().getString(R.string.appWebsiteLink)));
-			startActivity(intent);
+			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.appWebsiteLink));
 		});
 
 		if(AppUtil.isPro(requireContext())) {

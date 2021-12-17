@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsTranslationBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -50,13 +51,7 @@ public class SettingsTranslationActivity extends BaseActivity {
 		LinearLayout langFrame = activitySettingsTranslationBinding.langFrame;
 
 		helpTranslate.setOnClickListener(v12 -> {
-
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_VIEW);
-			intent.addCategory(Intent.CATEGORY_BROWSABLE);
-			intent.setData(Uri.parse(getResources().getString(R.string.crowdInLink)));
-			startActivity(intent);
-
+			AppUtil.openUrlInBrowser(this, getResources().getString(R.string.crowdInLink));
 		});
 
 		tvLanguageSelected.setText(tinyDB.getString("localeStr"));

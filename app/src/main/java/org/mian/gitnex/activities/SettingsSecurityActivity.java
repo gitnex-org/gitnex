@@ -148,6 +148,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 		});
 
+		activitySettingsSecurityBinding.biometricFrame.setOnClickListener(v -> switchBiometric.setChecked(!switchBiometric.isChecked()));
+
 		// clear cache setter
 		File cacheDir = appCtx.getCacheDir();
 		clearCacheSelected.setText(FileUtils.byteCountToDisplaySize((int) FileUtils.sizeOfDirectory(cacheDir)));

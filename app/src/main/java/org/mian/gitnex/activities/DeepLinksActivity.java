@@ -346,13 +346,7 @@ public class DeepLinksActivity extends BaseActivity {
 					.withPort(port)
 					.toUri();
 
-				Intent intentBrowser = new Intent();
-
-				intentBrowser.setAction(Intent.ACTION_VIEW);
-				intentBrowser.addCategory(Intent.CATEGORY_BROWSABLE);
-				intentBrowser.setData(Uri.parse(String.valueOf(host)));
-
-				startActivity(intentBrowser);
+				AppUtil.openUrlInBrowser(this, String.valueOf(host));
 				finish();
 
 			});

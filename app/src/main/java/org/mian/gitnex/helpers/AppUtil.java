@@ -3,16 +3,22 @@ package org.mian.gitnex.helpers;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.net.Uri;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.ColorInt;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
+import org.mian.gitnex.R;
 import org.mian.gitnex.database.models.UserAccount;
 import java.io.IOException;
 import java.io.InputStream;
@@ -341,6 +347,32 @@ public class AppUtil {
 
 		return false;
 
+	}
+
+	public static void openUrlInBrowser(Context context, String url) {
+		TinyDB tinyDB = TinyDB.getInstance(context);
+
+		try {
+			if(tinyDB.getBoolean("useCustomTabs")) {
+				new CustomTabsIntent
+					.Builder()
+					.setDefaultColorSchemeParams(
+						new CustomTabColorSchemeParams.Builder()
+							.setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
+							.setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
+							.setSecondaryToolbarColor(R.attr.primaryTextColor)
+							.build()
+					)
+					.build()
+					.launchUrl(context, Uri.parse(url));
+			} else {
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(tinyDB.getString("repoHtmlUrl")));
+				i.addCategory(Intent.CATEGORY_BROWSABLE);
+				context.startActivity(i);
+			}
+		} catch(Exception e) {
+			Toasty.error(context, context.getString(R.string.genericError));
+		}
 	}
 
 }

@@ -106,9 +106,6 @@
             android:name=".activities.CreateOrganizationActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity
-            android:name=".activities.OpenRepoInBrowserActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
-        <activity
             android:name=".activities.FileDiffActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|uiMode|keyboard|keyboardHidden|navigation" />
         <activity

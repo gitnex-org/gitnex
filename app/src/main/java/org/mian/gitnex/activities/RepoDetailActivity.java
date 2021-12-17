@@ -46,6 +46,7 @@ import org.mian.gitnex.fragments.MilestonesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
@@ -419,9 +420,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				startActivity(new Intent(RepoDetailActivity.this, CreateReleaseActivity.class));
 				break;
 			case "openWebRepo":
-
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(tinyDB.getString("repoHtmlUrl")));
-				startActivity(i);
+				AppUtil.openUrlInBrowser(this, tinyDB.getString("repoHtmlUrl"));
 				break;
 			case "shareRepo":
 
