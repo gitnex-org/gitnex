@@ -20,6 +20,7 @@ import org.mian.gitnex.helpers.PathsHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.structs.Protocol;
 import java.net.URI;
 import io.mikael.urlbuilder.UrlBuilder;
 import retrofit2.Call;
@@ -34,7 +35,6 @@ public class AddNewAccountActivity extends BaseActivity {
 	private View.OnClickListener onClickListener;
 	private ActivityAddNewAccountBinding viewBinding;
 
-	private enum Protocol {HTTPS, HTTP}
 	private String spinnerSelectedValue;
 
 	@Override

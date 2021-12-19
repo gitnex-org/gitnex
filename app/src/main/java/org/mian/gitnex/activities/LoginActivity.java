@@ -28,6 +28,7 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.structs.Protocol;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -42,8 +43,6 @@ import retrofit2.Callback;
  */
 
 public class LoginActivity extends BaseActivity {
-
-	private enum Protocol {HTTPS, HTTP}
 
 	private enum LoginType {BASIC, TOKEN}
 

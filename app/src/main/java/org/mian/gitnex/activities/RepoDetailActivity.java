@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +50,7 @@ import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.BottomSheetListener;
+import org.mian.gitnex.structs.FragmentRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -69,10 +69,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private TextView textViewBadgeRelease;
 
 	private FragmentRefreshListener fragmentRefreshListener;
-	private FragmentRefreshListenerPr fragmentRefreshListenerPr;
-	private FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone;
-	private FragmentRefreshListenerFiles fragmentRefreshListenerFiles;
-	private FragmentRefreshListenerFilterIssuesByMilestone fragmentRefreshListenerFilterIssuesByMilestone;
+	private FragmentRefreshListener fragmentRefreshListenerPr;
+	private FragmentRefreshListener fragmentRefreshListenerMilestone;
+	private FragmentRefreshListener fragmentRefreshListenerFiles;
+	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 
 	private String repositoryOwner;
 	private String repositoryName;
@@ -779,38 +779,28 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	}
 
 	// Issues milestone filter interface
-	public FragmentRefreshListenerFilterIssuesByMilestone getFragmentRefreshListenerFilterIssuesByMilestone() { return fragmentRefreshListenerFilterIssuesByMilestone; }
+	public FragmentRefreshListener getFragmentRefreshListenerFilterIssuesByMilestone() { return fragmentRefreshListenerFilterIssuesByMilestone; }
 
-	public void setFragmentRefreshListenerFilterIssuesByMilestone(FragmentRefreshListenerFilterIssuesByMilestone fragmentRefreshListener) { this.fragmentRefreshListenerFilterIssuesByMilestone = fragmentRefreshListener; }
-
-	public interface FragmentRefreshListenerFilterIssuesByMilestone { void onRefresh(String text); }
+	public void setFragmentRefreshListenerFilterIssuesByMilestone(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListenerFilterIssuesByMilestone = fragmentRefreshListener; }
 
 	// Issues interface
 	public FragmentRefreshListener getFragmentRefreshListener() { return fragmentRefreshListener; }
 
 	public void setFragmentRefreshListener(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListener = fragmentRefreshListener; }
 
-	public interface FragmentRefreshListener { void onRefresh(String text); }
-
 	// Pull request interface
-	public FragmentRefreshListenerPr getFragmentRefreshListenerPr() { return fragmentRefreshListenerPr; }
+	public FragmentRefreshListener getFragmentRefreshListenerPr() { return fragmentRefreshListenerPr; }
 
-	public void setFragmentRefreshListenerPr(FragmentRefreshListenerPr fragmentRefreshListenerPr) { this.fragmentRefreshListenerPr = fragmentRefreshListenerPr; }
-
-	public interface FragmentRefreshListenerPr { void onRefresh(String text); }
+	public void setFragmentRefreshListenerPr(FragmentRefreshListener fragmentRefreshListenerPr) { this.fragmentRefreshListenerPr = fragmentRefreshListenerPr; }
 
 	// Milestones interface
-	public FragmentRefreshListenerMilestone getFragmentRefreshListenerMilestone() { return fragmentRefreshListenerMilestone; }
+	public FragmentRefreshListener getFragmentRefreshListenerMilestone() { return fragmentRefreshListenerMilestone; }
 
-	public void setFragmentRefreshListenerMilestone(FragmentRefreshListenerMilestone fragmentRefreshListenerMilestone) { this.fragmentRefreshListenerMilestone = fragmentRefreshListenerMilestone; }
-
-	public interface FragmentRefreshListenerMilestone { void onRefresh(String text); }
+	public void setFragmentRefreshListenerMilestone(FragmentRefreshListener fragmentRefreshListenerMilestone) { this.fragmentRefreshListenerMilestone = fragmentRefreshListenerMilestone; }
 
 	// Files interface
-	public FragmentRefreshListenerFiles getFragmentRefreshListenerFiles() { return fragmentRefreshListenerFiles; }
+	public FragmentRefreshListener getFragmentRefreshListenerFiles() { return fragmentRefreshListenerFiles; }
 
-	public void setFragmentRefreshListenerFiles(FragmentRefreshListenerFiles fragmentRefreshListenerFiles) { this.fragmentRefreshListenerFiles = fragmentRefreshListenerFiles; }
-
-	public interface FragmentRefreshListenerFiles { void onRefresh(String text); }
+	public void setFragmentRefreshListenerFiles(FragmentRefreshListener fragmentRefreshListenerFiles) { this.fragmentRefreshListenerFiles = fragmentRefreshListenerFiles; }
 
 }
