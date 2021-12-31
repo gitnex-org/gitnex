@@ -1,5 +1,6 @@
 package org.mian.gitnex.helpers;
 
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -8,7 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.net.Uri;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -370,9 +370,45 @@ public class AppUtil {
 				i.addCategory(Intent.CATEGORY_BROWSABLE);
 				context.startActivity(i);
 			}
-		} catch(Exception e) {
+		} catch(ActivityNotFoundException e) {
+			Toasty.error(context, context.getString(R.string.browserOpenFailed));
+		} catch (Exception e) {
 			Toasty.error(context, context.getString(R.string.genericError));
 		}
 	}
 
+	public static Uri getUriFromGitUrl(String url) {
+		Uri uri = Uri.parse(url);
+		String host = uri.getHost();
+		if(host != null) {
+			return uri;
+		}
+		// must be a SSH URL now
+		return Uri.parse(getUriHostFromSSHUrl(url));
+	}
+
+	public static String getUriHostFromSSHUrl(String url) {
+		int scheme = url.indexOf("://");
+		if (scheme >= 0) {
+			url = url.substring(scheme+3);
+		}
+
+		String result = "";
+		String[] userHost = url.split("@"); // for a full URL this should be ["//user", "host.tld"]
+		if(userHost.length < 2) {
+			result = userHost[0].replace("//", "");
+		} else {
+			result = userHost[1];
+		}
+		return "https://" + result.replace(":", "/");
+	}
+
+	public static Uri changeScheme(Uri origin, String scheme) {
+		String raw = origin.toString();
+		int schemeIndex = raw.indexOf("://");
+		if (schemeIndex >= 0) {
+			raw = raw.substring(schemeIndex);
+		}
+		return Uri.parse(scheme+raw);
+	}
 }

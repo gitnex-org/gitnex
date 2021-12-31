@@ -19,9 +19,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.Files;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.DeepLinksActivity;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.FragmentFilesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
@@ -29,6 +33,7 @@ import org.mian.gitnex.helpers.Path;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 
@@ -183,12 +188,46 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 				break;
 
 			case "file":
+			case "symlink":
 				Intent intent = new Intent(getContext(), FileViewActivity.class);
 				intent.putExtra("file", file);
 
 				requireContext().startActivity(intent);
 				break;
 
+			case "submodule":
+				String rawUrl = file.getSubmodule_git_url();
+				if(rawUrl == null) {
+					return;
+				}
+				Uri url = AppUtil.getUriFromGitUrl(rawUrl);
+				String host = url.getHost();
+
+
+				UserAccountsApi userAccountsApi = BaseApi.getInstance(requireContext(), UserAccountsApi.class);
+				List<UserAccount> userAccounts = userAccountsApi.usersAccounts();
+				boolean accountFound = false;
+
+				for(UserAccount userAccount : userAccounts) {
+					Uri instanceUri = Uri.parse(userAccount.getInstanceUrl());
+					if(instanceUri.getHost().toLowerCase().equals(host)) {
+						accountFound = true;
+						// if scheme is wrong fix it
+						if (!url.getScheme().equals(instanceUri.getScheme())) {
+							url = AppUtil.changeScheme(url,instanceUri.getScheme());
+						}
+						break;
+					}
+				}
+
+				if(accountFound) {
+					Intent iLink = new Intent(requireContext(), DeepLinksActivity.class);
+					iLink.setData(url);
+					startActivity(iLink);
+				} else {
+					AppUtil.openUrlInBrowser(requireContext(), url.toString());
+				}
+				break;
 		}
 	}
 
@@ -229,7 +268,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel.getFilesList2(instanceToken, owner, repo, filesDir, ref, getContext(), binding.progressBar, binding.noDataFiles).observe(this, filesListMain2 -> {
+		filesModel.getFilesList2(instanceToken, owner, repo, filesDir, ref, getContext(), binding.progressBar, binding.noDataFiles).observe(getViewLifecycleOwner(), filesListMain2 -> {
 
 			filesAdapter.getOriginalFiles().clear();
 			filesAdapter.getOriginalFiles().addAll(filesListMain2);

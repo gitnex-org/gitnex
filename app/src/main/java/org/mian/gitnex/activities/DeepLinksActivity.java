@@ -88,8 +88,10 @@ public class DeepLinksActivity extends BaseActivity {
 
 			currentInstance = userAccount.getInstanceUrl();
 			instanceToken = userAccount.getToken();
+			String host = data.getHost();
+			if (host == null) host = "";
 
-			if(hostUri.toLowerCase().contains(Objects.requireNonNull(data.getHost().toLowerCase()))) {
+			if(hostUri.toLowerCase().contains(host.toLowerCase())) {
 
 				accountFound = true;
 
@@ -151,8 +153,13 @@ public class DeepLinksActivity extends BaseActivity {
 					finish();
 				}
 				else if(!data.getPathSegments().get(0).equals("") & !data.getLastPathSegment().equals("")) { // go to repo
+					String repo = data.getLastPathSegment();
+					if (repo.endsWith(".git")) { // Git clone URL
+						repo = repo.substring(0, repo.length() - 4);
+					}
+					String finalRepo = repo;
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getLastPathSegment(), "repo"), 500);
+						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), finalRepo, "repo"), 500);
 				}
 				else { // no action, show options
 					showNoActionButtons();
