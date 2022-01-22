@@ -15,6 +15,7 @@ public class AppUtilTest {
 		assertEquals(AppUtil.FileType.EXECUTABLE, AppUtil.getFileType("deb"));
 		assertEquals(AppUtil.FileType.TEXT, AppUtil.getFileType("JSON"));
 		assertEquals(AppUtil.FileType.DOCUMENT, AppUtil.getFileType("PDF"));
+		assertEquals(AppUtil.FileType.FONT, AppUtil.getFileType("woff2"));
 	}
 
 	@Test
