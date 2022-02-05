@@ -81,7 +81,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 		int imageSize = AppUtil.getPixelsFromDensity(context, 35);
 
 		PicassoService.getInstance(context).get()
-			.load(url + "img/favicon.png")
+			.load(url + "assets/img/favicon.png")
 			.placeholder(R.drawable.loader_animated)
 			.transform(new RoundedTransformation(8, 0))
 			.resize(imageSize, imageSize)
