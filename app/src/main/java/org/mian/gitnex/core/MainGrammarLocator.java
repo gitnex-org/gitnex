@@ -1,20 +1,16 @@
 package org.mian.gitnex.core;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.NonNull;
 import java.util.Set;
+import io.noties.prism4j.DefaultGrammarLocator;
+import io.noties.prism4j.Grammar;
 import io.noties.prism4j.GrammarLocator;
 import io.noties.prism4j.Prism4j;
-import io.noties.prism4j.annotations.PrismBundle;
 
 /**
  * @author opyale
  */
 
-@PrismBundle(
-	includeAll = true,
-	grammarLocatorClassName = ".DefaultGrammarLocator"
-)
 public class MainGrammarLocator implements GrammarLocator {
 
 	public static final String DEFAULT_FALLBACK_LANGUAGE = "clike";
@@ -109,14 +105,13 @@ public class MainGrammarLocator implements GrammarLocator {
 
 	}
 
-	@Nullable
 	@Override
-	public Prism4j.Grammar grammar(@NotNull Prism4j prism4j, @NotNull String language) {
+	public Grammar grammar(@NonNull Prism4j prism4j, @NonNull String language) {
 
 		return defaultGrammarLocator.grammar(prism4j, language);
 	}
 
-	@NotNull
+	@NonNull
 	@Override
 	public Set<String> languages() {
 

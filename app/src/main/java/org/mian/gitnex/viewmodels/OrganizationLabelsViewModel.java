@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.models.Labels;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.clients.RetrofitClient;
 import java.util.List;
 import retrofit2.Call;
@@ -57,7 +56,7 @@ public class OrganizationLabelsViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Labels>> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {
 				Log.i("onFailure", t.toString());
 			}
 

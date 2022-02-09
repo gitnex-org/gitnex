@@ -14,7 +14,6 @@ import org.gitnex.tea4j.models.Organization;
 import org.gitnex.tea4j.models.PullRequests;
 import org.gitnex.tea4j.models.UserInfo;
 import org.gitnex.tea4j.models.UserRepositories;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -527,7 +526,7 @@ public class DeepLinksActivity extends BaseActivity {
 		call.enqueue(new Callback<Organization>() {
 
 			@Override
-			public void onResponse(@NotNull Call<Organization> call, @NotNull Response<Organization> response) {
+			public void onResponse(@NonNull Call<Organization> call, @NonNull Response<Organization> response) {
 				if(response.code() == 404) { // org doesn't exist or it's a user user
 					Log.d("getUserOrOrg-404", String.valueOf(response.code()));
 					getUser(url, instanceToken, userOrgName);
@@ -552,7 +551,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NotNull Call<Organization> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
 				Log.e("onFailure-getUserOrOrg", t.toString());
 			}
 		});
@@ -564,7 +563,7 @@ public class DeepLinksActivity extends BaseActivity {
 		call.enqueue(new Callback<UserInfo>() {
 
 			@Override
-			public void onResponse(@NotNull Call<UserInfo> call, @NotNull Response<UserInfo> response) {
+			public void onResponse(@NonNull Call<UserInfo> call, @NonNull Response<UserInfo> response) {
 				if(response.code() == 200) {
 					assert response.body() != null;
 					userIntent.putExtra("username", response.body().getLogin());
@@ -578,7 +577,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NotNull Call<UserInfo> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
 				Log.e("onFailure-getUser", t.toString());
 				ctx.startActivity(mainIntent);
 				finish();
@@ -592,7 +591,7 @@ public class DeepLinksActivity extends BaseActivity {
 		call.enqueue(new Callback<Files>() {
 
 			@Override
-			public void onResponse(@NotNull Call<Files> call, @NotNull Response<Files> response) {
+			public void onResponse(@NonNull Call<Files> call, @NonNull Response<Files> response) {
 				if(response.code() == 200) {
 					// check if file and open file/dir
 					Files file = response.body();
@@ -611,7 +610,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NotNull Call<Files> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<Files> call, @NonNull Throwable t) {
 				Log.e("getFile-onFailure", t.toString());
 				// maybe it's a directory
 				getDir(url, instanceToken, owner, repo, filePath, branch);
