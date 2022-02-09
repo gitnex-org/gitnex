@@ -88,7 +88,7 @@ Thanks to all the open source libraries, contributors and donators.
 - [chrisvest/stormpot](https://github.com/chrisvest/stormpot)
 
 #### Icon sets
-- [feathericons/feather](https://github.com/feathericons/feather)
+- [lucide-icons/lucide](https://github.com/lucide-icons/lucide)
 - [primer/octicons](https://github.com/primer/octicons)
 - [google/material-design-icons](https://github.com/google/material-design-icons)
 
