@@ -37,11 +37,11 @@ public class AppUtilTest {
 
 	@Test
 	public void parseSSHUrl() {
-		assertEquals("https://codeberg.org/gitnex/GitNex", AppUtil.getUriHostFromSSHUrl("ssh://git@codeberg.org:gitnex/GitNex"));
-		assertEquals("https://codeberg.org/gitnex/GitNex", AppUtil.getUriHostFromSSHUrl("codeberg.org:gitnex/GitNex"));
-		assertEquals("https://codeberg.org/gitnex/GitNex", AppUtil.getUriHostFromSSHUrl("ssh://git@codeberg.org/gitnex/GitNex"));
-		assertEquals("https://codeberg.org/gitnex/GitNex.git", AppUtil.getUriHostFromSSHUrl("ssh://git@codeberg.org:gitnex/GitNex.git"));
-		assertEquals("https://codeberg.org/gitnex/GitNex.git", AppUtil.getUriHostFromSSHUrl("codeberg.org:gitnex/GitNex.git"));
+		assertEquals("https://git@codeberg.org/gitnex/GitNex", AppUtil.getUriFromSSHUrl("ssh://git@codeberg.org:gitnex/GitNex"));
+		assertEquals("https://codeberg.org/gitnex/GitNex", AppUtil.getUriFromSSHUrl("codeberg.org:gitnex/GitNex"));
+		assertEquals("https://git@codeberg.org/gitnex/GitNex", AppUtil.getUriFromSSHUrl("ssh://git@codeberg.org/gitnex/GitNex"));
+		assertEquals("https://git@codeberg.org/gitnex/GitNex.git", AppUtil.getUriFromSSHUrl("ssh://git@codeberg.org:gitnex/GitNex.git"));
+		assertEquals("https://codeberg.org/gitnex/GitNex.git", AppUtil.getUriFromSSHUrl("codeberg.org:gitnex/GitNex.git"));
 	}
 
 }

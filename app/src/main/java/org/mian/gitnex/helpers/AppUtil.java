@@ -383,24 +383,16 @@ public class AppUtil {
 		if(host != null) {
 			return uri;
 		}
-		// must be a SSH URL now
-		return Uri.parse(getUriHostFromSSHUrl(url));
+		// must be a Git SSH URL now (old rcp standard)
+		return Uri.parse(getUriFromSSHUrl(url));
 	}
 
-	public static String getUriHostFromSSHUrl(String url) {
-		int scheme = url.indexOf("://");
-		if (scheme >= 0) {
-			url = url.substring(scheme+3);
+	public static String getUriFromSSHUrl(String url) {
+		String[] urlParts = url.split("://");
+		if (urlParts.length > 1) {
+			url = urlParts[1];
 		}
-
-		String result = "";
-		String[] userHost = url.split("@"); // for a full URL this should be ["//user", "host.tld"]
-		if(userHost.length < 2) {
-			result = userHost[0].replace("//", "");
-		} else {
-			result = userHost[1];
-		}
-		return "https://" + result.replace(":", "/");
+		return "https://" + url.replace(":", "/");
 	}
 
 	public static Uri changeScheme(Uri origin, String scheme) {

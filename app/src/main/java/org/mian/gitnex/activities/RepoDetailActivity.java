@@ -33,6 +33,9 @@ import org.gitnex.tea4j.models.UserRepositories;
 import org.gitnex.tea4j.models.WatchInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.fragments.BottomSheetIssuesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetMilestonesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetPullRequestFilterFragment;
@@ -776,6 +779,19 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			}
 		});
 
+	}
+
+	@Override
+	protected void onDestroy() {
+		if(!isFinishing()) {
+			return;
+		}
+		if(getIntent().getBooleanExtra("switchAccountBackOnFinish", false)) {
+			UserAccount a = BaseApi.getInstance(this, UserAccountsApi.class)
+				.getAccountById(getIntent().getIntExtra("oldAccountId", 0));
+			AppUtil.switchToAccount(this, a);
+		}
+		super.onDestroy();
 	}
 
 	// Issues milestone filter interface
