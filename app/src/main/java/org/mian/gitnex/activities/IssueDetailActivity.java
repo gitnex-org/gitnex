@@ -33,7 +33,9 @@ import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Collaborators;
 import org.gitnex.tea4j.models.Issues;
 import org.gitnex.tea4j.models.Labels;
+import org.gitnex.tea4j.models.PullRequests;
 import org.gitnex.tea4j.models.UpdateIssueAssignees;
+import org.gitnex.tea4j.models.UserRepositories;
 import org.gitnex.tea4j.models.WatchInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.AssigneesActions;
@@ -86,6 +88,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	private String repoOwner;
 	private String repoName;
 	private int issueIndex;
+	private String issueCreator;
 
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
@@ -450,7 +453,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		}
 		else if(id == R.id.genericMenu) {
 
-			BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment();
+			BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment(issueCreator);
 			bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
 			return true;
 		}
@@ -542,6 +545,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	}
 
 	private void getSingleIssue(String repoOwner, String repoName, int issueIndex) {
+		updateTinyDBPermissionValues();
 
 		final TinyDB tinyDb = TinyDB.getInstance(appCtx);
 		Call<Issues> call = RetrofitClient.getApiInterface(ctx)
@@ -560,7 +564,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.issuePrState.setVisibility(View.VISIBLE);
 
 					if(singleIssue.getPull_request() != null) {
-
+						getPullSourceRepo();
 						if(singleIssue.getPull_request().isMerged()) { // merged
 
 							viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request_merged);
@@ -585,6 +589,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					tinyDb.putString("issueState", singleIssue.getState());
 					tinyDb.putString("issueTitle", singleIssue.getTitle());
 					tinyDb.putString("singleIssueHtmlUrl", singleIssue.getHtml_url());
+					issueCreator = singleIssue.getUser().getLogin();
 
 					PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated)
 						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(viewBinding.assigneeAvatar);
@@ -862,6 +867,58 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		}
 
+	}
+
+	private void updateTinyDBPermissionValues() {
+		RetrofitClient.getApiInterface(this).getUserRepository(Authorization.get(this), repoOwner, repoName).enqueue(new Callback<UserRepositories>() {
+
+			@Override
+			public void onResponse(@NonNull Call<UserRepositories> call, @NonNull Response<UserRepositories> response) {
+				if(response.isSuccessful()) {
+					assert response.body() != null;
+					tinyDB.putBoolean("isArchived", response.body().isArchived());
+					if(response.body().isArchived()) {
+						viewBinding.addNewComment.setVisibility(View.GONE);
+					}
+					tinyDB.putBoolean("isRepoAdmin", response.body().getPermissions().isAdmin());
+					tinyDB.putBoolean("canPush", response.body().getPermissions().canPush());
+				}
+				else {
+					onFailure(call, new Throwable());
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
+				tinyDB.putBoolean("isRepoAdmin", false);
+				tinyDB.putBoolean("canPush", false);
+			}
+		});
+	}
+
+	private void getPullSourceRepo() {
+		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.15.4")) {
+			RetrofitClient.getApiInterface(this).getPullRequestByIndex(Authorization.get(this), repoOwner, repoName, issueIndex).enqueue(new Callback<PullRequests>() {
+
+				@Override
+				public void onResponse(@NonNull Call<PullRequests> call, @NonNull Response<PullRequests> response) {
+					if(response.isSuccessful() && response.body() != null) {
+						tinyDB.putBoolean("canPushPullSource", response.body().getHead().getRepo().getPermissions().isPush());
+					}
+					else {
+						tinyDB.putBoolean("canPushPullSource", false);
+					}
+				}
+
+				@Override
+				public void onFailure(@NonNull Call<PullRequests> call, @NonNull Throwable t) {
+					tinyDB.putBoolean("canPushPullSource", false);
+				}
+			});
+		}
+		else {
+			tinyDB.putBoolean("canPushPullSource", true);
+		}
 	}
 
 }

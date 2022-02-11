@@ -100,8 +100,16 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				TextView commentMenuCopy = vw.findViewById(R.id.commentMenuCopy);
 				TextView commentMenuDelete = vw.findViewById(R.id.commentMenuDelete);
 				TextView issueCommentCopyUrl = vw.findViewById(R.id.issueCommentCopyUrl);
+				LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
 
-				if(!loginUid.contentEquals(issueComment.getUser().getUsername())) {
+				if(tinyDB.getBoolean("isArchived")) {
+					commentMenuEdit.setVisibility(View.GONE);
+					commentMenuDelete.setVisibility(View.GONE);
+					commentMenuQuote.setVisibility(View.GONE);
+					linearLayout.setVisibility(View.GONE);
+				}
+
+				if(!loginUid.contentEquals(issueComment.getUser().getUsername()) && !tinyDB.getBoolean("canPush")) {
 					commentMenuEdit.setVisibility(View.GONE);
 					commentMenuDelete.setVisibility(View.GONE);
 				}
@@ -114,7 +122,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				dialog.setContentView(vw);
 				dialog.show();
 
-				LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
 				TextView loadReactions = new TextView(context);
 				loadReactions.setText(context.getString(R.string.genericWaitFor));
 				loadReactions.setGravity(Gravity.CENTER);

@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import org.gitnex.tea4j.models.OrgPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityOrgTeamMembersBinding;
@@ -95,7 +96,7 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
 
         TeamMembersByOrgViewModel teamMembersModel = new ViewModelProvider(this).get(TeamMembersByOrgViewModel.class);
 
-        teamMembersModel.getMembersByOrgList(instanceToken, teamId, ctx).observe(this, teamMembersListMain -> {
+        teamMembersModel.getMembersByOrgList(instanceToken, teamId, ctx, noDataMembers, progressBar).observe(this, teamMembersListMain -> {
 
             adapter = new UserGridAdapter(ctx, teamMembersListMain);
 
@@ -117,9 +118,10 @@ public class OrganizationTeamMembersActivity extends BaseActivity implements Bot
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+    	if(((OrgPermissions) getIntent().getSerializableExtra("permissions")).isOwner()) {
+		    MenuInflater inflater = getMenuInflater();
+		    inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+	    }
         return true;
     }
 

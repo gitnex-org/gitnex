@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetFileViewerBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
+import org.mian.gitnex.helpers.TinyDB;
 
 /**
  * Author M M Arif
@@ -24,6 +25,11 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 	    BottomSheetFileViewerBinding bottomSheetFileViewerBinding = BottomSheetFileViewerBinding.inflate(inflater, container, false);
+
+	    if(!TinyDB.getInstance(requireContext()).getBoolean("canPush")) {
+	    	bottomSheetFileViewerBinding.deleteFile.setVisibility(View.GONE);
+	    	bottomSheetFileViewerBinding.editFile.setVisibility(View.GONE);
+	    }
 
 	    bottomSheetFileViewerBinding.downloadFile.setOnClickListener(v1 -> {
 

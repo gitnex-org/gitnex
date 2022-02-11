@@ -479,6 +479,7 @@ public class DeepLinksActivity extends BaseActivity {
 						tinyDB.putString("repoType", getResources().getString(R.string.strPublic));
 					}
 					tinyDB.putBoolean("isRepoAdmin", repoInfo.getPermissions().isAdmin());
+					tinyDB.putBoolean("canPush", repoInfo.getPermissions().canPush());
 					tinyDB.putString("repoBranch", repoInfo.getDefault_branch());
 
 					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");

@@ -166,6 +166,7 @@
                 tools:visibility="visible" />
 
             <View
+                android:id="@+id/shareDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="12dp"
@@ -204,6 +205,7 @@
                 app:drawableStartCompat="@drawable/ic_copy" />
 
             <View
+                android:id="@+id/dividerCloseReopenIssue"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="12dp"
@@ -225,23 +227,6 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 app:drawableStartCompat="@drawable/ic_issue_closed" />
-
-            <TextView
-                android:id="@+id/reOpenIssue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/reOpenIssue"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:drawableStartCompat="@drawable/ic_reopen"
-                tools:visibility="visible" />
 
         </LinearLayout>
 

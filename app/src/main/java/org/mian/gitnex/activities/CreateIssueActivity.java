@@ -138,6 +138,13 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	        viewBinding.createNewIssueButton.setOnClickListener(this);
         }
 
+        if(!tinyDB.getBoolean("canPush")) {
+        	viewBinding.newIssueAssigneesListLayout.setVisibility(View.GONE);
+        	viewBinding.newIssueMilestoneSpinnerLayout.setVisibility(View.GONE);
+        	viewBinding.newIssueLabelsLayout.setVisibility(View.GONE);
+        	viewBinding.newIssueDueDateLayout.setVisibility(View.GONE);
+        }
+
     }
 
 	@Override

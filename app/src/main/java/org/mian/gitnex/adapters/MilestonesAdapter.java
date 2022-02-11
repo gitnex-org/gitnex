@@ -100,6 +100,9 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			msProgress = itemView.findViewById(R.id.milestoneProgress);
 			ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
 
+			if(!TinyDB.getInstance(itemView.getContext()).getBoolean("isRepoAdmin")) {
+				milestonesMenu.setVisibility(View.GONE);
+			}
 			milestonesMenu.setOnClickListener(v -> {
 
 				Context ctx = v.getContext();
