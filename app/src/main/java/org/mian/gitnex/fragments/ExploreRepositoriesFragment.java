@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,12 +28,10 @@ import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomExploreRepositoriesDialogBinding;
 import org.mian.gitnex.databinding.FragmentExploreRepoBinding;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.InfiniteScrollListener;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,19 +42,21 @@ import retrofit2.Response;
 /**
  * Template Author M M Arif
  * Author 6543
+ * Modified M M Arif
  */
 
 public class ExploreRepositoriesFragment extends Fragment {
 
 	private FragmentExploreRepoBinding viewBinding;
-	private Context ctx;
+	private Context context;
 	private TinyDB tinyDb;
 
-	private int pageCurrentIndex = 1;
-	private boolean repoTypeInclude = true;
-	private String sort = "updated";
-	private String order = "desc";
-	private int limit = 10;
+	private int pageSize;
+	private final boolean repoTypeInclude = true;
+	private final String sort = "updated";
+	private final String order = "desc";
+	private final String TAG = Constants.exploreRepositories;
+	private int resultLimit;
 	private List<UserRepositories> dataList;
 	private ExploreRepositoriesAdapter adapter;
 
@@ -67,164 +69,130 @@ public class ExploreRepositoriesFragment extends Fragment {
 		viewBinding = FragmentExploreRepoBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
-		ctx = getContext();
+		context = getContext();
 		tinyDb = TinyDB.getInstance(getContext());
 
 		dataList = new ArrayList<>();
-		adapter = new ExploreRepositoriesAdapter(dataList, ctx);
+		adapter = new ExploreRepositoriesAdapter(dataList, context);
 
 		tinyDb.putBoolean("exploreRepoIncludeTopic", false);
 		tinyDb.putBoolean("exploreRepoIncludeDescription", false);
 		tinyDb.putBoolean("exploreRepoIncludeTemplate", false);
 		tinyDb.putBoolean("exploreRepoOnlyArchived", false);
 
-		// if gitea is 1.12 or higher use the new limit
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			limit = Constants.resultLimitNewGiteaInstances;
-		}
-
-		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ctx);
-
-		viewBinding.recyclerViewReposSearch.setHasFixedSize(true);
-		viewBinding.recyclerViewReposSearch.setLayoutManager(linearLayoutManager);
-		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerViewReposSearch.getContext(),
-			DividerItemDecoration.VERTICAL);
-		viewBinding.recyclerViewReposSearch.addItemDecoration(dividerItemDecoration);
+		resultLimit = Constants.getCurrentResultLimit(context);
 
 		viewBinding.searchKeyword.setOnEditorActionListener((v1, actionId, event) -> {
-
 			if(actionId == EditorInfo.IME_ACTION_SEND) {
-
 				if(!Objects.requireNonNull(viewBinding.searchKeyword.getText()).toString().equals("")) {
-
 					InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(viewBinding.searchKeyword.getWindowToken(), 0);
 
-					// if gitea is 1.12 or higher use the new limit
-					if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-						limit = Constants.resultLimitNewGiteaInstances;
-					}
-					else {
-						limit = 10;
-					}
-
-					pageCurrentIndex = 1;
 					viewBinding.progressBar.setVisibility(View.VISIBLE);
-					loadData(false, viewBinding.searchKeyword.getText().toString(), tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"));
+					loadInitial(String.valueOf(viewBinding.searchKeyword.getText()), tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"), resultLimit);
+
+					adapter.setLoadMoreListener(() -> viewBinding.recyclerViewReposSearch.post(() -> {
+						if(dataList.size() == resultLimit || pageSize == resultLimit) {
+							int page = (dataList.size() + resultLimit) / resultLimit;
+							loadMore(String.valueOf(viewBinding.searchKeyword.getText()), tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"), resultLimit, page);
+						}
+					}));
 				}
 			}
 			return false;
 		});
 
-		viewBinding.recyclerViewReposSearch.addOnScrollListener(new InfiniteScrollListener(pageCurrentIndex, linearLayoutManager) {
+		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+			viewBinding.pullToRefresh.setRefreshing(false);
+			loadInitial("", tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"), resultLimit);
+			adapter.notifyDataChanged();
+		}, 200));
 
-			@Override
-			public void onScrolledToEnd(int firstVisibleItemPosition) {
-
-				pageCurrentIndex++;
-				loadData(true, Objects.requireNonNull(viewBinding.searchKeyword.getText()).toString(), tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"));
+		adapter.setLoadMoreListener(() -> viewBinding.recyclerViewReposSearch.post(() -> {
+			if(dataList.size() == resultLimit || pageSize == resultLimit) {
+				int page = (dataList.size() + resultLimit) / resultLimit;
+				loadMore(String.valueOf(viewBinding.searchKeyword.getText()), tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"), resultLimit, page);
 			}
-		});
+		}));
 
-		viewBinding.pullToRefresh.setOnRefreshListener(() -> {
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+		viewBinding.recyclerViewReposSearch.setHasFixedSize(true);
+		viewBinding.recyclerViewReposSearch.addItemDecoration(dividerItemDecoration);
+		viewBinding.recyclerViewReposSearch.setLayoutManager(new LinearLayoutManager(context));
+		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
 
-			pageCurrentIndex = 1;
-
-			// if gitea is 1.12 or higher use the new limit
-			if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-				limit = Constants.resultLimitNewGiteaInstances;
-			}
-			else {
-				limit = 10;
-			}
-
-			loadData(false, Objects.requireNonNull(viewBinding.searchKeyword.getText()).toString(), tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"));
-		});
-
-		loadData(false, "", tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"));
+		loadInitial("", tinyDb.getBoolean("exploreRepoIncludeTopic"), tinyDb.getBoolean("exploreRepoIncludeDescription"), tinyDb.getBoolean("exploreRepoIncludeTemplate"), tinyDb.getBoolean("exploreRepoOnlyArchived"), resultLimit);
 
 		return viewBinding.getRoot();
-
 	}
 
-	private void loadData(boolean append, String searchKeyword, boolean exploreRepoIncludeTopic, boolean exploreRepoIncludeDescription, boolean exploreRepoIncludeTemplate, boolean exploreRepoOnlyArchived) {
+	private void loadInitial(String searchKeyword, boolean exploreRepoIncludeTopic, boolean exploreRepoIncludeDescription, boolean exploreRepoIncludeTemplate, boolean exploreRepoOnlyArchived, int resultLimit) {
 
-		viewBinding.noData.setVisibility(View.GONE);
-
-		int apiCallDefaultLimit = 10;
-		// if gitea is 1.12 or higher use the new limit
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			apiCallDefaultLimit = Constants.resultLimitNewGiteaInstances;
-		}
-
-		if(apiCallDefaultLimit > limit) {
-			return;
-		}
-
-		if(pageCurrentIndex == 1 || !append) {
-
-			dataList.clear();
-			adapter.notifyDataSetChanged();
-			viewBinding.pullToRefresh.setRefreshing(false);
-			viewBinding.progressBar.setVisibility(View.VISIBLE);
-		}
-		else {
-
-			viewBinding.loadingMoreView.setVisibility(View.VISIBLE);
-		}
-
-		Call<ExploreRepositories> call = RetrofitClient.getApiInterface(ctx).queryRepos(Authorization.get(getContext()), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, limit, pageCurrentIndex);
-
+		Call<ExploreRepositories> call = RetrofitClient
+			.getApiInterface(context).queryRepos(Authorization.get(getContext()), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, resultLimit, 1);
 		call.enqueue(new Callback<ExploreRepositories>() {
-
 			@Override
 			public void onResponse(@NonNull Call<ExploreRepositories> call, @NonNull Response<ExploreRepositories> response) {
-
-				if(response.code() == 200) {
-
-					assert response.body() != null;
-
-					limit = response.body().getSearchedData().size();
-
-					if(!append) {
-
+				if(response.isSuccessful()) {
+					if(response.body() != null && response.body().getSearchedData().size() > 0) {
 						dataList.clear();
+						dataList.addAll(response.body().getSearchedData());
+						adapter.notifyDataChanged();
+						viewBinding.noData.setVisibility(View.GONE);
 					}
-
-					dataList.addAll(response.body().getSearchedData());
-					adapter.notifyDataSetChanged();
-
+					else {
+						dataList.clear();
+						adapter.notifyDataChanged();
+						viewBinding.noData.setVisibility(View.VISIBLE);
+					}
+					viewBinding.progressBar.setVisibility(View.GONE);
+				}
+				else if(response.code() == 404) {
+					viewBinding.noData.setVisibility(View.VISIBLE);
+					viewBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
-
-					dataList.clear();
-					adapter.notifyDataChanged();
-					viewBinding.noData.setVisibility(View.VISIBLE);
-
+					Log.e(TAG, String.valueOf(response.code()));
 				}
-
-				onCleanup();
-
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<ExploreRepositories> call, @NonNull Throwable t) {
+				Log.e(TAG, t.toString());
+			}
+		});
+	}
 
-				Log.e("onFailure", Objects.requireNonNull(t.getMessage()));
-				onCleanup();
+	private void loadMore(String searchKeyword, boolean exploreRepoIncludeTopic, boolean exploreRepoIncludeDescription, boolean exploreRepoIncludeTemplate, boolean exploreRepoOnlyArchived, int resultLimit, int page) {
 
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
+		Call<ExploreRepositories> call = RetrofitClient.getApiInterface(context)
+			.queryRepos(Authorization.get(getContext()), searchKeyword, repoTypeInclude, sort, order, exploreRepoIncludeTopic, exploreRepoIncludeDescription, exploreRepoIncludeTemplate, exploreRepoOnlyArchived, resultLimit, page);
+		call.enqueue(new Callback<ExploreRepositories>() {
+			@Override
+			public void onResponse(@NonNull Call<ExploreRepositories> call, @NonNull Response<ExploreRepositories> response) {
+				if(response.isSuccessful()) {
+					assert response.body() != null;
+					List<UserRepositories> result = response.body().getSearchedData();
+					if(result.size() > 0) {
+						pageSize = result.size();
+						dataList.addAll(result);
+					}
+					else {
+						SnackBar.info(context, viewBinding.getRoot(), getString(R.string.noMoreData));
+						adapter.setMoreDataAvailable(false);
+					}
+					adapter.notifyDataChanged();
+					viewBinding.progressBar.setVisibility(View.GONE);
+				}
+				else {
+					Log.e(TAG, String.valueOf(response.code()));
+				}
 			}
 
-			private void onCleanup() {
-
-				AppUtil.setMultiVisibility(View.GONE, viewBinding.loadingMoreView, viewBinding.progressBar);
-
-				if(dataList.isEmpty()) {
-
-					viewBinding.noData.setVisibility(View.VISIBLE);
-				}
+			@Override
+			public void onFailure(@NonNull Call<ExploreRepositories> call, @NonNull Throwable t) {
+				Log.e(TAG, t.toString());
 			}
 		});
 	}
@@ -235,7 +203,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 		menu.clear();
 		inflater.inflate(R.menu.filter_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
-
 		MenuItem filter = menu.findItem(R.id.filter);
 
 		filter.setOnMenuItemClickListener(filter_ -> {
@@ -243,19 +210,17 @@ public class ExploreRepositoriesFragment extends Fragment {
 			showFilterOptions();
 			return false;
 		});
-
 	}
 
 	private void showFilterOptions() {
 
-		dialogFilterOptions = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+		dialogFilterOptions = new Dialog(context, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 
 		if (dialogFilterOptions.getWindow() != null) {
-
 			dialogFilterOptions.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		}
 
-		filterBinding = CustomExploreRepositoriesDialogBinding.inflate(LayoutInflater.from(ctx));
+		filterBinding = CustomExploreRepositoriesDialogBinding.inflate(LayoutInflater.from(context));
 
 		View view = filterBinding.getRoot();
 		dialogFilterOptions.setContentView(view);
@@ -290,13 +255,10 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 	@Override
 	public void onDetach() {
-
 		super.onDetach();
 	}
 
 	public interface OnFragmentInteractionListener {
-
 		void onFragmentInteraction(Uri uri);
 	}
-
 }

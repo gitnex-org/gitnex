@@ -42,7 +42,6 @@ public class RepoInfoFragment extends Fragment {
 	private LinearLayout pageContent;
 	private static final String repoNameF = "param2";
 	private static final String repoOwnerF = "param1";
-	private Locale locale;
 
 	private FragmentRepoInfoBinding binding;
 
@@ -77,7 +76,7 @@ public class RepoInfoFragment extends Fragment {
 		binding = FragmentRepoInfoBinding.inflate(inflater, container, false);
 		TinyDB tinyDb = TinyDB.getInstance(getContext());
 		ctx = getContext();
-		locale = getResources().getConfiguration().locale;
+		Locale locale = getResources().getConfiguration().locale;
 
 		pageContent = binding.repoInfoLayout;
 		pageContent.setVisibility(View.GONE);
@@ -198,7 +197,7 @@ public class RepoInfoFragment extends Fragment {
 							binding.repoMetaName.setText(repoInfo.getName());
 
 							if(!repoInfo.getDescription().isEmpty()) {
-								binding.repoMetaDescription.setText(repoInfo.getDescription());
+								Markdown.render(ctx, repoInfo.getDescription(), binding.repoMetaDescription);
 							}
 							else {
 								binding.repoMetaDescription.setText(getString(R.string.noDataDescription));
@@ -284,6 +283,7 @@ public class RepoInfoFragment extends Fragment {
 								tinyDb.putBoolean("hasPullRequests", false);
 							}
 
+							tinyDb.putBoolean("isArchived", repoInfo.isArchived());
 							if(repoInfo.isArchived()) {
 								binding.repoIsArchived.setVisibility(View.VISIBLE);
 							}
@@ -292,6 +292,7 @@ public class RepoInfoFragment extends Fragment {
 							}
 
 							tinyDb.putString("repoHtmlUrl", repoInfo.getHtml_url());
+							tinyDb.putBoolean("canPush", repoInfo.getPermissions().canPush());
 
 							binding.progressBar.setVisibility(View.GONE);
 							pageContent.setVisibility(View.VISIBLE);
@@ -337,8 +338,8 @@ public class RepoInfoFragment extends Fragment {
 						case 401:
 							AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 								getResources().getString(R.string.alertDialogTokenRevokedMessage),
-								getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+								getResources().getString(R.string.cancelButton),
+								getResources().getString(R.string.navLogout));
 							break;
 
 						case 403:

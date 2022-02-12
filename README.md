@@ -1,6 +1,6 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Pipeline status](https://img.shields.io/gitlab/pipeline/opyale/gitnex/main)](https://gitlab.com/opyale/gitnex/-/pipelines) [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://codeberg.org/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://codeberg.org/gitnex/GitNex/releases) [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex) [![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Pipeline status](https://img.shields.io/gitlab/pipeline/mmarif4u/gitnex-ci/main)](https://gitlab.com/mmarif4u/gitnex-ci/-/pipelines) [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://codeberg.org/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://codeberg.org/gitnex/GitNex/releases) [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex) [![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
 
-[<img alt="Become a Patroen" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif)
+[<img alt="Become a Patreon" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="40"/>](https://www.patreon.com/mmarif) [<img alt="Buy me a coffee" src="https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/buy-me-a-coffee.png" height="40"/>](https://www.buymeacoffee.com/mmarif)
 
 # GitNex - Android client for Gitea
 
@@ -9,7 +9,7 @@ GitNex is a free/paid, open-source Android client for Git repository management 
 GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. **No trackers are used** and source code is available here for anyone to audit.
 
 ## Downloads
-[<img alt='Get it on F-droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
+[<img alt='Get it on F-Droid' src='https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
 [<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE)
 
@@ -57,8 +57,6 @@ We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your la
 
 [Wiki](https://codeberg.org/gitnex/GitNex/wiki/Home)
 
-[Website Repository](https://gitlab.com/mmarif4u/gitnex-website)
-
 [Troubleshoot Guide](https://codeberg.org/gitnex/GitNex/wiki/Troubleshoot-Guide)
 
 [Faq](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
@@ -90,7 +88,7 @@ Thanks to all the open source libraries, contributors and donators.
 - [chrisvest/stormpot](https://github.com/chrisvest/stormpot)
 
 #### Icon sets
-- [feathericons/feather](https://github.com/feathericons/feather)
+- [lucide-icons/lucide](https://github.com/lucide-icons/lucide)
 - [primer/octicons](https://github.com/primer/octicons)
 - [google/material-design-icons](https://github.com/google/material-design-icons)
 

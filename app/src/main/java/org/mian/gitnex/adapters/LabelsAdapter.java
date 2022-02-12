@@ -18,8 +18,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.gitnex.tea4j.models.Labels;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
+import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.TinyDB;
 import java.util.List;
 
 /**
@@ -48,6 +50,10 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
             labelName = itemView.findViewById(R.id.labelName);
             ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
 
+            if((type.equals("repo") && !TinyDB.getInstance(itemView.getContext()).getBoolean("isRepoAdmin")) ||
+	            (type.equals("org") && !((OrganizationDetailActivity) itemView.getContext()).permissions.isOwner())) {
+	            labelsOptionsMenu.setVisibility(View.GONE);
+            }
             labelsOptionsMenu.setOnClickListener(v -> {
 
                 final Context context = v.getContext();
@@ -82,8 +88,8 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
                     AlertDialogs.labelDeleteDialog(context, labels.getName(), String.valueOf(labels.getId()),
                             context.getResources().getString(R.string.labelDeleteTitle),
                             context.getResources().getString(R.string.labelDeleteMessage),
-                            context.getResources().getString(R.string.labelDeleteTitle),
-                            context.getResources().getString(R.string.labelDeleteNegativeButton),
+                            context.getResources().getString(R.string.menuDeleteText),
+                            context.getResources().getString(R.string.cancelButton),
 	                        type, orgName);
                     dialog.dismiss();
                 });

@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetIssuesFilterBinding;
+import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -16,13 +19,22 @@ import org.mian.gitnex.databinding.BottomSheetIssuesFilterBinding;
 
 public class BottomSheetIssuesFilterFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetIssuesFilterFragment.BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 		BottomSheetIssuesFilterBinding bottomSheetIssuesFilterBinding = BottomSheetIssuesFilterBinding.inflate(inflater, container, false);
+		TinyDB tinyDb = TinyDB.getInstance(getContext());
+
+		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.14.0")) {
+			bottomSheetIssuesFilterBinding.filterByMilestone.setVisibility(View.VISIBLE);
+			bottomSheetIssuesFilterBinding.filterByMilestone.setOnClickListener(v1 -> {
+				bmListener.onButtonClicked("filterByMilestone");
+				dismiss();
+			});
+		}
 
 		bottomSheetIssuesFilterBinding.openIssues.setOnClickListener(v1 -> {
 			bmListener.onButtonClicked("openIssues");
@@ -37,19 +49,13 @@ public class BottomSheetIssuesFilterFragment extends BottomSheetDialogFragment {
 		return bottomSheetIssuesFilterBinding.getRoot();
 	}
 
-	public interface BottomSheetListener {
-
-		void onButtonClicked(String text);
-
-	}
-
 	@Override
 	public void onAttach(@NonNull Context context) {
 
 		super.onAttach(context);
 
 		try {
-			bmListener = (BottomSheetIssuesFilterFragment.BottomSheetListener) context;
+			bmListener = (BottomSheetListener) context;
 		}
 		catch(ClassCastException e) {
 			throw new ClassCastException(context.toString() + " must implement BottomSheetListener");

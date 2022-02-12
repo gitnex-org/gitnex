@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,6 +23,7 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,7 +33,9 @@ import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Collaborators;
 import org.gitnex.tea4j.models.Issues;
 import org.gitnex.tea4j.models.Labels;
+import org.gitnex.tea4j.models.PullRequests;
 import org.gitnex.tea4j.models.UpdateIssueAssignees;
+import org.gitnex.tea4j.models.UserRepositories;
 import org.gitnex.tea4j.models.WatchInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.AssigneesActions;
@@ -60,6 +62,7 @@ import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
 import org.mian.gitnex.views.ReactionList;
 import java.text.DateFormat;
@@ -78,13 +81,14 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class IssueDetailActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener, BottomSheetSingleIssueFragment.BottomSheetListener {
+public class IssueDetailActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener, BottomSheetListener {
 
 	private IssueCommentsAdapter adapter;
 
 	private String repoOwner;
 	private String repoName;
 	private int issueIndex;
+	private String issueCreator;
 
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
@@ -143,7 +147,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-			viewBinding.scrollViewComments.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+			viewBinding.scrollViewComments.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
 				if((scrollY - oldScrollY) > 0 && viewBinding.addNewComment.isShown()) {
 					viewBinding.addNewComment.setVisibility(View.GONE);
@@ -344,8 +348,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 						getResources().getString(R.string.alertDialogTokenRevokedMessage),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+						getResources().getString(R.string.cancelButton),
+						getResources().getString(R.string.navLogout));
 				}
 				else if(response2.code() == 403) {
 
@@ -398,8 +402,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 						getResources().getString(R.string.alertDialogTokenRevokedMessage),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+						getResources().getString(R.string.cancelButton),
+						getResources().getString(R.string.navLogout));
 				}
 				else if(response.code() == 403) {
 
@@ -449,7 +453,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		}
 		else if(id == R.id.genericMenu) {
 
-			BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment();
+			BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment(issueCreator);
 			bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
 			return true;
 		}
@@ -541,6 +545,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	}
 
 	private void getSingleIssue(String repoOwner, String repoName, int issueIndex) {
+		updateTinyDBPermissionValues();
 
 		final TinyDB tinyDb = TinyDB.getInstance(appCtx);
 		Call<Issues> call = RetrofitClient.getApiInterface(ctx)
@@ -559,7 +564,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					viewBinding.issuePrState.setVisibility(View.VISIBLE);
 
 					if(singleIssue.getPull_request() != null) {
-
+						getPullSourceRepo();
 						if(singleIssue.getPull_request().isMerged()) { // merged
 
 							viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request_merged);
@@ -584,6 +589,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					tinyDb.putString("issueState", singleIssue.getState());
 					tinyDb.putString("issueTitle", singleIssue.getTitle());
 					tinyDb.putString("singleIssueHtmlUrl", singleIssue.getHtml_url());
+					issueCreator = singleIssue.getUser().getLogin();
 
 					PicassoService.getInstance(ctx).get().load(singleIssue.getUser().getAvatar_url()).placeholder(R.drawable.loader_animated)
 						.transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop().into(viewBinding.assigneeAvatar);
@@ -801,8 +807,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
 						getResources().getString(R.string.alertDialogTokenRevokedMessage),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-						getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+						getResources().getString(R.string.cancelButton),
+						getResources().getString(R.string.navLogout));
 
 				}
 				else if(response.code() == 404) {
@@ -861,6 +867,58 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		}
 
+	}
+
+	private void updateTinyDBPermissionValues() {
+		RetrofitClient.getApiInterface(this).getUserRepository(Authorization.get(this), repoOwner, repoName).enqueue(new Callback<UserRepositories>() {
+
+			@Override
+			public void onResponse(@NonNull Call<UserRepositories> call, @NonNull Response<UserRepositories> response) {
+				if(response.isSuccessful()) {
+					assert response.body() != null;
+					tinyDB.putBoolean("isArchived", response.body().isArchived());
+					if(response.body().isArchived()) {
+						viewBinding.addNewComment.setVisibility(View.GONE);
+					}
+					tinyDB.putBoolean("isRepoAdmin", response.body().getPermissions().isAdmin());
+					tinyDB.putBoolean("canPush", response.body().getPermissions().canPush());
+				}
+				else {
+					onFailure(call, new Throwable());
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
+				tinyDB.putBoolean("isRepoAdmin", false);
+				tinyDB.putBoolean("canPush", false);
+			}
+		});
+	}
+
+	private void getPullSourceRepo() {
+		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.15.4")) {
+			RetrofitClient.getApiInterface(this).getPullRequestByIndex(Authorization.get(this), repoOwner, repoName, issueIndex).enqueue(new Callback<PullRequests>() {
+
+				@Override
+				public void onResponse(@NonNull Call<PullRequests> call, @NonNull Response<PullRequests> response) {
+					if(response.isSuccessful() && response.body() != null) {
+						tinyDB.putBoolean("canPushPullSource", response.body().getHead().getRepo().getPermissions().isPush());
+					}
+					else {
+						tinyDB.putBoolean("canPushPullSource", false);
+					}
+				}
+
+				@Override
+				public void onFailure(@NonNull Call<PullRequests> call, @NonNull Throwable t) {
+					tinyDB.putBoolean("canPushPullSource", false);
+				}
+			});
+		}
+		else {
+			tinyDB.putBoolean("canPushPullSource", true);
+		}
 	}
 
 }

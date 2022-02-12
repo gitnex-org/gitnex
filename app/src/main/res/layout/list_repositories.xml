@@ -61,7 +61,14 @@
         android:layout_marginBottom="8dp"
         android:textColor="?attr/primaryTextColor"
         android:textSize="15sp"
+        android:visibility="gone"
         android:text="@string/noDataDescription" />
+
+    <View
+        android:id="@+id/spacerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp" />
 
     <LinearLayout
         android:id="@+id/repoInfoFrame"

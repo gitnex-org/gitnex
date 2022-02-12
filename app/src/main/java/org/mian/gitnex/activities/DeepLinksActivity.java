@@ -14,7 +14,6 @@ import org.gitnex.tea4j.models.Organization;
 import org.gitnex.tea4j.models.PullRequests;
 import org.gitnex.tea4j.models.UserInfo;
 import org.gitnex.tea4j.models.UserRepositories;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -88,8 +87,10 @@ public class DeepLinksActivity extends BaseActivity {
 
 			currentInstance = userAccount.getInstanceUrl();
 			instanceToken = userAccount.getToken();
+			String host = data.getHost();
+			if (host == null) host = "";
 
-			if(hostUri.toLowerCase().contains(Objects.requireNonNull(data.getHost().toLowerCase()))) {
+			if(hostUri.toLowerCase().contains(host.toLowerCase())) {
 
 				accountFound = true;
 
@@ -151,8 +152,13 @@ public class DeepLinksActivity extends BaseActivity {
 					finish();
 				}
 				else if(!data.getPathSegments().get(0).equals("") & !data.getLastPathSegment().equals("")) { // go to repo
+					String repo = data.getLastPathSegment();
+					if (repo.endsWith(".git")) { // Git clone URL
+						repo = repo.substring(0, repo.length() - 4);
+					}
+					String finalRepo = repo;
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getLastPathSegment(), "repo"), 500);
+						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), finalRepo, "repo"), 500);
 				}
 				else { // no action, show options
 					showNoActionButtons();
@@ -274,13 +280,14 @@ public class DeepLinksActivity extends BaseActivity {
 						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "newRelease"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("releases")) { // releases
-					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "releases"), 500);
-				}
-				else if(data.getPathSegments().get(2).equals("releases") && data.getPathSegments().get(3).equals("tag") && data.getPathSegments().size() == 5) { // release
-					repoIntent.putExtra("releaseTagName", data.getLastPathSegment());
-					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "releases"), 500);
+					if(data.getPathSegments().size() == 5) {
+						if(data.getPathSegments().get(2).equals("releases") && data.getPathSegments().get(3).equals("tag")) {
+							repoIntent.putExtra("releaseTagName", data.getLastPathSegment());
+						}
+					}
+					new Handler(Looper.getMainLooper()).postDelayed(
+						() -> goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1),
+							"releases"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("labels")) { // labels
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
@@ -345,13 +352,7 @@ public class DeepLinksActivity extends BaseActivity {
 					.withPort(port)
 					.toUri();
 
-				Intent intentBrowser = new Intent();
-
-				intentBrowser.setAction(Intent.ACTION_VIEW);
-				intentBrowser.addCategory(Intent.CATEGORY_BROWSABLE);
-				intentBrowser.setData(Uri.parse(String.valueOf(host)));
-
-				startActivity(intentBrowser);
+				AppUtil.openUrlInBrowser(this, String.valueOf(host));
 				finish();
 
 			});
@@ -478,6 +479,7 @@ public class DeepLinksActivity extends BaseActivity {
 						tinyDB.putString("repoType", getResources().getString(R.string.strPublic));
 					}
 					tinyDB.putBoolean("isRepoAdmin", repoInfo.getPermissions().isAdmin());
+					tinyDB.putBoolean("canPush", repoInfo.getPermissions().canPush());
 					tinyDB.putString("repoBranch", repoInfo.getDefault_branch());
 
 					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
@@ -525,7 +527,7 @@ public class DeepLinksActivity extends BaseActivity {
 		call.enqueue(new Callback<Organization>() {
 
 			@Override
-			public void onResponse(@NotNull Call<Organization> call, @NotNull Response<Organization> response) {
+			public void onResponse(@NonNull Call<Organization> call, @NonNull Response<Organization> response) {
 				if(response.code() == 404) { // org doesn't exist or it's a user user
 					Log.d("getUserOrOrg-404", String.valueOf(response.code()));
 					getUser(url, instanceToken, userOrgName);
@@ -550,7 +552,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NotNull Call<Organization> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
 				Log.e("onFailure-getUserOrOrg", t.toString());
 			}
 		});
@@ -562,7 +564,7 @@ public class DeepLinksActivity extends BaseActivity {
 		call.enqueue(new Callback<UserInfo>() {
 
 			@Override
-			public void onResponse(@NotNull Call<UserInfo> call, @NotNull Response<UserInfo> response) {
+			public void onResponse(@NonNull Call<UserInfo> call, @NonNull Response<UserInfo> response) {
 				if(response.code() == 200) {
 					assert response.body() != null;
 					userIntent.putExtra("username", response.body().getLogin());
@@ -576,7 +578,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NotNull Call<UserInfo> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
 				Log.e("onFailure-getUser", t.toString());
 				ctx.startActivity(mainIntent);
 				finish();
@@ -590,7 +592,7 @@ public class DeepLinksActivity extends BaseActivity {
 		call.enqueue(new Callback<Files>() {
 
 			@Override
-			public void onResponse(@NotNull Call<Files> call, @NotNull Response<Files> response) {
+			public void onResponse(@NonNull Call<Files> call, @NonNull Response<Files> response) {
 				if(response.code() == 200) {
 					// check if file and open file/dir
 					Files file = response.body();
@@ -609,7 +611,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NotNull Call<Files> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<Files> call, @NonNull Throwable t) {
 				Log.e("getFile-onFailure", t.toString());
 				// maybe it's a directory
 				getDir(url, instanceToken, owner, repo, filePath, branch);

@@ -88,10 +88,13 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<Organizations
 
         PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.image);
 
-        if (!currentItem.getDescription().equals("")) {
-
-            holder.orgDescription.setText(currentItem.getDescription());
-        }
+	    if(!currentItem.getDescription().equals("")) {
+		    holder.orgDescription.setVisibility(View.VISIBLE);
+		    holder.orgDescription.setText(currentItem.getDescription());
+	    }
+	    else {
+		    holder.orgDescription.setVisibility(View.GONE);
+	    }
     }
 
     @Override

@@ -18,17 +18,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.profile.FollowersAdapter;
-import org.mian.gitnex.adapters.profile.FollowingAdapter;
+import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -45,10 +42,10 @@ public class FollowingFragment extends Fragment {
 	private FragmentProfileFollowersFollowingBinding fragmentProfileFollowersFollowingBinding;
 
 	private List<UserInfo> usersList;
-	private FollowingAdapter adapter;
+	private UsersAdapter adapter;
 
 	private int pageSize;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 
 	private static final String usernameBundle = "";
 	private String username;
@@ -79,13 +76,7 @@ public class FollowingFragment extends Fragment {
 		setHasOptionsMenu(true);
 		context = getContext();
 
-		TinyDB tinyDb = TinyDB.getInstance(context);
-
-		// if gitea is 1.12 or higher use the new limit
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
-
+		resultLimit = Constants.getCurrentResultLimit(context);
 		usersList = new ArrayList<>();
 
 		fragmentProfileFollowersFollowingBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -94,7 +85,7 @@ public class FollowingFragment extends Fragment {
 			adapter.notifyDataChanged();
 		}, 200));
 
-		adapter = new FollowingAdapter(context, usersList);
+		adapter = new UsersAdapter(usersList, context);
 		adapter.setLoadMoreListener(() -> fragmentProfileFollowersFollowingBinding.recyclerView.post(() -> {
 			if(usersList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (usersList.size() + resultLimit) / resultLimit;
@@ -144,8 +135,8 @@ public class FollowingFragment extends Fragment {
 
 						case 401:
 							AlertDialogs.authorizationTokenRevokedDialog(context, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-								getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+								getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
+								getResources().getString(R.string.navLogout));
 							break;
 
 						case 403:
@@ -173,7 +164,7 @@ public class FollowingFragment extends Fragment {
 
 	private void loadMore(String token, String username, int page, int resultLimit) {
 
-		fragmentProfileFollowersFollowingBinding.progressLoadMore.setVisibility(View.VISIBLE);
+		fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.VISIBLE);
 
 		Call<List<UserInfo>> call = RetrofitClient
 			.getApiInterface(context)
@@ -199,13 +190,13 @@ public class FollowingFragment extends Fragment {
 								adapter.setMoreDataAvailable(false);
 							}
 							adapter.notifyDataChanged();
-							fragmentProfileFollowersFollowingBinding.progressLoadMore.setVisibility(View.GONE);
+							fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.GONE);
 							break;
 
 						case 401:
 							AlertDialogs.authorizationTokenRevokedDialog(context, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-								getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+								getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
+								getResources().getString(R.string.navLogout));
 							break;
 
 						case 403:

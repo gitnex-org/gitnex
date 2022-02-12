@@ -14,15 +14,13 @@ public class Constants {
 	public static final String defaultOldestTimestamp = "1970-01-01T00:00:00+00:00";
 
 	public static int getCurrentResultLimit(Context context) {
-
 		Version version = new Version(TinyDB.getInstance(context).getString("giteaVersion"));
 		return version.higherOrEqual("1.12") ? resultLimitNewGiteaInstances : resultLimitOldGiteaInstances;
-
 	}
 
 	// tags
 	public static final String tagMilestonesFragment = "MilestonesFragment";
-	public static final String tagPullRequestsList = "PullRequestsListFragment";
+	public static final String tagPullRequestsList = "PullRequestFragment";
 	public static final String tagIssuesList = "IssuesListFragment";
 	public static final String tagMilestonesAdapter = "MilestonesAdapter";
 	public static final String draftsApi = "DraftsApi";
@@ -30,6 +28,12 @@ public class Constants {
 	public static final String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
 	public static final String userAccountsApi = "UserAccountsApi";
 	public static final String publicOrganizations = "PublicOrganizations";
+	public static final String exploreUsers = "ExploreUsers";
+	public static final String exploreIssues = "ExploreIssues";
+	public static final String exploreRepositories = "ExploreRepositories";
+	public static final String tagNotifications = "TagNotifications";
+	public static final String tagFollowers = "TagFollowers";
+	public static final String tagFollowing = "TagFollowing";
 
 	// issues variables
 	public static final int issuesPageInit = 1;

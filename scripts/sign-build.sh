@@ -9,6 +9,10 @@
 [ -z "${KS_FILE}" ] && { echo "Filename of keystore is missing (KS_FILE)"; exit 1; }
 [ -z "${OUTPUT}" ] && { echo "Missing filename of signed output (OUTPUT)"; exit 1; }
 
+# Update the docker container. curl is an outdated version which has to be updated.
+apt update
+apt upgrade curl -y
+
 KEYFILE=$(mktemp)
 curl -X GET "${INSTANCE}/api/v1/repos/${KS_REPO}/contents/${KS_FILE}?token=${BOT_TOKEN}" -H  "accept: application/json" | sed 's|"content":"|#|g' | cut -d '#' -f 2 | cut -d '"' -f 1 | base64 -d > ${KEYFILE}
 

@@ -109,16 +109,22 @@ public class FileDiffActivity extends BaseActivity {
 						runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx,
 							getString(R.string.alertDialogTokenRevokedTitle),
 							getString(R.string.alertDialogTokenRevokedMessage),
-							getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-							getString(R.string.alertDialogTokenRevokedCopyPositiveButton)));
+							getString(R.string.cancelButton),
+							getString(R.string.navLogout)));
 						break;
 
 					case 403:
-						runOnUiThread(() -> Toasty.error(ctx, ctx.getString(R.string.authorizeError)));
+						runOnUiThread(() -> {
+							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							finish();
+						});
 						break;
 
 					case 404:
-						runOnUiThread(() -> Toasty.warning(ctx, ctx.getString(R.string.apiNotFound)));
+						runOnUiThread(() -> {
+							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							finish();
+						});
 						break;
 
 					default:

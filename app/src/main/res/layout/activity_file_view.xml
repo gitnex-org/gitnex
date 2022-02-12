@@ -58,7 +58,7 @@
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/primaryBackgroundColor">
@@ -77,12 +77,21 @@
                 android:padding="16dp"
                 android:visibility="gone">
 
-                <TextView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/markdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
                     android:textIsSelectable="true"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/markdownTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textIsSelectable="true"
+                    android:visibility="gone"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -103,6 +112,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

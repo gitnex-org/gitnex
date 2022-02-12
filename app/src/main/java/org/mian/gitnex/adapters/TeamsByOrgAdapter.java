@@ -10,6 +10,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.models.OrgPermissions;
 import org.gitnex.tea4j.models.Teams;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationTeamMembersActivity;
@@ -25,11 +26,13 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
     private final List<Teams> teamList;
     private final Context context;
     private final List<Teams> teamListFull;
+    private final OrgPermissions permissions;
 
     static class OrgTeamsViewHolder extends RecyclerView.ViewHolder {
 
     	private Teams teams;
 
+    	private OrgPermissions permissions;
         private final TextView teamTitle;
         private final TextView teamDescription;
         private final TextView teamPermission;
@@ -48,6 +51,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
                 Intent intent = new Intent(context, OrganizationTeamMembersActivity.class);
                 intent.putExtra("teamTitle", teams.getName());
                 intent.putExtra("teamId", String.valueOf(teams.getId()));
+                intent.putExtra("permissions", permissions);
                 context.startActivity(intent);
             });
 
@@ -55,9 +59,10 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
 
     }
 
-    public TeamsByOrgAdapter(Context ctx, List<Teams> teamListMain) {
+    public TeamsByOrgAdapter(Context ctx, List<Teams> teamListMain, OrgPermissions permissions) {
         this.context = ctx;
         this.teamList = teamListMain;
+        this.permissions = permissions;
         teamListFull = new ArrayList<>(teamList);
     }
 
@@ -75,6 +80,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
 
         holder.teams = currentItem;
         holder.teamTitle.setText(currentItem.getName());
+        holder.permissions = permissions;
 
         if (!currentItem.getDescription().equals("")) {
             holder.teamDescription.setVisibility(View.VISIBLE);

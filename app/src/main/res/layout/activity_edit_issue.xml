@@ -149,7 +149,6 @@
                 android:layout_marginBottom="8dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="?attr/iconsColor"
-                android:visibility="gone"
                 android:hint="@string/newIssueDueDateTitle">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -1,18 +1,24 @@
 package org.mian.gitnex.helpers;
 
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.ColorInt;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
+import org.mian.gitnex.R;
 import org.mian.gitnex.database.models.UserAccount;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +41,7 @@ import java.util.regex.Pattern;
 
 public class AppUtil {
 
-	public enum FileType { IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, UNKNOWN }
+	public enum FileType { IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, FONT, UNKNOWN }
 
 	private static final HashMap<String[], FileType> extensions = new HashMap<>();
 
@@ -50,7 +56,7 @@ public class AppUtil {
 		extensions.put(new String[]{"doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt", "ott", "odf", "ods", "ots", "odg", "otg", "odp", "otp", "bin", "psd", "xcf", "pdf"}, FileType.DOCUMENT);
 		extensions.put(new String[]{"exe", "msi", "jar", "dmg", "deb", "apk"}, FileType.EXECUTABLE);
 		extensions.put(new String[]{"txt", "md", "json", "java", "go", "php", "c", "cc", "cpp", "h", "cxx", "cyc", "m", "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript", "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt", "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs", "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js", "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat", "twig", "cvs", "cmake", "in", "info", "spec", "m4", "am", "dist", "pam", "hx", "ts", "kt", "kts"}, FileType.TEXT);
-
+		extensions.put(new String[]{"ttf", "otf", "woff", "woff2", "ttc", "eot"}, FileType.FONT);
 	}
 
 	public static FileType getFileType(String extension) {
@@ -343,4 +349,58 @@ public class AppUtil {
 
 	}
 
+	public static void openUrlInBrowser(Context context, String url) {
+		TinyDB tinyDB = TinyDB.getInstance(context);
+
+		try {
+			if(tinyDB.getBoolean("useCustomTabs")) {
+				new CustomTabsIntent
+					.Builder()
+					.setDefaultColorSchemeParams(
+						new CustomTabColorSchemeParams.Builder()
+							.setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
+							.setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
+							.setSecondaryToolbarColor(R.attr.primaryTextColor)
+							.build()
+					)
+					.build()
+					.launchUrl(context, Uri.parse(url));
+			} else {
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(tinyDB.getString("repoHtmlUrl")));
+				i.addCategory(Intent.CATEGORY_BROWSABLE);
+				context.startActivity(i);
+			}
+		} catch(ActivityNotFoundException e) {
+			Toasty.error(context, context.getString(R.string.browserOpenFailed));
+		} catch (Exception e) {
+			Toasty.error(context, context.getString(R.string.genericError));
+		}
+	}
+
+	public static Uri getUriFromGitUrl(String url) {
+		Uri uri = Uri.parse(url);
+		String host = uri.getHost();
+		if(host != null) {
+			return uri;
+		}
+		// must be a Git SSH URL now (old rcp standard)
+		return Uri.parse(getUriFromSSHUrl(url));
+	}
+
+	public static String getUriFromSSHUrl(String url) {
+		String[] urlParts = url.split("://");
+		if (urlParts.length > 1) {
+			url = urlParts[1];
+		}
+		return "https://" + url.replace(":", "/");
+	}
+
+	public static Uri changeScheme(Uri origin, String scheme) {
+		String raw = origin.toString();
+		int schemeIndex = raw.indexOf("://");
+		if (schemeIndex >= 0) {
+			raw = raw.substring(schemeIndex);
+		}
+		return Uri.parse(scheme+raw);
+	}
 }

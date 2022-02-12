@@ -187,8 +187,8 @@ public class CreateRepoActivity extends BaseActivity {
                     enableProcessButton();
                     AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+                            getResources().getString(R.string.cancelButton),
+                            getResources().getString(R.string.navLogout));
                 }
                 else if(response.code() == 409) {
 
@@ -272,7 +272,7 @@ public class CreateRepoActivity extends BaseActivity {
 
 		            enableProcessButton();
 		            AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage),
-			            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+			            getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
 	            }
             }
 

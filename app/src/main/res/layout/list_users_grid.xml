@@ -8,19 +8,19 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/memberAvatar"
+        android:id="@+id/userAvatarImageView"
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:contentDescription="@string/orgMember"
+        android:contentDescription="@string/userAvatar"
         android:src="@drawable/ic_person" />
 
     <TextView
-        android:id="@+id/memberName"
+        android:id="@+id/userNameTv"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="top|center_horizontal"
         android:layout_marginTop="1dp"
-        android:text="@string/orgMember"
+        android:text="@string/userName"
         android:textSize="14sp"
         android:textColor="?attr/primaryTextColor" />
 

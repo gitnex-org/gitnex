@@ -1,25 +1,30 @@
 package org.mian.gitnex.fragments;
 
-import android.net.Uri;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.adapters.MyProfileFollowersAdapter;
+import org.gitnex.tea4j.models.UserInfo;
+import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.UsersAdapter;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.viewmodels.ProfileFollowersViewModel;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.SnackBar;
+import java.util.ArrayList;
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Author M M Arif
@@ -27,106 +32,119 @@ import org.mian.gitnex.viewmodels.ProfileFollowersViewModel;
 
 public class MyProfileFollowersFragment extends Fragment {
 
-    private ProgressBar mProgressBar;
-    private MyProfileFollowersAdapter adapter;
-    private RecyclerView mRecyclerView;
-    private TextView noDataFollowers;
-    private static String repoNameF = "param2";
-    private static String repoOwnerF = "param1";
+	private FragmentProfileFollowersFollowingBinding viewBinding;
+	private Context context;
 
-    private String repoName;
-    private String repoOwner;
-
-    private OnFragmentInteractionListener mListener;
-
-    public MyProfileFollowersFragment() {
-    }
-
-    public static MyProfileFollowersFragment newInstance(String param1, String param2) {
-        MyProfileFollowersFragment fragment = new MyProfileFollowersFragment();
-        Bundle args = new Bundle();
-        args.putString(repoOwnerF, param1);
-        args.putString(repoNameF, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            repoName = getArguments().getString(repoNameF);
-            repoOwner = getArguments().getString(repoOwnerF);
-        }
-    }
+	private List<UserInfo> dataList;
+	private UsersAdapter adapter;
+	private int pageSize;
+	private final String TAG = Constants.tagFollowers;
+	private int resultLimit;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-	    FragmentProfileFollowersFollowingBinding fragmentProfileFollowersFollowingBinding = FragmentProfileFollowersFollowingBinding.inflate(inflater, container, false);
+	    viewBinding = FragmentProfileFollowersFollowingBinding.inflate(inflater, container, false);
+	    context = getContext();
 
-        final SwipeRefreshLayout swipeRefresh = fragmentProfileFollowersFollowingBinding.pullToRefresh;
+	    dataList = new ArrayList<>();
+	    adapter = new UsersAdapter(dataList, context);
+	    resultLimit = Constants.getCurrentResultLimit(context);
 
-        noDataFollowers = fragmentProfileFollowersFollowingBinding.noData;
-        mRecyclerView = fragmentProfileFollowersFollowingBinding.recyclerView;
+	    viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		    viewBinding.pullToRefresh.setRefreshing(false);
+		    loadInitial(resultLimit);
+		    adapter.notifyDataChanged();
+	    }, 200));
 
-	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+	    adapter.setLoadMoreListener(() -> viewBinding.recyclerView.post(() -> {
+		    if(dataList.size() == resultLimit || pageSize == resultLimit) {
+			    int page = (dataList.size() + resultLimit) / resultLimit;
+			    loadMore(resultLimit, page);
+		    }
+	    }));
 
-	    mRecyclerView.setHasFixedSize(true);
-	    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+	    viewBinding.recyclerView.setHasFixedSize(true);
+	    viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+	    viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+	    viewBinding.recyclerView.setAdapter(adapter);
 
-        mProgressBar = fragmentProfileFollowersFollowingBinding.progressBar;
+	    loadInitial(resultLimit);
 
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-            swipeRefresh.setRefreshing(false);
-            ProfileFollowersViewModel.loadFollowersList(Authorization.get(getContext()), getContext());
-
-        }, 200));
-
-        fetchDataAsync(Authorization.get(getContext()));
-
-        return fragmentProfileFollowersFollowingBinding.getRoot();
+	    return viewBinding.getRoot();
     }
 
-    private void fetchDataAsync(String instanceToken) {
+	private void loadInitial(int resultLimit) {
 
-        ProfileFollowersViewModel pfModel = new ViewModelProvider(this).get(ProfileFollowersViewModel.class);
+		Call<List<UserInfo>> call = RetrofitClient
+			.getApiInterface(context)
+			.getFollowers(Authorization.get(getContext()), 1, resultLimit);
+		call.enqueue(new Callback<List<UserInfo>>() {
+			@Override
+			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+				if(response.isSuccessful()) {
+					if(response.body() != null && response.body().size() > 0) {
+						dataList.clear();
+						dataList.addAll(response.body());
+						adapter.notifyDataChanged();
+						viewBinding.noData.setVisibility(View.GONE);
+					}
+					else {
+						dataList.clear();
+						adapter.notifyDataChanged();
+						viewBinding.noData.setVisibility(View.VISIBLE);
+					}
+					viewBinding.progressBar.setVisibility(View.GONE);
+				}
+				else if(response.code() == 404) {
+					viewBinding.noData.setVisibility(View.VISIBLE);
+					viewBinding.progressBar.setVisibility(View.GONE);
+				}
+				else {
+					Log.e(TAG, String.valueOf(response.code()));
+				}
+			}
 
-        pfModel.getFollowersList(instanceToken, getContext()).observe(getViewLifecycleOwner(), pfListMain -> {
+			@Override
+			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+				Log.e(TAG, t.toString());
+			}
+		});
+	}
 
-            adapter = new MyProfileFollowersAdapter(getContext(), pfListMain);
+	private void loadMore(int resultLimit, int page) {
 
-            if(adapter.getItemCount() > 0) {
-                mRecyclerView.setAdapter(adapter);
-                noDataFollowers.setVisibility(View.GONE);
-            }
-            else {
-                adapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(adapter);
-                noDataFollowers.setVisibility(View.VISIBLE);
-            }
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
+		Call<List<UserInfo>> call = RetrofitClient.getApiInterface(context)
+			.getFollowers(Authorization.get(getContext()), page, resultLimit);
+		call.enqueue(new Callback<List<UserInfo>>() {
+			@Override
+			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+				if(response.isSuccessful()) {
+					assert response.body() != null;
+					List<UserInfo> result = response.body();
+					if(result.size() > 0) {
+						pageSize = result.size();
+						dataList.addAll(result);
+					}
+					else {
+						SnackBar.info(context, viewBinding.getRoot(), getString(R.string.noMoreData));
+						adapter.setMoreDataAvailable(false);
+					}
+					adapter.notifyDataChanged();
+					viewBinding.progressBar.setVisibility(View.GONE);
+				}
+				else {
+					Log.e(TAG, String.valueOf(response.code()));
+				}
+			}
 
-            mProgressBar.setVisibility(View.GONE);
-        });
-
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
+			@Override
+			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+				Log.e(TAG, t.toString());
+			}
+		});
+	}
 }

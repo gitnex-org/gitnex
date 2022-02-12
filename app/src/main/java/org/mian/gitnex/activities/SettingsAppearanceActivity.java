@@ -8,10 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
 import org.mian.gitnex.helpers.TinyDB;
@@ -98,6 +98,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			tinyDB.putBoolean("enableCounterBadges", isChecked);
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
+		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(v -> counterBadgesSwitch.setChecked(!counterBadgesSwitch.isChecked()));
 
 		// theme selection dialog
 		themeFrame.setOnClickListener(view -> {
@@ -203,7 +204,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		TinyDB db = TinyDB.getInstance(getContext());
 
-		@NotNull
+		@NonNull
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			int hour = db.getInt("lightThemeTimeHour");
@@ -228,7 +229,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		TinyDB db = TinyDB.getInstance(getContext());
 
-		@NotNull
+		@NonNull
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			int hour = db.getInt("darkThemeTimeHour");

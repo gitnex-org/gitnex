@@ -122,7 +122,7 @@
                     android:id="@+id/explore"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="@string/navExplore"
+                    android:text="@string/pageTitleExplore"
                     android:textColor="@color/btnTextColor"
                     android:textSize="16sp"
                     android:layout_marginTop="8dp" />

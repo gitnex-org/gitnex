@@ -138,6 +138,13 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	        viewBinding.createNewIssueButton.setOnClickListener(this);
         }
 
+        if(!tinyDB.getBoolean("canPush")) {
+        	viewBinding.newIssueAssigneesListLayout.setVisibility(View.GONE);
+        	viewBinding.newIssueMilestoneSpinnerLayout.setVisibility(View.GONE);
+        	viewBinding.newIssueLabelsLayout.setVisibility(View.GONE);
+        	viewBinding.newIssueDueDateLayout.setVisibility(View.GONE);
+        }
+
     }
 
 	@Override
@@ -263,8 +270,8 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
                     enableProcessButton();
                     AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
                             getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-                            getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+                            getResources().getString(R.string.cancelButton),
+                            getResources().getString(R.string.navLogout));
                 }
                 else {
 

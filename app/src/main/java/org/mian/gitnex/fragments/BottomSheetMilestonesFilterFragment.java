@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetMilestonesFilterBinding;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -17,7 +18,7 @@ import org.mian.gitnex.databinding.BottomSheetMilestonesFilterBinding;
 
 public class BottomSheetMilestonesFilterFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetMilestonesFilterFragment.BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
 	@Nullable
 	@Override
@@ -38,19 +39,13 @@ public class BottomSheetMilestonesFilterFragment extends BottomSheetDialogFragme
 		return bottomSheetMilestonesFilterBinding.getRoot();
 	}
 
-	public interface BottomSheetListener {
-
-		void onButtonClicked(String text);
-
-	}
-
 	@Override
 	public void onAttach(@NonNull Context context) {
 
 		super.onAttach(context);
 
 		try {
-			bmListener = (BottomSheetMilestonesFilterFragment.BottomSheetListener) context;
+			bmListener = (BottomSheetListener) context;
 		}
 		catch(ClassCastException e) {
 			Log.e("MilestonesFilterBs", e.toString());

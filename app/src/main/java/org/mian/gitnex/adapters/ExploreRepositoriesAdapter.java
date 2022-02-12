@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -40,19 +41,61 @@ import retrofit2.Callback;
  * Author M M Arif
  */
 
-public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepositoriesAdapter.ReposSearchViewHolder> {
+public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private final List<UserRepositories> reposList;
 	private final Context context;
+	private final int TYPE_LOAD = 0;
+	private List<UserRepositories> reposList;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
+	private final TinyDB tinyDb;
 
 	public ExploreRepositoriesAdapter(List<UserRepositories> dataList, Context ctx) {
-
 		this.context = ctx;
 		this.reposList = dataList;
+		this.tinyDb = TinyDB.getInstance(context);
 	}
 
-	static class ReposSearchViewHolder extends RecyclerView.ViewHolder {
+	@NonNull
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		if(viewType == TYPE_LOAD) {
+			return new ExploreRepositoriesAdapter.RepositoriesHolder(inflater.inflate(R.layout.list_repositories, parent, false));
+		}
+		else {
+			return new ExploreRepositoriesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+		}
+	}
 
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
+
+		if(getItemViewType(position) == TYPE_LOAD) {
+			((ExploreRepositoriesAdapter.RepositoriesHolder) holder).bindData(reposList.get(position));
+		}
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		if(reposList.get(position).getFullName() != null) {
+			return TYPE_LOAD;
+		}
+		else {
+			return 1;
+		}
+	}
+
+	@Override
+	public int getItemCount() {
+		return reposList.size();
+	}
+
+	class RepositoriesHolder extends RecyclerView.ViewHolder {
 		private UserRepositories userRepositories;
 
 		private final ImageView image;
@@ -62,9 +105,9 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 		private CheckBox isRepoAdmin;
 		private final TextView repoStars;
 		private final TextView repoLastUpdated;
+		private final View spacerView;
 
-		private ReposSearchViewHolder(View itemView) {
-
+		RepositoriesHolder(View itemView) {
 			super(itemView);
 			repoName = itemView.findViewById(R.id.repoName);
 			orgName = itemView.findViewById(R.id.orgName);
@@ -73,12 +116,11 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 			image = itemView.findViewById(R.id.imageAvatar);
 			repoStars = itemView.findViewById(R.id.repoStars);
 			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
+			spacerView = itemView.findViewById(R.id.spacerView);
 
 			itemView.setOnClickListener(v -> {
 
 				Context context = v.getContext();
-				TinyDB tinyDb = TinyDB.getInstance(context);
-
 				Intent intent = new Intent(context, RepoDetailActivity.class);
 				intent.putExtra("repoFullName", userRepositories.getFullName());
 
@@ -153,98 +195,107 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<ExploreRepo
 			});
 		}
 
-	}
+		@SuppressLint("SetTextI18n")
+		void bindData(UserRepositories userRepositories) {
+			this.userRepositories = userRepositories;
 
-	@NonNull
-	@Override
-	public ExploreRepositoriesAdapter.ReposSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			Locale locale = context.getResources().getConfiguration().locale;
+			String timeFormat = tinyDb.getString("dateFormat");
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories, parent, false);
-		return new ExploreRepositoriesAdapter.ReposSearchViewHolder(v);
-	}
+			orgName.setText(userRepositories.getFullName().split("/")[0]);
+			repoName.setText(userRepositories.getFullName().split("/")[1]);
+			repoStars.setText(userRepositories.getStars_count());
 
-	@Override
-	public void onBindViewHolder(@NonNull final ExploreRepositoriesAdapter.ReposSearchViewHolder holder, int position) {
+			ColorGenerator generator = ColorGenerator.MATERIAL;
+			int color = generator.getColor(userRepositories.getName());
+			String firstCharacter = String.valueOf(userRepositories.getFullName().charAt(0));
 
-		TinyDB tinyDb = TinyDB.getInstance(context);
-		UserRepositories currentItem = reposList.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
 
-		Locale locale = context.getResources().getConfiguration().locale;
-		String timeFormat = tinyDb.getString("dateFormat");
-		holder.userRepositories = currentItem;
-		holder.orgName.setText(currentItem.getFullName().split("/")[0]);
-		holder.repoName.setText(currentItem.getFullName().split("/")[1]);
-		holder.repoStars.setText(currentItem.getStars_count());
-
-		ColorGenerator generator = ColorGenerator.MATERIAL;
-		int color = generator.getColor(currentItem.getName());
-		String firstCharacter = String.valueOf(currentItem.getFullName().charAt(0));
-
-		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
-
-		if(currentItem.getAvatar_url() != null) {
-			if(!currentItem.getAvatar_url().equals("")) {
-				PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.image);
+			if(userRepositories.getAvatar_url() != null) {
+				if(!userRepositories.getAvatar_url().equals("")) {
+					PicassoService.getInstance(context).get().load(userRepositories.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+				}
+				else {
+					image.setImageDrawable(drawable);
+				}
 			}
 			else {
-				holder.image.setImageDrawable(drawable);
+				image.setImageDrawable(drawable);
 			}
-		}
-		else {
-			holder.image.setImageDrawable(drawable);
-		}
 
-		if(currentItem.getUpdated_at() != null) {
+			if(userRepositories.getUpdated_at() != null) {
 
-			switch(timeFormat) {
-				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(locale);
-					String createdTime = prettyTime.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					holder.repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getUpdated_at()), context));
-					break;
-				}
-				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					break;
-				}
-				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					break;
+				switch(timeFormat) {
+					case "pretty": {
+						PrettyTime prettyTime = new PrettyTime(locale);
+						String createdTime = prettyTime.format(userRepositories.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(userRepositories.getUpdated_at()), context));
+						break;
+					}
+					case "normal": {
+						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+						String createdTime = formatter.format(userRepositories.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						break;
+					}
+					case "normal1": {
+						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+						String createdTime = formatter.format(userRepositories.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						break;
+					}
 				}
 			}
-		}
-		else {
-			holder.repoLastUpdated.setVisibility(View.GONE);
-		}
+			else {
+				repoLastUpdated.setVisibility(View.GONE);
+			}
 
-		if(!currentItem.getDescription().equals("")) {
-			holder.repoDescription.setText(currentItem.getDescription());
-		}
-		else {
-			holder.repoDescription.setText(context.getString(R.string.noDataDescription));
-		}
+			if(!userRepositories.getDescription().equals("")) {
+				repoDescription.setVisibility(View.VISIBLE);
+				repoDescription.setText(userRepositories.getDescription());
+				spacerView.setVisibility(View.GONE);
+			}
+			else {
+				repoDescription.setVisibility(View.GONE);
+				spacerView.setVisibility(View.VISIBLE);
+			}
 
-		if(holder.isRepoAdmin == null) {
-			holder.isRepoAdmin = new CheckBox(context);
+			if(isRepoAdmin == null) {
+				isRepoAdmin = new CheckBox(context);
+			}
+			isRepoAdmin.setChecked(userRepositories.getPermissions().isAdmin());
 		}
-		holder.isRepoAdmin.setChecked(currentItem.getPermissions().isAdmin());
 	}
 
-	@Override
-	public int getItemCount() {
-
-		return reposList.size();
+	static class LoadHolder extends RecyclerView.ViewHolder {
+		LoadHolder(View itemView) {
+			super(itemView);
+		}
 	}
 
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
-
 		notifyDataSetChanged();
+		isLoading = false;
 	}
 
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<UserRepositories> list) {
+		reposList = list;
+		notifyDataChanged();
+	}
 }

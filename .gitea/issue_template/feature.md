@@ -1,0 +1,17 @@
+---
+
+name: "Feature"
+about: "A new feature or an enhancement to an existing feature"
+labels:
+
+- Feature
+
+---
+
+## # Describe your matter briefly
+<br><br>
+
+- [ ] I carefully read the [contribution guidelines](https://codeberg.org/GitNex/GitNex/src/branch/main/CONTRIBUTING.md).
+<br>
+
+<!-- Thank you for your time. -->

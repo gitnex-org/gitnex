@@ -2,7 +2,9 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
 import org.mian.gitnex.helpers.Toasty;
@@ -54,7 +56,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 		if(homeScreenSelectedChoice == 0) {
 
 			homeScreenSelectedChoice = tinyDB.getInt("homeScreenId");
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleMyRepos));
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navMyRepos));
 		}
 
 		if(homeScreenSelectedChoice == 1) {
@@ -63,15 +65,15 @@ public class SettingsGeneralActivity extends BaseActivity {
 		}
 		else if(homeScreenSelectedChoice == 2) {
 
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleOrganizations));
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navOrg));
 		}
 		else if(homeScreenSelectedChoice == 3) {
 
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleRepositories));
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navRepos));
 		}
 		else if(homeScreenSelectedChoice == 4) {
 
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleProfile));
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navProfile));
 		}
 		else if(homeScreenSelectedChoice == 5) {
 
@@ -139,6 +141,15 @@ public class SettingsGeneralActivity extends BaseActivity {
 			dlDialog.show();
 		});
 		// link handler
+
+		// custom tabs
+		viewBinding.switchTabs.setChecked(tinyDB.getBoolean("useCustomTabs"));
+		viewBinding.switchTabs.setOnCheckedChangeListener((buttonView, isChecked) -> {
+			tinyDB.putBoolean("useCustomTabs", isChecked);
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+		});
+		viewBinding.customTabsFrame.setOnClickListener(v -> viewBinding.switchTabs.setChecked(!viewBinding.switchTabs.isChecked()));
+		// custom tabs
 	}
 
 	private void initCloseListener() { onClickListener = view -> finish(); }

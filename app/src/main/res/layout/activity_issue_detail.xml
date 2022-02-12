@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/scrollViewComments"
@@ -165,7 +165,7 @@
                             </LinearLayout>
                         </HorizontalScrollView>
 
-                        <TextView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/issueDescription"
                             android:layout_below="@+id/assigneesScrollView"
                             android:layout_width="match_parent"
@@ -262,7 +262,7 @@
 
                 </RelativeLayout>
 
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

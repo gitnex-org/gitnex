@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 	private final List<UserAccount> userAccountsList;
 	private final Context context;
 	private TinyDB tinyDB;
+	private final Dialog dialog;
 
 	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
 
@@ -85,6 +87,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 
 					Toasty.success(context,  context.getResources().getString(R.string.switchAccountSuccess, userAccount.getUserName(), url));
 					((Activity) context).recreate();
+					dialog.dismiss();
 
 				}
 			});
@@ -93,8 +96,8 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 
 	}
 
-	public UserAccountsAdapter(Context ctx, List<UserAccount> userAccountsListMain) {
-
+	public UserAccountsAdapter(Context ctx, List<UserAccount> userAccountsListMain, Dialog dialog) {
+		this.dialog = dialog;
 		this.context = ctx;
 		this.userAccountsList = userAccountsListMain;
 	}
@@ -135,7 +138,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		PicassoService.getInstance(context).get()
-			.load(url + "img/favicon.png")
+			.load(url + "assets/img/favicon.png")
 			.placeholder(R.drawable.loader_animated)
 			.transform(new RoundedTransformation(imgRadius, 0))
 			.resize(120, 120)

@@ -1,22 +1,22 @@
-## # What do you want to address?
-<!-- This step is required; examples are shown below -->
+---
 
-- [ ] Bug
-- [ ] Feature
-- [ ] Suggestion
+name: "Bug"
+about: "Something isn't working"
+labels:
+
+- Bug
+
+---
 
 ## # Describe your matter briefly
-<!-- This step is required. -->
 <br><br>
 
-##### What did you expect? <!-- Useful when addressing bugs -->
+##### What did you expect?
 ---
-<!-- This step is optional. -->
 <br><br>
 
-##### Some additional details <!-- Useful, when we are trying to reproduce a bug -->
+##### Some additional details
 ---
-<!-- This step is optional; an example is shown below -->
 
 * The version of **Gitea** you are using: 
 * The version of **GitNex** you are using: 
@@ -34,4 +34,4 @@
 - [ ] I carefully read the [contribution guidelines](https://codeberg.org/GitNex/GitNex/src/branch/main/CONTRIBUTING.md).
 <br>
 
-#### Thank you for your time.
+<!-- Thank you for your time. -->

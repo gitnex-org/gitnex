@@ -193,6 +193,14 @@
                 android:text="@string/newCreateButtonCopy"
                 android:textColor="@color/btnTextColor" />
 
+            <Button
+                android:id="@+id/createNewTag"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/create_tag"
+                android:textColor="@color/btnTextColor" />
+
         </LinearLayout>
 
     </ScrollView>

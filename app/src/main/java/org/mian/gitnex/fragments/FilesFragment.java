@@ -11,25 +11,37 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.Files;
+import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.RepositoriesApi;
+import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.Repository;
+import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.FragmentFilesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Path;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -121,6 +133,24 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		});
 
+		requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+
+			@Override
+			public void handleOnBackPressed() {
+				if(path.size() == 0 || RepoDetailActivity.mViewPager.getCurrentItem() != 1) {
+					requireActivity().finish();
+					return;
+				}
+				path.remove(path.size() - 1);
+				binding.breadcrumbsView.removeLastItem();
+				if(path.size() == 0) {
+					fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
+				} else {
+					fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, path.toString(), ref);
+				}
+			}
+		});
+
 		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerFiles(repoBranch -> {
 
 			path.clear();
@@ -164,12 +194,111 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 				break;
 
 			case "file":
+			case "symlink":
 				Intent intent = new Intent(getContext(), FileViewActivity.class);
 				intent.putExtra("file", file);
 
 				requireContext().startActivity(intent);
 				break;
 
+			case "submodule":
+				String rawUrl = file.getSubmodule_git_url();
+				if(rawUrl == null) {
+					return;
+				}
+				Uri url = AppUtil.getUriFromGitUrl(rawUrl);
+				String host = url.getHost();
+
+				UserAccountsApi userAccountsApi = BaseApi.getInstance(requireContext(), UserAccountsApi.class);
+				List<UserAccount> userAccounts = userAccountsApi.usersAccounts();
+				UserAccount account = null;
+
+				for(UserAccount userAccount : userAccounts) {
+					Uri instanceUri = Uri.parse(userAccount.getInstanceUrl());
+					if(instanceUri.getHost().toLowerCase().equals(host)) {
+						account = userAccount;
+						// if scheme is wrong fix it
+						if (!url.getScheme().equals(instanceUri.getScheme())) {
+							url = AppUtil.changeScheme(url,instanceUri.getScheme());
+						}
+						break;
+					}
+				}
+
+				if(account != null) {
+					TinyDB tinyDB = TinyDB.getInstance(requireContext());
+					int oldId = tinyDB.getInt("currentActiveAccountId");
+					AppUtil.switchToAccount(requireContext(), account);
+					List<String> splittedUrl = url.getPathSegments();
+					if(splittedUrl.size() < 2) {
+						AppUtil.openUrlInBrowser(requireContext(), url.toString());
+					}
+					String owner = splittedUrl.get(splittedUrl.size() - 2);
+					String repo = splittedUrl.get(splittedUrl.size() - 1);
+					if (repo.endsWith(".git")) { // Git clone URL
+						repo = repo.substring(0, repo.length() - 4);
+					}
+
+					Call<UserRepositories> call = RetrofitClient
+						.getApiInterface(requireContext(), account.getInstanceUrl())
+						.getUserRepository(Authorization.get(requireContext()), owner, repo);
+
+					Uri finalUrl = url;
+					call.enqueue(new Callback<UserRepositories>() {
+
+						@Override
+						public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
+
+							UserRepositories repoInfo = response.body();
+
+							if (response.code() == 200) {
+
+								assert repoInfo != null;
+
+								Intent repoIntent = new Intent(requireContext(), RepoDetailActivity.class);
+								repoIntent.putExtra("repoFullName", repoInfo.getFullName());
+								repoIntent.putExtra("goToSection", "yes");
+								repoIntent.putExtra("goToSectionType", "repo");
+								repoIntent.putExtra("switchAccountBackOnFinish", true);
+								repoIntent.putExtra("oldAccountId", oldId);
+
+								tinyDB.putString("repoFullName", repoInfo.getFullName());
+								if(repoInfo.getPrivateFlag()) {
+									tinyDB.putString("repoType", getResources().getString(R.string.strPrivate));
+								}
+								else {
+									tinyDB.putString("repoType", getResources().getString(R.string.strPublic));
+								}
+								tinyDB.putBoolean("isRepoAdmin", repoInfo.getPermissions().isAdmin());
+								tinyDB.putString("repoBranch", repoInfo.getDefault_branch());
+
+								int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
+
+								RepositoriesApi repositoryData = BaseApi.getInstance(requireContext(), RepositoriesApi.class);
+								Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
+								if(count == 0) {
+									long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
+									tinyDB.putLong("repositoryId", id);
+								} else {
+									Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
+									tinyDB.putLong("repositoryId", data.getRepositoryId());
+								}
+
+								startActivity(repoIntent);
+							} else {
+								AppUtil.openUrlInBrowser(requireContext(), finalUrl.toString());
+							}
+						}
+
+						@Override
+						public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
+							AppUtil.openUrlInBrowser(requireContext(), finalUrl.toString());
+						}
+					});
+				} else {
+					AppUtil.openUrlInBrowser(requireContext(), url.toString());
+				}
+				break;
 		}
 	}
 
@@ -210,7 +339,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		filesModel.getFilesList2(instanceToken, owner, repo, filesDir, ref, getContext(), binding.progressBar, binding.noDataFiles).observe(this, filesListMain2 -> {
+		filesModel.getFilesList2(instanceToken, owner, repo, filesDir, ref, getContext(), binding.progressBar, binding.noDataFiles).observe(getViewLifecycleOwner(), filesListMain2 -> {
 
 			filesAdapter.getOriginalFiles().clear();
 			filesAdapter.getOriginalFiles().addAll(filesListMain2);

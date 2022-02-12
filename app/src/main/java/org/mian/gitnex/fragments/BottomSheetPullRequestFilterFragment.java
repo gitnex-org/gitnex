@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetPullRequestFilterBinding;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -16,7 +17,7 @@ import org.mian.gitnex.databinding.BottomSheetPullRequestFilterBinding;
 
 public class BottomSheetPullRequestFilterFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetPullRequestFilterFragment.BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
 	@Nullable
 	@Override
@@ -37,19 +38,13 @@ public class BottomSheetPullRequestFilterFragment extends BottomSheetDialogFragm
 		return bottomSheetPullRequestFilterBinding.getRoot();
 	}
 
-	public interface BottomSheetListener {
-
-		void onButtonClicked(String text);
-
-	}
-
 	@Override
 	public void onAttach(@NonNull Context context) {
 
 		super.onAttach(context);
 
 		try {
-			bmListener = (BottomSheetPullRequestFilterFragment.BottomSheetListener) context;
+			bmListener = (BottomSheetListener) context;
 		}
 		catch(ClassCastException e) {
 			throw new ClassCastException(context.toString() + " must implement BottomSheetListener");

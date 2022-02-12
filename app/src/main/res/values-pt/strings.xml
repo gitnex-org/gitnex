@@ -10,9 +10,7 @@
     <string name="navAbout">Sobre</string>
     <string name="navRate">Avalie o GitNex</string>
     <string name="navLogout">Sair</string>
-    <string name="navExplore">Explorar</string>
     <string name="navAdministration">Administração</string>
-    <string name="navSearchIssuesPulls">Pesquisar incidentes</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">Sobre</string>
@@ -39,6 +37,7 @@
     <string name="pageTitleAdministration">Administração de Gitea</string>
     <string name="pageTitleUserAccounts">Gerenciar contas</string>
     <string name="pageTitleNewPullRequest">Novo Pull Request</string>
+    <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
     <string name="repoName">Repo demo</string>
     <string name="repoFullName">Repo com ORG</string>
@@ -152,6 +151,7 @@
     <string name="milestoneNoDescription">Sem descrição</string>
     <string name="milestoneIssueStatusOpen">%1$d Aberto</string>
     <string name="milestoneIssueStatusClosed">%1$d Fechado</string>
+    <string name="selectMilestone">Select Milestone</string>
     <string name="newIssueSelectAssigneesListTitle">Selecionar designados</string>
     <string name="newIssueSelectLabelsListTitle">Selecionar marcadores</string>
     <string name="newIssueTitle">Título</string>
@@ -428,7 +428,10 @@
     <string name="isClosed">Fechado</string>
     <string name="genericServerResponseError">Não conseguimos encontrar o servidor no momento, por favor, verifique o status do seu servidor e tente novamente</string>
     <string name="genericCopyUrl">Copiar URL</string>
+    <string name="genericWaitFor">Hold on ☕</string>
     <!-- generic copy -->
+    <string name="exploreUsers">Explore users</string>
+    <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Explorar repositórios</string>
     <string name="starRepository">Favoritar repositório</string>
     <string name="unStarRepository">Desfavoritar repositório</string>
@@ -439,7 +442,7 @@
     <string name="watchRepositorySuccess">Repositório adicionado à lista de observação</string>
     <string name="unWatchRepositorySuccess">Repositório removido da lista de observação</string>
     <string name="titleDrafts">Rascunhos</string>
-    <string name="versionUnsupportedOld">Foi detectada uma versão(%1$s) de Gitea desatualizada e sem suporte. Por favor, atualize para a versão mais recente. Se você continuar, o aplicativo pode não funcionar corretamente</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">Nova versão do Gitea detectada! Por favor, ATUALIZE o GitNex!</string>
     <string name="versionUnknown">Gitea não detectado!</string>
     <string name="versionAlertDialogHeader">Versão do Gitea não suportada</string>
@@ -457,6 +460,7 @@
     <string name="fileDiffViewHeader">%1$s Arquivos Alterados</string>
     <string name="fileDiffViewHeaderSingle">%1$s Arquivo Alterado</string>
     <string name="openFileDiffText">Arquivos alterados</string>
+    <string name="updatePullRequestText">Update Pull Request</string>
     <string name="mergePullRequestText">Aplicar merge do Pull Request</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -547,7 +551,7 @@
     <string name="switchAccountSuccess">Alterado para a conta : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notificações</string>
-    <string name="noDataNotifications">Sem notificações</string>
+    <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Atraso da Enquete das Notificações</string>
     <string name="pollingDelaySelectedText">%d Minutos</string>
     <string name="pollingDelayDialogHeaderText">Selecionar atraso da votação</string>
@@ -628,4 +632,15 @@
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
     <string name="lastUpdatedAt">Updated %s</string>
     <string name="joined">Joined</string>
+    <string name="userFollow">Follow</string>
+    <string name="unfollowUser">Unfollow</string>
+    <string name="unfollowedUser">Unfollowed @%s</string>
+    <string name="nowFollowUser">You now follow @%s</string>
+    <string name="unfollowingFailed">Couldn\'t unfollow user</string>
+    <string name="followingFailed">Couldn\'t follow user</string>
+    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
+    <string name="updatePrSuccess">Pull Request updated successfully</string>
+    <string name="updateStrategyMerge">Merge</string>
+    <string name="updateStrategyRebase">Rebase</string>
+    <string name="selectUpdateStrategy">Select Update Strategy</string>
 </resources>

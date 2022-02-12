@@ -6,6 +6,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +74,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		private final ImageView avatar;
 		private final TextView author;
 		private final TextView information;
-		private final TextView comment;
+		private final RecyclerView comment;
 		private final LinearLayout commentReactionBadges;
 
 		private IssueCommentViewHolder(View view) {
@@ -98,8 +100,16 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				TextView commentMenuCopy = vw.findViewById(R.id.commentMenuCopy);
 				TextView commentMenuDelete = vw.findViewById(R.id.commentMenuDelete);
 				TextView issueCommentCopyUrl = vw.findViewById(R.id.issueCommentCopyUrl);
+				LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
 
-				if(!loginUid.contentEquals(issueComment.getUser().getUsername())) {
+				if(tinyDB.getBoolean("isArchived")) {
+					commentMenuEdit.setVisibility(View.GONE);
+					commentMenuDelete.setVisibility(View.GONE);
+					commentMenuQuote.setVisibility(View.GONE);
+					linearLayout.setVisibility(View.GONE);
+				}
+
+				if(!loginUid.contentEquals(issueComment.getUser().getUsername()) && !tinyDB.getBoolean("canPush")) {
 					commentMenuEdit.setVisibility(View.GONE);
 					commentMenuDelete.setVisibility(View.GONE);
 				}
@@ -112,7 +122,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				dialog.setContentView(vw);
 				dialog.show();
 
-				LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
+				TextView loadReactions = new TextView(context);
+				loadReactions.setText(context.getString(R.string.genericWaitFor));
+				loadReactions.setGravity(Gravity.CENTER);
+				loadReactions.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160));
+				linearLayout.addView(loadReactions);
 
 				Bundle bundle1 = new Bundle();
 				bundle1.putAll(bundle);
@@ -126,7 +140,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					dialog.dismiss();
 				});
 
-				linearLayout.addView(reactionSpinner);
+				Handler handler = new Handler();
+				handler.postDelayed(() -> {
+					linearLayout.removeView(loadReactions);
+					reactionSpinner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160));
+					linearLayout.addView(reactionSpinner);
+				}, 2500);
 
 				commentMenuEdit.setOnClickListener(v1 -> {
 					Bundle bundle = new Bundle();
@@ -264,8 +283,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					case 401:
 						AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
 							ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-							ctx.getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+							ctx.getResources().getString(R.string.cancelButton),
+							ctx.getResources().getString(R.string.navLogout));
 						break;
 
 					case 403:

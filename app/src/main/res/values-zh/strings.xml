@@ -10,9 +10,7 @@
     <string name="navAbout">关于</string>
     <string name="navRate">五星好评！</string>
     <string name="navLogout">退出</string>
-    <string name="navExplore">探索</string>
     <string name="navAdministration">管理</string>
-    <string name="navSearchIssuesPulls">搜索问题</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">关于</string>
@@ -30,7 +28,7 @@
     <string name="pageTitleCredits">鸣谢</string>
     <string name="pageTitleChooseBranch">选择分支</string>
     <string name="pageTitleLabelUpdate">更新标签</string>
-    <string name="pageTitleSponsors">赞助商</string>
+    <string name="pageTitleSponsors">捐赠人</string>
     <string name="pageTitleStarredRepos">已点赞</string>
     <string name="pageTitleCreateTeam">创建团队</string>
     <string name="pageTitleAddEmail">添加电子邮件地址</string>
@@ -39,6 +37,7 @@
     <string name="pageTitleAdministration">Gitea 管理</string>
     <string name="pageTitleUserAccounts">管理账户</string>
     <string name="pageTitleNewPullRequest">新拉取请求</string>
+    <string name="pageTitleUsers">用户</string>
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
     <string name="repoFullName">有组织的存储库</string>
@@ -152,6 +151,7 @@
     <string name="milestoneNoDescription">无描述</string>
     <string name="milestoneIssueStatusOpen">%1$d开启</string>
     <string name="milestoneIssueStatusClosed">%1$d 已关闭</string>
+    <string name="selectMilestone">选择里程碑</string>
     <string name="newIssueSelectAssigneesListTitle">选择受理人</string>
     <string name="newIssueSelectLabelsListTitle">选择标签</string>
     <string name="newIssueTitle">标题</string>
@@ -428,7 +428,10 @@
     <string name="isClosed">已关闭</string>
     <string name="genericServerResponseError">目前我们无法访问服务器，请检查您的服务器状态，然后重试</string>
     <string name="genericCopyUrl">复制 URL</string>
+    <string name="genericWaitFor">等一下 ☕</string>
     <!-- generic copy -->
+    <string name="exploreUsers">探索用户</string>
+    <string name="exploreIssues">探索问题</string>
     <string name="exploreTextBoxHint">探索仓库</string>
     <string name="starRepository">星级仓库</string>
     <string name="unStarRepository">从仓库中删除星星</string>
@@ -439,7 +442,7 @@
     <string name="watchRepositorySuccess">仓库已添加到关注列表</string>
     <string name="unWatchRepositorySuccess">仓库已从关注列表中删除</string>
     <string name="titleDrafts">草稿</string>
-    <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本(%1$s)。请更新到最新稳定版本。如果您继续，应用程序可能无法正常运行。</string>
+    <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本 (%1$s)。请更新到最新稳定版。如果您继续，应用程序可能无法正常运行。</string>
     <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
     <string name="versionUnknown">未检测到Gitea！</string>
     <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
@@ -457,6 +460,7 @@
     <string name="fileDiffViewHeader">%1$s 文件已更改</string>
     <string name="fileDiffViewHeaderSingle">%1$s 文件已更改</string>
     <string name="openFileDiffText">文件已更改</string>
+    <string name="updatePullRequestText">更新拉取请求</string>
     <string name="mergePullRequestText">合并拉取请求</string>
     <string name="deletePrHeadBranch">删除 head 分支</string>
     <string name="deleteBranchSuccess">已成功删除分支</string>
@@ -547,7 +551,7 @@
     <string name="switchAccountSuccess">已切换到账户： %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">通知</string>
-    <string name="noDataNotifications">没有找到通知</string>
+    <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">通知轮询延迟</string>
     <string name="pollingDelaySelectedText">%d 分钟</string>
     <string name="pollingDelayDialogHeaderText">选择轮询延迟</string>
@@ -628,4 +632,15 @@
     <string name="fileViewerNotificationChannelDescription">显示当前下载的进度</string>
     <string name="lastUpdatedAt">更新于 %s</string>
     <string name="joined">已加入</string>
+    <string name="userFollow">关注</string>
+    <string name="unfollowUser">取消关注</string>
+    <string name="unfollowedUser">已取消关注 @%s</string>
+    <string name="nowFollowUser">你已关注 @%s</string>
+    <string name="unfollowingFailed">无法取关用户</string>
+    <string name="followingFailed">无法关注用户</string>
+    <string name="updatePrConflict">此拉取请求与 Base 分支冲突。请解决该冲突并再次尝试</string>
+    <string name="updatePrSuccess">成功更新了拉取请求</string>
+    <string name="updateStrategyMerge">合并</string>
+    <string name="updateStrategyRebase">变基</string>
+    <string name="selectUpdateStrategy">选择更新策略</string>
 </resources>

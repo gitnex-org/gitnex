@@ -10,9 +10,7 @@
     <string name="navAbout">درباره ما</string>
     <string name="navRate">به GitNex امتیاز دهید</string>
     <string name="navLogout">خروج از حساب کاربری</string>
-    <string name="navExplore">گشت‌و‌گذار</string>
     <string name="navAdministration">مدیریت</string>
-    <string name="navSearchIssuesPulls">جستجوی مسائل</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleAbout">درباره ما</string>
@@ -39,6 +37,7 @@
     <string name="pageTitleAdministration">مدیریت Gitea</string>
     <string name="pageTitleUserAccounts">مدیریت حساب‌ها</string>
     <string name="pageTitleNewPullRequest">ایجاد درخواست ادغام جدید</string>
+    <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
     <string name="repoName">مخزن پیش نمایشی</string>
     <string name="repoFullName">مخزن با ORG</string>
@@ -155,6 +154,7 @@
     <string name="milestoneNoDescription">بدون توضیح</string>
     <string name="milestoneIssueStatusOpen">%1$d باز</string>
     <string name="milestoneIssueStatusClosed">%1$d بسته شده</string>
+    <string name="selectMilestone">Select Milestone</string>
     <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
     <string name="newIssueSelectLabelsListTitle">برچسب‌ها را انتخاب کنید</string>
     <string name="newIssueTitle">عنوان</string>
@@ -431,7 +431,10 @@
     <string name="isClosed">بسته</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">روگیری نشانی</string>
+    <string name="genericWaitFor">Hold on ☕</string>
     <!-- generic copy -->
+    <string name="exploreUsers">Explore users</string>
+    <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">کشف مخزن‌ها</string>
     <string name="starRepository">Star Repository</string>
     <string name="unStarRepository">Unstar Repository</string>
@@ -442,7 +445,7 @@
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="titleDrafts">پیش نویس‌ها</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
     <string name="versionUnknown">هیچ Gitea تشخیص داده نشد!</string>
     <string name="versionAlertDialogHeader">نگارش پشتیبانی نشده Gitea</string>
@@ -460,6 +463,7 @@
     <string name="fileDiffViewHeader">%1$s پرونده تغییر یافت</string>
     <string name="fileDiffViewHeaderSingle">%1$s پرونده تغییر یافت</string>
     <string name="openFileDiffText">پرونده‌های تغییر یافته</string>
+    <string name="updatePullRequestText">Update Pull Request</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -550,7 +554,7 @@
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">آگاهی‌ها</string>
-    <string name="noDataNotifications">هیچ آگاهی یافت نشد</string>
+    <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d دقیقه</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
@@ -631,4 +635,15 @@
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
     <string name="lastUpdatedAt">Updated %s</string>
     <string name="joined">Joined</string>
+    <string name="userFollow">Follow</string>
+    <string name="unfollowUser">Unfollow</string>
+    <string name="unfollowedUser">Unfollowed @%s</string>
+    <string name="nowFollowUser">You now follow @%s</string>
+    <string name="unfollowingFailed">Couldn\'t unfollow user</string>
+    <string name="followingFailed">Couldn\'t follow user</string>
+    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
+    <string name="updatePrSuccess">Pull Request updated successfully</string>
+    <string name="updateStrategyMerge">Merge</string>
+    <string name="updateStrategyRebase">Rebase</string>
+    <string name="selectUpdateStrategy">Select Update Strategy</string>
 </resources>

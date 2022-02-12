@@ -30,6 +30,7 @@ import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.notifications.Notifications;
+import org.mian.gitnex.structs.BottomSheetListener;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class FileViewActivity extends BaseActivity implements BottomSheetFileViewerFragment.BottomSheetListener {
+public class FileViewActivity extends BaseActivity implements BottomSheetListener {
 
 	private ActivityFileViewBinding binding;
 	private Files file;
@@ -174,15 +175,17 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 								binding.contents.setVisibility(View.GONE);
 
 								binding.markdownFrame.setVisibility(View.VISIBLE);
-								binding.markdown.setText(getString(R.string.excludeFilesInFileViewer));
-								binding.markdown.setGravity(Gravity.CENTER);
-								binding.markdown.setTypeface(null, Typeface.BOLD);
+								binding.markdown.setVisibility(View.GONE);
+								binding.markdownTv.setVisibility(View.VISIBLE);
+								binding.markdownTv.setText(getString(R.string.excludeFilesInFileViewer));
+								binding.markdownTv.setGravity(Gravity.CENTER);
+								binding.markdownTv.setTypeface(null, Typeface.BOLD);
 							});
 						}
 					} else {
 
 						runOnUiThread(() -> {
-							binding.markdown.setText("");
+							binding.markdownTv.setText("");
 							binding.progressBar.setVisibility(View.GONE);
 						});
 					}
@@ -194,8 +197,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 							runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx,
 								getResources().getString(R.string.alertDialogTokenRevokedTitle),
 								getResources().getString(R.string.alertDialogTokenRevokedMessage),
-								getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton),
-								getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton)));
+								getResources().getString(R.string.cancelButton),
+								getResources().getString(R.string.navLogout)));
 							break;
 
 						case 403:
@@ -255,7 +258,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetFileVie
 		} else if(id == R.id.markdown) {
 
 			if(!tinyDB.getBoolean("enableMarkdownInFileView")) {
-				Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
+				if(binding.markdown.getAdapter() == null) {
+					Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
+				}
 
 				binding.contents.setVisibility(View.GONE);
 				binding.markdownFrame.setVisibility(View.VISIBLE);

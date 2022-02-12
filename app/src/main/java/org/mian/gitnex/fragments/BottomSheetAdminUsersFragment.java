@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetAdminUsersBinding;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author M M Arif
@@ -16,7 +17,7 @@ import org.mian.gitnex.databinding.BottomSheetAdminUsersBinding;
 
 public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
 
-    private BottomSheetAdminUsersFragment.BottomSheetListener bmListener;
+    private BottomSheetListener bmListener;
 
     @Nullable
     @Override
@@ -34,16 +35,12 @@ public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
         return bottomSheetAdminUsersBinding.getRoot();
     }
 
-    public interface BottomSheetListener {
-        void onButtonClicked(String text);
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
-            bmListener = (BottomSheetAdminUsersFragment.BottomSheetListener) context;
+            bmListener = (BottomSheetListener) context;
         }
         catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement BottomSheetListener");

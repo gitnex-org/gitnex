@@ -112,9 +112,14 @@ public class ExplorePublicOrganizationsAdapter extends RecyclerView.Adapter<Recy
 		        .resize(120, 120)
 		        .centerCrop()
 		        .into(image);
-	        if (!organization.getDescription().equals("")) {
-	            orgDescription.setText(organization.getDescription());
-	        }
+
+			if(!organization.getDescription().equals("")) {
+				orgDescription.setVisibility(View.VISIBLE);
+				orgDescription.setText(organization.getDescription());
+			}
+			else {
+				orgDescription.setVisibility(View.GONE);
+			}
 		}
 	}
 
@@ -128,6 +133,7 @@ public class ExplorePublicOrganizationsAdapter extends RecyclerView.Adapter<Recy
 		isMoreDataAvailable = moreDataAvailable;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
@@ -143,6 +149,6 @@ public class ExplorePublicOrganizationsAdapter extends RecyclerView.Adapter<Recy
 
 	public void updateList(List<Organization> list) {
 		organizationsList = list;
-		notifyDataSetChanged();
+		notifyDataChanged();
 	}
 }

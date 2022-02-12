@@ -36,6 +36,8 @@ public class SettingsReportsActivity extends BaseActivity {
 			tinyDB.putBoolean("crashReportingEnabled", isChecked);
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 		});
+		activitySettingsReportsBinding.enableSendReports.setOnClickListener(
+			v -> activitySettingsReportsBinding.crashReportsSwitch.setChecked(!activitySettingsReportsBinding.crashReportsSwitch.isChecked()));
 	}
 
 	private void initCloseListener() {

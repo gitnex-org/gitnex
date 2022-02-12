@@ -28,20 +28,12 @@
     <string name="navAbout">About</string>
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">Logout</string>
-    <string name="navExplore">Explore</string>
     <string name="navAdministration">Administration</string>
-    <string name="navSearchIssuesPulls">Search Issues</string>
     <!-- menu items -->
 
     <!-- page titles -->
-    <string name="pageTitleAbout">About</string>
-    <string name="pageTitleMyRepos">My Repositories</string>
-    <string name="pageTitleRepositories">Repositories</string>
-    <string name="pageTitleProfile">Profile</string>
     <string name="pageTitleNewRepo">New Repository</string>
-    <string name="pageTitleOrganizations">Organizations</string>
     <string name="pageTitleIssues">Issues</string>
-    <string name="pageTitleSettings">Settings</string>
     <string name="pageTitleCreateOrganization">New Organization</string>
     <string name="pageTitleCreateMilestone">New Milestone</string>
     <string name="pageTitleCreateNewIssue">New Issue</string>
@@ -49,24 +41,21 @@
     <string name="pageTitleCredits">Credits</string>
     <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Update Label</string>
-    <string name="pageTitleSponsors">Donators</string>
     <string name="pageTitleStarredRepos">Starred Repositories</string>
     <string name="pageTitleCreateTeam">New Team</string>
     <string name="pageTitleAddEmail">Add Email Address</string>
     <string name="pageTitleNewFile">New File</string>
     <string name="pageTitleExplore">Explore</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
 
     <string name="repoName">Demo repo</string>
-    <string name="repoFullName">Repo with ORG</string>
     <string name="repoDescription">Demo description</string>
     <string name="noData">No repositories found</string>
 
     <string name="orgName">Demo organization</string>
-    <string name="orgDescription">Demo description</string>
     <string name="noDataOrg">No organizations found</string>
 
     <string name="newCreateButtonCopy">Create</string>
@@ -134,7 +123,6 @@
     <string name="removeContent">Remove</string>
 
     <string name="genericApiStatusError">Instance has returned an error. Code\u0020</string>
-    <string name="titleActivityRepoDetail">RepoDetailActivity</string>
     <string name="tabTextInfo">Details</string>
     <string name="tabTextFiles">Files</string>
     <string name="tabTextMl">Milestones</string>
@@ -203,6 +191,7 @@
     <string name="milestoneNoDescription">No description</string>
     <string name="milestoneIssueStatusOpen">%1$d Open</string>
     <string name="milestoneIssueStatusClosed">%1$d Closed</string>
+    <string name="selectMilestone">Select Milestone</string>
 
     <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
     <string name="newIssueSelectLabelsListTitle">Select Labels</string>
@@ -292,8 +281,6 @@
 
     <string name="noDataLabelsTab">No labels found</string>
     <string name="labelMenuContentDesc">Desc</string>
-    <string name="labelMenuEdit">Edit</string>
-    <string name="labelMenuDelete">Delete</string>
     <string name="labelDeleteText">Label deleted</string>
     <string name="labelDeleteErrorText">Something went wrong, please try again</string>
 
@@ -302,15 +289,10 @@
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="alertDialogTokenRevokedCopyNegativeButton">Cancel</string>
-    <string name="alertDialogTokenRevokedCopyPositiveButton">Logout</string>
-    <string name="labelDeleteTitle">Delete\u0020</string>
+    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
-    <string name="labelDeletePositiveButton">OK</string>
-    <string name="labelDeleteNegativeButton">Cancel</string>
 
     <!-- org tabbed layout str -->
-    <string name="titleActivityOrgDetail">OrgDetailActivity</string>
     <string name="orgTabRepos">Repositories</string>
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Members</string>
@@ -352,7 +334,6 @@
 
     <!-- issue comments -->
     <string name="editCommentTitle">Edit Comment</string>
-    <string name="editCommentButtonText">Edit</string>
     <string name="editCommentUpdatedText">Comment updated</string>
     <string name="issueCommentShare">Share Comment</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
@@ -373,7 +354,6 @@
     <string name="profileTabFollowers">Followers</string>
     <string name="profileTabFollowing">Following</string>
     <string name="profileCreateNewEmailAddress">Add Email Address</string>
-    <string name="profileEmailButton">Save</string>
     <string name="profileEmailTitle">Email Address</string>
     <string name="emailAddedText">New email added successfully</string>
     <string name="emailErrorEmpty">Email address is empty</string>
@@ -524,8 +504,11 @@
     <string name="isClosed">Closed</string>
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
+    <string name="genericWaitFor">Hold on ☕</string>
     <!-- generic copy -->
 
+    <string name="exploreUsers">Explore users</string>
+    <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
     <string name="starRepository">Star Repository</string>
     <string name="unStarRepository">Unstar Repository</string>
@@ -538,7 +521,7 @@
     <string name="titleDrafts">Drafts</string>
     <string name="filesBreadcrumbRoot" translatable="false">Root</string>
 
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, the app may not function properly</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
@@ -558,6 +541,7 @@
     <string name="fileDiffViewHeader">%1$s Files Changed</string>
     <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
     <string name="openFileDiffText">Files Changed</string>
+    <string name="updatePullRequestText">Update Pull Request</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -662,7 +646,7 @@
 
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
-    <string name="noDataNotifications">No notifications found</string>
+    <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
@@ -756,4 +740,29 @@
 
     <string name="lastUpdatedAt">Updated %s</string>
     <string name="joined">Joined</string>
+    <string name="userFollow">Follow</string>
+    <string name="unfollowUser">Unfollow</string>
+    <string name="unfollowedUser">Unfollowed @%s</string>
+    <string name="nowFollowUser">You now follow @%s</string>
+    <string name="unfollowingFailed">Couldn\'t unfollow user</string>
+    <string name="followingFailed">Couldn\'t follow user</string>
+    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
+    <string name="updatePrSuccess">Pull Request updated successfully</string>
+    <string name="updateStrategyMerge">Merge</string>
+    <string name="updateStrategyRebase">Rebase</string>
+    <string name="selectUpdateStrategy">Select Update Strategy</string>
+
+    <string name="closePr">Close Pull Request</string>
+    <string name="reopenPr">Reopen Pull Request</string>
+    <string name="userAvatar">Avatar</string>
+    <string name="tags">Tags</string>
+    <string name="releasesTags">Releases/Tags</string>
+    <string name="create_tag">Create Tag Only</string>
+    <string name="tagCreated">Tag created</string>
+    <string name="asRef">Use as reference</string>
+    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
+    <string name="deleteTagTitle">Delete tag %s</string>
+    <string name="tagDeleted">Tag deleted</string>
+    <string name="useCustomTabs">Use Custom Tabs</string>
+    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
 </resources>

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
 import org.gitnex.tea4j.models.MergePullRequest;
 import org.gitnex.tea4j.models.MergePullRequestSpinner;
 import org.mian.gitnex.R;
@@ -107,6 +106,11 @@ public class MergePullRequestActivity extends BaseActivity {
 		else {
 
 			viewBinding.mergeButton.setOnClickListener(mergePullRequest);
+		}
+
+		if(!tinyDB.getBoolean("canPushPullSource")) {
+			viewBinding.deleteBranch.setVisibility(View.GONE);
+			viewBinding.deleteBranchForkInfo.setVisibility(View.GONE);
 		}
 
 	}
@@ -223,7 +227,7 @@ public class MergePullRequestActivity extends BaseActivity {
 				else if(response.code() == 401) {
 
 					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.alertDialogTokenRevokedCopyNegativeButton), getResources().getString(R.string.alertDialogTokenRevokedCopyPositiveButton));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
 				}
 				else if(response.code() == 404) {
 
