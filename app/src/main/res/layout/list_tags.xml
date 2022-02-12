@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/headerFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tagName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:singleLine="true"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/tagsOptionsMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/labelMenuContentDesc"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_dotted_menu_horizontal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bodyFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tagBodyContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web|email"
+            android:textColorLink="@color/lightBlue"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/downloadFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/downloadDropdownIcon"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/generalImgContentText"
+                app:tint="?attr/primaryTextColor"
+                android:src="@drawable/ic_chevron_right"
+                app:srcCompat="@drawable/ic_chevron_right" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="14sp"
+                android:text="@string/releaseDownloadText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/downloads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:srcCompat="@drawable/ic_download"
+                    android:contentDescription="@string/generalImgContentText" />
+
+                <TextView
+                    android:id="@+id/releaseZipDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:srcCompat="@drawable/ic_download"
+                    android:contentDescription="@string/generalImgContentText" />
+
+                <TextView
+                    android:id="@+id/releaseTarDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

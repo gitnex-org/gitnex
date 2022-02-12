@@ -32,8 +32,11 @@ import java.util.Locale;
 
 public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.ReleasesViewHolder> {
 
-    private final List<Releases> releasesList;
+    private List<Releases> releasesList;
     private final Context context;
+
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 
 	static class ReleasesViewHolder extends RecyclerView.ViewHolder {
 
@@ -172,11 +175,44 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 	    ReleasesDownloadsAdapter adapter = new ReleasesDownloadsAdapter(currentItem.getAssets());
 	    holder.downloadList.setAdapter(adapter);
+
+	    if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		    isLoading = true;
+		    loadMoreListener.onLoadMore();
+	    }
     }
 
     @Override
     public int getItemCount() {
         return releasesList.size();
     }
+
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
+
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+
+		void onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<Releases> list) {
+		releasesList = list;
+		notifyDataChanged();
+	}
 
 }

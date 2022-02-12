@@ -39,6 +39,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.fragments.BottomSheetIssuesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetMilestonesFilterFragment;
 import org.mian.gitnex.fragments.BottomSheetPullRequestFilterFragment;
+import org.mian.gitnex.fragments.BottomSheetReleasesTagsFragment;
 import org.mian.gitnex.fragments.BottomSheetRepoFragment;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
@@ -76,6 +77,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListenerMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerFiles;
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
+	private FragmentRefreshListener fragmentRefreshListenerReleases;
 
 	private String repositoryOwner;
 	private String repositoryName;
@@ -388,6 +390,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			ctx.startActivity(intent);
 			return true;
 		}
+		else if(id == R.id.filterReleases && new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.15.0")) {
+			BottomSheetReleasesTagsFragment bottomSheetReleasesTagsFragment = new BottomSheetReleasesTagsFragment();
+			bottomSheetReleasesTagsFragment.show(getSupportFragmentManager(), "repoFilterReleasesMenuBottomSheet");
+			return true;
+		}
 
 		return super.onOptionsItemSelected(item);
 
@@ -497,6 +504,16 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			case "newPullRequest":
 
 				startActivity(new Intent(RepoDetailActivity.this, CreatePullRequestActivity.class));
+				break;
+			case "tags":
+				if(getFragmentRefreshListenerReleases() != null) {
+					getFragmentRefreshListenerReleases().onRefresh("tags");
+				}
+				break;
+			case "releases":
+				if(getFragmentRefreshListenerReleases() != null) {
+					getFragmentRefreshListenerReleases().onRefresh("releases");
+				}
 				break;
 		}
 	}
@@ -818,5 +835,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	public FragmentRefreshListener getFragmentRefreshListenerFiles() { return fragmentRefreshListenerFiles; }
 
 	public void setFragmentRefreshListenerFiles(FragmentRefreshListener fragmentRefreshListenerFiles) { this.fragmentRefreshListenerFiles = fragmentRefreshListenerFiles; }
+
+	//Releases interface
+	public FragmentRefreshListener getFragmentRefreshListenerReleases() { return fragmentRefreshListenerReleases; }
+
+	public void setFragmentRefreshListenerReleases(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListenerReleases = fragmentRefreshListener; }
 
 }
