@@ -11,7 +11,7 @@
 context="GitLab CI"
 description="GitLab continuous integration tool"
 state=$STATE
-target_url="https://gitlab.com/mmarif4u/gitnex-ci/-/pipelines"
+target_url=$CI_PIPELINE_URL
 
 body='
 {
