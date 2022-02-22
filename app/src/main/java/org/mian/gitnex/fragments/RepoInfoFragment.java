@@ -17,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -108,6 +109,13 @@ public class RepoInfoFragment extends Fragment {
 
 			Intent intent = new Intent(ctx, RepoWatchersActivity.class);
 			intent.putExtra("repoFullNameForWatchers", repoOwner + "/" + repoName);
+			ctx.startActivity(intent);
+		});
+
+		binding.repoMetaForksFrame.setOnClickListener(v -> {
+
+			Intent intent = new Intent(ctx, RepoForksActivity.class);
+			intent.putExtra("repoFullNameForForks", repoOwner + "/" + repoName);
 			ctx.startActivity(intent);
 		});
 

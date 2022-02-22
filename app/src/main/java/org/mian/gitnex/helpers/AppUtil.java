@@ -302,7 +302,7 @@ public class AppUtil {
 
 		long lines = 0;
 
-		Pattern pattern = Pattern.compile("(\r\n|\r|\n)");
+		Pattern pattern = Pattern.compile("(\r\n|\n)");
 		Matcher matcher = pattern.matcher(s);
 
 		while(matcher.find())

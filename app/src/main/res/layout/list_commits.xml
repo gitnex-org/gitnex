@@ -1,84 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/commitList"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="?attr/primaryBackgroundColor">
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearLayoutFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:padding="16dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/commitTitleVw"
+            android:id="@+id/commitSubject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/commitTitle"
+            android:layout_marginBottom="8dp"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:text="This is a test" />
 
-        <LinearLayout
-            android:id="@+id/frameCommitterAndDate"
+        <TextView
+            android:id="@+id/commitBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:alpha=".8"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"
+            tools:text="This is a test commit message" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/frameCommitter"
-                android:layout_width="0dp"
-                android:layout_weight=".25"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/commitAuthorAvatar"
+                    android:layout_width="@dimen/list_avatar_size"
+                    android:layout_height="@dimen/list_avatar_size"
+                    android:contentDescription="@string/generalImgContentText"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/commitCommitterAvatar"
+                    android:layout_width="@dimen/list_avatar_size"
+                    android:layout_height="@dimen/list_avatar_size"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
-                    android:id="@+id/commitCommitterVw"
+                    android:id="@+id/commitAuthorAndCommitter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp" />
+                    tools:text="opyale authored and opyale committed" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/commitDateVw"
-                android:layout_width="0dp"
-                android:layout_weight=".25"
+                android:id="@+id/commitSha"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="end"
+                android:layout_weight="0"
+                android:alpha=".8"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp" />
+                app:drawableLeftCompat="@drawable/ic_commit"
+                tools:text="357f3qd5s" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/frameViewCommits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/commitHtmlUrlVw"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:text="@string/viewInBrowser"
-                    android:layout_marginTop="15dp"
-                    android:textColor="@color/btnTextColor"
-                    android:textSize="14sp" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <View
-        android:layout_below="@id/linearLayoutFrame"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:id="@+id/divider"
         android:background="?attr/dividerColor" />
 
-</RelativeLayout>
+</LinearLayout>

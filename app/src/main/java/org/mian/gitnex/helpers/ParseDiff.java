@@ -2,6 +2,7 @@ package org.mian.gitnex.helpers;
 
 import org.gitnex.tea4j.models.FileDiffView;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,10 +54,11 @@ public class ParseDiff {
 
 	public static List<FileDiffView> getFileDiffViewArray(String raw) {
 
-		List<FileDiffView> fileContentsArray = new ArrayList<>();
-
 		String[] lines = raw.split("(^|\\n)diff --git a/");
+		List<FileDiffView> fileContentsArray;
+
 		if(lines.length > 1) {
+			fileContentsArray = new ArrayList<>(lines.length);
 
 			// for each file in diff
 			for(int i = 1; i < lines.length; i++) {
@@ -137,6 +139,8 @@ public class ParseDiff {
 					fileContentsArray.add(new FileDiffView(lines2[1], lines2[2].split("\\n")[0], "rename", "rename", null));
 				}
 			}
+		} else {
+			fileContentsArray = Collections.emptyList();
 		}
 
 		return fileContentsArray;

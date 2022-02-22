@@ -1,6 +1,7 @@
 package org.mian.gitnex.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,7 +19,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,14 +30,16 @@ import retrofit2.Response;
 /**
  * @author opyale
  */
-
 @SuppressLint("ViewConstructor")
 public class ReactionSpinner extends HorizontalScrollView {
+
+	private static final List<String> allowedReactionsCache = new ArrayList<>();
 
 	private enum ReactionType { COMMENT, ISSUE }
 	private enum ReactionAction { REMOVE, ADD }
 
 	private OnInteractedListener onInteractedListener;
+	private Runnable onLoadingFinishedListener;
 
 	public ReactionSpinner(Context context, Bundle bundle) {
 
@@ -45,12 +47,12 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 		LinearLayout root = new LinearLayout(context);
 
-		int dens = AppUtil.getPixelsFromDensity(context, 10);
+		int sidesPadding = AppUtil.getPixelsFromDensity(context, 10);
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		root.setOrientation(LinearLayout.HORIZONTAL);
-		root.setPadding(dens, 0, dens, 0);
+		root.setPadding(sidesPadding, 0, sidesPadding, 0);
 		root.setGravity(Gravity.START);
 		root.setLayoutParams(layoutParams);
 
@@ -76,55 +78,60 @@ public class ReactionSpinner extends HorizontalScrollView {
 			try {
 
 				List<IssueReaction> allReactions = getReactions(repoOwner, repoName, reactionType, id);
+				List<String> allowedReactions = getAllowedReactions();
 
-				for(String allowedReaction : getAllowedReactions()) {
+				if(!allowedReactions.isEmpty()) {
+					// Show all allowed reactions
+					for(String allowedReaction : allowedReactions) {
 
-					@SuppressLint("InflateParams") CardView reactionButton = (CardView) LayoutInflater.from(context)
-						.inflate(R.layout.layout_reaction_button, root, false);
+						@SuppressLint("InflateParams") CardView reactionButton = (CardView) LayoutInflater.from(context)
+							.inflate(R.layout.layout_reaction_button, root, false);
 
-					IssueReaction myReaction = null;
+						// Checks if current user reacted with 'allowedReaction'
+						boolean myReaction = allReactions.stream().anyMatch(issueReaction ->
+							issueReaction.getContent().equals(allowedReaction) &&
+								issueReaction.getUser().getLogin().equals(loginUid));
 
-					for(IssueReaction issueReaction : allReactions) {
+						ReactionAction reactionAction;
 
-						if(issueReaction.getContent().equals(allowedReaction) && issueReaction.getUser().getLogin().equals(loginUid)) {
-							myReaction = issueReaction;
-							break;
+						if(myReaction) {
+							reactionButton.setCardBackgroundColor(AppUtil.getColorFromAttribute(context, R.attr.inputSelectedColor));
+							reactionAction = ReactionAction.REMOVE;
+						} else {
+							reactionAction = ReactionAction.ADD;
 						}
+
+						reactionButton.setOnClickListener(v -> new Thread(() -> {
+
+							try {
+								if(react(repoOwner, repoName, reactionType, reactionAction, new IssueReaction(allowedReaction), id)) {
+									v.post(() -> onInteractedListener.onInteracted());
+								}
+							} catch(IOException ignored) {}
+
+						}).start());
+
+						Emoji emoji = EmojiManager.getForAlias(allowedReaction);
+
+						((TextView) reactionButton.findViewById(R.id.symbol)).setText((emoji == null) ? allowedReaction : emoji.getUnicode());
+						root.post(() -> root.addView(reactionButton));
+
 					}
 
-					ReactionAction reactionAction;
+					this.post(() -> {
+						setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+						addView(root);
+						setVisibility(VISIBLE);
+					});
 
-					if(myReaction != null) {
-
-						reactionButton.setCardBackgroundColor(AppUtil.getColorFromAttribute(context, R.attr.inputSelectedColor));
-						reactionAction = ReactionAction.REMOVE;
-					} else {
-						reactionAction = ReactionAction.ADD;
-					}
-
-					reactionButton.setOnClickListener(v -> new Thread(() -> {
-
-						try {
-							if(react(repoOwner, repoName, reactionType, reactionAction, new IssueReaction(allowedReaction), id)) {
-								v.post(() -> onInteractedListener.onInteracted());
-							}
-						} catch(IOException ignored) {}
-
-					}).start());
-
-					Emoji emoji = EmojiManager.getForAlias(allowedReaction);
-
-					((TextView) reactionButton.findViewById(R.id.symbol)).setText((emoji == null) ? allowedReaction : emoji.getUnicode());
-					root.post(() -> root.addView(reactionButton));
-
+				} else {
+					this.post(() -> setVisibility(GONE));
 				}
-
 			} catch(IOException ignored) {}
-
+			if(onLoadingFinishedListener != null) {
+				((Activity) context).runOnUiThread(() -> onLoadingFinishedListener.run());
+			}
 		}).start();
-
-		setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		addView(root);
 
 	}
 
@@ -204,29 +211,29 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 		}
 
-		if(response.isSuccessful() && response.body() != null)
+		if(response.isSuccessful() && response.body() != null) {
 			return response.body();
-		else
+		} else {
 			return Collections.emptyList();
-
+		}
 	}
 
+	// Assumes that there's something wrong when no allowed reactions are returned by the server
 	private List<String> getAllowedReactions() throws IOException {
 
-		List<String> allowedReactions = new ArrayList<>();
+		if(allowedReactionsCache.isEmpty()) {
 
-		Response<UISettings> response = RetrofitClient
-			.getApiInterface(getContext())
-			.getUISettings(Authorization.get(getContext()))
-			.execute();
+			Response<UISettings> response = RetrofitClient
+				.getApiInterface(getContext())
+				.getUISettings(Authorization.get(getContext()))
+				.execute();
 
-		if(response.isSuccessful() && response.body() != null) {
-			allowedReactions.addAll(Arrays.asList(response.body().getAllowed_reactions()));
-		} else {
-			allowedReactions.addAll(Arrays.asList(Constants.fallbackReactions));
+			if(response.isSuccessful() && response.body() != null) {
+				allowedReactionsCache.addAll(Arrays.asList(response.body().getAllowed_reactions()));
+			}
 		}
 
-		return allowedReactions;
+		return allowedReactionsCache;
 
 	}
 
@@ -235,5 +242,9 @@ public class ReactionSpinner extends HorizontalScrollView {
 	}
 
 	public interface OnInteractedListener { void onInteracted(); }
+
+	public void setOnLoadingFinishedListener(Runnable onLoadingFinishedListener) {
+		this.onLoadingFinishedListener = onLoadingFinishedListener;
+	}
 
 }

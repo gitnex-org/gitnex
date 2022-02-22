@@ -11,7 +11,7 @@ labels:
 ## # Describe your matter briefly
 <br><br>
 
-- [ ] I carefully read the [contribution guidelines](https://codeberg.org/GitNex/GitNex/src/branch/main/CONTRIBUTING.md).
+- [ ] I carefully read the [contribution guidelines](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
 <br>
 
 <!-- Thank you for your time. -->

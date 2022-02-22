@@ -6,7 +6,7 @@ android {
         applicationId "org.mian.gitnex"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 415
+        versionCode 420
         versionName "4.2.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -54,9 +54,9 @@ configurations {
 }
 
 dependencies {
-    def lifecycle_version = '2.4.0'
+    def lifecycle_version = '2.4.1'
     def markwon_version = '4.6.2'
-    def work_version = "2.7.0-alpha05"
+    def work_version = "2.7.1"
     def acra = "5.7.0"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -114,5 +114,4 @@ dependencies {
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.github.chrisvest:stormpot:2.4.2'
     implementation 'androidx.browser:browser:1.4.0'
-
 }

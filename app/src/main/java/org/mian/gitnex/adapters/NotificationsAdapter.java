@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.models.NotificationThread;
@@ -18,6 +20,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import java.util.List;
 
@@ -89,11 +92,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private final LinearLayout frame;
 		private final TextView subject;
 		private final TextView repository;
-		private final ImageView typePr;
-		private final ImageView typeIssue;
-		private final ImageView typeRepo;
-		private final ImageView typeCommit;
-		private final ImageView typeUnknown;
+		private final ImageView type;
 		private ImageView pinned;
 		private final ImageView more;
 
@@ -103,11 +102,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			frame = itemView.findViewById(R.id.frame);
 			subject = itemView.findViewById(R.id.subject);
 			repository = itemView.findViewById(R.id.repository);
-			typePr = itemView.findViewById(R.id.typePr);
-			typeIssue = itemView.findViewById(R.id.typeIssue);
-			typeRepo = itemView.findViewById(R.id.typeRepo);
-			typeCommit = itemView.findViewById(R.id.typeCommit);
-			typeUnknown = itemView.findViewById(R.id.typeUnknown);
+			type = itemView.findViewById(R.id.type);
 			pinned = itemView.findViewById(R.id.pinned);
 			more = itemView.findViewById(R.id.more);
 		}
@@ -138,41 +133,39 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				pinned.setVisibility(View.GONE);
 			}
 
-			switch(notificationThread.getSubject().getType()) {
-				case "Pull":
-					typePr.setVisibility(View.VISIBLE);
-					typeIssue.setVisibility(View.GONE);
-					typeRepo.setVisibility(View.GONE);
-					typeCommit.setVisibility(View.GONE);
-					typeUnknown.setVisibility(View.GONE);
+			switch(notificationThread.getSubject().getType().toLowerCase()) {
+
+				case "pull":
+					type.setImageResource(R.drawable.ic_pull_request);
 					break;
-				case "Issue":
-					typePr.setVisibility(View.GONE);
-					typeRepo.setVisibility(View.GONE);
-					typeCommit.setVisibility(View.GONE);
-					typeIssue.setVisibility(View.VISIBLE);
-					typeUnknown.setVisibility(View.GONE);
+				case "issue":
+					type.setImageResource(R.drawable.ic_issue);
 					break;
-				case "Repository":
-					typeUnknown.setVisibility(View.GONE);
-					typeIssue.setVisibility(View.GONE);
-					typePr.setVisibility(View.GONE);
-					typeRepo.setVisibility(View.VISIBLE);
-					typeCommit.setVisibility(View.GONE);
+				case "commit":
+					type.setImageResource(R.drawable.ic_commit);
 					break;
-				case "Commit":
-					typeUnknown.setVisibility(View.GONE);
-					typeIssue.setVisibility(View.GONE);
-					typePr.setVisibility(View.GONE);
-					typeRepo.setVisibility(View.GONE);
-					typeCommit.setVisibility(View.VISIBLE);
+				case "repository":
+					type.setImageResource(R.drawable.ic_repo);
 					break;
+
 				default:
-					typePr.setVisibility(View.GONE);
-					typeRepo.setVisibility(View.GONE);
-					typeCommit.setVisibility(View.GONE);
-					typeIssue.setVisibility(View.GONE);
-					typeUnknown.setVisibility(View.VISIBLE);
+					type.setImageResource(R.drawable.ic_question);
+					break;
+
+			}
+
+			switch(notificationThread.getSubject().getState().toLowerCase()) {
+
+				case "closed":
+					ImageViewCompat.setImageTintList(type, ColorStateList.valueOf(context.getResources().getColor(R.color.iconIssuePrClosedColor)));
+					break;
+				case "merged":
+					ImageViewCompat.setImageTintList(type, ColorStateList.valueOf(context.getResources().getColor(R.color.iconPrMergedColor)));
+					break;
+
+				default:
+				case "open":
+					ImageViewCompat.setImageTintList(type, ColorStateList.valueOf(AppUtil.getColorFromAttribute(context, R.attr.iconsColor)));
 					break;
 			}
 

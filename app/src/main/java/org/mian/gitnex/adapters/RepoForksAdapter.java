@@ -24,6 +24,7 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -64,8 +65,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 		if(viewType == TYPE_LOAD) {
 			return new RepoForksAdapter.ForksHolder(inflater.inflate(R.layout.list_repositories, parent, false));
-		}
-		else {
+		} else {
 			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
 		}
 	}
@@ -138,7 +138,6 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			orgName.setText(forksModel.getFullName().split("/")[0]);
 			repoName.setText(forksModel.getFullName().split("/")[1]);
 			repoStars.setText(forksModel.getStars_count());
-
 
 			ColorGenerator generator = ColorGenerator.MATERIAL;
 			int color = generator.getColor(forksModel.getName());
@@ -244,48 +243,31 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				//store if user is watching this repo
 				{
 
-					final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
+					RetrofitClient.getApiInterface(context)
+						.checkRepoWatchStatus(Authorization.get(context), repoOwner, repoName)
+						.enqueue(new Callback<WatchInfo>() {
 
-					WatchInfo watch = new WatchInfo();
+							@Override
+							public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
 
-					Call<WatchInfo> call;
+								if(response.isSuccessful() && response.body() != null) {
 
-					call = RetrofitClient.getApiInterface(context).checkRepoWatchStatus(token, repoOwner, repoName);
+									tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
+								} else {
+									tinyDb.putBoolean("repoWatch", false);
 
-					call.enqueue(new Callback<WatchInfo>() {
-
-						@Override
-						public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
-
-							if(response.isSuccessful()) {
-
-								assert response.body() != null;
-								tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
-
-							}
-							else {
-
-								tinyDb.putBoolean("repoWatch", false);
-
-								if(response.code() != 404) {
-
-									Toasty.error(context, context.getString(R.string.genericApiStatusError));
-
+									if(response.code() != 404) {
+										Toasty.error(context, context.getString(R.string.genericApiStatusError));
+									}
 								}
-
 							}
 
-						}
-
-						@Override
-						public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
-
-							tinyDb.putBoolean("repoWatch", false);
-							Toasty.error(context, context.getString(R.string.genericApiStatusError));
-
-						}
+							@Override
+							public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
+								tinyDb.putBoolean("repoWatch", false);
+								Toasty.error(context, context.getString(R.string.genericApiStatusError));
+							}
 					});
-
 				}
 
 				context.startActivity(intent);

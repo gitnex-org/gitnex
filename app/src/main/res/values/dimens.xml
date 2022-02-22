@@ -4,4 +4,6 @@
     <dimen name="fab_padding">15dp</dimen>
 
     <dimen name="list_avatar_size">24dp</dimen>
+    <dimen name="list_avatar_size_medium">34dp</dimen>
+    <dimen name="list_avatar_size_large">60dp</dimen>
 </resources>

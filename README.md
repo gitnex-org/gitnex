@@ -37,7 +37,7 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew assemb
 - [MANY MORE](https://codeberg.org/gitnex/GitNex/wiki/Features)
 
 ## Contributing
-[CONTRIBUTING](https://codeberg.org/gitnex/GitNex/src/branch/main/CONTRIBUTING.md)
+[Contributing](https://codeberg.org/gitnex/GitNex/wiki/Contributing)
 
 ## Translation
 Help us translate GitNex to your native language.

@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -85,60 +84,41 @@ public class LoginActivity extends BaseActivity {
 			selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
 
 			if(selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
-
 				Toasty.warning(ctx, getResources().getString(R.string.protocolError));
 			}
 		});
 
 		if(R.id.loginToken == loginMethod.getCheckedRadioButtonId()) {
-
 			AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
-		}
-		else {
-
+		} else {
 			AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
 		}
 
 		loginMethod.setOnCheckedChangeListener((group, checkedId) -> {
-
 			if(checkedId == R.id.loginToken) {
-
 				AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
-			}
-			else {
-
+			} else {
 				AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
 			}
 		});
 
-		Handler handler = new Handler(getMainLooper());
-
-		networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> {
-
-			handler.post(() -> {
-
-				if(hasNetworkConnection) {
-
-					enableProcessButton();
-				}
-				else {
-
-					disableProcessButton();
-					loginButton.setText(getResources().getString(R.string.btnLogin));
-					Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-				}
-
-			});
-		});
+		networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> runOnUiThread(() -> {
+			if(hasNetworkConnection) {
+				enableProcessButton();
+			} else {
+				disableProcessButton();
+				loginButton.setText(getResources().getString(R.string.btnLogin));
+				Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+			}
+		}));
 
 		loadDefaults();
 
 		loginButton.setOnClickListener(view -> {
-
 			disableProcessButton();
 			login();
 		});

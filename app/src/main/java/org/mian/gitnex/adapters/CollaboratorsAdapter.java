@@ -77,7 +77,7 @@ public class CollaboratorsAdapter extends BaseAdapter  {
     @Override
     public View getView(int position, View finalView, ViewGroup parent) {
 
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
 
         if (finalView == null) {
 

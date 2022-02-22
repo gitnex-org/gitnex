@@ -1,9 +1,7 @@
 package org.mian.gitnex.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +11,11 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
-import org.mian.gitnex.actions.NotificationsActions;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.BottomSheetNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.SimpleCallback;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -48,94 +48,55 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 		TextView markUnread = bottomSheetNotificationsBinding.markUnread;
 		TextView markPinned = bottomSheetNotificationsBinding.markPinned;
 
-		NotificationsActions notificationsActions = new NotificationsActions(context);
-		Activity activity = requireActivity();
-
 		if(notificationThread.isPinned()) {
-
 			AppUtil.setMultiVisibility(View.GONE, markUnread, markPinned);
 		} else if(notificationThread.isUnread()) {
-
 			markUnread.setVisibility(View.GONE);
 		} else {
-
 			markRead.setVisibility(View.GONE);
 		}
 
-		markPinned.setOnClickListener(v12 -> {
+		markPinned.setOnClickListener(v12 ->
+			RetrofitClient.getApiInterface(context)
+				.markNotificationThreadAsRead(Authorization.get(context), notificationThread.getId(), "pinned")
+				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 
-			Thread thread = new Thread(() -> {
-
-				try {
-
-					notificationsActions.setNotificationStatus(notificationThread, NotificationsActions.NotificationStatus.PINNED);
-					activity.runOnUiThread(() -> onOptionSelectedListener.onSelected());
-
-				}
-				catch(Exception e) {
-
-					activity.runOnUiThread(() -> Toasty.error(context, getString(R.string.genericError)));
-					Log.e("onError", e.toString());
-
-				} finally {
+					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
+						onOptionSelectedListener.onSelected();
+					} else {
+						Toasty.error(context, getString(R.string.genericError));
+					}
 
 					dismiss();
-				}
-			});
+				}));
 
-			thread.start();
+		markRead.setOnClickListener(v1 ->
+			RetrofitClient.getApiInterface(context)
+				.markNotificationThreadAsRead(Authorization.get(context), notificationThread.getId(), "read")
+				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 
-		});
-
-		markRead.setOnClickListener(v1 -> {
-
-			Thread thread = new Thread(() -> {
-
-				try {
-
-					notificationsActions.setNotificationStatus(notificationThread, NotificationsActions.NotificationStatus.READ);
-					activity.runOnUiThread(() -> onOptionSelectedListener.onSelected());
-
-				}
-				catch(Exception e) {
-
-					activity.runOnUiThread(() -> Toasty.error(context, getString(R.string.genericError)));
-					Log.e("onError", e.toString());
-
-				} finally {
+					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
+						onOptionSelectedListener.onSelected();
+					} else {
+						Toasty.error(context, getString(R.string.genericError));
+					}
 
 					dismiss();
-				}
-			});
+				}));
 
-			thread.start();
+		markUnread.setOnClickListener(v13 ->
+			RetrofitClient.getApiInterface(context)
+				.markNotificationThreadAsRead(Authorization.get(context), notificationThread.getId(), "unread")
+				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 
-		});
-
-		markUnread.setOnClickListener(v13 -> {
-
-			Thread thread = new Thread(() -> {
-
-				try {
-
-					notificationsActions.setNotificationStatus(notificationThread, NotificationsActions.NotificationStatus.UNREAD);
-					activity.runOnUiThread(() -> onOptionSelectedListener.onSelected());
-
-				}
-				catch(Exception e) {
-
-					activity.runOnUiThread(() -> Toasty.error(context, getString(R.string.genericError)));
-					Log.e("onError", e.toString());
-
-				} finally {
+					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
+						onOptionSelectedListener.onSelected();
+					} else {
+						Toasty.error(context, getString(R.string.genericError));
+					}
 
 					dismiss();
-				}
-			});
-
-			thread.start();
-
-		});
+				}));
 
 		return bottomSheetNotificationsBinding.getRoot();
 

@@ -4,7 +4,7 @@
     android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor"
+    android:background="?android:attr/selectableItemBackground"
     android:padding="16dp"
     android:orientation="horizontal">
 
@@ -21,44 +21,12 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/typePr"
+                android:id="@+id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:contentDescription="@string/generalImgContentText"
                 app:srcCompat="@drawable/ic_pull_request" />
-
-            <ImageView
-                android:id="@+id/typeIssue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_issue" />
-
-            <ImageView
-                android:id="@+id/typeRepo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_repo" />
-
-            <ImageView
-                android:id="@+id/typeCommit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_commit" />
-
-            <ImageView
-                android:id="@+id/typeUnknown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_question" />
 
         </LinearLayout>
 

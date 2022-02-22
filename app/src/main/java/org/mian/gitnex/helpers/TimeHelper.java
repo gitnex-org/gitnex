@@ -22,44 +22,41 @@ public class TimeHelper {
 		String part1 = parts[0] + "Z";
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
 		Date createdTime = null;
+
 		try {
 			createdTime = formatter.parse(part1);
-		}
-		catch(ParseException e) {
-			e.printStackTrace();
-		}
+		} catch(ParseException ignored) {}
 
 		DateFormat format = DateFormat.getDateTimeInstance();
+		assert createdTime != null;
+
 		return format.format(createdTime);
 
 	}
 
 	public static String formatTime(Date date, Locale locale, String timeFormat, Context context) {
 
-		if(date == null) {
-			return "";
-		}
+		if(date != null) {
+			switch(timeFormat) {
 
-		switch(timeFormat) {
+				case "pretty": {
+					PrettyTime prettyTime = new PrettyTime(locale);
+					return prettyTime.format(date);
+				}
+				case "normal": {
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+					return formatter.format(date);
+				}
+				case "normal1": {
+					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+					return formatter.format(date);
+				}
 
-			case "pretty": {
-				PrettyTime prettyTime = new PrettyTime(locale);
-				return prettyTime.format(date);
 			}
-
-			case "normal": {
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-				return formatter.format(date);
-			}
-
-			case "normal1": {
-				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-				return formatter.format(date);
-			}
-
 		}
 
 		return "";
+
 	}
 
 	public static String customDateFormatForToastDateFormat(Date customDate) {
@@ -84,8 +81,7 @@ public class TimeHelper {
 		if(to.before(from)) {
 			if(cal.after(to)) {
 				to.add(Calendar.DATE, 1);
-			}
-			else {
+			} else {
 				from.add(Calendar.DATE, -1);
 			}
 		}

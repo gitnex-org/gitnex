@@ -8,14 +8,14 @@
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:horizontalSpacing="10dp"
         android:numColumns="4"
         android:columnWidth="80dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"/>
+        android:background="?attr/primaryBackgroundColor"
+        android:gravity="center" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"

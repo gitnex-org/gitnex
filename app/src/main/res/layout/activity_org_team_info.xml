@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="?attr/primaryBackgroundColor">
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -24,13 +23,13 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/close_button_size"
                 android:layout_height="@dimen/close_button_size"
-                android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"
-                android:contentDescription="@string/close"
+                android:layout_marginRight="15dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:focusable="true"
                 android:clickable="true"
+                android:contentDescription="@string/close"
+                android:focusable="true"
+                android:gravity="center_vertical"
                 android:src="@drawable/ic_close" />
 
             <TextView
@@ -38,39 +37,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/fileDiffViewHeader"
+                android:maxLines="1"
                 android:textColor="?attr/primaryTextColor"
-                android:ellipsize="none"
-                android:scrollbars="horizontal"
-                android:singleLine="true"
-                android:layout_marginEnd="20dp"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
-        android:id="@+id/filesDiffFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/listView"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/primaryBackgroundColor"
-            android:scrollbars="vertical" />
+            app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
+            app:tabIndicatorFullWidth="true"
+            app:tabMode="auto"
+            app:tabTextAppearance="@style/customTabLayout"
+            app:tabTextColor="?attr/primaryTextColor" />
 
-    </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>

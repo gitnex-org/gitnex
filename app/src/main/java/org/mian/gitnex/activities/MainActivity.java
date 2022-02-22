@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -88,6 +89,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		setContentView(activityMainBinding.getRoot());
 
 		Intent mainIntent = getIntent();
+		Handler handler = new Handler();
 
 		// DO NOT MOVE
 		if(mainIntent.hasExtra("switchAccountId") &&
@@ -97,7 +99,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			mainIntent.removeExtra("switchAccountId");
 			recreate();
 			return;
-
 		}
 		// DO NOT MOVE
 
@@ -105,8 +106,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 		loginUid = tinyDB.getString("loginUid");
 		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		if(!tinyDB.getBoolean("loggedInMode")) {
 
@@ -136,7 +135,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			default:
 				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/manroperegular.ttf");
 				break;
-
 		}
 
 		toolbarTitle.setTypeface(myTypeface);
@@ -190,12 +188,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			@Override
 			public void onDrawerOpened(@NonNull View drawerView) {
-
-				if(tinyDB.getBoolean("noConnection")) {
-
-					Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-					tinyDB.putBoolean("noConnection", false);
-				}
 
 				String userEmailNav = tinyDB.getString("userEmail");
 				String userFullNameNav = tinyDB.getString("userFullname");
@@ -418,21 +410,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			}
 		}
 
-		if(!connToInternet) {
+		handler.postDelayed(() -> {
 
-			if(!tinyDB.getBoolean("noConnection")) {
+			boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+			if(!connToInternet) {
 
-				Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+				if(!tinyDB.getBoolean("noConnection")) {
+					Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+				}
+				tinyDB.putBoolean("noConnection", true);
 			}
+			else {
 
-			tinyDB.putBoolean("noConnection", true);
-		}
-		else {
-
-			loadUserInfo(instanceToken, loginUid);
-			giteaVersion();
-			tinyDB.putBoolean("noConnection", false);
-		}
+				loadUserInfo(instanceToken, loginUid);
+				giteaVersion();
+				tinyDB.putBoolean("noConnection", false);
+			}
+			Log.e("Network status is: ", String.valueOf(connToInternet));
+		}, 1500);
 
 		// Changelog popup
 		int versionCode = AppUtil.getAppBuildNo(appCtx);

@@ -2,15 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -23,13 +20,13 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/close_button_size"
                 android:layout_height="@dimen/close_button_size"
-                android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"
-                android:contentDescription="@string/close"
+                android:layout_marginRight="15dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:focusable="true"
                 android:clickable="true"
+                android:contentDescription="@string/close"
+                android:focusable="true"
+                android:gravity="center_vertical"
                 android:src="@drawable/ic_close" />
 
             <TextView
@@ -37,43 +34,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginEnd="20dp"
+                android:ellipsize="start"
+                android:singleLine="true"
                 android:textColor="?attr/primaryTextColor"
-                android:maxLines="1"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
-
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:horizontalSpacing="10dp"
-        android:numColumns="4"
-        android:columnWidth="80dp"
-        android:stretchMode="columnWidth"
-        android:background="?attr/primaryBackgroundColor"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/noDataMembers"
+    <ListView
+        android:id="@+id/diff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:gravity="center"
-        android:text="@string/noDataMembers"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="20sp"
-        android:visibility="gone" />
+        android:fastScrollEnabled="true" />
 
 </LinearLayout>

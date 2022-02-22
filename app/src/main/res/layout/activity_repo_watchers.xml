@@ -47,7 +47,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <GridView
-        android:padding="10dp"
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,7 +55,7 @@
         android:columnWidth="80dp"
         android:stretchMode="columnWidth"
         android:background="?attr/primaryBackgroundColor"
-        android:gravity="center"/>
+        android:gravity="center" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"

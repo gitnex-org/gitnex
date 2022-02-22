@@ -107,8 +107,7 @@
     <string name="orgCreatedError">Something went wrong, please try again</string>
     <string name="orgExistsError">Organization already exists</string>
 
-    <string name="binaryFileError">Binary files are not supported yet.</string>
-    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
+    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
 
     <string name="processingText">Processing</string>
     <string name="search">Search</string>
@@ -300,7 +299,13 @@
     <string name="noDataTeams">No teams found</string>
     <string name="teamTitle">Team name</string>
     <string name="teamDescription">Team desc</string>
-    <string name="teamPermission">Permission : %1$s</string>
+    <string name="teamPermissions">Permissions</string>
+    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
+    <string name="teamShowAll">show all</string>
     <string name="noDataMembers">No members found</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
@@ -540,8 +545,8 @@
     <string name="editPrSuccessMessage">Pull Request updated</string>
     <string name="fileDiffViewHeader">%1$s Files Changed</string>
     <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
-    <string name="openFileDiffText">Files Changed</string>
     <string name="updatePullRequestText">Update Pull Request</string>
+    <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -580,7 +585,8 @@
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitCommittedBy">Committed by %1$s</string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
     <string name="viewCommits">View Commits</string>
     <string name="changelogTitle" translatable="false">Changelog</string>
 

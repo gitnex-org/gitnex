@@ -28,8 +28,8 @@
 
             <ImageView
                 android:id="@+id/userAvatar"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/list_avatar_size_large"
+                android:layout_height="@dimen/list_avatar_size_large"
                 android:contentDescription="@string/generalImgContentText"
                 tools:srcCompat="@tools:sample/avatars" />
 

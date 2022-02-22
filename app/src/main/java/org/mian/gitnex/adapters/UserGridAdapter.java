@@ -82,7 +82,7 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View finalView, ViewGroup parent) {
 
-        UserGridAdapter.ViewHolder viewHolder = null;
+        UserGridAdapter.ViewHolder viewHolder;
 
         if (finalView == null) {
 
