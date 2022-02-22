@@ -2,6 +2,7 @@ stages:
   - build
   - sign
   - publish
+  - locales
 
 on_setup:
   image: curlimages/curl:7.77.0
@@ -73,6 +74,7 @@ release:
 
 push_translations:
   image: crowdin/cli:3.7.8
+  stage: locales
   only:
     refs:
       - main
