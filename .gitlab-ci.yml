@@ -71,6 +71,20 @@ release:
     - "[[ $CI_COMMIT_REF_NAME == *'-rc'* ]] && echo 'Upload blocked. Build seems to be a release candidate.' && exit 0"
     - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/releases/'"$CI_COMMIT_REF_NAME"'.apk'
 
+push_translations:
+  image: crowdin/cli:3.7.8
+  only:
+    refs:
+      - main
+    changes:
+      - app/src/main/res/values/strings.xml
+  script:
+    - echo "Set up Crowdin CLI"
+    - cp crowdin.example.yml crowdin.yml
+    - sed -i 's/-removed-/$CROWDIN_TOKEN/' filename
+    - echo "Push translations"
+    - crowdin push
+
 on_success:
   image: curlimages/curl:7.77.0
   stage: .post
