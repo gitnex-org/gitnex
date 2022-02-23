@@ -535,7 +535,6 @@
 
     <string name="prDeletedFork">Deleted Fork</string>
     <string name="noDataPullRequests">No pull requests found</string>
-    <string name="prCreator">Creator :\u0020</string>
     <string name="editPrText">Edit Pull Request</string>
     <string name="copyPrUrlText">Copy Pull Request URL</string>
     <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
