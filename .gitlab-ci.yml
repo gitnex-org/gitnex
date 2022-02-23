@@ -83,7 +83,7 @@ push_translations:
   script:
     - echo "Set up Crowdin CLI"
     - cp crowdin.example.yml crowdin.yml
-    - sed -i 's/-removed-/$CROWDIN_TOKEN/' filename
+    - sed -i 's/-removed-/$CROWDIN_TOKEN/' crowdin.yml
     - echo "Push translations"
     - crowdin push
 
