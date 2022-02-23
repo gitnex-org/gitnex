@@ -123,7 +123,7 @@ public class AlertDialogs {
     public static void collaboratorRemoveDialog(final Context context, final String userNameMain, String title, String message, String positiveButton, String negativeButton, final String searchKeyword) {
 
         new AlertDialog.Builder(context)
-                .setTitle(title + userNameMain)
+                .setTitle(String.format(title, userNameMain))
                 .setMessage(message)
                 .setPositiveButton(positiveButton, (dialog, whichButton) -> CollaboratorActions.deleteCollaborator(context,  searchKeyword, userNameMain))
                 .setNeutralButton(negativeButton, null).show();

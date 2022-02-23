@@ -89,7 +89,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
 
             addCollaboratorButtonRemove.setOnClickListener(v -> {
                 AlertDialogs.collaboratorRemoveDialog(context, userInfo.getUsername(),
-                        context.getResources().getString(R.string.removeCollaboratorTitle),
+                        context.getResources().getString(R.string.removeCollaboratorDialogTitle),
                         context.getResources().getString(R.string.removeCollaboratorMessage),
                         context.getResources().getString(R.string.removeButton),
                         context.getResources().getString(R.string.cancelButton), "fa");
