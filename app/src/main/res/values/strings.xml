@@ -15,7 +15,6 @@
     <string name="translateText" translatable="false">Translate</string>
     <string name="supportText" translatable="false">Support</string>
 
-    <string name="supportTextLiberapay" translatable="false">Liberapay</string>
     <string name="supportTextPatreon" translatable="false">Patreon</string>
 
     <!-- menu items -->
@@ -64,12 +63,10 @@
     <string name="newRepoTintCopy">Repository Name</string>
     <string name="newRepoDescTintCopy">Repository Description</string>
     <string name="newRepoPrivateCopy">Private</string>
-    <string name="newRepoDescInfo">Max 255 characters</string>
     <string name="newRepoOwner">Owner</string>
 
     <string name="newOrgTintCopy">Organization Name</string>
     <string name="newOrgDescTintCopy">Organization Description</string>
-    <string name="newOrgDescInfo">Max 255 characters</string>
 
     <string name="userName">Username</string>
     <string name="passWord">Password</string>
