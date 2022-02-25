@@ -15,7 +15,7 @@ import java.util.StringJoiner;
 public class Path {
 
 	private final List<String> segments;
-	private final List<OnChangedListener> onChangedListeners;
+	private final List<Runnable> onChangedListeners;
 
 	public Path(String... segments) {
 
@@ -24,16 +24,14 @@ public class Path {
 
 	}
 
-	public interface OnChangedListener { void onChanged(); }
-
-	public Path addListener(OnChangedListener onChangedListener) {
+	public Path addListener(Runnable onChangedListener) {
 
 		onChangedListeners.add(onChangedListener);
 		return this;
 
 	}
 
-	public Path removeListener(OnChangedListener onChangedListener) {
+	public Path removeListener(Runnable onChangedListener) {
 
 		onChangedListeners.remove(onChangedListener);
 		return this;
@@ -42,8 +40,8 @@ public class Path {
 
 	private void pathChanged() {
 
-		for(OnChangedListener onChangedListener : onChangedListeners) {
-			onChangedListener.onChanged();
+		for(Runnable onChangedListener : onChangedListeners) {
+			onChangedListener.run();
 		}
 	}
 

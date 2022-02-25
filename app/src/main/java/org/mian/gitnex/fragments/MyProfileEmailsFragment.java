@@ -40,8 +40,6 @@ public class MyProfileEmailsFragment extends Fragment {
     private String repoName;
     private String repoOwner;
 
-    private OnFragmentInteractionListener mListener;
-
     public MyProfileEmailsFragment() {
     }
 
@@ -116,21 +114,5 @@ public class MyProfileEmailsFragment extends Fragment {
             }
         });
 
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }

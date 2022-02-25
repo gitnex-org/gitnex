@@ -46,7 +46,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 	private final Context context;
 	private final int TYPE_LOAD = 0;
 	private List<UserRepositories> reposList;
-	private OnLoadMoreListener loadMoreListener;
+	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final TinyDB tinyDb;
 
@@ -72,7 +72,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
 			isLoading = true;
-			loadMoreListener.onLoadMore();
+			loadMoreListener.run();
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
@@ -286,11 +286,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 		isLoading = false;
 	}
 
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+	public void setLoadMoreListener(Runnable loadMoreListener) {
 		this.loadMoreListener = loadMoreListener;
 	}
 

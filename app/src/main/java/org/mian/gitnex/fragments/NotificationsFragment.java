@@ -41,7 +41,7 @@ import java.util.List;
  * Modified M M Arif
  */
 
-public class NotificationsFragment extends Fragment implements NotificationsAdapter.OnNotificationClickedListener, NotificationsAdapter.OnMoreClickedListener, BottomSheetNotificationsFragment.OnOptionSelectedListener {
+public class NotificationsFragment extends Fragment implements NotificationsAdapter.OnNotificationClickedListener, NotificationsAdapter.OnMoreClickedListener {
 
 	private FragmentNotificationsBinding viewBinding;
 	private final List<NotificationThread> notificationThreads = new ArrayList<>();
@@ -268,13 +268,10 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	@Override
 	public void onMoreClicked(NotificationThread notificationThread) {
 		BottomSheetNotificationsFragment bottomSheetNotificationsFragment = new BottomSheetNotificationsFragment();
-		bottomSheetNotificationsFragment.onAttach(context, notificationThread, this);
+		bottomSheetNotificationsFragment.onAttach(context, notificationThread, () -> {
+			pageCurrentIndex = 1;
+			loadNotifications(false);
+		});
 		bottomSheetNotificationsFragment.show(getChildFragmentManager(), "notificationsBottomSheet");
-	}
-
-	@Override
-	public void onSelected() {
-		pageCurrentIndex = 1;
-		loadNotifications(false);
 	}
 }

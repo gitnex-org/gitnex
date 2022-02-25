@@ -38,8 +38,6 @@ import java.util.List;
 
 public class RepositoriesByOrgFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-
     private ProgressBar mProgressBar;
     private RepositoriesByOrgAdapter adapter;
     private RecyclerView mRecyclerView;
@@ -169,21 +167,5 @@ public class RepositoriesByOrgFragment extends Fragment {
             }
         });
 
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }

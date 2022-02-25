@@ -252,13 +252,4 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 		dialogFilterOptions.show();
 	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-	}
-
-	public interface OnFragmentInteractionListener {
-		void onFragmentInteraction(Uri uri);
-	}
 }

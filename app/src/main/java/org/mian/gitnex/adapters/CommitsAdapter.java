@@ -27,7 +27,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final Context context;
     private final int TYPE_LOAD = 0;
     private List<Commits> commitsList;
-    private CommitsAdapter.OnLoadMoreListener loadMoreListener;
+    private Runnable loadMoreListener;
     private boolean isLoading = false;
     private boolean isMoreDataAvailable = true;
 
@@ -55,7 +55,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
             isLoading = true;
-            loadMoreListener.onLoadMore();
+            loadMoreListener.run();
         }
 
         if(getItemViewType(position) == TYPE_LOAD) {
@@ -192,11 +192,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         isLoading = false;
     }
 
-    public interface OnLoadMoreListener {
-        void onLoadMore();
-    }
-
-    public void setLoadMoreListener(CommitsAdapter.OnLoadMoreListener loadMoreListener) {
+    public void setLoadMoreListener(Runnable loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
     }
 

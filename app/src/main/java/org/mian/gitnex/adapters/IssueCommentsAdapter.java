@@ -52,10 +52,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	private final Bundle bundle;
 	private final List<IssueComments> issuesComments;
 	private final FragmentManager fragmentManager;
-	private final BottomSheetReplyFragment.OnInteractedListener onInteractedListener;
+	private final Runnable onInteractedListener;
 	private final Locale locale;
 
-	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, BottomSheetReplyFragment.OnInteractedListener onInteractedListener) {
+	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, Runnable onInteractedListener) {
 
 		this.context = ctx;
 		this.bundle = bundle;
@@ -136,7 +136,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				reactionSpinner.setOnInteractedListener(() -> {
 					tinyDB.putBoolean("commentEdited", true);
 
-					onInteractedListener.onInteracted();
+					onInteractedListener.run();
 					dialog.dismiss();
 				});
 

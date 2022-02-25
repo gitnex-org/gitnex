@@ -49,8 +49,6 @@ public class RepoInfoFragment extends Fragment {
 	private String repoName;
 	private String repoOwner;
 
-	private OnFragmentInteractionListener mListener;
-
 	public RepoInfoFragment() {}
 
 	public static RepoInfoFragment newInstance(String param1, String param2) {
@@ -122,22 +120,6 @@ public class RepoInfoFragment extends Fragment {
 		binding.repoMetaPullRequestsFrame.setOnClickListener(metaPR -> RepoDetailActivity.mViewPager.setCurrentItem(3));
 
 		return binding.getRoot();
-	}
-
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
-
-	public interface OnFragmentInteractionListener {
-		void onFragmentInteraction(Uri uri);
 	}
 
 	private void toggleExpandView() {

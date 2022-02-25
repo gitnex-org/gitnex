@@ -39,8 +39,6 @@ public class LabelsFragment extends Fragment {
     private String repoName;
     private String repoOwner;
 
-    private OnFragmentInteractionListener mListener;
-
     public LabelsFragment() {
     }
 
@@ -112,26 +110,6 @@ public class LabelsFragment extends Fragment {
             LabelsViewModel.loadLabelsList(Authorization.get(getContext()), repoOwner, repoName, getContext());
             tinyDb.putBoolean("labelsRefresh", false);
         }
-    }
-
-    public void onButtonPressed(Uri uri) {
-
-        if (mListener != null) {
-
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(Uri uri);
     }
 
     private void fetchDataAsync(String instanceToken, String owner, String repo) {

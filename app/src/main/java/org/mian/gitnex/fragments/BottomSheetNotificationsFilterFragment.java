@@ -18,7 +18,7 @@ import org.mian.gitnex.helpers.TinyDB;
 public class BottomSheetNotificationsFilterFragment extends BottomSheetDialogFragment {
 
 	private TinyDB tinyDB;
-	private OnDismissedListener onDismissedListener;
+	private Runnable onDismissedListener;
 
 	@Override
 	public void onAttach(@NonNull Context context) {
@@ -58,21 +58,16 @@ public class BottomSheetNotificationsFilterFragment extends BottomSheetDialogFra
 
 		if(onDismissedListener != null) {
 
-			onDismissedListener.onDismissed();
+			onDismissedListener.run();
 		}
 
 		super.dismiss();
 
 	}
 
-	public void setOnDismissedListener(OnDismissedListener onDismissedListener) {
+	public void setOnDismissedListener(Runnable onDismissedListener) {
 
 		this.onDismissedListener = onDismissedListener;
-	}
-
-	public interface OnDismissedListener {
-
-		void onDismissed();
 	}
 
 }

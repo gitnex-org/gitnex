@@ -40,7 +40,7 @@ import retrofit2.Response;
 public class ReactionList extends HorizontalScrollView {
 
 	private enum ReactionType { COMMENT, ISSUE }
-	private OnReactionAddedListener onReactionAddedListener;
+	private Runnable onReactionAddedListener;
 
 	@SuppressLint("SetTextI18n")
 	public ReactionList(Context context, Bundle bundle) {
@@ -161,7 +161,7 @@ public class ReactionList extends HorizontalScrollView {
 						});
 
 						root.post(() -> root.addView(reactionBadge));
-						onReactionAddedListener.reactionAdded();
+						onReactionAddedListener.run();
 
 					}
 				}
@@ -172,9 +172,7 @@ public class ReactionList extends HorizontalScrollView {
 
 	}
 
-	public void setOnReactionAddedListener(OnReactionAddedListener onReactionAddedListener) {
+	public void setOnReactionAddedListener(Runnable onReactionAddedListener) {
 		this.onReactionAddedListener = onReactionAddedListener;
 	}
-
-	public interface OnReactionAddedListener { void reactionAdded(); }
 }

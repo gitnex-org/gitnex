@@ -47,7 +47,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private final Context context;
 	private final int TYPE_LOAD = 0;
 	private List<UserRepositories> forksList;
-	private OnLoadMoreListener loadMoreListener;
+	private Runnable loadMoreListener;
 	private boolean isLoading = false;
 	private boolean isMoreDataAvailable = true;
 
@@ -76,7 +76,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
 
 			isLoading = true;
-			loadMoreListener.onLoadMore();
+			loadMoreListener.run();
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
@@ -296,12 +296,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		isLoading = false;
 	}
 
-	public interface OnLoadMoreListener {
-
-		void onLoadMore();
-	}
-
-	public void setLoadMoreListener(RepoForksAdapter.OnLoadMoreListener loadMoreListener) {
+	public void setLoadMoreListener(Runnable loadMoreListener) {
 
 		this.loadMoreListener = loadMoreListener;
 	}

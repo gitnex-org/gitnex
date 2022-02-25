@@ -36,8 +36,6 @@ public class CollaboratorsFragment extends Fragment {
     private String repoName;
     private String repoOwner;
 
-    private OnFragmentInteractionListener mListener;
-
     public CollaboratorsFragment() {
     }
 
@@ -72,22 +70,6 @@ public class CollaboratorsFragment extends Fragment {
         fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName);
         return fragmentCollaboratorsBinding.getRoot();
 
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 
     private void fetchDataAsync(String instanceToken, String owner, String repo) {

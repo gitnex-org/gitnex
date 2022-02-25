@@ -26,9 +26,9 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 	private Context context;
 	private NotificationThread notificationThread;
-	private OnOptionSelectedListener onOptionSelectedListener;
+	private Runnable onOptionSelectedListener;
 
-	public void onAttach(Context context, NotificationThread notificationThread, OnOptionSelectedListener onOptionSelectedListener) {
+	public void onAttach(Context context, NotificationThread notificationThread, Runnable onOptionSelectedListener) {
 
 		super.onAttach(context);
 
@@ -62,7 +62,7 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 
 					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
-						onOptionSelectedListener.onSelected();
+						onOptionSelectedListener.run();
 					} else {
 						Toasty.error(context, getString(R.string.genericError));
 					}
@@ -76,7 +76,7 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 
 					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
-						onOptionSelectedListener.onSelected();
+						onOptionSelectedListener.run();
 					} else {
 						Toasty.error(context, getString(R.string.genericError));
 					}
@@ -90,7 +90,7 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 
 					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
-						onOptionSelectedListener.onSelected();
+						onOptionSelectedListener.run();
 					} else {
 						Toasty.error(context, getString(R.string.genericError));
 					}
@@ -100,11 +100,6 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 		return bottomSheetNotificationsBinding.getRoot();
 
-	}
-
-	public interface OnOptionSelectedListener {
-
-		void onSelected();
 	}
 
 }

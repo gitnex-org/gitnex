@@ -64,8 +64,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 	private FilesAdapter filesAdapter;
 
-	private OnFragmentInteractionListener mListener;
-
 	public FilesFragment() {}
 
 	public static FilesFragment newInstance(String param1, String param2, String param3) {
@@ -392,20 +390,5 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		});
 
 	}
-
-	public void onButtonPressed(Uri uri) {
-
-		if(mListener != null) {
-			mListener.onFragmentInteraction(uri);
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
-
-	public interface OnFragmentInteractionListener { void onFragmentInteraction(Uri uri); }
 
 }

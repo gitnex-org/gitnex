@@ -37,8 +37,6 @@ public class OrganizationLabelsFragment extends Fragment {
 
 	private String repoOwner;
 
-	private OnFragmentInteractionListener mListener;
-
 	public static OrganizationLabelsFragment newInstance(String param1) {
 
 		OrganizationLabelsFragment fragment = new OrganizationLabelsFragment();
@@ -102,26 +100,6 @@ public class OrganizationLabelsFragment extends Fragment {
 			OrganizationLabelsViewModel.loadOrgLabelsList(Authorization.get(getContext()), repoOwner, getContext(), mProgressBar, noData);
 			tinyDb.putBoolean("labelsRefresh", false);
 		}
-	}
-
-	public void onButtonPressed(Uri uri) {
-
-		if (mListener != null) {
-
-			mListener.onFragmentInteraction(uri);
-		}
-	}
-
-	@Override
-	public void onDetach() {
-
-		super.onDetach();
-		mListener = null;
-	}
-
-	public interface OnFragmentInteractionListener {
-
-		void onFragmentInteraction(Uri uri);
 	}
 
 	private void fetchDataAsync(String instanceToken, String owner) {

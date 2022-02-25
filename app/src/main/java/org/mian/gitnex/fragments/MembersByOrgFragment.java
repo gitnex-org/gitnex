@@ -34,8 +34,6 @@ import java.util.Objects;
 
 public class MembersByOrgFragment extends Fragment {
 
-    private RepositoriesByOrgFragment.OnFragmentInteractionListener mListener;
-
     private TextView noDataMembers;
     private static String orgNameF = "param2";
     private String orgName;
@@ -109,7 +107,7 @@ public class MembersByOrgFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(Objects.requireNonNull(getContext()));
+        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
 
         inflater.inflate(R.menu.search_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -138,21 +136,5 @@ public class MembersByOrgFragment extends Fragment {
             }
         });
 
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }
