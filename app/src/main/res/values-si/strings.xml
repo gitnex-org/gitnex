@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- menu items -->
-    <string name="navMyRepos">Reponi</string>
-    <string name="navStarredRepos">Suosikki Repot</string>
-    <string name="navRepos">Repot</string>
-    <string name="navProfile">Profiili</string>
-    <string name="navSettings">Asetukset</string>
-    <string name="navOrg">Organisaatiot</string>
-    <string name="navAbout">Tietoja</string>
-    <string name="navRate">Anna palautetta</string>
-    <string name="navLogout">Kirjaudu ulos</string>
-    <string name="navAdministration">Administration</string>
+    <string name="navMyRepos">මාගේ කෝෂ්ඨ</string>
+    <string name="navStarredRepos">Starred Repositories</string>
+    <string name="navRepos">කෝෂ්ඨ</string>
+    <string name="navProfile">පැතිකඩ</string>
+    <string name="navSettings">සැකසුම්</string>
+    <string name="navOrg">සංවිධාන</string>
+    <string name="navAbout">මේ ගැන</string>
+    <string name="navRate">Rate GitNex</string>
+    <string name="navLogout">Logout</string>
+    <string name="navAdministration">පරිපාලනය</string>
     <!-- menu items -->
     <!-- page titles -->
-    <string name="pageTitleNewRepo">Uusi Repo</string>
-    <string name="pageTitleIssues">Ongelmat</string>
-    <string name="pageTitleCreateOrganization">Uusi organisaatio</string>
-    <string name="pageTitleCreateMilestone">Uusi tavoite</string>
-    <string name="pageTitleCreateNewIssue">Uusi ongelma</string>
-    <string name="pageTitleCreateLabel">Uusi tunniste</string>
-    <string name="pageTitleCredits">Tekijät</string>
+    <string name="pageTitleNewRepo">නව කෝෂ්ඨය</string>
+    <string name="pageTitleIssues">Issues</string>
+    <string name="pageTitleCreateOrganization">නව සංවිධානය</string>
+    <string name="pageTitleCreateMilestone">New Milestone</string>
+    <string name="pageTitleCreateNewIssue">New Issue</string>
+    <string name="pageTitleCreateLabel">New Label</string>
+    <string name="pageTitleCredits">Credits</string>
     <string name="pageTitleChooseBranch">Select Branch</string>
-    <string name="pageTitleLabelUpdate">Päivitä tunnisteita</string>
-    <string name="pageTitleStarredRepos">Suosikki Repot</string>
-    <string name="pageTitleCreateTeam">Uusi tiimi</string>
-    <string name="pageTitleAddEmail">Lisää sähköpostiosoite</string>
-    <string name="pageTitleNewFile">Uusi tiedosto</string>
-    <string name="pageTitleExplore">Explore</string>
-    <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleLabelUpdate">Update Label</string>
+    <string name="pageTitleStarredRepos">Starred Repositories</string>
+    <string name="pageTitleCreateTeam">නව කණ්ඩායම</string>
+    <string name="pageTitleAddEmail">වි-තැපෑල එකතු කරන්න</string>
+    <string name="pageTitleNewFile">නව ගොනුව</string>
+    <string name="pageTitleExplore">ගවේශණය</string>
+    <string name="pageTitleAdministration">ගිටියා පරිපාලනය</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
-    <string name="pageTitleUsers">Users</string>
+    <string name="pageTitleUsers">පරිශිලකයින්</string>
     <!-- page titles -->
     <string name="repoName">Demo repo</string>
-    <string name="repoDescription">Demo kuvaus</string>
-    <string name="noData">Repoja ei löytynyt</string>
-    <string name="orgName">Demo organisaatio</string>
-    <string name="noDataOrg">Yhtään organisaatiota ei löytynyt</string>
-    <string name="newCreateButtonCopy">Luo</string>
-    <string name="newUpdateButtonCopy">Päivitä</string>
-    <string name="newRepoTintCopy">Repon nimi</string>
-    <string name="newRepoDescTintCopy">Repon kuvaus</string>
-    <string name="newRepoPrivateCopy">Yksityinen</string>
-    <string name="newRepoOwner">Omistaja</string>
-    <string name="newOrgTintCopy">Organisaation nimi</string>
-    <string name="newOrgDescTintCopy">Organisaation kuvaus</string>
-    <string name="userName">Käyttäjätunnus</string>
-    <string name="passWord">Salasana</string>
+    <string name="repoDescription">Demo description</string>
+    <string name="noData">No repositories found</string>
+    <string name="orgName">Demo organization</string>
+    <string name="noDataOrg">No organizations found</string>
+    <string name="newCreateButtonCopy">සාදන්න</string>
+    <string name="newUpdateButtonCopy">යාවත්කාල</string>
+    <string name="newRepoTintCopy">කෝෂ්ඨයේ නම</string>
+    <string name="newRepoDescTintCopy">කෝෂ්ඨයේ සවිස්තරය</string>
+    <string name="newRepoPrivateCopy">පෞද්ගලික</string>
+    <string name="newRepoOwner">හිමිකරු</string>
+    <string name="newOrgTintCopy">සංවිධානයේ නම</string>
+    <string name="newOrgDescTintCopy">සංවිධානයේ සවිස්තරය</string>
+    <string name="userName">පරිශීලක නාමය</string>
+    <string name="passWord">මුරපදය</string>
     <string name="btnLogin">LOGIN</string>
     <string name="instanceUrl">Instance URL</string>
     <string name="navigationDrawerOpen">Open Navigation Drawer</string>
     <string name="navigationDrawerClose">Close Navigation Drawer</string>
     <string name="logo">Login to Gitea</string>
-    <string name="protocol">Protocol</string>
+    <string name="protocol">කෙටුම්පත</string>
     <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">Instance URL is required</string>
-    <string name="emptyFieldUsername">Username is required</string>
-    <string name="emptyFieldPassword">Password is required</string>
-    <string name="protocolEmptyError">Protocol is required</string>
+    <string name="emptyFieldUsername">පරිශීලක නාමය ඇවැසිය</string>
+    <string name="emptyFieldPassword">මුරපදය ඇවැසිය</string>
+    <string name="protocolEmptyError">කෙටුම්පත ඇවැසිය</string>
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
-    <string name="repoNameErrorEmpty">Repository name is empty</string>
+    <string name="repoNameErrorEmpty">කෝෂ්ඨයේ නම හිස්ය</string>
     <string name="repoNameErrorInvalid">Repository name is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
     <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
@@ -75,33 +75,33 @@
     <string name="orgDescError">Organization description exceeds the max 255 characters limit</string>
     <string name="orgCreated">Organization created successfully</string>
     <string name="orgCreatedError">Something went wrong, please try again</string>
-    <string name="orgExistsError">Organization already exists</string>
+    <string name="orgExistsError">සංවිධානය දැනටමත් පවතී</string>
     <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
     <string name="processingText">Processing</string>
-    <string name="search">Search</string>
-    <string name="close">Close</string>
-    <string name="addNewContent">Add</string>
+    <string name="search">සොයන්න</string>
+    <string name="close">වසන්න</string>
+    <string name="addNewContent">එකතු</string>
     <string name="orgContentAvatar">Org</string>
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
-    <string name="removeContent">Remove</string>
+    <string name="removeContent">ඉවත් කරන්න</string>
     <string name="genericApiStatusError">Instance has returned an error. Code\u0020</string>
-    <string name="tabTextInfo">Details</string>
-    <string name="tabTextFiles">Files</string>
+    <string name="tabTextInfo">විස්තර</string>
+    <string name="tabTextFiles">ගොනු</string>
     <string name="tabTextMl">Milestones</string>
-    <string name="tabTextReleases">Releases</string>
-    <string name="tabTextBranches">Branches</string>
+    <string name="tabTextReleases">නිකුතු</string>
+    <string name="tabTextBranches">ශාඛා</string>
     <string name="tabTextLabels">Labels</string>
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="noDataIssueTab">No issues found</string>
-    <string name="infoTabRepoSize">Koko</string>
-    <string name="infoTabRepoDefaultBranch">Olutus haara</string>
+    <string name="infoTabRepoSize">ප්‍රමාණය</string>
+    <string name="infoTabRepoDefaultBranch">Default Branch</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
-    <string name="infoTabRepoCloneUrl">Kopiointi URL</string>
-    <string name="infoTabRepoRepoUrl">Repo URL</string>
+    <string name="infoTabRepoCloneUrl">Clone URL</string>
+    <string name="infoTabRepoRepoUrl">කෝෂ්ඨයේ ඒ.ස.නි.</string>
     <string name="infoTabRepoForksCount">Forks</string>
-    <string name="infoTabRepoCreatedAt">Created</string>
+    <string name="infoTabRepoCreatedAt">සෑදිණි</string>
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
     <string name="infoShowMoreInformation">Show More Information</string>
     <string name="infoMoreInformation">More Information</string>
@@ -112,7 +112,7 @@
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
-    <string name="commentButtonText">Comment</string>
+    <string name="commentButtonText">අදහස</string>
     <string name="commentEmptyError">Please write your comment</string>
     <string name="commentSuccess">Comment posted</string>
     <string name="commentError">Something went wrong, please try again</string>
@@ -120,13 +120,13 @@
     <string name="generalImgContentText">Image</string>
     <string name="noDataMilestonesTab">No milestones found</string>
     <string name="commitAuthor">Commit author: %1$s</string>
-    <string name="releaseDownloadText">Downloads</string>
+    <string name="releaseDownloadText">බාගැනීම්</string>
     <string name="noDataReleasesTab">No releases found</string>
     <string name="releasePublishedBy">Published by @%1$s</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
     <string name="noDataCollaboratorTab">No collaborators found</string>
-    <string name="newMilestoneTitle">Title</string>
-    <string name="newMilestoneDescription">Description</string>
+    <string name="newMilestoneTitle">සිරැසිය</string>
+    <string name="newMilestoneDescription">සවිස්තරය</string>
     <string name="newMilestoneDueDate">Due Date</string>
     <string name="milestoneNameErrorEmpty">Milestone title is empty</string>
     <string name="milestoneDescError">Milestone description exceeds the max 255 characters limit</string>
@@ -134,13 +134,13 @@
     <string name="milestoneCreatedError">Something went wrong, please try again</string>
     <string name="milestoneDateEmpty">Please choose due date</string>
     <string name="milestoneNoDueDate">No due date</string>
-    <string name="milestoneNoDescription">No description</string>
+    <string name="milestoneNoDescription">සවිස්තරයක් නැත</string>
     <string name="milestoneIssueStatusOpen">%1$d Open</string>
     <string name="milestoneIssueStatusClosed">%1$d Closed</string>
     <string name="selectMilestone">Select Milestone</string>
     <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
     <string name="newIssueSelectLabelsListTitle">Select Labels</string>
-    <string name="newIssueTitle">Title</string>
+    <string name="newIssueTitle">සිරැසිය</string>
     <string name="newIssueAssigneesListTitle">Assignees</string>
     <string name="newIssueDescriptionTitle">Description</string>
     <string name="newIssueDueDateTitle">Due Date</string>
@@ -154,19 +154,19 @@
     <string name="noAssigneesFound">No assignees found</string>
     <string name="noLabelsFound">No labels found</string>
     <!-- settings -->
-    <string name="settingsLanguageHeaderText">Translation</string>
-    <string name="settingsLanguageSystem">System</string>
-    <string name="settingsSecurityHeader">Security</string>
+    <string name="settingsLanguageHeaderText">පරිවර්තන</string>
+    <string name="settingsLanguageSystem">පද්ධතිය</string>
+    <string name="settingsSecurityHeader">ආරක්ෂාව</string>
     <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
     <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
     <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsDateTimeHeaderText">Date &amp; Time</string>
-    <string name="settingsSave">Settings saved</string>
-    <string name="settingsLanguageSelectorHeader">Language</string>
-    <string name="settingsLanguageSelectedHeaderDefault">English</string>
+    <string name="settingsSave">සැකසුම් සුරැකිණි</string>
+    <string name="settingsLanguageSelectorHeader">භාෂාව</string>
+    <string name="settingsLanguageSelectedHeaderDefault">සිංහල</string>
     <string name="settingsAppearanceHeader">Appearance</string>
     <string name="settingsDateTimeHeaderDefault">Pretty</string>
-    <string name="settingsDateTimeNormal">Normal</string>
+    <string name="settingsDateTimeNormal">සාමාන්‍ය</string>
     <string name="settingsLanguageSelectorDialogTitle">Choose Language</string>
     <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
@@ -174,23 +174,23 @@
     <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
-    <string name="settingsHomeScreenHeaderText">Home Screen</string>
-    <string name="settingsHomeScreenSelectedText">My Repositories</string>
+    <string name="settingsHomeScreenHeaderText">මුල් තිරය</string>
+    <string name="settingsHomeScreenSelectedText">මාගේ කෝෂ්ඨ</string>
     <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
-    <string name="settingsCustomFontHeaderText">Font</string>
+    <string name="settingsCustomFontHeaderText">මුද්‍රණඅකුර</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
-    <string name="themeSelectionHeaderText">Theme</string>
+    <string name="themeSelectionHeaderText">තේමාව</string>
     <string name="settingsCounterBadges">Counter Badges</string>
-    <string name="settingsFileViewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
-    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">ප්‍රභව කේතයෙහි තේමාව</string>
+    <string name="cacheSizeDataDialogHeader">දත්ත නිහිතයේ ප්‍රමාණය</string>
+    <string name="cacheSizeDataSelectionHeaderText">දත්ත නිහිතයේ ප්‍රමාණය</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
     <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
-    <string name="draftsHeader">Drafts</string>
+    <string name="draftsHeader">කටුපිටපත්</string>
     <string name="draftsHintText">Comments draft</string>
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
@@ -198,7 +198,7 @@
     <string name="generalHintText">Home screen, default link handler</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
+    <string name="generalDeepLinkSelectedText">අ/නොවේ</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
     <!-- settings -->
@@ -223,13 +223,13 @@
     <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">Repositories</string>
-    <string name="orgTabTeams">Teams</string>
-    <string name="orgTabMembers">Members</string>
-    <string name="orgCreateTeam">New Team</string>
+    <string name="orgTabRepos">කෝෂ්ඨ</string>
+    <string name="orgTabTeams">කණ්ඩායම්</string>
+    <string name="orgTabMembers">සාමාජිකයින්</string>
+    <string name="orgCreateTeam">නව කණ්ඩායම</string>
     <string name="noDataTeams">No teams found</string>
-    <string name="teamTitle">Team name</string>
-    <string name="teamDescription">Team desc</string>
+    <string name="teamTitle">කණ්ඩායමේ නම</string>
+    <string name="teamDescription">කණ්ඩායමේ සවිස්තරය</string>
     <string name="teamPermissions">Permissions</string>
     <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
     <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
@@ -249,10 +249,10 @@
     <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
-    <string name="newTeamTitle">Team Name</string>
-    <string name="newTeamDesc">Description</string>
-    <string name="newTeamPermission">Permission</string>
-    <string name="newTeamAccessControls">Access Controls</string>
+    <string name="newTeamTitle">කණ්ඩායමේ නම</string>
+    <string name="newTeamDesc">සවිස්තරය</string>
+    <string name="newTeamPermission">අවසරය</string>
+    <string name="newTeamAccessControls">ප්‍රවේශය පාලනය</string>
     <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
     <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
     <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
@@ -265,16 +265,16 @@
     <string name="teamCreatedError">Something went wrong, please try again</string>
     <!-- create team -->
     <!-- issue comments -->
-    <string name="editCommentTitle">Edit Comment</string>
+    <string name="editCommentTitle">අදහස සංස්කරණය</string>
     <string name="editCommentUpdatedText">Comment updated</string>
-    <string name="issueCommentShare">Share Comment</string>
+    <string name="issueCommentShare">අදහස බෙදාගන්න</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
-    <string name="copyCommentText">Copy Comment</string>
+    <string name="copyCommentText">අදහස පිටපත්</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorTitle">Add / Remove Collaborator</string>
-    <string name="addCollaboratorSearchHint">Search users</string>
-    <string name="addCollaboratorViewUserDesc">Username</string>
+    <string name="addCollaboratorSearchHint">පරිශීලකයින් සොයන්න</string>
+    <string name="addCollaboratorViewUserDesc">පරිශීලක නාමය</string>
     <string name="removeCollaboratorDialogTitle">Remove %s?</string>
     <string name="removeCollaboratorMessage">Do you want to remove this user from the repository?</string>
     <string name="removeCollaboratorToastText">User removed from the repository.</string>
@@ -283,14 +283,14 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Followers</string>
     <string name="profileTabFollowing">Following</string>
-    <string name="profileCreateNewEmailAddress">Add Email Address</string>
-    <string name="profileEmailTitle">Email Address</string>
+    <string name="profileCreateNewEmailAddress">වි-තැපෑල එකතු කරන්න</string>
+    <string name="profileEmailTitle">වි-තැපැල් ලිපිනය</string>
     <string name="emailAddedText">New email added successfully</string>
     <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">Email address is not valid</string>
     <string name="emailErrorInUse">Email address is already in use</string>
     <string name="emailTypeText">Primary</string>
-    <string name="profileTabEmails">Emails</string>
+    <string name="profileTabEmails">වි-තැපැල්</string>
     <!-- profile section -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Add / Remove Labels</string>
@@ -318,15 +318,15 @@
     <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
     <!-- create user -->
-    <string name="userFullNameText">Full Name</string>
-    <string name="userEmail">Email</string>
-    <string name="userUserName">Username</string>
-    <string name="userPassword">Password</string>
+    <string name="userFullNameText">සම්පූර්ණ නම</string>
+    <string name="userEmail">වි-තැපෑල</string>
+    <string name="userUserName">පරිශීලක නාමය</string>
+    <string name="userPassword">මුරපදය</string>
     <string name="userInvalidFullName">Invalid Full Name</string>
-    <string name="userInvalidUserName">Invalid Username</string>
-    <string name="userInvalidEmail">Invalid Email</string>
-    <string name="userCreatedText">New user added successfully</string>
-    <string name="userExistsError">User already exists</string>
+    <string name="userInvalidUserName">පරිශීලකනාමය වලංගු නොවේ</string>
+    <string name="userInvalidEmail">වි-තැපෑල වලංගු නොවේ</string>
+    <string name="userCreatedText">නව පරිශීලක සාර්ථකව එකතු කෙරිණි</string>
+    <string name="userExistsError">පරිශීලක දැනටමත් පවතී</string>
     <!-- create user -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Edit Issue #%1$s</string>
@@ -335,8 +335,8 @@
     <!-- release -->
     <string name="createRelease">New Release</string>
     <string name="releaseTagNameText">Tag Name</string>
-    <string name="releaseTitleText">Title</string>
-    <string name="releaseContentText">Content</string>
+    <string name="releaseTitleText">සිරැසිය</string>
+    <string name="releaseContentText">අන්තර්ගතය</string>
     <string name="releaseTypeText">Mark as Pre-Release</string>
     <string name="releaseBranchText">Select Branch</string>
     <string name="releaseDraftText">Draft</string>
@@ -358,9 +358,9 @@
     <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <!-- new file -->
-    <string name="newFileNameTintCopy">File Name</string>
-    <string name="newFileBranchTintCopy">New Branch Name</string>
-    <string name="newFileContentTintCopy">File Content</string>
+    <string name="newFileNameTintCopy">ගොනුවේ නම</string>
+    <string name="newFileBranchTintCopy">නව ශාඛාවේ නම</string>
+    <string name="newFileContentTintCopy">ගොනුවේ අන්තර්ගතය</string>
     <string name="newFileButtonCopy">Create New File</string>
     <string name="newFileNameHintMessage">with folder: app/test.md</string>
     <string name="newFileMessageTintCopy">Commit Message</string>

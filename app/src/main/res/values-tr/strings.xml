@@ -13,14 +13,8 @@
     <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
-    <string name="pageTitleAbout">Hakkında</string>
-    <string name="pageTitleMyRepos">Depolarım</string>
-    <string name="pageTitleRepositories">Depolar</string>
-    <string name="pageTitleProfile">Profil</string>
     <string name="pageTitleNewRepo">Yeni Depo</string>
-    <string name="pageTitleOrganizations">Organizasyonlar</string>
     <string name="pageTitleIssues">Konular</string>
-    <string name="pageTitleSettings">Ayarlar</string>
     <string name="pageTitleCreateOrganization">Yeni Organizasyon</string>
     <string name="pageTitleCreateMilestone">Yeni Kilometre Taşı</string>
     <string name="pageTitleCreateNewIssue">Yeni Konu</string>
@@ -28,34 +22,28 @@
     <string name="pageTitleCredits">Katkılar</string>
     <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Etiketi Güncelle</string>
-    <string name="pageTitleSponsors">Bağışçılar</string>
     <string name="pageTitleStarredRepos">Yıldızlı Depolar</string>
     <string name="pageTitleCreateTeam">Yeni Takım</string>
     <string name="pageTitleAddEmail">E-posta Adresi Ekle</string>
     <string name="pageTitleNewFile">Yeni Dosya</string>
     <string name="pageTitleExplore">Keşfet</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
     <string name="repoName">Demo deposu</string>
-    <string name="repoFullName">ORG ile Depo</string>
     <string name="repoDescription">Demo açıklaması</string>
     <string name="noData">Depo bulunamadı</string>
     <string name="orgName">Demo organizasyonu</string>
-    <string name="orgDescription">Demo açıklaması</string>
     <string name="noDataOrg">Organizasyon bulunamadı</string>
     <string name="newCreateButtonCopy">Oluştur</string>
     <string name="newUpdateButtonCopy">Güncelle</string>
     <string name="newRepoTintCopy">Depo Adı</string>
     <string name="newRepoDescTintCopy">Depo Açıklaması</string>
     <string name="newRepoPrivateCopy">Gizli</string>
-    <string name="newRepoDescInfo">Maksimum 255 karakter</string>
     <string name="newRepoOwner">Sahibi</string>
     <string name="newOrgTintCopy">Organizasyon Adı</string>
     <string name="newOrgDescTintCopy">Organizasyon Açıklaması</string>
-    <string name="newOrgDescInfo">Maksimum 255 karakter</string>
     <string name="userName">Kullanıcı Adı</string>
     <string name="passWord">Parola</string>
     <string name="btnLogin">OTURUM AÇ</string>
@@ -88,8 +76,7 @@
     <string name="orgCreated">Organizasyon başarıyla oluşturuldu</string>
     <string name="orgCreatedError">Bir şeyler ters gitti lütfen tekrar deneyin</string>
     <string name="orgExistsError">Organizasyon zaten var</string>
-    <string name="binaryFileError">Binary files are not supported yet.</string>
-    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
+    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
     <string name="processingText">İşlem devam ediyor</string>
     <string name="search">Ara</string>
     <string name="close">Kapat</string>
@@ -99,7 +86,6 @@
     <string name="privateAvatar">Gizli</string>
     <string name="removeContent">Kaldır</string>
     <string name="genericApiStatusError">Örnek bir hata döndürdü. Kod\u0020</string>
-    <string name="titleActivityRepoDetail">DepoDetayEtkinliği</string>
     <string name="tabTextInfo">Ayrıntılar</string>
     <string name="tabTextFiles">Dosyalar</string>
     <string name="tabTextMl">Kilometre Taşları</string>
@@ -228,22 +214,15 @@
     <string name="labelUpdated">Etiket güncellendi.</string>
     <string name="noDataLabelsTab">Etiket bulunamadı</string>
     <string name="labelMenuContentDesc">Açıklama</string>
-    <string name="labelMenuEdit">Düzenle</string>
-    <string name="labelMenuDelete">Sil</string>
     <string name="labelDeleteText">Etiket silindi</string>
     <string name="labelDeleteErrorText">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="noDataBranchesTab">Dal bulunamadı</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Yetkilendirme Hatası</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="alertDialogTokenRevokedCopyNegativeButton">İptal</string>
-    <string name="alertDialogTokenRevokedCopyPositiveButton">Çıkış Yap</string>
-    <string name="labelDeleteTitle">Sil\u0020</string>
+    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Bu etiketi gerçekten silmek istiyor musunuz?</string>
-    <string name="labelDeletePositiveButton">Tamam</string>
-    <string name="labelDeleteNegativeButton">İptal</string>
     <!-- org tabbed layout str -->
-    <string name="titleActivityOrgDetail">KuruluşDetayıEtkinliği</string>
     <string name="orgTabRepos">Depolar</string>
     <string name="orgTabTeams">Takımlar</string>
     <string name="orgTabMembers">Üyeler</string>
@@ -251,7 +230,13 @@
     <string name="noDataTeams">Hiçbir takım bulunamadı</string>
     <string name="teamTitle">Takım adı</string>
     <string name="teamDescription">Takım açıklaması</string>
-    <string name="teamPermission">İzin : %1$s</string>
+    <string name="teamPermissions">Permissions</string>
+    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
+    <string name="teamShowAll">show all</string>
     <string name="noDataMembers">Üye bulunamadı</string>
     <string name="orgMember">Organizasyon üyeleri</string>
     <string name="orgTeamMembers">Organizasyon takım üyeleri</string>
@@ -281,7 +266,6 @@
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Yorumu Düzenle</string>
-    <string name="editCommentButtonText">Düzenle</string>
     <string name="editCommentUpdatedText">Yorum güncellendi</string>
     <string name="issueCommentShare">Share Comment</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
@@ -291,7 +275,7 @@
     <string name="addCollaboratorTitle">İşbirlikçi Ekle / Kaldır</string>
     <string name="addCollaboratorSearchHint">Kullanıcıları ara</string>
     <string name="addCollaboratorViewUserDesc">Kullanıcı Adı</string>
-    <string name="removeCollaboratorTitle">Kaldır\u0020</string>
+    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
     <string name="removeCollaboratorMessage">Bu kullanıcıyı depodan kaldırmak istiyor musunuz?</string>
     <string name="removeCollaboratorToastText">Kullanıcı depodan kaldırıldı.</string>
     <string name="addCollaboratorToastText">Kullanıcı depoya eklendi.</string>
@@ -300,7 +284,6 @@
     <string name="profileTabFollowers">Takipçiler</string>
     <string name="profileTabFollowing">Takip Edilenler</string>
     <string name="profileCreateNewEmailAddress">E-posta Adresi Ekle</string>
-    <string name="profileEmailButton">Kaydet</string>
     <string name="profileEmailTitle">E-posta Adresi</string>
     <string name="emailAddedText">New email added successfully</string>
     <string name="emailErrorEmpty">Email address is empty</string>
@@ -452,15 +435,14 @@
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
     <string name="noDataPullRequests">Çekme isteği bulunamadı</string>
-    <string name="prCreator">Yaratıcı :\u0020</string>
     <string name="editPrText">Çekme İsteğini Düzenle</string>
     <string name="copyPrUrlText">Çekme İsteği URL’sini Kopyala</string>
     <string name="editPrNavHeader">Çekme İsteği Düzenle #%1$s</string>
     <string name="editPrSuccessMessage">Çekme İsteği güncellendi</string>
     <string name="fileDiffViewHeader">%1$s Dosya Değiştirildi</string>
     <string name="fileDiffViewHeaderSingle">%1$s Dosya Değiştirildi</string>
-    <string name="openFileDiffText">Dosya Değiştirildi</string>
     <string name="updatePullRequestText">Update Pull Request</string>
+    <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Değişiklik İsteğini Birleştir</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -497,7 +479,8 @@
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitCommittedBy">Committed by %1$s</string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
     <string name="viewCommits">View Commits</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Sertifika doğrulama</string>
@@ -643,4 +626,17 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
+    <string name="closePr">Close Pull Request</string>
+    <string name="reopenPr">Reopen Pull Request</string>
+    <string name="userAvatar">Avatar</string>
+    <string name="tags">Tags</string>
+    <string name="releasesTags">Releases/Tags</string>
+    <string name="create_tag">Create Tag Only</string>
+    <string name="tagCreated">Tag created</string>
+    <string name="asRef">Use as reference</string>
+    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
+    <string name="deleteTagTitle">Delete tag %s</string>
+    <string name="tagDeleted">Tag deleted</string>
+    <string name="useCustomTabs">Use Custom Tabs</string>
+    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
 </resources>

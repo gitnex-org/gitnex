@@ -13,49 +13,37 @@
     <string name="navAdministration">Администрирование</string>
     <!-- menu items -->
     <!-- page titles -->
-    <string name="pageTitleAbout">О программе</string>
-    <string name="pageTitleMyRepos">Мои репозитории</string>
-    <string name="pageTitleRepositories">Репозитории</string>
-    <string name="pageTitleProfile">Профиль</string>
     <string name="pageTitleNewRepo">Создать репозиторий</string>
-    <string name="pageTitleOrganizations">Организации</string>
     <string name="pageTitleIssues">Задачи</string>
-    <string name="pageTitleSettings">Настройки</string>
     <string name="pageTitleCreateOrganization">Создать организацию</string>
     <string name="pageTitleCreateMilestone">Создать веху</string>
-    <string name="pageTitleCreateNewIssue">Создать задачу</string>
+    <string name="pageTitleCreateNewIssue">Новая задача</string>
     <string name="pageTitleCreateLabel">Создать метку</string>
     <string name="pageTitleCredits">Авторские права</string>
     <string name="pageTitleChooseBranch">Выбрать ветку</string>
     <string name="pageTitleLabelUpdate">Обновить метку</string>
-    <string name="pageTitleSponsors">Спонсоры</string>
     <string name="pageTitleStarredRepos">Избранные репозитории</string>
     <string name="pageTitleCreateTeam">Создать команду</string>
     <string name="pageTitleAddEmail">Добавить адрес эл. почты</string>
     <string name="pageTitleNewFile">Новый файл</string>
     <string name="pageTitleExplore">Обзор</string>
     <string name="pageTitleAdministration">Администрирование Gitea</string>
-    <string name="pageTitleUserAccounts">Управление аккаунтами</string>
     <string name="pageTitleNewPullRequest">Новый запрос на слияние</string>
-    <string name="pageTitleUsers">Users</string>
+    <string name="pageTitleUsers">Пользователи</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторий</string>
-    <string name="repoFullName">Репозиторий с организацией</string>
     <string name="repoDescription">Демо описание</string>
     <string name="noData">Репозиториев не обнаружено</string>
     <string name="orgName">Демо организации</string>
-    <string name="orgDescription">Демо описание</string>
     <string name="noDataOrg">Организаций не обнаружено</string>
     <string name="newCreateButtonCopy">Создать</string>
     <string name="newUpdateButtonCopy">Обновить</string>
     <string name="newRepoTintCopy">Имя репозитория</string>
     <string name="newRepoDescTintCopy">Описание репозитория</string>
     <string name="newRepoPrivateCopy">Приватный</string>
-    <string name="newRepoDescInfo">Макс. 255 символов</string>
     <string name="newRepoOwner">Владелец</string>
     <string name="newOrgTintCopy">Имя организации</string>
     <string name="newOrgDescTintCopy">Описание организации</string>
-    <string name="newOrgDescInfo">Макс. 255 символов</string>
     <string name="userName">Имя пользователя</string>
     <string name="passWord">Пароль</string>
     <string name="btnLogin">Войти</string>
@@ -88,8 +76,7 @@
     <string name="orgCreated">Организация успешно создана!</string>
     <string name="orgCreatedError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="orgExistsError">Организация уже существует</string>
-    <string name="binaryFileError">Двоичные файлы пока не поддерживаются.</string>
-    <string name="fileTooLarge">Этот файл превышает максимально возможное число строк diff</string>
+    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
     <string name="processingText">Обработка</string>
     <string name="search">Поиск</string>
     <string name="close">Закрыть</string>
@@ -99,14 +86,13 @@
     <string name="privateAvatar">Лич.</string>
     <string name="removeContent">Удалить</string>
     <string name="genericApiStatusError">Инстанция вернула ошибку. Код\u0020</string>
-    <string name="titleActivityRepoDetail">Активность</string>
-    <string name="tabTextInfo">Детали</string>
+    <string name="tabTextInfo">Информация</string>
     <string name="tabTextFiles">Файлы</string>
-    <string name="tabTextMl">Вехи</string>
+    <string name="tabTextMl">Этапы</string>
     <string name="tabTextReleases">Релизы</string>
     <string name="tabTextBranches">Ветки</string>
     <string name="tabTextLabels">Метки</string>
-    <string name="tabTextCollaborators">Сотрудники</string>
+    <string name="tabTextCollaborators">Соавторы</string>
     <string name="tabPullRequests">Запросы на слияние</string>
     <string name="noDataIssueTab">Задач не обнаружено</string>
     <string name="infoTabRepoSize">Размер</string>
@@ -134,7 +120,7 @@
     <string name="generalImgContentText">Изображение</string>
     <string name="noDataMilestonesTab">Вех не обнаружено</string>
     <string name="commitAuthor">Автор коммита: %1$s</string>
-    <string name="releaseDownloadText">Скачать</string>
+    <string name="releaseDownloadText">Загрузки</string>
     <string name="noDataReleasesTab">Релизов не обнаружено</string>
     <string name="releasePublishedBy">Опубликовано @%1$s</string>
     <string name="noReleaseBodyContent">Примечания к релизу не предоставляются.</string>
@@ -151,13 +137,13 @@
     <string name="milestoneNoDescription">Нет описания</string>
     <string name="milestoneIssueStatusOpen">%1$d Открыта</string>
     <string name="milestoneIssueStatusClosed">%1$d Закрыта</string>
-    <string name="selectMilestone">Select Milestone</string>
+    <string name="selectMilestone">Выбрать этап</string>
     <string name="newIssueSelectAssigneesListTitle">Выбрать назначения</string>
     <string name="newIssueSelectLabelsListTitle">Выбрать метки</string>
     <string name="newIssueTitle">Заголовок</string>
     <string name="newIssueAssigneesListTitle">Назначенные</string>
     <string name="newIssueDescriptionTitle">Описание</string>
-    <string name="newIssueDueDateTitle">Дата исполнения</string>
+    <string name="newIssueDueDateTitle">Срок выполнения</string>
     <string name="newIssueMilestoneTitle">Вехи</string>
     <string name="newIssueLabelsTitle">Метки</string>
     <string name="issueTitleEmpty">Заголовок задачи пустой.</string>
@@ -228,22 +214,15 @@
     <string name="labelUpdated">Метка обновлена.</string>
     <string name="noDataLabelsTab">Меток не обнаружено</string>
     <string name="labelMenuContentDesc">Описание</string>
-    <string name="labelMenuEdit">Редактировать</string>
-    <string name="labelMenuDelete">Удалить</string>
     <string name="labelDeleteText">Метка удалена!</string>
     <string name="labelDeleteErrorText">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
     <string name="noDataBranchesTab">Веток не обнаружено</string>
     <string name="selectBranchError">Выберите ветку для релиза</string>
     <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
     <string name="alertDialogTokenRevokedMessage">Похоже, токен доступа отозван, либо вам не разрешено просматривать это содержимое.\n\nВ случае отзыва токена, пожалуйста, выйдите из системы и войдите снова</string>
-    <string name="alertDialogTokenRevokedCopyNegativeButton">Закрыть</string>
-    <string name="alertDialogTokenRevokedCopyPositiveButton">Выход</string>
-    <string name="labelDeleteTitle">Удалить\u0020</string>
+    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Вы действительно хотите удалить эту метку?</string>
-    <string name="labelDeletePositiveButton">Да</string>
-    <string name="labelDeleteNegativeButton">Отмена</string>
     <!-- org tabbed layout str -->
-    <string name="titleActivityOrgDetail">Активность организации</string>
     <string name="orgTabRepos">Репозитории</string>
     <string name="orgTabTeams">Команды</string>
     <string name="orgTabMembers">Участники</string>
@@ -251,7 +230,13 @@
     <string name="noDataTeams">Команд не обнаружено</string>
     <string name="teamTitle">Имя команды</string>
     <string name="teamDescription">Описание команды</string>
-    <string name="teamPermission">Права: %1$s</string>
+    <string name="teamPermissions">Permissions</string>
+    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
+    <string name="teamShowAll">show all</string>
     <string name="noDataMembers">Участников не обнаружено</string>
     <string name="orgMember">Участники организации</string>
     <string name="orgTeamMembers">Участники команд организации</string>
@@ -281,7 +266,6 @@
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Редактировать комментарий</string>
-    <string name="editCommentButtonText">Редактировать</string>
     <string name="editCommentUpdatedText">Комментарий обновлен</string>
     <string name="issueCommentShare">Поделиться комментарием</string>
     <string name="deleteCommentSuccess">Комментарий успешно удалён</string>
@@ -291,7 +275,7 @@
     <string name="addCollaboratorTitle">Добавить сотрудника</string>
     <string name="addCollaboratorSearchHint">Поиск</string>
     <string name="addCollaboratorViewUserDesc">Имя пользователя</string>
-    <string name="removeCollaboratorTitle">Удалить\u0020</string>
+    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
     <string name="removeCollaboratorMessage">Вы точно хотите снять права сотрудника с этого пользователя?</string>
     <string name="removeCollaboratorToastText">С пользователя были сняты права сотрудника.</string>
     <string name="addCollaboratorToastText">Пользователь получает права сотрудника!</string>
@@ -300,7 +284,6 @@
     <string name="profileTabFollowers">Подписчики</string>
     <string name="profileTabFollowing">Подписки</string>
     <string name="profileCreateNewEmailAddress">Добавить адрес эл. почты</string>
-    <string name="profileEmailButton">Сохранить</string>
     <string name="profileEmailTitle">Адрес эл. почты</string>
     <string name="emailAddedText">Новая электронная почта успешно добавлена</string>
     <string name="emailErrorEmpty">Адрес электронной почты пустой</string>
@@ -326,7 +309,7 @@
     <!-- admin -->
     <string name="adminCreateNewUser">Создать нового пользователя</string>
     <string name="adminUsers">Пользователи системы</string>
-    <string name="userRoleAdmin">Администратор</string>
+    <string name="userRoleAdmin">Админ</string>
     <string name="adminCron">Задачи cron</string>
     <string name="adminCronScheduleHeader">Расписание</string>
     <string name="adminCronNextRunHeader">Следующий запуск</string>
@@ -428,10 +411,10 @@
     <string name="isClosed">Закрыто</string>
     <string name="genericServerResponseError">На данный момент мы не можем подключиться к серверу, пожалуйста, проверьте статус вашего сервера и повторите попытку</string>
     <string name="genericCopyUrl">Копировать URL</string>
-    <string name="genericWaitFor">Hold on ☕</string>
+    <string name="genericWaitFor">Подождите ☕</string>
     <!-- generic copy -->
-    <string name="exploreUsers">Explore users</string>
-    <string name="exploreIssues">Explore issues</string>
+    <string name="exploreUsers">Обзор пользователей</string>
+    <string name="exploreIssues">Обзор задач</string>
     <string name="exploreTextBoxHint">Просмотреть репозитории</string>
     <string name="starRepository">Репозиторий в избранное</string>
     <string name="unStarRepository">Убрать из избранного</string>
@@ -442,7 +425,7 @@
     <string name="watchRepositorySuccess">Репозиторий добавлен в список наблюдения</string>
     <string name="unWatchRepositorySuccess">Репозиторий удален из списка наблюдения</string>
     <string name="titleDrafts">Черновики</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedOld">Обнаружена неподдерживаемая старая версия (%1$s) Gitea. Пожалуйста, обновите до последней стабильной версии. Если вы продолжите, некоторые функции могут работать неправильно.</string>
     <string name="versionUnsupportedNew">Обнаружена новая версия Gitea! Пожалуйста, ОБНОВИТЕ GitNex!</string>
     <string name="versionUnknown">Gitea не обнаружен!</string>
     <string name="versionAlertDialogHeader">Неподдерживаемая версия Gitea</string>
@@ -452,15 +435,14 @@
     <string name="loginTokenError">Требуется токен</string>
     <string name="prDeletedFork">Удалённый Форк</string>
     <string name="noDataPullRequests">Запросов на слияние не найдено</string>
-    <string name="prCreator">Автор:\u0020</string>
     <string name="editPrText">Редактировать запрос на слияние</string>
     <string name="copyPrUrlText">Копировать URL запроса на слияние</string>
     <string name="editPrNavHeader">Редактировать запрос на слияние #%1$s</string>
     <string name="editPrSuccessMessage">Запрос на слияние обновлен</string>
     <string name="fileDiffViewHeader">%1$s файлов изменено</string>
     <string name="fileDiffViewHeaderSingle">%1$s файл изменен</string>
-    <string name="openFileDiffText">Измененные файлы</string>
-    <string name="updatePullRequestText">Update Pull Request</string>
+    <string name="updatePullRequestText">Обновить запрос на слияние</string>
+    <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Принять запрос на слияние</string>
     <string name="deletePrHeadBranch">Удалить текущую ветку</string>
     <string name="deleteBranchSuccess">Ветка удалена успешно</string>
@@ -497,7 +479,8 @@
     <string name="shareRepository">Поделиться репозиторием</string>
     <string name="createRepository">Создать репозиторий</string>
     <string name="commitTitle">Коммиты</string>
-    <string name="commitCommittedBy">Коммит от %1$s</string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
     <string name="viewCommits">Просмотр коммитов</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Проверка сертификата</string>
@@ -632,15 +615,28 @@
     <string name="fileViewerNotificationChannelDescription">Указывает на прогресс текущих загрузок</string>
     <string name="lastUpdatedAt">Обновлено %s</string>
     <string name="joined">Присоединился</string>
-    <string name="userFollow">Follow</string>
-    <string name="unfollowUser">Unfollow</string>
-    <string name="unfollowedUser">Unfollowed @%s</string>
-    <string name="nowFollowUser">You now follow @%s</string>
-    <string name="unfollowingFailed">Couldn\'t unfollow user</string>
-    <string name="followingFailed">Couldn\'t follow user</string>
-    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
-    <string name="updatePrSuccess">Pull Request updated successfully</string>
-    <string name="updateStrategyMerge">Merge</string>
+    <string name="userFollow">Подписаться</string>
+    <string name="unfollowUser">Отписаться</string>
+    <string name="unfollowedUser">Вы отписались от @%s</string>
+    <string name="nowFollowUser">Вы подписались на @%s</string>
+    <string name="unfollowingFailed">Не удалось отписать пользователя</string>
+    <string name="followingFailed">Не удалось подписаться на пользователя</string>
+    <string name="updatePrConflict">Запрос на слияние конфликтует с базовой веткой. Пожалуйста, разрешите конфликты и повторите попытку.</string>
+    <string name="updatePrSuccess">Запрос на слияние успешно обновлён</string>
+    <string name="updateStrategyMerge">Слить</string>
     <string name="updateStrategyRebase">Rebase</string>
-    <string name="selectUpdateStrategy">Select Update Strategy</string>
+    <string name="selectUpdateStrategy">Выберите стратегию обновления</string>
+    <string name="closePr">Close Pull Request</string>
+    <string name="reopenPr">Reopen Pull Request</string>
+    <string name="userAvatar">Avatar</string>
+    <string name="tags">Tags</string>
+    <string name="releasesTags">Releases/Tags</string>
+    <string name="create_tag">Create Tag Only</string>
+    <string name="tagCreated">Tag created</string>
+    <string name="asRef">Use as reference</string>
+    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
+    <string name="deleteTagTitle">Delete tag %s</string>
+    <string name="tagDeleted">Tag deleted</string>
+    <string name="useCustomTabs">Use Custom Tabs</string>
+    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
 </resources>

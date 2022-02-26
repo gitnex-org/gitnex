@@ -13,14 +13,8 @@
     <string name="navAdministration">Administración</string>
     <!-- menu items -->
     <!-- page titles -->
-    <string name="pageTitleAbout">Sobre</string>
-    <string name="pageTitleMyRepos">Mis repositorios</string>
-    <string name="pageTitleRepositories">Repositorios</string>
-    <string name="pageTitleProfile">Perfil</string>
     <string name="pageTitleNewRepo">Nuevo repositorio</string>
-    <string name="pageTitleOrganizations">Organizaciones</string>
     <string name="pageTitleIssues">Incidencias</string>
-    <string name="pageTitleSettings">Ajustes</string>
     <string name="pageTitleCreateOrganization">Nueva organización</string>
     <string name="pageTitleCreateMilestone">Nuevo hito</string>
     <string name="pageTitleCreateNewIssue">Nueva incidencia</string>
@@ -28,34 +22,28 @@
     <string name="pageTitleCredits">Créditos</string>
     <string name="pageTitleChooseBranch">Seleccionar rama</string>
     <string name="pageTitleLabelUpdate">Actualizar etiqueta</string>
-    <string name="pageTitleSponsors">Donadores</string>
     <string name="pageTitleStarredRepos">Favoritos</string>
     <string name="pageTitleCreateTeam">Nuevo equipo</string>
     <string name="pageTitleAddEmail">Añadir dirección de email</string>
     <string name="pageTitleNewFile">Nuevo archivo</string>
     <string name="pageTitleExplore">Explorar</string>
     <string name="pageTitleAdministration">Administración de Gitea</string>
-    <string name="pageTitleUserAccounts">Gestionar Cuentas</string>
     <string name="pageTitleNewPullRequest">Nuevo pull request</string>
-    <string name="pageTitleUsers">Users</string>
+    <string name="pageTitleUsers">Usuarios</string>
     <!-- page titles -->
     <string name="repoName">Repo Demo</string>
-    <string name="repoFullName">Repo con ORG</string>
     <string name="repoDescription">Descripción de demostración</string>
     <string name="noData">No se han encontrado repositorios</string>
     <string name="orgName">Demostración de organización</string>
-    <string name="orgDescription">Descripción de demostración</string>
     <string name="noDataOrg">No se ha encontrado ninguna organización</string>
     <string name="newCreateButtonCopy">Crear</string>
     <string name="newUpdateButtonCopy">Actualizar</string>
     <string name="newRepoTintCopy">Nombre del repositorio</string>
     <string name="newRepoDescTintCopy">Descripción del repositorio</string>
     <string name="newRepoPrivateCopy">Privado</string>
-    <string name="newRepoDescInfo">Máximo 255 caracteres</string>
     <string name="newRepoOwner">Propietario</string>
     <string name="newOrgTintCopy">Nombre de la organización</string>
     <string name="newOrgDescTintCopy">Descripción de la organización</string>
-    <string name="newOrgDescInfo">Máximo 255 caracteres</string>
     <string name="userName">Nombre de usuario</string>
     <string name="passWord">Contraseña</string>
     <string name="btnLogin">INICIAR SESIÓN</string>
@@ -88,8 +76,7 @@
     <string name="orgCreated">La organización se ha creado correctamente</string>
     <string name="orgCreatedError">Algo salió mal, por favor, inténtalo de nuevo</string>
     <string name="orgExistsError">La organización ya existe</string>
-    <string name="binaryFileError">Todavía no se admiten archivos binarios.</string>
-    <string name="fileTooLarge">Este archivo excede el máximo de líneas diff posibles</string>
+    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
     <string name="processingText">En proceso</string>
     <string name="search">Buscar</string>
     <string name="close">Cerrar</string>
@@ -99,7 +86,6 @@
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Eliminar</string>
     <string name="genericApiStatusError">La instancia ha devuelto un error. Código\u0020</string>
-    <string name="titleActivityRepoDetail">Repetir actividad</string>
     <string name="tabTextInfo">Detalles</string>
     <string name="tabTextFiles">Archivos</string>
     <string name="tabTextMl">Milestones</string>
@@ -228,22 +214,15 @@
     <string name="labelUpdated">Etiqueta actualizada.</string>
     <string name="noDataLabelsTab">No se han encontrado etiquetas</string>
     <string name="labelMenuContentDesc">Desc</string>
-    <string name="labelMenuEdit">Editar</string>
-    <string name="labelMenuDelete">Eliminar</string>
     <string name="labelDeleteText">Etiqueta borrada</string>
     <string name="labelDeleteErrorText">Algo salió mal, por favor, inténtalo de nuevo</string>
     <string name="noDataBranchesTab">No se han encontrado ramas</string>
     <string name="selectBranchError">Seleccione una rama para el lanzamiento</string>
     <string name="alertDialogTokenRevokedTitle">Error de autorización</string>
     <string name="alertDialogTokenRevokedMessage">Parece que el Token de acceso está revocado o no tiene permiso para ver estos contenidos. \n\nEn caso de que el Token esté revocado, por favor, cierre la sesión y vuelva a iniciarla</string>
-    <string name="alertDialogTokenRevokedCopyNegativeButton">Cancelar</string>
-    <string name="alertDialogTokenRevokedCopyPositiveButton">Cerrar sesión</string>
-    <string name="labelDeleteTitle">Eliminar\u0020</string>
+    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">¿Estás seguro de borrar esta etiqueta?</string>
-    <string name="labelDeletePositiveButton">OK</string>
-    <string name="labelDeleteNegativeButton">Cancelar</string>
     <!-- org tabbed layout str -->
-    <string name="titleActivityOrgDetail">OrgDetailActivity</string>
     <string name="orgTabRepos">Repositorios</string>
     <string name="orgTabTeams">Equipos</string>
     <string name="orgTabMembers">Miembros</string>
@@ -251,7 +230,13 @@
     <string name="noDataTeams">Ningún equipo encontrado</string>
     <string name="teamTitle">Nombre del equipo</string>
     <string name="teamDescription">Team desc</string>
-    <string name="teamPermission">Permiso: %1$s</string>
+    <string name="teamPermissions">Permissions</string>
+    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
+    <string name="teamShowAll">show all</string>
     <string name="noDataMembers">Ningún miembro encontrado</string>
     <string name="orgMember">Miembros de la organización</string>
     <string name="orgTeamMembers">Miembros de la organización</string>
@@ -281,7 +266,6 @@
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Editar comentario</string>
-    <string name="editCommentButtonText">Editar</string>
     <string name="editCommentUpdatedText">Comentario actualizado</string>
     <string name="issueCommentShare">Compartir comentario</string>
     <string name="deleteCommentSuccess">El comentario se ha borrado con éxito</string>
@@ -291,7 +275,7 @@
     <string name="addCollaboratorTitle">Añadir / Eliminar colaborador</string>
     <string name="addCollaboratorSearchHint">Buscar usuarios</string>
     <string name="addCollaboratorViewUserDesc">Nombre de usuario</string>
-    <string name="removeCollaboratorTitle">Eliminar\u0020</string>
+    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
     <string name="removeCollaboratorMessage">¿Quieres eliminar este usuario del repositorio?</string>
     <string name="removeCollaboratorToastText">El usuario fue eliminado del repositorio.</string>
     <string name="addCollaboratorToastText">El usuario fue añadido al repositorio.</string>
@@ -300,7 +284,6 @@
     <string name="profileTabFollowers">Seguidores</string>
     <string name="profileTabFollowing">Siguiendo</string>
     <string name="profileCreateNewEmailAddress">Añadir correo electrónico</string>
-    <string name="profileEmailButton">Guardar</string>
     <string name="profileEmailTitle">Dirección de correo electrónico</string>
     <string name="emailAddedText">Nuevo correo electrónico añadido con éxito</string>
     <string name="emailErrorEmpty">Correo electrónico está vacio</string>
@@ -452,15 +435,14 @@
     <string name="loginTokenError">Token es necesario</string>
     <string name="prDeletedFork">Fork eliminado</string>
     <string name="noDataPullRequests">Ningún pull request encontrado</string>
-    <string name="prCreator">Creador:\u0020</string>
     <string name="editPrText">Editar pull request</string>
     <string name="copyPrUrlText">Copiar URL del pull request</string>
     <string name="editPrNavHeader">Editar pull request #%1$s</string>
     <string name="editPrSuccessMessage">Pull request actualizado</string>
     <string name="fileDiffViewHeader">%1$s archivos modificados</string>
     <string name="fileDiffViewHeaderSingle">%1$s archivo modificado</string>
-    <string name="openFileDiffText">Archivos modificados</string>
     <string name="updatePullRequestText">Update Pull Request</string>
+    <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Fusionar pull request</string>
     <string name="deletePrHeadBranch">Eliminar la rama principal</string>
     <string name="deleteBranchSuccess">Rama eliminada con éxito</string>
@@ -497,7 +479,8 @@
     <string name="shareRepository">Compartir repositorio</string>
     <string name="createRepository">Crear repositorio</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitCommittedBy">Commit hecho por %1$s</string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
     <string name="viewCommits">Ver Commits</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Verificación del certificado</string>
@@ -643,4 +626,17 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
+    <string name="closePr">Close Pull Request</string>
+    <string name="reopenPr">Reopen Pull Request</string>
+    <string name="userAvatar">Avatar</string>
+    <string name="tags">Tags</string>
+    <string name="releasesTags">Releases/Tags</string>
+    <string name="create_tag">Create Tag Only</string>
+    <string name="tagCreated">Tag created</string>
+    <string name="asRef">Use as reference</string>
+    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
+    <string name="deleteTagTitle">Delete tag %s</string>
+    <string name="tagDeleted">Tag deleted</string>
+    <string name="useCustomTabs">Use Custom Tabs</string>
+    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
 </resources>

@@ -13,14 +13,8 @@
     <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
-    <string name="pageTitleAbout">О програму</string>
-    <string name="pageTitleMyRepos">Моји репозиторијуми</string>
-    <string name="pageTitleRepositories">Репозиторијуми</string>
-    <string name="pageTitleProfile">Профил</string>
     <string name="pageTitleNewRepo">Нови репозиторијум</string>
-    <string name="pageTitleOrganizations">Организације</string>
     <string name="pageTitleIssues">Тикети</string>
-    <string name="pageTitleSettings">Подешавања</string>
     <string name="pageTitleCreateOrganization">Нова организација</string>
     <string name="pageTitleCreateMilestone">Нова фаза</string>
     <string name="pageTitleCreateNewIssue">Нови тикет</string>
@@ -28,34 +22,28 @@
     <string name="pageTitleCredits">Заслуге</string>
     <string name="pageTitleChooseBranch">Select Branch</string>
     <string name="pageTitleLabelUpdate">Ажурирај ознаку</string>
-    <string name="pageTitleSponsors">Донатори</string>
     <string name="pageTitleStarredRepos">Омиљени репозиторијуми</string>
     <string name="pageTitleCreateTeam">Нови тим</string>
     <string name="pageTitleAddEmail">Додај имејл-адресу</string>
     <string name="pageTitleNewFile">Нови фајл</string>
     <string name="pageTitleExplore">Претражи репозиторијуме</string>
     <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleUserAccounts">Manage Accounts</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторијум</string>
-    <string name="repoFullName">Репозиторијум са ORG</string>
     <string name="repoDescription">Демо опис</string>
     <string name="noData">Ниједан репозиторијум није пронађен</string>
     <string name="orgName">Демо организација</string>
-    <string name="orgDescription">Демо опис</string>
     <string name="noDataOrg">Ниједна организација није пронађена</string>
     <string name="newCreateButtonCopy">Креирај</string>
     <string name="newUpdateButtonCopy">Ажурирај</string>
     <string name="newRepoTintCopy">Назив</string>
     <string name="newRepoDescTintCopy">Опис</string>
     <string name="newRepoPrivateCopy">Приватни</string>
-    <string name="newRepoDescInfo">Максимално 255 карактера</string>
     <string name="newRepoOwner">Власник</string>
     <string name="newOrgTintCopy">Назив</string>
     <string name="newOrgDescTintCopy">Опис</string>
-    <string name="newOrgDescInfo">Максимално 255 карактера</string>
     <string name="userName">Корисничко име</string>
     <string name="passWord">Лозинка</string>
     <string name="btnLogin">Пријави ме</string>
@@ -88,8 +76,7 @@
     <string name="orgCreated">Организација је успешно креирана</string>
     <string name="orgCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="orgExistsError">Организација већ постоји</string>
-    <string name="binaryFileError">Binary files are not supported yet.</string>
-    <string name="fileTooLarge">This file exceeds the maximum possible diff lines</string>
+    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
     <string name="processingText">Пријављивање у току</string>
     <string name="search">Претражи</string>
     <string name="close">Затвори</string>
@@ -99,7 +86,6 @@
     <string name="privateAvatar">При</string>
     <string name="removeContent">Уклони</string>
     <string name="genericApiStatusError">Сервер је вратио грешку: код\u0020</string>
-    <string name="titleActivityRepoDetail">Активности</string>
     <string name="tabTextInfo">Детаљи</string>
     <string name="tabTextFiles">Фајлови</string>
     <string name="tabTextMl">Фазе</string>
@@ -228,22 +214,15 @@
     <string name="labelUpdated">Ознака је ажурирана</string>
     <string name="noDataLabelsTab">Ниједна ознака није пронађена</string>
     <string name="labelMenuContentDesc">Опис</string>
-    <string name="labelMenuEdit">Уреди</string>
-    <string name="labelMenuDelete">Избриши</string>
     <string name="labelDeleteText">Ознака је избрисана</string>
     <string name="labelDeleteErrorText">Нешто је пошло наопако, покушај поново</string>
     <string name="noDataBranchesTab">Ниједна грана није пронађена</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Грешка приликом ауторизације</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="alertDialogTokenRevokedCopyNegativeButton">Откажи</string>
-    <string name="alertDialogTokenRevokedCopyPositiveButton">Одјави ме</string>
-    <string name="labelDeleteTitle">Избриши\u0020</string>
+    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Да ли желиш да избришеш ову ознаку?</string>
-    <string name="labelDeletePositiveButton">У реду</string>
-    <string name="labelDeleteNegativeButton">Откажи</string>
     <!-- org tabbed layout str -->
-    <string name="titleActivityOrgDetail">Активности</string>
     <string name="orgTabRepos">Репозиторијуми</string>
     <string name="orgTabTeams">Тимови</string>
     <string name="orgTabMembers">Чланови</string>
@@ -251,7 +230,13 @@
     <string name="noDataTeams">Ниједан тим није пронађен</string>
     <string name="teamTitle">Назив тима</string>
     <string name="teamDescription">Опис тима</string>
-    <string name="teamPermission">Право: %1$s</string>
+    <string name="teamPermissions">Permissions</string>
+    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
+    <string name="teamShowAll">show all</string>
     <string name="noDataMembers">Ниједан члан није пронађен</string>
     <string name="orgMember">Чланови организације</string>
     <string name="orgTeamMembers">Чланови тима</string>
@@ -281,7 +266,6 @@
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Уреди коментар</string>
-    <string name="editCommentButtonText">Уреди</string>
     <string name="editCommentUpdatedText">Коментар је ажуриран</string>
     <string name="issueCommentShare">Подели коментар</string>
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
@@ -291,7 +275,7 @@
     <string name="addCollaboratorTitle">Додај или уклони сарадника</string>
     <string name="addCollaboratorSearchHint">Претражи кориснике</string>
     <string name="addCollaboratorViewUserDesc">Корисничко име</string>
-    <string name="removeCollaboratorTitle">Уклони\u0020</string>
+    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
     <string name="removeCollaboratorMessage">Да ли желиш да уклониш корисника?</string>
     <string name="removeCollaboratorToastText">Корисник је уклоњен</string>
     <string name="addCollaboratorToastText">Корисник је додат</string>
@@ -300,7 +284,6 @@
     <string name="profileTabFollowers">Прате ме</string>
     <string name="profileTabFollowing">Пратим</string>
     <string name="profileCreateNewEmailAddress">Додај имејл-адресу</string>
-    <string name="profileEmailButton">Сачувај</string>
     <string name="profileEmailTitle">Имејл-адреса</string>
     <string name="emailAddedText">New email added successfully</string>
     <string name="emailErrorEmpty">Email address is empty</string>
@@ -452,15 +435,14 @@
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
     <string name="noDataPullRequests">Ниједан пул захтев није пронађен</string>
-    <string name="prCreator">Аутор: \u0020</string>
     <string name="editPrText">Уреди пул захтев</string>
     <string name="copyPrUrlText">Копирај URL пул захтева</string>
     <string name="editPrNavHeader">Уреди пул захтев #%1$s</string>
     <string name="editPrSuccessMessage">Пул захтев је ажуриран</string>
     <string name="fileDiffViewHeader">%1$s фајлова је измењено</string>
     <string name="fileDiffViewHeaderSingle">%1$s фајл је измењен</string>
-    <string name="openFileDiffText">Фајлови су измењени</string>
     <string name="updatePullRequestText">Update Pull Request</string>
+    <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Обједини пул захтев</string>
     <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
@@ -497,7 +479,8 @@
     <string name="shareRepository">Подели репозиторијум</string>
     <string name="createRepository">Креирај репозиторијум</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitCommittedBy">Аутор комита: %1$s</string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
     <string name="viewCommits">Прегледај комитове</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Провера сертификата</string>
@@ -643,4 +626,17 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
+    <string name="closePr">Close Pull Request</string>
+    <string name="reopenPr">Reopen Pull Request</string>
+    <string name="userAvatar">Avatar</string>
+    <string name="tags">Tags</string>
+    <string name="releasesTags">Releases/Tags</string>
+    <string name="create_tag">Create Tag Only</string>
+    <string name="tagCreated">Tag created</string>
+    <string name="asRef">Use as reference</string>
+    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
+    <string name="deleteTagTitle">Delete tag %s</string>
+    <string name="tagDeleted">Tag deleted</string>
+    <string name="useCustomTabs">Use Custom Tabs</string>
+    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
 </resources>

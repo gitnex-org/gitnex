@@ -13,14 +13,8 @@
     <string name="navAdministration">Administration</string>
     <!-- menu items -->
     <!-- page titles -->
-    <string name="pageTitleAbout">À propos</string>
-    <string name="pageTitleMyRepos">Mes dépôts</string>
-    <string name="pageTitleRepositories">Dépôts</string>
-    <string name="pageTitleProfile">Profil</string>
     <string name="pageTitleNewRepo">Nouveau dépôt</string>
-    <string name="pageTitleOrganizations">Organisations</string>
     <string name="pageTitleIssues">Tickets</string>
-    <string name="pageTitleSettings">Configuration</string>
     <string name="pageTitleCreateOrganization">Nouvelle organisation</string>
     <string name="pageTitleCreateMilestone">Nouveau jalon</string>
     <string name="pageTitleCreateNewIssue">Nouveau ticket</string>
@@ -28,34 +22,28 @@
     <string name="pageTitleCredits">Crédits</string>
     <string name="pageTitleChooseBranch">Branche</string>
     <string name="pageTitleLabelUpdate">Modifier l’étiquette</string>
-    <string name="pageTitleSponsors">Donateurs</string>
     <string name="pageTitleStarredRepos">Dépôts favoris</string>
     <string name="pageTitleCreateTeam">Nouvelle équipe</string>
     <string name="pageTitleAddEmail">Ajouter une adresse e-mail</string>
     <string name="pageTitleNewFile">Nouveau fichier</string>
     <string name="pageTitleExplore">Explorer</string>
     <string name="pageTitleAdministration">Administration de Gitea</string>
-    <string name="pageTitleUserAccounts">Gestion des comptes</string>
     <string name="pageTitleNewPullRequest">Nouvelle demande de tirage</string>
     <string name="pageTitleUsers">Utilisateurs</string>
     <!-- page titles -->
     <string name="repoName">Dépôt de démonstration</string>
-    <string name="repoFullName">Nom complet du dépôt</string>
     <string name="repoDescription">Description de démonstration</string>
     <string name="noData">Aucun dépôt</string>
     <string name="orgName">Organisation de démonstration</string>
-    <string name="orgDescription">Description de démonstration</string>
     <string name="noDataOrg">Aucune organisation</string>
     <string name="newCreateButtonCopy">Créer</string>
     <string name="newUpdateButtonCopy">Modifier</string>
     <string name="newRepoTintCopy">Nom</string>
     <string name="newRepoDescTintCopy">Description</string>
     <string name="newRepoPrivateCopy">Privé</string>
-    <string name="newRepoDescInfo">255 caractères maximum</string>
     <string name="newRepoOwner">Propriétaire</string>
     <string name="newOrgTintCopy">Nom</string>
     <string name="newOrgDescTintCopy">Description</string>
-    <string name="newOrgDescInfo">255 caractères maximum</string>
     <string name="userName">Nom d’utilisateur</string>
     <string name="passWord">Mot de passe</string>
     <string name="btnLogin">CONNEXION</string>
@@ -88,8 +76,7 @@
     <string name="orgCreated">Organisation créée</string>
     <string name="orgCreatedError">Une erreur s’est produite, veuillez réessayer</string>
     <string name="orgExistsError">Ce nom d’organisation est déjà pris</string>
-    <string name="binaryFileError">Les fichiers binaires ne sont pas encore pris en charge.</string>
-    <string name="fileTooLarge">Ce fichier dépasse le maximum de lignes de diff</string>
+    <string name="diffStatistics">%s ajout(s) et %s suppression(s)</string>
     <string name="processingText">Traitement en cours</string>
     <string name="search">Rechercher</string>
     <string name="close">Fermer</string>
@@ -99,7 +86,6 @@
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Supprimer</string>
     <string name="genericApiStatusError">L’instance a renvoyé une erreur. Code\u0020</string>
-    <string name="titleActivityRepoDetail">Activité du dépôt</string>
     <string name="tabTextInfo">Détails</string>
     <string name="tabTextFiles">Fichiers</string>
     <string name="tabTextMl">Jalons</string>
@@ -228,22 +214,15 @@
     <string name="labelUpdated">Étiquette modifiée</string>
     <string name="noDataLabelsTab">Aucune étiquette</string>
     <string name="labelMenuContentDesc">Desc</string>
-    <string name="labelMenuEdit">Modifier</string>
-    <string name="labelMenuDelete">Supprimer</string>
     <string name="labelDeleteText">Étiquette supprimée</string>
     <string name="labelDeleteErrorText">Une erreur s’est produite, veuillez réessayer</string>
     <string name="noDataBranchesTab">Aucune branche</string>
     <string name="selectBranchError">Branche de diffusion</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
     <string name="alertDialogTokenRevokedMessage">Le jeton d’accès est peut-être révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nEn cas de jeton révoqué, veuillez vous reconnecter</string>
-    <string name="alertDialogTokenRevokedCopyNegativeButton">Annuler</string>
-    <string name="alertDialogTokenRevokedCopyPositiveButton">Déconnexion</string>
-    <string name="labelDeleteTitle">Supprimer\u0020</string>
+    <string name="labelDeleteTitle">Effacer %s</string>
     <string name="labelDeleteMessage">Voulez-vous vraiment supprimer cette étiquette ?</string>
-    <string name="labelDeletePositiveButton">Confirmer</string>
-    <string name="labelDeleteNegativeButton">Annuler</string>
     <!-- org tabbed layout str -->
-    <string name="titleActivityOrgDetail">Activité de l’organisation</string>
     <string name="orgTabRepos">Dépôts</string>
     <string name="orgTabTeams">Équipes</string>
     <string name="orgTabMembers">Membres</string>
@@ -251,7 +230,13 @@
     <string name="noDataTeams">Aucune équipe</string>
     <string name="teamTitle">Nom</string>
     <string name="teamDescription">Description de l’équipe</string>
-    <string name="teamPermission">Permission : %1$s</string>
+    <string name="teamPermissions">Permissions</string>
+    <string name="teamPermissionNone">• Cette équipe n’a aucune permission.</string>
+    <string name="teamPermissionRead">• Cette équipe peut accéder dépôts communs.</string>
+    <string name="teamPermissionWrite">• Cette équipe peut accéder au dépôt et pousser ses modifications.</string>
+    <string name="teamPermissionAdmin">• Les membres peuvent voir et pousser dans les dépôts de l’équipe ainsi qu’ajouter des collaborateurs.</string>
+    <string name="teamPermissionOwner">• Cette équipe est propriétaire.</string>
+    <string name="teamShowAll">voir tout</string>
     <string name="noDataMembers">Aucun membre</string>
     <string name="orgMember">Membres de l’organisation</string>
     <string name="orgTeamMembers">Membres de l’équipe</string>
@@ -281,7 +266,6 @@
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Modifier le commentaire</string>
-    <string name="editCommentButtonText">Modifier</string>
     <string name="editCommentUpdatedText">Commentaire modifié</string>
     <string name="issueCommentShare">Partager le commentaire</string>
     <string name="deleteCommentSuccess">Commentaire supprimé avec succès</string>
@@ -291,7 +275,7 @@
     <string name="addCollaboratorTitle">Gérer les collaborateurs</string>
     <string name="addCollaboratorSearchHint">Rechercher des utilisateurs</string>
     <string name="addCollaboratorViewUserDesc">Nom d’utilisateur</string>
-    <string name="removeCollaboratorTitle">Supprimer\u0020</string>
+    <string name="removeCollaboratorDialogTitle">Supprimer %s ?</string>
     <string name="removeCollaboratorMessage">Supprimer cet utilisateur du dépôt ?</string>
     <string name="removeCollaboratorToastText">Utilisateur supprimé du dépôt</string>
     <string name="addCollaboratorToastText">Utilisateur ajouté au dépôt</string>
@@ -300,7 +284,6 @@
     <string name="profileTabFollowers">Abonnés</string>
     <string name="profileTabFollowing">Abonnements</string>
     <string name="profileCreateNewEmailAddress">Ajouter une adresse e-mail</string>
-    <string name="profileEmailButton">Sauvegarder</string>
     <string name="profileEmailTitle">Adresse e-mail</string>
     <string name="emailAddedText">Nouvelle adresse e-mail ajoutée</string>
     <string name="emailErrorEmpty">Adresse e-mail manquante</string>
@@ -452,15 +435,14 @@
     <string name="loginTokenError">Jeton est requis</string>
     <string name="prDeletedFork">Bifurcation supprimée</string>
     <string name="noDataPullRequests">Aucune demande de tirage</string>
-    <string name="prCreator">Auteur :\u0020</string>
     <string name="editPrText">Modifier la demande de tirage</string>
     <string name="copyPrUrlText">Copier l\'URL de la demande de tirage</string>
     <string name="editPrNavHeader">Modifier la demande de tirage n° %1$s</string>
     <string name="editPrSuccessMessage">Demande de tirage mise à jour</string>
     <string name="fileDiffViewHeader">%1$s fichiers modifiés</string>
     <string name="fileDiffViewHeaderSingle">%1$s fichier modifié</string>
-    <string name="openFileDiffText">Fichiers modifiés</string>
     <string name="updatePullRequestText">Mettre à jour la demande de tirage</string>
+    <string name="openFileDiffText">Voir Fichiers modifiés</string>
     <string name="mergePullRequestText">Fusionner la demande de tirage</string>
     <string name="deletePrHeadBranch">Supprimer la branche courante</string>
     <string name="deleteBranchSuccess">Branche supprimée</string>
@@ -497,7 +479,8 @@
     <string name="shareRepository">Partager le dépôt</string>
     <string name="createRepository">Créer un dépôt</string>
     <string name="commitTitle">Révisions</string>
-    <string name="commitCommittedBy">Révision de %1$s</string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> a signé et <b>%s</b> a modifié %s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> a modifié %s]]></string>
     <string name="viewCommits">Voir révisions</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Vérification du certificat</string>
@@ -643,4 +626,17 @@
     <string name="updateStrategyMerge">Fusionner</string>
     <string name="updateStrategyRebase">Rebaser</string>
     <string name="selectUpdateStrategy">Stratégie de mise à jour</string>
+    <string name="closePr">Fusionner la demande de tirage</string>
+    <string name="reopenPr">Rouvrir la demande de tirage</string>
+    <string name="userAvatar">Avatar</string>
+    <string name="tags">Étiquettes</string>
+    <string name="releasesTags">Versions/Étiquettes</string>
+    <string name="create_tag">Créer une étiquette seulement</string>
+    <string name="tagCreated">Étiquette créée</string>
+    <string name="asRef">Utiliser comme référence</string>
+    <string name="deleteTagConfirmation">Voulez-vous vraiment supprimer cette étiquette ?</string>
+    <string name="deleteTagTitle">Supprimer l’étiquette %s</string>
+    <string name="tagDeleted">Étiquette supprimée</string>
+    <string name="useCustomTabs">Utiliser des onglets personnalisés</string>
+    <string name="browserOpenFailed">Aucune application présente ne peut ouvrir ce lien. Les URL SSH ou avec un préfixe autre que http:// ou https:// ne sont pas compatibles avec la plupart des navigateurs.</string>
 </resources>
