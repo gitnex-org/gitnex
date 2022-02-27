@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.2.0" versioncode="420">
-        <change>Create/delete/list tags</change>
-        <change>Hide repository actions for non admins</change>
-        <change>New files diff viewer</change>
-        <change>Show users who reacted to issue/pr/comment</change>
-        <change>Redesigned organization Teams</change>
-        <change>Notice: GitNex 4.3.0 will drop support for Android 5. Going forward 5.0.0 will drop for Android 6</change>
+    <release version="4.3.0" versioncode="425">
+        <change>Under development</change>
     </release>
 
 </changelog>

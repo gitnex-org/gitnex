@@ -6,8 +6,8 @@ android {
         applicationId "org.mian.gitnex"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 420
-        versionName "4.2.0"
+        versionCode 425
+        versionName "4.3.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -104,8 +104,8 @@ dependencies {
     implementation "ch.acra:acra-mail:$acra"
     implementation "ch.acra:acra-limiter:$acra"
     implementation "ch.acra:acra-notification:$acra"
-    implementation 'androidx.room:room-runtime:2.4.1'
-    annotationProcessor 'androidx.room:room-compiler:2.4.1'
+    implementation 'androidx.room:room-runtime:2.4.2'
+    annotationProcessor 'androidx.room:room-compiler:2.4.2'
     implementation "androidx.work:work-runtime:$work_version"
     implementation "io.mikael:urlbuilder:2.0.9"
     implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
