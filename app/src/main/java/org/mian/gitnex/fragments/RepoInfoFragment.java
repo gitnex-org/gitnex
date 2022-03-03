@@ -2,7 +2,6 @@ package org.mian.gitnex.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -110,12 +108,12 @@ public class RepoInfoFragment extends Fragment {
 			ctx.startActivity(intent);
 		});
 
-		binding.repoMetaForksFrame.setOnClickListener(v -> {
+		/*binding.repoMetaForksFrame.setOnClickListener(v -> {
 
 			Intent intent = new Intent(ctx, RepoForksActivity.class);
 			intent.putExtra("repoFullNameForForks", repoOwner + "/" + repoName);
 			ctx.startActivity(intent);
-		});
+		});*/
 
 		binding.repoMetaPullRequestsFrame.setOnClickListener(metaPR -> RepoDetailActivity.mViewPager.setCurrentItem(3));
 
