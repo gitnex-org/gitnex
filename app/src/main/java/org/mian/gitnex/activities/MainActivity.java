@@ -204,12 +204,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
 
 				RecyclerView navRecyclerViewUserAccounts = hView.findViewById(R.id.userAccounts);
-				UserAccountsNavAdapter adapterUserAccounts;
 
-				adapterUserAccounts = new UserAccountsNavAdapter(ctx, userAccountsList, drawer);
+				UserAccountsNavAdapter adapterUserAccounts = new UserAccountsNavAdapter(ctx, userAccountsList, drawer);
 
 				userAccountsApi.getAllAccounts().observe((AppCompatActivity) ctx, userAccounts -> {
 					if(userAccounts.size() > 0) {
+						userAccountsList.clear();
 						userAccountsList.addAll(userAccounts);
 						navRecyclerViewUserAccounts.setAdapter(adapterUserAccounts);
 						navRecyclerViewFrame.setVisibility(View.VISIBLE);
