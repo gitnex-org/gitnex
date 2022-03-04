@@ -67,7 +67,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		TextView loadReactions = new TextView(ctx);
 		loadReactions.setText(Objects.requireNonNull(ctx).getString(R.string.genericWaitFor));
 		loadReactions.setGravity(Gravity.CENTER);
-		loadReactions.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 80));
+		loadReactions.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 140));
 		binding.commentReactionButtons.addView(loadReactions);
 
 		ReactionSpinner reactionSpinner = new ReactionSpinner(ctx, bundle);
