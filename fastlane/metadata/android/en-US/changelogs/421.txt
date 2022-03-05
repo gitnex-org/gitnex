@@ -1,0 +1,12 @@
+4.2.1
+
+Bugfix: Fix reactions UI
+Bugfix: Fix duplicate instance profiles
+Regression: Disable fork view
+Bugfix: Fix notifications UI
+
+Release Notes 4.2.0: https://codeberg.org/gitnex/GitNex/releases
+
+Release Video 4.2.0: https://youtu.be/mxkE-x64iXs
+
+Release Blog 4.2.0: https://gitnex.codeberg.page/posts/420.html
