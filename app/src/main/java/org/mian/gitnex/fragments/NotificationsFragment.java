@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -155,19 +153,20 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 			.enqueue((SimpleCallback<List<NotificationThread>>) (call1, listResponse) -> {
 
 				if(listResponse.isPresent() && listResponse.get().isSuccessful() && listResponse.get().body() != null) {
-					System.out.println(listResponse.get().body());
 					if(!append) {
 						notificationThreads.clear();
 					}
 
 					if(listResponse.get().body().size() > 0) {
 						notificationThreads.addAll(listResponse.get().body());
-						notificationsAdapter.notifyDataSetChanged();
 					}
 					else {
 						notificationsAdapter.setMoreDataAvailable(false);
 					}
 
+					if(!append || listResponse.get().body().size() > 0) {
+						notificationsAdapter.notifyDataSetChanged();
+					}
 				}
 
 				AppUtil.setMultiVisibility(View.GONE, viewBinding.progressBar);
@@ -240,10 +239,12 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		if(notificationThread.isUnread() && !notificationThread.isPinned()) {
 			RetrofitClient.getApiInterface(context).markNotificationThreadAsRead(Authorization.get(context), notificationThread.getId(), "read").enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
-				if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
-					pageCurrentIndex = 1;
-					loadNotifications(false);
-				}
+				// reload without any checks, because Gitea returns a 205 and Java expects this to be empty
+				// but Gitea send a response -> results in a call of onFailure and no response is present
+				//if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
+				pageCurrentIndex = 1;
+				loadNotifications(false);
+				//}
 			});
 		}
 
