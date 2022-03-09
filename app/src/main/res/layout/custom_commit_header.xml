@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/primaryBackgroundColor"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:id="@+id/linearLayoutFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="?attr/primaryBackgroundColor">
 
         <TextView
             android:id="@+id/commitSubject"
@@ -22,6 +22,16 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="18sp"
             tools:text="This is a test" />
+
+        <TextView
+            android:id="@+id/commitBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:alpha=".8"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"
+            tools:text="This is a test commit message" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,8 +52,8 @@
                     android:id="@+id/commitAuthorAvatar"
                     android:layout_width="@dimen/list_avatar_size"
                     android:layout_height="@dimen/list_avatar_size"
-                    android:contentDescription="@string/generalImgContentText"
                     android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/generalImgContentText"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
@@ -70,12 +80,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:layout_marginStart="10dp"
                 android:alpha=".8"
                 android:drawablePadding="10dp"
+                android:textSize="12sp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="12sp"
                 app:drawableLeftCompat="@drawable/ic_commit"
                 tools:text="357f3qd5s" />
 

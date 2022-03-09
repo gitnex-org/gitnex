@@ -284,6 +284,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					intent1.putExtra("branchName", branch);
 					ctx.startActivity(intent1);
 					break;
+				case "commit":
+					Intent intent2 = new Intent(ctx, CommitDetailActivity.class);
+					intent2.putExtra("sha", mainIntent.getStringExtra("sha"));
+					ctx.startActivity(intent2);
+					break;
 				case "issue":
 					RepoDetailActivity.mViewPager.setCurrentItem(2);
 					break;
@@ -800,6 +805,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 	@Override
 	protected void onDestroy() {
+		super.onDestroy();
 		if(!isFinishing()) {
 			return;
 		}
@@ -808,7 +814,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				.getAccountById(getIntent().getIntExtra("oldAccountId", 0));
 			AppUtil.switchToAccount(this, a);
 		}
-		super.onDestroy();
 	}
 
 	// Issues milestone filter interface

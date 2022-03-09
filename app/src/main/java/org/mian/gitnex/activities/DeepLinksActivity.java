@@ -252,9 +252,10 @@ public class DeepLinksActivity extends BaseActivity {
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
 						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "pullNew"), 500);
 				}
-				else if(data.getPathSegments().get(2).equals("commit")) { // commits (no API yet to properly implement)
+				else if(data.getPathSegments().get(2).equals("commit")) {
+					repoIntent.putExtra("sha", data.getLastPathSegment());
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "pull"), 500);
+						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "commit"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("commits")) { // commits list
 					String branch = data.getLastPathSegment();

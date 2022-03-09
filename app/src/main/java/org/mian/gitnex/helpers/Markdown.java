@@ -20,6 +20,7 @@ import org.commonmark.parser.InlineParserFactory;
 import org.commonmark.parser.Parser;
 import org.commonmark.parser.PostProcessor;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -382,18 +383,20 @@ public class Markdown {
 								view.getContext().startActivity(i);
 							}
 							else if(link.startsWith("gitnexcommit://")) {
-								// this is not supported by GitNex itself right now, so let's open the browser
 								TinyDB tinyDB = TinyDB.getInstance(context);
-								String instanceUrl = tinyDB.getString("instanceUrl");
-								instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
 								link = link.substring(15);
+								Intent i = new Intent(view.getContext(), CommitDetailActivity.class);
+								String sha;
 								if(link.contains("/")) {
-									AppUtil.openUrlInBrowser(context,
-										instanceUrl + link.substring(0, link.lastIndexOf("/")) + "/commit/" + link.split("/")[2]);
+									sha = link.split("/")[2];
+									tinyDB.putString("repoFullName", link.split("/")[0] + link.split("/")[1]);
 								}
 								else {
-									AppUtil.openUrlInBrowser(context, instanceUrl + tinyDB.getString("repoFullName") + "/commit/" + link);
+									sha = link.substring(1);
 								}
+
+								i.putExtra("sha", sha);
+								view.getContext().startActivity(i);
 							}
 							else {
 								AppUtil.openUrlInBrowser(view.getContext(), link);

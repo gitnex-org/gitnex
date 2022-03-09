@@ -61,7 +61,7 @@ public class DiffFilesFragment extends Fragment {
 
 		binding.diffFiles.setOnItemClickListener((parent, view, position, id) -> requireActivity().getSupportFragmentManager()
 			.beginTransaction()
-			.replace(R.id.fragment_container, DiffFragment.newInstance((FileDiffView) parent.getItemAtPosition(position)))
+			.replace(R.id.fragment_container, DiffFragment.newInstance((FileDiffView) parent.getItemAtPosition(position), "pull"))
 			.commit());
 
 		getPullDiffFiles(repoOwner, repoName, pullIndex);
