@@ -3,15 +3,21 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
@@ -21,6 +27,8 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -97,12 +105,14 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
 
-		private Issues issue;
+		private Issues issueObject;
 
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
 		private final TextView issueCommentsCount;
+		private final HorizontalScrollView labelsScrollView;
+		private final LinearLayout frameLabels;
 
 		IssuesHolder(View itemView) {
 
@@ -111,10 +121,17 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			issueTitle = itemView.findViewById(R.id.issueTitle);
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
+			labelsScrollView = itemView.findViewById(R.id.labelsScrollView);
+			frameLabels = itemView.findViewById(R.id.frameLabels);
+
+			issueAssigneeAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, issueObject.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issueObject.getUser().getLogin()));
+				return true;
+			});
 
 			itemView.setOnClickListener(layoutView -> {
 				Intent intent = new IssueContext(
-					issue,
+					issueObject,
 					((RepoDetailActivity) context).repository
 				).getIntent(context, IssueDetailActivity.class);
 				context.startActivity(intent);
@@ -122,14 +139,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			issueAssigneeAvatar.setOnClickListener(v -> {
 				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", issue.getUser().getLogin());
+				intent.putExtra("username", issueObject.getUser().getLogin());
 				context.startActivity(intent);
 			});
 
-			issueAssigneeAvatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, issue.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issue.getUser().getLogin()));
-				return true;
-			});
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -152,8 +165,44 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + issue.getNumber() + "</font>";
 			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(issue.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-			this.issue = issue;
+			this.issueObject = issue;
 			this.issueCommentsCount.setText(String.valueOf(issue.getComments()));
+
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+			params.setMargins(0, 0, 15, 0);
+
+			if(issue.getLabels() != null) {
+
+				labelsScrollView.setVisibility(View.VISIBLE);
+				frameLabels.removeAllViews();
+
+				for(int i = 0; i < issue.getLabels().size(); i++) {
+
+					String labelColor = issue.getLabels().get(i).getColor();
+					String labelName = issue.getLabels().get(i).getName();
+					int color = Color.parseColor("#" + labelColor);
+
+					ImageView labelsView = new ImageView(context);
+					frameLabels.setOrientation(LinearLayout.HORIZONTAL);
+					frameLabels.setGravity(Gravity.START | Gravity.TOP);
+					labelsView.setLayoutParams(params);
+
+					int height = AppUtil.getPixelsFromDensity(context, 22);
+					int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
+
+					TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT)
+						.textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
+						.width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8)))
+						.height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
+
+					labelsView.setImageDrawable(drawable);
+					frameLabels.addView(labelsView);
+				}
+			}
+			else {
+				labelsScrollView.setVisibility(View.GONE);
+			}
 
 			switch(timeFormat) {
 				case "pretty": {

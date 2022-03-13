@@ -52,6 +52,7 @@ import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
+import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
@@ -418,6 +419,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					getSingleIssue(repoOwner, repoName, issueIndex);
 					currentLabelsIds.clear();
 					new Handler(Looper.getMainLooper()).postDelayed(() -> LabelsActions.getCurrentIssueLabels(ctx, repoOwner, repoName, issueIndex, currentLabelsIds), 1000);
+					IssuesFragment.resumeIssues = true;
 				}
 				else if(response.code() == 401) {
 
@@ -761,7 +763,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT)
 					.textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
 					.width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(ctx, 10)))
-					.height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(ctx, 5));
+					.height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(ctx, 18));
 
 				labelsView.setImageDrawable(drawable);
 				viewBinding.frameLabels.addView(labelsView);

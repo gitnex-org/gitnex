@@ -39,6 +39,24 @@
 
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/labelsScrollView"
+        android:foregroundGravity="right"
+        android:layout_marginBottom="8dp"
+        android:scrollbarThumbHorizontal="@android:color/transparent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/frameLabels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" />
+
+    </HorizontalScrollView>
+
     <LinearLayout
         android:id="@+id/issueInfoFrame"
         android:layout_width="match_parent"
