@@ -168,6 +168,7 @@
     <string name="releaseDownloadText">Downloads</string>
     <string name="releaseTypePre" translatable="false">Pre-Release</string>
     <string name="releaseTypeStable" translatable="false">Stable</string>
+    <string name="releaseTypeDraft" translatable="false">Draft</string>
     <string name="noDataReleasesTab">No releases found</string>
     <string name="releasePublishedBy">Published by @%1$s</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
