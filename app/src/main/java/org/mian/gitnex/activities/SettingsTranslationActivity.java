@@ -1,7 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +13,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.TreeMap;
 
 /**
  * Author M M Arif

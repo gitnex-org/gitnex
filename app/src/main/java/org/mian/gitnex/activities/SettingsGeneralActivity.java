@@ -2,13 +2,10 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

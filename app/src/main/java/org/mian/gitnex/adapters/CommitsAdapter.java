@@ -16,7 +16,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.CommitsActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.fragments.CommitDetailFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;

@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainGrammarLocator;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.TinyDB;
 import de.qwerty287.markwonprism4j.Prism4jSyntaxHighlight;
 import de.qwerty287.markwonprism4j.Prism4jTheme;
 import de.qwerty287.markwonprism4j.Prism4jThemeDarkula;

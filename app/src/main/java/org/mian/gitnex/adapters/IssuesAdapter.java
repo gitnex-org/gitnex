@@ -188,7 +188,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 					frameLabels.setGravity(Gravity.START | Gravity.TOP);
 					labelsView.setLayoutParams(params);
 
-					int height = AppUtil.getPixelsFromDensity(context, 22);
+					int height = AppUtil.getPixelsFromDensity(context, 20);
 					int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
 
 					TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT)

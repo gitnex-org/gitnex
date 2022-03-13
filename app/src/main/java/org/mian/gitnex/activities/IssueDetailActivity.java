@@ -757,8 +757,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				viewBinding.frameLabels.setGravity(Gravity.START | Gravity.TOP);
 				labelsView.setLayoutParams(params);
 
-				int height = AppUtil.getPixelsFromDensity(ctx, 25);
-				int textSize = AppUtil.getPixelsFromScaledDensity(ctx, 15);
+				int height = AppUtil.getPixelsFromDensity(ctx, 20);
+				int textSize = AppUtil.getPixelsFromScaledDensity(ctx, 12);
 
 				TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT)
 					.textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
