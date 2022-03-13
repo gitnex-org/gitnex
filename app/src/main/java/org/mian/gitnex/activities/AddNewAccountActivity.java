@@ -14,6 +14,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityAddNewAccountBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.PathsHelper;
@@ -50,6 +51,15 @@ public class AddNewAccountActivity extends BaseActivity {
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);
 		viewBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
+		viewBinding.loginToken.setText(getIntent().getStringExtra("token"));
+		String scheme = getIntent().getStringExtra("scheme");
+		if(scheme != null && scheme.equals("http"))  {
+			viewBinding.protocolSpinner.setText(Protocol.HTTP.toString());
+			spinnerSelectedValue = Protocol.HTTP.toString();
+		} else { // default is https
+			viewBinding.protocolSpinner.setText(Protocol.HTTPS.toString());
+			spinnerSelectedValue = Protocol.HTTPS.toString();
+		}
 
 		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
 
@@ -134,7 +144,6 @@ public class AddNewAccountActivity extends BaseActivity {
 						return;
 					}
 
-					tinyDB.putString("giteaVersion", version.getVersion());
 					Version giteaVersion = new Version(version.getVersion());
 
 					if(giteaVersion.less(getString(R.string.versionLow))) {
@@ -210,14 +219,24 @@ public class AddNewAccountActivity extends BaseActivity {
 
 						if(!userAccountExists) {
 
-							userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
+							long id = userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
+							UserAccount account = userAccountsApi.getAccountById((int) id);
+							AppUtil.switchToAccount(AddNewAccountActivity.this, account);
 							Toasty.success(ctx, getResources().getString(R.string.accountAddedMessage));
 							finish();
 
 						}
 						else {
-
-							Toasty.warning(ctx, getResources().getString(R.string.accountAlreadyExistsError));
+							UserAccount account = userAccountsApi.getAccountByName(accountName);
+							if(account.isLoggedIn()) {
+								Toasty.warning(ctx, getResources().getString(R.string.accountAlreadyExistsError));
+								AppUtil.switchToAccount(ctx, account);
+							} else {
+								userAccountsApi.updateTokenByAccountName(accountName, loginToken);
+								userAccountsApi.login(account.getAccountId());
+								AppUtil.switchToAccount(AddNewAccountActivity.this, account);
+							}
+							finish();
 						}
 						break;
 
@@ -228,7 +247,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 					default:
 
-						Toasty.error(ctx, getResources().getString(R.string.genericApiStatusError) + response.code());
+						Toasty.error(ctx, getResources().getString(R.string.genericApiError, response.code()));
 				}
 
 			}

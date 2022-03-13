@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetFileViewerBinding;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.structs.BottomSheetListener;
-import org.mian.gitnex.helpers.TinyDB;
 
 /**
  * Author M M Arif
@@ -24,9 +24,10 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+	    RepositoryContext repository = RepositoryContext.fromBundle(requireArguments());
 	    BottomSheetFileViewerBinding bottomSheetFileViewerBinding = BottomSheetFileViewerBinding.inflate(inflater, container, false);
 
-	    if(!TinyDB.getInstance(requireContext()).getBoolean("canPush")) {
+	    if(!repository.getPermissions().canPush()) {
 	    	bottomSheetFileViewerBinding.deleteFile.setVisibility(View.GONE);
 	    	bottomSheetFileViewerBinding.editFile.setVisibility(View.GONE);
 	    }
@@ -57,12 +58,10 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
         super.onAttach(context);
 
         try {
-
             bmListener = (BottomSheetListener) context;
         }
         catch (ClassCastException e) {
-
-            throw new ClassCastException(context.toString() + " must implement BottomSheetListener");
+            throw new ClassCastException(context + " must implement BottomSheetListener");
         }
     }
 

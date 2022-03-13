@@ -23,6 +23,8 @@ import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.IssueContext;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
 import java.util.Locale;
 
@@ -105,27 +107,12 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			prCreatedTime = itemView.findViewById(R.id.prCreatedTime);
 
 			itemView.setOnClickListener(v -> {
-				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", pullRequest.getNumber());
-				intent.putExtra("prMergeable", pullRequest.isMergeable());
-				intent.putExtra("prHeadBranch", pullRequest.getHead().getRef());
+				Intent intent = new IssueContext(
+					pullRequest,
+					new RepositoryContext(pullRequest.getBase().getRepo().getFull_name().split("/")[0], pullRequest.getBase().getRepo().getName(), context)
+				)
+					.getIntent(context, IssueDetailActivity.class);
 
-				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("issueNumber", String.valueOf(pullRequest.getNumber()));
-				tinyDb.putString("prMergeable", String.valueOf(pullRequest.isMergeable()));
-				tinyDb.putString("prHeadBranch", pullRequest.getHead().getRef());
-
-				if(pullRequest.getHead() != null && pullRequest.getHead().getRepo() != null) {
-					tinyDb.putString("prIsFork", String.valueOf(pullRequest.getHead().getRepo().isFork()));
-					tinyDb.putString("prForkFullName", pullRequest.getHead().getRepo().getFull_name());
-				}
-				else {
-					// pull was done from a deleted fork
-					tinyDb.putString("prIsFork", "true");
-					tinyDb.putString("prForkFullName", context.getString(R.string.prDeletedFork));
-				}
-
-				tinyDb.putString("issueType", "Pull");
 				context.startActivity(intent);
 
 			});
@@ -147,7 +134,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat");
+			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			PicassoService.getInstance(context).get()

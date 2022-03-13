@@ -1,5 +1,6 @@
 package org.mian.gitnex.helpers;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -10,15 +11,27 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.LoginActivity;
+import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.core.MainApplication;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +53,32 @@ import java.util.regex.Pattern;
  */
 
 public class AppUtil {
+
+	public static void logout(Context ctx) {
+		TinyDB tinyDB = TinyDB.getInstance(ctx);
+
+		UserAccountsApi api = BaseApi.getInstance(ctx, UserAccountsApi.class);
+		assert api != null;
+
+		api.logout(tinyDB.getInt("currentActiveAccountId"));
+		if (api.getCount() >= 1) {
+			switchToAccount(ctx, api.loggedInUserAccounts().get(0));
+			if(ctx instanceof MainActivity) {
+				((Activity) ctx).recreate();
+			} else { // if it's not a MainActivity, open MainActivity instead of current one
+				((Activity) ctx).finish();
+				Intent intent = new Intent(ctx, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				ctx.startActivity(intent);
+			}
+		} else {
+			tinyDB.putInt("currentActiveAccountId", -2);
+			((Activity) ctx).finish();
+			Intent intent = new Intent(ctx, LoginActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			ctx.startActivity(intent);
+		}
+	}
 
 	public enum FileType { IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, FONT, UNKNOWN }
 
@@ -187,7 +226,11 @@ public class AppUtil {
 		TinyDB tinyDB = TinyDB.getInstance(context);
 		Locale locale = new Locale(tinyDB.getString("locale"));
 
-		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
+		} else {
+			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale).format(date);
+		}
 
 	}
 
@@ -330,23 +373,11 @@ public class AppUtil {
 	}
 
 	public static boolean switchToAccount(Context context, UserAccount userAccount) {
+		return ((MainApplication) context.getApplicationContext()).switchToAccount(userAccount, false);
+	}
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-
-		if(tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
-
-			tinyDB.putString("loginUid", userAccount.getUserName());
-			tinyDB.putString("userLogin", userAccount.getUserName());
-			tinyDB.putString(userAccount.getUserName() + "-token", userAccount.getToken());
-			tinyDB.putString("instanceUrl", userAccount.getInstanceUrl());
-			tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
-
-			return true;
-
-		}
-
-		return false;
-
+	public static boolean switchToAccount(Context context, UserAccount userAccount, boolean tmp) {
+		return ((MainApplication) context.getApplicationContext()).switchToAccount(userAccount, tmp);
 	}
 
 	public static void openUrlInBrowser(Context context, String url) {
@@ -366,7 +397,7 @@ public class AppUtil {
 					.build()
 					.launchUrl(context, Uri.parse(url));
 			} else {
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(tinyDB.getString("repoHtmlUrl")));
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				i.addCategory(Intent.CATEGORY_BROWSABLE);
 				context.startActivity(i);
 			}

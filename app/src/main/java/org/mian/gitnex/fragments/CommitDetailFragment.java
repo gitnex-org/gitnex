@@ -16,6 +16,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Commits;
 import org.gitnex.tea4j.models.FileDiffView;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.PicassoService;
@@ -23,6 +24,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomCommitHeaderBinding;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
 import org.mian.gitnex.helpers.*;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -56,10 +58,9 @@ public class CommitDetailFragment extends Fragment {
 
 		binding = FragmentCommitDetailsBinding.inflate(getLayoutInflater(), container, false);
 
-		String repoFullName = TinyDB.getInstance(requireContext()).getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		repoOwner = parts[0];
-		repoName = parts[1];
+		RepositoryContext repository = RepositoryContext.fromIntent(requireActivity().getIntent());
+		repoOwner = repository.getOwner();
+		repoName = repository.getName();
 		sha = requireActivity().getIntent().getStringExtra("sha");
 		binding.toolbarTitle.setText(sha.substring(0, Math.min(sha.length(), 10)));
 
@@ -78,8 +79,8 @@ public class CommitDetailFragment extends Fragment {
 
 	private void getDiff() {
 		Call<ResponseBody> call = new Version(TinyDB.getInstance(requireContext()).getString("giteaVersion")).higherOrEqual("1.16.0") ?
-			RetrofitClient.getApiInterface(requireContext()).getCommitDiff(Authorization.get(requireContext()), repoOwner, repoName, sha) :
-			RetrofitClient.getWebInterface(requireContext()).getCommitDiff(Authorization.getWeb(requireContext()), repoOwner, repoName, sha);
+			RetrofitClient.getApiInterface(requireContext()).getCommitDiff(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repoOwner, repoName, sha) :
+			RetrofitClient.getWebInterface(requireContext()).getCommitDiff(((BaseActivity) requireActivity()).getAccount().getWebAuthorization(), repoOwner, repoName, sha);
 
 		call.enqueue(new Callback<ResponseBody>() {
 
@@ -130,7 +131,7 @@ public class CommitDetailFragment extends Fragment {
 
 	private void getCommit() {
 
-		RetrofitClient.getApiInterface(requireContext()).getCommit(Authorization.get(requireContext()), repoOwner, repoName, sha)
+		RetrofitClient.getApiInterface(requireContext()).getCommit(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repoOwner, repoName, sha)
 			.enqueue(new Callback<Commits>() {
 
 				@Override

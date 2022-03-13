@@ -46,9 +46,16 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/loadingIndicator"
+            android:indeterminate="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             app:tabMode="scrollable"
+            android:visibility="gone"
             app:tabTextAppearance="@style/customTabLayout"
             android:layout_width="match_parent"
             android:background="?attr/primaryBackgroundColor"
@@ -109,6 +116,7 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/container"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

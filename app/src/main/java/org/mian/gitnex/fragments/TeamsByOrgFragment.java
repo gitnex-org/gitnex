@@ -21,12 +21,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.models.OrgPermissions;
-import org.gitnex.tea4j.models.Teams;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.TeamsByOrgAdapter;
 import org.mian.gitnex.databinding.FragmentTeamsByOrgBinding;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
 
 /**
@@ -34,6 +32,8 @@ import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
  */
 
 public class TeamsByOrgFragment extends Fragment {
+
+	public static boolean resumeTeams = false;
 
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
@@ -65,7 +65,7 @@ public class TeamsByOrgFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 	    FragmentTeamsByOrgBinding fragmentTeamsByOrgBinding = FragmentTeamsByOrgBinding.inflate(inflater, container, false);
@@ -88,11 +88,11 @@ public class TeamsByOrgFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            TeamsByOrgViewModel.loadTeamsByOrgList(Authorization.get(getContext()), orgName, getContext(), noDataTeams, mProgressBar);
+            TeamsByOrgViewModel.loadTeamsByOrgList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName, getContext(), noDataTeams, mProgressBar);
 
         }, 200));
 
-        fetchDataAsync(Authorization.get(getContext()), orgName);
+        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName);
 
         return fragmentTeamsByOrgBinding.getRoot();
     }
@@ -100,11 +100,9 @@ public class TeamsByOrgFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
-
-        if(tinyDb.getBoolean("resumeTeams")) {
-            TeamsByOrgViewModel.loadTeamsByOrgList(Authorization.get(getContext()), orgName, getContext(), noDataTeams, mProgressBar);
-            tinyDb.putBoolean("resumeTeams", false);
+        if(resumeTeams) {
+            TeamsByOrgViewModel.loadTeamsByOrgList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName, getContext(), noDataTeams, mProgressBar);
+	        resumeTeams = false;
         }
     }
 
@@ -113,7 +111,7 @@ public class TeamsByOrgFragment extends Fragment {
         TeamsByOrgViewModel teamModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
 
         teamModel.getTeamsByOrg(instanceToken, owner, getContext(), noDataTeams, mProgressBar).observe(getViewLifecycleOwner(), orgTeamsListMain -> {
-            adapter = new TeamsByOrgAdapter(getContext(), orgTeamsListMain, permissions);
+            adapter = new TeamsByOrgAdapter(getContext(), orgTeamsListMain, permissions, orgName);
             if(adapter.getItemCount() > 0) {
                 mRecyclerView.setAdapter(adapter);
                 noDataTeams.setVisibility(View.GONE);

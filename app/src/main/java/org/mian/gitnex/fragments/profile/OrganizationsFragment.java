@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.UserOrganizations;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.profile.OrganizationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
@@ -83,7 +83,7 @@ public class OrganizationsFragment extends Fragment {
 
 		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentOrganizationsBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(Authorization.get(context), username, resultLimit);
+			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -91,7 +91,7 @@ public class OrganizationsFragment extends Fragment {
 		adapter.setLoadMoreListener(() -> fragmentOrganizationsBinding.recyclerView.post(() -> {
 			if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (organizationsList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.get(context), username, page, resultLimit);
+				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, page, resultLimit);
 			}
 		}));
 
@@ -101,7 +101,7 @@ public class OrganizationsFragment extends Fragment {
 		fragmentOrganizationsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
 
-		loadInitial(Authorization.get(context), username, resultLimit);
+		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
 
 		return fragmentOrganizationsBinding.getRoot();
 	}

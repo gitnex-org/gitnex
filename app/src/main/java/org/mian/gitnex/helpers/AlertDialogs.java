@@ -1,5 +1,6 @@
 package org.mian.gitnex.helpers;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +13,10 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.actions.TeamActions;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.LoginActivity;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.clients.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,15 +37,8 @@ public class AlertDialogs {
             .setIcon(R.drawable.ic_warning)
             .setNeutralButton(copyNegativeButton, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(copyPositiveButton, (dialog, which) -> {
-
-                final TinyDB tinyDb = TinyDB.getInstance(context);
-                tinyDb.putBoolean("loggedInMode", false);
-                tinyDb.remove("basicAuthPassword");
-                tinyDb.putBoolean("basicAuthFlag", false);
-                Intent intent = new Intent(context, LoginActivity.class);
-                context.startActivity(intent);
+                AppUtil.logout(context);
                 dialog.dismiss();
-
             });
 
         alertDialogBuilder.create().show();
@@ -57,14 +53,7 @@ public class AlertDialogs {
 		    .setCancelable(false)
 		    .setIcon(R.drawable.ic_info)
 		    .setPositiveButton(copyPositiveButton, (dialog, which) -> {
-
-			    final TinyDB tinyDb = TinyDB.getInstance(context);
-			    tinyDb.putBoolean("loggedInMode", false);
-			    tinyDb.remove("basicAuthPassword");
-			    tinyDb.putBoolean("basicAuthFlag", false);
-
-			    Intent intent = new Intent(context, LoginActivity.class);
-			    context.startActivity(intent);
+		    	AppUtil.logout(context);
 			    dialog.dismiss();
 
 		    });
@@ -72,23 +61,25 @@ public class AlertDialogs {
 	    alertDialogBuilder.create().show();
     }
 
-    public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String title, String message, String positiveButton, String negativeButton, String type, String orgName) {
+    public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String type, String orgName,
+	    RepositoryContext repository) {
 
         new AlertDialog.Builder(context)
-            .setTitle(String.format(title, labelTitle))
-            .setMessage(message)
+            .setTitle(context.getString(R.string.deleteLabelTitle, labelTitle))
+            .setMessage(R.string.labelDeleteMessage)
             .setIcon(R.drawable.ic_delete)
-            .setPositiveButton(positiveButton, (dialog, whichButton) -> {
+            .setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> {
 
                 Intent intent = new Intent(context, CreateLabelActivity.class);
                 intent.putExtra("labelId", labelId);
                 intent.putExtra("labelAction", "delete");
 	            intent.putExtra("type", type);
 	            intent.putExtra("orgName", orgName);
+	            intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
                 context.startActivity(intent);
 
             })
-            .setNeutralButton(negativeButton, null).show();
+            .setNeutralButton(R.string.cancelButton, null).show();
 
     }
 
@@ -97,7 +88,7 @@ public class AlertDialogs {
 			.setTitle(String.format(context.getString(R.string.deleteTagTitle), tagName))
 			.setMessage(R.string.deleteTagConfirmation)
 			.setIcon(R.drawable.ic_delete)
-			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient.getApiInterface(context).deleteTag(Authorization.get(context), owner, repo, tagName).enqueue(new Callback<Void>() {
+			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient.getApiInterface(context).deleteTag(((BaseActivity) context).getAccount().getAuthorization(), owner, repo, tagName).enqueue(new Callback<Void>() {
 
 				@Override
 				public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
@@ -120,13 +111,13 @@ public class AlertDialogs {
 			.setNeutralButton(R.string.cancelButton, null).show();
 	}
 
-    public static void collaboratorRemoveDialog(final Context context, final String userNameMain, String title, String message, String positiveButton, String negativeButton, final String searchKeyword) {
+    public static void collaboratorRemoveDialog(final Context context, final String userNameMain, RepositoryContext repository) {
 
         new AlertDialog.Builder(context)
-                .setTitle(String.format(title, userNameMain))
-                .setMessage(message)
-                .setPositiveButton(positiveButton, (dialog, whichButton) -> CollaboratorActions.deleteCollaborator(context,  searchKeyword, userNameMain))
-                .setNeutralButton(negativeButton, null).show();
+                .setTitle(context.getString(R.string.removeCollaboratorDialogTitle, userNameMain))
+                .setMessage(R.string.removeCollaboratorMessage)
+                .setPositiveButton(R.string.removeButton, (dialog, whichButton) -> CollaboratorActions.deleteCollaborator(context, userNameMain, repository))
+                .setNeutralButton(R.string.cancelButton, null).show();
 
     }
 

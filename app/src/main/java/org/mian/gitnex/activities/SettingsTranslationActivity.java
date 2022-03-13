@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsTranslationBinding;
+import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.LinkedHashMap;
@@ -54,9 +55,8 @@ public class SettingsTranslationActivity extends BaseActivity {
 			AppUtil.openUrlInBrowser(this, getResources().getString(R.string.crowdInLink));
 		});
 
-		tvLanguageSelected.setText(tinyDB.getString("localeStr"));
-
 		langSelectedChoice = tinyDB.getInt("langId");
+		tvLanguageSelected.setText(langs.get(langs.keySet().toArray(new String[0])[langSelectedChoice]));
 
 		// language dialog
 		langFrame.setOnClickListener(view -> {
@@ -69,11 +69,10 @@ public class SettingsTranslationActivity extends BaseActivity {
 			lBuilder.setSingleChoiceItems(langs.values().toArray(new String[0]), langSelectedChoice, (dialogInterface, i) -> {
 
 				String selectedLanguage = langs.keySet().toArray(new String[0])[i];
-				tinyDB.putString("localeStr", langs.get(selectedLanguage));
 				tinyDB.putInt("langId", i);
 				tinyDB.putString("locale", selectedLanguage);
 
-				tinyDB.putBoolean("refreshParent", true);
+				SettingsFragment.refreshParent = true;
 				this.overridePendingTransition(0, 0);
 				dialogInterface.dismiss();
 				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));

@@ -27,8 +27,7 @@
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notifications"
             android:title="@string/pageTitleNotifications"
-            app:actionLayout="@layout/badge_notification"
-            android:visible="false" />
+            app:actionLayout="@layout/badge_notification" />
 
         <item android:id="@+id/nav_explore"
             android:icon="@drawable/ic_search"

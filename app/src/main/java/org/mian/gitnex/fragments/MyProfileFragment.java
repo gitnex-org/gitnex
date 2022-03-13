@@ -20,15 +20,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Callback;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.AccountContext;
 import java.util.Locale;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 
@@ -51,108 +54,18 @@ public class MyProfileFragment extends Fragment {
 
 	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navProfile));
 
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
-
-        TextView userFullName = v.findViewById(R.id.userFullName);
-	    ImageView userAvatarBackground = v.findViewById(R.id.userAvatarBackground);
-        ImageView userAvatar = v.findViewById(R.id.userAvatar);
-        TextView userLogin = v.findViewById(R.id.userLogin);
-        View divider = v.findViewById(R.id.divider);
-        TextView userLanguage = v.findViewById(R.id.userLanguage);
-        ImageView userLanguageIcon = v.findViewById(R.id.userLanguageIcon);
-
-	    String[] userLanguageCodes = tinyDb.getString("userLang").split("-");
-
-	    if(userLanguageCodes.length >= 2) {
-		    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
-		    userLanguage.setText(locale.getDisplayLanguage());
-	    }
-	    else {
-	    	userLanguage.setText(getResources().getConfiguration().locale.getDisplayLanguage());
-	    }
-
-	    userAvatar.setOnClickListener(loginId ->
-		    AppUtil.copyToClipboard(ctx,
-			    tinyDb.getString("userLogin"),
-			    ctx.getString(R.string.copyLoginIdToClipBoard, tinyDb.getString("userLogin"))));
-
-	    userFullName.setText(Html.fromHtml(tinyDb.getString("userFullname")));
-	    userLogin.setText(getString(R.string.usernameWithAt, tinyDb.getString("userLogin")));
-
-	    int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 3);
-
-	    PicassoService.getInstance(ctx).get()
-		    .load(tinyDb.getString("userAvatar"))
-		    .transform(new RoundedTransformation(avatarRadius, 0))
-		    .placeholder(R.drawable.loader_animated)
-		    .resize(120, 120)
-		    .centerCrop().into(userAvatar);
-
-	    PicassoService.getInstance(ctx).get()
-		    .load(tinyDb.getString("userAvatar"))
-		    .transform(new BlurTransformation(ctx))
-		    .into(userAvatarBackground, new Callback() {
-
-			    @Override
-			    public void onSuccess() {
-				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
-
-				    userFullName.setTextColor(invertedColor);
-				    divider.setBackgroundColor(invertedColor);
-				    userLogin.setTextColor(invertedColor);
-				    userLanguage.setTextColor(invertedColor);
-
-				    ImageViewCompat.setImageTintList(userLanguageIcon, ColorStateList.valueOf(invertedColor));
-			    }
-
-			    @Override public void onError(Exception e) {}
+	    AccountContext account = ((BaseActivity) requireActivity()).getAccount();
+	    if(account.getUserInfo() != null) {
+		    viewData(v, account);
+	    } else {
+	    	// we have to wait until loading is finished
+		    LinearProgressIndicator loading = v.findViewById(R.id.loadingIndicator);
+		    loading.setVisibility(View.VISIBLE);
+		    ((MainActivity) requireActivity()).setProfileInitListener((text) -> {
+		    	loading.setVisibility(View.GONE);
+		    	viewData(v, account);
 		    });
-
-        MyProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-
-        ViewPager mViewPager = v.findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        Typeface myTypeface;
-
-        switch(tinyDb.getInt("customFontId", -1)) {
-
-            case 0:
-                myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/roboto.ttf");
-                break;
-
-            case 2:
-                myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/sourcecodeproregular.ttf");
-                break;
-
-            default:
-                myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/manroperegular.ttf");
-                break;
-
-        }
-
-        TabLayout tabLayout = v.findViewById(R.id.tabs);
-
-        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
-        int tabsCount = vg.getChildCount();
-
-        for (int j = 0; j < tabsCount; j++) {
-
-            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-            int tabChildCount = vgTab.getChildCount();
-
-            for (int i = 0; i < tabChildCount; i++) {
-
-                View tabViewChild = vgTab.getChildAt(i);
-
-                if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(myTypeface);
-                }
-            }
-        }
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+	    }
 
         return v;
     }
@@ -176,7 +89,7 @@ public class MyProfileFragment extends Fragment {
                     return new MyProfileFollowingFragment();
 
                 case 2: // emails
-                    return MyProfileEmailsFragment.newInstance("repoOwner", "repoName");
+                    return new MyProfileEmailsFragment();
 
             }
 
@@ -214,5 +127,105 @@ public class MyProfileFragment extends Fragment {
 	    else {
 		    return super.onOptionsItemSelected(item);
 	    }
+    }
+
+    public void viewData(View v, AccountContext account) {
+	    TinyDB tinyDb = TinyDB.getInstance(getContext());
+
+	    TextView userFullName = v.findViewById(R.id.userFullName);
+	    ImageView userAvatarBackground = v.findViewById(R.id.userAvatarBackground);
+	    ImageView userAvatar = v.findViewById(R.id.userAvatar);
+	    TextView userLogin = v.findViewById(R.id.userLogin);
+	    View divider = v.findViewById(R.id.divider);
+	    TextView userLanguage = v.findViewById(R.id.userLanguage);
+	    ImageView userLanguageIcon = v.findViewById(R.id.userLanguageIcon);
+
+	    String[] userLanguageCodes = account.getUserInfo().getLang() != null ? account.getUserInfo().getLang().split("-") : new String[]{""};
+
+	    if(userLanguageCodes.length >= 2) {
+		    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
+		    userLanguage.setText(locale.getDisplayLanguage());
+	    }
+	    else {
+		    userLanguage.setText(getResources().getConfiguration().locale.getDisplayLanguage());
+	    }
+
+	    userAvatar.setOnClickListener(loginId -> AppUtil.copyToClipboard(ctx, account.getAccount().getUserName(),
+		    ctx.getString(R.string.copyLoginIdToClipBoard, account.getAccount().getUserName())));
+
+	    userFullName.setText(Html.fromHtml(account.getFullName()));
+	    userLogin.setText(getString(R.string.usernameWithAt, account.getAccount().getUserName()));
+
+	    int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 3);
+
+	    PicassoService.getInstance(ctx).get().load(account.getUserInfo().getAvatar()).transform(new RoundedTransformation(avatarRadius, 0)).placeholder(R.drawable.loader_animated).resize(120, 120).centerCrop().into(userAvatar);
+
+	    PicassoService.getInstance(ctx).get().load(account.getUserInfo().getAvatar()).transform(new BlurTransformation(ctx))
+		    .into(userAvatarBackground, new Callback() {
+
+			    @Override
+			    public void onSuccess() {
+
+				    int invertedColor = new ColorInverter().getImageViewContrastColor(userAvatarBackground);
+
+				    userFullName.setTextColor(invertedColor);
+				    divider.setBackgroundColor(invertedColor);
+				    userLogin.setTextColor(invertedColor);
+				    userLanguage.setTextColor(invertedColor);
+
+				    ImageViewCompat.setImageTintList(userLanguageIcon, ColorStateList.valueOf(invertedColor));
+			    }
+
+			    @Override
+			    public void onError(Exception e) {
+
+			    }
+		    });
+
+	    MyProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+
+	    ViewPager mViewPager = v.findViewById(R.id.container);
+	    mViewPager.setAdapter(mSectionsPagerAdapter);
+
+	    Typeface myTypeface;
+
+	    switch(tinyDb.getInt("customFontId", -1)) {
+
+		    case 0:
+			    myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/roboto.ttf");
+			    break;
+
+		    case 2:
+			    myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/sourcecodeproregular.ttf");
+			    break;
+
+		    default:
+			    myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/manroperegular.ttf");
+			    break;
+
+	    }
+
+	    TabLayout tabLayout = v.findViewById(R.id.tabs);
+
+	    ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+	    int tabsCount = vg.getChildCount();
+
+	    for(int j = 0; j < tabsCount; j++) {
+
+		    ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+		    int tabChildCount = vgTab.getChildCount();
+
+		    for(int i = 0; i < tabChildCount; i++) {
+
+			    View tabViewChild = vgTab.getChildAt(i);
+
+			    if(tabViewChild instanceof TextView) {
+				    ((TextView) tabViewChild).setTypeface(myTypeface);
+			    }
+		    }
+	    }
+
+	    mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+	    tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 }

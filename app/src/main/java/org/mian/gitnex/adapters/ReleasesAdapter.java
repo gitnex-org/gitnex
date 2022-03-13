@@ -105,7 +105,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
         final TinyDB tinyDb = TinyDB.getInstance(context);
 	    final Locale locale = context.getResources().getConfiguration().locale;
-	    final String timeFormat = tinyDb.getString("dateFormat");
+	    final String timeFormat = tinyDb.getString("dateFormat", "pretty");
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
         Releases currentItem = releasesList.get(position);

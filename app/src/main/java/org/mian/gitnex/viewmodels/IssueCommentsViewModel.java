@@ -29,7 +29,11 @@ public class IssueCommentsViewModel extends ViewModel {
         return issueComments;
     }
 
-    public static void loadIssueComments(String token, String owner, String repo, int index, Context ctx) {
+	public static void loadIssueComments(String token, String owner, String repo, int index, Context ctx) {
+		loadIssueComments(token, owner, repo, index, ctx, null);
+	}
+
+    public static void loadIssueComments(String token, String owner, String repo, int index, Context ctx, Runnable onLoadingFinished) {
 
         Call<List<IssueComments>> call = RetrofitClient
                 .getApiInterface(ctx)
@@ -43,6 +47,9 @@ public class IssueCommentsViewModel extends ViewModel {
                 if(response.isSuccessful()) {
 
                     issueComments.postValue(response.body());
+					if(onLoadingFinished != null) {
+						onLoadingFinished.run();
+					}
 
                 }
                 else {

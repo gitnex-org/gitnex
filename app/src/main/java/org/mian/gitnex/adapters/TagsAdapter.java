@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.gitnex.tea4j.models.GitTag;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TinyDB;
@@ -30,7 +31,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
     private final Context context;
     private final String repo;
     private final String owner;
-	private Context ctx;
 
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -103,7 +103,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 		    }
 	    });
 
-	    if(!TinyDB.getInstance(ctx).getBoolean("isRepoAdmin")) {
+	    if(!((RepoDetailActivity) context).repository.getPermissions().canPush()) {
             holder.options.setVisibility(View.GONE);
         }
 

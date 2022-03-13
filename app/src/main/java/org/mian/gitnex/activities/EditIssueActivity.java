@@ -3,6 +3,7 @@ package org.mian.gitnex.activities;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,12 +25,13 @@ import org.gitnex.tea4j.models.Milestones;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityEditIssueBinding;
+import org.mian.gitnex.fragments.IssuesFragment;
+import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,11 +60,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
     List<Milestones> milestonesList = new ArrayList<>();
 
-	private String loginUid;
-	private String instanceToken;
-	private String repoOwner;
-	private String repoName;
-	private int issueIndex;
+	private IssueContext issue;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -75,13 +73,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        loginUid = tinyDB.getString("loginUid");
-        instanceToken = "token " + tinyDB.getString(loginUid + "-token");
-        String repoFullName = tinyDB.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        repoOwner = parts[0];
-        repoName = parts[1];
-        issueIndex = Integer.parseInt(tinyDB.getString("issueNumber"));
+        issue = IssueContext.fromIntent(getIntent());
 
         ImageView closeActivity = activityEditIssueBinding.close;
         editIssueButton = activityEditIssueBinding.editIssueButton;
@@ -91,7 +83,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         editIssueDueDate = activityEditIssueBinding.editIssueDueDate;
 
         // if gitea is 1.12 or higher use the new limit
-        if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+        if(getAccount().requiresVersion("1.12.0")) {
 
             resultLimit = Constants.resultLimitNewGiteaInstances;
         }
@@ -119,22 +111,19 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         editIssueDueDate.setOnClickListener(this);
         editIssueButton.setOnClickListener(this);
 
-        if(!tinyDB.getString("issueNumber").isEmpty()) {
+        if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 
-            if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
+            toolbar_title.setText(getString(R.string.editPrNavHeader, String.valueOf(issue.getIssueIndex())));
+        }
+        else {
 
-                toolbar_title.setText(getString(R.string.editPrNavHeader, String.valueOf(issueIndex)));
-            }
-            else {
-
-                toolbar_title.setText(getString(R.string.editIssueNavHeader, String.valueOf(issueIndex)));
-            }
+            toolbar_title.setText(getString(R.string.editIssueNavHeader, String.valueOf(issue.getIssueIndex())));
         }
 
         disableProcessButton();
-        getIssue(instanceToken, loginUid, repoOwner, repoName, issueIndex, resultLimit);
+        getIssue(issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getIssueIndex(), resultLimit);
 
-        if(!tinyDB.getBoolean("canPush")) {
+        if(!issue.getRepository().getPermissions().canPush()) {
 			findViewById(R.id.editIssueMilestoneSpinnerLayout).setVisibility(View.GONE);
 			findViewById(R.id.editIssueDueDateLayout).setVisibility(View.GONE);
         }
@@ -175,16 +164,16 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         }
 
         disableProcessButton();
-        editIssue(instanceToken, repoOwner, repoName, issueIndex, loginUid, editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm, milestoneId);
+        editIssue(issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getIssueIndex(), editIssueTitleForm, editIssueDescriptionForm, editIssueDueDateForm, milestoneId);
     }
 
-    private void editIssue(String instanceToken, String repoOwner, String repoName, int issueIndex, String loginUid, String title, String description, String dueDate, int milestoneId) {
+    private void editIssue(String repoOwner, String repoName, int issueIndex, String title, String description, String dueDate, int milestoneId) {
 
         CreateIssue issueData = new CreateIssue(title, description, dueDate, milestoneId);
 
         Call<JsonElement> call = RetrofitClient
                 .getApiInterface(ctx)
-                .patchIssue(Authorization.get(ctx), repoOwner, repoName, issueIndex, issueData);
+                .patchIssue(getAccount().getAuthorization(), repoOwner, repoName, issueIndex, issueData);
 
         call.enqueue(new Callback<JsonElement>() {
 
@@ -193,7 +182,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
                 if(response.code() == 201) {
 
-                    if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
+                    if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 
                         Toasty.success(ctx, getString(R.string.editPrSuccessMessage));
                     }
@@ -202,8 +191,11 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                         Toasty.success(ctx, getString(R.string.editIssueSuccessMessage));
                     }
 
-                    tinyDB.putBoolean("issueEdited", true);
-                    tinyDB.putBoolean("resumeIssues", true);
+                    Intent result = new Intent();
+                    result.putExtra("issueEdited", true);
+	                IssuesFragment.resumeIssues = issue.getIssue().getPull_request() == null;
+	                PullRequestsFragment.resumePullRequests = issue.getIssue().getPull_request() != null;
+					setResult(200, result);
                     finish();
                 }
                 else if(response.code() == 401) {
@@ -252,11 +244,11 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    private void getIssue(final String instanceToken, final String loginUid, final String repoOwner, final String repoName, int issueIndex, int resultLimit) {
+    private void getIssue(final String repoOwner, final String repoName, int issueIndex, int resultLimit) {
 
         Call<Issues> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getIssueByIndex(Authorization.get(ctx), repoOwner, repoName, issueIndex);
+                .getIssueByIndex(getAccount().getAuthorization(), repoOwner, repoName, issueIndex);
 
         call.enqueue(new Callback<Issues>() {
 
@@ -280,7 +272,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
                         Call<List<Milestones>> call_ = RetrofitClient
                                 .getApiInterface(ctx)
-                                .getMilestones(Authorization.get(ctx), repoOwner, repoName, 1, resultLimit, msState);
+                                .getMilestones(getAccount().getAuthorization(), repoOwner, repoName, 1, resultLimit, msState);
 
 	                    int checkMilestoneId = currentMilestoneId;
 
@@ -378,5 +370,11 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         editIssueButton.setEnabled(true);
     }
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		issue.getRepository().checkAccountSwitch(this);
+	}
 
 }

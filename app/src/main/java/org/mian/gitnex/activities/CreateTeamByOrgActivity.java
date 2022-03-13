@@ -16,10 +16,9 @@ import org.gitnex.tea4j.models.Teams;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateTeamByOrgBinding;
+import org.mian.gitnex.fragments.TeamsByOrgFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -224,10 +223,8 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
     private void processCreateTeam() {
 
-        final TinyDB tinyDb = TinyDB.getInstance(appCtx);
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-        final String orgName = tinyDb.getString("orgName");;
+        final String instanceToken = getAccount().getAuthorization();
+        final String orgName = getIntent().getStringExtra("orgName");
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
         String newTeamName = teamName.getText().toString();
@@ -281,7 +278,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             newTeamAccessControls_.set(i, newTeamAccessControls_.get(i).trim());
         }
 
-        createNewTeamCall(instanceToken, orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_, loginUid);
+        createNewTeamCall(instanceToken, orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_, getAccount().getAccount().getUserName());
     }
 
     private void createNewTeamCall(final String instanceToken, String orgName, String newTeamName, String newTeamDesc, String newTeamPermission, List<String> newTeamAccessControls, String loginUid) {
@@ -292,7 +289,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
         call3 = RetrofitClient
                 .getApiInterface(ctx)
-                .createTeamsByOrg(Authorization.get(ctx), orgName, createNewTeamJson);
+                .createTeamsByOrg(getAccount().getAuthorization(), orgName, createNewTeamJson);
 
         call3.enqueue(new Callback<Teams>() {
 
@@ -303,8 +300,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
                     if(response2.code() == 201) {
 
-                        TinyDB tinyDb = TinyDB.getInstance(appCtx);
-                        tinyDb.putBoolean("resumeTeams", true);
+	                    TeamsByOrgFragment.resumeTeams = true;
 
                         Toasty.success(ctx, getString(R.string.teamCreated));
                         finish();

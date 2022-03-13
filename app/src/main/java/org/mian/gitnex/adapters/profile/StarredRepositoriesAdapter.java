@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters.profile;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,17 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.RepositoriesApi;
+import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
 import java.util.Locale;
 
@@ -105,6 +111,29 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			avatar = itemView.findViewById(R.id.imageAvatar);
 			repoStars = itemView.findViewById(R.id.repoStars);
 			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
+
+			itemView.setOnClickListener(v -> {
+				Context context = v.getContext();
+				RepositoryContext repo = new RepositoryContext(userRepositories, context);
+				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
+
+				int currentActiveAccountId = TinyDB.getInstance(context).getInt("currentActiveAccountId");
+				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
+
+				assert repositoryData != null;
+				Integer count = repositoryData.checkRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+
+				if(count == 0) {
+					long id = repositoryData.insertRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+					repo.setRepositoryId((int) id);
+				}
+				else {
+					Repository data = repositoryData.getRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+					repo.setRepositoryId(data.getRepositoryId());
+				}
+
+				context.startActivity(intent);
+			});
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -115,7 +144,7 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat");
+			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			orgName.setText(userRepositories.getFullName().split("/")[0]);
 			repoName.setText(userRepositories.getFullName().split("/")[1]);

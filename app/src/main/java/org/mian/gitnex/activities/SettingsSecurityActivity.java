@@ -16,6 +16,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsSecurityBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import java.io.File;
@@ -64,15 +65,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 		cacheSizeDataList = getResources().getStringArray(R.array.cacheSizeList);
 		cacheSizeImagesList = getResources().getStringArray(R.array.cacheSizeList);
 
-		if(!tinyDB.getString("cacheSizeStr").isEmpty()) {
-
-			cacheSizeDataSelected.setText(tinyDB.getString("cacheSizeStr"));
-		}
-
-		if(!tinyDB.getString("cacheSizeImagesStr").isEmpty()) {
-
-			cacheSizeImagesSelected.setText(tinyDB.getString("cacheSizeImagesStr"));
-		}
+		cacheSizeDataSelected.setText(tinyDB.getString("cacheSizeStr", getString(R.string.cacheSizeDataSelectionSelectedText)));
+		cacheSizeImagesSelected.setText(tinyDB.getString("cacheSizeImagesStr", getString(R.string.cacheSizeImagesSelectionSelectedText)));
 
 		if(cacheSizeDataSelectedChoice == 0) {
 
@@ -84,7 +78,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			cacheSizeImagesSelectedChoice = tinyDB.getInt("cacheSizeImagesId");
 		}
 
-		switchBiometric.setChecked(tinyDB.getBoolean("biometricStatus"));
+		switchBiometric.setChecked(tinyDB.getBoolean("biometricStatus", false));
 
 		// biometric switcher
 		switchBiometric.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -237,14 +231,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			builder.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
 				appCtx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE).edit().remove(MemorizingTrustManager.KEYSTORE_KEY).apply();
-
-				tinyDB.putBoolean("loggedInMode", false);
-				tinyDB.remove("basicAuthPassword");
-				tinyDB.putBoolean("basicAuthFlag", false);
-
-				Intent loginActivityIntent = new Intent().setClass(appCtx, LoginActivity.class);
-				loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				appCtx.startActivity(loginActivityIntent);
+				AppUtil.logout(this);
 			});
 
 			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());

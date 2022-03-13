@@ -22,8 +22,9 @@ import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.database.models.DraftWithRepository;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.IssueContext;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
 
 /**
@@ -56,7 +57,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
             deleteDraft.setOnClickListener(itemDelete -> {
 
                 int getDraftId = draftWithRepository.getDraftId();
-                deleteDraft(getAdapterPosition());
+                deleteDraft(getBindingAdapterPosition());
 
 	            DraftsApi draftsApi = BaseApi.getInstance(context, DraftsApi.class);
 	            assert draftsApi != null;
@@ -66,11 +67,13 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 
 	        itemView.setOnClickListener(itemEdit -> {
 
-		        Bundle bundle = new Bundle();
+	        	RepositoryContext repository = new RepositoryContext(draftWithRepository.getRepositoryOwner(), draftWithRepository.getRepositoryName(), context);
+	        	repository.setRepositoryId(draftWithRepository.getRepositoryId());
+	        	IssueContext issue = new IssueContext(repository, draftWithRepository.getIssueId(), draftWithRepository.getIssueType());
+		        Bundle bundle = issue.getBundle();
 
                 bundle.putString("commentBody", draftWithRepository.getDraftText());
                 bundle.putString("issueNumber", String.valueOf(draftWithRepository.getIssueId()));
-                bundle.putString("repositoryId", String.valueOf(draftWithRepository.getRepositoryId()));
                 bundle.putString("draftTitle", repoInfo.getText().toString());
 		        bundle.putString("commentId", draftWithRepository.getCommentId());
 		        bundle.putString("draftId", String.valueOf(draftWithRepository.getDraftId()));
@@ -79,14 +82,20 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 	                bundle.putString("commentAction", "edit");
                 }
 
-                TinyDB tinyDb = TinyDB.getInstance(context);
-                tinyDb.putString("issueNumber", String.valueOf(draftWithRepository.getIssueId()));
-                tinyDb.putLong("repositoryId", draftWithRepository.getRepositoryId());
-		        tinyDb.putString("issueType", draftWithRepository.getIssueType());
-		        tinyDb.putString("repoFullName", draftWithRepository.getRepositoryOwner() + "/" + draftWithRepository.getRepositoryName());
-
-		        BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(bundle);
-		        bottomSheetReplyFragment.setOnInteractedListener(() -> context.startActivity(new Intent(context, IssueDetailActivity.class)));
+		        BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(bundle, issue);
+		        bottomSheetReplyFragment.setOnInteractedListener(() -> {
+					Intent i = new IssueContext(
+						new RepositoryContext(
+							draftWithRepository.getRepositoryOwner(),
+							draftWithRepository.getRepositoryName(),
+							context
+						),
+						draftWithRepository.getIssueId(),
+				        draftWithRepository.getIssueType()
+					).getIntent(context, IssueDetailActivity.class);
+					i.putExtra("openedFromLink", "true");
+					context.startActivity(i);
+		        });
 		        bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
             });
 

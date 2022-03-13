@@ -11,9 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.activities.AdminCronTasksActivity;
 import org.mian.gitnex.activities.AdminGetUsersActivity;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.FragmentAdministrationBinding;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 
 /**
  * Author M M Arif
@@ -21,19 +20,15 @@ import org.mian.gitnex.helpers.Version;
 
 public class AdministrationFragment extends Fragment {
 
-	private Context ctx;
-	private TinyDB tinyDB;
-
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-		ctx = getContext();
-		tinyDB = TinyDB.getInstance(ctx);
+		Context ctx = getContext();
 		FragmentAdministrationBinding fragmentAdministrationBinding = FragmentAdministrationBinding.inflate(inflater, container, false);
 
 		fragmentAdministrationBinding.adminUsers.setOnClickListener(v1 -> startActivity(new Intent(getContext(), AdminGetUsersActivity.class)));
 
 		// if gitea version is greater/equal(1.13.0) than user installed version (installed.higherOrEqual(compareVer))
-		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.13.0")) {
+		if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.13.0")) {
 
 			fragmentAdministrationBinding.adminCron.setVisibility(View.VISIBLE);
 		}

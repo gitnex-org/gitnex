@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
@@ -81,7 +81,7 @@ public class FollowingFragment extends Fragment {
 
 		fragmentProfileFollowersFollowingBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentProfileFollowersFollowingBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(Authorization.get(context), username, resultLimit);
+			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -89,7 +89,7 @@ public class FollowingFragment extends Fragment {
 		adapter.setLoadMoreListener(() -> fragmentProfileFollowersFollowingBinding.recyclerView.post(() -> {
 			if(usersList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (usersList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.get(context), username, page, resultLimit);
+				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, page, resultLimit);
 			}
 		}));
 
@@ -99,7 +99,7 @@ public class FollowingFragment extends Fragment {
 		fragmentProfileFollowersFollowingBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentProfileFollowersFollowingBinding.recyclerView.setAdapter(adapter);
 
-		loadInitial(Authorization.get(context), username, resultLimit);
+		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
 
 		return fragmentProfileFollowersFollowingBinding.getRoot();
 	}

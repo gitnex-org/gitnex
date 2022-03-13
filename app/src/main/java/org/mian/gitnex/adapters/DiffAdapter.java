@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class DiffAdapter extends BaseAdapter {
 	private final Context context;
 	private final FragmentManager fragmentManager;
 	private final List<String> lines;
+	private final IssueContext issue;
 
 	private final List<Integer> selectedLines;
 	private final Typeface typeface;
@@ -36,11 +38,12 @@ public class DiffAdapter extends BaseAdapter {
 	private static int COLOR_SELECTED;
 	private static int COLOR_FONT;
 
-	public DiffAdapter(Context context, FragmentManager fragmentManager, List<String> lines, String type) {
+	public DiffAdapter(Context context, FragmentManager fragmentManager, List<String> lines, IssueContext issue, String type) {
 
 		this.context = context;
 		this.fragmentManager = fragmentManager;
 		this.lines = lines;
+		this.issue = issue;
 		this.type = type;
 
 		selectedLines = new ArrayList<>();
@@ -120,8 +123,8 @@ public class DiffAdapter extends BaseAdapter {
 					bundle.putString("commentBody", stringBuilder.toString());
 					bundle.putBoolean("cursorToEnd", true);
 
-					BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
-				}
+				BottomSheetReplyFragment.newInstance(bundle, issue).show(fragmentManager, "replyBottomSheet");
+			}
 
 				return true;
 

@@ -6,10 +6,11 @@ import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.gitnex.tea4j.models.Milestones;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -21,23 +22,14 @@ public class MilestoneActions {
 
 	static final private String TAG = "MilestoneActions : ";
 
-	public static void closeMilestone(final Context ctx, int milestoneId_) {
-
-		final TinyDB tinyDB = TinyDB.getInstance(ctx);
-
-		String repoFullName = tinyDB.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
-		final String loginUid = tinyDB.getString("loginUid");
-		final String token = "token " + tinyDB.getString(loginUid + "-token");
+	public static void closeMilestone(final Context ctx, int milestoneId_, RepositoryContext repository) {
 
 		Milestones milestoneStateJson = new Milestones("closed");
 		Call<JsonElement> call;
 
 		call = RetrofitClient
 				.getApiInterface(ctx)
-				.closeReopenMilestone(token, repoOwner, repoName, milestoneId_, milestoneStateJson);
+				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getOwner(), milestoneId_, milestoneStateJson);
 
 		call.enqueue(new Callback<JsonElement>() {
 
@@ -77,23 +69,14 @@ public class MilestoneActions {
 
 	}
 
-	public static void openMilestone(final Context ctx, int milestoneId_) {
-
-		final TinyDB tinyDB = TinyDB.getInstance(ctx);
-
-		String repoFullName = tinyDB.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
-		final String loginUid = tinyDB.getString("loginUid");
-		final String token = "token " + tinyDB.getString(loginUid + "-token");
+	public static void openMilestone(final Context ctx, int milestoneId_, RepositoryContext repository) {
 
 		Milestones milestoneStateJson = new Milestones("open");
 		Call<JsonElement> call;
 
 		call = RetrofitClient
 				.getApiInterface(ctx)
-				.closeReopenMilestone(token, repoOwner, repoName, milestoneId_, milestoneStateJson);
+				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getOwner(), milestoneId_, milestoneStateJson);
 
 		call.enqueue(new Callback<JsonElement>() {
 

@@ -9,16 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.gitnex.tea4j.models.OrgPermissions;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.BottomSheetOrganizationBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
-import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Author M M Arif

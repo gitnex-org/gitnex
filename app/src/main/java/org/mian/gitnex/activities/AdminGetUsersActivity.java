@@ -24,7 +24,6 @@ import org.mian.gitnex.adapters.AdminGetUsersAdapter;
 import org.mian.gitnex.databinding.ActivityAdminGetUsersBinding;
 import org.mian.gitnex.fragments.BottomSheetAdminUsersFragment;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 
@@ -70,11 +69,11 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            AdminGetUsersViewModel.loadUsersList(ctx, Authorization.get(ctx));
+            AdminGetUsersViewModel.loadUsersList(ctx, getAccount().getAuthorization());
 
         }, 500));
 
-        fetchDataAsync(ctx, Authorization.get(ctx));
+        fetchDataAsync(ctx, getAccount().getAuthorization());
 
     }
 

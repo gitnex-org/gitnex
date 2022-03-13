@@ -1,6 +1,7 @@
 package org.mian.gitnex.helpers;
 
 import android.content.Context;
+import org.mian.gitnex.activities.BaseActivity;
 
 /**
  * Author M M Arif
@@ -14,8 +15,7 @@ public class Constants {
 	public static final String defaultOldestTimestamp = "1970-01-01T00:00:00+00:00";
 
 	public static int getCurrentResultLimit(Context context) {
-		Version version = new Version(TinyDB.getInstance(context).getString("giteaVersion"));
-		return version.higherOrEqual("1.12") ? resultLimitNewGiteaInstances : resultLimitOldGiteaInstances;
+		return ((BaseActivity) context).getAccount().requiresVersion("1.12") ? resultLimitNewGiteaInstances : resultLimitOldGiteaInstances;
 	}
 
 	// tags

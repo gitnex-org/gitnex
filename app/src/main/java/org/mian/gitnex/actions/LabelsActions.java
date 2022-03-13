@@ -7,10 +7,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import org.gitnex.tea4j.models.Labels;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
 import retrofit2.Call;
@@ -26,7 +26,7 @@ public class LabelsActions {
 
 		Call<List<Labels>> callSingleIssueLabels = RetrofitClient
 			.getApiInterface(ctx)
-			.getIssueLabels(Authorization.get(ctx), repoOwner, repoName, issueIndex);
+			.getIssueLabels(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName, issueIndex);
 
 		callSingleIssueLabels.enqueue(new Callback<List<Labels>>() {
 
@@ -63,7 +63,7 @@ public class LabelsActions {
 
 		Call<List<Labels>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getLabels(Authorization.get(ctx), repoOwner, repoName);
+			.getLabels(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Labels>>() {
 
@@ -82,7 +82,7 @@ public class LabelsActions {
 					// Load organization labels
 					Call<List<Labels>> callOrgLabels = RetrofitClient
 						.getApiInterface(ctx)
-						.getOrganizationLabels(Authorization.get(ctx), repoOwner);
+						.getOrganizationLabels(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner);
 
 					callOrgLabels.enqueue(new Callback<List<Labels>>() {
 

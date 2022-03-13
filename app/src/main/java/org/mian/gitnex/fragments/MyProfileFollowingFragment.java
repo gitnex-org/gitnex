@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class MyProfileFollowingFragment extends Fragment {
 
 		Call<List<UserInfo>> call = RetrofitClient
 			.getApiInterface(context)
-			.getFollowing(Authorization.get(getContext()), 1, resultLimit);
+			.getFollowing(((BaseActivity) requireActivity()).getAccount().getAuthorization(), 1, resultLimit);
 		call.enqueue(new Callback<List<UserInfo>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
@@ -117,7 +117,7 @@ public class MyProfileFollowingFragment extends Fragment {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<UserInfo>> call = RetrofitClient.getApiInterface(context)
-			.getFollowing(Authorization.get(getContext()), page, resultLimit);
+			.getFollowing(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit);
 		call.enqueue(new Callback<List<UserInfo>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {

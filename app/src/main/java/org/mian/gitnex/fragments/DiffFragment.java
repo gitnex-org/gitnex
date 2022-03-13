@@ -11,6 +11,7 @@ import org.gitnex.tea4j.models.FileDiffView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.DiffAdapter;
 import org.mian.gitnex.databinding.FragmentDiffBinding;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -24,12 +25,27 @@ public class DiffFragment extends Fragment {
 	private Context ctx;
 
 	private FileDiffView fileDiffView;
+	private IssueContext issue;
 	private String type;
 
 	public DiffFragment() {}
 
 	public void setFileDiffView(FileDiffView fileDiffView) {
 		this.fileDiffView = fileDiffView;
+	}
+
+	public void setIssue(IssueContext issue) {
+
+		this.issue = issue;
+	}
+
+	public static DiffFragment newInstance(FileDiffView fileDiffView, IssueContext issue) {
+
+		DiffFragment fragment = new DiffFragment();
+		fragment.setFileDiffView(fileDiffView);
+		fragment.setIssue(issue);
+		return fragment;
+
 	}
 
 	public static DiffFragment newInstance(FileDiffView fileDiffView, String type) {
@@ -55,7 +71,7 @@ public class DiffFragment extends Fragment {
 
 		binding.toolbarTitle.setText(fileDiffView.getFileName());
 		binding.diff.setDivider(null);
-		binding.diff.setAdapter(new DiffAdapter(ctx, getChildFragmentManager(), Arrays.asList(fileDiffView.toString().split("\\R")), type));
+		binding.diff.setAdapter(new DiffAdapter(ctx, getChildFragmentManager(), Arrays.asList(fileDiffView.toString().split("\\R")), issue, type));
 
 		return binding.getRoot();
 

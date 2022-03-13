@@ -14,6 +14,7 @@ import com.google.gson.JsonElement;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.models.CronTasks;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -31,7 +32,6 @@ import retrofit2.Callback;
 public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAdapter.CronTasksViewHolder> {
 
 	private final List<CronTasks> tasksList;
-	private static TinyDB tinyDb;
 
 	static class CronTasksViewHolder extends RecyclerView.ViewHolder {
 
@@ -45,7 +45,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			Context ctx = itemView.getContext();
 
 			final Locale locale = ctx.getResources().getConfiguration().locale;
-			final String timeFormat = tinyDb.getString("dateFormat");
+			final String timeFormat = TinyDB.getInstance(ctx).getString("dateFormat", "pretty");
 
 			ImageView runTask = itemView.findViewById(R.id.runTask);
 			taskName = itemView.findViewById(R.id.taskName);
@@ -92,9 +92,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 		}
 	}
 
-	public AdminCronTasksAdapter(Context ctx, List<CronTasks> tasksListMain) {
-
-		tinyDb = TinyDB.getInstance(ctx);
+	public AdminCronTasksAdapter(List<CronTasks> tasksListMain) {
 		this.tasksList = tasksListMain;
 	}
 
@@ -117,12 +115,9 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 
 	private static void runCronTask(final Context ctx, final String taskName) {
 
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
-
 		Call<JsonElement> call = RetrofitClient
 			.getApiInterface(ctx)
-			.adminRunCronTask(instanceToken, taskName);
+			.adminRunCronTask(((BaseActivity) ctx).getAccount().getAuthorization(), taskName);
 
 		call.enqueue(new Callback<JsonElement>() {
 

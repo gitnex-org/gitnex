@@ -17,11 +17,13 @@ import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Milestones;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.MilestoneActions;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,9 +43,10 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private Runnable loadMoreListener;
 	private boolean isLoading = false;
 	private boolean isMoreDataAvailable = true;
+	private final RepositoryContext repository;
 
-	public MilestonesAdapter(Context ctx, List<Milestones> dataListMain) {
-
+	public MilestonesAdapter(Context ctx, List<Milestones> dataListMain, RepositoryContext repository) {
+		this.repository = repository;
 		this.context = ctx;
 		this.dataList = dataListMain;
 	}
@@ -100,7 +103,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			msProgress = itemView.findViewById(R.id.milestoneProgress);
 			ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
 
-			if(!TinyDB.getInstance(itemView.getContext()).getBoolean("isRepoAdmin")) {
+			if(!((RepoDetailActivity) itemView.getContext()).repository.getPermissions().canPush()) {
 				milestonesMenu.setVisibility(View.GONE);
 			}
 			milestonesMenu.setOnClickListener(v -> {
@@ -130,14 +133,14 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 				closeMilestone.setOnClickListener(v12 -> {
 
-					MilestoneActions.closeMilestone(ctx, milestoneId_);
+					MilestoneActions.closeMilestone(ctx, milestoneId_, repository);
 					dialog.dismiss();
 					updateAdapter(getAdapterPosition());
 				});
 
 				openMilestone.setOnClickListener(v12 -> {
 
-					MilestoneActions.openMilestone(ctx, milestoneId_);
+					MilestoneActions.openMilestone(ctx, milestoneId_, repository);
 					dialog.dismiss();
 					updateAdapter(getAdapterPosition());
 				});
@@ -152,7 +155,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			this.milestones = dataModel;
 			final TinyDB tinyDb = TinyDB.getInstance(context);
 			final String locale = context.getResources().getConfiguration().locale.getLanguage();
-			final String timeFormat = tinyDb.getString("dateFormat");
+			final String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			Markdown.render(context, dataModel.getTitle(), msTitle);
 

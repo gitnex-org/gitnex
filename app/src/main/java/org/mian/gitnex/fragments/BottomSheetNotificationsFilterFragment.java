@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetNotificationsFilterBinding;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * Author opyale
@@ -17,57 +16,28 @@ import org.mian.gitnex.helpers.TinyDB;
 
 public class BottomSheetNotificationsFilterFragment extends BottomSheetDialogFragment {
 
-	private TinyDB tinyDB;
-	private Runnable onDismissedListener;
-
-	@Override
-	public void onAttach(@NonNull Context context) {
-
-		super.onAttach(context);
-
-		this.tinyDB = TinyDB.getInstance(context);
-
-	}
+	private BottomSheetListener listener;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		BottomSheetNotificationsFilterBinding binding = BottomSheetNotificationsFilterBinding.inflate(inflater, container, false);
 
-		BottomSheetNotificationsFilterBinding bottomSheetNotificationsFilterBinding = BottomSheetNotificationsFilterBinding.inflate(inflater, container, false);
-
-		bottomSheetNotificationsFilterBinding.readNotifications.setOnClickListener(v1 -> {
-
-			tinyDB.putString("notificationsFilterState", "read");
+		binding.readNotifications.setOnClickListener(v1 -> {
+			listener.onButtonClicked("read");
 			dismiss();
-
 		});
 
-		bottomSheetNotificationsFilterBinding.unreadNotifications.setOnClickListener(v12 -> {
-
-			tinyDB.putString("notificationsFilterState", "unread");
+		binding.unreadNotifications.setOnClickListener(v12 -> {
+			listener.onButtonClicked("unread");
 			dismiss();
-
 		});
 
-		return bottomSheetNotificationsFilterBinding.getRoot();
-
+		return binding.getRoot();
 	}
 
-	@Override
-	public void dismiss() {
-
-		if(onDismissedListener != null) {
-
-			onDismissedListener.run();
-		}
-
-		super.dismiss();
-
-	}
-
-	public void setOnDismissedListener(Runnable onDismissedListener) {
-
-		this.onDismissedListener = onDismissedListener;
+	public void setOnClickListener(BottomSheetListener listener) {
+		this.listener = listener;
 	}
 
 }

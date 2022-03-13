@@ -19,10 +19,10 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.AccountContext;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +50,7 @@ public class NotificationsWorker extends Worker {
 		this.tinyDB = TinyDB.getInstance(context);
 		this.userAccounts = new HashMap<>(userAccountsApi.getCount());
 
-		for(UserAccount userAccount : userAccountsApi.usersAccounts()) {
+		for(UserAccount userAccount : userAccountsApi.loggedInUserAccounts()) {
 
 			// We do also accept empty values, since the server version was not saved properly in the beginning.
 			if(userAccount.getServerVersion() == null || userAccount.getServerVersion().isEmpty() ||
@@ -76,7 +76,7 @@ public class NotificationsWorker extends Worker {
 	 */
 	private void pollingLoops() {
 		int notificationLoops = tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay) < 15 ?
-			Math.min(15 - tinyDB.getInt("pollingDelayMinutes"), 10) : 1;
+			Math.min(15 - tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay), 10) : 1;
 
 		for(int i = 0; i < notificationLoops; i++) {
 			long startPollingTime = System.currentTimeMillis();
@@ -96,9 +96,10 @@ public class NotificationsWorker extends Worker {
 			Map<String, String> userAccountParameters = userAccounts.get(userAccount);
 
 			try {
+				assert userAccountParameters != null;
 				Call<List<NotificationThread>> call = RetrofitClient
 					.getApiInterface(context, userAccount.getInstanceUrl())
-					.getNotificationThreads(Authorization.get(userAccount), false, new String[]{"unread"},
+					.getNotificationThreads(new AccountContext(userAccount).getAuthorization(), false, new String[]{"unread"},
 						userAccountParameters.get("previousTimestamp"), null, 1, Integer.MAX_VALUE);
 
 				Response<List<NotificationThread>> response = call.execute();

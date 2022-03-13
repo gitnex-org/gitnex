@@ -17,12 +17,14 @@ import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -111,12 +113,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
 
 			itemView.setOnClickListener(layoutView -> {
-				Intent intent = new Intent(context, IssueDetailActivity.class);
-				intent.putExtra("issueNumber", issue.getNumber());
-
-				TinyDB tinyDb = TinyDB.getInstance(context);
-				tinyDb.putString("issueNumber", String.valueOf(issue.getNumber()));
-				tinyDb.putString("issueType", "Issue");
+				Intent intent = new IssueContext(
+					issue,
+					((RepoDetailActivity) context).repository
+				).getIntent(context, IssueDetailActivity.class);
 				context.startActivity(intent);
 			});
 
@@ -137,7 +137,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat");
+			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 

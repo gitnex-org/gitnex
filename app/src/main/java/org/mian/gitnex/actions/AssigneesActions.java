@@ -8,12 +8,12 @@ import androidx.annotation.NonNull;
 import org.gitnex.tea4j.models.Collaborators;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.AccountContext;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,7 +28,7 @@ public class AssigneesActions {
 
 		Call<Issues> callSingleIssueLabels = RetrofitClient
 			.getApiInterface(ctx)
-			.getIssueByIndex(Authorization.get(ctx), repoOwner, repoName, issueIndex);
+			.getIssueByIndex(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName, issueIndex);
 
 		callSingleIssueLabels.enqueue(new Callback<Issues>() {
 
@@ -64,11 +64,9 @@ public class AssigneesActions {
 
 	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<Collaborators> assigneesList, Dialog dialogAssignees, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding) {
 
-		TinyDB tinyDB = TinyDB.getInstance(ctx);
-
 		Call<List<Collaborators>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getCollaborators(Authorization.get(ctx), repoOwner, repoName);
+			.getCollaborators(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Collaborators>>() {
 
@@ -87,7 +85,8 @@ public class AssigneesActions {
 
 					if(assigneesList_.size() > 0) {
 
-						assigneesList.add(new Collaborators(tinyDB.getString("userFullname"), tinyDB.getString("loginUid"), tinyDB.getString("userAvatar")));
+						AccountContext userInfo = ((BaseActivity) ctx).getAccount();
+						assigneesList.add(new Collaborators(userInfo.getFullName(), userInfo.getAccount().getUserName(), userInfo.getUserInfo().getAvatar()));
 						assigneesList.addAll(assigneesList_);
 					}
 					else {

@@ -15,10 +15,9 @@ import org.gitnex.tea4j.models.UserOrganizations;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateOrganizationBinding;
+import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,7 +123,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         else {
 
             disableProcessButton();
-            createNewOrganization(Authorization.get(ctx), newOrgName, newOrgDesc);
+            createNewOrganization(getAccount().getAuthorization(), newOrgName, newOrgDesc);
         }
 
     }
@@ -134,7 +133,7 @@ public class CreateOrganizationActivity extends BaseActivity {
         UserOrganizations createOrganization = new UserOrganizations(orgName, null, orgDesc, null, null);
 
         Call<UserOrganizations> call = RetrofitClient
-            .getApiInterface(appCtx)
+            .getApiInterface(ctx)
             .createNewOrganization(token, createOrganization);
 
         call.enqueue(new Callback<UserOrganizations>() {
@@ -143,9 +142,7 @@ public class CreateOrganizationActivity extends BaseActivity {
             public void onResponse(@NonNull Call<UserOrganizations> call, @NonNull retrofit2.Response<UserOrganizations> response) {
 
                 if(response.code() == 201) {
-
-                    TinyDB tinyDb = TinyDB.getInstance(appCtx);
-                    tinyDb.putBoolean("orgCreated", true);
+                	OrganizationsFragment.orgCreated = true;
                     enableProcessButton();
                     Toasty.success(ctx, getString(R.string.orgCreated));
                     finish();

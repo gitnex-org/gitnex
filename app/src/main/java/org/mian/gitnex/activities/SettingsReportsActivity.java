@@ -28,7 +28,7 @@ public class SettingsReportsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		activitySettingsReportsBinding.crashReportsSwitch.setChecked(tinyDB.getBoolean("crashReportingEnabled"));
+		activitySettingsReportsBinding.crashReportsSwitch.setChecked(tinyDB.getBoolean("crashReportingEnabled", true));
 
 		// crash reports switcher
 		activitySettingsReportsBinding.crashReportsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

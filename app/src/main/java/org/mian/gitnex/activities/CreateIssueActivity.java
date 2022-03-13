@@ -27,13 +27,12 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateIssueBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
+import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -58,9 +57,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private String assigneesSetter;
 	private int milestoneId;
 
-	private String loginUid;
-	private String repoOwner;
-	private String repoName;
+	private RepositoryContext repository;
 
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
@@ -84,14 +81,10 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        loginUid = tinyDB.getString("loginUid");
-        String repoFullName = tinyDB.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        repoOwner = parts[0];
-        repoName = parts[1];
+        repository = RepositoryContext.fromIntent(getIntent());
 
         // require gitea 1.12 or higher
-        if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+        if(getAccount().requiresVersion("1.12.0")) {
 
             resultLimit = Constants.resultLimitNewGiteaInstances;
         }
@@ -121,7 +114,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	    viewBinding.newIssueLabels.setOnClickListener(this);
 	    viewBinding.newIssueDueDate.setOnClickListener(this);
 
-        getMilestones(repoOwner, repoName, resultLimit);
+        getMilestones(repository.getOwner(), repository.getName(), resultLimit);
 
         disableProcessButton();
 
@@ -138,7 +131,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	        viewBinding.createNewIssueButton.setOnClickListener(this);
         }
 
-        if(!tinyDB.getBoolean("canPush")) {
+        if(!repository.getPermissions().canPush()) {
         	viewBinding.newIssueAssigneesListLayout.setVisibility(View.GONE);
         	viewBinding.newIssueMilestoneSpinnerLayout.setVisibility(View.GONE);
         	viewBinding.newIssueLabelsLayout.setVisibility(View.GONE);
@@ -185,7 +178,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ -> dialogAssignees.dismiss());
 
 		dialogAssignees.show();
-		AssigneesActions.getRepositoryAssignees(ctx, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
+		AssigneesActions.getRepositoryAssignees(ctx, repository.getOwner(), repository.getName(), assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
 	}
 
 	private void showLabels() {
@@ -205,7 +198,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		labelsBinding.cancel.setOnClickListener(labelsBinding_ -> dialogLabels.dismiss());
 
 		dialogLabels.show();
-		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 
     private void processNewIssue() {
@@ -238,7 +231,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         }
 
         disableProcessButton();
-        createNewIssueFunc(repoOwner, repoName, loginUid, newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
+        createNewIssueFunc(repository.getOwner(), repository.getName(), getAccount().getAccount().getUserName(), newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
     }
 
     private void createNewIssueFunc(String repoOwner, String repoName, String loginUid, String newIssueDescriptionForm, String newIssueDueDateForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
@@ -249,7 +242,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         call3 = RetrofitClient
                 .getApiInterface(ctx)
-                .createNewIssue(Authorization.get(ctx), repoOwner, repoName, createNewIssueJson);
+                .createNewIssue(getAccount().getAuthorization(), repoOwner, repoName, createNewIssueJson);
 
         call3.enqueue(new Callback<JsonElement>() {
 
@@ -258,8 +251,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
 				if(response2.code() == 201) {
 
-                    TinyDB tinyDb = TinyDB.getInstance(appCtx);
-                    tinyDb.putBoolean("resumeIssues", true);
+                    IssuesFragment.resumeIssues = true;
 
                     Toasty.success(ctx, getString(R.string.issueCreated));
                     enableProcessButton();
@@ -301,7 +293,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
         String msState = "open";
         Call<List<Milestones>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getMilestones(Authorization.get(ctx), repoOwner, repoName, 1, resultLimit, msState);
+                .getMilestones(getAccount().getAuthorization(), repoOwner, repoName, 1, resultLimit, msState);
 
         call.enqueue(new Callback<List<Milestones>>() {
 
@@ -386,4 +378,10 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
 	    viewBinding.createNewIssueButton.setEnabled(true);
     }
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		repository.checkAccountSwitch(this);
+	}
 }

@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
+import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
@@ -69,11 +69,15 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		if(darkMinute.length() == 1) darkMinute = "0" + darkMinute;
 		if(darkHour.length() == 1) darkHour = "0" + darkHour;
 
+		timeSelectedChoice = tinyDB.getInt("timeId");
+		customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
+		themeSelectedChoice = tinyDB.getInt("themeId");
+
 		activitySettingsAppearanceBinding.lightThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, lightHour,
 			lightMinute));
 		activitySettingsAppearanceBinding.darkThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, darkHour,
 			darkMinute));
-		activitySettingsAppearanceBinding.tvDateTimeSelected.setText(tinyDB.getString("timeStr"));
+		activitySettingsAppearanceBinding.tvDateTimeSelected.setText(themeList[themeSelectedChoice]);
 		activitySettingsAppearanceBinding.customFontSelected.setText(tinyDB.getString("customFontStr", "Manrope"));
 		activitySettingsAppearanceBinding.themeSelected.setText(tinyDB.getString("themeStr", "Dark"));
 
@@ -86,11 +90,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			lightTimeFrame.setVisibility(View.GONE);
 		}
 
-		timeSelectedChoice = tinyDB.getInt("timeId");
-		customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
-		themeSelectedChoice = tinyDB.getInt("themeId");
-
-		counterBadgesSwitch.setChecked(tinyDB.getBoolean("enableCounterBadges"));
+		counterBadgesSwitch.setChecked(tinyDB.getBoolean("enableCounterBadges", true));
 
 		// counter badge switcher
 		counterBadgesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -112,10 +112,9 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 				themeSelectedChoice = i;
 				activitySettingsAppearanceBinding.themeSelected.setText(themeList[i]);
-				tinyDB.putString("themeStr", themeList[i]);
 				tinyDB.putInt("themeId", i);
 
-				tinyDB.putBoolean("refreshParent", true);
+				SettingsFragment.refreshParent = true;
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterfaceTheme.dismiss();
@@ -151,7 +150,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				tinyDB.putString("customFontStr", customFontList[i]);
 				tinyDB.putInt("customFontId", i);
 
-				tinyDB.putBoolean("refreshParent", true);
+				SettingsFragment.refreshParent = true;
 				this.recreate();
 				this.overridePendingTransition(0, 0);
 				dialogInterfaceCustomFont.dismiss();
@@ -217,7 +216,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 			db.putInt("lightThemeTimeHour", hourOfDay);
 			db.putInt("lightThemeTimeMinute", minute);
-			db.putBoolean("refreshParent", true);
+			SettingsFragment.refreshParent = true;
 			requireActivity().overridePendingTransition(0, 0);
 			this.dismiss();
 			Toasty.success(requireActivity().getApplicationContext(), requireContext().getResources().getString(R.string.settingsSave));
@@ -242,7 +241,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 			db.putInt("darkThemeTimeHour", hourOfDay);
 			db.putInt("darkThemeTimeMinute", minute);
-			db.putBoolean("refreshParent", true);
+			SettingsFragment.refreshParent = true;
 			requireActivity().overridePendingTransition(0, 0);
 			this.dismiss();
 			Toasty.success(requireActivity().getApplicationContext(), requireContext().getResources().getString(R.string.settingsSave));

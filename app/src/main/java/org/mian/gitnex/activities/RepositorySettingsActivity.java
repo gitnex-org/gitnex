@@ -21,7 +21,7 @@ import org.mian.gitnex.databinding.CustomRepositoryDeleteDialogBinding;
 import org.mian.gitnex.databinding.CustomRepositoryEditPropertiesDialogBinding;
 import org.mian.gitnex.databinding.CustomRepositoryTransferDialogBinding;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -40,11 +40,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private Dialog dialogTransferRepository;
 	private View.OnClickListener onClickListener;
 
-	private String loginUid;
-	private String instanceToken;
-
-	private String repositoryOwner;
-	private String repositoryName;
+	private RepositoryContext repository;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +50,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		viewBinding = ActivityRepositorySettingsBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		loginUid = tinyDB.getString("loginUid");
-		String repoFullName = tinyDB.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		repositoryOwner = parts[0];
-		repositoryName = parts[1];
-		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
+		repository = RepositoryContext.fromIntent(getIntent());
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -67,7 +58,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		closeActivity.setOnClickListener(onClickListener);
 
 		// require gitea 1.12 or higher
-		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+		if(getAccount().requiresVersion("1.12.0")) {
 
 			viewBinding.transferOwnerFrame.setVisibility(View.VISIBLE);
 		}
@@ -100,7 +91,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			String newOwner = String.valueOf(transferRepoBinding.ownerNameForTransfer.getText());
 			String repoName = String.valueOf(transferRepoBinding.repoNameForTransfer.getText());
 
-			if(!repositoryName.equals(repoName)) {
+			if(!repository.getName().equals(repoName)) {
 
 				Toasty.error(ctx, getString(R.string.repoSettingsDeleteError));
 			}
@@ -124,7 +115,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		Call<JsonElement> transferCall = RetrofitClient
 			.getApiInterface(ctx)
-			.transferRepository(instanceToken, repositoryOwner, repositoryName, repositoryTransfer);
+			.transferRepository(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), repositoryTransfer);
 
 		transferCall.enqueue(new Callback<JsonElement>() {
 
@@ -140,7 +131,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
 
 					finish();
-					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository((int) tinyDB.getLong("repositoryId", 0));
+					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -187,7 +178,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		deleteRepoBinding.delete.setOnClickListener(deleteRepo -> {
 
-			if(!repositoryName.equals(String.valueOf(deleteRepoBinding.repoNameForDeletion.getText()))) {
+			if(!repository.getName().equals(String.valueOf(deleteRepoBinding.repoNameForDeletion.getText()))) {
 
 				Toasty.error(ctx, getString(R.string.repoSettingsDeleteError));
 			}
@@ -205,7 +196,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		Call<JsonElement> deleteCall = RetrofitClient
 			.getApiInterface(ctx)
-			.deleteRepository(instanceToken, repositoryOwner, repositoryName);
+			.deleteRepository(getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 
 		deleteCall.enqueue(new Callback<JsonElement>() {
 
@@ -221,7 +212,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
 
 					finish();
-					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository((int) tinyDB.getLong("repositoryId", 0));
+					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -259,74 +250,46 @@ public class RepositorySettingsActivity extends BaseActivity {
 		dialogProp.setContentView(view);
 
 		propBinding.cancel.setOnClickListener(editProperties -> dialogProp.dismiss());
+		UserRepositories repoInfo = repository.getRepository();
 
-		Call<UserRepositories> call = RetrofitClient
-			.getApiInterface(ctx)
-			.getUserRepository(instanceToken, repositoryOwner, repositoryName);
+		propBinding.progressBar.setVisibility(View.GONE);
+		propBinding.mainView.setVisibility(View.VISIBLE);
 
-		call.enqueue(new Callback<UserRepositories>() {
 
-			@Override
-			public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
+		assert repoInfo != null;
+		propBinding.repoName.setText(repoInfo.getName());
+		propBinding.repoWebsite.setText(repoInfo.getWebsite());
+		propBinding.repoDescription.setText(repoInfo.getDescription());
+		propBinding.repoPrivate.setChecked(repoInfo.getPrivateFlag());
+		propBinding.repoAsTemplate.setChecked(repoInfo.isTemplate());
 
-				UserRepositories repoInfo = response.body();
+		propBinding.repoEnableIssues.setChecked(repoInfo.getHas_issues());
 
-				propBinding.progressBar.setVisibility(View.GONE);
-				propBinding.mainView.setVisibility(View.VISIBLE);
+		propBinding.repoEnableIssues.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-				if (response.code() == 200) {
-
-					assert repoInfo != null;
-					propBinding.repoName.setText(repoInfo.getName());
-					propBinding.repoWebsite.setText(repoInfo.getWebsite());
-					propBinding.repoDescription.setText(repoInfo.getDescription());
-					propBinding.repoPrivate.setChecked(repoInfo.getPrivateFlag());
-					propBinding.repoAsTemplate.setChecked(repoInfo.isTemplate());
-
-					propBinding.repoEnableIssues.setChecked(repoInfo.getHas_issues());
-
-					propBinding.repoEnableIssues.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-						if (isChecked) {
-
-							propBinding.repoEnableTimer.setVisibility(View.VISIBLE);
-						}
-						else {
-
-							propBinding.repoEnableTimer.setVisibility(View.GONE);
-						}
-					});
-
-					if(repoInfo.getInternal_tracker() != null) {
-
-						propBinding.repoEnableTimer.setChecked(repoInfo.getInternal_tracker().isEnable_time_tracker());
-					}
-					else {
-
-						propBinding.repoEnableTimer.setVisibility(View.GONE);
-					}
-
-					propBinding.repoEnableWiki.setChecked(repoInfo.isHas_wiki());
-					propBinding.repoEnablePr.setChecked(repoInfo.isHas_pull_requests());
-					propBinding.repoEnableMerge.setChecked(repoInfo.isAllow_merge_commits());
-					propBinding.repoEnableRebase.setChecked(repoInfo.isAllow_rebase());
-					propBinding.repoEnableSquash.setChecked(repoInfo.isAllow_squash_merge());
-					propBinding.repoEnableForceMerge.setChecked(repoInfo.isAllow_rebase_explicit());
-
-				}
-				else {
-
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-
+			if (isChecked) {
+				propBinding.repoEnableTimer.setVisibility(View.VISIBLE);
 			}
-
-			@Override
-			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getString(R.string.genericServerResponseError));
+			else {
+				propBinding.repoEnableTimer.setVisibility(View.GONE);
 			}
 		});
+
+		if(repoInfo.getInternal_tracker() != null) {
+
+			propBinding.repoEnableTimer.setChecked(repoInfo.getInternal_tracker().isEnable_time_tracker());
+		}
+		else {
+
+			propBinding.repoEnableTimer.setVisibility(View.GONE);
+		}
+
+		propBinding.repoEnableWiki.setChecked(repoInfo.isHas_wiki());
+		propBinding.repoEnablePr.setChecked(repoInfo.isHas_pull_requests());
+		propBinding.repoEnableMerge.setChecked(repoInfo.isAllow_merge_commits());
+		propBinding.repoEnableRebase.setChecked(repoInfo.isAllow_rebase());
+		propBinding.repoEnableSquash.setChecked(repoInfo.isAllow_squash_merge());
+		propBinding.repoEnableForceMerge.setChecked(repoInfo.isAllow_rebase_explicit());
 
 		propBinding.save.setOnClickListener(saveProperties -> saveRepositoryProperties(String.valueOf(propBinding.repoName.getText()),
 			String.valueOf(propBinding.repoWebsite.getText()),
@@ -363,7 +326,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		Call<UserRepositories> propsCall = RetrofitClient
 			.getApiInterface(ctx)
-			.updateRepositoryProperties(instanceToken, repositoryOwner, repositoryName, repoProps);
+			.updateRepositoryProperties(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), repoProps);
 
 		propsCall.enqueue(new Callback<UserRepositories>() {
 
@@ -375,18 +338,17 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 				if (response.code() == 200) {
 
-					tinyDB.putBoolean("hasIssues", repoEnableIssues);
-					tinyDB.putBoolean("hasPullRequests", repoEnablePr);
-
 					dialogProp.dismiss();
 					Toasty.success(ctx, getString(R.string.repoPropertiesSaveSuccess));
+					assert response.body() != null;
+					repository.setRepository(response.body());
 
-					if(!repositoryName.equals(repoName)) {
-
+					if(!repository.getName().equals(repoName)) {
+						BaseApi.getInstance(ctx, RepositoriesApi.class).updateRepositoryOwnerAndName(repository.getOwner(), repoName, repository.getRepositoryId());
+						Intent result = new Intent();
+						result.putExtra("nameChanged", true);
+						setResult(200, result);
 						finish();
-						BaseApi.getInstance(ctx, RepositoriesApi.class).updateRepositoryOwnerAndName(repositoryOwner, repoName, (int) tinyDB.getLong("repositoryId", 0));
-						Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
-						RepositorySettingsActivity.this.startActivity(intent);
 					}
 				}
 				else {
@@ -409,6 +371,12 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		repository.checkAccountSwitch(this);
 	}
 
 }

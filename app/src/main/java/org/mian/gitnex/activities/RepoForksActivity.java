@@ -25,10 +25,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoForksAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityRepoForksBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -64,8 +61,6 @@ public class RepoForksActivity extends BaseActivity {
 		Toolbar toolbar = activityRepoForksBinding.toolbar;
 		setSupportActionBar(toolbar);
 
-		TinyDB tinyDb = TinyDB.getInstance(appCtx);
-
 		String repoFullNameForForks = getIntent().getStringExtra("repoFullNameForForks");
 		assert repoFullNameForForks != null;
 		String[] parts = repoFullNameForForks.split("/");
@@ -86,7 +81,8 @@ public class RepoForksActivity extends BaseActivity {
 		});
 
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12")) {
+		if(getAccount().requiresVersion("1.12")) {
+
 			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
@@ -98,7 +94,7 @@ public class RepoForksActivity extends BaseActivity {
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
-			loadInitial(Authorization.get(ctx), repoOwner, repoName, pageSize, resultLimit);
+			loadInitial(getAccount().getAuthorization(), repoOwner, repoName, pageSize, resultLimit);
 			adapter.notifyDataChanged();
 
 		}, 200));
@@ -109,7 +105,7 @@ public class RepoForksActivity extends BaseActivity {
 			if(forksList.size() == resultLimit || pageSize == resultLimit) {
 
 				int page = (forksList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.get(ctx), repoOwner, repoName, page, resultLimit);
+				loadMore(getAccount().getAuthorization(), repoOwner, repoName, page, resultLimit);
 			}
 		}));
 
@@ -117,7 +113,7 @@ public class RepoForksActivity extends BaseActivity {
 		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 		recyclerView.setAdapter(adapter);
 
-		loadInitial(Authorization.get(ctx), repoOwner, repoName, pageSize, resultLimit);
+		loadInitial(getAccount().getAuthorization(), repoOwner, repoName, pageSize, resultLimit);
 	}
 
 	private void loadInitial(String instanceToken, String repoOwner, String repoName, int pageSize, int resultLimit) {

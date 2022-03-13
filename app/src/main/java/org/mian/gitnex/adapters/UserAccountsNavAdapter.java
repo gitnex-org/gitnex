@@ -52,7 +52,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 			userAccountAvatar = itemView.findViewById(R.id.userAccountAvatar);
 
 			itemView.setOnClickListener(item -> {
-				customDialogUserAccountsList(userAccountsList);
+				customDialogUserAccountsList();
 				drawer.closeDrawers();
 			});
 
@@ -95,7 +95,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 		return userAccountsList.size();
 	}
 
-	private void customDialogUserAccountsList(List<UserAccount> allAccountsList) {
+	private void customDialogUserAccountsList() {
 
 		Dialog dialog = new Dialog(context, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 		dialog.setContentView(R.layout.custom_user_accounts_dialog);
@@ -113,7 +113,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 
 		});
 
-		UserAccountsAdapter arrayAdapter = new UserAccountsAdapter(context, allAccountsList, dialog);
+		UserAccountsAdapter arrayAdapter = new UserAccountsAdapter(context, dialog);
 		listView.setLayoutManager(new LinearLayoutManager(context));
 		listView.setAdapter(arrayAdapter);
 		dialog.show();

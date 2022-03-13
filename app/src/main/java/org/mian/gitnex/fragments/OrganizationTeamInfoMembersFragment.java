@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import org.gitnex.tea4j.models.Teams;
 import org.gitnex.tea4j.models.UserInfo;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoMembersBinding;
-import org.mian.gitnex.helpers.Authorization;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -64,7 +64,7 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 
 		Call<List<UserInfo>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getTeamMembersByOrg(Authorization.get(ctx), team.getId());
+			.getTeamMembersByOrg(((BaseActivity) requireActivity()).getAccount().getAuthorization(), team.getId());
 
 		binding.progressBar.setVisibility(View.VISIBLE);
 

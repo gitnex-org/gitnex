@@ -20,10 +20,9 @@ import org.gitnex.tea4j.models.IssueReaction;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ReactionAuthorsAdapter;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,9 +57,7 @@ public class ReactionList extends HorizontalScrollView {
 		addView(root);
 		setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-
-		String loginUid = tinyDB.getString("loginUid");
+		String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 		String repoOwner = bundle.getString("repoOwner");
 		String repoName = bundle.getString("repoName");
 
@@ -87,14 +84,14 @@ public class ReactionList extends HorizontalScrollView {
 					case ISSUE:
 						response = RetrofitClient
 							.getApiInterface(context)
-							.getIssueReactions(Authorization.get(context), repoOwner, repoName, id)
+							.getIssueReactions(((BaseActivity) context).getAccount().getAuthorization(), repoOwner, repoName, id)
 							.execute();
 						break;
 
 					case COMMENT:
 						response = RetrofitClient
 							.getApiInterface(context)
-							.getIssueCommentReactions(Authorization.get(context), repoOwner, repoName, id)
+							.getIssueCommentReactions(((BaseActivity) context).getAccount().getAuthorization(), repoOwner, repoName, id)
 							.execute();
 						break;
 				}

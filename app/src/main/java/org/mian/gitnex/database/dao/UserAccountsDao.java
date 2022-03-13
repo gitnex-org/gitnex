@@ -20,10 +20,16 @@ public interface UserAccountsDao {
     @Query("SELECT * FROM UserAccounts ORDER BY accountId ASC")
     LiveData<List<UserAccount>> getAllAccounts();
 
+	@Query("SELECT * FROM UserAccounts WHERE isLoggedIn = 1 ORDER BY accountId ASC")
+	LiveData<List<UserAccount>> getAllLoggedInAccounts();
+
 	@Query("SELECT * FROM UserAccounts ORDER BY accountId ASC")
 	List<UserAccount> userAccounts();
 
-    @Query("SELECT COUNT(accountId) FROM UserAccounts")
+	@Query("SELECT * FROM UserAccounts WHERE isLoggedIn = 1 ORDER BY accountId ASC")
+	List<UserAccount> loggedInUserAccounts();
+
+    @Query("SELECT COUNT(accountId) FROM UserAccounts WHERE isLoggedIn = 1")
     Integer getCount();
 
     @Query("SELECT COUNT(accountId) FROM UserAccounts WHERE accountName = :accountName LIMIT 1")
@@ -55,6 +61,12 @@ public interface UserAccountsDao {
 
     @Query("UPDATE UserAccounts SET instanceUrl = :instanceUrl, token = :token, userName = :userName, serverVersion = :serverVersion WHERE accountId = :accountId")
     void updateAll(String instanceUrl, String token, String userName, String serverVersion, int accountId);
+
+	@Query("UPDATE UserAccounts SET isLoggedIn = 0 WHERE accountId = :accountId")
+	void logout(int accountId);
+
+	@Query("UPDATE UserAccounts SET isLoggedIn = 1 WHERE accountId = :accountId")
+	void login(int accountId);
 
     @Query("DELETE FROM UserAccounts WHERE accountId = :accountId")
     void deleteAccount(int accountId);

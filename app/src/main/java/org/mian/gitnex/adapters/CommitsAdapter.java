@@ -14,6 +14,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.Commits;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitDetailActivity;
+import org.mian.gitnex.activities.CommitsActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.fragments.CommitDetailFragment;
 import org.mian.gitnex.helpers.AppUtil;
@@ -169,7 +170,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 	        commitSha.setText(commitsModel.getSha().substring(0, Math.min(commitsModel.getSha().length(), 10)));
             rootView.setOnClickListener(v -> {
-	            Intent intent = new Intent(context, CommitDetailActivity.class);
+	            Intent intent = ((CommitsActivity) context).repository.getIntent(context, CommitDetailActivity.class);
 				intent.putExtra("sha", commitsModel.getSha());
 				context.startActivity(intent);
             });

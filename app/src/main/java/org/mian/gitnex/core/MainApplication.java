@@ -14,10 +14,12 @@ import org.acra.config.LimiterConfigurationBuilder;
 import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 import org.mian.gitnex.R;
+import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.notifications.Notifications;
 
 /**
@@ -36,6 +38,7 @@ import org.mian.gitnex.notifications.Notifications;
 public class MainApplication extends Application {
 
 	private TinyDB tinyDB;
+	public AccountContext currentAccount;
 
 	@Override
 	public void onCreate() {
@@ -45,9 +48,9 @@ public class MainApplication extends Application {
 		Context appCtx = getApplicationContext();
 		tinyDB = TinyDB.getInstance(appCtx);
 
-		tinyDB.putBoolean("biometricLifeCycle", false);
+		currentAccount = AccountContext.fromId(tinyDB.getInt("currentActiveAccountId", 0), appCtx);
 
-		setDefaults();
+		tinyDB.putBoolean("biometricLifeCycle", false);
 
 		switch(tinyDB.getInt("customFontId", -1)) {
 
@@ -83,7 +86,7 @@ public class MainApplication extends Application {
 
 		tinyDB = TinyDB.getInstance(context);
 
-		if(tinyDB.getBoolean("crashReportingEnabled")) {
+		if(tinyDB.getBoolean("crashReportingEnabled", true)) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);
 
@@ -96,78 +99,13 @@ public class MainApplication extends Application {
 		}
 	}
 
-	private void setDefaults() {
-
-		// enabling counter badges by default
-		if(tinyDB.getString("enableCounterBadgesInit").isEmpty()) {
-			tinyDB.putBoolean("enableCounterBadges", true);
-			tinyDB.putString("enableCounterBadgesInit", "yes");
+	public boolean switchToAccount(UserAccount userAccount, boolean tmp) {
+		if(!tmp || tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
+			currentAccount = new AccountContext(userAccount);
+			if(!tmp) tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
+			return true;
 		}
 
-		// enable crash reports by default
-		if(tinyDB.getString("crashReportingEnabledInit").isEmpty()) {
-			tinyDB.putBoolean("crashReportingEnabled", true);
-			tinyDB.putString("crashReportingEnabledInit", "yes");
-		}
-
-		// default cache setter
-		if(tinyDB.getString("cacheSizeStr").isEmpty()) {
-			tinyDB.putString("cacheSizeStr", getResources().getString(R.string.cacheSizeDataSelectionSelectedText));
-		}
-		if(tinyDB.getString("cacheSizeImagesStr").isEmpty()) {
-			tinyDB.putString("cacheSizeImagesStr", getResources().getString(R.string.cacheSizeImagesSelectionSelectedText));
-		}
-
-		// enable comment drafts by default
-		if(tinyDB.getString("draftsCommentsDeletionEnabledInit").isEmpty()) {
-			tinyDB.putBoolean("draftsCommentsDeletionEnabled", true);
-			tinyDB.putString("draftsCommentsDeletionEnabledInit", "yes");
-		}
-
-		// setting default polling delay
-		if(tinyDB.getInt("pollingDelayMinutes", 0) <= 0) {
-			tinyDB.putInt("pollingDelayMinutes", Constants.defaultPollingDelay);
-		}
-
-		// disable biometric by default
-		if(tinyDB.getString("biometricStatusInit").isEmpty()) {
-			tinyDB.putBoolean("biometricStatus", false);
-			tinyDB.putString("biometricStatusInit", "yes");
-		}
-
-		// set default date format
-		if(tinyDB.getString("dateFormat").isEmpty()) {
-			tinyDB.putString("dateFormat", "pretty");
-		}
-
-		if(tinyDB.getString("codeBlockStr").isEmpty()) {
-			tinyDB.putInt("codeBlockColor", ResourcesCompat.getColor(getResources(), R.color.colorLightGreen, null));
-			tinyDB.putInt("codeBlockBackground", ResourcesCompat.getColor(getResources(), R.color.black, null));
-		}
-
-		if(tinyDB.getString("enableCounterIssueBadgeInit").isEmpty()) {
-			tinyDB.putBoolean("enableCounterIssueBadge", true);
-		}
-
-		if(tinyDB.getString("homeScreenStr").isEmpty()) {
-			tinyDB.putString("homeScreenStr", "yes");
-			tinyDB.putInt("homeScreenId", 0);
-		}
-
-		if(tinyDB.getString("localeStr").isEmpty()) {
-			tinyDB.putString("localeStr", getString(R.string.settingsLanguageSystem));
-			tinyDB.putInt("langId", 0);
-		}
-
-		if(tinyDB.getInt("darkThemeTimeHour", 100) == 100) {
-			tinyDB.putInt("lightThemeTimeHour", 6);
-			tinyDB.putInt("lightThemeTimeMinute", 0);
-			tinyDB.putInt("darkThemeTimeHour", 18);
-			tinyDB.putInt("darkThemeTimeMinute", 0);
-		}
-
-		if(tinyDB.getString("timeStr").isEmpty()) {
-			tinyDB.putString("timeStr", getString(R.string.settingsDateTimeHeaderDefault));
-		}
+		return false;
 	}
 }

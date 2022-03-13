@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.UserInfo;
 import org.gitnex.tea4j.models.UserSearch;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentExploreUsersBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import java.util.ArrayList;
@@ -63,12 +63,12 @@ public class ExploreUsersFragment extends Fragment {
 					imm.hideSoftInputFromWindow(viewBinding.searchKeyword.getWindowToken(), 0);
 
 					viewBinding.progressBar.setVisibility(View.VISIBLE);
-					loadInitial(Authorization.get(context), String.valueOf(viewBinding.searchKeyword.getText()), resultLimit);
+					loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), String.valueOf(viewBinding.searchKeyword.getText()), resultLimit);
 
 					adapter.setLoadMoreListener(() -> viewBinding.recyclerViewExploreUsers.post(() -> {
 						if(usersList.size() == resultLimit || pageSize == resultLimit) {
 							int page = (usersList.size() + resultLimit) / resultLimit;
-							loadMore(Authorization.get(context), String.valueOf(viewBinding.searchKeyword.getText()), resultLimit, page);
+							loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), String.valueOf(viewBinding.searchKeyword.getText()), resultLimit, page);
 						}
 					}));
 				}
@@ -78,14 +78,14 @@ public class ExploreUsersFragment extends Fragment {
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			viewBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(Authorization.get(context), "", resultLimit);
+			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "", resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
 		adapter.setLoadMoreListener(() -> viewBinding.recyclerViewExploreUsers.post(() -> {
 			if(usersList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (usersList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.get(context), "", resultLimit, page);
+				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "", resultLimit, page);
 			}
 		}));
 
@@ -95,7 +95,7 @@ public class ExploreUsersFragment extends Fragment {
 		viewBinding.recyclerViewExploreUsers.setLayoutManager(new LinearLayoutManager(context));
 		viewBinding.recyclerViewExploreUsers.setAdapter(adapter);
 
-		loadInitial(Authorization.get(context), "", resultLimit);
+		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "", resultLimit);
 
 		return viewBinding.getRoot();
 	}

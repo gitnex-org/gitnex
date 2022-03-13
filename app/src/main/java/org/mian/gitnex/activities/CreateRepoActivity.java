@@ -21,8 +21,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateRepoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +44,6 @@ public class CreateRepoActivity extends BaseActivity {
     private CheckBox repoAccess;
 
 	private String loginUid;
-	private String userLogin;
 
 	private String selectedOwner;
 
@@ -66,8 +63,7 @@ public class CreateRepoActivity extends BaseActivity {
 
         boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 
-        loginUid = tinyDB.getString("loginUid");
-        userLogin = tinyDB.getString("userLogin");
+        loginUid = getAccount().getAccount().getUserName();
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -84,7 +80,7 @@ public class CreateRepoActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         spinner = activityCreateRepoBinding.ownerSpinner;
-        getOrganizations(Authorization.get(ctx), userLogin);
+        getOrganizations(getAccount().getAuthorization(), loginUid);
 
         createRepo = activityCreateRepoBinding.createNewRepoButton;
         disableProcessButton();
@@ -147,7 +143,7 @@ public class CreateRepoActivity extends BaseActivity {
         else {
 
             disableProcessButton();
-            createNewRepository(Authorization.get(ctx), loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
+            createNewRepository(getAccount().getAuthorization(), loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
         }
     }
 
@@ -176,8 +172,7 @@ public class CreateRepoActivity extends BaseActivity {
 
                 if(response.code() == 201) {
 
-                    TinyDB tinyDb = TinyDB.getInstance(appCtx);
-                    tinyDb.putBoolean("repoCreated", true);
+                    MainActivity.repoCreated = true;
                     Toasty.success(ctx, getString(R.string.repoCreated));
                     enableProcessButton();
                     finish();
@@ -235,9 +230,8 @@ public class CreateRepoActivity extends BaseActivity {
 
 			            for(int i = 0; i < organizationsList_.size(); i++) {
 
-				            if(!tinyDB.getString("organizationId").isEmpty()) {
-
-					            if(Integer.parseInt(tinyDB.getString("organizationId")) == organizationsList_.get(i).getId()) {
+				            if(!getIntent().getStringExtra("orgName").equals("")) {
+					            if(getIntent().getStringExtra("orgName").equals(organizationsList_.get(i).getUsername())) {
 						            organizationId = i + 1;
 					            }
 				            }
@@ -253,7 +247,7 @@ public class CreateRepoActivity extends BaseActivity {
 
 		            spinner.setOnItemClickListener ((parent, view, position, id) -> selectedOwner = organizationsList.get(position).getUsername());
 
-		            if(tinyDB.getBoolean("organizationAction") & organizationId != 0) {
+		            if(getIntent().getBooleanExtra("organizationAction", false) && organizationId != 0) {
 
 			            int selectOwnerById = organizationId;
 			            new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -261,8 +255,7 @@ public class CreateRepoActivity extends BaseActivity {
 				            spinner.setText(organizationsList.get(selectOwnerById).getUsername(), false);
 				            selectedOwner = organizationsList.get(selectOwnerById).getUsername();
 			            }, 500);
-
-			            tinyDB.putBoolean("organizationAction", false);
+			            getIntent().removeExtra("organizationAction");
 		            }
 
 		            enableProcessButton();

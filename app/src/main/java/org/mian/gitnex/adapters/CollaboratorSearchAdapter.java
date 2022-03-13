@@ -17,14 +17,14 @@ import org.gitnex.tea4j.models.Collaborators;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,17 +34,19 @@ import retrofit2.Response;
  * Author M M Arif
  */
 
-public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.UserSearchViewHolder> {
+public class CollaboratorSearchAdapter extends RecyclerView.Adapter<CollaboratorSearchAdapter.CollaboratorSearchViewHolder> {
 
     private final List<UserInfo> usersSearchList;
     private final Context context;
+    private final RepositoryContext repository;
 
-    public UserSearchAdapter(List<UserInfo> dataList, Context ctx) {
+    public CollaboratorSearchAdapter(List<UserInfo> dataList, Context ctx, RepositoryContext repository) {
         this.context = ctx;
         this.usersSearchList = dataList;
+        this.repository = repository;
     }
 
-    class UserSearchViewHolder extends RecyclerView.ViewHolder {
+    class CollaboratorSearchViewHolder extends RecyclerView.ViewHolder {
 
 	    private UserInfo userInfo;
 
@@ -57,7 +59,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         private final String[] permissionList = {"Read", "Write", "Admin"};
         final private int permissionSelectedChoice = 0;
 
-        private UserSearchViewHolder(View itemView) {
+        private CollaboratorSearchViewHolder(View itemView) {
 
             super(itemView);
             userAvatar = itemView.findViewById(R.id.userAvatar);
@@ -70,9 +72,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
                 AlertDialog.Builder pBuilder = new AlertDialog.Builder(context);
 
                 pBuilder.setTitle(R.string.newTeamPermission);
-                pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
-
-                })
+                pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, null)
                         .setCancelable(false)
                         .setNegativeButton(R.string.cancelButton, null)
                         .setPositiveButton(R.string.addButton, (dialog, which) -> {
@@ -80,20 +80,14 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
                             ListView lw = ((AlertDialog)dialog).getListView();
                             Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getUsername());
+                            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getUsername(), repository);
                         });
 
                 AlertDialog pDialog = pBuilder.create();
                 pDialog.show();
             });
 
-            addCollaboratorButtonRemove.setOnClickListener(v -> {
-                AlertDialogs.collaboratorRemoveDialog(context, userInfo.getUsername(),
-                        context.getResources().getString(R.string.removeCollaboratorDialogTitle),
-                        context.getResources().getString(R.string.removeCollaboratorMessage),
-                        context.getResources().getString(R.string.removeButton),
-                        context.getResources().getString(R.string.cancelButton), "fa");
-            });
+            addCollaboratorButtonRemove.setOnClickListener(v -> AlertDialogs.collaboratorRemoveDialog(context, userInfo.getUsername(), repository));
 
 	        userAvatar.setOnClickListener(loginId -> {
 		        Intent intent = new Intent(context, ProfileActivity.class);
@@ -111,13 +105,13 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
 
     @NonNull
     @Override
-    public UserSearchAdapter.UserSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CollaboratorSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
-        return new UserSearchAdapter.UserSearchViewHolder(v);
+        return new CollaboratorSearchAdapter.CollaboratorSearchViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final UserSearchAdapter.UserSearchViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final CollaboratorSearchViewHolder holder, int position) {
 
         UserInfo currentItem = usersSearchList.get(position);
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
@@ -140,16 +134,11 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
 
         if(getItemCount() > 0) {
 
-            TinyDB tinyDb = TinyDB.getInstance(context);
-            final String loginUid = tinyDb.getString("loginUid");
-            String repoFullName = tinyDb.getString("repoFullName");
-            String[] parts = repoFullName.split("/");
-            final String repoOwner = parts[0];
-            final String repoName = parts[1];
+            final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 
             Call<Collaborators> call = RetrofitClient
                     .getApiInterface(context)
-                    .checkRepoCollaborator(Authorization.get(context), repoOwner, repoName, currentItem.getUsername());
+                    .checkRepoCollaborator(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), currentItem.getUsername());
 
             call.enqueue(new Callback<Collaborators>() {
 
@@ -157,7 +146,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
                 public void onResponse(@NonNull Call<Collaborators> call, @NonNull Response<Collaborators> response) {
 
                     if(response.code() == 204) {
-                        if(!currentItem.getUsername().equals(loginUid) && !currentItem.getUsername().equals(repoOwner)) {
+                        if(!currentItem.getUsername().equals(loginUid) && !currentItem.getUsername().equals(repository.getOwner())) {
                             holder.addCollaboratorButtonRemove.setVisibility(View.VISIBLE);
                         }
                         else {
@@ -165,7 +154,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
                         }
                     }
                     else if(response.code() == 404) {
-                        if(!currentItem.getUsername().equals(loginUid) && !currentItem.getUsername().equals(repoOwner)) {
+                        if(!currentItem.getUsername().equals(loginUid) && !currentItem.getUsername().equals(repository.getOwner())) {
                             holder.addCollaboratorButtonAdd.setVisibility(View.VISIBLE);
                         }
                         else {

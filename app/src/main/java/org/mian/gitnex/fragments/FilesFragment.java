@@ -19,30 +19,24 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.Files;
-import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
-import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.FragmentFilesBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Path;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 /**
  * Author M M Arif
@@ -52,13 +46,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 	private FragmentFilesBinding binding;
 
-	private static final String repoNameF = "param2";
-	private static final String repoOwnerF = "param1";
-	private static final String repoRefF = "param3";
-
-	private String repoName;
-	private String repoOwner;
-	private String ref;
+	private RepositoryContext repository;
 
 	private final Path path = new Path();
 
@@ -66,30 +54,18 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 	public FilesFragment() {}
 
-	public static FilesFragment newInstance(String param1, String param2, String param3) {
+	public static FilesFragment newInstance(RepositoryContext repository) {
 
 		FilesFragment fragment = new FilesFragment();
-
-		Bundle args = new Bundle();
-		args.putString(repoOwnerF, param1);
-		args.putString(repoNameF, param2);
-		args.putString(repoRefF, param3);
-
-		fragment.setArguments(args);
+		fragment.setArguments(repository.getBundle());
 
 		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
+		repository = RepositoryContext.fromBundle(requireArguments());
 		super.onCreate(savedInstanceState);
-
-		if(getArguments() != null) {
-			repoName = getArguments().getString(repoNameF);
-			repoOwner = getArguments().getString(repoOwnerF);
-			ref = getArguments().getString(repoRefF);
-		}
 	}
 
 	@Override
@@ -105,7 +81,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding.recyclerView.setAdapter(filesAdapter);
 		binding.recyclerView.addItemDecoration(new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-		binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
+		binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + repository.getBranchRef()))));
 		// noinspection unchecked
 		binding.breadcrumbsView.setCallback(new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
 
@@ -129,16 +105,16 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			@Override
 			public void handleOnBackPressed() {
-				if(path.size() == 0 || RepoDetailActivity.mViewPager.getCurrentItem() != 1) {
+				if(path.size() == 0 || ((RepoDetailActivity) requireActivity()).mViewPager.getCurrentItem() != 1) {
 					requireActivity().finish();
 					return;
 				}
 				path.remove(path.size() - 1);
 				binding.breadcrumbsView.removeLastItem();
 				if(path.size() == 0) {
-					fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
+					fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), repository.getBranchRef());
 				} else {
-					fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, path.toString(), ref);
+					fetchDataAsyncSub(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), path.toString(), repository.getBranchRef());
 				}
 			}
 		});
@@ -150,11 +126,10 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerFiles(repoBranch -> {
 
+			repository.setBranchRef(repoBranch);
 			path.clear();
-			ref = repoBranch;
-			binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + ref))));
+			binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + repository.getBranchRef()))));
 			refresh();
-
 		});
 
 
@@ -184,7 +159,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			case "file":
 			case "symlink":
-				Intent intent = new Intent(getContext(), FileViewActivity.class);
+				Intent intent = repository.getIntent(getContext(), FileViewActivity.class);
 				intent.putExtra("file", file);
 
 				requireContext().startActivity(intent);
@@ -199,7 +174,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 				String host = url.getHost();
 
 				UserAccountsApi userAccountsApi = BaseApi.getInstance(requireContext(), UserAccountsApi.class);
-				List<UserAccount> userAccounts = userAccountsApi.usersAccounts();
+				List<UserAccount> userAccounts = userAccountsApi.loggedInUserAccounts();
 				UserAccount account = null;
 
 				for(UserAccount userAccount : userAccounts) {
@@ -208,16 +183,14 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 						account = userAccount;
 						// if scheme is wrong fix it
 						if (!url.getScheme().equals(instanceUri.getScheme())) {
-							url = AppUtil.changeScheme(url,instanceUri.getScheme());
+							url = AppUtil.changeScheme(url, instanceUri.getScheme());
 						}
 						break;
 					}
 				}
 
 				if(account != null) {
-					TinyDB tinyDB = TinyDB.getInstance(requireContext());
-					int oldId = tinyDB.getInt("currentActiveAccountId");
-					AppUtil.switchToAccount(requireContext(), account);
+					AppUtil.switchToAccount(requireContext(), account, true);
 					List<String> splittedUrl = url.getPathSegments();
 					if(splittedUrl.size() < 2) {
 						AppUtil.openUrlInBrowser(requireContext(), url.toString());
@@ -228,62 +201,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 						repo = repo.substring(0, repo.length() - 4);
 					}
 
-					Call<UserRepositories> call = RetrofitClient
-						.getApiInterface(requireContext(), account.getInstanceUrl())
-						.getUserRepository(Authorization.get(requireContext()), owner, repo);
-
-					Uri finalUrl = url;
-					call.enqueue(new Callback<UserRepositories>() {
-
-						@Override
-						public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
-
-							UserRepositories repoInfo = response.body();
-
-							if (response.code() == 200) {
-
-								assert repoInfo != null;
-
-								Intent repoIntent = new Intent(requireContext(), RepoDetailActivity.class);
-								repoIntent.putExtra("repoFullName", repoInfo.getFullName());
-								repoIntent.putExtra("goToSection", "yes");
-								repoIntent.putExtra("goToSectionType", "repo");
-								repoIntent.putExtra("switchAccountBackOnFinish", true);
-								repoIntent.putExtra("oldAccountId", oldId);
-
-								tinyDB.putString("repoFullName", repoInfo.getFullName());
-								if(repoInfo.getPrivateFlag()) {
-									tinyDB.putString("repoType", getResources().getString(R.string.strPrivate));
-								}
-								else {
-									tinyDB.putString("repoType", getResources().getString(R.string.strPublic));
-								}
-								tinyDB.putBoolean("isRepoAdmin", repoInfo.getPermissions().isAdmin());
-								tinyDB.putString("repoBranch", repoInfo.getDefault_branch());
-
-								int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-
-								RepositoriesApi repositoryData = BaseApi.getInstance(requireContext(), RepositoriesApi.class);
-								Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-								if(count == 0) {
-									long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-									tinyDB.putLong("repositoryId", id);
-								} else {
-									Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-									tinyDB.putLong("repositoryId", data.getRepositoryId());
-								}
-
-								startActivity(repoIntent);
-							} else {
-								AppUtil.openUrlInBrowser(requireContext(), finalUrl.toString());
-							}
-						}
-
-						@Override
-						public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
-							AppUtil.openUrlInBrowser(requireContext(), finalUrl.toString());
-						}
-					});
+					startActivity(new RepositoryContext(owner, repo, requireContext()).getIntent(requireContext(), RepoDetailActivity.class));
 				} else {
 					AppUtil.openUrlInBrowser(requireContext(), url.toString());
 				}
@@ -293,9 +211,9 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 	public void refresh() {
 		if(path.size() > 0) {
-			fetchDataAsyncSub(Authorization.get(getContext()), repoOwner, repoName, path.toString(), ref);
+			fetchDataAsyncSub(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), path.toString(), repository.getBranchRef());
 		} else {
-			fetchDataAsync(Authorization.get(getContext()), repoOwner, repoName, ref);
+			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), repository.getBranchRef());
 		}
 	}
 

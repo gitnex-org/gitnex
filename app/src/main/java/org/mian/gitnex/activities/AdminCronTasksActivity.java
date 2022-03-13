@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.adapters.AdminCronTasksAdapter;
 import org.mian.gitnex.databinding.ActivityAdminCronTasksBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.viewmodels.AdminCronTasksViewModel;
 
 /**
@@ -52,11 +51,11 @@ public class AdminCronTasksActivity extends BaseActivity {
 		activityAdminCronTasksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			activityAdminCronTasksBinding.pullToRefresh.setRefreshing(false);
-			AdminCronTasksViewModel.loadCronTasksList(ctx, Authorization.get(ctx), PAGE, LIMIT);
+			AdminCronTasksViewModel.loadCronTasksList(ctx, getAccount().getAuthorization(), PAGE, LIMIT);
 
 		}, 500));
 
-		fetchDataAsync(ctx, Authorization.get(ctx));
+		fetchDataAsync(ctx, getAccount().getAuthorization());
 	}
 
 	private void fetchDataAsync(Context ctx, String instanceToken) {
@@ -65,7 +64,7 @@ public class AdminCronTasksActivity extends BaseActivity {
 
 		cronTasksViewModel.getCronTasksList(ctx, instanceToken, PAGE, LIMIT).observe(this, cronTasksListMain -> {
 
-			adapter = new AdminCronTasksAdapter(ctx, cronTasksListMain);
+			adapter = new AdminCronTasksAdapter(cronTasksListMain);
 
 			if(adapter.getItemCount() > 0) {
 

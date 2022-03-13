@@ -16,9 +16,9 @@ import org.gitnex.tea4j.models.OrgPermissions;
 import org.gitnex.tea4j.models.Teams;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.OrganizationTeamInfoActivity;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.Authorization;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +36,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
     private final Context context;
     private final List<Teams> teamListFull;
     private final OrgPermissions permissions;
+    private final String orgName;
 
     static class OrgTeamsViewHolder extends RecyclerView.ViewHolder {
 
@@ -48,6 +49,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
 
 	    private final List<UserInfo> userInfos;
         private final TeamMembersByOrgPreviewAdapter adapter;
+        private String orgName;
 
         private OrgTeamsViewHolder(View itemView) {
             super(itemView);
@@ -70,16 +72,18 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
                 Intent intent = new Intent(context, OrganizationTeamInfoActivity.class);
                 intent.putExtra("team", team);
                 intent.putExtra("permissions", permissions);
+                intent.putExtra("orgName", orgName);
                 context.startActivity(intent);
             });
         }
     }
 
-    public TeamsByOrgAdapter(Context ctx, List<Teams> teamListMain, OrgPermissions permissions) {
+    public TeamsByOrgAdapter(Context ctx, List<Teams> teamListMain, OrgPermissions permissions, String orgName) {
         this.context = ctx;
         this.teamList = teamListMain;
         this.permissions = permissions;
         teamListFull = new ArrayList<>(teamList);
+        this.orgName = orgName;
     }
 
     @NonNull
@@ -97,13 +101,14 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
         holder.team = currentItem;
         holder.teamTitle.setText(currentItem.getName());
         holder.permissions = permissions;
+        holder.orgName = orgName;
 
 	    holder.membersPreviewFrame.setVisibility(View.GONE);
 	    holder.userInfos.clear();
 	    holder.adapter.notifyDataSetChanged();
 
 	    RetrofitClient.getApiInterface(context)
-		    .getTeamMembersByOrg(Authorization.get(context), currentItem.getId())
+		    .getTeamMembersByOrg(((BaseActivity) context).getAccount().getAuthorization(), currentItem.getId())
 		    .enqueue(new Callback<List<UserInfo>>() {
 			    @Override
 			    public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
@@ -168,7 +173,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             teamList.clear();
-            teamList.addAll((List) results.values);
+            teamList.addAll((List<Teams>) results.values);
             notifyDataSetChanged();
         }
     };

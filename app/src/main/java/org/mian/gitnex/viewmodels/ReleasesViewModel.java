@@ -8,12 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.models.GitTag;
 import org.gitnex.tea4j.models.Releases;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +32,7 @@ public class ReleasesViewModel extends ViewModel {
         releasesList = new MutableLiveData<>();
 
 	    // if gitea is 1.12 or higher use the new limit
-	    if(new Version(TinyDB.getInstance(ctx).getString("giteaVersion")).higherOrEqual("1.12.0")) {
+	    if(((BaseActivity) ctx).getAccount().requiresVersion("1.12.0")) {
 		    resultLimit = Constants.resultLimitNewGiteaInstances;
 	    }
 
@@ -111,7 +110,7 @@ public class ReleasesViewModel extends ViewModel {
 		tagsList = new MutableLiveData<>();
 
 		// if gitea is 1.12 or higher use the new limit
-		if(new Version(TinyDB.getInstance(ctx).getString("giteaVersion")).higherOrEqual("1.12.0")) {
+		if(((BaseActivity) ctx).getAccount().requiresVersion("1.12.0")) {
 			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 

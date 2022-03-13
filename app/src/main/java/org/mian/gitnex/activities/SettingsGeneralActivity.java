@@ -44,7 +44,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		String[] appHomeDefaultScreenNew = getResources().getStringArray(R.array.appDefaultHomeScreenNew);
 
-		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.3")) {
+		if(getAccount().requiresVersion("1.12.3")) {
 
 			appHomeDefaultScreen = appHomeDefaultScreenNew;
 		}
@@ -55,7 +55,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		if(homeScreenSelectedChoice == 0) {
 
-			homeScreenSelectedChoice = tinyDB.getInt("homeScreenId");
+			homeScreenSelectedChoice = tinyDB.getInt("homeScreenId", 0);
 			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navMyRepos));
 		}
 

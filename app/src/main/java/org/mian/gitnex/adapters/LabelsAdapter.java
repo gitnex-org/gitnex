@@ -19,9 +19,10 @@ import org.gitnex.tea4j.models.Labels;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
 
 /**
@@ -31,10 +32,10 @@ import java.util.List;
 public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder>  {
 
     private final List<Labels> labelsList;
-    private static String type;
-	private static String orgName;
+    private final String type;
+	private final String orgName;
 
-    static class LabelsViewHolder extends RecyclerView.ViewHolder {
+    class LabelsViewHolder extends RecyclerView.ViewHolder {
 
     	private Labels labels;
 
@@ -50,7 +51,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
             labelName = itemView.findViewById(R.id.labelName);
             ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
 
-            if((type.equals("repo") && !TinyDB.getInstance(itemView.getContext()).getBoolean("isRepoAdmin")) ||
+            if((type.equals("repo") && !((RepoDetailActivity) itemView.getContext()).repository.getPermissions().canPush()) ||
 	            (type.equals("org") && !((OrganizationDetailActivity) itemView.getContext()).permissions.isOwner())) {
 	            labelsOptionsMenu.setVisibility(View.GONE);
             }
@@ -79,18 +80,21 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
                     intent.putExtra("labelAction", "edit");
 	                intent.putExtra("type", type);
 	                intent.putExtra("orgName", orgName);
+	                intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
                     context.startActivity(intent);
                     dialog.dismiss();
                 });
 
                 labelMenuDelete.setOnClickListener(deleteLabel -> {
+	                RepositoryContext repo;
+                	if(type.equals("repo")) {
+                        repo = ((RepoDetailActivity) itemView.getContext()).repository;
+	                } else {
+                		repo = null;
+	                }
 
                     AlertDialogs.labelDeleteDialog(context, labels.getName(), String.valueOf(labels.getId()),
-                            context.getResources().getString(R.string.labelDeleteTitle),
-                            context.getResources().getString(R.string.labelDeleteMessage),
-                            context.getResources().getString(R.string.menuDeleteText),
-                            context.getResources().getString(R.string.cancelButton),
-	                        type, orgName);
+	                        type, orgName, repo);
                     dialog.dismiss();
                 });
 
@@ -102,8 +106,8 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
     public LabelsAdapter(Context ctx, List<Labels> labelsMain, String type, String orgName) {
 
 	    this.labelsList = labelsMain;
-        LabelsAdapter.type = type;
-        LabelsAdapter.orgName = orgName;
+        this.type = type;
+        this.orgName = orgName;
     }
 
     @NonNull

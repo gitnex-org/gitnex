@@ -16,10 +16,10 @@ import com.vdurmont.emoji.EmojiManager;
 import org.gitnex.tea4j.models.IssueReaction;
 import org.gitnex.tea4j.models.UISettings;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,9 +56,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 		root.setGravity(Gravity.START);
 		root.setLayoutParams(layoutParams);
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-
-		String loginUid = tinyDB.getString("loginUid");
+		String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 		String repoOwner = bundle.getString("repoOwner");
 		String repoName = bundle.getString("repoName");
 
@@ -105,7 +103,11 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 							try {
 								if(react(repoOwner, repoName, reactionType, reactionAction, new IssueReaction(allowedReaction), id)) {
-									v.post(() -> onInteractedListener.run());
+									v.post(() -> {
+										((IssueDetailActivity) context).singleIssueUpdate = reactionType == ReactionType.ISSUE;
+										((IssueDetailActivity) context).commentEdited = reactionType == ReactionType.COMMENT;
+										onInteractedListener.run();
+									});
 								}
 							} catch(IOException ignored) {}
 
@@ -147,7 +149,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case ADD:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.setIssueReaction(Authorization.get(getContext()), repoOwner, repoName, id, issueReaction)
+							.setIssueReaction(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id, issueReaction)
 							.execute();
 						break;
 
@@ -155,7 +157,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case REMOVE:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.removeIssueReaction(Authorization.get(getContext()), repoOwner, repoName, id, issueReaction)
+							.removeIssueReaction((((BaseActivity) getContext()).getAccount().getAuthorization()), repoOwner, repoName, id, issueReaction)
 							.execute();
 						break;
 
@@ -168,7 +170,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case ADD:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.setIssueCommentReaction(Authorization.get(getContext()), repoOwner, repoName, id, issueReaction)
+							.setIssueCommentReaction(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id, issueReaction)
 							.execute();
 						break;
 
@@ -176,7 +178,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case REMOVE:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.removeIssueCommentReaction(Authorization.get(getContext()), repoOwner, repoName, id, issueReaction)
+							.removeIssueCommentReaction(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id, issueReaction)
 							.execute();
 						break;
 
@@ -198,14 +200,14 @@ public class ReactionSpinner extends HorizontalScrollView {
 			case ISSUE:
 				response = RetrofitClient
 					.getApiInterface(getContext())
-					.getIssueReactions(Authorization.get(getContext()), repoOwner, repoName, id)
+					.getIssueReactions(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id)
 					.execute();
 				break;
 
 			case COMMENT:
 				response = RetrofitClient
 					.getApiInterface(getContext())
-					.getIssueCommentReactions(Authorization.get(getContext()), repoOwner, repoName, id)
+					.getIssueCommentReactions((((BaseActivity) getContext()).getAccount().getAuthorization()), repoOwner, repoName, id)
 					.execute();
 				break;
 
@@ -225,7 +227,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 			Response<UISettings> response = RetrofitClient
 				.getApiInterface(getContext())
-				.getUISettings(Authorization.get(getContext()))
+				.getUISettings(((BaseActivity) getContext()).getAccount().getAuthorization())
 				.execute();
 
 			if(response.isSuccessful() && response.body() != null) {

@@ -23,12 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.OrganizationListViewModel;
 
 /**
@@ -36,6 +35,8 @@ import org.mian.gitnex.viewmodels.OrganizationListViewModel;
  */
 
 public class OrganizationsFragment extends Fragment {
+
+	public static boolean orgCreated = false;
 
     private ProgressBar mProgressBar;
     private OrganizationsListAdapter adapter;
@@ -91,11 +92,11 @@ public class OrganizationsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            OrganizationListViewModel.loadOrgsList(Authorization.get(getContext()), getContext());
+            OrganizationListViewModel.loadOrgsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext());
 
         }, 50));
 
-        fetchDataAsync(Authorization.get(getContext()));
+        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
 
         return fragmentOrganizationsBinding.getRoot();
 
@@ -104,13 +105,10 @@ public class OrganizationsFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        if(tinyDb.getBoolean("orgCreated")) {
-            OrganizationListViewModel.loadOrgsList(Authorization.get(getContext()), getContext());
-            tinyDb.putBoolean("orgCreated", false);
+	    if(orgCreated) {
+            OrganizationListViewModel.loadOrgsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext());
+            orgCreated = false;
         }
     }
 

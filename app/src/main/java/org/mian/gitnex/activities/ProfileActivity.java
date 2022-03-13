@@ -26,7 +26,6 @@ import org.mian.gitnex.fragments.profile.FollowingFragment;
 import org.mian.gitnex.fragments.profile.OrganizationsFragment;
 import org.mian.gitnex.fragments.profile.RepositoriesFragment;
 import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
@@ -105,7 +104,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 				}
 			}
 
-			if(!username.equals(tinyDB.getString("userLogin"))) {
+			if(!username.equals(getAccount().getAccount().getUserName())) {
 				checkFollowStatus();
 			}
 		}
@@ -119,7 +118,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 	}
 
 	private void checkFollowStatus() {
-		RetrofitClient.getApiInterface(this).checkFollowing(Authorization.get(this), username).enqueue(new Callback<JsonElement>() {
+		RetrofitClient.getApiInterface(this).checkFollowing(getAccount().getAuthorization(), username).enqueue(new Callback<JsonElement>() {
 
 			@Override
 			public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
@@ -144,10 +143,10 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 	private void followUnfollow() {
 		Call<JsonElement> call;
 		if (following) {
-			call = RetrofitClient.getApiInterface(this).unfollowUser(Authorization.get(this), username);
+			call = RetrofitClient.getApiInterface(this).unfollowUser(getAccount().getAuthorization(), username);
 		}
 		else {
-			call = RetrofitClient.getApiInterface(this).followUser(Authorization.get(this), username);
+			call = RetrofitClient.getApiInterface(this).followUser(getAccount().getAuthorization(), username);
 		}
 
 		call.enqueue(new Callback<JsonElement>() {
@@ -234,7 +233,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if(!username.equals(tinyDB.getString("userLogin"))) {
+		if(!username.equals(getAccount().getAccount().getUserName())) {
 			getMenuInflater().inflate(R.menu.generic_nav_dotted_menu, menu);
 		}
 		return super.onCreateOptionsMenu(menu);

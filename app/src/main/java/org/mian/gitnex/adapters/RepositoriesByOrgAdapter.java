@@ -30,6 +30,7 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -74,94 +75,28 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 	        repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
 	        spacerView = itemView.findViewById(R.id.spacerView);
 
-            itemView.setOnClickListener(v -> {
+	        itemView.setOnClickListener(v -> {
+		        Context context = v.getContext();
+		        RepositoryContext repo = new RepositoryContext(userRepositories, context);
+		        Intent intent = repo.getIntent(context, RepoDetailActivity.class);
 
-                Context context = v.getContext();
-	            TinyDB tinyDb = TinyDB.getInstance(context);
+		        int currentActiveAccountId = TinyDB.getInstance(context).getInt("currentActiveAccountId");
+		        RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
-                Intent intent = new Intent(context, RepoDetailActivity.class);
-                intent.putExtra("repoFullName", userRepositories.getFullName());
+		        assert repositoryData != null;
+		        Integer count = repositoryData.checkRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
 
-                tinyDb.putString("repoFullName", userRepositories.getFullName());
-                //tinyDb.putBoolean("resumeIssues", true);
-                tinyDb.putBoolean("isRepoAdmin", isRepoAdmin.isChecked());
-	            tinyDb.putString("repoBranch", userRepositories.getDefault_branch());
+		        if(count == 0) {
+			        long id = repositoryData.insertRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+			        repo.setRepositoryId((int) id);
+		        }
+		        else {
+			        Repository data = repositoryData.getRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+			        repo.setRepositoryId(data.getRepositoryId());
+		        }
 
-	            if(userRepositories.getPrivateFlag()) {
-		            tinyDb.putString("repoType", context.getResources().getString(R.string.strPrivate));
-	            }
-	            else {
-		            tinyDb.putString("repoType", context.getResources().getString(R.string.strPublic));
-	            }
-
-                String[] parts = userRepositories.getFullName().split("/");
-                final String repoOwner = parts[0];
-                final String repoName = parts[1];
-
-                int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-                RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
-
-                //RepositoriesRepository.deleteRepositoriesByAccount(currentActiveAccountId);
-	            assert repositoryData != null;
-	            Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-
-                if(count == 0) {
-
-                    long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-                    tinyDb.putLong("repositoryId", id);
-                }
-                else {
-
-                    Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-                    tinyDb.putLong("repositoryId", data.getRepositoryId());
-                }
-
-                //store if user is watching this repo
-                {
-
-                    final String token = "token " + tinyDb.getString(tinyDb.getString("loginUid") + "-token");
-
-                    Call<WatchInfo> call;
-
-                    call = RetrofitClient.getApiInterface(context).checkRepoWatchStatus(token, repoOwner, repoName);
-
-                    call.enqueue(new Callback<WatchInfo>() {
-
-                        @Override
-                        public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
-
-                            if(response.isSuccessful()) {
-
-                                assert response.body() != null;
-                                tinyDb.putBoolean("repoWatch", response.body().getSubscribed());
-
-                            } else {
-
-                                tinyDb.putBoolean("repoWatch", false);
-
-                                if(response.code() != 404) {
-
-                                    Toasty.error(context, context.getString(R.string.genericApiStatusError));
-
-                                }
-
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
-
-                            tinyDb.putBoolean("repoWatch", false);
-                            Toasty.error(context, context.getString(R.string.genericApiStatusError));
-
-                        }
-                    });
-
-                }
-
-                context.startActivity(intent);
-            });
+		        context.startActivity(intent);
+	        });
         }
 
     }
@@ -189,7 +124,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 	    Locale locale = context.getResources().getConfiguration().locale;
-	    String timeFormat = tinyDb.getString("dateFormat");
+	    String timeFormat = tinyDb.getString("dateFormat", "pretty");
 	    holder.userRepositories = currentItem;
 	    holder.orgName.setText(currentItem.getFullName().split("/")[0]);
 	    holder.repoName.setText(currentItem.getFullName().split("/")[1]);

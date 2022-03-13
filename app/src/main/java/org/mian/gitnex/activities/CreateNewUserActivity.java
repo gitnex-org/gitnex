@@ -16,7 +16,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateNewUserBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -110,7 +109,7 @@ public class CreateNewUserActivity extends BaseActivity {
         }
 
         disableProcessButton();
-        createNewUser(Authorization.get(ctx), newFullName, newUserName, newUserEmail, newUserPassword);
+        createNewUser(getAccount().getAuthorization(), newFullName, newUserName, newUserEmail, newUserPassword);
     }
 
     private void createNewUser(final String instanceToken, String newFullName, String newUserName, String newUserEmail, String newUserPassword) {
@@ -120,7 +119,7 @@ public class CreateNewUserActivity extends BaseActivity {
         Call<UserInfo> call;
 
         call = RetrofitClient
-                .getApiInterface(appCtx)
+                .getApiInterface(ctx)
                 .createNewUser(instanceToken, createUser);
 
         call.enqueue(new Callback<UserInfo>() {

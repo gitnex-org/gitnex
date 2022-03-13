@@ -3,6 +3,7 @@ package org.mian.gitnex.activities;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,10 +19,8 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateMilestoneBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.Calendar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +36,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     private EditText milestoneTitle;
     private EditText milestoneDescription;
     private Button createNewMilestoneButton;
+    private RepositoryContext repository;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -56,6 +56,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         createNewMilestoneButton = activityCreateMilestoneBinding.createNewMilestoneButton;
         milestoneTitle = activityCreateMilestoneBinding.milestoneTitle;
         milestoneDescription = activityCreateMilestoneBinding.milestoneDescription;
+        repository = RepositoryContext.fromIntent(getIntent());
 
         milestoneTitle.requestFocus();
         assert imm != null;
@@ -93,12 +94,6 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        TinyDB tinyDb = TinyDB.getInstance(appCtx);
-        String repoFullName = tinyDb.getString("repoFullName");
-        String[] parts = repoFullName.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
-
         String newMilestoneTitle = milestoneTitle.getText().toString();
         String newMilestoneDescription = milestoneDescription.getText().toString();
         String newMilestoneDueDate = milestoneDueDate.getText().toString();
@@ -130,7 +125,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
             finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
         }
-        else if (new Version(tinyDb.getString("giteaVersion")).less("1.10.0")) {
+        else if (!getAccount().requiresVersion("1.10.0")) {
 
             // if Gitea version is less than 1.10.0 DueDate is required
             Toasty.warning(ctx, getString(R.string.milestoneDateEmpty));
@@ -138,7 +133,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         }
 
         disableProcessButton();
-        createNewMilestone(Authorization.get(ctx), repoOwner, repoName, newMilestoneTitle, newMilestoneDescription, finalMilestoneDueDate);
+        createNewMilestone(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), newMilestoneTitle, newMilestoneDescription, finalMilestoneDueDate);
     }
 
     private void createNewMilestone(final String token, String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription, String newMilestoneDueDate) {
@@ -148,7 +143,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
         Call<Milestones> call;
 
         call = RetrofitClient
-                .getApiInterface(appCtx)
+                .getApiInterface(ctx)
                 .createMilestone(token, repoOwner, repoName, createMilestone);
 
         call.enqueue(new Callback<Milestones>() {
@@ -160,8 +155,9 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
                     if(response.code() == 201) {
 
-                        TinyDB tinyDb = TinyDB.getInstance(appCtx);
-                        tinyDb.putBoolean("milestoneCreated", true);
+                        Intent result = new Intent();
+                        result.putExtra("milestoneCreated", true);
+                        setResult(201, result);
                         Toasty.success(ctx, getString(R.string.milestoneCreated));
                         enableProcessButton();
                         finish();
@@ -223,5 +219,11 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         createNewMilestoneButton.setEnabled(true);
     }
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		repository.checkAccountSwitch(this);
+	}
 
 }

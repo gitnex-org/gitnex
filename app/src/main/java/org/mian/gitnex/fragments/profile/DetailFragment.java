@@ -9,12 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -75,7 +75,7 @@ public class DetailFragment extends Fragment {
 
 		Call<UserInfo> call = RetrofitClient
 			.getApiInterface(context)
-			.getUserProfile(Authorization.get(context), username);
+			.getUserProfile(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username);
 
 		call.enqueue(new Callback<UserInfo>() {
 			@Override
@@ -89,7 +89,7 @@ public class DetailFragment extends Fragment {
 							String email = !response.body().getEmail().isEmpty() ? response.body().getEmail() : "";
 
 							int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
-							String timeFormat = tinyDb.getString("dateFormat");
+							String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 							binding.userFullName.setText(username);
 							binding.userLogin.setText(getString(R.string.usernameWithAt, response.body().getLogin()));

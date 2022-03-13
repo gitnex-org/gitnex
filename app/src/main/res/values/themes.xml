@@ -40,6 +40,7 @@
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:listDivider">@drawable/shape_list_divider</item>
+        <item name="isDark">1</item>
     </style>
     <!-- Dark theme - default -->
 
@@ -81,6 +82,7 @@
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="isDark">0</item>
     </style>
     <!-- Light theme -->
 
@@ -122,6 +124,7 @@
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="isDark">0</item>
     </style>
     <!-- Retro theme -->
 
@@ -163,6 +166,7 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="isDark">1</item>
     </style>
     <!-- Pitch black theme -->
 

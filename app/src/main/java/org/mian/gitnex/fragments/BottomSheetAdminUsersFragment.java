@@ -43,7 +43,7 @@ public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
             bmListener = (BottomSheetListener) context;
         }
         catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement BottomSheetListener");
+            throw new ClassCastException(context + " must implement BottomSheetListener");
         }
     }
 

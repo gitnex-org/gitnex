@@ -19,15 +19,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -39,6 +38,8 @@ import retrofit2.Response;
  */
 
 public class IssuesFragment extends Fragment {
+
+	public static boolean resumeIssues = false;
 
 	private FragmentIssuesBinding fragmentIssuesBinding;
 	private Context context;
@@ -52,6 +53,14 @@ public class IssuesFragment extends Fragment {
 	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private final String requestType = Constants.issuesRequestType;
 
+	private RepositoryContext repository;
+
+	public static IssuesFragment newInstance(RepositoryContext repository) {
+		IssuesFragment f = new IssuesFragment();
+		f.setArguments(repository.getBundle());
+		return f;
+	}
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,16 +69,10 @@ public class IssuesFragment extends Fragment {
 		setHasOptionsMenu(true);
 		context = getContext();
 
-		TinyDB tinyDb = TinyDB.getInstance(context);
-		String repoFullName = tinyDb.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
-		final String loginUid = tinyDb.getString("loginUid");
-		final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
+		repository = RepositoryContext.fromBundle(requireArguments());
 
 		// if gitea is 1.12 or higher use the new limit
-		if(new Version(tinyDb.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+		if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.12.0")) {
 			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
@@ -77,7 +80,7 @@ public class IssuesFragment extends Fragment {
 
 		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(instanceToken, repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), "");
+			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), "");
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -85,7 +88,7 @@ public class IssuesFragment extends Fragment {
 		adapter.setLoadMoreListener(() -> fragmentIssuesBinding.recyclerView.post(() -> {
 			if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (issuesList.size() + resultLimit) / resultLimit;
-				loadMore(Authorization.get(context), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"), "");
+				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), "");
 			}
 		}));
 
@@ -111,16 +114,14 @@ public class IssuesFragment extends Fragment {
 
 				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 					int page = (issuesList.size() + resultLimit) / resultLimit;
-					loadMore(Authorization.get(context), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"), "");
+					loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 				}
 			}));
-
-			tinyDb.putString("repoIssuesState", issueState);
 
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, issueState, "");
+			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, issueState, repository.getIssueMilestoneFilterName());
 			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
@@ -133,38 +134,28 @@ public class IssuesFragment extends Fragment {
 
 				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 					int page = (issuesList.size() + resultLimit) / resultLimit;
-					loadMore(Authorization.get(context), repoOwner, repoName, page, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
+					loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 				}
 			}));
-
-			tinyDb.putString("issueMilestoneFilterId", filterIssueByMilestone);
 
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), filterIssueByMilestone);
+			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), filterIssueByMilestone);
 			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
-		loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
+		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 
 		return fragmentIssuesBinding.getRoot();
 	}
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
-		TinyDB tinyDb = TinyDB.getInstance(context);
-
-		String repoFullName = tinyDb.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
-
-		if(tinyDb.getBoolean("resumeIssues")) {
-			loadInitial(Authorization.get(context), repoOwner, repoName, resultLimit, requestType, tinyDb.getString("repoIssuesState"), tinyDb.getString("issueMilestoneFilterId"));
-			tinyDb.putBoolean("resumeIssues", false);
+		if(resumeIssues) {
+			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+			resumeIssues = false;
 		}
 	}
 
@@ -251,9 +242,7 @@ public class IssuesFragment extends Fragment {
 		inflater.inflate(R.menu.filter_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 
-		TinyDB tinyDb = TinyDB.getInstance(context);
-
-		if(tinyDb.getString("repoIssuesState").equals("closed")) {
+		if(repository.getIssueState().toString().equals("closed")) {
 			menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
 		}
 		else {

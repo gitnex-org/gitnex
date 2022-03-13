@@ -28,7 +28,7 @@ public class SettingsDraftsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		activitySettingsDraftsBinding.commentsDeletionSwitch.setChecked(tinyDB.getBoolean("draftsCommentsDeletionEnabled"));
+		activitySettingsDraftsBinding.commentsDeletionSwitch.setChecked(tinyDB.getBoolean("draftsCommentsDeletionEnabled", true));
 
 		// delete comments on submit switcher
 		activitySettingsDraftsBinding.commentsDeletionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

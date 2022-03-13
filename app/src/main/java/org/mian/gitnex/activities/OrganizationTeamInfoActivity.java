@@ -19,7 +19,6 @@ import org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding;
 import org.mian.gitnex.fragments.BottomSheetOrganizationTeamsFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoMembersFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoPermissionsFragment;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
@@ -28,8 +27,7 @@ import org.mian.gitnex.structs.BottomSheetListener;
 
 public class OrganizationTeamInfoActivity extends BaseActivity implements BottomSheetListener {
 
-	private ActivityOrgTeamInfoBinding binding;
-    private Teams team;
+	private Teams team;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -37,7 +35,7 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 
         super.onCreate(savedInstanceState);
 
-	    binding = ActivityOrgTeamInfoBinding.inflate(getLayoutInflater());
+	    org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding binding = ActivityOrgTeamInfoBinding.inflate(getLayoutInflater());
 
 	    setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
@@ -85,16 +83,6 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 
 		    tab.setCustomView(textView);
 	    }).attach();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        TinyDB tinyDb = TinyDB.getInstance(appCtx);
-
-        if(tinyDb.getBoolean("teamActionFlag")) {
-            tinyDb.putBoolean("teamActionFlag", false);
-        }
     }
 
     @Override

@@ -17,11 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
-import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
-import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.TinyDB;
 import java.util.List;
 
 /**
@@ -38,10 +34,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private final OnNotificationClickedListener onNotificationClickedListener;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
-	private final TinyDB tinyDb;
 
 	public NotificationsAdapter(Context context, List<NotificationThread> notificationThreads, OnMoreClickedListener onMoreClickedListener, OnNotificationClickedListener onNotificationClickedListener) {
-		this.tinyDb = TinyDB.getInstance(context);
+
 		this.context = context;
 		this.notificationThreads = notificationThreads;
 		this.onMoreClickedListener = onMoreClickedListener;
@@ -169,28 +164,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					break;
 			}
 
-			frame.setOnClickListener(v -> {
-
-				onNotificationClickedListener.onNotificationClicked(notificationThread);
-
-				String[] parts = notificationThread.getRepository().getFullName().split("/");
-				final String repoOwner = parts[0];
-				final String repoName = parts[1];
-
-				int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
-
-				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-
-				if(count == 0) {
-					long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-					tinyDb.putLong("repositoryId", id);
-				}
-				else {
-					Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-					tinyDb.putLong("repositoryId", data.getRepositoryId());
-				}
-			});
+			frame.setOnClickListener(v -> onNotificationClickedListener.onNotificationClicked(notificationThread));
 
 			more.setOnClickListener(v -> onMoreClickedListener.onMoreClicked(notificationThread));
 		}

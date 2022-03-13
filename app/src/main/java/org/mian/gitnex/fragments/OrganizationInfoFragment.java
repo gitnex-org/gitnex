@@ -15,10 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import org.gitnex.tea4j.models.Organization;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationInfoBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import retrofit2.Call;
@@ -78,7 +78,7 @@ public class OrganizationInfoFragment extends Fragment {
 
         orgNameInfo.setText(orgName);
 
-        getOrgInfo(Authorization.get(getContext()), orgName);
+        getOrgInfo(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName);
 
         return fragmentOrganizationInfoBinding.getRoot();
 

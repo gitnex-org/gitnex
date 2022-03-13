@@ -24,11 +24,11 @@ import org.mian.gitnex.databinding.ActivityFileViewBinding;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.structs.BottomSheetListener;
 import java.io.IOException;
@@ -46,6 +46,18 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 	private ActivityFileViewBinding binding;
 	private Files file;
+	private RepositoryContext repository;
+	private boolean renderMd = false;
+
+	public ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+		result -> {
+			if(result.getResultCode() == 200) {
+				assert result.getData() != null;
+				if(result.getData().getBooleanExtra("fileModified", false)) {
+					getSingleFileContents(repository.getOwner(), repository.getName(), file.getPath(), repository.getBranchRef());
+				}
+			}
+		});
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,11 +65,10 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		super.onCreate(savedInstanceState);
 
 		binding = ActivityFileViewBinding.inflate(getLayoutInflater());
+		repository = RepositoryContext.fromIntent(getIntent());
 
 		setContentView(binding.getRoot());
 		setSupportActionBar(binding.toolbar);
-
-		tinyDB.putBoolean("enableMarkdownInFileView", false);
 
 		file = (Files) getIntent().getSerializableExtra("file");
 
@@ -66,31 +77,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		binding.toolbarTitle.setMovementMethod(new ScrollingMovementMethod());
 		binding.toolbarTitle.setText(file.getPath());
 
-		String repoFullName = tinyDB.getString("repoFullName");
-		String repoBranch = tinyDB.getString("repoBranch");
-		String[] parts = repoFullName.split("/");
-		String repoOwner = parts[0];
-		String repoName = parts[1];
-
-		getSingleFileContents(repoOwner, repoName, file.getPath(), repoBranch);
-
-	}
-
-	@Override
-	public void onResume() {
-
-		super.onResume();
-
-		if(tinyDB.getBoolean("fileModified")) {
-			String repoFullName = tinyDB.getString("repoFullName");
-			String repoBranch = tinyDB.getString("repoBranch");
-			String[] parts = repoFullName.split("/");
-			String repoOwner = parts[0];
-			String repoName = parts[1];
-
-			getSingleFileContents(repoOwner, repoName, file.getPath(), repoBranch);
-			tinyDB.putBoolean("fileModified", false);
-		}
+		getSingleFileContents(repository.getOwner(), repository.getName(), file.getPath(), repository.getBranchRef());
 	}
 
 	private void getSingleFileContents(final String owner, String repo, final String filename, String ref) {
@@ -99,7 +86,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 			Call<ResponseBody> call = RetrofitClient
 				.getWebInterface(ctx)
-				.getFileContents(Authorization.getWeb(ctx), owner, repo, ref, filename);
+				.getFileContents(getAccount().getWebAuthorization(), owner, repo, ref, filename);
 
 			try {
 
@@ -152,8 +139,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 									binding.contents.setContent(text, fileExtension);
 
-									if(tinyDB.getBoolean("enableMarkdownInFileView")) {
-										Markdown.render(ctx, EmojiParser.parseToUnicode(text), binding.markdown);
+									if(renderMd) {
+										Markdown.render(ctx, EmojiParser.parseToUnicode(text), binding.markdown, repository);
 
 										binding.contents.setVisibility(View.GONE);
 										binding.markdownFrame.setVisibility(View.VISIBLE);
@@ -252,25 +239,26 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		} else if(id == R.id.genericMenu) {
 
 			BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
+			bottomSheet.setArguments(repository.getBundle());
 			bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
 			return true;
 
 		} else if(id == R.id.markdown) {
 
-			if(!tinyDB.getBoolean("enableMarkdownInFileView")) {
+			if(!renderMd) {
 				if(binding.markdown.getAdapter() == null) {
-					Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown);
+					Markdown.render(ctx, EmojiParser.parseToUnicode(binding.contents.getContent()), binding.markdown, repository);
 				}
 
 				binding.contents.setVisibility(View.GONE);
 				binding.markdownFrame.setVisibility(View.VISIBLE);
 
-				tinyDB.putBoolean("enableMarkdownInFileView", true);
+				renderMd = true;
 			} else {
 				binding.markdownFrame.setVisibility(View.GONE);
 				binding.contents.setVisibility(View.VISIBLE);
 
-				tinyDB.putBoolean("enableMarkdownInFileView", false);
+				renderMd = false;
 			}
 
 			return true;
@@ -288,12 +276,12 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		}
 
 		if("deleteFile".equals(text)) {
-			Intent intent = new Intent(ctx, CreateFileActivity.class);
+			Intent intent = repository.getIntent(ctx, CreateFileActivity.class);
 			intent.putExtra("fileAction", CreateFileActivity.FILE_ACTION_DELETE);
 			intent.putExtra("filePath", file.getPath());
 			intent.putExtra("fileSha", file.getSha());
 
-			ctx.startActivity(intent);
+			editFileLauncher.launch(intent);
 		}
 
 		if("editFile".equals(text)) {
@@ -301,7 +289,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			if(binding.contents.getContent() != null &&
 				!binding.contents.getContent().isEmpty()) {
 
-				Intent intent = new Intent(ctx, CreateFileActivity.class);
+				Intent intent = repository.getIntent(ctx, CreateFileActivity.class);
 
 				intent.putExtra("fileAction", CreateFileActivity.FILE_ACTION_EDIT);
 				intent.putExtra("filePath", file.getPath());
@@ -352,19 +340,13 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 				NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);;
 				notificationManager.notify(notificationId, builder.build());
 
-				String repoFullName = tinyDB.getString("repoFullName");
-				String repoBranch = tinyDB.getString("repoBranch");
-				String[] parts = repoFullName.split("/");
-				String repoOwner = parts[0];
-				String repoName = parts[1];
-
 				Thread thread = new Thread(() -> {
 
 					try {
 
 						Call<ResponseBody> call = RetrofitClient
 							.getWebInterface(ctx)
-							.getFileContents(Authorization.getWeb(ctx), repoOwner, repoName, repoBranch, file.getPath());
+							.getFileContents(getAccount().getWebAuthorization(), repository.getOwner(), repository.getName(), repository.getBranchRef(), file.getPath());
 
 						Response<ResponseBody> response = call.execute();
 
@@ -399,5 +381,11 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		}
 
 	});
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		repository.checkAccountSwitch(this);
+	}
 
 }

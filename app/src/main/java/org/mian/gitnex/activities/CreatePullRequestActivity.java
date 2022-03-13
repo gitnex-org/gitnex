@@ -23,10 +23,10 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreatePrBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,18 +41,13 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 	private View.OnClickListener onClickListener;
 	private ActivityCreatePrBinding viewBinding;
-	private CustomLabelsSelectionDialogBinding labelsBinding;
 	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 	private Dialog dialogLabels;
-	private String labelsSetter;
 	private List<Integer> labelsIds = new ArrayList<>();
-	private List<String> assignees = new ArrayList<>();
+	private final List<String> assignees = new ArrayList<>();
 	private int milestoneId;
 
-	private String loginUid;
-	private String instanceToken;
-	private String repoOwner;
-	private String repoName;
+	private RepositoryContext repository;
 
 	private LabelsListAdapter labelsAdapter;
 
@@ -69,15 +64,10 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		loginUid = tinyDB.getString("loginUid");
-		String repoFullName = tinyDB.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		repoOwner = parts[0];
-		repoName = parts[1];
-		instanceToken = "token " + tinyDB.getString(loginUid + "-token");
+		repository = RepositoryContext.fromIntent(getIntent());
 
 		// require gitea 1.12 or higher
-		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+		if(getAccount().requiresVersion("1.12.0")) {
 
 			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
@@ -106,14 +96,14 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		disableProcessButton();
 
-		getMilestones(repoOwner, repoName, resultLimit);
-		getBranches(repoOwner, repoName);
+		getMilestones(repository.getOwner(), repository.getName(), resultLimit);
+		getBranches(repository.getOwner(), repository.getName());
 
 		viewBinding.prLabels.setOnClickListener(prLabels -> showLabels());
 
 		viewBinding.createPr.setOnClickListener(createPr -> processPullRequest());
 
-		if(!tinyDB.getBoolean("canPush")) {
+		if(!repository.getPermissions().canPush()) {
 			viewBinding.prDueDateLayout.setVisibility(View.GONE);
 			viewBinding.prLabelsLayout.setVisibility(View.GONE);
 		}
@@ -167,11 +157,11 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 	private void createPullRequest(String prTitle, String prDescription, String mergeInto, String pullFrom, int milestoneId, String dueDate, List<String> assignees) {
 
-		CreatePullRequest createPullRequest = new CreatePullRequest(prTitle, prDescription, loginUid, mergeInto, pullFrom, milestoneId, dueDate, assignees, labelsIds);
+		CreatePullRequest createPullRequest = new CreatePullRequest(prTitle, prDescription, getAccount().getAccount().getUserName(), mergeInto, pullFrom, milestoneId, dueDate, assignees, labelsIds);
 
 		Call<Void> transferCall = RetrofitClient
-			.getApiInterface(appCtx)
-			.createPullRequest(instanceToken, repoOwner, repoName, createPullRequest);
+			.getApiInterface(ctx)
+			.createPullRequest(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), createPullRequest);
 
 		transferCall.enqueue(new Callback<Void>() {
 
@@ -214,7 +204,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	@Override
 	public void labelsInterface(List<String> data) {
 
-		labelsSetter = String.valueOf(data);
+		String labelsSetter = String.valueOf(data);
 		viewBinding.prLabels.setText(labelsSetter.replace("]", "").replace("[", ""));
 	}
 
@@ -233,7 +223,8 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			dialogLabels.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		}
 
-		labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
+		org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding
+			.inflate(LayoutInflater.from(ctx));
 
 		View view = labelsBinding.getRoot();
 		dialogLabels.setContentView(view);
@@ -241,14 +232,14 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		labelsBinding.cancel.setOnClickListener(editProperties -> dialogLabels.dismiss());
 
 		dialogLabels.show();
-		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, dialogLabels, labelsAdapter, labelsBinding);
 	}
 
 	private void getBranches(String repoOwner, String repoName) {
 
 		Call<List<Branches>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getBranches(Authorization.get(ctx), repoOwner, repoName);
+			.getBranches(getAccount().getAuthorization(), repoOwner, repoName);
 
 		call.enqueue(new Callback<List<Branches>>() {
 
@@ -296,8 +287,8 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		String msState = "open";
 		Call<List<Milestones>> call = RetrofitClient
-			.getApiInterface(appCtx)
-			.getMilestones(Authorization.get(ctx), repoOwner, repoName, 1, resultLimit, msState);
+			.getApiInterface(ctx)
+			.getMilestones(getAccount().getAuthorization(), repoOwner, repoName, 1, resultLimit, msState);
 
 		call.enqueue(new Callback<List<Milestones>>() {
 
@@ -374,5 +365,11 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	private void enableProcessButton() {
 
 		viewBinding.createPr.setEnabled(true);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		repository.checkAccountSwitch(this);
 	}
 }

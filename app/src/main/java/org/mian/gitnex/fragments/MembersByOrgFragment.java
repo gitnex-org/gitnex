@@ -13,19 +13,14 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.FragmentMembersByOrgBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.MembersByOrgViewModel;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -67,15 +62,12 @@ public class MembersByOrgFragment extends Fragment {
 	    FragmentMembersByOrgBinding fragmentMembersByOrgBinding = FragmentMembersByOrgBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
         noDataMembers = fragmentMembersByOrgBinding.noDataMembers;
 
 	    progressBar = fragmentMembersByOrgBinding.progressBar;
         mGridView = fragmentMembersByOrgBinding.gridView;
 
-        fetchDataAsync(Authorization.get(getContext()), orgName);
+        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName);
 
         return fragmentMembersByOrgBinding.getRoot();
     }
@@ -84,22 +76,19 @@ public class MembersByOrgFragment extends Fragment {
 
         MembersByOrgViewModel membersModel= new ViewModelProvider(this).get(MembersByOrgViewModel.class);
 
-        membersModel.getMembersList(instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
-            @Override
-            public void onChanged(@Nullable List<UserInfo> membersListMain) {
-                adapter = new UserGridAdapter(getContext(), membersListMain);
-                if(adapter.getCount() > 0) {
-                    mGridView.setAdapter(adapter);
-                    noDataMembers.setVisibility(View.GONE);
-                }
-                else {
-                    adapter.notifyDataSetChanged();
-                    mGridView.setAdapter(adapter);
-                    noDataMembers.setVisibility(View.VISIBLE);
-                }
-
-	            progressBar.setVisibility(View.GONE);
+        membersModel.getMembersList(instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), membersListMain -> {
+            adapter = new UserGridAdapter(getContext(), membersListMain);
+            if(adapter.getCount() > 0) {
+                mGridView.setAdapter(adapter);
+                noDataMembers.setVisibility(View.GONE);
             }
+            else {
+                adapter.notifyDataSetChanged();
+                mGridView.setAdapter(adapter);
+                noDataMembers.setVisibility(View.VISIBLE);
+            }
+
+	        progressBar.setVisibility(View.GONE);
         });
 
     }

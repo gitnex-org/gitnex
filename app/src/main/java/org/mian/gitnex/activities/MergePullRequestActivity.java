@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,11 +15,11 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityMergePullRequestBinding;
+import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.util.ArrayList;
 import java.util.Objects;
 import retrofit2.Call;
@@ -32,9 +33,7 @@ public class MergePullRequestActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
 
-	private String repoOwner;
-	private String repoName;
-	private int prIndex;
+	private IssueContext issue;
 
 	private ActivityMergePullRequestBinding viewBinding;
 
@@ -49,11 +48,7 @@ public class MergePullRequestActivity extends BaseActivity {
 		viewBinding = ActivityMergePullRequestBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		String repoFullName = tinyDB.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
-		repoOwner = parts[0];
-		repoName = parts[1];
-		prIndex = Integer.parseInt(tinyDB.getString("issueNumber"));
+		issue = IssueContext.fromIntent(getIntent());
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -65,22 +60,22 @@ public class MergePullRequestActivity extends BaseActivity {
 
 		setMergeAdapter();
 
-		if(!tinyDB.getString("issueTitle").isEmpty()) {
+		if(!issue.getPullRequest().getTitle().isEmpty()) {
 
-			viewBinding.toolbarTitle.setText(tinyDB.getString("issueTitle"));
-			viewBinding.mergeTitle.setText(tinyDB.getString("issueTitle") + " (#" + tinyDB.getString("issueNumber") + ")");
+			viewBinding.toolbarTitle.setText(issue.getPullRequest().getTitle());
+			viewBinding.mergeTitle.setText(issue.getPullRequest().getTitle() + " (#" + issue.getIssueIndex() + ")");
 		}
 
 		initCloseListener();
 		viewBinding.close.setOnClickListener(onClickListener);
 
 		// if gitea version is greater/equal(1.12.0) than user installed version (installed.higherOrEqual(compareVer))
-		if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
+		if(getAccount().requiresVersion("1.12.0")) {
 
 			viewBinding.deleteBranch.setVisibility(View.VISIBLE);
 		}
 
-		if(tinyDB.getString("prMergeable").equals("false")) {
+		if(!issue.getPullRequest().isMergeable()) {
 
 			disableProcessButton();
 			viewBinding.mergeInfoDisabledMessage.setVisibility(View.VISIBLE);
@@ -90,7 +85,7 @@ public class MergePullRequestActivity extends BaseActivity {
 			viewBinding.mergeInfoDisabledMessage.setVisibility(View.GONE);
 		}
 
-		if(tinyDB.getString("prIsFork").equals("true")) {
+		if(issue.prIsFork()) {
 
 			viewBinding.deleteBranchForkInfo.setVisibility(View.VISIBLE);
 		}
@@ -108,7 +103,7 @@ public class MergePullRequestActivity extends BaseActivity {
 			viewBinding.mergeButton.setOnClickListener(mergePullRequest);
 		}
 
-		if(!tinyDB.getBoolean("canPushPullSource")) {
+		if(!issue.getPullRequest().getHead().getRepo().getPermissions().isPush()) {
 			viewBinding.deleteBranch.setVisibility(View.GONE);
 			viewBinding.deleteBranchForkInfo.setVisibility(View.GONE);
 		}
@@ -123,7 +118,7 @@ public class MergePullRequestActivity extends BaseActivity {
 		mergeList.add(new MergePullRequestSpinner("rebase", getResources().getString(R.string.mergeOptionRebase)));
 		mergeList.add(new MergePullRequestSpinner("rebase-merge", getResources().getString(R.string.mergeOptionRebaseCommit)));
 		// squash merge works only on gitea > v1.11.4 due to a bug
-		if(new Version(tinyDB.getString("giteaVersion")).higher("1.11.4")) {
+		if(getAccount().requiresVersion("1.12.0")) {
 
 			mergeList.add(new MergePullRequestSpinner("squash", getResources().getString(R.string.mergeOptionSquash)));
 		}
@@ -174,7 +169,7 @@ public class MergePullRequestActivity extends BaseActivity {
 
 		MergePullRequest mergePR = new MergePullRequest(Do, mergePRDT, mergeTitle);
 
-		Call<Void> call = RetrofitClient.getApiInterface(ctx).mergePullRequest(Authorization.get(ctx), repoOwner, repoName, prIndex, mergePR);
+		Call<Void> call = RetrofitClient.getApiInterface(ctx).mergePullRequest(getAccount().getAuthorization(), issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getIssueIndex(), mergePR);
 
 		call.enqueue(new Callback<Void>() {
 
@@ -185,43 +180,24 @@ public class MergePullRequestActivity extends BaseActivity {
 
 					if(deleteBranch) {
 
-						if(tinyDB.getString("prIsFork").equals("true")) {
-
-							String repoFullName = tinyDB.getString("prForkFullName");
+						if(issue.prIsFork()) {
+							String repoFullName = issue.getPullRequest().getHead().getRepo().getFull_name();
 							String[] parts = repoFullName.split("/");
 							final String repoOwner = parts[0];
 							final String repoName = parts[1];
 
-							PullRequestActions.deleteHeadBranch(ctx, repoOwner, repoName, tinyDB.getString("prHeadBranch"), false);
-
-							Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
-							tinyDB.putBoolean("prMerged", true);
-							tinyDB.putBoolean("resumePullRequests", true);
-							finish();
+							PullRequestActions.deleteHeadBranch(ctx, repoOwner, repoName, issue.getPullRequest().getHead().getRef(), false);
 						}
 						else {
-
-							String repoFullName = tinyDB.getString("repoFullName");
-							String[] parts = repoFullName.split("/");
-							final String repoOwner = parts[0];
-							final String repoName = parts[1];
-
-							PullRequestActions.deleteHeadBranch(ctx, repoOwner, repoName, tinyDB.getString("prHeadBranch"), false);
-
-							Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
-							tinyDB.putBoolean("prMerged", true);
-							tinyDB.putBoolean("resumePullRequests", true);
-							finish();
+							PullRequestActions.deleteHeadBranch(ctx, issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getPullRequest().getHead().getRef(), false);
 						}
 
 					}
-					else {
-
-						Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
-						tinyDB.putBoolean("prMerged", true);
-						tinyDB.putBoolean("resumePullRequests", true);
-						finish();
-					}
+					Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
+					Intent result = new Intent();
+					PullRequestsFragment.resumePullRequests = true;
+					setResult(200, result);
+					finish();
 
 				}
 				else if(response.code() == 401) {
@@ -266,6 +242,12 @@ public class MergePullRequestActivity extends BaseActivity {
 	private void enableProcessButton() {
 
 		viewBinding.mergeButton.setEnabled(true);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		issue.getRepository().checkAccountSwitch(this);
 	}
 
 }

@@ -28,11 +28,8 @@ import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
 import org.mian.gitnex.fragments.TeamsByOrgFragment;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
-import org.mian.gitnex.helpers.Version;
-import java.util.List;
 import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
 import retrofit2.Call;
@@ -54,7 +51,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 	    setContentView(R.layout.activity_org_detail);
 
-	    String orgName = tinyDB.getString("orgName");
+	    String orgName = getIntent().getStringExtra("orgName");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
@@ -113,9 +110,9 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-	    if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.16.0")) {
+	    if(getAccount().requiresVersion("1.16.0")) {
 		    RetrofitClient.getApiInterface(this)
-			    .getOrgPermissions(Authorization.get(this), tinyDB.getString("loginUid"), orgName).enqueue(new Callback<OrgPermissions>() {
+			    .getOrgPermissions(getAccount().getAuthorization(), getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<OrgPermissions>() {
 
 			    @Override
 			    public void onResponse(@NonNull Call<OrgPermissions> call, @NonNull Response<OrgPermissions> response) {
@@ -173,9 +170,11 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
         switch (text) {
             case "repository":
-
-                tinyDB.putBoolean("organizationAction", true);
-                startActivity(new Intent(OrganizationDetailActivity.this, CreateRepoActivity.class));
+            	Intent intentRepo = new Intent(this, CreateRepoActivity.class);
+                intentRepo.putExtra("organizationAction", true);
+                intentRepo.putExtra("orgName", getIntent().getStringExtra("orgName"));
+                intentRepo.putExtras(getIntent().getExtras());
+                startActivity(intentRepo);
                 break;
 	        case "label":
 
@@ -185,16 +184,17 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		        ctx.startActivity(intent);
 		        break;
             case "team":
-
-                startActivity(new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class));
+				Intent intentTeam = new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class);
+				intentTeam.putExtras(getIntent().getExtras());
+                startActivity(intentTeam);
                 break;
 	        case "copyOrgUrl":
 
-		        String url = UrlBuilder.fromString(tinyDB.getString("instanceUrl"))
+		        String url = UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl())
 			        .withPath("/")
 			        .toString();
 		        ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-		        ClipData clip = ClipData.newPlainText("orgUrl", url + tinyDB.getString("orgName"));
+		        ClipData clip = ClipData.newPlainText("orgUrl", url + getIntent().getStringExtra("orgName"));
 		        assert clipboard != null;
 		        clipboard.setPrimaryClip(clip);
 		        Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
@@ -212,15 +212,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
         @Override
         public Fragment getItem(int position) {
 
-            String orgName;
-            if(getIntent().getStringExtra("orgName") != null || !Objects.equals(getIntent().getStringExtra("orgName"), "")) {
-
-                orgName = getIntent().getStringExtra("orgName");
-            }
-            else {
-
-                orgName = tinyDB.getString("orgName");
-            }
+            String orgName = getIntent().getStringExtra("orgName");
 
             Fragment fragment = null;
             switch (position) {

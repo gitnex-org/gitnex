@@ -17,13 +17,14 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.activities.DiffActivity;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
+import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.views.ReactionSpinner;
 import java.util.Objects;
@@ -35,9 +36,11 @@ import java.util.Objects;
 public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
+	private final IssueContext issue;
 	private final String issueCreator;
 
-	public BottomSheetSingleIssueFragment(String username) {
+	public BottomSheetSingleIssueFragment(IssueContext issue, String username) {
+		this.issue = issue;
 		issueCreator = username;
 	}
 
@@ -48,21 +51,16 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		BottomSheetSingleIssueBinding binding = BottomSheetSingleIssueBinding.inflate(inflater, container, false);
 
 		final Context ctx = getContext();
-		final TinyDB tinyDB = TinyDB.getInstance(ctx);
 
-		boolean userIsCreator = issueCreator.equals(tinyDB.getString("loginUid"));
-		boolean isRepoAdmin = tinyDB.getBoolean("isRepoAdmin");
-		boolean canPush = tinyDB.getBoolean("canPush");
-		boolean archived = tinyDB.getBoolean("isArchived");
-
-		String repoFullName = tinyDB.getString("repoFullName");
-		String[] parts = repoFullName.split("/");
+		boolean userIsCreator = issueCreator.equals(((BaseActivity) requireActivity()).getAccount().getAccount().getUserName());
+		boolean isRepoAdmin = issue.getRepository().getPermissions().isAdmin();
+		boolean canPush = issue.getRepository().getPermissions().canPush();
+		boolean archived = issue.getRepository().getRepository().isArchived();
 
 		Bundle bundle = new Bundle();
-
-		bundle.putString("repoOwner", parts[0]);
-		bundle.putString("repoName", parts[1]);
-		bundle.putInt("issueId", Integer.parseInt(tinyDB.getString("issueNumber")));
+		bundle.putString("repoOwner", issue.getRepository().getOwner());
+		bundle.putString("repoName", issue.getRepository().getName());
+		bundle.putInt("issueId", issue.getIssueIndex());
 
 		TextView loadReactions = new TextView(ctx);
 		loadReactions.setText(Objects.requireNonNull(ctx).getString(R.string.genericWaitFor));
@@ -73,7 +71,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		ReactionSpinner reactionSpinner = new ReactionSpinner(ctx, bundle);
 		reactionSpinner.setOnInteractedListener(() -> {
 
-			tinyDB.putBoolean("singleIssueUpdate", true);
+			((IssueDetailActivity) requireActivity()).singleIssueUpdate = true;
 
 			bmListener.onButtonClicked("onResume");
 			dismiss();
@@ -84,14 +82,14 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.commentReactionButtons.addView(reactionSpinner);
 		});
 
-		if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
+		if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 
 			binding.editIssue.setText(R.string.editPrText);
 			binding.copyIssueUrl.setText(R.string.copyPrUrlText);
 			binding.shareIssue.setText(R.string.sharePr);
 
-			boolean canPushPullSource = tinyDB.getBoolean("canPushPullSource");
-			if(tinyDB.getBoolean("prMerged") || tinyDB.getString("repoPrState").equals("closed")) {
+			boolean canPushPullSource = issue.getPullRequest().getHead().getRepo().getPermissions().isPush();
+			if(issue.getPullRequest().isMerged() || issue.getIssue().getState().equals("closed")) {
 				binding.updatePullRequest.setVisibility(View.GONE);
 				binding.mergePullRequest.setVisibility(View.GONE);
 				if(canPushPullSource) {
@@ -114,7 +112,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 				if(!userIsCreator && !canPush) {
 					binding.editIssue.setVisibility(View.GONE);
 				}
-				if(canPush && !tinyDB.getString("prMergeable").equals("false")) {
+				if(canPush && !issue.getPullRequest().isMergeable()) {
 					binding.mergePullRequest.setVisibility(View.VISIBLE);
 				}
 				else {
@@ -123,18 +121,8 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 				binding.deletePrHeadBranch.setVisibility(View.GONE);
 			}
 
-			if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.13.0")) {
-				binding.openFilesDiff.setVisibility(View.VISIBLE);
-			}
-			else if(tinyDB.getString("repoType").equals("public")) {
-				binding.openFilesDiff.setVisibility(View.VISIBLE);
-			}
-			else {
-				binding.openFilesDiff.setVisibility(View.GONE);
-			}
-
-		}
-		else {
+			binding.openFilesDiff.setVisibility(View.VISIBLE);
+		} else {
 			if(!userIsCreator && !canPush) {
 				binding.editIssue.setVisibility(View.GONE);
 			}
@@ -144,35 +132,35 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		}
 
 		binding.updatePullRequest.setOnClickListener(v -> {
-			if(new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.16.0")) {
-				AlertDialogs.selectPullUpdateStrategy(requireContext(), parts[0], parts[1], tinyDB.getString("issueNumber"));
-			}
-			else {
-				PullRequestActions.updatePr(requireContext(), parts[0], parts[1], tinyDB.getString("issueNumber"), null);
+			if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.16.0")) {
+				AlertDialogs.selectPullUpdateStrategy(requireContext(), issue.getRepository().getOwner(), issue.getRepository().getName(),
+					String.valueOf(issue.getIssueIndex()));
+			} else {
+				PullRequestActions.updatePr(requireContext(), issue.getRepository().getOwner(), issue.getRepository().getName(),
+					String.valueOf(issue.getIssueIndex()), null);
 			}
 			dismiss();
 		});
 
 		binding.mergePullRequest.setOnClickListener(v13 -> {
-			startActivity(new Intent(ctx, MergePullRequestActivity.class));
-			dismiss();
-		});
 
-		binding.openFilesDiff.setOnClickListener(v14 -> {
-			startActivity(new Intent(ctx, DiffActivity.class));
+			startActivity(issue.getIntent(ctx, MergePullRequestActivity.class));
 			dismiss();
 		});
 
 		binding.deletePrHeadBranch.setOnClickListener(v -> {
 
-			PullRequestActions.deleteHeadBranch(ctx, parts[0], parts[1], tinyDB.getString("prHeadBranch"), true);
+			PullRequestActions.deleteHeadBranch(ctx, issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getPullRequest().getHead().getRef(), true);
 			dismiss();
 		});
 
-
+		binding.openFilesDiff.setOnClickListener(v14 -> {
+			startActivity(issue.getIntent(ctx, DiffActivity.class));
+			dismiss();
+		});
 
 		binding.editIssue.setOnClickListener(v15 -> {
-			startActivity(new Intent(ctx, EditIssueActivity.class));
+			((IssueDetailActivity) requireActivity()).editIssueLauncher.launch(issue.getIntent(ctx, EditIssueActivity.class));
 			dismiss();
 		});
 
@@ -190,9 +178,9 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 			Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 			sharingIntent.setType("text/plain");
-			sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle"));
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tinyDB.getString("singleIssueHtmlUrl"));
-			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + tinyDB.getString("issueNumber") + " " + tinyDB.getString("issueTitle")));
+			sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.hash) + issue.getIssueIndex() + " " + issue.getIssue().getTitle());
+			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, issue.getIssue().getHtml_url());
+			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + issue.getIssueIndex() + " " + issue.getIssue().getTitle()));
 
 			dismiss();
 		});
@@ -201,7 +189,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 			// copy to clipboard
 			ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-			ClipData clip = ClipData.newPlainText("issueUrl", tinyDB.getString("singleIssueHtmlUrl"));
+			ClipData clip = ClipData.newPlainText("issueUrl", issue.getIssue().getHtml_url());
 			assert clipboard != null;
 			clipboard.setPrimaryClip(clip);
 
@@ -210,22 +198,22 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			dismiss();
 		});
 
-		if(tinyDB.getString("issueState").equals("open")) { // close issue
+		if(issue.getIssue().getState().equals("open")) { // close issue
 			if(!userIsCreator && !canPush) {
 				binding.closeIssue.setVisibility(View.GONE);
 				binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			}
-			else if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
+			else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 				binding.closeIssue.setText(R.string.closePr);
 			}
 			binding.closeIssue.setOnClickListener(closeSingleIssue -> {
-				IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "closed");
+				IssueActions.closeReopenIssue(ctx, "closed", issue);
 				dismiss();
 			});
 		}
-		else if(tinyDB.getString("issueState").equals("closed")) {
+		else if(issue.getIssue().getState().equals("closed")) {
 			if(userIsCreator || canPush) {
-				if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
+				if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 					binding.closeIssue.setText(R.string.reopenPr);
 				}
 				else {
@@ -237,28 +225,26 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 				binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			}
 			binding.closeIssue.setOnClickListener(closeSingleIssue -> {
-				IssueActions.closeReopenIssue(ctx, Integer.parseInt(tinyDB.getString("issueNumber")), "open");
+				IssueActions.closeReopenIssue(ctx, "open", issue);
 				dismiss();
 			});
 		}
 
 		binding.subscribeIssue.setOnClickListener(subscribeToIssue -> {
 
-			IssueActions.subscribe(ctx);
+			IssueActions.subscribe(ctx, issue);
+			issue.setSubscribed(true);
 			dismiss();
 		});
 
 		binding.unsubscribeIssue.setOnClickListener(unsubscribeToIssue -> {
 
-			IssueActions.unsubscribe(ctx);
+			IssueActions.unsubscribe(ctx, issue);
+			issue.setSubscribed(false);
 			dismiss();
 		});
 
-		if(new Version(tinyDB.getString("giteaVersion")).less("1.12.0")) {
-			binding.subscribeIssue.setVisibility(View.GONE);
-			binding.unsubscribeIssue.setVisibility(View.GONE);
-		}
-		else if(tinyDB.getBoolean("issueSubscribed")) {
+		if(issue.isSubscribed()) {
 			binding.subscribeIssue.setVisibility(View.GONE);
 			binding.unsubscribeIssue.setVisibility(View.VISIBLE);
 		}
@@ -293,7 +279,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		}
 		catch(ClassCastException e) {
 
-			throw new ClassCastException(context.toString() + " must implement BottomSheetListener");
+			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
 }

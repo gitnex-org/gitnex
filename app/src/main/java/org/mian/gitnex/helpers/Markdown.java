@@ -20,11 +20,14 @@ import org.commonmark.parser.InlineParserFactory;
 import org.commonmark.parser.Parser;
 import org.commonmark.parser.PostProcessor;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.core.MainGrammarLocator;
+import org.mian.gitnex.helpers.contexts.IssueContext;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -140,13 +143,13 @@ public class Markdown {
 		}
 	}
 
-	public static void render(Context context, String markdown, RecyclerView recyclerView) {
+	public static void render(Context context, String markdown, RecyclerView recyclerView, RepositoryContext repository) {
 
 		try {
 			RecyclerViewRenderer renderer = rvRendererPool.claim(OBJECT_POOL_CLAIM_TIMEOUT);
 
 			if(renderer != null) {
-				renderer.setParameters(context, markdown, recyclerView);
+				renderer.setParameters(context, markdown, recyclerView, repository);
 				executorService.execute(renderer);
 			}
 		}
@@ -172,7 +175,7 @@ public class Markdown {
 		private void setup() {
 
 			Prism4jTheme prism4jTheme =
-				TinyDB.getInstance(context).getString("currentTheme").equals("dark") ? Prism4jThemeDarkula.create() : Prism4jThemeDefault.create();
+				AppUtil.getColorFromAttribute(context, R.attr.isDark) == 1 ? Prism4jThemeDarkula.create() : Prism4jThemeDefault.create();
 
 			Markwon.Builder builder = Markwon.builder(context).usePlugin(CorePlugin.create()).usePlugin(HtmlPlugin.create())
 				.usePlugin(LinkifyPlugin.create(true)).usePlugin(SoftBreakAddsNewLinePlugin.create()).usePlugin(TablePlugin.create(context))
@@ -279,6 +282,9 @@ public class Markdown {
 		private String markdown;
 		private RecyclerView recyclerView;
 		private MarkwonAdapter adapter;
+		private RepositoryContext repository;
+
+		private LinkPostProcessor linkPostProcessor;
 
 		public RecyclerViewRenderer(Slot slot) {
 
@@ -288,9 +294,15 @@ public class Markdown {
 		private void setup() {
 
 			Objects.requireNonNull(context);
+			Objects.requireNonNull(repository);
+
+			if(linkPostProcessor == null) {
+				linkPostProcessor = new LinkPostProcessor(context.getString(R.string.commentButtonText));
+				linkPostProcessor.repository = repository;
+			}
 
 			Prism4jTheme prism4jTheme =
-				TinyDB.getInstance(context).getString("currentTheme").equals("dark") ? Prism4jThemeDarkula.create() : Prism4jThemeDefault.create();
+				AppUtil.getColorFromAttribute(context, R.attr.isDark) == 1 ? Prism4jThemeDarkula.create() : Prism4jThemeDefault.create();
 
 			final InlineParserFactory inlineParserFactory = MarkwonInlineParser.factoryBuilder().addInlineProcessor(new IssueInlineProcessor())
 				.addInlineProcessor(new UserInlineProcessor()).build();
@@ -336,7 +348,7 @@ public class Markdown {
 					public void configureParser(@NonNull Parser.Builder builder) {
 
 						builder.inlineParserFactory(inlineParserFactory);
-						builder.postProcessor(new LinkPostProcessor(TinyDB.getInstance(context), context.getString(R.string.commentButtonText)));
+						builder.postProcessor(linkPostProcessor);
 					}
 
 					@Override
@@ -357,8 +369,8 @@ public class Markdown {
 
 					@Override
 					public void configureConfiguration(@NonNull MarkwonConfiguration.Builder builder) {
-
 						builder.linkResolver((view, link) -> {
+							RepositoryContext repoLocal = linkPostProcessor.repository;
 							if(link.startsWith("gitnexuser://")) {
 								Intent i = new Intent(view.getContext(), ProfileActivity.class);
 								i.putExtra("username", link.substring(13));
@@ -366,30 +378,34 @@ public class Markdown {
 							}
 							else if(link.startsWith("gitnexissue://")) {
 								link = link.substring(14); // remove gitnexissue://
-								Intent i = new Intent(view.getContext(), IssueDetailActivity.class);
 								String index;
-								TinyDB tinyDB = TinyDB.getInstance(context);
 								if(link.contains("/")) {
 									index = link.split("#")[1];
-									tinyDB.putString("repoFullName", link.split("#")[0]);
-									i.putExtra("openedFromLink", "true");
 								}
 								else {
 									index = link.substring(1);
 								}
+								String[] repo;
+								if(link.contains("/")) {
+									repo = link.split("#")[0].split("/");
+								} else {
+									repo = new String[]{repoLocal.getOwner(), repoLocal.getName()};
+								}
+								Intent i = new IssueContext(new RepositoryContext(repo[0], repo[1], context), Integer.parseInt(index), null)
+									.getIntent(context, IssueDetailActivity.class);
 
-								tinyDB.putString("issueNumber", index);
-								i.putExtra("issueNumber", index);
+								if (link.contains("/")) {
+									i.putExtra("openedFromLink", "true");
+								}
+
 								view.getContext().startActivity(i);
 							}
 							else if(link.startsWith("gitnexcommit://")) {
-								TinyDB tinyDB = TinyDB.getInstance(context);
 								link = link.substring(15);
-								Intent i = new Intent(view.getContext(), CommitDetailActivity.class);
+								Intent i = repoLocal.getIntent(view.getContext(), CommitDetailActivity.class);
 								String sha;
 								if(link.contains("/")) {
 									sha = link.split("/")[2];
-									tinyDB.putString("repoFullName", link.split("/")[0] + link.split("/")[1]);
 								}
 								else {
 									sha = link.substring(1);
@@ -417,11 +433,14 @@ public class Markdown {
 				.include(FencedCodeBlock.class, SimpleEntry.create(R.layout.custom_markdown_code_block, R.id.textCodeBlock)).build();
 		}
 
-		public void setParameters(Context context, String markdown, RecyclerView recyclerView) {
+		public void setParameters(Context context, String markdown, RecyclerView recyclerView, RepositoryContext repository) {
 
 			this.context = context;
 			this.markdown = markdown;
 			this.recyclerView = recyclerView;
+			this.repository = repository;
+			if(linkPostProcessor != null)
+				linkPostProcessor.repository = repository;
 		}
 
 		@Override
@@ -430,6 +449,7 @@ public class Markdown {
 			Objects.requireNonNull(context);
 			Objects.requireNonNull(markdown);
 			Objects.requireNonNull(recyclerView);
+			Objects.requireNonNull(repository);
 
 			if(markwon == null) {
 				setup();
@@ -466,6 +486,7 @@ public class Markdown {
 			markdown = null;
 			recyclerView = null;
 			adapter = null;
+			repository = null;
 
 			slot.release(this);
 
@@ -476,224 +497,223 @@ public class Markdown {
 			slot.expire(this);
 		}
 
-	}
+		private static class IssueInlineProcessor extends InlineProcessor {
 
-	private static class IssueInlineProcessor extends InlineProcessor {
-
-		private static final Pattern RE = Pattern.compile("(?<!\\w)#\\d+");
-
-		@Override
-		public char specialCharacter() {
-
-			return '#';
-		}
-
-		@Override
-		protected Node parse() {
-
-			final String id = match(RE);
-			if(id != null) {
-				Link link = new Link("gitnexissue://" + id, null);
-				link.appendChild(text(id));
-				return link;
-			}
-			return null;
-		}
-
-	}
-
-	private static class UserInlineProcessor extends InlineProcessor {
-
-		private static final Pattern RE = Pattern.compile("(?<!\\w)@\\w+");
-
-		@Override
-		public char specialCharacter() {
-
-			return '@';
-		}
-
-		@Override
-		protected Node parse() {
-
-			final String user = match(RE);
-			if(user != null) {
-				final Link link = new Link("gitnexuser://" + user.substring(1 /* remove @ */), null);
-				link.appendChild(text(user));
-				return link;
-			}
-			return null;
-		}
-
-	}
-
-	private static class LinkPostProcessor implements PostProcessor {
-
-		private final String commentText;
-		private final TinyDB tinyDB;
-		private String instanceUrl;
-		private String fullRepoName;
-
-		public LinkPostProcessor(TinyDB tinyDB, String commentText) {
-
-			this.commentText = commentText;
-			this.tinyDB = tinyDB;
-			init();
-		}
-
-		private static Node insertNode(Node node, Node insertAfterNode) {
-
-			insertAfterNode.insertAfter(node);
-			return node;
-		}
-
-		private void init() {
-
-			String instanceUrl = tinyDB.getString("instanceUrl");
-			instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/")).replaceAll("\\.", "\\.");
-			this.instanceUrl = instanceUrl;
-			fullRepoName = tinyDB.getString("repoFullName");
-		}
-
-		@Override
-		public Node process(Node node) {
-
-			init();
-			AutolinkVisitor autolinkVisitor = new AutolinkVisitor();
-			node.accept(autolinkVisitor);
-			return node;
-		}
-
-		private void link(Text textNode) {
-
-			String literal = textNode.getLiteral();
-
-			Node lastNode = textNode;
-			boolean foundAny = false;
-
-			final Pattern patternIssue = Pattern
-				.compile(instanceUrl + "([^/]+/[^/]+)/(?:issues|pulls)/(\\d+)(?:(?:/#|#)(issue-\\d+|issuecomment-\\d+)|)", Pattern.MULTILINE);
-			final Matcher matcherIssue = patternIssue.matcher(literal);
-
-			final Pattern patternCommit = Pattern.compile(instanceUrl + "([^/]+/[^/]+)/commit/([a-z0-9_]+)(?!`|\\)|\\S+)", Pattern.MULTILINE);
-			final Matcher matcherCommit = patternCommit.matcher(literal);
-
-			int foundAt = 0;
-			for(int i = 0; i < literal.length(); i++) {
-				int issueStart = literal.length();
-				if(matcherIssue.find(i)) {
-					issueStart = matcherIssue.start();
-					foundAny = true;
-				}
-
-				int commitStart = literal.length();
-				if(matcherCommit.find(i)) {
-					commitStart = matcherCommit.start();
-					foundAny = true;
-				}
-
-				if(commitStart < issueStart) {
-					// next one is a commit
-					if(matcherCommit.start() > i) {
-						lastNode = insertNode(new Text(literal.substring(foundAt, matcherCommit.start())), lastNode);
-					}
-					String shortSha = matcherCommit.group(2);
-					if(shortSha == null) {
-						return;
-					}
-					if(shortSha.length() > 10) {
-						shortSha = shortSha.substring(0, 10);
-					}
-					String text;
-					if(matcherCommit.group(1).equals(fullRepoName)) {
-						text = shortSha;
-					}
-					else {
-						text = matcherCommit.group(1) + "/" + shortSha;
-					}
-					Text contentNode = new Text(text);
-					Link linkNode = new Link("gitnexcommit://" + text, null);
-					linkNode.appendChild(contentNode);
-					lastNode = insertNode(linkNode, lastNode);
-
-					i = matcherCommit.start();
-				}
-				else if(issueStart < literal.length()) {
-					// next one is an issue/comment
-					if(matcherIssue.start() > i) {
-						lastNode = insertNode(new Text(literal.substring(i, matcherIssue.start())), lastNode);
-					}
-
-					String text;
-					if(matcherIssue.group(1).equals(fullRepoName)) {
-						text = "#" + matcherIssue.group(2);
-					}
-					else {
-						text = matcherIssue.group(1) + "#" + matcherIssue.group(2);
-					}
-					Text contentNode = new Text(text);
-					Link linkNode = new Link("gitnexissue://" + text, null);
-					linkNode.appendChild(contentNode);
-					lastNode = insertNode(linkNode, lastNode);
-
-					String anchor = matcherIssue.group(3);
-					if(anchor != null && anchor.startsWith("issuecomment-")) {
-						// comment
-
-						// insert space
-						lastNode = insertNode(new Text(" "), lastNode);
-
-						Text commentNode = new Text("(" + commentText + ")");
-						Link linkCommentNode = new Link(matcherIssue.group(), null);
-						linkCommentNode.appendChild(commentNode);
-						lastNode = insertNode(linkCommentNode, lastNode);
-					}
-
-					i = matcherIssue.end();
-				}
-
-				// reset every time to make it usable in a "pure" state
-				matcherCommit.reset();
-				matcherIssue.reset();
-			}
-
-			if(foundAny) {
-				textNode.unlink();
-			}
-		}
-
-		private void linkifyImage(Image node) {
-
-			final Matcher patternAttachments = Pattern.compile("(/attachments/\\S+)", Pattern.MULTILINE).matcher(node.getDestination());
-			if(patternAttachments.matches()) {
-				node.setDestination(instanceUrl + fullRepoName + patternAttachments.group(1));
-			}
-		}
-
-		private class AutolinkVisitor extends AbstractVisitor {
-
-			int inLink = 0;
+			private static final Pattern RE = Pattern.compile("(?<!\\w)#\\d+");
 
 			@Override
-			public void visit(Link link) {
+			public char specialCharacter() {
 
-				inLink++;
-				super.visit(link);
-				inLink--;
+				return '#';
 			}
 
 			@Override
-			public void visit(Image image) {
+			protected Node parse() {
 
-				super.visit(image);
-				linkifyImage(image);
+				final String id = match(RE);
+				if(id != null) {
+					Link link = new Link("gitnexissue://" + id, null);
+					link.appendChild(text(id));
+					return link;
+				}
+				return null;
+			}
+
+		}
+
+		private static class UserInlineProcessor extends InlineProcessor {
+
+			private static final Pattern RE = Pattern.compile("(?<!\\w)@\\w+");
+
+			@Override
+			public char specialCharacter() {
+
+				return '@';
 			}
 
 			@Override
-			public void visit(Text text) {
+			protected Node parse() {
 
-				if(inLink == 0) {
-					link(text);
+				final String user = match(RE);
+				if(user != null) {
+					final Link link = new Link("gitnexuser://" + user.substring(1 /* remove @ */), null);
+					link.appendChild(text(user));
+					return link;
 				}
+				return null;
+			}
+
+		}
+
+		private class LinkPostProcessor implements PostProcessor {
+
+			private final String commentText;
+			private String instanceUrl;
+			private final Context context;
+			private RepositoryContext repository;
+
+			public LinkPostProcessor(String commentText) {
+
+				this.commentText = commentText;
+				this.context = RecyclerViewRenderer.this.context;
+				init();
+			}
+
+			private Node insertNode(Node node, Node insertAfterNode) {
+
+				insertAfterNode.insertAfter(node);
+				return node;
+			}
+
+			private void init() {
+
+				String instanceUrl = ((BaseActivity) context).getAccount().getAccount().getInstanceUrl();
+				instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/")).replaceAll("\\.", "\\.");
+				this.instanceUrl = instanceUrl;
+			}
+
+			@Override
+			public Node process(Node node) {
+
+				init();
+				AutolinkVisitor autolinkVisitor = new AutolinkVisitor();
+				node.accept(autolinkVisitor);
+				return node;
+			}
+
+			private void link(Text textNode) {
+
+				String literal = textNode.getLiteral();
+
+				Node lastNode = textNode;
+				boolean foundAny = false;
+
+				final Pattern patternIssue = Pattern
+					.compile(instanceUrl + "([^/]+/[^/]+)/(?:issues|pulls)/(\\d+)(?:(?:/#|#)(issue-\\d+|issuecomment-\\d+)|)", Pattern.MULTILINE);
+				final Matcher matcherIssue = patternIssue.matcher(literal);
+
+				final Pattern patternCommit = Pattern.compile(instanceUrl + "([^/]+/[^/]+)/commit/([a-z0-9_]+)(?!`|\\)|\\S+)", Pattern.MULTILINE);
+				final Matcher matcherCommit = patternCommit.matcher(literal);
+
+				int foundAt = 0;
+				for(int i = 0; i < literal.length(); i++) {
+					int issueStart = literal.length();
+					if(matcherIssue.find(i)) {
+						issueStart = matcherIssue.start();
+						foundAny = true;
+					}
+
+					int commitStart = literal.length();
+					if(matcherCommit.find(i)) {
+						commitStart = matcherCommit.start();
+						foundAny = true;
+					}
+
+					if(commitStart < issueStart) {
+						// next one is a commit
+						if(matcherCommit.start() > i) {
+							lastNode = insertNode(new Text(literal.substring(foundAt, matcherCommit.start())), lastNode);
+						}
+						String shortSha = matcherCommit.group(2);
+						if(shortSha == null) {
+							return;
+						}
+						if(shortSha.length() > 10) {
+							shortSha = shortSha.substring(0, 10);
+						}
+						String text;
+						if(matcherCommit.group(1).equals(repository.getFullName())) {
+							text = shortSha;
+						}
+						else {
+							text = matcherCommit.group(1) + "/" + shortSha;
+						}
+						Text contentNode = new Text(text);
+						Link linkNode = new Link("gitnexcommit://" + text, null);
+						linkNode.appendChild(contentNode);
+						lastNode = insertNode(linkNode, lastNode);
+
+						i = matcherCommit.start();
+					}
+					else if(issueStart < literal.length()) {
+						// next one is an issue/comment
+						if(matcherIssue.start() > i) {
+							lastNode = insertNode(new Text(literal.substring(i, matcherIssue.start())), lastNode);
+						}
+
+						String text;
+						if(matcherIssue.group(1).equals(repository.getFullName())) {
+							text = "#" + matcherIssue.group(2);
+						}
+						else {
+							text = matcherIssue.group(1) + "#" + matcherIssue.group(2);
+						}
+						Text contentNode = new Text(text);
+						Link linkNode = new Link("gitnexissue://" + text, null);
+						linkNode.appendChild(contentNode);
+						lastNode = insertNode(linkNode, lastNode);
+
+						String anchor = matcherIssue.group(3);
+						if(anchor != null && anchor.startsWith("issuecomment-")) {
+							// comment
+
+							// insert space
+							lastNode = insertNode(new Text(" "), lastNode);
+
+							Text commentNode = new Text("(" + commentText + ")");
+							Link linkCommentNode = new Link(matcherIssue.group(), null);
+							linkCommentNode.appendChild(commentNode);
+							lastNode = insertNode(linkCommentNode, lastNode);
+						}
+
+						i = matcherIssue.end();
+					}
+
+					// reset every time to make it usable in a "pure" state
+					matcherCommit.reset();
+					matcherIssue.reset();
+				}
+
+				if(foundAny) {
+					textNode.unlink();
+				}
+			}
+
+			private void linkifyImage(Image node) {
+
+				final Matcher patternAttachments = Pattern.compile("(/attachments/\\S+)", Pattern.MULTILINE).matcher(node.getDestination());
+				if(patternAttachments.matches()) {
+					node.setDestination(instanceUrl + repository.getFullName() + patternAttachments.group(1));
+				}
+			}
+
+			private class AutolinkVisitor extends AbstractVisitor {
+
+				int inLink = 0;
+
+				@Override
+				public void visit(Link link) {
+
+					inLink++;
+					super.visit(link);
+					inLink--;
+				}
+
+				@Override
+				public void visit(Image image) {
+
+					super.visit(image);
+					linkifyImage(image);
+				}
+
+				@Override
+				public void visit(Text text) {
+
+					if(inLink == 0) {
+						link(text);
+					}
+				}
+
 			}
 
 		}

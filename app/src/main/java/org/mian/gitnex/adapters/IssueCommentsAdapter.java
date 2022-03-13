@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.models.IssueComments;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -33,6 +34,7 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.views.ReactionList;
 import org.mian.gitnex.views.ReactionSpinner;
 import java.util.List;
@@ -54,8 +56,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	private final FragmentManager fragmentManager;
 	private final Runnable onInteractedListener;
 	private final Locale locale;
+	private final IssueContext issue;
 
-	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, Runnable onInteractedListener) {
+	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, Runnable onInteractedListener, IssueContext issue) {
 
 		this.context = ctx;
 		this.bundle = bundle;
@@ -64,6 +67,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		this.onInteractedListener = onInteractedListener;
 		tinyDB = TinyDB.getInstance(ctx);
 		locale = ctx.getResources().getConfiguration().locale;
+		this.issue = issue;
 	}
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +94,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 			menu.setOnClickListener(v -> {
 
-				final String loginUid = tinyDB.getString("loginUid");
+				final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 
 				@SuppressLint("InflateParams") View vw = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_issue_comments, null);
 
@@ -102,14 +106,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				TextView issueCommentCopyUrl = vw.findViewById(R.id.issueCommentCopyUrl);
 				LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
 
-				if(tinyDB.getBoolean("isArchived")) {
+				if(issue.getRepository().getRepository().isArchived()) {
 					commentMenuEdit.setVisibility(View.GONE);
 					commentMenuDelete.setVisibility(View.GONE);
 					commentMenuQuote.setVisibility(View.GONE);
 					linearLayout.setVisibility(View.GONE);
 				}
 
-				if(!loginUid.contentEquals(issueComment.getUser().getUsername()) && !tinyDB.getBoolean("canPush")) {
+				if(!loginUid.contentEquals(issueComment.getUser().getUsername()) && !issue.getRepository().getPermissions().canPush()) {
 					commentMenuEdit.setVisibility(View.GONE);
 					commentMenuDelete.setVisibility(View.GONE);
 				}
@@ -134,8 +138,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				ReactionSpinner reactionSpinner = new ReactionSpinner(context, bundle1);
 				reactionSpinner.setOnInteractedListener(() -> {
-					tinyDB.putBoolean("commentEdited", true);
-
 					onInteractedListener.run();
 					dialog.dismiss();
 				});
@@ -152,7 +154,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					bundle.putString("commentAction", "edit");
 					bundle.putString("commentBody", issueComment.getBody());
 
-					BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(bundle);
+					BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(bundle, issue);
 					bottomSheetReplyFragment.setOnInteractedListener(onInteractedListener);
 					bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
 
@@ -166,7 +168,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					// share issue comment
 					Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 					sharingIntent.setType("text/plain");
-					String intentHeader = tinyDB.getString("issueNumber") + context.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + tinyDB.getString("issueTitle");
+					String intentHeader = issue.getIssueIndex() + context.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + issue.getIssue().getTitle();
 					sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, intentHeader);
 					sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, commentUrl);
 					context.startActivity(Intent.createChooser(sharingIntent, intentHeader));
@@ -192,7 +194,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					StringBuilder stringBuilder = new StringBuilder();
 					String commenterName = issueComment.getUser().getUsername();
 
-					if(!commenterName.equals(tinyDB.getString("userLogin"))) {
+					if(!commenterName.equals(((BaseActivity) context).getAccount().getAccount().getUserName())) {
 						stringBuilder.append("@").append(commenterName).append("\n\n");
 					}
 
@@ -209,14 +211,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					bundle.putBoolean("cursorToEnd", true);
 
 					dialog.dismiss();
-					BottomSheetReplyFragment.newInstance(bundle).show(fragmentManager, "replyBottomSheet");
+					BottomSheetReplyFragment.newInstance(bundle, issue).show(fragmentManager, "replyBottomSheet");
 				});
 
 				commentMenuCopy.setOnClickListener(v1 -> {
 					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(context).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
 
-					ClipData clip = ClipData.newPlainText("Comment on issue #" + tinyDB.getString("issueNumber"), issueComment.getBody());
+					ClipData clip = ClipData.newPlainText("Comment on issue #" + issue.getIssueIndex(), issueComment.getBody());
 					clipboard.setPrimaryClip(clip);
 
 					dialog.dismiss();
@@ -252,20 +254,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
 
-		final String loginUid = tinyDB.getString("loginUid");
-		final String instanceToken = "token " + tinyDB.getString(loginUid + "-token");
-		String[] repoFullName = tinyDB.getString("repoFullName").split("/");
-
-		if (repoFullName.length != 2) {
-			return;
-		}
-
-		final String repoOwner = repoFullName[0];
-		final String repoName = repoFullName[1];
-
 		Call<JsonElement> call = RetrofitClient
 				.getApiInterface(ctx)
-				.deleteComment(instanceToken, repoOwner, repoName, commentId);
+				.deleteComment(((BaseActivity) context).getAccount().getAuthorization(), issue.getRepository().getOwner(), issue.getRepository().getName(), commentId);
 
 		call.enqueue(new Callback<JsonElement>() {
 
@@ -318,7 +309,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	@Override
 	public void onBindViewHolder(@NonNull IssueCommentsAdapter.IssueCommentViewHolder holder, int position) {
 
-		String timeFormat = tinyDB.getString("dateFormat");
+		String timeFormat = tinyDB.getString("dateFormat", "pretty");
 		IssueComments issueComment = issuesComments.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
@@ -335,7 +326,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			.centerCrop()
 			.into(holder.avatar);
 
-		Markdown.render(context, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment);
+		Markdown.render(context, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment, issue.getRepository());
 
 		StringBuilder informationBuilder = null;
 		if(issueComment.getCreated_at() != null) {

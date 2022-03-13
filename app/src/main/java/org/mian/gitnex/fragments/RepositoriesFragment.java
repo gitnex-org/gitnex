@@ -23,12 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.RepositoriesListViewModel;
 
 /**
@@ -93,11 +92,11 @@ public class RepositoriesFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            RepositoriesListViewModel.loadReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
+            RepositoriesListViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext(), pageSize, resultLimit);
 
         }, 50));
 
-        fetchDataAsync(Authorization.get(getContext()), pageSize, resultLimit);
+        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), pageSize, resultLimit);
         return fragmentRepositoriesBinding.getRoot();
 
     }
@@ -105,13 +104,10 @@ public class RepositoriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
-        final String loginUid = tinyDb.getString("loginUid");
-        final String instanceToken = "token " + tinyDb.getString(loginUid + "-token");
 
-        if(tinyDb.getBoolean("repoCreated")) {
-            RepositoriesListViewModel.loadReposList(Authorization.get(getContext()), getContext(), pageSize, resultLimit);
-            tinyDb.putBoolean("repoCreated", false);
+        if(MainActivity.repoCreated) {
+            RepositoriesListViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext(), pageSize, resultLimit);
+	        MainActivity.repoCreated = false;
         }
     }
 

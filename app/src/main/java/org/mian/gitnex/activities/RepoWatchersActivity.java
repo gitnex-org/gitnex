@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoWatchersBinding;
-import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 
 /**
@@ -24,6 +24,8 @@ public class RepoWatchersActivity extends BaseActivity {
     private UserGridAdapter adapter;
     private GridView mGridView;
     private ProgressBar mProgressBar;
+
+    private RepositoryContext repository;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,17 +41,16 @@ public class RepoWatchersActivity extends BaseActivity {
         mGridView = activityRepoWatchersBinding.gridView;
         mProgressBar = activityRepoWatchersBinding.progressBar;
 
-        String repoFullNameForWatchers = getIntent().getStringExtra("repoFullNameForWatchers");
-        String[] parts = repoFullNameForWatchers.split("/");
-        final String repoOwner = parts[0];
-        final String repoName = parts[1];
+        repository = RepositoryContext.fromIntent(getIntent());
+        final String repoOwner = repository.getOwner();
+        final String repoName = repository.getName();
 
         initCloseListener();
         closeActivity.setOnClickListener(onClickListener);
 
         toolbarTitle.setText(R.string.repoWatchersInMenu);
 
-        fetchDataAsync(Authorization.get(ctx), repoOwner, repoName);
+        fetchDataAsync(getAccount().getAuthorization(), repoOwner, repoName);
     }
 
     private void fetchDataAsync(String instanceToken, String repoOwner, String repoName) {
@@ -81,5 +82,11 @@ public class RepoWatchersActivity extends BaseActivity {
 
         onClickListener = view -> finish();
     }
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		repository.checkAccountSwitch(this);
+	}
 
 }

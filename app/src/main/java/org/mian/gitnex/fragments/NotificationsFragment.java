@@ -19,17 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.models.NotificationThread;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.NotificationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.RepositoriesApi;
+import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.databinding.FragmentNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SimpleCallback;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.IssueContext;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,13 +52,11 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 	private Activity activity;
 	private Context context;
-	private TinyDB tinyDB;
 	private Menu menu;
 
 	private int pageCurrentIndex = 1;
 	private int pageResultLimit;
 	private String currentFilterMode = "unread";
-	private final String TAG = Constants.tagNotifications;
 	private String instanceToken;
 
 	@Override
@@ -71,12 +74,10 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		activity = requireActivity();
 		context = getContext();
-		tinyDB = TinyDB.getInstance(context);
 
-		instanceToken = Authorization.get(context);
+		instanceToken = ((BaseActivity) requireActivity()).getAccount().getAuthorization();
 
 		pageResultLimit = Constants.getCurrentResultLimit(context);
-		tinyDB.putString("notificationsFilterState", currentFilterMode);
 
 		notificationsAdapter = new NotificationsAdapter(context, notificationThreads, this, this);
 
@@ -116,7 +117,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		viewBinding.markAllAsRead.setOnClickListener(v1 ->
 			RetrofitClient.getApiInterface(context)
-				.markNotificationThreadsAsRead(Authorization.get(context), AppUtil.getTimestampFromDate(context, new Date()), true, new String[]{"unread", "pinned"}, "read")
+				.markNotificationThreadsAsRead(instanceToken, AppUtil.getTimestampFromDate(context, new Date()), true, new String[]{"unread", "pinned"}, "read")
 				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 
 					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
@@ -142,8 +143,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		viewBinding.noDataNotifications.setVisibility(View.GONE);
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-
-		String[] filter = tinyDB.getString("notificationsFilterState").equals("read") ?
+		String[] filter = currentFilterMode.equals("read") ?
 			new String[]{"pinned", "read"} :
 			new String[]{"pinned", "unread"};
 
@@ -221,9 +221,8 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 			BottomSheetNotificationsFilterFragment bottomSheetNotificationsFilterFragment = new BottomSheetNotificationsFilterFragment();
 			bottomSheetNotificationsFilterFragment.show(getChildFragmentManager(), "notificationsFilterBottomSheet");
-			bottomSheetNotificationsFilterFragment.setOnDismissedListener(() -> {
-
-				currentFilterMode = tinyDB.getString("notificationsFilterState");
+			bottomSheetNotificationsFilterFragment.setOnClickListener((text) -> {
+				currentFilterMode = text;
 				changeFilterMode();
 				pageCurrentIndex = 1;
 				loadNotifications(false);
@@ -238,7 +237,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	public void onNotificationClicked(NotificationThread notificationThread) {
 
 		if(notificationThread.isUnread() && !notificationThread.isPinned()) {
-			RetrofitClient.getApiInterface(context).markNotificationThreadAsRead(Authorization.get(context), notificationThread.getId(), "read").enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
+			RetrofitClient.getApiInterface(context).markNotificationThreadAsRead(instanceToken, notificationThread.getId(), "read").enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
 				// reload without any checks, because Gitea returns a 205 and Java expects this to be empty
 				// but Gitea send a response -> results in a call of onFailure and no response is present
 				//if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
@@ -250,19 +249,32 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
 
-			Intent intent = new Intent(context, IssueDetailActivity.class);
-			intent.putExtra("openedFromLink", "true");
+			RepositoryContext repo = new RepositoryContext(notificationThread.getRepository(), context);
 			String issueUrl = notificationThread.getSubject().getUrl();
-			tinyDB.putString("issueNumber", issueUrl.substring(issueUrl.lastIndexOf("/") + 1));
-			tinyDB.putString("issueType", notificationThread.getSubject().getType());
-			tinyDB.putString("repoFullName", notificationThread.getRepository().getFullName());
 
+			int currentActiveAccountId = TinyDB.getInstance(requireContext()).getInt("currentActiveAccountId");
+			RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
+
+			Integer count = repositoryData.checkRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+
+			if(count == 0) {
+				long id = repositoryData.insertRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+				repo.setRepositoryId((int) id);
+			}
+			else {
+				Repository data = repositoryData.getRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
+				repo.setRepositoryId(data.getRepositoryId());
+			}
+
+			Intent intent = new IssueContext(
+				new RepositoryContext(notificationThread.getRepository(), context),
+				Integer.parseInt(issueUrl.substring(issueUrl.lastIndexOf("/") + 1)),
+				notificationThread.getSubject().getType()
+			).getIntent(context, IssueDetailActivity.class);
+			intent.putExtra("openedFromLink", "true");
 			startActivity(intent);
 		} else if(notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
-			Intent intent = new Intent(context, RepoDetailActivity.class);
-			tinyDB.putString("repoFullName", notificationThread.getRepository().getFullName());
-
-			startActivity(intent);
+			startActivity(new RepositoryContext(notificationThread.getRepository(), context).getIntent(context, RepoDetailActivity.class));
 		}
 	}
 

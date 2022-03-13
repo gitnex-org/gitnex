@@ -23,12 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentMyRepositoriesBinding;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.MyRepositoriesViewModel;
 
 /**
@@ -37,8 +36,6 @@ import org.mian.gitnex.viewmodels.MyRepositoriesViewModel;
 
 public class MyRepositoriesFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private ReposListAdapter adapter;
@@ -48,28 +45,9 @@ public class MyRepositoriesFragment extends Fragment {
     private int pageSize = 1;
     private int resultLimit = 50;
 
-    private String mParam1;
-    private String mParam2;
-
-    public MyRepositoriesFragment() {
-    }
-
-    public static MyRepositoriesFragment newInstance(String param1, String param2) {
-        MyRepositoriesFragment fragment = new MyRepositoriesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -80,9 +58,7 @@ public class MyRepositoriesFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
-        final String userLogin =  tinyDb.getString("userLogin");
-        tinyDb.putBoolean("isRepoAdmin", true);
+        final String userLogin =  ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
         final SwipeRefreshLayout swipeRefresh = fragmentMyRepositoriesBinding.pullToRefresh;
 
@@ -126,11 +102,11 @@ public class MyRepositoriesFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            MyRepositoriesViewModel.loadMyReposList(Authorization.get(getContext()), userLogin, getContext(),  pageSize, resultLimit);
+            MyRepositoriesViewModel.loadMyReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), userLogin, getContext(),  pageSize, resultLimit);
 
         }, 50));
 
-        fetchDataAsync(Authorization.get(getContext()), userLogin, pageSize, resultLimit);
+        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), userLogin, pageSize, resultLimit);
 
         return fragmentMyRepositoriesBinding.getRoot();
 
@@ -139,12 +115,11 @@ public class MyRepositoriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
-        final String userLogin =  tinyDb.getString("userLogin");
+        final String userLogin = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
-        if(tinyDb.getBoolean("repoCreated")) {
-            MyRepositoriesViewModel.loadMyReposList(Authorization.get(getContext()), userLogin, getContext(),  pageSize, resultLimit);
-            tinyDb.putBoolean("repoCreated", false);
+        if(MainActivity.repoCreated) {
+            MyRepositoriesViewModel.loadMyReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), userLogin, getContext(),  pageSize, resultLimit);
+	        MainActivity.repoCreated = false;
         }
 
     }

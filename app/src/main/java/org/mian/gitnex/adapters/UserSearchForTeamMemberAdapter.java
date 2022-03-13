@@ -12,12 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.models.UserInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -34,12 +34,14 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 	private final List<UserInfo> usersSearchList;
 	private final Context context;
-	private static int teamId;
+	private final int teamId;
+	private final String orgName;
 
-	public UserSearchForTeamMemberAdapter(List<UserInfo> dataList, Context ctx, int teamId) {
+	public UserSearchForTeamMemberAdapter(List<UserInfo> dataList, Context ctx, int teamId, String orgName) {
 		this.context = ctx;
 		this.usersSearchList = dataList;
-		UserSearchForTeamMemberAdapter.teamId = teamId;
+		this.teamId = teamId;
+		this.orgName = orgName;
 	}
 
 	class UserSearchViewHolder extends RecyclerView.ViewHolder {
@@ -122,15 +124,11 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 		if(getItemCount() > 0) {
 
-			TinyDB tinyDb = TinyDB.getInstance(context);
-			final String loginUid = tinyDb.getString("loginUid");
-			String repoFullName = tinyDb.getString("repoFullName");
-			String[] parts = repoFullName.split("/");
-			final String repoOwner = parts[0];
+			final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 
 			Call<UserInfo> call = RetrofitClient
 					.getApiInterface(context)
-					.checkTeamMember(Authorization.get(context), teamId, currentItem.getLogin());
+					.checkTeamMember(((BaseActivity) context).getAccount().getAuthorization(), teamId, currentItem.getLogin());
 
 			call.enqueue(new Callback<UserInfo>() {
 
@@ -139,7 +137,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 					if(response.code() == 200) {
 
-						if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repoOwner)) {
+						if(!currentItem.getLogin().equals(loginUid)) {
 							holder.addMemberButtonRemove.setVisibility(View.VISIBLE);
 						}
 						else {
@@ -149,7 +147,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 					}
 					else if(response.code() == 404) {
 
-						if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repoOwner)) {
+						if(!currentItem.getLogin().equals(loginUid)) {
 							holder.addMemberButtonAdd.setVisibility(View.VISIBLE);
 						}
 						else {

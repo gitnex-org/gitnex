@@ -24,11 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.RepositoriesByOrgAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesByOrgBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.RepositoriesByOrgViewModel;
 import java.util.List;
 
@@ -90,11 +90,11 @@ public class RepositoriesByOrgFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            RepositoriesByOrgViewModel.loadOrgRepos(Authorization.get(getContext()), orgName, getContext(), pageSize, resultLimit);
+            RepositoriesByOrgViewModel.loadOrgRepos(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName, getContext(), pageSize, resultLimit);
 
         }, 200));
 
-        fetchDataAsync(Authorization.get(getContext()), orgName, pageSize, resultLimit);
+        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName, pageSize, resultLimit);
 
         return fragmentRepositoriesByOrgBinding.getRoot();
     }
@@ -103,11 +103,10 @@ public class RepositoriesByOrgFragment extends Fragment {
     public void onResume() {
 
         super.onResume();
-        TinyDB tinyDb = TinyDB.getInstance(getContext());
 
-        if(tinyDb.getBoolean("repoCreated")) {
-            RepositoriesByOrgViewModel.loadOrgRepos(Authorization.get(getContext()), orgName, getContext(), pageSize, resultLimit);
-            tinyDb.putBoolean("repoCreated", false);
+        if(MainActivity.repoCreated) {
+            RepositoriesByOrgViewModel.loadOrgRepos(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName, getContext(), pageSize, resultLimit);
+	        MainActivity.repoCreated = false;
         }
 
     }

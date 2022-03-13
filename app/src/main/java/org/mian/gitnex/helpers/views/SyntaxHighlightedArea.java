@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainGrammarLocator;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
@@ -53,7 +54,7 @@ public class SyntaxHighlightedArea extends LinearLayout {
 
 	public void setup() {
 
-		prism4jTheme = TinyDB.getInstance(getContext()).getString("currentTheme").equals("dark") ?
+		prism4jTheme = AppUtil.getColorFromAttribute(getContext(), R.attr.isDark) == 1 ?
 			Prism4jThemeDarkula.create() :
 			Prism4jThemeDefault.create();
 

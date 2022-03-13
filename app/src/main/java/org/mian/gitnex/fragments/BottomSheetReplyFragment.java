@@ -17,12 +17,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.vdurmont.emoji.EmojiParser;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.ActionResult;
 import org.mian.gitnex.actions.IssueActions;
+import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.DraftsApi;
@@ -30,6 +33,7 @@ import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.util.Objects;
 
 /**
@@ -44,9 +48,8 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 	private TinyDB tinyDB;
 	private DraftsApi draftsApi;
 
-	private int repositoryId;
 	private int currentActiveAccountId;
-	private int issueNumber;
+	private IssueContext issue;
 	private long draftId;
 
 	private Runnable onInteractedListener;
@@ -60,9 +63,8 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		tinyDB = TinyDB.getInstance(context);
 		draftsApi = BaseApi.getInstance(context, DraftsApi.class);
 
-		repositoryId = (int) tinyDB.getLong("repositoryId", 0);
-		currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-		issueNumber = Integer.parseInt(tinyDB.getString("issueNumber"));
+		currentActiveAccountId = ((BaseActivity) requireActivity()).getAccount().getAccount().getAccountId();
+		issue = IssueContext.fromBundle(requireArguments());
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -95,9 +97,9 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			draftId = Long.parseLong(arguments.getString("draftId"));
 		}
 
-		if(!tinyDB.getString("issueTitle").isEmpty()) {
+		if(issue.getIssue() != null && !issue.getIssue().getTitle().isEmpty()) {
 
-			toolbarTitle.setText(EmojiParser.parseToUnicode(tinyDB.getString("issueTitle")));
+			toolbarTitle.setText(EmojiParser.parseToUnicode(issue.getIssue().getTitle()));
 		}
 		else if(arguments.getString("draftTitle") != null) {
 
@@ -179,20 +181,21 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			if(mode == Mode.SEND) {
 
 				IssueActions
-					.reply(getContext(), comment.getText().toString(), issueNumber)
+					.reply(getContext(), comment.getText().toString(), issue)
 					.accept((status, result) -> {
 
 						if(status == ActionResult.Status.SUCCESS) {
 
-							Toasty.success(getContext(), getString(R.string.commentSuccess));
-
-							if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled")) {
-								draftsApi.deleteSingleDraft((int) draftId);
+							FragmentActivity activity = requireActivity();
+							if(activity instanceof IssueDetailActivity) {
+								((IssueDetailActivity) activity).commentPosted = true;
 							}
 
-							tinyDB.putBoolean("commentPosted", true);
-							tinyDB.putBoolean("resumeIssues", true);
-							tinyDB.putBoolean("resumePullRequests", true);
+							Toasty.success(getContext(), getString(R.string.commentSuccess));
+
+							if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled", true)) {
+								draftsApi.deleteSingleDraft((int) draftId);
+							}
 
 							if(onInteractedListener != null) {
 								onInteractedListener.run();
@@ -209,16 +212,19 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			} else {
 
 				IssueActions
-					.edit(getContext(), comment.getText().toString(), arguments.getInt("commentId"))
+					.edit(getContext(), comment.getText().toString(), arguments.getInt("commentId"), issue)
 					.accept((status, result) -> {
+
+						FragmentActivity activity = requireActivity();
+						if(activity instanceof IssueDetailActivity) {
+							((IssueDetailActivity) activity).commentEdited = true;
+						}
 
 						if(status == ActionResult.Status.SUCCESS) {
 
-							if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled")) {
+							if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled", true)) {
 								draftsApi.deleteSingleDraft((int) draftId);
 							}
-
-							tinyDB.putBoolean("commentEdited", true);
 
 							if(onInteractedListener != null) {
 								onInteractedListener.run();
@@ -263,11 +269,11 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		else {
 
 			String draftType;
-			if(tinyDB.getString("issueType").equalsIgnoreCase("Issue")) {
+			if(issue.getIssueType().equalsIgnoreCase("Issue")) {
 
 				draftType = Constants.draftTypeIssue;
 			}
-			else if(tinyDB.getString("issueType").equalsIgnoreCase("Pull")) {
+			else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 
 				draftType = Constants.draftTypePull;
 			}
@@ -278,7 +284,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 			if(draftId == 0) {
 
-				draftId = draftsApi.insertDraft(repositoryId, currentActiveAccountId, issueNumber, text, draftType, "TODO", tinyDB.getString("issueType"));
+				draftId = draftsApi.insertDraft(issue.getRepository().getRepositoryId(), currentActiveAccountId, issue.getIssueIndex(), text, draftType, "TODO", issue.getIssueType());
 			}
 			else {
 
@@ -290,9 +296,10 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		}
 	}
 
-	public static BottomSheetReplyFragment newInstance(Bundle bundle) {
+	public static BottomSheetReplyFragment newInstance(Bundle bundle, IssueContext issue) {
 
 		BottomSheetReplyFragment fragment = new BottomSheetReplyFragment();
+		bundle.putSerializable(IssueContext.INTENT_EXTRA, issue);
 		fragment.setArguments(bundle);
 
 		return fragment;

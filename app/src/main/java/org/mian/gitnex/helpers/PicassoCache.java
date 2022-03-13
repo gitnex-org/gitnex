@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.squareup.picasso.Cache;
+import org.mian.gitnex.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ public class PicassoCache implements Cache {
 
 		TinyDB tinyDb = TinyDB.getInstance(ctx);
 
-		CACHE_SIZE = FilesData.returnOnlyNumber(tinyDb.getString("cacheSizeImagesStr")) * 1024 * 1024;
+		CACHE_SIZE = FilesData.returnOnlyNumber(tinyDb.getString("cacheSizeImagesStr", ctx.getString(R.string.cacheSizeImagesSelectionSelectedText))) * 1024 * 1024;
 		this.cachePath = cachePath;
 		cacheMap = new HashMap<>();
 		this.ctx = ctx;

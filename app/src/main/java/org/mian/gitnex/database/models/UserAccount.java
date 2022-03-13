@@ -22,6 +22,7 @@ public class UserAccount implements Serializable {
     private String token;
     @Nullable
     private String serverVersion;
+    private boolean isLoggedIn;
 
     public int getAccountId() {
         return accountId;
@@ -72,4 +73,13 @@ public class UserAccount implements Serializable {
     public void setServerVersion(@Nullable String serverVersion) {
         this.serverVersion = serverVersion;
     }
+
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		isLoggedIn = loggedIn;
+	}
+
 }

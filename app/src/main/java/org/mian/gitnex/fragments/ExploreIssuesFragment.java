@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentSearchIssuesBinding;
-import org.mian.gitnex.helpers.Authorization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import java.util.ArrayList;
@@ -100,7 +100,7 @@ public class ExploreIssuesFragment extends Fragment {
 	private void loadInitial(String searchKeyword, int resultLimit) {
 
 		Call<List<Issues>> call = RetrofitClient
-			.getApiInterface(context).queryIssues(Authorization.get(getContext()), searchKeyword, "issues", "open", resultLimit, 1);
+			.getApiInterface(context).queryIssues(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, "issues", "open", resultLimit, 1);
 		call.enqueue(new Callback<List<Issues>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
@@ -138,7 +138,7 @@ public class ExploreIssuesFragment extends Fragment {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<Issues>> call = RetrofitClient.getApiInterface(context)
-			.queryIssues(Authorization.get(getContext()), searchKeyword, "issues", "open", resultLimit, page);
+			.queryIssues(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, "issues", "open", resultLimit, page);
 		call.enqueue(new Callback<List<Issues>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {

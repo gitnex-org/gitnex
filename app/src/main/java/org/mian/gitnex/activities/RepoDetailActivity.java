@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.JsonElement;
 import org.gitnex.tea4j.models.Branches;
@@ -50,9 +53,8 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Authorization;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.structs.FragmentRefreshListener;
 import java.util.ArrayList;
@@ -71,6 +73,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private TextView textViewBadgeIssue;
 	private TextView textViewBadgePull;
 	private TextView textViewBadgeRelease;
+	private Typeface myTypeface;
 
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListener fragmentRefreshListenerPr;
@@ -79,11 +82,52 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
 
-	private String repositoryOwner;
-	private String repositoryName;
-
-	public static ViewPager mViewPager;
+	public ViewPager mViewPager;
 	private int tabsCount;
+
+	public RepositoryContext repository;
+
+	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+		result -> {
+			if(result.getResultCode() == 201) {
+				assert result.getData() != null;
+				if(result.getData().getBooleanExtra("updateReleases", false)) {
+					if(fragmentRefreshListenerReleases != null) fragmentRefreshListenerReleases.onRefresh(null);
+				}
+			}
+		});
+
+	private final ActivityResultLauncher<Intent> createMilestoneLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+		result -> {
+			if(result.getResultCode() == 201) {
+				assert result.getData() != null;
+				if(result.getData().getBooleanExtra("milestoneCreated", false)) {
+					if(fragmentRefreshListenerMilestone != null) fragmentRefreshListenerMilestone.onRefresh(repository.getMilestoneState().toString());
+				}
+			}
+		});
+
+	private final ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+		result -> {
+			if(result.getResultCode() == 200) {
+				assert result.getData() != null;
+				if(result.getData().getBooleanExtra("fileModified", false)) {
+					if(fragmentRefreshListenerFiles != null) fragmentRefreshListenerFiles.onRefresh(repository.getBranchRef());
+				}
+			}
+		});
+
+	private final ActivityResultLauncher<Intent> settingsLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+		result -> {
+			if(result.getResultCode() == 200) {
+				assert result.getData() != null;
+				if(result.getData().getBooleanExtra("nameChanged", false)) {
+					recreate();
+				}
+			}
+		});
+
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -92,32 +136,16 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 		setContentView(R.layout.activity_repo_detail);
 
-		String[] repoNameParts = tinyDB.getString("repoFullName").split("/");
-		repositoryOwner = repoNameParts[0];
-		repositoryName = repoNameParts[1];
+		repository = RepositoryContext.fromIntent(getIntent());
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 
 		TextView toolbarTitle = findViewById(R.id.toolbar_title);
-		ImageView repoTypeToolbar = findViewById(R.id.repoTypeToolbar);
-
-		if(tinyDB.getString("repoType").equalsIgnoreCase("private")) {
-			repoTypeToolbar.setVisibility(View.VISIBLE);
-		}
-		else {
-			repoTypeToolbar.setVisibility(View.GONE);
-		}
-		toolbarTitle.setText(repositoryName);
+		toolbarTitle.setText(repository.getName());
 
 		setSupportActionBar(toolbar);
-		Objects.requireNonNull(getSupportActionBar()).setTitle(repositoryName);
+		Objects.requireNonNull(getSupportActionBar()).setTitle(repository.getName());
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		tinyDB.putString("repoIssuesState", "open");
-		tinyDB.putString("repoPrState", "open");
-		tinyDB.putString("milestoneState", "open");
-
-		Typeface myTypeface;
 
 		switch(tinyDB.getInt("customFontId", -1)) {
 
@@ -137,208 +165,16 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 		toolbarTitle.setTypeface(myTypeface);
 
-		TabLayout tabLayout = findViewById(R.id.tabs);
+		getRepoInfo(getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 
-		ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
-		tabsCount = viewGroup.getChildCount();
-
-		for(int j = 0; j < tabsCount; j++) {
-
-			ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
-			int tabChildCount = vgTab.getChildCount();
-
-			for(int i = 0; i < tabChildCount; i++) {
-
-				View tabViewChild = vgTab.getChildAt(i);
-
-				if(tabViewChild instanceof TextView) {
-
-					((TextView) tabViewChild).setTypeface(myTypeface);
-				}
-			}
-		}
-
-		// Only show collaborators tab, if you have permission to
-		View collaboratorTab = viewGroup.getChildAt(7);
-
-		if(tinyDB.getBoolean("isRepoAdmin") || new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.12.0")) {
-
-			collaboratorTab.setVisibility(View.VISIBLE);
-		}
-		else {
-
-			tabsCount--;
-			collaboratorTab.setVisibility(View.GONE);
-		}
-
-		mViewPager = findViewById(R.id.container);
-
-		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-		SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		if(tinyDB.getBoolean("enableCounterBadges")) {
-
-			@SuppressLint("InflateParams") View tabHeader2 = LayoutInflater.from(this).inflate(R.layout.badge_issue, null);
-			textViewBadgeIssue = tabHeader2.findViewById(R.id.counterBadgeIssue);
-
-			@SuppressLint("InflateParams") View tabHeader4 = LayoutInflater.from(this).inflate(R.layout.badge_pull, null);
-			textViewBadgePull = tabHeader4.findViewById(R.id.counterBadgePull);
-
-			@SuppressLint("InflateParams") View tabHeader6 = LayoutInflater.from(this).inflate(R.layout.badge_release, null);
-			textViewBadgeRelease = tabHeader6.findViewById(R.id.counterBadgeRelease);
-
-			textViewBadgeIssue.setVisibility(View.GONE);
-			textViewBadgePull.setVisibility(View.GONE);
-			textViewBadgeRelease.setVisibility(View.GONE);
-
-			getRepoInfo(Authorization.get(ctx), repositoryOwner, repositoryName);
-			ColorStateList textColor = tabLayout.getTabTextColors();
-
-			// Issue count
-			if(textViewBadgeIssue.getText() != "") {
-
-				TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(2);
-				Objects.requireNonNull(tabLayout.getTabAt(2)).setCustomView(tabHeader2);
-				assert tabOpenIssues != null; // FIXME This should be cleaned up
-				TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeIssueText);
-				openIssueTabView.setTextColor(textColor);
-			}
-
-			// Pull request count
-			if(textViewBadgePull.getText() != "") { // only show if API returned a number
-
-				Objects.requireNonNull(tabLayout.getTabAt(3)).setCustomView(tabHeader4);
-				TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(3);
-				assert tabOpenPulls != null; // FIXME This should be cleaned up
-				TextView openPullTabView = Objects.requireNonNull(tabOpenPulls.getCustomView()).findViewById(R.id.counterBadgePullText);
-				openPullTabView.setTextColor(textColor);
-			}
-
-			// Release count
-			if(new Version("1.11.4").less(tinyDB.getString("giteaVersion"))) {
-
-				if(textViewBadgeRelease.getText() != "") { // only show if API returned a number
-
-					Objects.requireNonNull(tabLayout.getTabAt(4)).setCustomView(tabHeader6);
-					TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(4);
-					assert tabOpenRelease != null; // FIXME This should be cleaned up
-					TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
-					openReleaseTabView.setTextColor(textColor);
-				}
-			}
-		}
-
-		Intent mainIntent = getIntent();
-		String goToSection = mainIntent.getStringExtra("goToSection");
-		String goToSectionType = mainIntent.getStringExtra("goToSectionType");
-
-		if(goToSection != null) {
-
-			mainIntent.removeExtra("goToSection");
-			mainIntent.removeExtra("goToSectionType");
-
-			switch(goToSectionType) {
-				case "branchesList":
-					RepoDetailActivity.mViewPager.setCurrentItem(1);
-					chooseBranch();
-					break;
-				case "branch":
-					RepoDetailActivity.mViewPager.setCurrentItem(1);
-					String selectedBranch = mainIntent.getStringExtra("selectedBranch");
-					tinyDB.putString("repoBranch", selectedBranch);
-					if(getFragmentRefreshListenerFiles() != null) {
-						getFragmentRefreshListenerFiles().onRefresh(selectedBranch);
-					}
-					break;
-				case "file":
-					RepoDetailActivity.mViewPager.setCurrentItem(1);
-					String branch1 = mainIntent.getStringExtra("branch");
-					tinyDB.putString("repoBranch", branch1);
-					if(getFragmentRefreshListenerFiles() != null) {
-						getFragmentRefreshListenerFiles().onRefresh(branch1);
-					}
-					Intent intent = new Intent(ctx, FileViewActivity.class);
-					intent.putExtra("file", mainIntent.getSerializableExtra("file"));
-					startActivity(intent);
-					break;
-				case "dir":
-					RepoDetailActivity.mViewPager.setCurrentItem(1);
-					String branch2 = mainIntent.getStringExtra("branch");
-					tinyDB.putString("repoBranch", branch2);
-					if(getFragmentRefreshListenerFiles() != null) {
-						getFragmentRefreshListenerFiles().onRefresh(branch2);
-					}
-					//((SectionsPagerAdapter) Objects.requireNonNull(RepoDetailActivity.mViewPager.getAdapter())).getItem(1);
-					break;
-				case "commitsList":
-					RepoDetailActivity.mViewPager.setCurrentItem(1);
-					String branch = mainIntent.getStringExtra("branchName");
-					tinyDB.putString("repoBranch", branch);
-					if(getFragmentRefreshListenerFiles() != null) {
-						getFragmentRefreshListenerFiles().onRefresh(branch);
-					}
-					Intent intent1 = new Intent(ctx, CommitsActivity.class);
-					intent1.putExtra("branchName", branch);
-					ctx.startActivity(intent1);
-					break;
-				case "commit":
-					Intent intent2 = new Intent(ctx, CommitDetailActivity.class);
-					intent2.putExtra("sha", mainIntent.getStringExtra("sha"));
-					ctx.startActivity(intent2);
-					break;
-				case "issue":
-					RepoDetailActivity.mViewPager.setCurrentItem(2);
-					break;
-				case "issueNew":
-					RepoDetailActivity.mViewPager.setCurrentItem(2);
-					startActivity(new Intent(RepoDetailActivity.this, CreateIssueActivity.class));
-					break;
-				case "pull":
-					RepoDetailActivity.mViewPager.setCurrentItem(3);
-					break;
-				case "pullNew":
-					RepoDetailActivity.mViewPager.setCurrentItem(3);
-					startActivity(new Intent(RepoDetailActivity.this, CreatePullRequestActivity.class));
-					break;
-				case "releases":
-					RepoDetailActivity.mViewPager.setCurrentItem(4);
-					break;
-				case "newRelease":
-					RepoDetailActivity.mViewPager.setCurrentItem(4);
-					startActivity(new Intent(RepoDetailActivity.this, CreateReleaseActivity.class));
-					break;
-				case "milestones":
-					RepoDetailActivity.mViewPager.setCurrentItem(5);
-					break;
-				case "milestonesNew":
-					RepoDetailActivity.mViewPager.setCurrentItem(5);
-					startActivity(new Intent(RepoDetailActivity.this, CreateMilestoneActivity.class));
-					break;
-				case "labels":
-					RepoDetailActivity.mViewPager.setCurrentItem(6);
-					break;
-				case "settings":
-					startActivity(new Intent(RepoDetailActivity.this, RepositorySettingsActivity.class));
-					break;
-			}
-		}
-
-		checkRepositoryStarStatus(Authorization.get(ctx), repositoryOwner, repositoryName);
-		checkRepositoryWatchStatus(Authorization.get(ctx), repositoryOwner, repositoryName);
+		checkRepositoryStarStatus(getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+		checkRepositoryWatchStatus(getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 	}
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
-
-		if(tinyDB.getBoolean("enableCounterIssueBadge")) {
-
-			getRepoInfo(Authorization.get(ctx), repositoryOwner, repositoryName);
-		}
+		repository.checkAccountSwitch(this);
 	}
 
 	@Override
@@ -361,8 +197,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		}
 		else if(id == R.id.repoMenu) {
 
-			BottomSheetRepoFragment bottomSheet = new BottomSheetRepoFragment();
-			bottomSheet.show(getSupportFragmentManager(), "repoBottomSheet");
+			if(repository.hasRepository()) {
+				BottomSheetRepoFragment bottomSheet = new BottomSheetRepoFragment(repository);
+				bottomSheet.show(getSupportFragmentManager(), "repoBottomSheet");
+			}
 			return true;
 		}
 		else if(id == R.id.filter) {
@@ -390,12 +228,12 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		}
 		else if(id == R.id.branchCommits) {
 
-			Intent intent = new Intent(ctx, CommitsActivity.class);
-			intent.putExtra("branchName", tinyDB.getString("repoBranch"));
+			Intent intent = repository.getIntent(ctx, CommitsActivity.class);
+
 			ctx.startActivity(intent);
 			return true;
 		}
-		else if(id == R.id.filterReleases && new Version(tinyDB.getString("giteaVersion")).higherOrEqual("1.15.0")) {
+		else if(id == R.id.filterReleases && getAccount().requiresVersion("1.15.0")) {
 			BottomSheetReleasesTagsFragment bottomSheetReleasesTagsFragment = new BottomSheetReleasesTagsFragment();
 			bottomSheetReleasesTagsFragment.show(getSupportFragmentManager(), "repoFilterReleasesMenuBottomSheet");
 			return true;
@@ -412,19 +250,19 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 			case "label":
 
-				startActivity(new Intent(RepoDetailActivity.this, CreateLabelActivity.class));
+				startActivity(repository.getIntent(ctx, CreateLabelActivity.class));
 				break;
 			case "newIssue":
 
-				startActivity(new Intent(RepoDetailActivity.this, CreateIssueActivity.class));
+				startActivity(repository.getIntent(ctx, CreateIssueActivity.class));
 				break;
 			case "newMilestone":
 
-				startActivity(new Intent(RepoDetailActivity.this, CreateMilestoneActivity.class));
+				createMilestoneLauncher.launch(repository.getIntent(ctx, CreateMilestoneActivity.class));
 				break;
 			case "addCollaborator":
 
-				startActivity(new Intent(RepoDetailActivity.this, AddCollaboratorToRepositoryActivity.class));
+				startActivity(repository.getIntent(ctx, AddCollaboratorToRepositoryActivity.class));
 				break;
 			case "chooseBranch":
 
@@ -432,71 +270,70 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				break;
 			case "createRelease":
 
-				startActivity(new Intent(RepoDetailActivity.this, CreateReleaseActivity.class));
+				createReleaseLauncher.launch(repository.getIntent(ctx, CreateReleaseActivity.class));
 				break;
 			case "openWebRepo":
-				AppUtil.openUrlInBrowser(this, tinyDB.getString("repoHtmlUrl"));
+				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtml_url());
 				break;
 			case "shareRepo":
 
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, tinyDB.getString("repoHtmlUrl"));
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tinyDB.getString("repoHtmlUrl"));
-				startActivity(Intent.createChooser(sharingIntent, tinyDB.getString("repoHtmlUrl")));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, repository.getRepository().getHtml_url());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, repository.getRepository().getHtml_url());
+				startActivity(Intent.createChooser(sharingIntent, repository.getRepository().getHtml_url()));
 				break;
 			case "copyRepoUrl":
 
 				ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-				ClipData clip = ClipData.newPlainText("repoUrl", tinyDB.getString("repoHtmlUrl"));
+				ClipData clip = ClipData.newPlainText("repoUrl", repository.getRepository().getHtml_url());
 				assert clipboard != null;
 				clipboard.setPrimaryClip(clip);
 				Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
 				break;
 			case "newFile":
 
-				startActivity(new Intent(RepoDetailActivity.this, CreateFileActivity.class));
+				editFileLauncher.launch(repository.getIntent(ctx, CreateFileActivity.class));
 				break;
 			case "filterByMilestone":
 				filterIssuesByMilestone();
 				break;
 			case "openIssues":
-
+				repository.setIssueState(RepositoryContext.State.OPEN);
 				if(getFragmentRefreshListener() != null) {
 
 					getFragmentRefreshListener().onRefresh("open");
 				}
 				break;
 			case "closedIssues":
-
+				repository.setIssueState(RepositoryContext.State.CLOSED);
 				if(getFragmentRefreshListener() != null) {
 
 					getFragmentRefreshListener().onRefresh("closed");
 				}
 				break;
 			case "openPr":
-
+				repository.setPrState(RepositoryContext.State.OPEN);
 				if(getFragmentRefreshListenerPr() != null) {
-
 					getFragmentRefreshListenerPr().onRefresh("open");
 				}
 				break;
 			case "closedPr":
-
+				repository.setPrState(RepositoryContext.State.CLOSED);
 				if(getFragmentRefreshListenerPr() != null) {
 
 					getFragmentRefreshListenerPr().onRefresh("closed");
 				}
 				break;
 			case "openMilestone":
-
+				repository.setMilestoneState(RepositoryContext.State.OPEN);
 				if(getFragmentRefreshListenerMilestone() != null) {
 
 					getFragmentRefreshListenerMilestone().onRefresh("open");
 				}
 				break;
 			case "closedMilestone":
-
+				repository.setMilestoneState(RepositoryContext.State.CLOSED);
 				if(getFragmentRefreshListenerMilestone() != null) {
 
 					getFragmentRefreshListenerMilestone().onRefresh("closed");
@@ -504,11 +341,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				break;
 			case "repoSettings":
 
-				startActivity(new Intent(RepoDetailActivity.this, RepositorySettingsActivity.class));
+				settingsLauncher.launch(repository.getIntent(ctx, RepositorySettingsActivity.class));
 				break;
 			case "newPullRequest":
 
-				startActivity(new Intent(RepoDetailActivity.this, CreatePullRequestActivity.class));
+				startActivity(repository.getIntent(ctx, CreatePullRequestActivity.class));
 				break;
 			case "tags":
 				if(getFragmentRefreshListenerReleases() != null) {
@@ -519,6 +356,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				if(getFragmentRefreshListenerReleases() != null) {
 					getFragmentRefreshListenerReleases().onRefresh("releases");
 				}
+				break;
+			case "unwatch":
+				repository.setWatched(false);
+				break;
+			case "watch":
+				repository.setWatched(true);
+				break;
+			case "unstar":
+				repository.setStarred(false);
+				break;
+			case "star":
+				repository.setStarred(true);
 				break;
 		}
 	}
@@ -531,7 +380,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 		Call<List<Milestones>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getMilestones(Authorization.get(ctx), repositoryOwner, repositoryName, 1, 50, "open");
+			.getMilestones(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), 1, 50, "open");
 
 		call.enqueue(new Callback<List<Milestones>>() {
 
@@ -550,11 +399,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					for(int i = 0; i < response.body().size(); i++) {
 						milestones = response.body().get(i);
 						milestonesList.add(milestones.getTitle());
-					}
-
-					for(int j = 0; j < milestonesList.size(); j++) {
-						if(tinyDB.getString("issueMilestoneFilterId").equals(milestonesList.get(j))) {
-							selectedMilestone = j;
+						if(repository.getIssueMilestoneFilterName().equals(milestones.getTitle())) {
+							selectedMilestone = i;
 						}
 					}
 
@@ -563,7 +409,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 					pBuilder.setSingleChoiceItems(milestonesList.toArray(new String[0]), selectedMilestone, (dialogInterface, i) -> {
 
-						tinyDB.putString("issueMilestoneFilterId", milestonesList.get(i));
+						repository.setIssueMilestoneFilterName(response.body().get(i).getTitle());
 
 						if(getFragmentRefreshListenerFilterIssuesByMilestone() != null) {
 							getFragmentRefreshListenerFilterIssuesByMilestone().onRefresh(milestonesList.get(i));
@@ -587,12 +433,13 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private void chooseBranch() {
 
 		Dialog progressDialog = new Dialog(this);
+		progressDialog.setCancelable(false);
 		progressDialog.setContentView(R.layout.custom_progress_loader);
 		progressDialog.show();
 
 		Call<List<Branches>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getBranches(Authorization.get(ctx), repositoryOwner, repositoryName);
+			.getBranches(getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 
 		call.enqueue(new Callback<List<Branches>>() {
 
@@ -611,7 +458,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						Branches branches = response.body().get(i);
 						branchesList.add(branches.getName());
 
-						if(tinyDB.getString("repoBranch").equals(branches.getName())) {
+						if(repository.getBranchRef().equals(branches.getName())) {
 							selectedBranch = i;
 						}
 					}
@@ -621,7 +468,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 					pBuilder.setSingleChoiceItems(branchesList.toArray(new String[0]), selectedBranch, (dialogInterface, i) -> {
 
-						tinyDB.putString("repoBranch", branchesList.get(i));
+						repository.setBranchRef(branchesList.get(i));
 
 						if(getFragmentRefreshListenerFiles() != null) {
 							getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
@@ -645,45 +492,43 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		SectionsPagerAdapter(FragmentManager fm) {
-
 			super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		}
 
 		@NonNull
 		@Override
 		public Fragment getItem(int position) {
-
 			Fragment fragment = null;
 
 			switch(position) {
 
 				case 0: // Repository details
 
-					return RepoInfoFragment.newInstance(repositoryOwner, repositoryName);
+					return RepoInfoFragment.newInstance(repository);
 				case 1: // Files
 
-					return FilesFragment.newInstance(repositoryOwner, repositoryName, tinyDB.getString("repoBranch"));
+					return FilesFragment.newInstance(repository);
 				case 2: // Issues
 
-					fragment = new IssuesFragment();
+					fragment = IssuesFragment.newInstance(repository);
 					break;
 				case 3: // Pull requests
 
-					fragment = new PullRequestsFragment();
+					fragment = PullRequestsFragment.newInstance(repository);
 					break;
 				case 4: // Releases
 
-					return ReleasesFragment.newInstance(repositoryOwner, repositoryName);
+					return ReleasesFragment.newInstance(repository);
 				case 5: // Milestones
 
-					fragment = new MilestonesFragment();
+					fragment = MilestonesFragment.newInstance(repository);
 					break;
 				case 6: // Labels
 
-					return LabelsFragment.newInstance(repositoryOwner, repositoryName);
+					return LabelsFragment.newInstance(repository);
 				case 7: // Collaborators
 
-					return CollaboratorsFragment.newInstance(repositoryOwner, repositoryName);
+					return CollaboratorsFragment.newInstance(repository);
 			}
 
 			assert fragment != null;
@@ -699,6 +544,13 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 	private void getRepoInfo(String token, final String owner, String repo) {
 
+		LinearProgressIndicator loading = findViewById(R.id.loadingIndicator);
+		if(repository.hasRepository()) {
+			loading.setVisibility(View.GONE);
+			initWithRepo();
+			return;
+		}
+
 		Call<UserRepositories> call = RetrofitClient.getApiInterface(ctx).getUserRepository(token, owner, repo);
 		call.enqueue(new Callback<UserRepositories>() {
 
@@ -706,47 +558,211 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
 
 				UserRepositories repoInfo = response.body();
+				loading.setVisibility(View.GONE);
 
 				if(response.code() == 200) {
-
-					if(tinyDB.getBoolean("enableCounterBadges")) {
-
-						assert repoInfo != null;
-
-						if(repoInfo.getOpen_issues_count() != null) {
-
-							textViewBadgeIssue.setVisibility(View.VISIBLE);
-							textViewBadgeIssue.setText(repoInfo.getOpen_issues_count());
-						}
-
-						if(repoInfo.getOpen_pull_count() != null) {
-
-							textViewBadgePull.setVisibility(View.VISIBLE);
-							textViewBadgePull.setText(repoInfo.getOpen_pull_count());
-						}
-
-						if(repoInfo.getRelease_count() != null) {
-
-							textViewBadgeRelease.setVisibility(View.VISIBLE);
-							textViewBadgeRelease.setText(repoInfo.getRelease_count());
-						}
-					}
-
+					assert repoInfo != null;
+					repository.setRepository(repoInfo);
+					initWithRepo();
 				}
 				else {
-
+					Toasty.error(ctx, getString(R.string.genericError));
 					Log.e("onFailure", String.valueOf(response.code()));
+					finish();
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
-
+				Toasty.error(ctx, getString(R.string.genericError));
 				Log.e("onFailure", t.toString());
+				finish();
 			}
 
 		});
 
+	}
+
+	private void initWithRepo() {
+		repository.setBranchRef(repository.getRepository().getDefault_branch());
+
+		ImageView repoTypeToolbar = findViewById(R.id.repoTypeToolbar);
+		if(repository.getRepository().isPrivateFlag()) {
+			repoTypeToolbar.setVisibility(View.VISIBLE);
+		} else {
+			repoTypeToolbar.setVisibility(View.GONE);
+		}
+
+		TabLayout tabLayout = findViewById(R.id.tabs);
+		tabLayout.setVisibility(View.VISIBLE);
+
+		ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
+		tabsCount = viewGroup.getChildCount();
+
+		for(int j = 0; j < tabsCount; j++) {
+
+			ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
+			int tabChildCount = vgTab.getChildCount();
+
+			for(int i = 0; i < tabChildCount; i++) {
+
+				View tabViewChild = vgTab.getChildAt(i);
+
+				if(tabViewChild instanceof TextView) {
+
+					((TextView) tabViewChild).setTypeface(myTypeface);
+				}
+			}
+		}
+
+		mViewPager = findViewById(R.id.container);
+		mViewPager.setVisibility(View.VISIBLE);
+
+		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+		SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		mViewPager.setAdapter(mSectionsPagerAdapter);
+
+		if(tinyDB.getBoolean("enableCounterBadges", true)) {
+			@SuppressLint("InflateParams") View tabHeader2 = LayoutInflater.from(ctx).inflate(R.layout.badge_issue, null);
+			textViewBadgeIssue = tabHeader2.findViewById(R.id.counterBadgeIssue);
+
+			@SuppressLint("InflateParams") View tabHeader4 = LayoutInflater.from(ctx).inflate(R.layout.badge_pull, null);
+			textViewBadgePull = tabHeader4.findViewById(R.id.counterBadgePull);
+
+			@SuppressLint("InflateParams") View tabHeader6 = LayoutInflater.from(ctx).inflate(R.layout.badge_release, null);
+			textViewBadgeRelease = tabHeader6.findViewById(R.id.counterBadgeRelease);
+
+			ColorStateList textColor = tabLayout.getTabTextColors();
+
+			if(repository.getRepository().getOpen_issues_count() != null) {
+				textViewBadgeIssue.setVisibility(View.VISIBLE);
+				textViewBadgeIssue.setText(repository.getRepository().getOpen_issues_count());
+
+				TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(2);
+				assert tabOpenIssues != null;
+
+				tabOpenIssues.setCustomView(tabHeader2);
+				TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeIssueText);
+				openIssueTabView.setTextColor(textColor);
+			} else {
+				textViewBadgeIssue.setVisibility(View.GONE);
+			}
+
+			if(repository.getRepository().getOpen_pull_count() != null) {
+				textViewBadgePull.setVisibility(View.VISIBLE);
+				textViewBadgePull.setText(repository.getRepository().getOpen_pull_count());
+
+				Objects.requireNonNull(tabLayout.getTabAt(3)).setCustomView(tabHeader4);
+				TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(3);
+				assert tabOpenPulls != null; // FIXME This should be cleaned up
+				TextView openPullTabView = Objects.requireNonNull(tabOpenPulls.getCustomView()).findViewById(R.id.counterBadgePullText);
+				openPullTabView.setTextColor(textColor);
+			} else {
+				textViewBadgePull.setVisibility(View.GONE);
+			}
+
+			if(repository.getRepository().getRelease_count() != null) {
+				textViewBadgeRelease.setVisibility(View.VISIBLE);
+				textViewBadgeRelease.setText(repository.getRepository().getRelease_count());
+
+				Objects.requireNonNull(tabLayout.getTabAt(4)).setCustomView(tabHeader6);
+				TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(4);
+				assert tabOpenRelease != null; // FIXME This should be cleaned up
+				TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
+				openReleaseTabView.setTextColor(textColor);
+			} else {
+				textViewBadgeRelease.setVisibility(View.GONE);
+			}
+		}
+
+		Intent mainIntent = getIntent();
+		String goToSection = mainIntent.getStringExtra("goToSection");
+		String goToSectionType = mainIntent.getStringExtra("goToSectionType");
+
+		if(goToSection != null) {
+			mainIntent.removeExtra("goToSection");
+			mainIntent.removeExtra("goToSectionType");
+
+			switch(goToSectionType) {
+				case "branchesList":
+					mViewPager.setCurrentItem(1);
+					chooseBranch();
+					break;
+				case "branch":
+					mViewPager.setCurrentItem(1);
+					String selectedBranch = mainIntent.getStringExtra("selectedBranch");
+					repository.setBranchRef(selectedBranch);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(selectedBranch);
+					}
+					break;
+				case "file":
+					mViewPager.setCurrentItem(1);
+					String branch1 = mainIntent.getStringExtra("branch");
+					repository.setBranchRef(branch1);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(branch1);
+					}
+					Intent intent = repository.getIntent(ctx, FileViewActivity.class);
+					intent.putExtra("file", mainIntent.getSerializableExtra("file"));
+					startActivity(intent);
+					break;
+				case "dir":
+					mViewPager.setCurrentItem(1);
+					String branch2 = mainIntent.getStringExtra("branch");
+					repository.setBranchRef(branch2);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(branch2);
+					}
+					break;
+				case "commitsList":
+					mViewPager.setCurrentItem(1);
+					String branch = mainIntent.getStringExtra("branchName");
+					repository.setBranchRef(branch);
+					if(getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(branch);
+					}
+					Intent intent1 = repository.getIntent(ctx, CommitsActivity.class);
+					ctx.startActivity(intent1);
+					break;
+				case "issue":
+					mViewPager.setCurrentItem(2);
+					break;
+				case "issueNew":
+					mViewPager.setCurrentItem(2);
+					startActivity(repository.getIntent(ctx, CreateIssueActivity.class));
+					break;
+				case "pull":
+					mViewPager.setCurrentItem(3);
+					break;
+				case "pullNew":
+					mViewPager.setCurrentItem(3);
+					startActivity(repository.getIntent(ctx, CreatePullRequestActivity.class));
+					break;
+				case "releases":
+					mViewPager.setCurrentItem(4);
+					break;
+				case "newRelease":
+					mViewPager.setCurrentItem(4);
+					createReleaseLauncher.launch(repository.getIntent(ctx, CreateReleaseActivity.class));
+					break;
+				case "milestones":
+					mViewPager.setCurrentItem(5);
+					break;
+				case "milestonesNew":
+					mViewPager.setCurrentItem(5);
+					createMilestoneLauncher.launch(repository.getIntent(ctx, CreateMilestoneActivity.class));
+					break;
+				case "labels":
+					mViewPager.setCurrentItem(6);
+					break;
+				case "settings":
+					settingsLauncher.launch(repository.getIntent(ctx, RepositorySettingsActivity.class));
+					break;
+			}
+		}
 	}
 
 	private void checkRepositoryStarStatus(String instanceToken, final String owner, String repo) {
@@ -757,7 +773,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			@Override
 			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-				tinyDB.putInt("repositoryStarStatus", response.code());
+				repository.setStarred(response.code() == 204);
 			}
 
 			@Override
@@ -780,17 +796,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
 
 				if(response.code() == 200) {
-
 					assert response.body() != null;
-
-					if(response.body().getSubscribed()) {
-
-						tinyDB.putBoolean("repositoryWatchStatus", true);
-					}
+					repository.setWatched(response.body().getSubscribed());
 				}
 				else {
-
-					tinyDB.putBoolean("repositoryWatchStatus", false);
+					repository.setWatched(false);
 				}
 			}
 
@@ -801,19 +811,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			}
 		});
 
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if(!isFinishing()) {
-			return;
-		}
-		if(getIntent().getBooleanExtra("switchAccountBackOnFinish", false)) {
-			UserAccount a = BaseApi.getInstance(this, UserAccountsApi.class)
-				.getAccountById(getIntent().getIntExtra("oldAccountId", 0));
-			AppUtil.switchToAccount(this, a);
-		}
 	}
 
 	// Issues milestone filter interface
