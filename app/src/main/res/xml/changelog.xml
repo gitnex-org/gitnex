@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.2.1" versioncode="421">
-        <change>Bugfix: Fix reactions UI</change>
-        <change>Bugfix: Fix duplicate instance profiles</change>
-        <change>Regression: Disable fork view</change>
-        <change>Bugfix: Fix notifications UI</change>
+    <release version="4.2.2" versioncode="422">
+        <change>Bugfix: Fix crash on commits viewing in some cases</change>
+        <change>Bugfix: Fix notifications pagination</change>
+        <change>Bugfix: Fix cache size when selected 1 GB</change>
     </release>
 
 </changelog>

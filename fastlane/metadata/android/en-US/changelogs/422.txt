@@ -1,0 +1,11 @@
+4.2.2
+
+Bugfix: Fix crash on commits viewing in some cases
+Bugfix: Fix notifications pagination
+Bugfix: Fix cache size when selected 1 GB
+
+Release Notes 4.2.0: https://codeberg.org/gitnex/GitNex/releases
+
+Release Video 4.2.0: https://youtu.be/mxkE-x64iXs
+
+Release Blog 4.2.0: https://gitnex.codeberg.page/posts/420.html
