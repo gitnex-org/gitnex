@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -131,6 +132,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		return assigneesList.size();
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void updateList(List<String> list) {
 
 		currentAssignees = list;
