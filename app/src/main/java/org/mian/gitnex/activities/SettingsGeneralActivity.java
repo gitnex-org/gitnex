@@ -2,13 +2,10 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.Version;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +47,11 @@ public class SettingsGeneralActivity extends BaseActivity {
 		}
 
 		homeScreenList = new ArrayList<>(Arrays.asList(appHomeDefaultScreen));
+
+		if(!((BaseActivity) ctx).getAccount().requiresVersion("1.14.0")) {
+			homeScreenList.remove(8);
+		}
+
 		String[] homeScreenArray = new String[homeScreenList.size()];
 		homeScreenList.toArray(homeScreenArray);
 
@@ -86,6 +88,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		else if(homeScreenSelectedChoice == 7) {
 
 			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleNotifications));
+		}
+		else if(homeScreenSelectedChoice == 8) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navMyIssues));
 		}
 
 		viewBinding.homeScreenFrame.setOnClickListener(setDefaultHomeScreen -> {
