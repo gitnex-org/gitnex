@@ -100,7 +100,7 @@ public class ExploreIssuesFragment extends Fragment {
 	private void loadInitial(String searchKeyword, int resultLimit) {
 
 		Call<List<Issues>> call = RetrofitClient
-			.getApiInterface(context).queryIssues(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, "issues", "open", resultLimit, 1);
+			.getApiInterface(context).queryIssues(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, "issues", null, "open", resultLimit, 1);
 		call.enqueue(new Callback<List<Issues>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
@@ -138,7 +138,7 @@ public class ExploreIssuesFragment extends Fragment {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<Issues>> call = RetrofitClient.getApiInterface(context)
-			.queryIssues(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, "issues", "open", resultLimit, page);
+			.queryIssues(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, "issues", null,"open", resultLimit, page);
 		call.enqueue(new Callback<List<Issues>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
