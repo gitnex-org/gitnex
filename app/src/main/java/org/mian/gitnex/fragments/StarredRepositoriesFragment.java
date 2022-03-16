@@ -97,12 +97,12 @@ public class StarredRepositoriesFragment extends Fragment {
 
         }, 50));
 
-        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), pageSize, resultLimit);
+        //fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), pageSize, resultLimit);
 
         return fragmentStarredRepositoriesBinding.getRoot();
     }
 
-    private void fetchDataAsync(String instanceToken, int pageSize, int resultLimit) {
+    /*private void fetchDataAsync(String instanceToken, int pageSize, int resultLimit) {
 
         StarredRepositoriesViewModel starredRepoModel = new ViewModelProvider(this).get(StarredRepositoriesViewModel.class);
 
@@ -122,9 +122,9 @@ public class StarredRepositoriesFragment extends Fragment {
 	            mProgressBar.setVisibility(View.GONE);
 	        });
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         inflater.inflate(R.menu.search_menu, menu);
@@ -133,11 +133,6 @@ public class StarredRepositoriesFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        //searchView.setQueryHint(getContext().getString(R.string.strFilter));
-
-        /*if(!connToInternet) {
-            return;
-        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -154,7 +149,7 @@ public class StarredRepositoriesFragment extends Fragment {
             }
         });
 
-    }
+    }*/
 
 	@Override
 	public void onResume() {

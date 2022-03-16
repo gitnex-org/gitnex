@@ -131,7 +131,7 @@ public class MyRepositoriesFragment extends Fragment {
         myRepoModel.getCurrentUserRepositories(instanceToken, userLogin, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
 	        myReposListMain -> {
 
-	            adapter = new ReposListAdapter(getContext(), myReposListMain);
+	            adapter = new ReposListAdapter(myReposListMain, getContext());
 	            if(adapter.getItemCount() > 0) {
 	                mRecyclerView.setAdapter(adapter);
 	                noDataMyRepo.setVisibility(View.GONE);
@@ -155,11 +155,6 @@ public class MyRepositoriesFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        //searchView.setQueryHint(getContext().getString(R.string.strFilter));
-
-        /*if(!connToInternet) {
-            return;
-        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
