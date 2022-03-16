@@ -17,7 +17,7 @@ import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MyIssuesFragment extends Fragment {

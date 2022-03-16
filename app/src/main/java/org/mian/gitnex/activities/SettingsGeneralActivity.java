@@ -48,7 +48,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		homeScreenList = new ArrayList<>(Arrays.asList(appHomeDefaultScreen));
 
-		if(!((BaseActivity) ctx).getAccount().requiresVersion("1.14.0")) {
+		if(!getAccount().requiresVersion("1.14.0")) {
 			homeScreenList.remove(8);
 		}
 
