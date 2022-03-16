@@ -100,6 +100,16 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		});
 		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(v -> counterBadgesSwitch.setChecked(!counterBadgesSwitch.isChecked()));
 
+		// show labels in lists(issues, pr) - default is color dots
+		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(tinyDB.getBoolean("showLabelsInList", true));
+
+		activitySettingsAppearanceBinding.switchLabelsInListBadge.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+			tinyDB.putBoolean("showLabelsInList", isChecked);
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+		});
+		activitySettingsAppearanceBinding.labelsInListFrame.setOnClickListener(v -> activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(!activitySettingsAppearanceBinding.switchLabelsInListBadge.isChecked()));
+
 		// theme selection dialog
 		themeFrame.setOnClickListener(view -> {
 

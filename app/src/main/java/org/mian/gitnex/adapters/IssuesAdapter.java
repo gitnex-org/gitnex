@@ -111,8 +111,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
 		private final TextView issueCommentsCount;
-		private final HorizontalScrollView labelsScrollView;
+		private final HorizontalScrollView labelsScrollViewWithText;
 		private final LinearLayout frameLabels;
+		private final HorizontalScrollView labelsScrollViewDots;
+		private final LinearLayout frameLabelsDots;
 
 		IssuesHolder(View itemView) {
 
@@ -121,8 +123,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			issueTitle = itemView.findViewById(R.id.issueTitle);
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
-			labelsScrollView = itemView.findViewById(R.id.labelsScrollView);
+			labelsScrollViewWithText = itemView.findViewById(R.id.labelsScrollViewWithText);
 			frameLabels = itemView.findViewById(R.id.frameLabels);
+			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
+			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
 
 			issueAssigneeAvatar.setOnLongClickListener(loginId -> {
 				AppUtil.copyToClipboard(context, issueObject.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issueObject.getUser().getLogin()));
@@ -174,34 +178,59 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			if(issue.getLabels() != null) {
 
-				labelsScrollView.setVisibility(View.VISIBLE);
-				frameLabels.removeAllViews();
+				if(!tinyDb.getBoolean("showLabelsInList")) { // default
 
-				for(int i = 0; i < issue.getLabels().size(); i++) {
+					labelsScrollViewWithText.setVisibility(View.GONE);
+					labelsScrollViewDots.setVisibility(View.VISIBLE);
+					frameLabelsDots.removeAllViews();
 
-					String labelColor = issue.getLabels().get(i).getColor();
-					String labelName = issue.getLabels().get(i).getName();
-					int color = Color.parseColor("#" + labelColor);
+					for(int i = 0; i < issue.getLabels().size(); i++) {
 
-					ImageView labelsView = new ImageView(context);
-					frameLabels.setOrientation(LinearLayout.HORIZONTAL);
-					frameLabels.setGravity(Gravity.START | Gravity.TOP);
-					labelsView.setLayoutParams(params);
+						String labelColor = issue.getLabels().get(i).getColor();
+						int color = Color.parseColor("#" + labelColor);
 
-					int height = AppUtil.getPixelsFromDensity(context, 20);
-					int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
+						ImageView labelsView = new ImageView(context);
+						frameLabelsDots.setOrientation(LinearLayout.HORIZONTAL);
+						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
+						labelsView.setLayoutParams(params);
 
-					TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT)
-						.textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
-						.width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8)))
-						.height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
+						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).width(54).height(54).endConfig().buildRound("", color);
 
-					labelsView.setImageDrawable(drawable);
-					frameLabels.addView(labelsView);
+						labelsView.setImageDrawable(drawable);
+						frameLabelsDots.addView(labelsView);
+					}
+				}
+				else {
+
+					labelsScrollViewDots.setVisibility(View.GONE);
+					labelsScrollViewWithText.setVisibility(View.VISIBLE);
+					frameLabels.removeAllViews();
+
+					for(int i = 0; i < issue.getLabels().size(); i++) {
+
+						String labelColor = issue.getLabels().get(i).getColor();
+						String labelName = issue.getLabels().get(i).getName();
+						int color = Color.parseColor("#" + labelColor);
+
+						ImageView labelsView = new ImageView(context);
+						frameLabels.setOrientation(LinearLayout.HORIZONTAL);
+						frameLabels.setGravity(Gravity.START | Gravity.TOP);
+						labelsView.setLayoutParams(params);
+
+						int height = AppUtil.getPixelsFromDensity(context, 20);
+						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
+
+						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize).width(LabelWidthCalculator
+							.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8))).height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
+
+						labelsView.setImageDrawable(drawable);
+						frameLabels.addView(labelsView);
+					}
 				}
 			}
 			else {
-				labelsScrollView.setVisibility(View.GONE);
+				labelsScrollViewDots.setVisibility(View.GONE);
+				labelsScrollViewWithText.setVisibility(View.GONE);
 			}
 
 			switch(timeFormat) {
@@ -233,31 +262,27 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 	static class LoadHolder extends RecyclerView.ViewHolder {
 
 		LoadHolder(View itemView) {
-
 			super(itemView);
 		}
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
-
 		isMoreDataAvailable = moreDataAvailable;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
-
 		notifyDataSetChanged();
 		isLoading = false;
 	}
 
 	public void setLoadMoreListener(Runnable loadMoreListener) {
-
 		this.loadMoreListener = loadMoreListener;
 	}
 
 	public void updateList(List<Issues> list) {
-
 		issuesList = list;
-		notifyDataSetChanged();
+		notifyDataChanged();
 	}
 
 }

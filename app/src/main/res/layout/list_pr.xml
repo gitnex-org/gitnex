@@ -27,22 +27,48 @@
             android:contentDescription="@string/generalImgContentText"
             android:src="@drawable/ic_android" />
 
-        <TextView
-            android:id="@+id/prTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/titleLabelsSection"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top|center_vertical"
-            android:textAlignment="gravity"
-            android:text="@string/strFilter"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/prTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top|center_vertical"
+                android:textAlignment="gravity"
+                android:text="@string/newIssueTitle"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp" />
+
+            <HorizontalScrollView
+                android:id="@+id/labelsScrollViewDots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="right"
+                android:layout_marginBottom="8dp"
+                android:scrollbarThumbHorizontal="@android:color/transparent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/frameLabelsDots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp" />
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <HorizontalScrollView
+        android:id="@+id/labelsScrollViewWithText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/labelsScrollView"
         android:foregroundGravity="right"
         android:layout_marginBottom="8dp"
         android:scrollbarThumbHorizontal="@android:color/transparent"

@@ -3,15 +3,21 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.amulyakhare.textdrawable.TextDrawable;
 import org.gitnex.tea4j.models.Issues;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
@@ -23,6 +29,8 @@ import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -98,6 +106,10 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
 		private final TextView issueCommentsCount;
+		private final HorizontalScrollView labelsScrollViewWithText;
+		private final LinearLayout frameLabels;
+		private final HorizontalScrollView labelsScrollViewDots;
+		private final LinearLayout frameLabelsDots;
 
 		IssuesHolder(View itemView) {
 			super(itemView);
@@ -105,13 +117,16 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			issueTitle = itemView.findViewById(R.id.issueTitle);
 			issueCommentsCount = itemView.findViewById(R.id.issueCommentsCount);
 			issueCreatedTime = itemView.findViewById(R.id.issueCreatedTime);
+			labelsScrollViewWithText = itemView.findViewById(R.id.labelsScrollViewWithText);
+			frameLabels = itemView.findViewById(R.id.frameLabels);
+			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
+			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
 
 			itemView.setOnClickListener(v -> {
+
 				String[] parts = issue.getRepository().getFull_name().split("/");
 				final String repoOwner = parts[0];
 				final String repoName = parts[1];
-
-
 
 				int currentActiveAccountId = ((BaseActivity) context).getAccount().getAccount().getAccountId();
 				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
@@ -170,6 +185,68 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + issue.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 			issueCommentsCount.setText(String.valueOf(issue.getComments()));
+
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+			params.setMargins(0, 0, 15, 0);
+
+			if(issue.getLabels() != null) {
+
+				if(!tinyDb.getBoolean("showLabelsInList")) { // default
+
+					labelsScrollViewWithText.setVisibility(View.GONE);
+					labelsScrollViewDots.setVisibility(View.VISIBLE);
+					frameLabelsDots.removeAllViews();
+
+					for(int i = 0; i < issue.getLabels().size(); i++) {
+
+						String labelColor = issue.getLabels().get(i).getColor();
+						int color = Color.parseColor("#" + labelColor);
+
+						ImageView labelsView = new ImageView(context);
+						frameLabelsDots.setOrientation(LinearLayout.HORIZONTAL);
+						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
+						labelsView.setLayoutParams(params);
+
+						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).width(54).height(54).endConfig().buildRound("", color);
+
+						labelsView.setImageDrawable(drawable);
+						frameLabelsDots.addView(labelsView);
+					}
+				}
+				else {
+
+					labelsScrollViewDots.setVisibility(View.GONE);
+					labelsScrollViewWithText.setVisibility(View.VISIBLE);
+					frameLabels.removeAllViews();
+
+					for(int i = 0; i < issue.getLabels().size(); i++) {
+
+						String labelColor = issue.getLabels().get(i).getColor();
+						String labelName = issue.getLabels().get(i).getName();
+						int color = Color.parseColor("#" + labelColor);
+
+						ImageView labelsView = new ImageView(context);
+						frameLabels.setOrientation(LinearLayout.HORIZONTAL);
+						frameLabels.setGravity(Gravity.START | Gravity.TOP);
+						labelsView.setLayoutParams(params);
+
+						int height = AppUtil.getPixelsFromDensity(context, 20);
+						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
+
+						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize).width(
+							LabelWidthCalculator
+								.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8))).height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
+
+						labelsView.setImageDrawable(drawable);
+						frameLabels.addView(labelsView);
+					}
+				}
+			}
+			else {
+				labelsScrollViewDots.setVisibility(View.GONE);
+				labelsScrollViewWithText.setVisibility(View.GONE);
+			}
 
 			switch(timeFormat) {
 				case "pretty": {
