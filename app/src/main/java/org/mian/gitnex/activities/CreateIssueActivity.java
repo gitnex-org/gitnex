@@ -175,7 +175,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		View view = assigneesBinding.getRoot();
 		dialogAssignees.setContentView(view);
 
-		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ -> dialogAssignees.dismiss());
+		assigneesBinding.save.setOnClickListener(assigneesBinding_ -> dialogAssignees.dismiss());
 
 		dialogAssignees.show();
 		AssigneesActions.getRepositoryAssignees(ctx, repository.getOwner(), repository.getName(), assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
@@ -195,7 +195,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 		View view = labelsBinding.getRoot();
 		dialogLabels.setContentView(view);
 
-		labelsBinding.cancel.setOnClickListener(labelsBinding_ -> dialogLabels.dismiss());
+		labelsBinding.save.setOnClickListener(labelsBinding_ -> dialogLabels.dismiss());
 
 		dialogLabels.show();
 		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, dialogLabels, labelsAdapter, labelsBinding);

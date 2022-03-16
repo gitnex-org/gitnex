@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,15 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.models.Releases;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
@@ -35,13 +30,10 @@ import java.util.List;
 
 public class ReleasesFragment extends Fragment {
 
-    private ProgressBar mProgressBar;
     private ReleasesAdapter adapter;
     private TagsAdapter tagsAdapter;
-    private RecyclerView mRecyclerView;
-    private TextView noDataReleases;
-
     private RepositoryContext repository;
+    private FragmentReleasesBinding fragmentReleasesBinding;
     private String releaseTag;
     private int page = 1;
     private int pageReleases = 1;
@@ -66,31 +58,23 @@ public class ReleasesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        FragmentReleasesBinding fragmentReleasesBinding = FragmentReleasesBinding.inflate(inflater, container, false);
+        fragmentReleasesBinding = FragmentReleasesBinding.inflate(inflater, container, false);
 
-        noDataReleases = fragmentReleasesBinding.noDataReleases;
-
-        final SwipeRefreshLayout swipeRefresh = fragmentReleasesBinding.pullToRefresh;
-
-        mRecyclerView = fragmentReleasesBinding.recyclerView;
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+	    fragmentReleasesBinding.recyclerView.setHasFixedSize(true);
+	    fragmentReleasesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentReleasesBinding.recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+	    fragmentReleasesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = fragmentReleasesBinding.progressBar;
+	    fragmentReleasesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-            swipeRefresh.setRefreshing(false);
+		    fragmentReleasesBinding.pullToRefresh.setRefreshing(false);
 	        if(repository.isReleasesViewTypeIsTag()) {
 		        ReleasesViewModel.loadTagsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
 	        } else {
 		        ReleasesViewModel.loadReleasesList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
 	        }
-	        mProgressBar.setVisibility(View.VISIBLE);
+	        fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 
         }, 50));
 
@@ -106,11 +90,10 @@ public class ReleasesFragment extends Fragment {
 		    } else {
 			    ReleasesViewModel.loadReleasesList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
 		    }
-		    mProgressBar.setVisibility(View.VISIBLE);
+		    fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 	    });
 
         return fragmentReleasesBinding.getRoot();
-
     }
 
     private void fetchDataAsync(String instanceToken, String owner, String repo) {
@@ -126,31 +109,31 @@ public class ReleasesFragment extends Fragment {
 			        public void onLoadMore() {
 				        pageReleases += 1;
 				        ReleasesViewModel.loadMoreReleases(instanceToken, owner, repo, pageReleases, getContext(), adapter);
-				        mProgressBar.setVisibility(View.VISIBLE);
+				        fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 			        }
 
 			        @Override
 			        public void onLoadFinished() {
-				        mProgressBar.setVisibility(View.GONE);
+				        fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
 			        }
 		        });
 		        if(adapter.getItemCount() > 0) {
-			        mRecyclerView.setAdapter(adapter);
+			        fragmentReleasesBinding.recyclerView.setAdapter(adapter);
 			        if(releasesListMain != null && releaseTag != null) {
 				        int index = getReleaseIndex(releaseTag, releasesListMain);
 				        releaseTag = null;
 				        if(index != -1) {
-					        mRecyclerView.scrollToPosition(index);
+					        fragmentReleasesBinding.recyclerView.scrollToPosition(index);
 				        }
 			        }
-			        noDataReleases.setVisibility(View.GONE);
+			        fragmentReleasesBinding.noDataReleases.setVisibility(View.GONE);
 		        }
 		        else {
-			        adapter.notifyDataSetChanged();
-			        mRecyclerView.setAdapter(adapter);
-			        noDataReleases.setVisibility(View.VISIBLE);
+			        adapter.notifyDataChanged();
+			        fragmentReleasesBinding.recyclerView.setAdapter(adapter);
+			        fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
 		        }
-		        mProgressBar.setVisibility(View.GONE);
+		        fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
 	        }
         });
 
@@ -163,24 +146,24 @@ public class ReleasesFragment extends Fragment {
 				    public void onLoadMore() {
 					    page += 1;
 					    ReleasesViewModel.loadMoreTags(instanceToken, owner, repo , page, getContext(), tagsAdapter);
-					    mProgressBar.setVisibility(View.VISIBLE);
+					    fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 				    }
 
 				    @Override
 				    public void onLoadFinished() {
-					    mProgressBar.setVisibility(View.GONE);
+					    fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
 				    }
 			    });
 			    if(tagsAdapter.getItemCount() > 0) {
-				    mRecyclerView.setAdapter(tagsAdapter);
-				    noDataReleases.setVisibility(View.GONE);
+				    fragmentReleasesBinding.recyclerView.setAdapter(tagsAdapter);
+				    fragmentReleasesBinding.noDataReleases.setVisibility(View.GONE);
 			    }
 			    else {
-				    tagsAdapter.notifyDataSetChanged();
-				    mRecyclerView.setAdapter(tagsAdapter);
-				    noDataReleases.setVisibility(View.VISIBLE);
+				    tagsAdapter.notifyDataChanged();
+				    fragmentReleasesBinding.recyclerView.setAdapter(tagsAdapter);
+				    fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
 			    }
-			    mProgressBar.setVisibility(View.GONE);
+			    fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
 		    }
 	    });
 
