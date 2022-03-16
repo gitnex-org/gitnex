@@ -169,7 +169,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			if(pullRequest.getLabels() != null) {
 
-				if(!tinyDb.getBoolean("showLabelsInList")) { // default
+				if(!tinyDb.getBoolean("showLabelsInList", false)) { // default
 
 					labelsScrollViewWithText.setVisibility(View.GONE);
 					labelsScrollViewDots.setVisibility(View.VISIBLE);

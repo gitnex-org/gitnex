@@ -178,7 +178,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			if(issue.getLabels() != null) {
 
-				if(!tinyDb.getBoolean("showLabelsInList")) { // default
+				if(!tinyDb.getBoolean("showLabelsInList", false)) { // default
 
 					labelsScrollViewWithText.setVisibility(View.GONE);
 					labelsScrollViewDots.setVisibility(View.VISIBLE);
