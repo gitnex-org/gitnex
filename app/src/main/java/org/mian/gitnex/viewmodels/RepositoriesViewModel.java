@@ -6,9 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.Releases;
 import org.gitnex.tea4j.models.UserRepositories;
-import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import java.util.List;
@@ -17,26 +15,34 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepositoriesViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> reposList;
 
-    public LiveData<List<UserRepositories>> getRepositories(String token, int page, int resultLimit, Context ctx) {
+    public LiveData<List<UserRepositories>> getRepositories(String token, int page, int resultLimit, String userLogin, String type, Context ctx) {
 
     	reposList = new MutableLiveData<>();
-    	loadReposList(token, page, resultLimit, ctx);
+    	loadReposList(token, page, resultLimit, userLogin, type, ctx);
 
         return reposList;
     }
 
-    public static void loadReposList(String token, int page, int resultLimit, Context ctx) {
+    public static void loadReposList(String token, int page, int resultLimit, String userLogin, String type, Context ctx) {
 
-        Call<List<UserRepositories>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .getUserRepositories(token, page, resultLimit);
+	    Call<List<UserRepositories>> call;
+
+    	if(type.equals("starredRepos")) {
+		    call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
+	    }
+    	else if(type.equals("myRepos")) {
+		    call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
+	    }
+    	else {
+		    call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+	    }
 
         call.enqueue(new Callback<List<UserRepositories>>() {
 
@@ -51,16 +57,26 @@ public class RepositoriesViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<UserRepositories>> call, Throwable t) {
-                Log.i("onFailure", t.toString());
+            public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
+	            Log.e("onFailure", t.toString());
             }
 
         });
     }
 
-	public static void loadMoreRepos(String token, int page, int resultLimit, Context ctx, ReposListAdapter adapter) {
+	public static void loadMoreRepos(String token, int page, int resultLimit, String userLogin, String type, Context ctx, ReposListAdapter adapter) {
 
-		Call<List<UserRepositories>> call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+		Call<List<UserRepositories>> call;
+
+		if(type.equals("starredRepos")) {
+			call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
+		}
+		else if(type.equals("myRepos")) {
+			call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
+		}
+		else {
+			call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+		}
 
 		call.enqueue(new Callback<List<UserRepositories>>() {
 
@@ -81,41 +97,15 @@ public class RepositoriesViewModel extends ViewModel {
 					}
 				}
 				else {
-					Log.i("onResponse", String.valueOf(response.code()));
+					Log.e("onResponse", String.valueOf(response.code()));
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
 
-				Log.i("onFailure", t.toString());
+				Log.e("onFailure", t.toString());
 			}
 		});
 	}
-
-	/*public static void loadReposList(String token, Context ctx, int page, int limit) {
-
-		Call<List<UserRepositories>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.getUserRepositories(token, page, limit);
-
-		call.enqueue(new Callback<List<UserRepositories>>() {
-
-			@Override
-			public void onResponse(@NonNull Call<List<UserRepositories>> call, @NonNull Response<List<UserRepositories>> response) {
-
-				if(response.isSuccessful()) {
-					if(response.code() == 200) {
-						reposList.postValue(response.body());
-					}
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<UserRepositories>> call, Throwable t) {
-				Log.i("onFailure", t.toString());
-			}
-
-		});
-	}*/
 }

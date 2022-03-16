@@ -26,7 +26,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepositoriesFragment extends Fragment {
@@ -34,7 +34,7 @@ public class RepositoriesFragment extends Fragment {
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private final int resultLimit = Constants.resultLimitOldGiteaInstances;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,11 +43,6 @@ public class RepositoriesFragment extends Fragment {
 
 		setHasOptionsMenu(true);
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navRepos));
-
-		// if gitea is 1.12 or higher use the new limit
-		if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
 
 		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(view -> {
 			Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
@@ -76,7 +71,7 @@ public class RepositoriesFragment extends Fragment {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(instanceToken, page, resultLimit, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(instanceToken, page, resultLimit, "", "repos", getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -85,7 +80,7 @@ public class RepositoriesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, "", "repos", getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -110,101 +105,15 @@ public class RepositoriesFragment extends Fragment {
 		});
 	}
 
-    /*private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
-    private ReposListAdapter adapter;
-    private ExtendedFloatingActionButton createNewRepo;
-    private TextView noDataRepo;
-    private final int pageSize = 1;
-    private final int resultLimit = 50;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-	    FragmentRepositoriesBinding fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
-
-        setHasOptionsMenu(true);
-
-        final SwipeRefreshLayout swipeRefresh = fragmentRepositoriesBinding.pullToRefresh;
-
-	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navRepos));
-
-        noDataRepo = fragmentRepositoriesBinding.noData;
-        mProgressBar = fragmentRepositoriesBinding.progressBar;
-        mRecyclerView = fragmentRepositoriesBinding.recyclerView;
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        createNewRepo = fragmentRepositoriesBinding.addNewRepo;
-
-        createNewRepo.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-            startActivity(intent);
-        });
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && createNewRepo.isShown()) {
-                    createNewRepo.setVisibility(View.GONE);
-                }
-                else if (dy < 0 ) {
-                    createNewRepo.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-            swipeRefresh.setRefreshing(false);
-            RepositoriesListViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext(), pageSize, resultLimit);
-
-        }, 50));
-
-        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), pageSize, resultLimit);
-        return fragmentRepositoriesBinding.getRoot();
-
-    }*/
-
     @Override
     public void onResume() {
         super.onResume();
 
         if(MainActivity.repoCreated) {
-            RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, getContext());
+            RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "repos", getContext());
 	        MainActivity.repoCreated = false;
         }
     }
-
-    /*private void fetchDataAsync(String instanceToken, int pageSize, int resultLimit) {
-
-        RepositoriesListViewModel repoModel = new ViewModelProvider(this).get(RepositoriesListViewModel.class);
-
-        repoModel.getUserRepositories(instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
-	        reposListMain -> {
-
-	            adapter = new ReposListAdapter(getContext(), reposListMain);
-	            if(adapter.getItemCount() > 0) {
-	                mRecyclerView.setAdapter(adapter);
-	                noDataRepo.setVisibility(View.GONE);
-	            }
-	            else {
-	                adapter.notifyDataSetChanged();
-	                mRecyclerView.setAdapter(adapter);
-	                noDataRepo.setVisibility(View.VISIBLE);
-	            }
-	            mProgressBar.setVisibility(View.GONE);
-	        });
-    }*/
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -231,5 +140,4 @@ public class RepositoriesFragment extends Fragment {
             }
         });
     }
-
 }

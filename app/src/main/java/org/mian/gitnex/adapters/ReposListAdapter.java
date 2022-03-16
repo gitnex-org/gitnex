@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
@@ -217,7 +217,6 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				isRepoAdmin = new CheckBox(context);
 			}
 			isRepoAdmin.setChecked(repositories.getPermissions().isAdmin());
-
 		}
 	}
 
@@ -226,154 +225,6 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			super(itemView);
 		}
 	}
-
-	/*static class ReposViewHolder extends RecyclerView.ViewHolder {
-
-		private UserRepositories userRepositories;
-
-		private final ImageView image;
-		private final TextView repoName;
-		private final TextView orgName;
-		private final TextView repoDescription;
-		private CheckBox isRepoAdmin;
-		private final TextView repoStars;
-		private final TextView repoLastUpdated;
-		private final View spacerView;
-
-		private ReposViewHolder(View itemView) {
-
-			super(itemView);
-			repoName = itemView.findViewById(R.id.repoName);
-			orgName = itemView.findViewById(R.id.orgName);
-			repoDescription = itemView.findViewById(R.id.repoDescription);
-			isRepoAdmin = itemView.findViewById(R.id.repoIsAdmin);
-			image = itemView.findViewById(R.id.imageAvatar);
-			repoStars = itemView.findViewById(R.id.repoStars);
-			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
-			spacerView = itemView.findViewById(R.id.spacerView);
-
-			itemView.setOnClickListener(v -> {
-				Context context = v.getContext();
-				RepositoryContext repo = new RepositoryContext(userRepositories, context);
-				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
-
-				int currentActiveAccountId = TinyDB.getInstance(context).getInt("currentActiveAccountId");
-				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
-
-				assert repositoryData != null;
-				Integer count = repositoryData.checkRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-
-				if(count == 0) {
-					long id = repositoryData.insertRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-					repo.setRepositoryId((int) id);
-				}
-				else {
-					Repository data = repositoryData.getRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-					repo.setRepositoryId(data.getRepositoryId());
-				}
-
-				context.startActivity(intent);
-			});
-		}
-
-	}*/
-
-	/*public ReposListAdapter(Context ctx, List<UserRepositories> reposListMain) {
-
-		this.context = ctx;
-		this.reposList = reposListMain;
-		reposListFull = new ArrayList<>(reposList);
-	}
-
-	@NonNull
-	@Override
-	public ReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories, parent, false);
-		return new ReposViewHolder(v);
-	}*/
-
-	/*@Override
-	public void onBindViewHolder(@NonNull ReposViewHolder holder, int position) {
-
-		TinyDB tinyDb = TinyDB.getInstance(context);
-		UserRepositories currentItem = reposList.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
-
-		Locale locale = context.getResources().getConfiguration().locale;
-		String timeFormat = tinyDb.getString("dateFormat", "pretty");
-		holder.userRepositories = currentItem;
-		holder.orgName.setText(currentItem.getFullName().split("/")[0]);
-		holder.repoName.setText(currentItem.getFullName().split("/")[1]);
-		holder.repoStars.setText(currentItem.getStars_count());
-
-		ColorGenerator generator = ColorGenerator.MATERIAL;
-		int color = generator.getColor(currentItem.getName());
-		String firstCharacter = String.valueOf(currentItem.getFullName().charAt(0));
-
-		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
-
-		if(currentItem.getAvatar_url() != null) {
-			if(!currentItem.getAvatar_url().equals("")) {
-				PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.image);
-			}
-			else {
-				holder.image.setImageDrawable(drawable);
-			}
-		}
-		else {
-			holder.image.setImageDrawable(drawable);
-		}
-
-		if(currentItem.getUpdated_at() != null) {
-
-			switch(timeFormat) {
-				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(locale);
-					String createdTime = prettyTime.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					holder.repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getUpdated_at()), context));
-					break;
-				}
-				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					break;
-				}
-				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					break;
-				}
-			}
-		}
-		else {
-			holder.repoLastUpdated.setVisibility(View.GONE);
-		}
-
-		if(!currentItem.getDescription().equals("")) {
-			holder.repoDescription.setVisibility(View.VISIBLE);
-			holder.repoDescription.setText(currentItem.getDescription());
-			holder.spacerView.setVisibility(View.GONE);
-		}
-		else {
-			holder.repoDescription.setVisibility(View.GONE);
-			holder.spacerView.setVisibility(View.VISIBLE);
-		}
-
-		if(holder.isRepoAdmin == null) {
-			holder.isRepoAdmin = new CheckBox(context);
-		}
-		holder.isRepoAdmin.setChecked(currentItem.getPermissions().isAdmin());
-	}
-
-	@Override
-	public int getItemCount() {
-
-		return reposList.size();
-	}*/
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;

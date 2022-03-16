@@ -1,7 +1,6 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,31 +11,102 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
-import org.mian.gitnex.databinding.FragmentMyRepositoriesBinding;
-import org.mian.gitnex.viewmodels.MyRepositoriesViewModel;
+import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MyRepositoriesFragment extends Fragment {
 
-    private ProgressBar mProgressBar;
+	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
+	private ReposListAdapter adapter;
+	private int page = 1;
+	private final int resultLimit = Constants.resultLimitOldGiteaInstances;
+
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+
+		setHasOptionsMenu(true);
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navMyRepos));
+		final String userLogin =  ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
+
+		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(view -> {
+			Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
+			startActivity(intent);
+		});
+
+		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
+		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentRepositoriesBinding.recyclerView.getContext(),
+			DividerItemDecoration.VERTICAL);
+		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+
+		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
+			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), userLogin);
+			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
+		}, 50));
+
+		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), userLogin);
+
+		return fragmentRepositoriesBinding.getRoot();
+	};
+
+	private void fetchDataAsync(String instanceToken, String userLogin) {
+
+		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+
+		reposModel.getRepositories(instanceToken, page, resultLimit, userLogin, "myRepos", getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+
+			adapter = new ReposListAdapter(reposListMain, getContext());
+			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
+
+				@Override
+				public void onLoadMore() {
+
+					page += 1;
+					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, userLogin, "myRepos", getContext(), adapter);
+					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onLoadFinished() {
+
+					fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+				}
+			});
+
+			if(adapter.getItemCount() > 0) {
+				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+				fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
+			}
+			else {
+				adapter.notifyDataChanged();
+				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+				fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
+			}
+
+			fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+		});
+	}
+
+    /*private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private ReposListAdapter adapter;
     private ExtendedFloatingActionButton createNewRepo;
@@ -144,7 +214,7 @@ public class MyRepositoriesFragment extends Fragment {
 	            mProgressBar.setVisibility(View.GONE);
 	        });
 
-    }
+    }*/
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -164,7 +234,7 @@ public class MyRepositoriesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(mRecyclerView.getAdapter() != null) {
+                if(fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
                     adapter.getFilter().filter(newText);
                 }
                 return false;

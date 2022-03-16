@@ -1,7 +1,6 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,119 +11,101 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
-import org.mian.gitnex.databinding.FragmentStarredRepositoriesBinding;
-import org.mian.gitnex.viewmodels.StarredRepositoriesViewModel;
+import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class StarredRepositoriesFragment extends Fragment {
 
-    private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
-    private ReposListAdapter adapter;
-    private ExtendedFloatingActionButton createNewRepo;
-    private TextView noData;
-    private int pageSize = 1;
-    private int resultLimit = 50;
+	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
+	private ReposListAdapter adapter;
+	private int page = 1;
+	private final int resultLimit = Constants.resultLimitOldGiteaInstances;
+
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+
+		setHasOptionsMenu(true);
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navStarredRepos));
+
+		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(view -> {
+			Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
+			startActivity(intent);
+		});
+
+		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
+		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentRepositoriesBinding.recyclerView.getContext(),
+			DividerItemDecoration.VERTICAL);
+		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+
+		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
+			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
+		}, 50));
+
+		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+
+		return fragmentRepositoriesBinding.getRoot();
+	};
+
+	private void fetchDataAsync(String instanceToken) {
+
+		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+
+		reposModel.getRepositories(instanceToken, page, resultLimit, "", "starredRepos", getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+
+			adapter = new ReposListAdapter(reposListMain, getContext());
+			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
+
+				@Override
+				public void onLoadMore() {
+
+					page += 1;
+					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, "", "starredRepos", getContext(), adapter);
+					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onLoadFinished() {
+
+					fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+				}
+			});
+
+			if(adapter.getItemCount() > 0) {
+				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+				fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
+			}
+			else {
+				adapter.notifyDataChanged();
+				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+				fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
+			}
+
+			fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+		});
+	}
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-	    FragmentStarredRepositoriesBinding fragmentStarredRepositoriesBinding = FragmentStarredRepositoriesBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
-
-        final SwipeRefreshLayout swipeRefresh = fragmentStarredRepositoriesBinding.pullToRefresh;
-
-	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navStarredRepos));
-
-        noData = fragmentStarredRepositoriesBinding.noData;
-        mProgressBar = fragmentStarredRepositoriesBinding.progressBar;
-        mRecyclerView = fragmentStarredRepositoriesBinding.recyclerView;
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        createNewRepo = fragmentStarredRepositoriesBinding.addNewRepo;
-
-        createNewRepo.setOnClickListener(view -> {
-
-            Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-            startActivity(intent);
-        });
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && createNewRepo.isShown()) {
-                    createNewRepo.setVisibility(View.GONE);
-                } else if (dy < 0 ) {
-                    createNewRepo.setVisibility(View.VISIBLE);
-
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-            swipeRefresh.setRefreshing(false);
-            StarredRepositoriesViewModel.loadStarredReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext(), pageSize, resultLimit);
-
-        }, 50));
-
-        //fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), pageSize, resultLimit);
-
-        return fragmentStarredRepositoriesBinding.getRoot();
-    }
-
-    /*private void fetchDataAsync(String instanceToken, int pageSize, int resultLimit) {
-
-        StarredRepositoriesViewModel starredRepoModel = new ViewModelProvider(this).get(StarredRepositoriesViewModel.class);
-
-        starredRepoModel.getUserStarredRepositories(instanceToken, getContext(), pageSize, resultLimit).observe(getViewLifecycleOwner(),
-	        starredReposListMain -> {
-
-	            adapter = new ReposListAdapter(getContext(), starredReposListMain);
-	            if(adapter.getItemCount() > 0) {
-	                mRecyclerView.setAdapter(adapter);
-	                noData.setVisibility(View.GONE);
-	            }
-	            else {
-	                adapter.notifyDataSetChanged();
-	                mRecyclerView.setAdapter(adapter);
-	                noData.setVisibility(View.VISIBLE);
-	            }
-	            mProgressBar.setVisibility(View.GONE);
-	        });
-
-    }*/
-
-    /*@Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         inflater.inflate(R.menu.search_menu, menu);
@@ -142,21 +123,21 @@ public class StarredRepositoriesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(mRecyclerView.getAdapter() != null) {
+                if(fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
                     adapter.getFilter().filter(newText);
                 }
                 return false;
             }
         });
 
-    }*/
+    }
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
 		if(MainActivity.repoCreated) {
-			StarredRepositoriesViewModel.loadStarredReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext(), pageSize, resultLimit);
+			RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "starredRepos", getContext());
 			MainActivity.repoCreated = false;
 		}
 
