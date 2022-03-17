@@ -23,6 +23,7 @@ import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
@@ -34,7 +35,7 @@ public class RepositoriesFragment extends Fragment {
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = 5;
+	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

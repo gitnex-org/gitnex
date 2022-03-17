@@ -32,7 +32,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
 	private static final String getOrgName = null;
 	private String orgName;
 

@@ -22,119 +22,179 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
-public class OrganizationsListAdapter extends RecyclerView.Adapter<OrganizationsListAdapter.OrganizationsViewHolder> implements Filterable {
+public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-    private final List<UserOrganizations> orgList;
-    private final Context context;
-    private final List<UserOrganizations> orgListFull;
+	private final Context context;
+	private final int TYPE_LOAD = 0;
+	private List<UserOrganizations> orgList;
+	private final List<UserOrganizations> orgListFull;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 
-    static class OrganizationsViewHolder extends RecyclerView.ViewHolder {
+	public OrganizationsListAdapter(List<UserOrganizations> orgListMain, Context ctx) {
+		this.context = ctx;
+		this.orgList = orgListMain;
+		orgListFull = new ArrayList<>(orgList);
+	}
 
-    	private UserOrganizations userOrganizations;
+	@NonNull
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		if(viewType == TYPE_LOAD) {
+			return new OrganizationsListAdapter.OrgHolder(inflater.inflate(R.layout.list_organizations, parent, false));
+		}
+		else {
+			return new OrganizationsListAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+		}
+	}
 
-        private final ImageView image;
-        private final TextView orgName;
-        private final TextView orgDescription;
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
 
-        private OrganizationsViewHolder(View itemView) {
-            super(itemView);
-	        orgName = itemView.findViewById(R.id.orgName);
-	        orgDescription = itemView.findViewById(R.id.orgDescription);
-            image = itemView.findViewById(R.id.imageAvatar);
+		if(getItemViewType(position) == TYPE_LOAD) {
+			((OrganizationsListAdapter.OrgHolder) holder).bindData(orgList.get(position));
+		}
+	}
 
-            itemView.setOnClickListener(v -> {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, OrganizationDetailActivity.class);
-                intent.putExtra("orgName", userOrganizations.getUsername());
-                context.startActivity(intent);
-            });
-        }
-    }
+	@Override
+	public int getItemViewType(int position) {
+		if(orgList.get(position).getUsername() != null) {
+			return TYPE_LOAD;
+		}
+		else {
+			return 1;
+		}
+	}
 
-    public OrganizationsListAdapter(Context ctx, List<UserOrganizations> orgsListMain) {
+	@Override
+	public int getItemCount() {
+		return orgList.size();
+	}
 
-        this.context = ctx;
-        this.orgList = orgsListMain;
-        orgListFull = new ArrayList<>(orgList);
-    }
+	class OrgHolder extends RecyclerView.ViewHolder {
 
-    @NonNull
-    @Override
-    public OrganizationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		private UserOrganizations userOrganizations;
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_organizations, parent, false);
-        return new OrganizationsViewHolder(v);
-    }
+		private final ImageView image;
+		private final TextView orgName;
+		private final TextView orgDescription;
 
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onBindViewHolder(@NonNull OrganizationsViewHolder holder, int position) {
+		OrgHolder(View itemView) {
 
-        UserOrganizations currentItem = orgList.get(position);
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			super(itemView);
+			orgName = itemView.findViewById(R.id.orgName);
+			orgDescription = itemView.findViewById(R.id.orgDescription);
+			image = itemView.findViewById(R.id.imageAvatar);
 
-	    holder.userOrganizations = currentItem;
-	    holder.orgName.setText(currentItem.getUsername());
+			itemView.setOnClickListener(v -> {
+				Context context = v.getContext();
+				Intent intent = new Intent(context, OrganizationDetailActivity.class);
+				intent.putExtra("orgName", userOrganizations.getUsername());
+				context.startActivity(intent);
+			});
+		}
 
-        PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.image);
+		void bindData(UserOrganizations org) {
 
-	    if(!currentItem.getDescription().equals("")) {
-		    holder.orgDescription.setVisibility(View.VISIBLE);
-		    holder.orgDescription.setText(currentItem.getDescription());
-	    }
-	    else {
-		    holder.orgDescription.setVisibility(View.GONE);
-	    }
-    }
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-    @Override
-    public int getItemCount() {
-        return orgList.size();
-    }
+			this.userOrganizations = org;
+			orgName.setText(org.getUsername());
 
-    @Override
-    public Filter getFilter() {
-        return orgFilter;
-    }
+			PicassoService.getInstance(context).get().load(org.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
 
-    private final Filter orgFilter = new Filter() {
+			if(!org.getDescription().equals("")) {
+				orgDescription.setVisibility(View.VISIBLE);
+				orgDescription.setText(org.getDescription());
+			}
+			else {
+				orgDescription.setVisibility(View.GONE);
+			}
+		}
 
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
+	}
 
-            List<UserOrganizations> filteredList = new ArrayList<>();
+	static class LoadHolder extends RecyclerView.ViewHolder {
+		LoadHolder(View itemView) {
+			super(itemView);
+		}
+	}
 
-            if (constraint == null || constraint.length() == 0) {
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
 
-                filteredList.addAll(orgListFull);
-            }
-            else {
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
 
-                String filterPattern = constraint.toString().toLowerCase().trim();
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+		void onLoadFinished();
+	}
 
-                for (UserOrganizations item : orgListFull) {
-                    if (item.getUsername().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
 
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
+	public void updateList(List<UserOrganizations> list) {
+		orgList = list;
+		notifyDataChanged();
+	}
 
-            return results;
-        }
+	@Override
+	public Filter getFilter() {
+		return orgFilter;
+	}
 
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+	private final Filter orgFilter = new Filter() {
 
-            orgList.clear();
-            orgList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
 
+			List<UserOrganizations> filteredList = new ArrayList<>();
+
+			if(constraint == null || constraint.length() == 0) {
+
+				filteredList.addAll(orgListFull);
+			}
+			else {
+
+				String filterPattern = constraint.toString().toLowerCase().trim();
+
+				for(UserOrganizations item : orgListFull) {
+					if(item.getUsername().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
+						filteredList.add(item);
+					}
+				}
+			}
+
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+
+			orgList.clear();
+			orgList.addAll((List) results.values);
+			notifyDataChanged();
+		}
+	};
 }

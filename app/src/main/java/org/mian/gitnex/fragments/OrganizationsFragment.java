@@ -11,126 +11,110 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
-import org.mian.gitnex.viewmodels.OrganizationListViewModel;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class OrganizationsFragment extends Fragment {
 
 	public static boolean orgCreated = false;
+	private FragmentOrganizationsBinding fragmentOrganizationsBinding;
+	private OrganizationsListAdapter adapter;
+	private int page = 1;
+	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
 
-    private ProgressBar mProgressBar;
-    private OrganizationsListAdapter adapter;
-    private RecyclerView mRecyclerView;
-    private ExtendedFloatingActionButton createNewOrganization;
-    private TextView noDataOrg;
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		fragmentOrganizationsBinding = FragmentOrganizationsBinding.inflate(inflater, container, false);
 
-	    FragmentOrganizationsBinding fragmentOrganizationsBinding = FragmentOrganizationsBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
+		setHasOptionsMenu(true);
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navOrg));
 
-        final SwipeRefreshLayout swipeRefresh = fragmentOrganizationsBinding.pullToRefresh;
+		fragmentOrganizationsBinding.addNewOrganization.setOnClickListener(view -> {
+			Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
+			startActivity(intent);
+		});
 
-	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navOrg));
+		fragmentOrganizationsBinding.recyclerView.setHasFixedSize(true);
+		fragmentOrganizationsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentOrganizationsBinding.recyclerView.getContext(),
+			DividerItemDecoration.VERTICAL);
+		fragmentOrganizationsBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar = fragmentOrganizationsBinding.progressBar;
-        noDataOrg = fragmentOrganizationsBinding.noDataOrg;
-        mRecyclerView = fragmentOrganizationsBinding.recyclerView;
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+			page = 1;
+			fragmentOrganizationsBinding.pullToRefresh.setRefreshing(false);
+			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+			fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
+		}, 50));
 
-        createNewOrganization = fragmentOrganizationsBinding.addNewOrganization;
+		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
 
-        createNewOrganization.setOnClickListener(view -> {
+		return fragmentOrganizationsBinding.getRoot();
+	};
 
-            Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
-            startActivity(intent);
-        });
+	private void fetchDataAsync(String instanceToken) {
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && createNewOrganization.isShown()) {
-                    createNewOrganization.setVisibility(View.GONE);
-                } else if (dy < 0 ) {
-                    createNewOrganization.setVisibility(View.VISIBLE);
-                }
-            }
+		OrganizationsViewModel orgModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+		orgModel.getUserOrg(instanceToken, page, resultLimit, getContext()).observe(getViewLifecycleOwner(), orgListMain -> {
 
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+			adapter = new OrganizationsListAdapter(orgListMain, getContext());
+			adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
 
-            swipeRefresh.setRefreshing(false);
-            OrganizationListViewModel.loadOrgsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext());
+				@Override
+				public void onLoadMore() {
 
-        }, 50));
+					page += 1;
+					OrganizationsViewModel.loadMoreOrgList(instanceToken, page, resultLimit, getContext(), adapter);
+					fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
+				}
 
-        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+				@Override
+				public void onLoadFinished() {
 
-        return fragmentOrganizationsBinding.getRoot();
+					fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
+				}
+			});
 
-    }
+			if(adapter.getItemCount() > 0) {
+				fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
+				fragmentOrganizationsBinding.noDataOrg.setVisibility(View.GONE);
+			}
+			else {
+				adapter.notifyDataChanged();
+				fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
+				fragmentOrganizationsBinding.noDataOrg.setVisibility(View.VISIBLE);
+			}
+
+			fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
+		});
+	}
 
     @Override
     public void onResume(){
         super.onResume();
 
 	    if(orgCreated) {
-            OrganizationListViewModel.loadOrgsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext());
+            OrganizationsViewModel.loadOrgList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, getContext());
             orgCreated = false;
         }
-    }
-
-    private void fetchDataAsync(String instanceToken) {
-
-        OrganizationListViewModel orgModel = new ViewModelProvider(this).get(OrganizationListViewModel.class);
-
-        orgModel.getUserOrgs(instanceToken, getContext()).observe(getViewLifecycleOwner(), orgsListMain -> {
-            adapter = new OrganizationsListAdapter(getContext(), orgsListMain);
-
-            if(adapter.getItemCount() > 0) {
-                mRecyclerView.setAdapter(adapter);
-                noDataOrg.setVisibility(View.GONE);
-            }
-            else {
-                adapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(adapter);
-                noDataOrg.setVisibility(View.VISIBLE);
-            }
-            mProgressBar.setVisibility(View.GONE);
-        });
-
     }
 
     @Override
@@ -142,11 +126,6 @@ public class OrganizationsFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        //searchView.setQueryHint(getContext().getString(R.string.strFilter));
-
-        /*if(!connToInternet) {
-            return;
-        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -156,13 +135,11 @@ public class OrganizationsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(mRecyclerView.getAdapter() != null) {
+                if(fragmentOrganizationsBinding.recyclerView.getAdapter() != null) {
                     adapter.getFilter().filter(newText);
                 }
                 return false;
             }
         });
-
     }
-
 }
