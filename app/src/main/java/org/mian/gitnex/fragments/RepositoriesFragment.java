@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +23,6 @@ import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
-import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
@@ -34,7 +34,7 @@ public class RepositoriesFragment extends Fragment {
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private final int resultLimit = 5;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class RepositoriesFragment extends Fragment {
 
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
+			page = 1;
 			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
 			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
 			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
@@ -71,7 +72,7 @@ public class RepositoriesFragment extends Fragment {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(instanceToken, page, resultLimit, "", "repos", getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(instanceToken, page, resultLimit, null, "repos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -80,7 +81,7 @@ public class RepositoriesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, "", "repos", getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, null, "repos", null, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -90,7 +91,7 @@ public class RepositoriesFragment extends Fragment {
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
 				}
 			});
-
+			Log.e("adapter.getItemCount()", String.valueOf(adapter.getItemCount()));
 			if(adapter.getItemCount() > 0) {
 				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
 				fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
@@ -110,7 +111,7 @@ public class RepositoriesFragment extends Fragment {
         super.onResume();
 
         if(MainActivity.repoCreated) {
-            RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "repos", getContext());
+            RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "repos", null, getContext());
 	        MainActivity.repoCreated = false;
         }
     }

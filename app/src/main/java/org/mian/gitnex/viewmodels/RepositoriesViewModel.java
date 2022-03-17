@@ -22,26 +22,31 @@ public class RepositoriesViewModel extends ViewModel {
 
     private static MutableLiveData<List<UserRepositories>> reposList;
 
-    public LiveData<List<UserRepositories>> getRepositories(String token, int page, int resultLimit, String userLogin, String type, Context ctx) {
+    public LiveData<List<UserRepositories>> getRepositories(String token, int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
 
     	reposList = new MutableLiveData<>();
-    	loadReposList(token, page, resultLimit, userLogin, type, ctx);
+    	loadReposList(token, page, resultLimit, userLogin, type, orgName, ctx);
 
         return reposList;
     }
 
-    public static void loadReposList(String token, int page, int resultLimit, String userLogin, String type, Context ctx) {
+    public static void loadReposList(String token, int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
 
 	    Call<List<UserRepositories>> call;
 
-    	if(type.equals("starredRepos")) {
-		    call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
-	    }
-    	else if(type.equals("myRepos")) {
-		    call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
-	    }
-    	else {
-		    call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+	    switch(type) {
+		    case "starredRepos":
+			    call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
+			    break;
+		    case "myRepos":
+			    call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
+			    break;
+		    case "org":
+			    call = RetrofitClient.getApiInterface(ctx).getReposByOrg(token, orgName, page, resultLimit);
+			    break;
+		    default:
+			    call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+			    break;
 	    }
 
         call.enqueue(new Callback<List<UserRepositories>>() {
@@ -52,6 +57,7 @@ public class RepositoriesViewModel extends ViewModel {
                 if(response.isSuccessful()) {
                     if(response.code() == 200) {
                         reposList.postValue(response.body());
+	                    Log.e("typeRepo", String.valueOf(reposList));
                     }
                 }
             }
@@ -64,18 +70,23 @@ public class RepositoriesViewModel extends ViewModel {
         });
     }
 
-	public static void loadMoreRepos(String token, int page, int resultLimit, String userLogin, String type, Context ctx, ReposListAdapter adapter) {
+	public static void loadMoreRepos(String token, int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, ReposListAdapter adapter) {
 
 		Call<List<UserRepositories>> call;
 
-		if(type.equals("starredRepos")) {
-			call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
-		}
-		else if(type.equals("myRepos")) {
-			call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
-		}
-		else {
-			call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+		switch(type) {
+			case "starredRepos":
+				call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
+				break;
+			case "myRepos":
+				call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
+				break;
+			case "org":
+				call = RetrofitClient.getApiInterface(ctx).getReposByOrg(token, orgName, page, resultLimit);
+				break;
+			default:
+				call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+				break;
 		}
 
 		call.enqueue(new Callback<List<UserRepositories>>() {

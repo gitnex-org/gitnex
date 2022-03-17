@@ -57,6 +57,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
+			page = 1;
 			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
 			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
 			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
@@ -71,7 +72,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(instanceToken, page, resultLimit, "", "starredRepos", getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(instanceToken, page, resultLimit, "", "starredRepos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -80,7 +81,7 @@ public class StarredRepositoriesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, "", "starredRepos", getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, "", "starredRepos", null, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -137,7 +138,7 @@ public class StarredRepositoriesFragment extends Fragment {
 		super.onResume();
 
 		if(MainActivity.repoCreated) {
-			RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "starredRepos", getContext());
+			RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "starredRepos", null, getContext());
 			MainActivity.repoCreated = false;
 		}
 
