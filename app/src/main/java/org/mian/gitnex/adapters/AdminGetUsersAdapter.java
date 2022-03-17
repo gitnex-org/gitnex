@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
@@ -24,116 +25,167 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
-public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdapter.UsersViewHolder> implements Filterable {
+public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-    private final List<UserInfo> usersList;
-    private final Context context;
-    private final List<UserInfo> usersListFull;
+	private List<UserInfo> usersList;
+	private final List<UserInfo> usersListFull;
+	private final Context context;
+	private final int TYPE_LOAD = 0;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 
-    class UsersViewHolder extends RecyclerView.ViewHolder {
+	public AdminGetUsersAdapter(List<UserInfo> usersListMain, Context ctx) {
+		this.context = ctx;
+		this.usersList = usersListMain;
+		usersListFull = new ArrayList<>(usersList);
+	}
 
-	    private String userLoginId;
+	@NonNull
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		if(viewType == TYPE_LOAD) {
+			return new AdminGetUsersAdapter.ReposHolder(inflater.inflate(R.layout.list_admin_users, parent, false));
+		}
+		else {
+			return new AdminGetUsersAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
+		}
+	}
 
-        private final ImageView userAvatar;
-        private final TextView userFullName;
-        private final TextView userEmail;
-        private final ImageView userRole;
-        private final TextView userName;
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
 
-        private UsersViewHolder(View itemView) {
+		if(getItemViewType(position) == TYPE_LOAD) {
+			((AdminGetUsersAdapter.ReposHolder) holder).bindData(usersList.get(position));
+		}
+	}
 
-            super(itemView);
+	@Override
+	public int getItemViewType(int position) {
+		if(usersList.get(position).getFullname() != null) {
+			return TYPE_LOAD;
+		}
+		else {
+			return 1;
+		}
+	}
 
-            userAvatar = itemView.findViewById(R.id.userAvatar);
-            userFullName = itemView.findViewById(R.id.userFullName);
-            userName = itemView.findViewById(R.id.userName);
-            userEmail = itemView.findViewById(R.id.userEmail);
-            userRole = itemView.findViewById(R.id.userRole);
+	@Override
+	public int getItemCount() {
+		return usersList.size();
+	}
 
-	        itemView.setOnClickListener(loginId -> {
-		        Intent intent = new Intent(context, ProfileActivity.class);
-		        intent.putExtra("username", userLoginId);
-		        context.startActivity(intent);
-	        });
+	class ReposHolder extends RecyclerView.ViewHolder {
 
-	        userAvatar.setOnLongClickListener(loginId -> {
-		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-		        return true;
-	        });
-        }
-    }
+		private String userLoginId;
+		private final ImageView userAvatar;
+		private final TextView userFullName;
+		private final TextView userEmail;
+		private final ImageView userRole;
+		private final TextView userName;
 
-    public AdminGetUsersAdapter(Context ctx, List<UserInfo> usersListMain) {
+		ReposHolder(View itemView) {
 
-        this.context = ctx;
-        this.usersList = usersListMain;
-        usersListFull = new ArrayList<>(usersList);
-    }
+			super(itemView);
+			userAvatar = itemView.findViewById(R.id.userAvatar);
+			userFullName = itemView.findViewById(R.id.userFullName);
+			userName = itemView.findViewById(R.id.userName);
+			userEmail = itemView.findViewById(R.id.userEmail);
+			userRole = itemView.findViewById(R.id.userRole);
 
-    @NonNull
-    @Override
-    public AdminGetUsersAdapter.UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+			itemView.setOnClickListener(loginId -> {
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userLoginId);
+				context.startActivity(intent);
+			});
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_admin_users, parent, false);
-        return new AdminGetUsersAdapter.UsersViewHolder(v);
-    }
+			userAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				return true;
+			});
+		}
 
-    @Override
-    public void onBindViewHolder(@NonNull AdminGetUsersAdapter.UsersViewHolder holder, int position) {
+		void bindData(UserInfo users) {
 
-        UserInfo currentItem = usersList.get(position);
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-	    holder.userLoginId = currentItem.getLogin();
+			userLoginId = users.getLogin();
 
-        if(!currentItem.getFullname().equals("")) {
+			if(!users.getFullname().equals("")) {
 
-            holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
-            holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
-        }
-        else {
+				userFullName.setText(Html.fromHtml(users.getFullname()));
+				userName.setText(context.getResources().getString(R.string.usernameWithAt, users.getUsername()));
+			}
+			else {
 
-            holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
-            holder.userName.setVisibility(View.GONE);
-        }
+				userFullName.setText(context.getResources().getString(R.string.usernameWithAt, users.getUsername()));
+				userName.setVisibility(View.GONE);
+			}
 
-        if(!currentItem.getEmail().equals("")) {
+			if(!users.getEmail().equals("")) {
+				userEmail.setText(users.getEmail());
+			}
+			else {
+				userEmail.setVisibility(View.GONE);
+			}
 
-            holder.userEmail.setText(currentItem.getEmail());
-        }
-        else {
+			if(users.getIs_admin()) {
 
-            holder.userEmail.setVisibility(View.GONE);
-        }
+				userRole.setVisibility(View.VISIBLE);
+				TextDrawable drawable = TextDrawable.builder().beginConfig()
+					.textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null)).fontSize(44).width(180).height(60)
+					.endConfig().buildRoundRect(context.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null), 8);
+				userRole.setImageDrawable(drawable);
+			}
+			else {
 
-        if(currentItem.getIs_admin()) {
+				userRole.setVisibility(View.GONE);
+			}
 
-            holder.userRole.setVisibility(View.VISIBLE);
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null))
-                    .fontSize(44)
-                    .width(180)
-                    .height(60)
-                    .endConfig()
-                    .buildRoundRect(context.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null), 8);
-            holder.userRole.setImageDrawable(drawable);
-        }
-        else {
+			PicassoService.getInstance(context).get().load(users.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
+		}
+	}
 
-            holder.userRole.setVisibility(View.GONE);
-        }
+	static class LoadHolder extends RecyclerView.ViewHolder {
+		LoadHolder(View itemView) {
+			super(itemView);
+		}
+	}
 
-        PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
-    }
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
 
-    @Override
-    public int getItemCount() {
-        return usersList.size();
-    }
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+		void onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<UserInfo> list) {
+		usersList = list;
+		notifyDataChanged();
+	}
 
     @Override
     public Filter getFilter() {
@@ -169,8 +221,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
 
             usersList.clear();
             usersList.addAll((List) results.values);
-            notifyDataSetChanged();
+            notifyDataChanged();
         }
     };
-
 }

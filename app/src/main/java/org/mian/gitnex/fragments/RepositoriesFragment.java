@@ -92,7 +92,7 @@ public class RepositoriesFragment extends Fragment {
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
 				}
 			});
-			Log.e("adapter.getItemCount()", String.valueOf(adapter.getItemCount()));
+
 			if(adapter.getItemCount() > 0) {
 				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
 				fragmentRepositoriesBinding.noData.setVisibility(View.GONE);

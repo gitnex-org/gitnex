@@ -57,7 +57,6 @@ public class RepositoriesViewModel extends ViewModel {
                 if(response.isSuccessful()) {
                     if(response.code() == 200) {
                         reposList.postValue(response.body());
-	                    Log.e("typeRepo", String.valueOf(reposList));
                     }
                 }
             }
