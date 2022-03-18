@@ -34,13 +34,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<UserRepositories> reposList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -56,12 +55,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		if(viewType == TYPE_LOAD) {
-			return new ExploreRepositoriesAdapter.RepositoriesHolder(inflater.inflate(R.layout.list_repositories, parent, false));
-		}
-		else {
-			return new ExploreRepositoriesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new ExploreRepositoriesAdapter.RepositoriesHolder(inflater.inflate(R.layout.list_repositories, parent, false));
 	}
 
 	@Override
@@ -70,20 +64,12 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			isLoading = true;
 			loadMoreListener.run();
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((ExploreRepositoriesAdapter.RepositoriesHolder) holder).bindData(reposList.get(position));
-		}
+		((ExploreRepositoriesAdapter.RepositoriesHolder) holder).bindData(reposList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(reposList.get(position).getFullName() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -210,12 +196,6 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 				isRepoAdmin = new CheckBox(context);
 			}
 			isRepoAdmin.setChecked(userRepositories.getPermissions().isAdmin());
-		}
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
 		}
 	}
 

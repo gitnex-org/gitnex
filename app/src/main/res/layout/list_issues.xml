@@ -45,7 +45,7 @@
 
             <HorizontalScrollView
                 android:id="@+id/labelsScrollViewDots"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:foregroundGravity="right"
                 android:layout_marginBottom="8dp"
@@ -67,7 +67,7 @@
 
     <HorizontalScrollView
         android:id="@+id/labelsScrollViewWithText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:foregroundGravity="right"
         android:layout_marginBottom="8dp"

@@ -37,13 +37,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<PullRequests> prList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -56,40 +55,23 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
 		LayoutInflater inflater = LayoutInflater.from(context);
-
-		if(viewType == TYPE_LOAD) {
-			return new PullRequestsAdapter.PullRequestsHolder(inflater.inflate(R.layout.list_pr, parent, false));
-		}
-		else {
-			return new PullRequestsAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new PullRequestsAdapter.PullRequestsHolder(inflater.inflate(R.layout.list_pr, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
-
 			isLoading = true;
 			loadMoreListener.run();
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((PullRequestsAdapter.PullRequestsHolder) holder).bindData(prList.get(position));
-		}
+		((PullRequestsAdapter.PullRequestsHolder) holder).bindData(prList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-
-		if(prList.get(position).getTitle() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -234,14 +216,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreated_at()), context));
 			}
 		}
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-
-		LoadHolder(View itemView) {
-			super(itemView);
-		}
-
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {

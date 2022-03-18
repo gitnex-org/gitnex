@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,13 +44,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<Issues> searchedList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -65,12 +65,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		if(viewType == TYPE_LOAD) {
-			return new ExploreIssuesAdapter.IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
-		}
-		else {
-			return new ExploreIssuesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new ExploreIssuesAdapter.IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
 	}
 
 	@Override
@@ -80,19 +75,12 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			loadMoreListener.onLoadMore();
 		}
 
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((ExploreIssuesAdapter.IssuesHolder) holder).bindData(searchedList.get(position));
-		}
+		((ExploreIssuesAdapter.IssuesHolder) holder).bindData(searchedList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(searchedList.get(position).getTitle() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -101,7 +89,9 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 	}
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
+
 		private Issues issue;
+
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
 		private final TextView issueCreatedTime;
@@ -112,6 +102,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private final LinearLayout frameLabelsDots;
 
 		IssuesHolder(View itemView) {
+
 			super(itemView);
 			issueAssigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
 			issueTitle = itemView.findViewById(R.id.issueTitle);
@@ -122,7 +113,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
 
-			itemView.setOnClickListener(v -> {
+			new Handler().postDelayed(() -> {
 
 				String[] parts = issue.getRepository().getFull_name().split("/");
 				final String repoOwner = parts[0];
@@ -145,13 +136,13 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 					repo.setRepositoryId(data.getRepositoryId());
 				}
 
-				Intent intent = new IssueContext(
-					issue,
-					repo
-				).getIntent(context, IssueDetailActivity.class);
-				intent.putExtra("openedFromLink", "true");
-				context.startActivity(intent);
-			});
+				Intent intentIssueDetail = new IssueContext(issue, repo).getIntent(context, IssueDetailActivity.class);
+				intentIssueDetail.putExtra("openedFromLink", "true");
+
+				itemView.setOnClickListener(v -> context.startActivity(intentIssueDetail));
+				frameLabels.setOnClickListener(v -> context.startActivity(intentIssueDetail));
+				frameLabelsDots.setOnClickListener(v -> context.startActivity(intentIssueDetail));
+			}, 200);
 
 			issueAssigneeAvatar.setOnClickListener(v -> {
 				Intent intent = new Intent(context, ProfileActivity.class);
@@ -165,8 +156,8 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			});
 		}
 
-		@SuppressLint("SetTextI18n")
 		void bindData(Issues issue) {
+
 			this.issue = issue;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
@@ -270,12 +261,6 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 				}
 			}
 
-		}
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
 		}
 	}
 

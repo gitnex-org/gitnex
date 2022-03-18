@@ -39,6 +39,7 @@ public class MyIssuesFragment extends Fragment {
 
 		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
+			page = 1;
 			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
 			IssuesViewModel.loadIssuesList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), null, "issues", true, "open", getContext());
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);

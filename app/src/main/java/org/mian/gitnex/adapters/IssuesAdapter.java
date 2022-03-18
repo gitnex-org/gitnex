@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,61 +41,45 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<Issues> issuesList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
+	TinyDB tinyDb;
 
 	public IssuesAdapter(Context ctx, List<Issues> issuesListMain) {
 
 		this.context = ctx;
 		this.issuesList = issuesListMain;
+		tinyDb = TinyDB.getInstance(context);
 	}
 
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
 		LayoutInflater inflater = LayoutInflater.from(context);
-
-		if(viewType == TYPE_LOAD) {
-			return new IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
-		}
-		else {
-			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
-
 			isLoading = true;
 			loadMoreListener.run();
 		}
 
-		if(getItemViewType(position) == TYPE_LOAD) {
-
-			((IssuesHolder) holder).bindData(issuesList.get(position));
-		}
+		((IssuesHolder) holder).bindData(issuesList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-
-		if(issuesList.get(position).getTitle() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -133,26 +118,28 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				return true;
 			});
 
-			itemView.setOnClickListener(layoutView -> {
-				Intent intent = new IssueContext(
-					issueObject,
-					((RepoDetailActivity) context).repository
-				).getIntent(context, IssueDetailActivity.class);
-				context.startActivity(intent);
-			});
+			new Handler().postDelayed(() -> {
+
+				Intent intentIssueDetail = new IssueContext(issueObject, ((RepoDetailActivity) context).repository).getIntent(context, IssueDetailActivity.class);
+
+				itemView.setOnClickListener(layoutView -> {
+					context.startActivity(intentIssueDetail);
+				});
+				frameLabels.setOnClickListener(v -> context.startActivity(intentIssueDetail));
+				frameLabelsDots.setOnClickListener(v -> context.startActivity(intentIssueDetail));
+
+			}, 200);
 
 			issueAssigneeAvatar.setOnClickListener(v -> {
 				Intent intent = new Intent(context, ProfileActivity.class);
 				intent.putExtra("username", issueObject.getUser().getLogin());
 				context.startActivity(intent);
 			});
-
 		}
 
 		@SuppressLint("SetTextI18n")
 		void bindData(Issues issue) {
 
-			TinyDB tinyDb = TinyDB.getInstance(context);
 			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
@@ -259,13 +246,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 	}
 
-	static class LoadHolder extends RecyclerView.ViewHolder {
-
-		LoadHolder(View itemView) {
-			super(itemView);
-		}
-	}
-
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
 	}
@@ -284,5 +264,4 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		issuesList = list;
 		notifyDataChanged();
 	}
-
 }
