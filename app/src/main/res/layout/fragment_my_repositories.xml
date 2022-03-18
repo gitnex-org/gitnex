@@ -22,7 +22,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
+        android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
@@ -30,13 +30,13 @@
         app:indicatorColor="?attr/progressIndicatorColor" />
 
     <TextView
-        android:id="@+id/noData"
+        android:id="@+id/noDataMyRepo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp"
-        android:gravity="center"
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
+        android:gravity="center"
         android:textSize="18sp"
         android:visibility="gone" />
 

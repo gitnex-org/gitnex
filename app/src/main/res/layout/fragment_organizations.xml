@@ -32,10 +32,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp"
-        android:text="@string/noDataOrg"
+        android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

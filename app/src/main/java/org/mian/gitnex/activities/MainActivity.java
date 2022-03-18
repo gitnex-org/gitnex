@@ -60,7 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 @SuppressWarnings("ConstantConditions")
@@ -276,7 +276,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					navigationView.getMenu().findItem(R.id.nav_administration).setVisible(false);
 				}
 
-				if(((BaseActivity) ctx).getAccount().requiresVersion("1.14.0")) {
+				if(getAccount().requiresVersion("1.14.0")) {
 					navigationView.getMenu().findItem(R.id.nav_my_issues).setVisible(true);
 				}
 			}

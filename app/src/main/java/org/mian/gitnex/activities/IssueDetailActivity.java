@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -590,12 +592,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				}
 				else if(response.code() == 404) {
 
-					if("Pull".equals(issue.getIssueType())) {
-						Toasty.warning(ctx, getResources().getString(R.string.noDataPullRequests));
-					}
-					else {
-						Toasty.warning(ctx, getResources().getString(R.string.noDataIssueTab));
-					}
+					Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 					finish();
 				}
 			}
@@ -644,11 +641,13 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			getPullRequest();
 			if(issue.getIssue().getPull_request().isMerged()) { // merged
 
-				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request_merged);
+				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconPrMergedColor)));
 			}
 			else if(!issue.getIssue().getPull_request().isMerged() && issue.getIssue().getState().equals("closed")) { // closed
 
-				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request_closed);
+				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor)));
 			}
 			else { // open
 
@@ -657,7 +656,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		}
 		else if(issue.getIssue().getState().equals("closed")) { // issue closed
 
-			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue_closed_red);
+			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
+			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor)));
 		} else {
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
 		}

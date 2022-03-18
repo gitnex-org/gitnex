@@ -28,7 +28,6 @@
     <color name="dividerColorDark">#1d1d1d</color>
     <color name="lightYellow">#efd34a</color>
     <color name="warningColor">#dbb109</color>
-    <color name="successColor">#1e9c37</color>
 
     <color name="lightThemeDiffRemovedColor">#FCEDED</color>
     <color name="lightThemeDiffAddedColor">#EAF8ED</color>

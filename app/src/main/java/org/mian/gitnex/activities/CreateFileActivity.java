@@ -214,7 +214,7 @@ public class CreateFileActivity extends BaseActivity {
 
 		            default:
 			            enableProcessButton();
-			            Toasty.error(ctx, getString(R.string.orgCreatedError));
+			            Toasty.error(ctx, getString(R.string.genericError));
 		            	break;
 
 	            }

@@ -56,28 +56,28 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/themeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/themeSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/themeSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/themeSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -89,28 +89,28 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/lightThemeTimeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsLightThemeTimeSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/lightThemeSelectedTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsThemeTimeSelectedHint"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -122,28 +122,28 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/darkThemeTimeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsDarkThemeTimeSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/darkThemeSelectedTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsThemeTimeSelectedHint"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -155,28 +155,28 @@
         android:focusable="true"
         android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/customFontHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsCustomFontHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/customFontSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsCustomFontDefault"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -188,28 +188,28 @@
         android:focusable="true"
         android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/tvDateTimeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsDateTimeHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvDateTimeSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsDateTimeHeaderDefault"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -217,19 +217,20 @@
         android:id="@+id/counterBadgeFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/tvCounterBadgeHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="72dp"
             android:text="@string/settingsCounterBadges"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchCounterBadge"

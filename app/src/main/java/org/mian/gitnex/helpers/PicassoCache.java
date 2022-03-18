@@ -38,7 +38,7 @@ public class PicassoCache implements Cache {
 
 		TinyDB tinyDb = TinyDB.getInstance(ctx);
 
-		CACHE_SIZE = FilesData.returnOnlyNumber(tinyDb.getString("cacheSizeImagesStr", ctx.getString(R.string.cacheSizeImagesSelectionSelectedText))) * 1024 * 1024;
+		CACHE_SIZE = FilesData.returnOnlyNumberFileSize(tinyDb.getString("cacheSizeImagesStr", ctx.getString(R.string.cacheSizeImagesSelectionSelectedText))) * 1024 * 1024;
 		this.cachePath = cachePath;
 		cacheMap = new HashMap<>();
 		this.ctx = ctx;

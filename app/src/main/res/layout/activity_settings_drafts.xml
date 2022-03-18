@@ -52,19 +52,20 @@
         android:id="@+id/enableDraftsCommentsDeletion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/enableCommentsDeletionHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="72dp"
             android:text="@string/settingsEnableCommentsDeletionText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/commentsDeletionSwitch"
@@ -82,8 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/enableCommentsDeletionHeader"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="44dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="72dp"
             android:text="@string/settingsEnableCommentsDeletionHintText"
             android:textColor="?attr/hintColor"
             android:textSize="12sp" />
