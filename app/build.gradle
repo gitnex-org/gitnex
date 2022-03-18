@@ -4,7 +4,7 @@ android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "org.mian.gitnex"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 31
         versionCode 425
         versionName "4.3.0"
@@ -114,4 +114,5 @@ dependencies {
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.github.chrisvest:stormpot:2.4.2'
     implementation 'androidx.browser:browser:1.4.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }

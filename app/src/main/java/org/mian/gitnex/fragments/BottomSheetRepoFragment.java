@@ -46,7 +46,6 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
         TextView unWatchRepository = bottomSheetRepoBinding.unWatchRepository;
         TextView shareRepository = bottomSheetRepoBinding.shareRepository;
 	    TextView copyRepoUrl = bottomSheetRepoBinding.copyRepoUrl;
-	    View repoSettingsDivider = bottomSheetRepoBinding.repoSettingsDivider;
 	    TextView repoSettings = bottomSheetRepoBinding.repoSettings;
 	    TextView createPullRequest = bottomSheetRepoBinding.createPullRequest;
 
@@ -66,7 +65,6 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		    createLabel.setVisibility(View.GONE);
 		    createRelease.setVisibility(View.GONE);
 		    newFile.setVisibility(View.GONE);
-		    bottomSheetRepoBinding.createDivider.setVisibility(View.GONE);
 	    }
 
         createLabel.setOnClickListener(v112 -> {
@@ -126,7 +124,6 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		else {
 
 			addCollaborator.setVisibility(View.GONE);
-			repoSettingsDivider.setVisibility(View.GONE);
 			repoSettings.setVisibility(View.GONE);
 		}
 

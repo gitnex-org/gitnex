@@ -18,65 +18,120 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/createRepository"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/createRepository"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_repo" />
+                android:id="@+id/orgCreate"
+                android:padding="8dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/createLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/createLabel"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_label" />
+                <TextView
+                    android:id="@+id/bottomSheetHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/newCreateButtonCopy"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/createTeam"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/orgCreateTeam"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_people" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/copyOrgUrl"
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/orgCreateSection"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                android:padding="8dp"
+                app:alignContent="stretch" >
+
+                <TextView
+                    android:id="@+id/createRepository"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_repo"
+                    android:text="@string/repository"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/createTeam"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:layout_alignSelf="flex_start"
+                    android:gravity="center"
+                    app:drawableTopCompat="@drawable/ic_people"
+                    android:text="@string/team"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/createLabel"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:layout_alignSelf="flex_start"
+                    android:gravity="center"
+                    app:drawableTopCompat="@drawable/ic_label"
+                    android:text="@string/label"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:id="@+id/orgDivider"
+                android:layout_marginBottom="16dp"
+                android:background="?attr/dividerColor" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/genericCopyUrl"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_copy" />
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bottomSheetHeaderOrg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/organization"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                android:padding="8dp"
+                app:alignContent="stretch" >
+
+                <TextView
+                    android:id="@+id/copyOrgUrl"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_copy"
+                    android:text="@string/genericCopyUrl"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
 
         </LinearLayout>
 

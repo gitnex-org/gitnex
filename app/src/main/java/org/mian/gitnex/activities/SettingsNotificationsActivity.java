@@ -76,7 +76,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 				);
 			}
 
-			Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 		});
 		viewBinding.enableNotificationsFrame.setOnClickListener(
@@ -104,7 +104,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 				Notifications.startWorker(ctx);
 
 				viewBinding.pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), numberPicker.getValue()));
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			});
 
 			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
@@ -123,7 +123,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 			}
 
 			tinyDB.putBoolean("notificationsEnableLights", isChecked);
-			Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 		});
 		viewBinding.enableLightsFrame.setOnClickListener(v -> viewBinding.enableLightsMode.setChecked(!viewBinding.enableLightsMode.isChecked()));
@@ -138,7 +138,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 				tinyDB.putInt("notificationsLightColor", color);
 				viewBinding.chooseColorState.setCardBackgroundColor(color);
 				colorPicker.dismiss();
-				Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			});
 
 			colorPicker.show();
@@ -149,7 +149,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.enableVibrationMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
 			tinyDB.putBoolean("notificationsEnableVibration", isChecked);
-			Toasty.info(appCtx, getResources().getString(R.string.settingsSave));
+			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 		});
 		viewBinding.enableVibrationFrame.setOnClickListener(

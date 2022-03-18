@@ -54,7 +54,7 @@ public class RetrofitClient {
 
 			if(cacheEnabled) {
 
-				int cacheSize = FilesData.returnOnlyNumber(tinyDB.getString("cacheSizeStr", context.getString(R.string.cacheSizeDataSelectionSelectedText))) * 1024 * 1024;
+				int cacheSize = FilesData.returnOnlyNumberFileSize(tinyDB.getString("cacheSizeStr", context.getString(R.string.cacheSizeDataSelectionSelectedText))) * 1024 * 1024;
 				Cache cache = new Cache(new File(context.getCacheDir(), "responses"), cacheSize);
 
 				okHttpClient.cache(cache).addInterceptor(chain -> {
