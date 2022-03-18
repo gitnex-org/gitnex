@@ -119,7 +119,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    }
 	    else if(currentItem.isDraft()) {
 		    holder.releaseType.setBackgroundResource(R.drawable.shape_draft_release);
-		    holder.releaseType.setText(R.string.releaseTypeDraft);
+		    holder.releaseType.setText(R.string.releaseDraftText);
 	    }
 	    else {
 		    holder.releaseType.setBackgroundResource(R.drawable.shape_stable_release);

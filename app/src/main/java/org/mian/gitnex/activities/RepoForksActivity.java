@@ -26,6 +26,7 @@ import org.mian.gitnex.adapters.RepoForksAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityRepoForksBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -49,6 +50,8 @@ public class RepoForksActivity extends BaseActivity {
 	private RepoForksAdapter adapter;
 	private ProgressBar progressLoadMore;
 
+	private RepositoryContext repository;
+
 	@SuppressLint("DefaultLocale")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,11 +64,9 @@ public class RepoForksActivity extends BaseActivity {
 		Toolbar toolbar = activityRepoForksBinding.toolbar;
 		setSupportActionBar(toolbar);
 
-		String repoFullNameForForks = getIntent().getStringExtra("repoFullNameForForks");
-		assert repoFullNameForForks != null;
-		String[] parts = repoFullNameForForks.split("/");
-		final String repoOwner = parts[0];
-		final String repoName = parts[1];
+		repository = RepositoryContext.fromIntent(getIntent());
+		final String repoOwner = repository.getOwner();
+		final String repoName = repository.getName();
 
 		activityRepoForksBinding.toolbarTitle.setText(ctx.getResources().getString(R.string.infoTabRepoForksCount));
 
@@ -75,10 +76,7 @@ public class RepoForksActivity extends BaseActivity {
 		progressBar = activityRepoForksBinding.progressBar;
 		SwipeRefreshLayout swipeRefresh = activityRepoForksBinding.pullToRefresh;
 
-		closeActivity.setOnClickListener(v -> {
-			getIntent().removeExtra("repoFullNameForForks");
-			finish();
-		});
+		closeActivity.setOnClickListener(v -> finish());
 
 		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
 		if(getAccount().requiresVersion("1.12")) {
@@ -241,4 +239,9 @@ public class RepoForksActivity extends BaseActivity {
 		adapter.updateList(userRepositories);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		repository.checkAccountSwitch(this);
+	}
 }

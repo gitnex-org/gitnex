@@ -174,7 +174,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
                 else {
 
                     enableProcessButton();
-                    Toasty.error(ctx, getString(R.string.milestoneCreatedError));
+                    Toasty.error(ctx, getString(R.string.genericError));
                 }
             }
 

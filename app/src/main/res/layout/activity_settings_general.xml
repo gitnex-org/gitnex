@@ -56,24 +56,24 @@
         android:focusable="true"
         android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/generalDeepLinkDefaultScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/generalDeepLinkDefaultScreen"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="44dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/generalDeepLinkDefaultScreenHintText"
             android:textColor="?attr/hintColor"
             android:textSize="12sp" />
@@ -82,11 +82,11 @@
             android:id="@+id/generalDeepLinkSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/generalDeepLinkSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -98,28 +98,28 @@
         android:focusable="true"
         android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/homeScreenHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsHomeScreenHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/homeScreenSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsHomeScreenSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -127,19 +127,20 @@
         android:id="@+id/customTabsFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/customTabsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="72dp"
             android:text="@string/useCustomTabs"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchTabs"

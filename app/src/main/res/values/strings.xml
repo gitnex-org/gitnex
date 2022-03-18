@@ -28,6 +28,7 @@
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">Logout</string>
     <string name="navAdministration">Administration</string>
+    <string name="navMyIssues">My Issues</string>
     <!-- menu items -->
 
     <!-- page titles -->
@@ -52,10 +53,8 @@
 
     <string name="repoName">Demo repo</string>
     <string name="repoDescription">Demo description</string>
-    <string name="noData">No repositories found</string>
 
     <string name="orgName">Demo organization</string>
-    <string name="noDataOrg">No organizations found</string>
 
     <string name="newCreateButtonCopy">Create</string>
     <string name="newUpdateButtonCopy">Update</string>
@@ -93,7 +92,6 @@
     <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
     <string name="repoDescError">Repository description exceeds the max 255 characters limit</string>
     <string name="repoCreated">Repository created successfully</string>
-    <string name="repoCreatedError">Something went wrong, please try again</string>
     <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
     <string name="repoOwnerError">Select owner for the repository</string>
 
@@ -101,7 +99,6 @@
     <string name="orgNameErrorInvalid">Organization name is not valid, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organization description exceeds the max 255 characters limit</string>
     <string name="orgCreated">Organization created successfully</string>
-    <string name="orgCreatedError">Something went wrong, please try again</string>
     <string name="orgExistsError">Organization already exists</string>
 
     <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
@@ -124,11 +121,8 @@
     <string name="tabTextMl">Milestones</string>
     <string name="tabTextReleases">Releases</string>
     <string name="tabTextBranches">Branches</string>
-    <string name="tabTextLabels">Labels</string>
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
-
-    <string name="noDataIssueTab">No issues found</string>
 
     <string name="infoTabRepoSize">Size</string>
     <string name="infoTabRepoDefaultBranch">Default Branch</string>
@@ -154,26 +148,19 @@
     <string name="commentButtonText">Comment</string>
     <string name="commentEmptyError">Please write your comment</string>
     <string name="commentSuccess">Comment posted</string>
-    <string name="commentError">Something went wrong, please try again</string>
 
     <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="screamingInFearEmoticon" translatable="false">😱</string>
 
     <string name="generalImgContentText">Image</string>
 
-    <string name="noDataMilestonesTab">No milestones found</string>
-
     <string name="commitAuthor">Commit author: %1$s</string>
 
     <string name="releaseDownloadText">Downloads</string>
     <string name="releaseTypePre" translatable="false">Pre-Release</string>
     <string name="releaseTypeStable" translatable="false">Stable</string>
-    <string name="releaseTypeDraft" translatable="false">Draft</string>
-    <string name="noDataReleasesTab">No releases found</string>
     <string name="releasePublishedBy">Published by @%1$s</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
-
-    <string name="noDataCollaboratorTab">No collaborators found</string>
 
     <string name="newMilestoneTitle">Title</string>
     <string name="newMilestoneDescription">Description</string>
@@ -182,7 +169,6 @@
     <string name="milestoneNameErrorEmpty">Milestone title is empty</string>
     <string name="milestoneDescError">Milestone description exceeds the max 255 characters limit</string>
     <string name="milestoneCreated">Milestone created successfully</string>
-    <string name="milestoneCreatedError">Something went wrong, please try again</string>
     <string name="milestoneDateEmpty">Please choose due date</string>
     <string name="milestoneNoDueDate">No due date</string>
     <string name="milestoneNoDescription">No description</string>
@@ -201,10 +187,8 @@
     <string name="issueTitleEmpty">Issue title is empty</string>
     <string name="issueDescriptionEmpty">Issue description is empty</string>
     <string name="issueCreated">New issue created successfully</string>
-    <string name="issueCreatedError">Something went wrong, please try again</string>
     <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">No assignees found</string>
-    <string name="noLabelsFound">No labels found</string>
 
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Translation</string>
@@ -274,16 +258,12 @@
     <string name="labelColor">Label Color</string>
     <string name="labelEmptyError">Label name is empty</string>
     <string name="labelNameError">Label name is not valid</string>
-    <string name="labelCreated">Label created.</string>
-    <string name="labelGeneralError">Something went wrong, please try again</string>
-    <string name="labelUpdated">Label updated.</string>
+    <string name="labelCreated">Label created</string>
+    <string name="labelUpdated">Label updated</string>
 
-    <string name="noDataLabelsTab">No labels found</string>
     <string name="labelMenuContentDesc">Desc</string>
     <string name="labelDeleteText">Label deleted</string>
-    <string name="labelDeleteErrorText">Something went wrong, please try again</string>
 
-    <string name="noDataBranchesTab">No branches found</string>
     <string name="selectBranchError">Select a branch for release</string>
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
@@ -292,11 +272,8 @@
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
 
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">Repositories</string>
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Members</string>
-    <string name="orgCreateTeam">New Team</string>
-    <string name="noDataTeams">No teams found</string>
     <string name="teamTitle">Team name</string>
     <string name="teamDescription">Team desc</string>
     <string name="teamPermissions">Permissions</string>
@@ -306,7 +283,6 @@
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
-    <string name="noDataMembers">No members found</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
     <string name="addNewMember">Add / Remove New Member</string>
@@ -334,7 +310,6 @@
     <string name="teamDescError">Team description have illegal characters</string>
     <string name="teamDescLimit">Team description have more than 100 characters</string>
     <string name="teamCreated">Team created successfully</string>
-    <string name="teamCreatedError">Something went wrong, please try again</string>
     <!-- create team -->
 
     <!-- issue comments -->
@@ -346,7 +321,6 @@
     <!-- issue comments -->
 
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">Add / Remove Collaborator</string>
     <string name="addCollaboratorSearchHint">Search users</string>
     <string name="addCollaboratorViewUserDesc">Username</string>
     <string name="removeCollaboratorDialogTitle">Remove %s?</string>
@@ -471,7 +445,6 @@
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
 
     <!-- files -->
-    <string name="noDataFilesTab">No files found</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="colonDivider" translatable="false">\u0020:\u0020</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
@@ -483,7 +456,7 @@
     <string name="cancelButton">Cancel</string>
     <string name="genericError">Something went wrong, please try again</string>
     <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
-    <string name="noDataFound">No data found</string>
+    <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Add</string>
     <string name="removeButton">Remove</string>
     <string name="authorizeError">You are not authorized to perform this action.</string>
@@ -511,17 +484,26 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
     <string name="genericWaitFor">Hold on ☕</string>
+    <string name="file">File</string>
+    <string name="issue">Issue</string>
+    <string name="label">Label</string>
+    <string name="release">Release</string>
+    <string name="pr">Pull Request</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="unstar">Unstar</string>
+    <string name="watch">Watch</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="share">Share</string>
+    <string name="repository">Repository</string>
+    <string name="team">Team</string>
+    <string name="organization">Organization</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
-    <string name="starRepository">Star Repository</string>
-    <string name="unStarRepository">Unstar Repository</string>
     <string name="starRepositorySuccess">Repository added to starred list</string>
     <string name="unStarRepositorySuccess">Repository removed from starred list</string>
-    <string name="watchRepository">Watch Repository</string>
-    <string name="unWatchRepository">Unwatch Repository</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="titleDrafts">Drafts</string>
@@ -538,7 +520,6 @@
     <string name="loginTokenError">Token is required</string>
 
     <string name="prDeletedFork">Deleted Fork</string>
-    <string name="noDataPullRequests">No pull requests found</string>
     <string name="editPrText">Edit Pull Request</string>
     <string name="copyPrUrlText">Copy Pull Request URL</string>
     <string name="editPrNavHeader">Edit Pull Request #%1$s</string>

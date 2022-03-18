@@ -100,7 +100,7 @@ public class LabelsActions {
 							if(labelsList.isEmpty()) {
 
 								dialogLabels.dismiss();
-								Toasty.warning(ctx, ctx.getResources().getString(R.string.noLabelsFound));
+								Toasty.warning(ctx, ctx.getResources().getString(R.string.noDataFound));
 
 							}
 

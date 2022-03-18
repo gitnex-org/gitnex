@@ -124,7 +124,7 @@ public class CommitDetailFragment extends Fragment {
 						break;
 
 					default:
-						requireActivity().runOnUiThread(() -> Toasty.error(requireContext(), getString(R.string.labelGeneralError)));
+						requireActivity().runOnUiThread(() -> Toasty.error(requireContext(), getString(R.string.genericError)));
 				}
 			}
 

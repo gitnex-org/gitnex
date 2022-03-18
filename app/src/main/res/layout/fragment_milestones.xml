@@ -43,22 +43,9 @@
         android:layout_height="match_parent"
         android:layout_margin="15dp"
         android:gravity="center"
-        android:text="@string/noDataMilestonesTab"
+        android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:visibility="gone" />
-
-    <ImageView
-        android:src="@drawable/ic_add"
-        android:id="@+id/createNewMilestone"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_margin="15dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/shape_circle"
-        android:padding="@dimen/fab_padding"
-        android:visibility="gone"
-        android:contentDescription="@string/addNewContent" />
 
 </RelativeLayout>

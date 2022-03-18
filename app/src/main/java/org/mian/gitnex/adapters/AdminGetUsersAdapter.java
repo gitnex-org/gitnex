@@ -59,6 +59,12 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdap
 		        context.startActivity(intent);
 	        });
 
+	        userAvatar.setOnClickListener(loginId -> {
+		        Intent intent = new Intent(context, ProfileActivity.class);
+		        intent.putExtra("username", userLoginId);
+		        context.startActivity(intent);
+	        });
+
 	        userAvatar.setOnLongClickListener(loginId -> {
 		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 		        return true;

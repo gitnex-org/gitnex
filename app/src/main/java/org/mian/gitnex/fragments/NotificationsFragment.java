@@ -90,15 +90,16 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		viewBinding.notifications.setAdapter(notificationsAdapter);
 		viewBinding.notifications.addItemDecoration(dividerItemDecoration);
 
-		notificationsAdapter.setLoadMoreListener(() -> {
-			pageCurrentIndex++;
-			loadNotifications(true);
-		});
-
 		viewBinding.notifications.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+				if(!recyclerView.canScrollVertically(1) && dy != 0) {
+					pageCurrentIndex++;
+					loadNotifications(true);
+				}
+
 				if(currentFilterMode.equalsIgnoreCase("unread")) {
 					if(dy > 0 && viewBinding.markAllAsRead.isShown()) {
 						viewBinding.markAllAsRead.setVisibility(View.GONE);

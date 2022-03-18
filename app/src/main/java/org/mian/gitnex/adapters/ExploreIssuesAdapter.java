@@ -51,7 +51,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private final Context context;
 	private final int TYPE_LOAD = 0;
 	private List<Issues> searchedList;
-	private Runnable loadMoreListener;
+	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final TinyDB tinyDb;
 
@@ -77,7 +77,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
 			isLoading = true;
-			loadMoreListener.run();
+			loadMoreListener.onLoadMore();
 		}
 
 		if(getItemViewType(position) == TYPE_LOAD) {
@@ -281,15 +281,24 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
+		loadMoreListener.onLoadFinished();
 	}
 
-	public void setLoadMoreListener(Runnable loadMoreListener) {
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+		void onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
 		this.loadMoreListener = loadMoreListener;
 	}
 

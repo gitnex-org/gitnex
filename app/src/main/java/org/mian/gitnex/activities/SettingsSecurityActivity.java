@@ -136,7 +136,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 			else {
 
 				tinyDB.putBoolean("biometricStatus", false);
-				Toasty.success(appCtx, getResources().getString(R.string.biometricNotSupported));
+				Toasty.warning(appCtx, getResources().getString(R.string.biometricNotSupported));
 			}
 
 		});

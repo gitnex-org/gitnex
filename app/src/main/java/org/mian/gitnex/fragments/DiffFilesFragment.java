@@ -114,7 +114,7 @@ public class DiffFilesFragment extends Fragment {
 						break;
 
 					default:
-						requireActivity().runOnUiThread(() -> Toasty.error(ctx, getString(R.string.labelGeneralError)));
+						requireActivity().runOnUiThread(() -> Toasty.error(ctx, getString(R.string.genericError)));
 
 				}
 			} catch(IOException ignored) {}

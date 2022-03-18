@@ -47,6 +47,11 @@ public class SettingsGeneralActivity extends BaseActivity {
 		}
 
 		homeScreenList = new ArrayList<>(Arrays.asList(appHomeDefaultScreen));
+
+		if(!getAccount().requiresVersion("1.14.0")) {
+			homeScreenList.remove(8);
+		}
+
 		String[] homeScreenArray = new String[homeScreenList.size()];
 		homeScreenList.toArray(homeScreenArray);
 
@@ -83,6 +88,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		else if(homeScreenSelectedChoice == 7) {
 
 			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.pageTitleNotifications));
+		}
+		else if(homeScreenSelectedChoice == 8) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navMyIssues));
 		}
 
 		viewBinding.homeScreenFrame.setOnClickListener(setDefaultHomeScreen -> {

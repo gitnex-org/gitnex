@@ -51,19 +51,20 @@
         android:id="@+id/biometricFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/biometricHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="72dp"
             android:text="@string/settingsBiometricHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchBiometric"
@@ -84,21 +85,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
-        android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/tvCertHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/settingsCertsSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -107,31 +106,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
-        android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/cacheSizeDataHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/cacheSizeDataSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/cacheSizeDataSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/cacheSizeDataSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -140,31 +137,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
-        android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/cacheSizeImagesHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/cacheSizeImagesSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/cacheSizeImagesSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/cacheSizeImagesSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -173,31 +168,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
-        android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/clearCacheHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/clearCacheSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/clearCacheSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/clearCacheSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

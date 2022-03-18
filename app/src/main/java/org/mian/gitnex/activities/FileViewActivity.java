@@ -197,7 +197,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 							break;
 
 						default:
-							runOnUiThread(() -> Toasty.error(ctx, getString(R.string.labelGeneralError)));
+							runOnUiThread(() -> Toasty.error(ctx, getString(R.string.genericError)));
 
 					}
 				}

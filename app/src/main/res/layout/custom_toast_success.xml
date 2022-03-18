@@ -5,8 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="15dp"
-    android:background="@drawable/shape_round_corners"
-    android:backgroundTint="@color/successColor">
+    android:background="@drawable/shape_full_circle"
+    android:backgroundTint="@color/darkGreen">
 
     <TextView android:id="@+id/toastText"
         android:layout_width="wrap_content"
