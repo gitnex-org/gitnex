@@ -268,7 +268,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		assigneesAdapter.updateList(currentAssignees);
 		dialogAssignees = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-		dialogAssignees.setCancelable(false);
+		dialogAssignees.setCancelable(true);
 
 		if (dialogAssignees.getWindow() != null) {
 
@@ -280,7 +280,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		View view = assigneesBinding.getRoot();
 		dialogAssignees.setContentView(view);
 
-		assigneesBinding.cancel.setOnClickListener(assigneesBinding_ -> {
+		assigneesBinding.save.setOnClickListener(assigneesBinding_ -> {
 
 			currentAssignees = new ArrayList<>(new LinkedHashSet<>(currentAssignees));
 			assigneesListData = new ArrayList<>(new LinkedHashSet<>(assigneesListData));
@@ -305,7 +305,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		labelsAdapter.updateList(currentLabelsIds);
 		dialogLabels = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-		dialogLabels.setCancelable(false);
+		dialogLabels.setCancelable(true);
 
 		if (dialogLabels.getWindow() != null) {
 
@@ -317,7 +317,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		View view = labelsBinding.getRoot();
 		dialogLabels.setContentView(view);
 
-		labelsBinding.cancel.setOnClickListener(labelsBinding_ -> {
+		labelsBinding.save.setOnClickListener(labelsBinding_ -> {
 
 			currentLabelsIds = new ArrayList<>(new LinkedHashSet<>(currentLabelsIds));
 			labelsIds = new ArrayList<>(new LinkedHashSet<>(labelsIds));

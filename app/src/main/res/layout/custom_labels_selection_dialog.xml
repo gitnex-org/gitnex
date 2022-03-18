@@ -84,12 +84,12 @@
                 android:orientation="vertical" >
 
                 <Button
-                    android:id="@+id/cancel"
+                    android:id="@+id/save"
                     android:layout_width="wrap_content"
                     android:layout_height="60dp"
                     style="?android:attr/button"
                     android:layout_alignParentStart="true"
-                    android:text="@string/close"
+                    android:text="@string/saveButton"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp" />
 

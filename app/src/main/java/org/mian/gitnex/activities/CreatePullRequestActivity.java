@@ -229,7 +229,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		View view = labelsBinding.getRoot();
 		dialogLabels.setContentView(view);
 
-		labelsBinding.cancel.setOnClickListener(editProperties -> dialogLabels.dismiss());
+		labelsBinding.save.setOnClickListener(editProperties -> dialogLabels.dismiss());
 
 		dialogLabels.show();
 		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, dialogLabels, labelsAdapter, labelsBinding);
