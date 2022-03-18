@@ -14,7 +14,6 @@
         android:id="@+id/infoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
@@ -50,6 +49,7 @@
                 android:foregroundGravity="right"
                 android:layout_marginBottom="8dp"
                 android:scrollbarThumbHorizontal="@android:color/transparent"
+                android:visibility="gone"
                 android:fillViewport="true">
 
                 <LinearLayout
@@ -72,6 +72,7 @@
         android:foregroundGravity="right"
         android:layout_marginBottom="8dp"
         android:scrollbarThumbHorizontal="@android:color/transparent"
+        android:visibility="gone"
         android:fillViewport="true">
 
         <LinearLayout

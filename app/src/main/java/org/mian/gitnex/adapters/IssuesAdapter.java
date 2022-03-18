@@ -215,10 +215,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 					}
 				}
 			}
-			else {
-				labelsScrollViewDots.setVisibility(View.GONE);
-				labelsScrollViewWithText.setVisibility(View.GONE);
-			}
 
 			switch(timeFormat) {
 				case "pretty": {
