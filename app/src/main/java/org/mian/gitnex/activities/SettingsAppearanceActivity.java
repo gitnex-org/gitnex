@@ -101,7 +101,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(v -> counterBadgesSwitch.setChecked(!counterBadgesSwitch.isChecked()));
 
 		// show labels in lists(issues, pr) - default is color dots
-		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(tinyDB.getBoolean("showLabelsInList", true));
+		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(tinyDB.getBoolean("showLabelsInList", false));
 
 		activitySettingsAppearanceBinding.switchLabelsInListBadge.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
