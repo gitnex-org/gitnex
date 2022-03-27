@@ -41,12 +41,8 @@ public class RepoStargazersViewModel extends ViewModel {
             public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
 
                 if(response.isSuccessful()) {
-                    if(response.code() == 200) {
-                        stargazersList.postValue(response.body());
-
-                    }
+                	stargazersList.postValue(response.body());
                 }
-
             }
 
             @Override
@@ -55,6 +51,5 @@ public class RepoStargazersViewModel extends ViewModel {
             }
 
         });
-
     }
 }

@@ -46,10 +46,7 @@ public class TeamsByOrgViewModel extends ViewModel {
             public void onResponse(@NonNull Call<List<Teams>> call, @NonNull Response<List<Teams>> response) {
 
                 if(response.isSuccessful()) {
-                    if(response.code() == 200) {
-                        teamsList.postValue(response.body());
-
-                    }
+                	teamsList.postValue(response.body());
                 }
                 else if(response.code() == 403) {
 	                Toasty.error(ctx, ctx.getString(R.string.authorizeError));
@@ -60,7 +57,6 @@ public class TeamsByOrgViewModel extends ViewModel {
 	                mProgressBar.setVisibility(View.GONE);
 	                noDataTeams.setText(R.string.genericError);
                 }
-
             }
 
             @Override
@@ -69,9 +65,6 @@ public class TeamsByOrgViewModel extends ViewModel {
 	            mProgressBar.setVisibility(View.GONE);
 	            noDataTeams.setText(R.string.genericError);
             }
-
         });
-
     }
-
 }

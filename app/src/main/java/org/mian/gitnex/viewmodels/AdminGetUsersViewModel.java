@@ -42,9 +42,7 @@ public class AdminGetUsersViewModel extends ViewModel {
             public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
 
 	            if (response.isSuccessful()) {
-		            if(response.code() == 200) {
-			            usersList.postValue(response.body());
-		            }
+	            	usersList.postValue(response.body());
 	            }
             }
 
@@ -52,7 +50,6 @@ public class AdminGetUsersViewModel extends ViewModel {
             public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
                 Log.e("onFailure", t.toString());
             }
-
         });
     }
 
@@ -68,6 +65,7 @@ public class AdminGetUsersViewModel extends ViewModel {
 			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
 
 				if (response.isSuccessful()) {
+
 					List<UserInfo> list = usersList.getValue();
 					assert list != null;
 					assert response.body() != null;
