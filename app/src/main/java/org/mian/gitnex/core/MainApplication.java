@@ -90,9 +90,12 @@ public class MainApplication extends Application {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);
 
-			ACRABuilder.setBuildConfigClass(BuildConfig.class).setReportFormat(StringFormat.KEY_VALUE_LIST);
-			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setReportAsFile(true).setMailTo(getResources().getString(R.string.appEmail)).setSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil
-				.getAppBuildNo(context))).setEnabled(true);
+			ACRABuilder.withBuildConfigClass(BuildConfig.class).setReportFormat(StringFormat.KEY_VALUE_LIST);
+			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).withMailTo(getResources().getString(R.string.appEmail))
+				.withSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil
+					.getAppBuildNo(context)))
+				.withReportAsFile(true)
+				.withEnabled(true);
 			ACRABuilder.getPluginConfigurationBuilder(LimiterConfigurationBuilder.class).setEnabled(true);
 
 			ACRA.init(this, ACRABuilder);
