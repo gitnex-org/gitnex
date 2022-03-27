@@ -350,4 +350,8 @@
     </style>
     <!-- Pitch black theme styles -->
 
+    <style name="AppThemeSystem" parent="AppThemeLight"/>
+
+    <style name="AppThemeSystemPitchBlack" parent="AppThemeLight"/>
+
 </resources>
