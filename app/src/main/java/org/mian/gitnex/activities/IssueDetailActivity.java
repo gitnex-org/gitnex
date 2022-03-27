@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,13 +23,13 @@ import android.widget.ScrollView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
@@ -59,6 +58,7 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.DividerItemDecorator;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -82,7 +82,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class IssueDetailActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener, BottomSheetListener {
@@ -154,7 +154,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		viewBinding.recyclerView.setNestedScrollingEnabled(false);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.shape_list_divider));
 		viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		viewBinding.addNewComment.setOnClickListener(v -> {
@@ -162,36 +162,12 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(new Bundle(), issue);
 			bottomSheetReplyFragment.setOnInteractedListener(this::onResume);
 			bottomSheetReplyFragment.show(getSupportFragmentManager(), "replyBottomSheet");
-
 		});
 
 		labelsAdapter = new LabelsListAdapter(labelsList, IssueDetailActivity.this, currentLabelsIds);
 		assigneesAdapter = new AssigneesListAdapter(ctx, assigneesList, IssueDetailActivity.this, currentAssignees);
 		LabelsActions.getCurrentIssueLabels(ctx, repoOwner, repoName, issueIndex, currentLabelsIds);
 		AssigneesActions.getCurrentIssueAssignees(ctx, repoOwner, repoName, issueIndex, currentAssignees);
-
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-			viewBinding.scrollViewComments.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-
-				if((scrollY - oldScrollY) > 0 && viewBinding.addNewComment.isShown()) {
-					viewBinding.addNewComment.setVisibility(View.GONE);
-				}
-				else if((scrollY - oldScrollY) < 0) {
-					viewBinding.addNewComment.setVisibility(View.VISIBLE);
-				}
-
-				if(!viewBinding.scrollViewComments.canScrollVertically(1)) { // bottom
-					viewBinding.addNewComment.setVisibility(View.GONE);
-				}
-
-				if(!viewBinding.scrollViewComments.canScrollVertically(-1)) { // top
-					viewBinding.addNewComment.setVisibility(View.VISIBLE);
-				}
-
-			});
-
-		}
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
