@@ -11,9 +11,6 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
     flavorDimensions "default"
     productFlavors {
         free {
@@ -48,6 +45,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 configurations {
     cleanedAnnotations
     compile.exclude group: 'org.jetbrains', module: 'annotations'
@@ -57,7 +58,7 @@ dependencies {
     def lifecycle_version = '2.4.1'
     def markwon_version = '4.6.2'
     def work_version = "2.7.1"
-    def acra = "5.7.0"
+    def acra = '5.8.4'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -70,7 +71,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
-    implementation "com.google.code.gson:gson:2.8.9"
+    implementation "com.google.code.gson:gson:2.9.0"
     implementation "com.squareup.picasso:picasso:2.71828"
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
     implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
@@ -95,10 +96,11 @@ dependencies {
     implementation "io.noties.markwon:simple-ext:$markwon_version"
     implementation 'org.codeberg.qwerty287:markwonprism4j:9d3ef078cd'
     implementation 'org.codeberg.qwerty287:Prism4j:3.0.0'
-    implementation 'com.google.guava:guava:29.0-android'
+    implementation 'com.google.guava:guava:31.1-android'
     implementation "io.noties.markwon:image-picasso:$markwon_version"
     implementation "com.github.HamidrezaAmz:BreadcrumbsView:0.2.9"
-    implementation "commons-io:commons-io:20030203.000550"
+    //noinspection GradleDependency
+    implementation 'commons-io:commons-io:2.11.0' // do not "upgrade" to 20030203.000550 - this was published over 15 years ago
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation "com.github.chrisbanes:PhotoView:2.3.0"
     implementation "ch.acra:acra-mail:$acra"

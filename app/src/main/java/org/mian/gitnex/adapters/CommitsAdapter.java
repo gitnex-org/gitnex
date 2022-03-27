@@ -111,7 +111,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 			            TimeHelper
 				            .formatTime(commitsModel.getCommit().getCommitter().getDate(), context.getResources().getConfiguration().locale, "pretty",
 					            context)), HtmlCompat.FROM_HTML_MODE_COMPACT));
-
             }
 
 	        if(commitsModel.getAuthor() != null && commitsModel.getAuthor().getAvatar_url() != null &&
@@ -134,7 +133,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 	        }
 
             if(commitsModel.getCommitter() != null &&
-				!commitsModel.getAuthor().getLogin().equals(commitsModel.getCommitter().getLogin()) &&
+	            (commitsModel.getAuthor() == null || !commitsModel.getAuthor().getLogin().equals(commitsModel.getCommitter().getLogin())) &&
 	            commitsModel.getCommitter().getAvatar_url() != null &&
 	            !commitsModel.getCommitter().getAvatar_url().isEmpty()) {
 

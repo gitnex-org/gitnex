@@ -159,7 +159,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 				try {
 
 					FileUtils.deleteDirectory(cacheDir);
-					FileUtils.mkdir(cacheDir.getAbsolutePath());
+					FileUtils.forceMkdir(cacheDir);
 					this.recreate();
 					this.overridePendingTransition(0, 0);
 				}
