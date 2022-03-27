@@ -35,8 +35,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 		this.appCtx = getApplicationContext();
 		this.tinyDB = TinyDB.getInstance(appCtx);
 
-		switch(tinyDB.getInt("themeId")) {
-
+		switch(tinyDB.getInt("themeId", 6)) {
+			case 0:
+				setTheme(R.style.AppTheme);
+				break;
 			case 1:
 
 				setTheme(R.style.AppThemeLight);
@@ -80,10 +82,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 				setTheme(R.style.AppThemePitchBlack);
 				break;
+			case 7:
+				setTheme(R.style.AppThemeSystemPitchBlack);
+				break;
 			default:
-
-				setTheme(R.style.AppTheme);
-
+				setTheme(R.style.AppThemeSystem);
+				break;
 		}
 
 		String locale = tinyDB.getString("locale");
