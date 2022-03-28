@@ -32,13 +32,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<Milestones> dataList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false;
@@ -54,15 +53,8 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
 		LayoutInflater inflater = LayoutInflater.from(context);
-
-		if(viewType == TYPE_LOAD) {
-			return new MilestonesAdapter.DataHolder(inflater.inflate(R.layout.list_milestones, parent, false));
-		}
-		else {
-			return new MilestonesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new MilestonesAdapter.DataHolder(inflater.inflate(R.layout.list_milestones, parent, false));
 	}
 
 	@Override
@@ -73,11 +65,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			isLoading = true;
 			loadMoreListener.run();
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-
-			((MilestonesAdapter.DataHolder) holder).bindData(dataList.get(position));
-		}
+		((MilestonesAdapter.DataHolder) holder).bindData(dataList.get(position));
 	}
 
 	class DataHolder extends RecyclerView.ViewHolder {
@@ -240,13 +228,10 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 				msDueDate.setText(context.getString(R.string.milestoneNoDueDate));
 			}
-
 		}
-
 	}
 
 	private void updateAdapter(int position) {
-
 		dataList.remove(position);
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, dataList.size());
@@ -254,27 +239,12 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	@Override
 	public int getItemViewType(int position) {
-
-		if(dataList.get(position).getTitle() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
 	public int getItemCount() {
-
 		return dataList.size();
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-
-		LoadHolder(View itemView) {
-
-			super(itemView);
-		}
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
@@ -282,21 +252,18 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		isMoreDataAvailable = moreDataAvailable;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
-
 		notifyDataSetChanged();
 		isLoading = false;
 	}
 
 	public void setLoadMoreListener(Runnable loadMoreListener) {
-
 		this.loadMoreListener = loadMoreListener;
 	}
 
 	public void updateList(List<Milestones> list) {
-
 		dataList = list;
-		notifyDataSetChanged();
+		notifyDataChanged();
 	}
-
 }

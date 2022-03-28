@@ -26,7 +26,6 @@ import java.util.List;
 public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<UserInfo> followersList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -40,12 +39,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		if(viewType == TYPE_LOAD) {
-			return new UsersAdapter.UsersHolder(inflater.inflate(R.layout.list_users, parent, false));
-		}
-		else {
-			return new UsersAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new UsersAdapter.UsersHolder(inflater.inflate(R.layout.list_users, parent, false));
 	}
 
 	@Override
@@ -54,20 +48,12 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			isLoading = true;
 			loadMoreListener.run();
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((UsersAdapter.UsersHolder) holder).bindData(followersList.get(position));
-		}
+		((UsersAdapter.UsersHolder) holder).bindData(followersList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(followersList.get(position).getUsername() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -115,12 +101,6 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			}
 
 			PicassoService.getInstance(context).get().load(userInfo.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
-		}
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
 		}
 	}
 

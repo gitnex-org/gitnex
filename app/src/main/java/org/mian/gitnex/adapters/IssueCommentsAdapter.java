@@ -1,7 +1,6 @@
 package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -27,6 +26,7 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
+import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
@@ -268,6 +268,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					case 204:
 						updateAdapter(position);
 						Toasty.success(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
+						IssuesFragment.resumeIssues = true;
 						break;
 
 					case 401:

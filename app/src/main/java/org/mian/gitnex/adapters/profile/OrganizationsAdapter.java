@@ -19,13 +19,12 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<UserOrganizations> organizationsList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -38,15 +37,8 @@ public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
 		LayoutInflater inflater = LayoutInflater.from(context);
-
-		if(viewType == TYPE_LOAD) {
-			return new OrganizationsHolder(inflater.inflate(R.layout.list_organizations, parent, false));
-		}
-		else {
-			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new OrganizationsHolder(inflater.inflate(R.layout.list_organizations, parent, false));
 	}
 
 	@Override
@@ -56,20 +48,12 @@ public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			isLoading = true;
 			loadMoreListener.run();
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((OrganizationsHolder) holder).bindData(organizationsList.get(position));
-		}
+		((OrganizationsHolder) holder).bindData(organizationsList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(organizationsList.get(position).getUsername() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -116,16 +100,11 @@ public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		}
 	}
 
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
-		}
-	}
-
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
@@ -137,6 +116,6 @@ public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	public void updateList(List<UserOrganizations> list) {
 		organizationsList = list;
-		notifyDataSetChanged();
+		notifyDataChanged();
 	}
 }

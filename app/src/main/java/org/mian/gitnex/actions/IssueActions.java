@@ -1,9 +1,7 @@
 package org.mian.gitnex.actions;
 
-import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.JsonElement;
 import org.gitnex.tea4j.models.IssueComments;
 import org.gitnex.tea4j.models.Issues;
