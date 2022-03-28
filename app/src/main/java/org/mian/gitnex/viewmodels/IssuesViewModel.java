@@ -7,17 +7,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.models.Issues;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class IssuesViewModel extends ViewModel {
@@ -45,21 +47,22 @@ public class IssuesViewModel extends ViewModel {
 			.getApiInterface(ctx)
 			.queryIssues(token, searchKeyword, type, created, state, resultLimit, 1);
 
-		call.enqueue(new Callback<List<Issues>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
-				if (response.isSuccessful()) {
+				if(response.isSuccessful()) {
 					issuesList.postValue(response.body());
 				}
 				else {
-					Log.e("onResponse", String.valueOf(response.code()));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 				}
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Issues>> call, Throwable t) {
+			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
+
 				Log.e("onFailure", t.toString());
 			}
 		});
@@ -90,7 +93,7 @@ public class IssuesViewModel extends ViewModel {
 					}
 				}
 				else {
-					Log.e("onResponse", String.valueOf(response.code()));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 				}
 			}
 
