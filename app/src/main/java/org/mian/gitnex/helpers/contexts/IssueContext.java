@@ -6,7 +6,6 @@ import android.os.Bundle;
 import org.gitnex.tea4j.models.Issues;
 import org.gitnex.tea4j.models.PullRequests;
 import org.gitnex.tea4j.models.UserRepositories;
-import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import java.io.Serializable;
 

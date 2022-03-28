@@ -3,13 +3,9 @@ package org.mian.gitnex.database.api;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import org.mian.gitnex.database.db.GitnexDatabase;
-import org.mian.gitnex.helpers.Constants;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

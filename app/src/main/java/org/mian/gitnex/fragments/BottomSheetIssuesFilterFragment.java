@@ -10,8 +10,6 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.BottomSheetIssuesFilterBinding;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**

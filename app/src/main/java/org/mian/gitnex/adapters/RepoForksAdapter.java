@@ -34,13 +34,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<UserRepositories> forksList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false;
@@ -55,45 +54,27 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
 		LayoutInflater inflater = LayoutInflater.from(context);
-
-		if(viewType == TYPE_LOAD) {
-			return new RepoForksAdapter.ForksHolder(inflater.inflate(R.layout.list_repositories, parent, false));
-		} else {
-			return new LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new RepoForksAdapter.ForksHolder(inflater.inflate(R.layout.list_repositories, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
-
 			isLoading = true;
 			loadMoreListener.run();
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-
-			((RepoForksAdapter.ForksHolder) holder).bindData(forksList.get(position));
-		}
+		((RepoForksAdapter.ForksHolder) holder).bindData(forksList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-
-		if(forksList.get(position).getName() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
 	public int getItemCount() {
-
 		return forksList.size();
 	}
 
@@ -226,34 +207,22 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	}
 
-	static class LoadHolder extends RecyclerView.ViewHolder {
-
-		LoadHolder(View itemView) {
-
-			super(itemView);
-		}
-	}
-
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
-
 		isMoreDataAvailable = moreDataAvailable;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
-
 		notifyDataSetChanged();
 		isLoading = false;
 	}
 
 	public void setLoadMoreListener(Runnable loadMoreListener) {
-
 		this.loadMoreListener = loadMoreListener;
 	}
 
 	public void updateList(List<UserRepositories> list) {
-
 		forksList = list;
-		notifyDataSetChanged();
+		notifyDataChanged();
 	}
-
 }
