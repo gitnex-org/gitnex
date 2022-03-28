@@ -14,7 +14,6 @@
         android:id="@+id/infoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
@@ -26,18 +25,64 @@
             android:contentDescription="@string/generalImgContentText"
             tools:src="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/issueTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/titleLabelsSection"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top|center_vertical"
-            android:text="@string/strFilter"
-            android:textAlignment="gravity"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            tools:text="Id illum odio repellat omnis fuga deserunt aut. Ut est aut similique qui incidunt quia et." />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/issueTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top|center_vertical"
+                android:text="@string/newIssueTitle"
+                android:textAlignment="gravity"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                tools:text="Id illum odio repellat omnis fuga deserunt aut. Ut est aut similique qui incidunt quia et." />
+
+            <HorizontalScrollView
+                android:id="@+id/labelsScrollViewDots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="right"
+                android:layout_marginBottom="8dp"
+                android:scrollbarThumbHorizontal="@android:color/transparent"
+                android:visibility="gone"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/frameLabelsDots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp" />
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/labelsScrollViewWithText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="right"
+        android:layout_marginBottom="8dp"
+        android:scrollbarThumbHorizontal="@android:color/transparent"
+        android:visibility="gone"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/frameLabels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" />
+
+    </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/issueInfoFrame"

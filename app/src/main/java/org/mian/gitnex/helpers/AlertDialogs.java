@@ -1,6 +1,5 @@
 package org.mian.gitnex.helpers;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +14,8 @@ import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.actions.TeamActions;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateLabelActivity;
-import org.mian.gitnex.activities.LoginActivity;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

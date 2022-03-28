@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminGetUsersAdapter;
+import org.mian.gitnex.databinding.ActivityAdminGetUsersBinding;
 import org.mian.gitnex.fragments.BottomSheetAdminUsersFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
-import org.mian.gitnex.databinding.ActivityAdminGetUsersBinding;
 
 /**
  * @author M M Arif

@@ -43,7 +43,6 @@ import java.util.Locale;
 public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<UserRepositories> reposList;
 	private final List<UserRepositories> reposListFull;
 	private OnLoadMoreListener loadMoreListener;
@@ -61,12 +60,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		if(viewType == TYPE_LOAD) {
-			return new ReposListAdapter.ReposHolder(inflater.inflate(R.layout.list_repositories, parent, false));
-		}
-		else {
-			return new ReposListAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new ReposListAdapter.ReposHolder(inflater.inflate(R.layout.list_repositories, parent, false));
 	}
 
 	@Override
@@ -76,19 +70,12 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			loadMoreListener.onLoadMore();
 		}
 
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((ReposListAdapter.ReposHolder) holder).bindData(reposList.get(position));
-		}
+		((ReposListAdapter.ReposHolder) holder).bindData(reposList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(reposList.get(position).getFullName() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -217,12 +204,6 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				isRepoAdmin = new CheckBox(context);
 			}
 			isRepoAdmin.setChecked(repositories.getPermissions().isAdmin());
-		}
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
 		}
 	}
 

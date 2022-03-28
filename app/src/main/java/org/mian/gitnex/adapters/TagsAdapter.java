@@ -18,7 +18,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.TinyDB;
 import java.util.List;
 
 /**

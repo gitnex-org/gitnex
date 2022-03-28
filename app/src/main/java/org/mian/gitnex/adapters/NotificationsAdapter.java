@@ -21,14 +21,12 @@ import org.mian.gitnex.helpers.AppUtil;
 import java.util.List;
 
 /**
- * Author opyale
- * Modified M M Arif
+ * @author opyale
  */
 
 public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<NotificationThread> notificationThreads;
 	private final OnMoreClickedListener onMoreClickedListener;
 	private final OnNotificationClickedListener onNotificationClickedListener;
@@ -46,12 +44,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		if(viewType == TYPE_LOAD) {
-			return new NotificationsAdapter.NotificationsHolder(inflater.inflate(R.layout.list_notifications, parent, false));
-		}
-		else {
-			return new NotificationsAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new NotificationsAdapter.NotificationsHolder(inflater.inflate(R.layout.list_notifications, parent, false));
 	}
 
 	@Override
@@ -59,20 +52,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading) {
 			isLoading = true;
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((NotificationsAdapter.NotificationsHolder) holder).bindData(notificationThreads.get(position));
-		}
+		((NotificationsAdapter.NotificationsHolder) holder).bindData(notificationThreads.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(notificationThreads.get(position).getSubject() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -165,12 +150,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			frame.setOnClickListener(v -> onNotificationClickedListener.onNotificationClicked(notificationThread));
 
 			more.setOnClickListener(v -> onMoreClickedListener.onMoreClicked(notificationThread));
-		}
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
 		}
 	}
 

@@ -28,7 +28,6 @@ import java.util.List;
 public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<UserOrganizations> orgList;
 	private final List<UserOrganizations> orgListFull;
 	private OnLoadMoreListener loadMoreListener;
@@ -44,12 +43,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		if(viewType == TYPE_LOAD) {
-			return new OrganizationsListAdapter.OrgHolder(inflater.inflate(R.layout.list_organizations, parent, false));
-		}
-		else {
-			return new OrganizationsListAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new OrganizationsListAdapter.OrgHolder(inflater.inflate(R.layout.list_organizations, parent, false));
 	}
 
 	@Override
@@ -59,19 +53,12 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 			loadMoreListener.onLoadMore();
 		}
 
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((OrganizationsListAdapter.OrgHolder) holder).bindData(orgList.get(position));
-		}
+		((OrganizationsListAdapter.OrgHolder) holder).bindData(orgList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(orgList.get(position).getUsername() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -120,12 +107,6 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 			}
 		}
 
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
-		}
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {

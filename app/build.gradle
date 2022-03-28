@@ -71,13 +71,13 @@ dependencies {
     implementation "com.squareup.picasso:picasso:2.71828"
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
     implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
-    implementation "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
+    implementation 'com.github.amulyakhare:TextDrawable:558677ea31'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.2.Final'
-    implementation "com.pes.materialcolorpicker:library:1.2.5"
+    implementation 'com.github.Pes8:android-material-color-picker-dialog:master'
     implementation "io.noties.markwon:core:$markwon_version"
     implementation "io.noties.markwon:ext-latex:$markwon_version"
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"

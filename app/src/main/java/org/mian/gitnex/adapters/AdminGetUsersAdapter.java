@@ -33,7 +33,6 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private List<UserInfo> usersList;
 	private final List<UserInfo> usersListFull;
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
@@ -47,12 +46,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		if(viewType == TYPE_LOAD) {
-			return new AdminGetUsersAdapter.ReposHolder(inflater.inflate(R.layout.list_admin_users, parent, false));
-		}
-		else {
-			return new AdminGetUsersAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new AdminGetUsersAdapter.ReposHolder(inflater.inflate(R.layout.list_admin_users, parent, false));
 	}
 
 	@Override
@@ -62,19 +56,12 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 			loadMoreListener.onLoadMore();
 		}
 
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((AdminGetUsersAdapter.ReposHolder) holder).bindData(usersList.get(position));
-		}
+		((AdminGetUsersAdapter.ReposHolder) holder).bindData(usersList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(usersList.get(position).getFullname() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -150,12 +137,6 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 			}
 
 			PicassoService.getInstance(context).get().load(users.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
-		}
-	}
-
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
 		}
 	}
 

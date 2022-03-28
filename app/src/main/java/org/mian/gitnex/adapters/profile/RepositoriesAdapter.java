@@ -31,13 +31,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final int TYPE_LOAD = 0;
 	private List<UserRepositories> reposList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -52,13 +51,7 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 		LayoutInflater inflater = LayoutInflater.from(context);
-
-		if(viewType == TYPE_LOAD) {
-			return new RepositoriesAdapter.RepositoriesHolder(inflater.inflate(R.layout.list_repositories, parent, false));
-		}
-		else {
-			return new RepositoriesAdapter.LoadHolder(inflater.inflate(R.layout.row_load, parent, false));
-		}
+		return new RepositoriesAdapter.RepositoriesHolder(inflater.inflate(R.layout.list_repositories, parent, false));
 	}
 
 	@Override
@@ -68,20 +61,12 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			isLoading = true;
 			loadMoreListener.run();
 		}
-
-		if(getItemViewType(position) == TYPE_LOAD) {
-			((RepositoriesAdapter.RepositoriesHolder) holder).bindData(reposList.get(position));
-		}
+		((RepositoriesAdapter.RepositoriesHolder) holder).bindData(reposList.get(position));
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if(reposList.get(position).getFullName() != null) {
-			return TYPE_LOAD;
-		}
-		else {
-			return 1;
-		}
+		return position;
 	}
 
 	@Override
@@ -196,16 +181,11 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		}
 	}
 
-	static class LoadHolder extends RecyclerView.ViewHolder {
-		LoadHolder(View itemView) {
-			super(itemView);
-		}
-	}
-
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
@@ -217,6 +197,6 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	public void updateList(List<UserRepositories> list) {
 		reposList = list;
-		notifyDataSetChanged();
+		notifyDataChanged();
 	}
 }

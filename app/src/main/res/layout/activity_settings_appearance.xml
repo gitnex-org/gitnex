@@ -246,4 +246,47 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/labelsInListFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/tvLabelsInListHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="72dp"
+            android:text="@string/settingsLabelsInListHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="18sp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchLabelsInListBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_toEndOf="@+id/tvLabelsInListHeader"
+            android:gravity="end"
+            android:paddingStart="0dp"
+            android:paddingEnd="24dp"
+            android:switchMinWidth="56dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/switchLabelsInListBadge"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="72dp"
+            android:text="@string/settingsLabelsInListHint"
+            android:textColor="?attr/hintColor"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
 </LinearLayout>

@@ -246,6 +246,8 @@
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
+    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
+    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>

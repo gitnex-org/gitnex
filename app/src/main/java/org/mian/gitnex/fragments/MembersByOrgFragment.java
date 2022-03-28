@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +20,6 @@ import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.FragmentMembersByOrgBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.viewmodels.MembersByOrgViewModel;
-import java.util.Objects;
 
 /**
  * Author M M Arif
