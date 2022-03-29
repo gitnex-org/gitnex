@@ -136,7 +136,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			repoName.setText(userRepositories.getFullName().split("/")[1]);
 			repoStars.setText(userRepositories.getStars_count());
 
-			ColorGenerator generator = ColorGenerator.MATERIAL;
+			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(userRepositories.getName());
 			String firstCharacter = String.valueOf(userRepositories.getFullName().charAt(0));
 

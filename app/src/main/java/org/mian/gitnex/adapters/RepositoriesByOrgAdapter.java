@@ -125,7 +125,7 @@ public class RepositoriesByOrgAdapter extends RecyclerView.Adapter<RepositoriesB
 	    holder.repoName.setText(currentItem.getFullName().split("/")[1]);
 	    holder.repoStars.setText(currentItem.getStars_count());
 
-        ColorGenerator generator = ColorGenerator.MATERIAL;
+        ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
         int color = generator.getColor(currentItem.getName());
         String firstCharacter = String.valueOf(currentItem.getFullName().charAt(0));
 

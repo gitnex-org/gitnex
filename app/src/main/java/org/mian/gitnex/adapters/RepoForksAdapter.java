@@ -115,7 +115,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			repoName.setText(forksModel.getFullName().split("/")[1]);
 			repoStars.setText(forksModel.getStars_count());
 
-			ColorGenerator generator = ColorGenerator.MATERIAL;
+			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(forksModel.getName());
 			String firstCharacter = String.valueOf(forksModel.getFullName().charAt(0));
 

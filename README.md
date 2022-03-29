@@ -76,7 +76,7 @@ Thanks to all the open source libraries, contributors and donators.
 - [noties/Markwon](https://github.com/noties/Markwon)
 - [noties/Prism4j](https://github.com/noties/Prism4j)
 - [ocpsoft/prettytime](https://github.com/ocpsoft/prettytime)
-- [amulyakhare/TextDrawable](https://github.com/amulyakhare/TextDrawable)
+- [ramseth001/TextDrawable](https://github.com/ramseth001/TextDrawable)
 - [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)
 - [Pes8/android-material-color-picker-dialog](https://github.com/Pes8/android-material-color-picker-dialog)
 - [HamidrezaAmz/BreadcrumbsView](https://github.com/HamidrezaAmz/BreadcrumbsView)
