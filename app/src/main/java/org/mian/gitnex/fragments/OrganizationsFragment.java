@@ -12,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
@@ -23,6 +24,7 @@ import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.DividerItemDecorator;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -52,8 +54,8 @@ public class OrganizationsFragment extends Fragment {
 
 		fragmentOrganizationsBinding.recyclerView.setHasFixedSize(true);
 		fragmentOrganizationsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentOrganizationsBinding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
+
+		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(requireContext(), R.drawable.shape_list_divider));
 		fragmentOrganizationsBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
