@@ -9,11 +9,7 @@
 [ -z "${KS_FILE}" ] && { echo "Filename of keystore is missing (KS_FILE)"; exit 1; }
 [ -z "${OUTPUT}" ] && { echo "Missing filename of signed output (OUTPUT)"; exit 1; }
 
-# Update the docker container. curl is an outdated version which has to be updated.
-apt update
-apt upgrade curl -y
-
 KEYFILE=$(mktemp)
 curl -X GET "${INSTANCE}/api/v1/repos/${KS_REPO}/contents/${KS_FILE}?token=${BOT_TOKEN}" -H  "accept: application/json" | sed 's|"content":"|#|g' | cut -d '#' -f 2 | cut -d '"' -f 1 | base64 -d > ${KEYFILE}
 
-/opt/android-sdk-linux/build-tools/*/apksigner sign -v --ks-pass pass:$KS_PASS --key-pass pass:$KEY_PASS --ks-key-alias GitNexBot --ks ${KEYFILE} --out signed.apk $(find . -name "*release*.apk")
+apksigner sign -v --ks-pass pass:$KS_PASS --key-pass pass:$KEY_PASS --ks-key-alias GitNexBot --ks ${KEYFILE} --out signed.apk $(find . -name "*release*.apk")
