@@ -26,7 +26,7 @@ public class MilestoneActions {
 
 		call = RetrofitClient
 				.getApiInterface(ctx)
-				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getOwner(), milestoneId_, milestoneStateJson);
+				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), milestoneId_, milestoneStateJson);
 
 		call.enqueue(new Callback<>() {
 
@@ -36,7 +36,6 @@ public class MilestoneActions {
 				if(response.isSuccessful()) {
 
 					Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
-
 				}
 				else if(response.code() == 401) {
 
@@ -65,7 +64,7 @@ public class MilestoneActions {
 
 		call = RetrofitClient
 				.getApiInterface(ctx)
-				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getOwner(), milestoneId_, milestoneStateJson);
+				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), milestoneId_, milestoneStateJson);
 
 		call.enqueue(new Callback<>() {
 
