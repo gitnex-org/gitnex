@@ -48,7 +48,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private final boolean repoTypeInclude = true;
 	private final String sort = "updated";
 	private final String order = "desc";
-	private final String TAG = Constants.exploreRepositories;
 	private int resultLimit;
 	private List<UserRepositories> dataList;
 	private ExploreRepositoriesAdapter adapter;
@@ -181,9 +180,9 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 		menu.clear();
 		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu, menu);
+		inflater.inflate(R.menu.filter_menu_explore, menu);
 		super.onCreateOptionsMenu(menu, inflater);
-		MenuItem filter = menu.findItem(R.id.filter);
+		MenuItem filter = menu.findItem(R.id.filter_explore);
 
 		filter.setOnMenuItemClickListener(filter_ -> {
 

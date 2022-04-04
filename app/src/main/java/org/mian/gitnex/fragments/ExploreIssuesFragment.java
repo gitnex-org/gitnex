@@ -1,28 +1,28 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
 import org.mian.gitnex.databinding.FragmentSearchIssuesBinding;
-import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
-import java.util.Objects;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ExploreIssuesFragment extends Fragment {
@@ -30,37 +30,18 @@ public class ExploreIssuesFragment extends Fragment {
 	private FragmentSearchIssuesBinding viewBinding;
 	private ExploreIssuesAdapter adapter;
 	private int page = 1;
-	private final String TAG = Constants.exploreIssues;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		viewBinding = FragmentSearchIssuesBinding.inflate(inflater, container, false);
-
-		viewBinding.searchKeyword.setOnEditorActionListener((v1, actionId, event) -> {
-			if(actionId == EditorInfo.IME_ACTION_SEND) {
-				if(!Objects.requireNonNull(viewBinding.searchKeyword.getText()).toString().equals("")) {
-					InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(viewBinding.searchKeyword.getWindowToken(), 0);
-
-					viewBinding.progressBar.setVisibility(View.VISIBLE);
-					fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), String.valueOf(viewBinding.searchKeyword.getText()));
-				}
-			}
-			return false;
-		});
+		setHasOptionsMenu(true);
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			viewBinding.pullToRefresh.setRefreshing(false);
-			if(!Objects.requireNonNull(viewBinding.searchKeyword.getText()).toString().equals("")) {
-				fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), String.valueOf(viewBinding.searchKeyword.getText()));
-			}
-			else {
-				fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "");
-			}
+			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "");
 			viewBinding.progressBar.setVisibility(View.VISIBLE);
-
 		}, 50));
 
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
@@ -108,6 +89,35 @@ public class ExploreIssuesFragment extends Fragment {
 			}
 
 			viewBinding.progressBar.setVisibility(View.GONE);
+		});
+	}
+
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+		menu.clear();
+		inflater.inflate(R.menu.search_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				viewBinding.progressBar.setVisibility(View.VISIBLE);
+				fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), query);
+				searchView.setQuery(null, false);
+				searchItem.collapseActionView();
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				return false;
+			}
 		});
 	}
 }

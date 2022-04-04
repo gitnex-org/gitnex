@@ -14,45 +14,6 @@
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/searchKeywordLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            android:textColorHint="?attr/hintColor"
-            app:hintTextColor="?attr/hintColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:startIconDrawable="@drawable/ic_search"
-            app:startIconTint="?attr/iconsColor"
-            app:endIconMode="clear_text"
-            app:endIconTint="?attr/iconsColor"
-            android:hint="@string/exploreUsers">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/searchKeyword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:imeOptions="actionSend"
-                android:inputType="text"
-                android:textSize="16sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/noData"
         android:layout_width="match_parent"
