@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="?attr/primaryBackgroundColor" >
+    android:background="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:id="@+id/userInfoSection"

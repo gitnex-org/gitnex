@@ -80,6 +80,7 @@ public class IssuesViewModel extends ViewModel {
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
 				if (response.isSuccessful()) {
+					
 					List<Issues> list = issuesList.getValue();
 					assert list != null;
 					assert response.body() != null;

@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -36,16 +37,53 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
-public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.ReposViewHolder> implements Filterable {
+public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-	private final List<UserRepositories> reposList;
 	private final Context context;
+	private List<UserRepositories> reposList;
 	private final List<UserRepositories> reposListFull;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
+	private final TinyDB tinyDb;
 
-	static class ReposViewHolder extends RecyclerView.ViewHolder {
+	public ReposListAdapter(List<UserRepositories> reposListMain, Context ctx) {
+		this.context = ctx;
+		this.reposList = reposListMain;
+		reposListFull = new ArrayList<>(reposList);
+		this.tinyDb = TinyDB.getInstance(context);
+	}
+
+	@NonNull
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		return new ReposListAdapter.ReposHolder(inflater.inflate(R.layout.list_repositories, parent, false));
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
+
+		((ReposListAdapter.ReposHolder) holder).bindData(reposList.get(position));
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		return position;
+	}
+
+	@Override
+	public int getItemCount() {
+		return reposList.size();
+	}
+
+	class ReposHolder extends RecyclerView.ViewHolder {
 
 		private UserRepositories userRepositories;
 
@@ -58,7 +96,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		private final TextView repoLastUpdated;
 		private final View spacerView;
 
-		private ReposViewHolder(View itemView) {
+		ReposHolder(View itemView) {
 
 			super(itemView);
 			repoName = itemView.findViewById(R.id.repoName);
@@ -94,108 +132,111 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			});
 		}
 
-	}
+		@SuppressLint("SetTextI18n")
+		void bindData(UserRepositories repositories) {
 
-	public ReposListAdapter(Context ctx, List<UserRepositories> reposListMain) {
+			this.userRepositories = repositories;
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		this.context = ctx;
-		this.reposList = reposListMain;
-		reposListFull = new ArrayList<>(reposList);
-	}
+			Locale locale = context.getResources().getConfiguration().locale;
+			String timeFormat = tinyDb.getString("dateFormat", "pretty");
+			orgName.setText(repositories.getFullName().split("/")[0]);
+			repoName.setText(repositories.getFullName().split("/")[1]);
+			repoStars.setText(repositories.getStars_count());
 
-	@NonNull
-	@Override
-	public ReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
+			int color = generator.getColor(repositories.getName());
+			String firstCharacter = String.valueOf(repositories.getFullName().charAt(0));
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_repositories, parent, false);
-		return new ReposViewHolder(v);
-	}
+			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
 
-	@Override
-	public void onBindViewHolder(@NonNull ReposViewHolder holder, int position) {
-
-		TinyDB tinyDb = TinyDB.getInstance(context);
-		UserRepositories currentItem = reposList.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
-
-		Locale locale = context.getResources().getConfiguration().locale;
-		String timeFormat = tinyDb.getString("dateFormat", "pretty");
-		holder.userRepositories = currentItem;
-		holder.orgName.setText(currentItem.getFullName().split("/")[0]);
-		holder.repoName.setText(currentItem.getFullName().split("/")[1]);
-		holder.repoStars.setText(currentItem.getStars_count());
-
-		ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
-		int color = generator.getColor(currentItem.getName());
-		String firstCharacter = String.valueOf(currentItem.getFullName().charAt(0));
-
-		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
-
-		if(currentItem.getAvatar_url() != null) {
-			if(!currentItem.getAvatar_url().equals("")) {
-				PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.image);
+			if(repositories.getAvatar_url() != null) {
+				if(!repositories.getAvatar_url().equals("")) {
+					PicassoService.getInstance(context).get().load(repositories.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+				}
+				else {
+					image.setImageDrawable(drawable);
+				}
 			}
 			else {
-				holder.image.setImageDrawable(drawable);
+				image.setImageDrawable(drawable);
 			}
-		}
-		else {
-			holder.image.setImageDrawable(drawable);
-		}
 
-		if(currentItem.getUpdated_at() != null) {
+			if(repositories.getUpdated_at() != null) {
 
-			switch(timeFormat) {
-				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(locale);
-					String createdTime = prettyTime.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					holder.repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getUpdated_at()), context));
-					break;
-				}
-				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					break;
-				}
-				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(currentItem.getUpdated_at());
-					holder.repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-					break;
+				switch(timeFormat) {
+					case "pretty": {
+						PrettyTime prettyTime = new PrettyTime(locale);
+						String createdTime = prettyTime.format(repositories.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repositories.getUpdated_at()), context));
+						break;
+					}
+					case "normal": {
+						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+						String createdTime = formatter.format(repositories.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						break;
+					}
+					case "normal1": {
+						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
+						String createdTime = formatter.format(repositories.getUpdated_at());
+						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
+						break;
+					}
 				}
 			}
-		}
-		else {
-			holder.repoLastUpdated.setVisibility(View.GONE);
-		}
+			else {
+				repoLastUpdated.setVisibility(View.GONE);
+			}
 
-		if(!currentItem.getDescription().equals("")) {
-			holder.repoDescription.setVisibility(View.VISIBLE);
-			holder.repoDescription.setText(currentItem.getDescription());
-			holder.spacerView.setVisibility(View.GONE);
-		}
-		else {
-			holder.repoDescription.setVisibility(View.GONE);
-			holder.spacerView.setVisibility(View.VISIBLE);
-		}
+			if(!repositories.getDescription().equals("")) {
+				repoDescription.setVisibility(View.VISIBLE);
+				repoDescription.setText(repositories.getDescription());
+				spacerView.setVisibility(View.GONE);
+			}
+			else {
+				repoDescription.setVisibility(View.GONE);
+				spacerView.setVisibility(View.VISIBLE);
+			}
 
-		if(holder.isRepoAdmin == null) {
-			holder.isRepoAdmin = new CheckBox(context);
+			if(isRepoAdmin == null) {
+				isRepoAdmin = new CheckBox(context);
+			}
+			isRepoAdmin.setChecked(repositories.getPermissions().isAdmin());
 		}
-		holder.isRepoAdmin.setChecked(currentItem.getPermissions().isAdmin());
 	}
 
-	@Override
-	public int getItemCount() {
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
 
-		return reposList.size();
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+		void onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<UserRepositories> list) {
+		reposList = list;
+		notifyDataChanged();
 	}
 
 	@Override
 	public Filter getFilter() {
-
 		return reposFilter;
 	}
 
@@ -230,8 +271,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 
 			reposList.clear();
 			reposList.addAll((List) results.values);
-			notifyDataSetChanged();
+			notifyDataChanged();
 		}
 	};
-
 }

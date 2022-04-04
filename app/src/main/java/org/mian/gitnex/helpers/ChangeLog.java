@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ChangeLog {
@@ -22,7 +22,7 @@ public class ChangeLog {
     static final private String TAG = "ChangeLog";
     static final private String CHANGELOG_XML_NODE = "changelog";
 
-    private Activity changelogActivity;
+    private final Activity changelogActivity;
 
 	public ChangeLog(Activity context) {
 		changelogActivity = context;

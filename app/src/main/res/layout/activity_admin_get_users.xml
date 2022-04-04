@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/primaryBackgroundColor"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -40,20 +39,24 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/adminUsers"
                 android:textColor="?attr/primaryTextColor"
-                android:maxLines="1"
-                android:textSize="20sp" />
+                android:ellipsize="none"
+                android:scrollbars="horizontal"
+                android:singleLine="true"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefresh"
+        android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
+        android:layout_marginTop="56dp"
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/primaryBackgroundColor"
@@ -61,8 +64,17 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        app:indicatorColor="?attr/progressIndicatorColor" />
+
     <TextView
-        android:id="@+id/noDataUsers"
+        android:id="@+id/no_data_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
@@ -70,6 +82,6 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
-</LinearLayout>
+</RelativeLayout>
