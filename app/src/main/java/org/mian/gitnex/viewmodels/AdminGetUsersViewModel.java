@@ -1,14 +1,15 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.models.UserInfo;
+import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminGetUsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,20 +37,23 @@ public class AdminGetUsersViewModel extends ViewModel {
                 .getApiInterface(ctx)
                 .adminGetUsers(token, page, resultLimit);
 
-        call.enqueue(new Callback<List<UserInfo>>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
 
-	            if (response.isSuccessful()) {
-	            	usersList.postValue(response.body());
-	            }
-            }
+		        if(response.isSuccessful()) {
+			        usersList.postValue(response.body());
+		        }
+		        else {
+			        Toasty.error(ctx, ctx.getString(R.string.genericError));
+		        }
+	        }
 
-            @Override
-            public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+	        }
         });
     }
 
@@ -59,12 +63,12 @@ public class AdminGetUsersViewModel extends ViewModel {
 			.getApiInterface(ctx)
 			.adminGetUsers(token, page, resultLimit);
 
-		call.enqueue(new Callback<List<UserInfo>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
 
-				if (response.isSuccessful()) {
+				if(response.isSuccessful()) {
 
 					List<UserInfo> list = usersList.getValue();
 					assert list != null;
@@ -79,13 +83,14 @@ public class AdminGetUsersViewModel extends ViewModel {
 					}
 				}
 				else {
-					Log.e("onResponse", String.valueOf(response.code()));
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
-				Log.e("onFailure", t.toString());
+
+				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
 			}
 		});
 	}

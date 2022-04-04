@@ -1,7 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -63,7 +62,7 @@ public class IssuesViewModel extends ViewModel {
 			@Override
 			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-				Log.e("onFailure", t.toString());
+				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
 			}
 		});
 	}
@@ -74,13 +73,13 @@ public class IssuesViewModel extends ViewModel {
 			.getApiInterface(ctx)
 			.queryIssues(token, searchKeyword, type, created, state, resultLimit, page);
 
-		call.enqueue(new Callback<List<Issues>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
 
-				if (response.isSuccessful()) {
-					
+				if(response.isSuccessful()) {
+
 					List<Issues> list = issuesList.getValue();
 					assert list != null;
 					assert response.body() != null;
@@ -100,7 +99,8 @@ public class IssuesViewModel extends ViewModel {
 
 			@Override
 			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
-				Log.e("onFailure", t.toString());
+
+				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
 			}
 		});
 	}

@@ -1,20 +1,21 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.models.Emails;
+import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ProfileEmailsViewModel extends ViewModel {
@@ -35,25 +36,24 @@ public class ProfileEmailsViewModel extends ViewModel {
                 .getApiInterface(ctx)
                 .getUserEmails(token);
 
-        call.enqueue(new Callback<List<Emails>>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Emails>> call, @NonNull Response<List<Emails>> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<List<Emails>> call, @NonNull Response<List<Emails>> response) {
 
-                if (response.isSuccessful()) {
-                    emailsList.postValue(response.body());
-                } else {
-                    Log.i("onResponse", String.valueOf(response.code()));
-                }
+		        if(response.isSuccessful()) {
+			        emailsList.postValue(response.body());
+		        }
+		        else {
+			        Toasty.error(ctx, ctx.getString(R.string.genericError));
+		        }
+	        }
 
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<List<Emails>> call, @NonNull Throwable t) {
 
-            @Override
-            public void onFailure(@NonNull Call<List<Emails>> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.toString());
-            }
-
+		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+	        }
         });
     }
-
 }

@@ -1,7 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,7 +16,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class AdminCronTasksViewModel extends ViewModel {
@@ -38,42 +37,35 @@ public class AdminCronTasksViewModel extends ViewModel {
 			.getApiInterface(ctx)
 			.adminGetCronTasks(token, page, limit);
 
-		call.enqueue(new Callback<List<CronTasks>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<CronTasks>> call, @NonNull Response<List<CronTasks>> response) {
 
-				if (response.code() == 200) {
+				if(response.isSuccessful()) {
 					tasksList.postValue(response.body());
 				}
-
 				else if(response.code() == 401) {
-
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-						ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-						ctx.getResources().getString(R.string.cancelButton),
+						ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.cancelButton),
 						ctx.getResources().getString(R.string.navLogout));
 				}
 				else if(response.code() == 403) {
-
 					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
 				}
 				else if(response.code() == 404) {
-
 					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
 				}
 				else {
-
 					Toasty.error(ctx, ctx.getString(R.string.genericError));
-					Log.i("onResponse", String.valueOf(response.code()));
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<CronTasks>> call, @NonNull Throwable t) {
-				Log.e("onFailure", t.toString());
-			}
 
+				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+			}
 		});
 	}
 }

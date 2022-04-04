@@ -13,13 +13,14 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class FilesViewModel extends ViewModel {
@@ -41,24 +42,27 @@ public class FilesViewModel extends ViewModel {
                 .getApiInterface(ctx)
                 .getFiles(token, owner, repo, ref);
 
-        call.enqueue(new Callback<List<Files>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
+        call.enqueue(new Callback<>() {
 
-	            if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-	                Collections.sort(response.body(), (byType1, byType2) -> byType1.getType().compareTo(byType2.getType()));
-                    filesList.postValue(response.body());
-                }
-                else {
-	                progressBar.setVisibility(View.GONE);
-	                noDataFiles.setVisibility(View.VISIBLE);
-                }
-            }
+	        @Override
+	        public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
 
-            @Override
-            public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
-	            Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
-            }
+		        if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+			        Collections.sort(response.body(), Comparator.comparing(Files::getType));
+			        filesList.postValue(response.body());
+		        }
+		        else {
+			        progressBar.setVisibility(View.GONE);
+			        noDataFiles.setVisibility(View.VISIBLE);
+			        Toasty.error(ctx, ctx.getString(R.string.genericError));
+		        }
+	        }
+
+	        @Override
+	        public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
+
+		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+	        }
         });
     }
 
@@ -76,25 +80,27 @@ public class FilesViewModel extends ViewModel {
                 .getApiInterface(ctx)
                 .getDirFiles(token, owner, repo, filesDir, ref);
 
-        call.enqueue(new Callback<List<Files>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
+        call.enqueue(new Callback<>() {
 
-	            if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-	                Collections.sort(response.body(), (byType1, byType2) -> byType1.getType().compareTo(byType2.getType()));
-	                filesList2.postValue(response.body());
-                }
-                else {
-	                progressBar.setVisibility(View.GONE);
-	                noDataFiles.setVisibility(View.VISIBLE);
-                }
-            }
+	        @Override
+	        public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
 
-            @Override
-            public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
-	            Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
-            }
+		        if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+			        Collections.sort(response.body(), Comparator.comparing(Files::getType));
+			        filesList2.postValue(response.body());
+		        }
+		        else {
+			        progressBar.setVisibility(View.GONE);
+			        noDataFiles.setVisibility(View.VISIBLE);
+			        Toasty.error(ctx, ctx.getString(R.string.genericError));
+		        }
+	        }
+
+	        @Override
+	        public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
+
+		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+	        }
         });
     }
-
 }

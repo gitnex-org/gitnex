@@ -1,7 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,7 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class TeamsByOrgViewModel extends ViewModel {
@@ -40,31 +39,33 @@ public class TeamsByOrgViewModel extends ViewModel {
                 .getApiInterface(ctx)
                 .getTeamsByOrg(token, orgName);
 
-        call.enqueue(new Callback<List<Teams>>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Teams>> call, @NonNull Response<List<Teams>> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<List<Teams>> call, @NonNull Response<List<Teams>> response) {
 
-                if(response.isSuccessful()) {
-                	teamsList.postValue(response.body());
-                }
-                else if(response.code() == 403) {
-	                Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-	                mProgressBar.setVisibility(View.GONE);
-	                noDataTeams.setText(R.string.authorizeError);
-                }
-                else {
-	                mProgressBar.setVisibility(View.GONE);
-	                noDataTeams.setText(R.string.genericError);
-                }
-            }
+		        if(response.isSuccessful()) {
+			        teamsList.postValue(response.body());
+		        }
+		        else if(response.code() == 403) {
+			        Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+			        mProgressBar.setVisibility(View.GONE);
+			        noDataTeams.setVisibility(View.GONE);
+		        }
+		        else {
+			        mProgressBar.setVisibility(View.GONE);
+			        noDataTeams.setVisibility(View.GONE);
+			        Toasty.error(ctx, ctx.getString(R.string.genericError));
+		        }
+	        }
 
-            @Override
-            public void onFailure(@NonNull Call<List<Teams>> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.toString());
-	            mProgressBar.setVisibility(View.GONE);
-	            noDataTeams.setText(R.string.genericError);
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<List<Teams>> call, @NonNull Throwable t) {
+
+		        mProgressBar.setVisibility(View.GONE);
+		        noDataTeams.setVisibility(View.GONE);
+		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+	        }
         });
     }
 }
