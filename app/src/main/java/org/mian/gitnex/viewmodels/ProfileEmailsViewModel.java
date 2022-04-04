@@ -52,7 +52,7 @@ public class ProfileEmailsViewModel extends ViewModel {
 	        @Override
 	        public void onFailure(@NonNull Call<List<Emails>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }

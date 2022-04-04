@@ -31,7 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class CollaboratorSearchAdapter extends RecyclerView.Adapter<CollaboratorSearchAdapter.CollaboratorSearchViewHolder> {
@@ -74,7 +74,7 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
                 pBuilder.setTitle(R.string.newTeamPermission);
                 pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, null)
                         .setCancelable(false)
-                        .setNegativeButton(R.string.cancelButton, null)
+                        .setNeutralButton(R.string.cancelButton, null)
                         .setPositiveButton(R.string.addButton, (dialog, which) -> {
 
                             ListView lw = ((AlertDialog)dialog).getListView();
@@ -164,7 +164,6 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
                     else {
                         holder.addCollaboratorButtonRemove.setVisibility(View.GONE);
                         holder.addCollaboratorButtonAdd.setVisibility(View.GONE);
-                        Log.i("onResponse", String.valueOf(response.code()));
                     }
 
                 }

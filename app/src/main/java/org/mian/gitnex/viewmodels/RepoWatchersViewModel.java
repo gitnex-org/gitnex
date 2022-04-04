@@ -52,7 +52,7 @@ public class RepoWatchersViewModel extends ViewModel {
 	        @Override
 	        public void onFailure(@NonNull Call<List<UserInfo>> call, Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }

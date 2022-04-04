@@ -61,7 +61,7 @@ public class FilesViewModel extends ViewModel {
 	        @Override
 	        public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }
@@ -99,7 +99,7 @@ public class FilesViewModel extends ViewModel {
 	        @Override
 	        public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }

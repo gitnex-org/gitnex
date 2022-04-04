@@ -59,7 +59,7 @@ public class IssueCommentsViewModel extends ViewModel {
 	        @Override
 	        public void onFailure(@NonNull Call<List<IssueComments>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }

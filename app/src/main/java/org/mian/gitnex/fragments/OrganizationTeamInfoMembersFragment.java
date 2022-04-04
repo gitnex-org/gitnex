@@ -94,7 +94,7 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 			@Override
 			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}

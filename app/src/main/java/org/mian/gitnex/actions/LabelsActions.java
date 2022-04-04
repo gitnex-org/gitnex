@@ -2,7 +2,6 @@ package org.mian.gitnex.actions;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
 import org.gitnex.tea4j.models.Labels;
@@ -17,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class LabelsActions {
@@ -28,34 +27,34 @@ public class LabelsActions {
 			.getApiInterface(ctx)
 			.getIssueLabels(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName, issueIndex);
 
-		callSingleIssueLabels.enqueue(new Callback<List<Labels>>() {
+		callSingleIssueLabels.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Labels>> call, @NonNull retrofit2.Response<List<Labels>> response) {
 
-				if(response.code() == 200) {
+				if(response.isSuccessful()) {
 
 					List<Labels> issueLabelsList = response.body();
-
 					assert issueLabelsList != null;
 
 					if(issueLabelsList.size() > 0) {
 
-						for (int i = 0; i < issueLabelsList.size(); i++) {
+						for(int i = 0; i < issueLabelsList.size(); i++) {
 
 							currentLabelsIds.add(issueLabelsList.get(i).getId());
 						}
 					}
-
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {
 
-				Log.e("onFailure", t.toString());
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
-
 		});
 	}
 
@@ -65,14 +64,14 @@ public class LabelsActions {
 			.getApiInterface(ctx)
 			.getLabels(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName);
 
-		call.enqueue(new Callback<List<Labels>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Labels>> call, @NonNull retrofit2.Response<List<Labels>> response) {
 
 				labelsList.clear();
 
-				if (response.code() == 200) {
+				if(response.isSuccessful()) {
 
 					if(response.body() != null) {
 
@@ -80,11 +79,10 @@ public class LabelsActions {
 					}
 
 					// Load organization labels
-					Call<List<Labels>> callOrgLabels = RetrofitClient
-						.getApiInterface(ctx)
+					Call<List<Labels>> callOrgLabels = RetrofitClient.getApiInterface(ctx)
 						.getOrganizationLabels(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner);
 
-					callOrgLabels.enqueue(new Callback<List<Labels>>() {
+					callOrgLabels.enqueue(new Callback<>() {
 
 						@Override
 						public void onResponse(@NonNull Call<List<Labels>> call, @NonNull retrofit2.Response<List<Labels>> responseOrg) {
@@ -107,7 +105,11 @@ public class LabelsActions {
 							labelsBinding.labelsRecyclerView.setAdapter(labelsAdapter);
 						}
 
-						@Override public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {}
+						@Override
+						public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {
+
+							Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						}
 
 					});
 
@@ -116,7 +118,6 @@ public class LabelsActions {
 
 					Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
 				}
-
 			}
 
 			@Override
@@ -125,7 +126,5 @@ public class LabelsActions {
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});
-
 	}
-
 }

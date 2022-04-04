@@ -62,7 +62,7 @@ public class IssuesViewModel extends ViewModel {
 			@Override
 			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}
@@ -100,7 +100,7 @@ public class IssuesViewModel extends ViewModel {
 			@Override
 			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}

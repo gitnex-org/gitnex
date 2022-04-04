@@ -64,7 +64,7 @@ public class ReleasesViewModel extends ViewModel {
 	        @Override
 	        public void onFailure(@NonNull Call<List<Releases>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }
@@ -101,7 +101,7 @@ public class ReleasesViewModel extends ViewModel {
 			@Override
 			public void onFailure(@NonNull Call<List<Releases>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}
@@ -144,7 +144,7 @@ public class ReleasesViewModel extends ViewModel {
 			@Override
 			public void onFailure(@NonNull Call<List<GitTag>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}
@@ -182,7 +182,7 @@ public class ReleasesViewModel extends ViewModel {
 			@Override
 			public void onFailure(@NonNull Call<List<GitTag>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}

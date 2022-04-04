@@ -64,7 +64,7 @@ public class TeamsByOrgViewModel extends ViewModel {
 
 		        mProgressBar.setVisibility(View.GONE);
 		        noDataTeams.setVisibility(View.GONE);
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }

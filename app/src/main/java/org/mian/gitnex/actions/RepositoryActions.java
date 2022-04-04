@@ -1,7 +1,6 @@
 package org.mian.gitnex.actions;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
@@ -15,7 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepositoryActions {
@@ -28,51 +27,44 @@ public class RepositoryActions {
                 .getApiInterface(context)
                 .starRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 
-        call.enqueue(new Callback<JsonElement>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-                if(response.isSuccessful()) {
-                    if(response.code() == 204) {
+		        if(response.isSuccessful()) {
+			        if(response.code() == 204) {
 
-	                    MainActivity.repoCreated = true;
-                        Toasty.success(context, context.getString(R.string.starRepositorySuccess));
+				        MainActivity.repoCreated = true;
+				        Toasty.success(context, context.getString(R.string.starRepositorySuccess));
+			        }
+		        }
+		        else if(response.code() == 401) {
 
-                    }
-                }
-                else if(response.code() == 401) {
+			        AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
+				        context.getResources().getString(R.string.alertDialogTokenRevokedMessage), context.getResources().getString(R.string.cancelButton),
+				        context.getResources().getString(R.string.navLogout));
+		        }
+		        else if(response.code() == 403) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            context.getResources().getString(R.string.cancelButton),
-                            context.getResources().getString(R.string.navLogout));
+			        Toasty.error(context, context.getString(R.string.authorizeError));
+		        }
+		        else if(response.code() == 404) {
 
-                }
-                else if(response.code() == 403) {
+			        Toasty.warning(context, context.getString(R.string.apiNotFound));
+		        }
+		        else {
 
-                    Toasty.error(context, context.getString(R.string.authorizeError));
+			        Toasty.error(context, context.getString(R.string.genericError));
+		        }
+	        }
 
-                }
-                else if(response.code() == 404) {
+	        @Override
+	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
-                    Toasty.warning(context, context.getString(R.string.apiNotFound));
-
-                }
-                else {
-
-                    Toasty.error(context, context.getString(R.string.genericError));
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
+		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
+	        }
         });
-
     }
 
     public static void unStarRepository(final Context context, RepositoryContext repository) {
@@ -83,51 +75,44 @@ public class RepositoryActions {
                 .getApiInterface(context)
                 .unStarRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 
-        call.enqueue(new Callback<JsonElement>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-                if(response.isSuccessful()) {
-                    if(response.code() == 204) {
+		        if(response.isSuccessful()) {
+			        if(response.code() == 204) {
 
-	                    MainActivity.repoCreated = true;
-                        Toasty.success(context, context.getString(R.string.unStarRepositorySuccess));
+				        MainActivity.repoCreated = true;
+				        Toasty.success(context, context.getString(R.string.unStarRepositorySuccess));
+			        }
+		        }
+		        else if(response.code() == 401) {
 
-                    }
-                }
-                else if(response.code() == 401) {
+			        AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
+				        context.getResources().getString(R.string.alertDialogTokenRevokedMessage), context.getResources().getString(R.string.cancelButton),
+				        context.getResources().getString(R.string.navLogout));
+		        }
+		        else if(response.code() == 403) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            context.getResources().getString(R.string.cancelButton),
-                            context.getResources().getString(R.string.navLogout));
+			        Toasty.error(context, context.getString(R.string.authorizeError));
+		        }
+		        else if(response.code() == 404) {
 
-                }
-                else if(response.code() == 403) {
+			        Toasty.warning(context, context.getString(R.string.apiNotFound));
+		        }
+		        else {
 
-                    Toasty.error(context, context.getString(R.string.authorizeError));
+			        Toasty.error(context, context.getString(R.string.genericError));
+		        }
+	        }
 
-                }
-                else if(response.code() == 404) {
+	        @Override
+	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
-                    Toasty.warning(context, context.getString(R.string.apiNotFound));
-
-                }
-                else {
-
-                    Toasty.error(context, context.getString(R.string.genericError));
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
+		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
+	        }
         });
-
     }
 
     public static void watchRepository(final Context context, RepositoryContext repository) {
@@ -138,50 +123,45 @@ public class RepositoryActions {
                 .getApiInterface(context)
                 .watchRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 
-        call.enqueue(new Callback<JsonElement>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-                if(response.isSuccessful()) {
-                    if(response.code() == 200) {
+		        if(response.isSuccessful()) {
+			        if(response.code() == 200) {
 
-                        Toasty.success(context, context.getString(R.string.watchRepositorySuccess));
+				        Toasty.success(context, context.getString(R.string.watchRepositorySuccess));
 
-                    }
-                }
-                else if(response.code() == 401) {
+			        }
+		        }
+		        else if(response.code() == 401) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            context.getResources().getString(R.string.cancelButton),
-                            context.getResources().getString(R.string.navLogout));
+			        AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
+				        context.getResources().getString(R.string.alertDialogTokenRevokedMessage), context.getResources().getString(R.string.cancelButton),
+				        context.getResources().getString(R.string.navLogout));
+		        }
+		        else if(response.code() == 403) {
 
-                }
-                else if(response.code() == 403) {
+			        Toasty.error(context, context.getString(R.string.authorizeError));
+		        }
+		        else if(response.code() == 404) {
 
-                    Toasty.error(context, context.getString(R.string.authorizeError));
+			        Toasty.warning(context, context.getString(R.string.apiNotFound));
+		        }
+		        else {
 
-                }
-                else if(response.code() == 404) {
+			        Toasty.error(context, context.getString(R.string.genericError));
+		        }
 
-                    Toasty.warning(context, context.getString(R.string.apiNotFound));
+	        }
 
-                }
-                else {
+	        @Override
+	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
-                    Toasty.error(context, context.getString(R.string.genericError));
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
+		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
+	        }
         });
-
     }
 
     public static void unWatchRepository(final Context context, RepositoryContext repository) {
@@ -192,48 +172,40 @@ public class RepositoryActions {
                 .getApiInterface(context)
                 .unWatchRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
 
-        call.enqueue(new Callback<JsonElement>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
 
-                if(response.code() == 204) {
+		        if(response.code() == 204) {
 
-                    Toasty.success(context, context.getString(R.string.unWatchRepositorySuccess));
+			        Toasty.success(context, context.getString(R.string.unWatchRepositorySuccess));
+		        }
+		        else if(response.code() == 401) {
 
-                }
-                else if(response.code() == 401) {
+			        AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
+				        context.getResources().getString(R.string.alertDialogTokenRevokedMessage), context.getResources().getString(R.string.cancelButton),
+				        context.getResources().getString(R.string.navLogout));
+		        }
+		        else if(response.code() == 403) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            context.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            context.getResources().getString(R.string.cancelButton),
-                            context.getResources().getString(R.string.navLogout));
+			        Toasty.error(context, context.getString(R.string.authorizeError));
+		        }
+		        else if(response.code() == 404) {
 
-                }
-                else if(response.code() == 403) {
+			        Toasty.warning(context, context.getString(R.string.apiNotFound));
+		        }
+		        else {
 
-                    Toasty.error(context, context.getString(R.string.authorizeError));
+			        Toasty.error(context, context.getString(R.string.genericError));
+		        }
+	        }
 
-                }
-                else if(response.code() == 404) {
+	        @Override
+	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
 
-                    Toasty.warning(context, context.getString(R.string.apiNotFound));
-
-                }
-                else {
-
-                    Toasty.error(context, context.getString(R.string.genericError));
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
+		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
+	        }
         });
-
     }
-
 }

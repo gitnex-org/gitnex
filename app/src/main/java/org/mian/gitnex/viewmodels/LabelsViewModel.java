@@ -52,7 +52,7 @@ public class LabelsViewModel extends ViewModel {
 	        @Override
 	        public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.errorOnLogin));
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }
