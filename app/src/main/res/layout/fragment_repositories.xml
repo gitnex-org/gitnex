@@ -17,6 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/primaryBackgroundColor"
+            android:paddingBottom="64dp"
+            android:clipToPadding="false"
             android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -50,7 +52,6 @@
         android:contentDescription="@string/pageTitleNewRepo"
         android:textColor="@color/colorWhite"
         android:backgroundTint="?attr/fabColor"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:iconTint="@color/colorWhite"
         app:icon="@drawable/ic_add" />
 

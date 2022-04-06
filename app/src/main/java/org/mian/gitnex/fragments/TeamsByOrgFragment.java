@@ -27,7 +27,7 @@ import org.mian.gitnex.databinding.FragmentTeamsByOrgBinding;
 import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class TeamsByOrgFragment extends Fragment {
@@ -37,7 +37,7 @@ public class TeamsByOrgFragment extends Fragment {
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private TextView noDataTeams;
-    private static String orgNameF = "param2";
+    private static final String orgNameF = "param2";
     private String orgName;
     private OrgPermissions permissions;
     private TeamsByOrgAdapter adapter;
@@ -133,11 +133,6 @@ public class TeamsByOrgFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        //searchView.setQueryHint(getContext().getString(R.string.strFilter));
-
-        /*if(!connToInternet) {
-            return;
-        }*/
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

@@ -1,20 +1,21 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.models.Labels;
+import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class LabelsViewModel extends ViewModel {
@@ -35,27 +36,24 @@ public class LabelsViewModel extends ViewModel {
                 .getApiInterface(ctx)
                 .getLabels(token, owner, repo);
 
-        call.enqueue(new Callback<List<Labels>>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Labels>> call, @NonNull Response<List<Labels>> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<List<Labels>> call, @NonNull Response<List<Labels>> response) {
 
-                if(response.isSuccessful()) {
-                    labelsList.postValue(response.body());
-                }
-                else {
-                    Log.i("onResponse", String.valueOf(response.code()));
-                }
+		        if(response.isSuccessful()) {
+			        labelsList.postValue(response.body());
+		        }
+		        else {
+			        Toasty.error(ctx, ctx.getString(R.string.genericError));
+		        }
+	        }
 
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<List<Labels>> call, @NonNull Throwable t) {
 
-            @Override
-            public void onFailure(@NonNull Call<List<Labels>> call, Throwable t) {
-                Log.i("onFailure", t.toString());
-            }
-
+		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+	        }
         });
-
     }
-
 }

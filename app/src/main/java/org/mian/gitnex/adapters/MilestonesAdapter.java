@@ -39,9 +39,8 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	private final Context context;
 	private List<Milestones> dataList;
-	private Runnable loadMoreListener;
-	private boolean isLoading = false;
-	private boolean isMoreDataAvailable = true;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final RepositoryContext repository;
 
 	public MilestonesAdapter(Context ctx, List<Milestones> dataListMain, RepositoryContext repository) {
@@ -63,7 +62,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
 
 			isLoading = true;
-			loadMoreListener.run();
+			loadMoreListener.onLoadMore();
 		}
 		((MilestonesAdapter.DataHolder) holder).bindData(dataList.get(position));
 	}
@@ -123,14 +122,14 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 					MilestoneActions.closeMilestone(ctx, milestoneId_, repository);
 					dialog.dismiss();
-					updateAdapter(getAdapterPosition());
+					updateAdapter(getBindingAdapterPosition());
 				});
 
 				openMilestone.setOnClickListener(v12 -> {
 
 					MilestoneActions.openMilestone(ctx, milestoneId_, repository);
 					dialog.dismiss();
-					updateAdapter(getAdapterPosition());
+					updateAdapter(getBindingAdapterPosition());
 				});
 
 			});
@@ -231,12 +230,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		}
 	}
 
-	private void updateAdapter(int position) {
-		dataList.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, dataList.size());
-	}
-
 	@Override
 	public int getItemViewType(int position) {
 		return position;
@@ -247,18 +240,32 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		return dataList.size();
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
+	private void updateAdapter(int position) {
+		dataList.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, dataList.size());
+	}
 
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
+		loadMoreListener.onLoadFinished();
 	}
 
-	public void setLoadMoreListener(Runnable loadMoreListener) {
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+		void onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
 		this.loadMoreListener = loadMoreListener;
 	}
 

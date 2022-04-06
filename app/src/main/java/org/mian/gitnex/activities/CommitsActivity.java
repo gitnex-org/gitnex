@@ -154,7 +154,7 @@ public class CommitsActivity extends BaseActivity {
 			@Override
 			public void onFailure(@NonNull Call<List<Commits>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, getResources().getString(R.string.errorOnLogin));
+				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
 			}
 
 		});
@@ -200,7 +200,7 @@ public class CommitsActivity extends BaseActivity {
 			@Override
 			public void onFailure(@NonNull Call<List<Commits>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, getResources().getString(R.string.errorOnLogin));
+				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
 			}
 
 		});
