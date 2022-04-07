@@ -405,7 +405,7 @@ public class AppUtil {
 	public static Uri getUriFromGitUrl(String url) {
 		Uri uri = Uri.parse(url);
 		String host = uri.getHost();
-		if(host != null) {
+		if(host != null && !host.contains(":")) {
 			return uri;
 		}
 		// must be a Git SSH URL now (old rcp standard)

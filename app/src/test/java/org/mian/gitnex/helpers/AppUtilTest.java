@@ -1,7 +1,7 @@
 package org.mian.gitnex.helpers;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author qwerty287
@@ -20,19 +20,19 @@ public class AppUtilTest {
 
 	@Test
 	public void checkStringsWithAlphaNumeric() {
-		assertEquals(AppUtil.checkStringsWithAlphaNumeric("string"), true);
-		assertEquals(AppUtil.checkStringsWithAlphaNumeric("123"), true);
-		assertEquals(AppUtil.checkStringsWithAlphaNumeric("123 with string"), false);
-		assertEquals(AppUtil.checkStringsWithAlphaNumeric("string 123"), false);
-		assertEquals(AppUtil.checkStringsWithAlphaNumeric("string-123"), false);
+		assertTrue(AppUtil.checkStringsWithAlphaNumeric("string"));
+		assertTrue(AppUtil.checkStringsWithAlphaNumeric("123"));
+		assertFalse(AppUtil.checkStringsWithAlphaNumeric("123 with string"));
+		assertFalse(AppUtil.checkStringsWithAlphaNumeric("string 123"));
+		assertFalse(AppUtil.checkStringsWithAlphaNumeric("string-123"));
 	}
 
 	@Test
 	public void checkIntegers() {
-		assertEquals(AppUtil.checkIntegers("string"), false);
-		assertEquals(AppUtil.checkIntegers("123"), true);
-		assertEquals(AppUtil.checkIntegers("123 with string"), false);
-		assertEquals(AppUtil.checkIntegers("string 123"), false);
+		assertFalse(AppUtil.checkIntegers("string"));
+		assertTrue(AppUtil.checkIntegers("123"));
+		assertFalse(AppUtil.checkIntegers("123 with string"));
+		assertFalse(AppUtil.checkIntegers("string 123"));
 	}
 
 	@Test

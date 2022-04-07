@@ -12,21 +12,21 @@ public class PathsHelperTest {
 	@Test
 	public void testJoin() {
 
-		assertEquals(PathsHelper.join("test", "/test", "test/", "/test/"), "/test/test/test/test/");
-		assertEquals(PathsHelper.join("test", "test", "test", "test"), "/test/test/test/test/");
-		assertEquals(PathsHelper.join("/test", "/test", "/test", "/test"), "/test/test/test/test/");
-		assertEquals(PathsHelper.join("/test/", "/test/", "test/", "/test/"), "/test/test/test/test/");
-		assertEquals(PathsHelper.join("test", "test", "/test", "/test"), "/test/test/test/test/");
-		assertEquals(PathsHelper.join("test/", "test", "/test", "/test"), "/test/test/test/test/");
+		assertEquals("/test/test/test/test/", PathsHelper.join("test", "/test", "test/", "/test/"));
+		assertEquals("/test/test/test/test/", PathsHelper.join("test", "test", "test", "test"));
+		assertEquals("/test/test/test/test/", PathsHelper.join("/test", "/test", "/test", "/test"));
+		assertEquals("/test/test/test/test/", PathsHelper.join("/test/", "/test/", "test/", "/test/"));
+		assertEquals("/test/test/test/test/", PathsHelper.join("test", "test", "/test", "/test"));
+		assertEquals("/test/test/test/test/", PathsHelper.join("test/", "test", "/test", "/test"));
 
-		assertEquals(PathsHelper.join("test/test/test/test"), "/test/test/test/test/");
-		assertEquals(PathsHelper.join("/test/test/test/test"), "/test/test/test/test/");
-		assertEquals(PathsHelper.join("test/test/test/test/"), "/test/test/test/test/");
+		assertEquals("/test/test/test/test/", PathsHelper.join("test/test/test/test"));
+		assertEquals("/test/test/test/test/", PathsHelper.join("/test/test/test/test"));
+		assertEquals("/test/test/test/test/", PathsHelper.join("test/test/test/test/"));
 
-		assertEquals(PathsHelper.join("test"), "/test/");
-		assertEquals(PathsHelper.join("test/"), "/test/");
-		assertEquals(PathsHelper.join("/test/"), "/test/");
-		assertEquals(PathsHelper.join("/test"), "/test/");
+		assertEquals("/test/", PathsHelper.join("test"));
+		assertEquals("/test/", PathsHelper.join("test/"));
+		assertEquals("/test/", PathsHelper.join("/test/"));
+		assertEquals("/test/", PathsHelper.join("/test"));
 
 	}
 
