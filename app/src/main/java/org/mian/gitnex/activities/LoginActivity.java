@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import org.gitnex.tea4j.ApiInterface;
 import org.gitnex.tea4j.models.GiteaVersion;
 import org.gitnex.tea4j.models.UserInfo;
 import org.gitnex.tea4j.models.UserTokens;
@@ -219,9 +220,15 @@ public class LoginActivity extends BaseActivity {
 
 			String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
-			callVersion =
-				(loginOTP != 0) ? RetrofitClient.getApiInterface(ctx).getGiteaVersionWithOTP(credential, loginOTP) :
-					RetrofitClient.getApiInterface(ctx).getGiteaVersionWithBasic(credential);
+			ApiInterface apiClient = RetrofitClient.getApiInterface(ctx);
+
+			if (loginOTP != 0) {
+
+				callVersion = apiClient.getGiteaVersionWithOTP(credential, loginOTP);
+			} else {
+
+				callVersion = apiClient.getGiteaVersionWithBasic(credential);
+			}
 		}
 
 		callVersion.enqueue(new Callback<GiteaVersion>() {
@@ -584,7 +591,7 @@ public class LoginActivity extends BaseActivity {
 			instanceUrlET.setText(tinyDB.getString("instanceUrlRaw"));
 		}
 
-		if(getAccount() != null) {
+		if(getAccount() != null && getAccount().getAccount() != null) {
 
 			loginUidET.setText(getAccount().getAccount().getUserName());
 		}

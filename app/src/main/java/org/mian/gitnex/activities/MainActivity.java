@@ -107,12 +107,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 		// DO NOT MOVE
 
-		instanceToken = getAccount().getAuthorization();
-		noConnection = false;
-
 		if(tinyDB.getInt("currentActiveAccountId", -1) <= 0) {
 			AppUtil.logout(ctx);
+			return;
 		}
+
+		instanceToken = getAccount().getAuthorization();
+		noConnection = false;
 
 		Toolbar toolbar = activityMainBinding.toolbar;
 		toolbarTitle = activityMainBinding.toolbarTitle;
