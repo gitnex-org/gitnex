@@ -32,6 +32,7 @@ public class MyIssuesFragment extends Fragment {
 	private int page = 1;
 	private Menu menu;
 	public String state = "open";
+	public boolean assignedToMe = false;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,40 +46,42 @@ public class MyIssuesFragment extends Fragment {
 			DividerItemDecoration.VERTICAL);
 		fragmentIssuesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-		((MainActivity) requireActivity()).setFragmentRefreshListenerMyIssues(myIssuesState -> {
+		((MainActivity) requireActivity()).setFragmentRefreshListenerMyIssues(myIssues -> {
 
-			state = myIssuesState;
-			if(myIssuesState.equals("open")) {
-				menu.getItem(1).setIcon(R.drawable.ic_filter);
-			}
-			else {
+			state = myIssues;
+			if(state.equals("closed")) {
 				menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
 			}
+			else {
+				menu.getItem(1).setIcon(R.drawable.ic_filter);
+			}
+
+			assignedToMe = state.equals("assignedToMe");
 
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			fetchDataAsync(null, myIssuesState);
+			fetchDataAsync(null, state, assignedToMe);
 		});
 
 		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			page = 1;
 			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
-			IssuesViewModel.loadIssuesList(null, "issues", true, state, getContext());
+			IssuesViewModel.loadIssuesList(null, "issues", true, state, assignedToMe, getContext());
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		fetchDataAsync(null, state);
+		fetchDataAsync(null, state, assignedToMe);
 
 		return fragmentIssuesBinding.getRoot();
 	};
 
-	private void fetchDataAsync(String query, String state) {
+	private void fetchDataAsync(String query, String state, boolean assignedToMe) {
 
 		IssuesViewModel issuesModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
-		issuesModel.getIssuesList(query, "issues", true, state, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
+		issuesModel.getIssuesList(query, "issues", true, state, assignedToMe, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
 
 			adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
 			adapter.setLoadMoreListener(new ExploreIssuesAdapter.OnLoadMoreListener() {
@@ -87,7 +90,7 @@ public class MyIssuesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					IssuesViewModel.loadMoreIssues(query, "issues", true, state, page, getContext(), adapter);
+					IssuesViewModel.loadMoreIssues(query, "issues", true, state, page, assignedToMe, getContext(), adapter);
 					fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -128,7 +131,7 @@ public class MyIssuesFragment extends Fragment {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				fetchDataAsync(query, state);
+				fetchDataAsync(query, state, assignedToMe);
 				searchView.setQuery(null, false);
 				searchItem.collapseActionView();
 				return false;

@@ -26,7 +26,7 @@ public class IssuesViewModel extends ViewModel {
 	private static MutableLiveData<List<Issue>> issuesList;
 	private static int resultLimit = Constants.resultLimitOldGiteaInstances;
 
-	public LiveData<List<Issue>> getIssuesList(String searchKeyword, String type, Boolean created, String state, Context ctx) {
+	public LiveData<List<Issue>> getIssuesList(String searchKeyword, String type, Boolean created, String state, Boolean assignedToMe, Context ctx) {
 
 		issuesList = new MutableLiveData<>();
 
@@ -35,17 +35,16 @@ public class IssuesViewModel extends ViewModel {
 			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
-		loadIssuesList(searchKeyword, type, created, state, ctx);
+		loadIssuesList(searchKeyword, type, created, state, assignedToMe, ctx);
 
 		return issuesList;
 	}
 
-	public static void loadIssuesList(String searchKeyword, String type, Boolean created, String state, Context ctx) {
+	public static void loadIssuesList(String searchKeyword, String type, Boolean created, String state, Boolean assignedToMe, Context ctx) {
 
-		Call<List<Issue>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null,
-				null, created, null, null, null, null, 1, resultLimit);
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx)
+				.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, 1,
+				resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -68,12 +67,10 @@ public class IssuesViewModel extends ViewModel {
 		});
 	}
 
-	public static void loadMoreIssues(String searchKeyword, String type, Boolean created, String state, int page, Context ctx, ExploreIssuesAdapter adapter) {
+	public static void loadMoreIssues(String searchKeyword, String type, Boolean created, String state, int page, Boolean assignedToMe, Context ctx, ExploreIssuesAdapter adapter) {
 
-		Call<List<Issue>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null,
-				null, created, null, null, null, null, page, resultLimit);
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx)
+				.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 

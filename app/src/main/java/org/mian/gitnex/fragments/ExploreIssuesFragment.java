@@ -57,7 +57,7 @@ public class ExploreIssuesFragment extends Fragment {
 
 		IssuesViewModel issuesModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
-		issuesModel.getIssuesList(searchKeyword, "issues", null, "open", getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
+		issuesModel.getIssuesList(searchKeyword, "issues", null, "open", null, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
 
 			adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
 			adapter.setLoadMoreListener(new ExploreIssuesAdapter.OnLoadMoreListener() {
@@ -66,7 +66,7 @@ public class ExploreIssuesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					IssuesViewModel.loadMoreIssues(searchKeyword, "issues", null, "open", page, getContext(), adapter);
+					IssuesViewModel.loadMoreIssues(searchKeyword, "issues", null, "open", page, null, getContext(), adapter);
 					viewBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

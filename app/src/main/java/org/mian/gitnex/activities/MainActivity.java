@@ -520,6 +520,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					getFragmentRefreshListener().onRefresh("closed");
 				}
 				break;
+			case "assignedToMe":
+				if(getFragmentRefreshListener() != null) {
+					getFragmentRefreshListener().onRefresh("assignedToMe");
+				}
+				break;
 		}
 
 	}
@@ -630,7 +635,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	private void giteaVersion() {
 
 		Call<ServerVersion> callVersion = RetrofitClient.getApiInterface(ctx).getVersion();
-		callVersion.enqueue(new Callback<ServerVersion>() {
+		callVersion.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull final Call<ServerVersion> callVersion, @NonNull retrofit2.Response<ServerVersion> responseVersion) {
@@ -645,7 +650,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			@Override
 			public void onFailure(@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
-				Log.e("onFailure-version", t.toString());
 			}
 		});
 	}
@@ -653,7 +657,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	private void loadUserInfo() {
 		Call<User> call = RetrofitClient.getApiInterface(ctx).userGetCurrent();
 
-		call.enqueue(new Callback<User>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
@@ -671,16 +675,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 						if(!getAccount().getAccount().getUserName().equals(userDetails.getLogin())) {
 							// user changed it's name -> update database
 							int accountId = getAccount().getAccount().getAccountId();
-							BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).updateUsername(accountId,
-								userDetails.getLogin());
+							BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).updateUsername(accountId, userDetails.getLogin());
 							getAccount().setAccount(BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).getAccountById(accountId));
 						}
-						if(profileInitListener != null) profileInitListener.onButtonClicked(null);
+						if(profileInitListener != null) {
+							profileInitListener.onButtonClicked(null);
+						}
 					}
 				}
 				else if(response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
+						getResources().getString(R.string.navLogout));
 				}
 				else {
 
@@ -691,8 +697,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			@Override
 			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
 			}
 		});
 
@@ -719,8 +723,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			@Override
 			public void onFailure(@NonNull Call<NotificationCount> call, @NonNull Throwable t) {
-
-				Log.e("onFailure-notification", t.toString());
 			}
 		});
 	}
@@ -730,7 +732,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		this.profileInitListener = profileInitListener;
 	}
 
-	// My issues-open-close interface
+	// My issues interface
 	public FragmentRefreshListener getFragmentRefreshListener() { return fragmentRefreshListenerMyIssues; }
 	public void setFragmentRefreshListenerMyIssues(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListenerMyIssues = fragmentRefreshListener; }
 }

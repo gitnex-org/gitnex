@@ -145,6 +145,7 @@
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
+    <string name="assignedToMe">Assigned to Me</string>
     <string name="commentButtonText">Comment</string>
     <string name="commentEmptyError">Please write your comment</string>
     <string name="commentSuccess">Comment posted</string>
