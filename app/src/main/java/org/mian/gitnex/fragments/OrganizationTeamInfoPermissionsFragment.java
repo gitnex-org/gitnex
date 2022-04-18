@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import org.gitnex.tea4j.models.Teams;
+import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoPermissionsBinding;
 import java.util.Collections;
@@ -18,11 +18,11 @@ import java.util.Collections;
 public class OrganizationTeamInfoPermissionsFragment extends Fragment {
 
 	private FragmentOrganizationTeamInfoPermissionsBinding binding;
-	private Teams team;
+	private Team team;
 
 	public OrganizationTeamInfoPermissionsFragment() {}
 
-	public static OrganizationTeamInfoPermissionsFragment newInstance(Teams team) {
+	public static OrganizationTeamInfoPermissionsFragment newInstance(Team team) {
 		OrganizationTeamInfoPermissionsFragment fragment = new OrganizationTeamInfoPermissionsFragment();
 
 		Bundle bundle = new Bundle();
@@ -36,12 +36,12 @@ public class OrganizationTeamInfoPermissionsFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentOrganizationTeamInfoPermissionsBinding.inflate(inflater, container, false);
 
-		team = (Teams) requireArguments().getSerializable("team");
+		team = (Team) requireArguments().getSerializable("team");
 
 		StringBuilder permissions = new StringBuilder();
 
 		// Future proofing in case of gitea becoming able to assign multiple permissions per team
-		for(String permission : Collections.singletonList(team.getPermission())) {
+		for(String permission : Collections.singletonList(team.getPermission().getValue())) {
 
 			switch(permission) {
 				case "none":

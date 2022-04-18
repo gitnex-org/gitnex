@@ -12,12 +12,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
-import org.gitnex.tea4j.models.Collaborators;
-import org.gitnex.tea4j.models.CreateIssue;
-import org.gitnex.tea4j.models.Labels;
-import org.gitnex.tea4j.models.Milestones;
+import org.gitnex.tea4j.v2.models.CreateIssueOption;
+import org.gitnex.tea4j.v2.models.Issue;
+import org.gitnex.tea4j.v2.models.Label;
+import org.gitnex.tea4j.v2.models.Milestone;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.AssigneesActions;
 import org.mian.gitnex.actions.LabelsActions;
@@ -35,13 +36,15 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class CreateIssueActivity extends BaseActivity implements View.OnClickListener, LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener {
@@ -56,6 +59,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private String labelsSetter;
 	private String assigneesSetter;
 	private int milestoneId;
+	private Date currentDate = null;
 
 	private RepositoryContext repository;
 
@@ -63,9 +67,9 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private AssigneesListAdapter assigneesAdapter;
 
 	private List<Integer> labelsIds = new ArrayList<>();
-	private List<Labels> labelsList = new ArrayList<>();
-	private List<Milestones> milestonesList = new ArrayList<>();
-	private List<Collaborators> assigneesList = new ArrayList<>();
+	private final List<Label> labelsList = new ArrayList<>();
+	private final LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
+	private final List<User> assigneesList = new ArrayList<>();
 	private List<String> assigneesListData = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
@@ -131,7 +135,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	        viewBinding.createNewIssueButton.setOnClickListener(this);
         }
 
-        if(!repository.getPermissions().canPush()) {
+        if(!repository.getPermissions().isPush()) {
         	viewBinding.newIssueAssigneesListLayout.setVisibility(View.GONE);
         	viewBinding.newIssueMilestoneSpinnerLayout.setVisibility(View.GONE);
         	viewBinding.newIssueLabelsLayout.setVisibility(View.GONE);
@@ -221,66 +225,65 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
             return;
         }
 
-        if (newIssueDueDateForm.equals("")) {
-
-            newIssueDueDateForm = null;
-        }
-        else {
-
-            newIssueDueDateForm = (AppUtil.customDateCombine(AppUtil.customDateFormat(newIssueDueDateForm)));
-        }
-
-        disableProcessButton();
-        createNewIssueFunc(repository.getOwner(), repository.getName(), getAccount().getAccount().getUserName(), newIssueDescriptionForm, newIssueDueDateForm, milestoneId, newIssueTitleForm);
+	    disableProcessButton();
+        createNewIssueFunc(repository.getOwner(), repository.getName(), newIssueDescriptionForm, milestoneId, newIssueTitleForm);
     }
 
-    private void createNewIssueFunc(String repoOwner, String repoName, String loginUid, String newIssueDescriptionForm, String newIssueDueDateForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
+    private void createNewIssueFunc(String repoOwner, String repoName, String newIssueDescriptionForm, int newIssueMilestoneIdForm, String newIssueTitleForm) {
 
-        CreateIssue createNewIssueJson = new CreateIssue(loginUid, newIssueDescriptionForm, false, newIssueDueDateForm, newIssueMilestoneIdForm, newIssueTitleForm, assigneesListData, labelsIds);
+		ArrayList<Long> labelIds = new ArrayList<>();
+	    for(Integer i : labelsIds) {
+		    labelIds.add((long) i);
+	    }
 
-        Call<JsonElement> call3;
+        CreateIssueOption createNewIssueJson = new CreateIssueOption();
+		createNewIssueJson.setBody(newIssueDescriptionForm);
+		createNewIssueJson.setMilestone((long) newIssueMilestoneIdForm);
+		createNewIssueJson.setDueDate(currentDate);
+		createNewIssueJson.setTitle(newIssueTitleForm);
+		createNewIssueJson.setAssignees(assigneesListData);
+		createNewIssueJson.setLabels(labelIds);
 
-        call3 = RetrofitClient
+        Call<Issue> call3 = RetrofitClient
                 .getApiInterface(ctx)
-                .createNewIssue(getAccount().getAuthorization(), repoOwner, repoName, createNewIssueJson);
+                .issueCreateIssue(repoOwner, repoName, createNewIssueJson);
 
-        call3.enqueue(new Callback<JsonElement>() {
+        call3.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response2) {
+	        @Override
+	        public void onResponse(@NonNull Call<Issue> call, @NonNull retrofit2.Response<Issue> response2) {
 
-				if(response2.code() == 201) {
+		        if(response2.code() == 201) {
 
-                    IssuesFragment.resumeIssues = true;
+			        IssuesFragment.resumeIssues = true;
 
-                    Toasty.success(ctx, getString(R.string.issueCreated));
-                    enableProcessButton();
-                    finish();
-                }
-                else if(response2.code() == 401) {
+			        Toasty.success(ctx, getString(R.string.issueCreated));
+			        enableProcessButton();
+			        RepoDetailActivity.updateRepo = true;
+			        MainActivity.repoCreated = true;
+			        finish();
+		        }
+		        else if(response2.code() == 401) {
 
-                    enableProcessButton();
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.cancelButton),
-                            getResources().getString(R.string.navLogout));
-                }
-                else {
+			        enableProcessButton();
+			        AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage),
+				        getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
+		        }
+		        else {
 
-                    Toasty.error(ctx, getString(R.string.genericError));
-                    enableProcessButton();
-                }
+			        Toasty.error(ctx, getString(R.string.genericError));
+			        enableProcessButton();
+		        }
 
-            }
+	        }
 
-            @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+	        @Override
+	        public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
-	            Toasty.error(ctx, getString(R.string.genericServerResponseError));
-                enableProcessButton();
-            }
+		        Toasty.error(ctx, getString(R.string.genericServerResponseError));
+		        enableProcessButton();
+	        }
         });
-
     }
 
     private void initCloseListener() {
@@ -291,62 +294,63 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
     private void getMilestones(String repoOwner, String repoName, int resultLimit) {
 
         String msState = "open";
-        Call<List<Milestones>> call = RetrofitClient
+        Call<List<Milestone>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getMilestones(getAccount().getAuthorization(), repoOwner, repoName, 1, resultLimit, msState);
+                .issueGetMilestonesList(repoOwner, repoName, msState, null, 1, resultLimit);
 
-        call.enqueue(new Callback<List<Milestones>>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull retrofit2.Response<List<Milestones>> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<List<Milestone>> call, @NonNull retrofit2.Response<List<Milestone>> response) {
 
-                if(response.isSuccessful()) {
+		        if(response.isSuccessful()) {
 
-                    if(response.code() == 200) {
+			        if(response.code() == 200) {
 
-                        List<Milestones> milestonesList_ = response.body();
+				        List<Milestone> milestonesList_ = response.body();
 
-                        milestonesList.add(new Milestones(0,getString(R.string.issueCreatedNoMilestone)));
-                        assert milestonesList_ != null;
+				        Milestone ms = new Milestone();
+				        ms.setId(0L);
+				        ms.setTitle(getString(R.string.issueCreatedNoMilestone));
+				        milestonesList.put(ms.getTitle(), ms);
+				        assert milestonesList_ != null;
 
-                        if(milestonesList_.size() > 0) {
+				        if(milestonesList_.size() > 0) {
 
-                            for (int i = 0; i < milestonesList_.size(); i++) {
+					        for(Milestone milestone : milestonesList_) {
 
-                                //Don't translate "open" is a enum
-                                if(milestonesList_.get(i).getState().equals("open")) {
-                                    Milestones data = new Milestones(
-                                            milestonesList_.get(i).getId(),
-                                            milestonesList_.get(i).getTitle()
-                                    );
-                                    milestonesList.add(data);
-                                }
-                            }
-                        }
+						        //Don't translate "open" is a enum
+						        if(milestone.getState().equals("open")) {
+							        milestonesList.put(milestone.getTitle(), milestone);
+						        }
+					        }
+				        }
 
-                        ArrayAdapter<Milestones> adapter = new ArrayAdapter<>(CreateIssueActivity.this,
-                                R.layout.list_spinner_items, milestonesList);
+				        ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateIssueActivity.this, R.layout.list_spinner_items, new ArrayList<>(milestonesList.keySet()));
 
-	                    viewBinding.newIssueMilestoneSpinner.setAdapter(adapter);
-                        enableProcessButton();
+				        viewBinding.newIssueMilestoneSpinner.setAdapter(adapter);
+				        enableProcessButton();
 
-	                    viewBinding.newIssueMilestoneSpinner.setOnItemClickListener ((parent, view, position, id) ->
+				        viewBinding.newIssueMilestoneSpinner.setOnItemClickListener((parent, view, position, id) -> {
+					        if(position == 0) {
+						        milestoneId = 0;
+					        }
+					        else if(view instanceof TextView) {
+						        milestoneId = Math.toIntExact(Objects.requireNonNull(milestonesList.get(((TextView) view).getText().toString())).getId());
+					        }
+				        });
 
-		                    milestoneId = milestonesList.get(position).getId()
-	                    );
+			        }
+		        }
 
-                    }
-                }
+	        }
 
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-            @Override
-            public void onFailure(@NonNull Call<List<Milestones>> call, @NonNull Throwable t) {
-
-	            Toasty.error(ctx, getString(R.string.genericServerResponseError));
-            }
+		        Toasty.error(ctx, getString(R.string.genericServerResponseError));
+	        }
         });
-
     }
 
     @Override
@@ -360,7 +364,10 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
             final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-	            (view, year, monthOfYear, dayOfMonth) -> viewBinding.newIssueDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth)), mYear, mMonth, mDay);
+	            (view, year, monthOfYear, dayOfMonth) -> {
+				viewBinding.newIssueDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
+				currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
+				}, mYear, mMonth, mDay);
             datePickerDialog.show();
         }
         else if(v == viewBinding.createNewIssueButton) {

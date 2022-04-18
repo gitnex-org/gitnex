@@ -9,8 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.gitnex.tea4j.models.NotificationThread;
-import org.mian.gitnex.activities.BaseActivity;
+import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.BottomSheetNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -56,8 +55,8 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 		markPinned.setOnClickListener(v12 ->
 			RetrofitClient.getApiInterface(context)
-				.markNotificationThreadAsRead(((BaseActivity) context).getAccount().getAuthorization(), notificationThread.getId(), "pinned")
-				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
+				.notifyReadThread(String.valueOf(notificationThread.getId()), "pinned")
+				.enqueue((SimpleCallback<NotificationThread>) (call, voidResponse) -> {
 
 					// reload without any checks, because Gitea returns a 205 and Java expects this to be empty
 					// but Gitea send a response -> results in a call of onFailure and no response is present
@@ -72,8 +71,8 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 		markRead.setOnClickListener(v1 ->
 			RetrofitClient.getApiInterface(context)
-				.markNotificationThreadAsRead(((BaseActivity) context).getAccount().getAuthorization(), notificationThread.getId(), "read")
-				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
+				.notifyReadThread(String.valueOf(notificationThread.getId()), "read")
+				.enqueue((SimpleCallback<NotificationThread>) (call, voidResponse) -> {
 
 					// reload without any checks, because Gitea returns a 205 and Java expects this to be empty
 					// but Gitea send a response -> results in a call of onFailure and no response is present
@@ -90,8 +89,8 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 		markUnread.setOnClickListener(v13 ->
 			RetrofitClient.getApiInterface(context)
-				.markNotificationThreadAsRead(((BaseActivity) context).getAccount().getAuthorization(), notificationThread.getId(), "unread")
-				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
+				.notifyReadThread(String.valueOf(notificationThread.getId()), "unread")
+				.enqueue((SimpleCallback<NotificationThread>) (call, voidResponse) -> {
 
 					// reload without any checks, because Gitea returns a 205 and Java expects this to be empty
 					// but Gitea send a response -> results in a call of onFailure and no response is present

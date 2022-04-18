@@ -59,18 +59,18 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 
 			page = 1;
 			activityAdminGetUsersBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(getAccount().getAuthorization());
+			fetchDataAsync();
 			activityAdminGetUsersBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		fetchDataAsync(getAccount().getAuthorization());
+		fetchDataAsync();
 	};
 
-	private void fetchDataAsync(String instanceToken) {
+	private void fetchDataAsync() {
 
 		AdminGetUsersViewModel adminUsersModel = new ViewModelProvider(this).get(AdminGetUsersViewModel.class);
 
-		adminUsersModel.getUsersList(instanceToken, page, resultLimit, ctx).observe(this, adminUsersListMain -> {
+		adminUsersModel.getUsersList(page, resultLimit, ctx).observe(this, adminUsersListMain -> {
 
 			adapter = new AdminGetUsersAdapter(adminUsersListMain, ctx);
 			adapter.setLoadMoreListener(new AdminGetUsersAdapter.OnLoadMoreListener() {
@@ -79,7 +79,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 				public void onLoadMore() {
 
 					page += 1;
-					AdminGetUsersViewModel.loadMoreUsersList(instanceToken, page, resultLimit, ctx, adapter);
+					AdminGetUsersViewModel.loadMoreUsersList(page, resultLimit, ctx, adapter);
 					activityAdminGetUsersBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

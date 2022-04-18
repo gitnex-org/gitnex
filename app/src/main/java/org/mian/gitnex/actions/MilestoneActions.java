@@ -2,10 +2,9 @@ package org.mian.gitnex.actions;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
-import org.gitnex.tea4j.models.Milestones;
+import org.gitnex.tea4j.v2.models.EditMilestoneOption;
+import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
@@ -14,84 +13,64 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * Author M M Arif
  */
 
 public class MilestoneActions {
 
+	static final private String TAG = "MilestoneActions : ";
+
 	public static void closeMilestone(final Context ctx, int milestoneId_, RepositoryContext repository) {
-
-		Milestones milestoneStateJson = new Milestones("closed");
-		Call<JsonElement> call;
-
-		call = RetrofitClient
-				.getApiInterface(ctx)
-				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), milestoneId_, milestoneStateJson);
-
-		call.enqueue(new Callback<>() {
-
-			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
-
-				if(response.isSuccessful()) {
-
-					Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
-				}
-				else if(response.code() == 401) {
-
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-						ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.cancelButton),
-						ctx.getResources().getString(R.string.navLogout));
-				}
-				else {
-
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+		updateMilestoneState(ctx, milestoneId_, repository, "closed");
 	}
 
 	public static void openMilestone(final Context ctx, int milestoneId_, RepositoryContext repository) {
+		updateMilestoneState(ctx, milestoneId_, repository, "open");
+	}
 
-		Milestones milestoneStateJson = new Milestones("open");
-		Call<JsonElement> call;
+	private static void updateMilestoneState(final Context ctx, int milestoneId_, RepositoryContext repository, String state) {
 
-		call = RetrofitClient
-				.getApiInterface(ctx)
-				.closeReopenMilestone(((BaseActivity) ctx).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), milestoneId_, milestoneStateJson);
+		EditMilestoneOption milestoneStateJson = new EditMilestoneOption();
+		milestoneStateJson.setState(state);
+		Call<Milestone> call = RetrofitClient
+			.getApiInterface(ctx)
+			.issueEditMilestone(repository.getOwner(), repository.getName(), String.valueOf(milestoneId_), milestoneStateJson);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<Milestone> call, @NonNull retrofit2.Response<Milestone> response) {
 
 				if(response.isSuccessful()) {
 
 					Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
+
 				}
 				else if(response.code() == 401) {
 
 					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
 						ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.cancelButton),
 						ctx.getResources().getString(R.string.navLogout));
+
 				}
 				else {
 
 					Toasty.error(ctx, ctx.getString(R.string.genericError));
+
 				}
+
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+				Toasty.error(ctx, ctx.getString(R.string.genericError));
+
 			}
+
 		});
+
+
 	}
+
 }

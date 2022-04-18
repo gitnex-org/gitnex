@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.Milestones;
+import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.MilestonesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -22,25 +22,25 @@ import retrofit2.Response;
 
 public class MilestonesViewModel extends ViewModel {
 
-	private static MutableLiveData<List<Milestones>> milestonesList;
+	private static MutableLiveData<List<Milestone>> milestonesList;
 	private static final int resultLimit = Constants.resultLimitNewGiteaInstances;
 
-	public LiveData<List<Milestones>> getMilestonesList(String token, String repoOwner, String repoName, String milestoneState, Context ctx) {
+	public LiveData<List<Milestone>> getMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
 
 		milestonesList = new MutableLiveData<>();
-		loadMilestonesList(token, repoOwner, repoName, milestoneState, ctx);
+		loadMilestonesList(repoOwner, repoName, milestoneState, ctx);
 
 		return milestonesList;
 	}
 
-	public static void loadMilestonesList(String token, String repoOwner, String repoName, String milestoneState, Context ctx) {
+	public static void loadMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
 
-		Call<List<Milestones>> call = RetrofitClient.getApiInterface(ctx).getMilestones(token, repoOwner, repoName, 1, resultLimit, milestoneState);
+		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, milestoneState, null, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull Response<List<Milestones>> response) {
+			public void onResponse(@NonNull Call<List<Milestone>> call, @NonNull Response<List<Milestone>> response) {
 
 				if(response.isSuccessful()) {
 					milestonesList.postValue(response.body());
@@ -51,25 +51,25 @@ public class MilestonesViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Milestones>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}
 
-	public static void loadMoreMilestones(String token, String repoOwner, String repoName, int page, String milestoneState, Context ctx, MilestonesAdapter adapter) {
+	public static void loadMoreMilestones(String repoOwner, String repoName, int page, String milestoneState, Context ctx, MilestonesAdapter adapter) {
 
-		Call<List<Milestones>> call = RetrofitClient.getApiInterface(ctx).getMilestones(token, repoOwner, repoName, page, resultLimit, milestoneState);
+		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, milestoneState, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<Milestones>> call, @NonNull Response<List<Milestones>> response) {
+			public void onResponse(@NonNull Call<List<Milestone>> call, @NonNull Response<List<Milestone>> response) {
 
 				if(response.isSuccessful()) {
 
-					List<Milestones> list = milestonesList.getValue();
+					List<Milestone> list = milestonesList.getValue();
 					assert list != null;
 					assert response.body() != null;
 
@@ -87,7 +87,7 @@ public class MilestonesViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Milestones>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}

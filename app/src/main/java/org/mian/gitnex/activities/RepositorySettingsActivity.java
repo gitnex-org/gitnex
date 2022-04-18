@@ -9,9 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
-import org.gitnex.tea4j.models.RepositoryTransfer;
-import org.gitnex.tea4j.models.UserRepositories;
+import org.gitnex.tea4j.v2.models.EditRepoOption;
+import org.gitnex.tea4j.v2.models.InternalTracker;
+import org.gitnex.tea4j.v2.models.Repository;
+import org.gitnex.tea4j.v2.models.TransferRepoOption;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -111,16 +112,17 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void transferRepository(String newOwner) {
 
-		RepositoryTransfer repositoryTransfer = new RepositoryTransfer(newOwner);
+		TransferRepoOption repositoryTransfer = new TransferRepoOption();
+		repositoryTransfer.setNewOwner(newOwner);
 
-		Call<JsonElement> transferCall = RetrofitClient
+		Call<Repository> transferCall = RetrofitClient
 			.getApiInterface(ctx)
-			.transferRepository(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), repositoryTransfer);
+			.repoTransfer(repositoryTransfer, repository.getOwner(), repository.getName());
 
-		transferCall.enqueue(new Callback<JsonElement>() {
+		transferCall.enqueue(new Callback<Repository>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
 
 				transferRepoBinding.transfer.setVisibility(View.GONE);
 				transferRepoBinding.processingRequest.setVisibility(View.VISIBLE);
@@ -151,7 +153,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
 				transferRepoBinding.transfer.setVisibility(View.VISIBLE);
 				transferRepoBinding.processingRequest.setVisibility(View.GONE);
@@ -194,14 +196,14 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void deleteRepository() {
 
-		Call<JsonElement> deleteCall = RetrofitClient
+		Call<Void> deleteCall = RetrofitClient
 			.getApiInterface(ctx)
-			.deleteRepository(getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+			.repoDelete(repository.getOwner(), repository.getName());
 
-		deleteCall.enqueue(new Callback<JsonElement>() {
+		deleteCall.enqueue(new Callback<Void>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 				deleteRepoBinding.delete.setVisibility(View.GONE);
 				deleteRepoBinding.processingRequest.setVisibility(View.VISIBLE);
@@ -226,7 +228,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 				deleteRepoBinding.delete.setVisibility(View.VISIBLE);
 				deleteRepoBinding.processingRequest.setVisibility(View.GONE);
@@ -250,7 +252,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		dialogProp.setContentView(view);
 
 		propBinding.cancel.setOnClickListener(editProperties -> dialogProp.dismiss());
-		UserRepositories repoInfo = repository.getRepository();
+		Repository repoInfo = repository.getRepository();
 
 		propBinding.progressBar.setVisibility(View.GONE);
 		propBinding.mainView.setVisibility(View.VISIBLE);
@@ -260,10 +262,10 @@ public class RepositorySettingsActivity extends BaseActivity {
 		propBinding.repoName.setText(repoInfo.getName());
 		propBinding.repoWebsite.setText(repoInfo.getWebsite());
 		propBinding.repoDescription.setText(repoInfo.getDescription());
-		propBinding.repoPrivate.setChecked(repoInfo.getPrivateFlag());
+		propBinding.repoPrivate.setChecked(repoInfo.isPrivate());
 		propBinding.repoAsTemplate.setChecked(repoInfo.isTemplate());
 
-		propBinding.repoEnableIssues.setChecked(repoInfo.getHas_issues());
+		propBinding.repoEnableIssues.setChecked(repoInfo.isHasIssues());
 
 		propBinding.repoEnableIssues.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
@@ -275,21 +277,21 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 		});
 
-		if(repoInfo.getInternal_tracker() != null) {
+		if(repoInfo.getInternalTracker() != null) {
 
-			propBinding.repoEnableTimer.setChecked(repoInfo.getInternal_tracker().isEnable_time_tracker());
+			propBinding.repoEnableTimer.setChecked(repoInfo.getInternalTracker().isEnableTimeTracker());
 		}
 		else {
 
 			propBinding.repoEnableTimer.setVisibility(View.GONE);
 		}
 
-		propBinding.repoEnableWiki.setChecked(repoInfo.isHas_wiki());
-		propBinding.repoEnablePr.setChecked(repoInfo.isHas_pull_requests());
-		propBinding.repoEnableMerge.setChecked(repoInfo.isAllow_merge_commits());
-		propBinding.repoEnableRebase.setChecked(repoInfo.isAllow_rebase());
-		propBinding.repoEnableSquash.setChecked(repoInfo.isAllow_squash_merge());
-		propBinding.repoEnableForceMerge.setChecked(repoInfo.isAllow_rebase_explicit());
+		propBinding.repoEnableWiki.setChecked(repoInfo.isHasWiki());
+		propBinding.repoEnablePr.setChecked(repoInfo.isHasPullRequests());
+		propBinding.repoEnableMerge.setChecked(repoInfo.isAllowMergeCommits());
+		propBinding.repoEnableRebase.setChecked(repoInfo.isAllowRebase());
+		propBinding.repoEnableSquash.setChecked(repoInfo.isAllowSquashMerge());
+		propBinding.repoEnableForceMerge.setChecked(repoInfo.isAllowRebaseExplicit());
 
 		propBinding.save.setOnClickListener(saveProperties -> saveRepositoryProperties(String.valueOf(propBinding.repoName.getText()),
 			String.valueOf(propBinding.repoWebsite.getText()),
@@ -309,29 +311,29 @@ public class RepositorySettingsActivity extends BaseActivity {
 		boolean repoEnablePr, boolean repoEnableTimer, boolean repoEnableMerge, boolean repoEnableRebase,
 		boolean repoEnableSquash, boolean repoEnableForceMerge) {
 
-		UserRepositories.internalTimeTrackerObject repoPropsTimeTracker = new UserRepositories.internalTimeTrackerObject(repoEnableTimer);
+		EditRepoOption repoProps = new EditRepoOption();
+		repoProps.setName(repoName);
+		repoProps.setWebsite(repoWebsite);
+		repoProps.setDescription(repoDescription);
+		repoProps.setPrivate(repoPrivate);
+		repoProps.setTemplate(repoAsTemplate);
+		repoProps.setHasIssues(repoEnableIssues);
+		repoProps.setHasWiki(repoEnableWiki);
+		repoProps.setHasPullRequests(repoEnablePr);
+		repoProps.setInternalTracker(new InternalTracker().enableTimeTracker(repoEnableTimer));
+		repoProps.setAllowMergeCommits(repoEnableMerge);
+		repoProps.setAllowRebase(repoEnableRebase);
+		repoProps.setAllowSquashMerge(repoEnableSquash);
+		repoProps.setAllowRebaseExplicit(repoEnableForceMerge);
 
-		UserRepositories repoProps;
-
-		if(!repoEnableIssues) {
-
-			repoProps = new UserRepositories(repoName, repoWebsite, repoDescription, repoPrivate, repoAsTemplate, repoEnableIssues, repoEnableWiki, repoEnablePr, repoEnableMerge,
-				repoEnableRebase, repoEnableSquash, repoEnableForceMerge);
-		}
-		else {
-
-			repoProps = new UserRepositories(repoName, repoWebsite, repoDescription, repoPrivate, repoAsTemplate, repoEnableIssues, repoEnableWiki, repoEnablePr, repoPropsTimeTracker, repoEnableMerge,
-				repoEnableRebase, repoEnableSquash, repoEnableForceMerge);
-		}
-
-		Call<UserRepositories> propsCall = RetrofitClient
+		Call<Repository> propsCall = RetrofitClient
 			.getApiInterface(ctx)
-			.updateRepositoryProperties(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), repoProps);
+			.repoEdit(repository.getOwner(), repository.getName(), repoProps);
 
-		propsCall.enqueue(new Callback<UserRepositories>() {
+		propsCall.enqueue(new Callback<Repository>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
+			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
 
 				propBinding.save.setVisibility(View.GONE);
 				propBinding.processingRequest.setVisibility(View.VISIBLE);
@@ -360,7 +362,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
 				propBinding.save.setVisibility(View.VISIBLE);
 				propBinding.processingRequest.setVisibility(View.GONE);

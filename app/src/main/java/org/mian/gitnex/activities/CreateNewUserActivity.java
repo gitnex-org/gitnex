@@ -10,7 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.CreateUserOption;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateNewUserBinding;
@@ -109,23 +110,26 @@ public class CreateNewUserActivity extends BaseActivity {
         }
 
         disableProcessButton();
-        createNewUser(getAccount().getAuthorization(), newFullName, newUserName, newUserEmail, newUserPassword);
+        createNewUser(newFullName, newUserName, newUserEmail, newUserPassword);
     }
 
-    private void createNewUser(final String instanceToken, String newFullName, String newUserName, String newUserEmail, String newUserPassword) {
+    private void createNewUser(String newFullName, String newUserName, String newUserEmail, String newUserPassword) {
 
-        UserInfo createUser = new UserInfo(newUserEmail, newFullName, newUserName, newUserPassword, newUserName, 0, true);
+        CreateUserOption createUser = new CreateUserOption();
+		createUser.setEmail(newUserEmail);
+		createUser.setFullName(newFullName);
+		createUser.setUsername(newUserName);
+		createUser.setPassword(newUserPassword);
+		createUser.setMustChangePassword(true);
 
-        Call<UserInfo> call;
-
-        call = RetrofitClient
+        Call<User> call = RetrofitClient
                 .getApiInterface(ctx)
-                .createNewUser(instanceToken, createUser);
+                .adminCreateUser(createUser);
 
-        call.enqueue(new Callback<UserInfo>() {
+        call.enqueue(new Callback<User>() {
 
             @Override
-            public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
                 if(response.code() == 201) {
 
@@ -164,7 +168,7 @@ public class CreateNewUserActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
                 enableProcessButton();

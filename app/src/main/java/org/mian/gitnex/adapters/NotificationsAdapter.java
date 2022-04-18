@@ -15,7 +15,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
-import org.gitnex.tea4j.models.NotificationThread;
+import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppUtil;
 import java.util.List;

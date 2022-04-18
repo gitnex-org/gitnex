@@ -5,7 +5,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mian.gitnex.activities.MainActivity;
-import static org.junit.Assert.*;
 
 /**
  * @author qwerty287

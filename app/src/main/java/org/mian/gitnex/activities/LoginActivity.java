@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -11,10 +10,10 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import org.gitnex.tea4j.ApiInterface;
-import org.gitnex.tea4j.models.GiteaVersion;
-import org.gitnex.tea4j.models.UserInfo;
-import org.gitnex.tea4j.models.UserTokens;
+import org.gitnex.tea4j.v2.models.AccessToken;
+import org.gitnex.tea4j.v2.models.CreateAccessTokenOption;
+import org.gitnex.tea4j.v2.models.ServerVersion;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -38,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class LoginActivity extends BaseActivity {
@@ -201,7 +200,6 @@ public class LoginActivity extends BaseActivity {
 		}
 		catch(Exception e) {
 
-			Log.e("onFailure-login", e.toString());
 			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
 			enableProcessButton();
 		}
@@ -210,35 +208,33 @@ public class LoginActivity extends BaseActivity {
 	private void versionCheck(final String loginUid, final String loginPass, final int loginOTP, final String loginToken,
 		final LoginType loginType) {
 
-		Call<GiteaVersion> callVersion;
+		Call<ServerVersion> callVersion;
 
 		if(!loginToken.equals("")) {
 
-			callVersion = RetrofitClient.getApiInterface(ctx).getGiteaVersionWithToken("token " + loginToken);
+			callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken).getVersion();
 		}
 		else {
 
 			String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
-			ApiInterface apiClient = RetrofitClient.getApiInterface(ctx);
-
 			if (loginOTP != 0) {
 
-				callVersion = apiClient.getGiteaVersionWithOTP(credential, loginOTP);
+				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).getVersion(loginOTP);
 			} else {
 
-				callVersion = apiClient.getGiteaVersionWithBasic(credential);
+				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).getVersion();
 			}
 		}
 
-		callVersion.enqueue(new Callback<GiteaVersion>() {
+		callVersion.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull final Call<GiteaVersion> callVersion, @NonNull retrofit2.Response<GiteaVersion> responseVersion) {
+			public void onResponse(@NonNull final Call<ServerVersion> callVersion, @NonNull retrofit2.Response<ServerVersion> responseVersion) {
 
 				if(responseVersion.code() == 200) {
 
-					GiteaVersion version = responseVersion.body();
+					ServerVersion version = responseVersion.body();
 					assert version != null;
 
 					if(!Version.valid(version.getVersion())) {
@@ -252,10 +248,8 @@ public class LoginActivity extends BaseActivity {
 
 					if(giteaVersion.less(getString(R.string.versionLow))) {
 
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx)
-							.setTitle(getString(R.string.versionAlertDialogHeader))
-							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
-							.setIcon(R.drawable.ic_warning)
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
+							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setIcon(R.drawable.ic_warning)
 							.setCancelable(true);
 
 						alertDialogBuilder.setNeutralButton(getString(R.string.cancelButton), (dialog, which) -> {
@@ -307,7 +301,7 @@ public class LoginActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
 				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
 				enableProcessButton();
@@ -317,14 +311,14 @@ public class LoginActivity extends BaseActivity {
 
 	private void setupUsingExistingToken(final String loginToken) {
 
-		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx).getUserInfo("token " + loginToken);
+		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken).userGetCurrent();
 
-		call.enqueue(new Callback<UserInfo>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
-				UserInfo userDetails = response.body();
+				User userDetails = response.body();
 
 				switch(response.code()) {
 
@@ -333,13 +327,13 @@ public class LoginActivity extends BaseActivity {
 						assert userDetails != null;
 
 						// insert new account to db if does not exist
-						String accountName = userDetails.getUsername() + "@" + instanceUrl;
+						String accountName = userDetails.getLogin() + "@" + instanceUrl;
 						UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
 						assert userAccountsApi != null;
 						boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
 						UserAccount account;
 						if(!userAccountExists) {
-							long accountId = userAccountsApi.createNewAccount(accountName, instanceUrl.toString(), userDetails.getUsername(), loginToken, giteaVersion.toString());
+							long accountId = userAccountsApi.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), loginToken, giteaVersion.toString());
 							account = userAccountsApi.getAccountById((int) accountId);
 						}
 						else {
@@ -367,10 +361,9 @@ public class LoginActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-				Log.e("onFailure", t.toString());
-				Toasty.error(ctx, getResources().getString(R.string.genericError));
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 				enableProcessButton();
 			}
 		});
@@ -382,49 +375,49 @@ public class LoginActivity extends BaseActivity {
 		final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 		final String tokenName = "gitnex-app-" + device_id;
 
-		Call<List<UserTokens>> call;
+		Call<List<AccessToken>> call;
 		if(loginOTP != 0) {
 
-			call = RetrofitClient.getApiInterface(ctx).getUserTokensWithOTP(credential, loginOTP, loginUid);
+			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).userGetTokens(loginOTP, loginUid, null, null);
 		}
 		else {
 
-			call = RetrofitClient.getApiInterface(ctx).getUserTokens(credential, loginUid);
+			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).userGetTokens(loginUid, null, null);
 		}
 
-		call.enqueue(new Callback<List<UserTokens>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserTokens>> call, @NonNull retrofit2.Response<List<UserTokens>> response) {
+			public void onResponse(@NonNull Call<List<AccessToken>> call, @NonNull retrofit2.Response<List<AccessToken>> response) {
 
-				List<UserTokens> userTokens = response.body();
+				List<AccessToken> userTokens = response.body();
 
 				if(response.code() == 200) {
 
 					assert userTokens != null;
 
-					for(UserTokens t : userTokens) {
+					for(AccessToken t : userTokens) {
 
 						if(t.getName().equals(tokenName)) {
 
 							// this app had created an token on this instance before
 							// -> since it looks like GitNex forgot the secret we have to delete it first
 
-							Call<Void> delcall;
+							Call<Void> delToken;
 							if(loginOTP != 0) {
 
-								delcall = RetrofitClient.getApiInterface(ctx)
-									.deleteTokenWithOTP(credential, loginOTP, loginUid, t.getId());
+								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential)
+									.userDeleteAccessToken(loginOTP, loginUid, String.valueOf(t.getId()));
 							}
 							else {
 
-								delcall = RetrofitClient.getApiInterface(ctx).deleteToken(credential, loginUid, t.getId());
+								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).userDeleteAccessToken(loginUid, String.valueOf(t.getId()));
 							}
 
-							delcall.enqueue(new Callback<Void>() {
+							delToken.enqueue(new Callback<>() {
 
 								@Override
-								public void onResponse(@NonNull Call<Void> delcall, @NonNull retrofit2.Response<Void> response) {
+								public void onResponse(@NonNull Call<Void> delToken, @NonNull retrofit2.Response<Void> response) {
 
 									if(response.code() == 204) {
 
@@ -438,9 +431,8 @@ public class LoginActivity extends BaseActivity {
 								}
 
 								@Override
-								public void onFailure(@NonNull Call<Void> delcall, @NonNull Throwable t) {
+								public void onFailure(@NonNull Call<Void> delToken, @NonNull Throwable t) {
 
-									Log.e("onFailure-login", t.toString());
 									Toasty.error(ctx, getResources().getString(R.string.malformedJson));
 									enableProcessButton();
 								}
@@ -459,9 +451,8 @@ public class LoginActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserTokens>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<AccessToken>> call, @NonNull Throwable t) {
 
-				Log.e("onFailure-login", t.toString());
 				Toasty.error(ctx, getResources().getString(R.string.malformedJson));
 				enableProcessButton();
 			}
@@ -473,41 +464,40 @@ public class LoginActivity extends BaseActivity {
 
 		final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
-		UserTokens createUserToken = new UserTokens(tokenName);
-		Call<UserTokens> callCreateToken;
+		CreateAccessTokenOption createUserToken = new CreateAccessTokenOption().name(tokenName);
+		Call<AccessToken> callCreateToken;
 
 		if(loginOTP != 0) {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx)
-				.createNewTokenWithOTP(credential, loginOTP, loginUid, createUserToken);
+			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential)
+				.userCreateToken(loginOTP, loginUid, createUserToken);
 		}
 		else {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx)
-				.createNewToken(credential, loginUid, createUserToken);
+			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential)
+				.userCreateToken(loginUid, createUserToken);
 		}
 
-		callCreateToken.enqueue(new Callback<UserTokens>() {
+		callCreateToken.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserTokens> callCreateToken, @NonNull retrofit2.Response<UserTokens> responseCreate) {
+			public void onResponse(@NonNull Call<AccessToken> callCreateToken, @NonNull retrofit2.Response<AccessToken> responseCreate) {
 
 				if(responseCreate.code() == 201) {
 
-					UserTokens newToken = responseCreate.body();
+					AccessToken newToken = responseCreate.body();
 					assert newToken != null;
 
 					if(!newToken.getSha1().equals("")) {
 
-						Call<UserInfo> call = RetrofitClient.getApiInterface(ctx)
-							.getUserInfo("token " + newToken.getSha1());
+						Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + newToken.getSha1()).userGetCurrent();
 
-						call.enqueue(new Callback<UserInfo>() {
+						call.enqueue(new Callback<>() {
 
 							@Override
-							public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+							public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
-								UserInfo userDetails = response.body();
+								User userDetails = response.body();
 
 								switch(response.code()) {
 
@@ -516,7 +506,7 @@ public class LoginActivity extends BaseActivity {
 										assert userDetails != null;
 
 										// insert new account to db if does not exist
-										String accountName = userDetails.getUsername() + "@" + instanceUrl;
+										String accountName = userDetails.getLogin() + "@" + instanceUrl;
 										UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
 										assert userAccountsApi != null;
 										boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
@@ -524,7 +514,8 @@ public class LoginActivity extends BaseActivity {
 										UserAccount account;
 										if(!userAccountExists) {
 											long accountId = userAccountsApi
-												.createNewAccount(accountName, instanceUrl.toString(), userDetails.getUsername(), newToken.getSha1(), giteaVersion.toString());
+												.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), newToken.getSha1(),
+													giteaVersion.toString());
 											account = userAccountsApi.getAccountById((int) accountId);
 										}
 										else {
@@ -550,9 +541,8 @@ public class LoginActivity extends BaseActivity {
 							}
 
 							@Override
-							public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+							public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-								Log.e("onFailure", t.toString());
 								Toasty.error(ctx, getResources().getString(R.string.genericError));
 								enableProcessButton();
 							}
@@ -567,9 +557,9 @@ public class LoginActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserTokens> createUserToken, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<AccessToken> createUserToken, @NonNull Throwable t) {
 
-				Log.e("onFailure-token", t.toString());
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}

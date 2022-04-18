@@ -50,14 +50,14 @@ public class RepoWatchersActivity extends BaseActivity {
 
         toolbarTitle.setText(R.string.repoWatchersInMenu);
 
-        fetchDataAsync(getAccount().getAuthorization(), repoOwner, repoName);
+        fetchDataAsync(repoOwner, repoName);
     }
 
-    private void fetchDataAsync(String instanceToken, String repoOwner, String repoName) {
+    private void fetchDataAsync(String repoOwner, String repoName) {
 
         RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
-        repoWatchersModel.getRepoWatchers(instanceToken, repoOwner, repoName, ctx).observe(this, watchersListMain -> {
+        repoWatchersModel.getRepoWatchers(repoOwner, repoName, ctx).observe(this, watchersListMain -> {
 
             adapter = new UserGridAdapter(ctx, watchersListMain);
 

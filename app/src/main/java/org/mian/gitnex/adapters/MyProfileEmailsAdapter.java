@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
-import org.gitnex.tea4j.models.Emails;
+import org.gitnex.tea4j.v2.models.Email;
 import org.mian.gitnex.R;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class MyProfileEmailsAdapter extends RecyclerView.Adapter<MyProfileEmailsAdapter.EmailsViewHolder> {
 
-    private final List<Emails> emailsList;
+    private final List<Email> emailsList;
     private final Context context;
 
     static class EmailsViewHolder extends RecyclerView.ViewHolder {
@@ -37,7 +37,7 @@ public class MyProfileEmailsAdapter extends RecyclerView.Adapter<MyProfileEmails
         }
     }
 
-    public MyProfileEmailsAdapter(Context ctx, List<Emails> emailsListMain) {
+    public MyProfileEmailsAdapter(Context ctx, List<Email> emailsListMain) {
         this.context = ctx;
         this.emailsList = emailsListMain;
     }
@@ -52,11 +52,11 @@ public class MyProfileEmailsAdapter extends RecyclerView.Adapter<MyProfileEmails
     @Override
     public void onBindViewHolder(@NonNull MyProfileEmailsAdapter.EmailsViewHolder holder, int position) {
 
-        Emails currentItem = emailsList.get(position);
+        Email currentItem = emailsList.get(position);
 
         holder.userEmail.setText(currentItem.getEmail());
 
-        if(currentItem.getPrimary()) {
+        if(currentItem.isPrimary()) {
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
                     .textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null))

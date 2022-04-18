@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.MergePullRequest;
-import org.gitnex.tea4j.models.MergePullRequestSpinner;
+import org.gitnex.tea4j.v2.models.MergePullRequestOption;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -18,6 +16,7 @@ import org.mian.gitnex.databinding.ActivityMergePullRequestBinding;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.MergePullRequestSpinner;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.util.ArrayList;
@@ -26,17 +25,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MergePullRequestActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
-
 	private IssueContext issue;
-
 	private ActivityMergePullRequestBinding viewBinding;
-
 	private String Do;
 
 	@SuppressLint("SetTextI18n")
@@ -107,7 +103,6 @@ public class MergePullRequestActivity extends BaseActivity {
 			viewBinding.deleteBranch.setVisibility(View.GONE);
 			viewBinding.deleteBranchForkInfo.setVisibility(View.GONE);
 		}
-
 	}
 
 	private void setMergeAdapter() {
@@ -130,7 +125,6 @@ public class MergePullRequestActivity extends BaseActivity {
 
 			Do = mergeList.get(position).getId();
 		});
-
 	}
 
 	private void initCloseListener() {
@@ -167,11 +161,28 @@ public class MergePullRequestActivity extends BaseActivity {
 
 	private void mergeFunction(String Do, String mergePRDT, String mergeTitle, boolean deleteBranch) {
 
-		MergePullRequest mergePR = new MergePullRequest(Do, mergePRDT, mergeTitle);
+		MergePullRequestOption mergePR = new MergePullRequestOption();
+		mergePR.setDeleteBranchAfterMerge(deleteBranch);
+		mergePR.setMergeTitleField(mergeTitle);
+		mergePR.setMergeMessageField(mergePRDT);
+		switch(Do) {
+			case "merge":
+				mergePR.setDo(MergePullRequestOption.DoEnum.MERGE);
+				break;
+			case "rebase":
+				mergePR.setDo(MergePullRequestOption.DoEnum.REBASE);
+				break;
+			case "rebase-merge":
+				mergePR.setDo(MergePullRequestOption.DoEnum.REBASE_MERGE);
+				break;
+			case "squash":
+				mergePR.setDo(MergePullRequestOption.DoEnum.SQUASH);
+				break;
+		}
 
-		Call<Void> call = RetrofitClient.getApiInterface(ctx).mergePullRequest(getAccount().getAuthorization(), issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getIssueIndex(), mergePR);
+		Call<Void> call = RetrofitClient.getApiInterface(ctx).repoMergePullRequest(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) issue.getIssueIndex(), mergePR);
 
-		call.enqueue(new Callback<Void>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
@@ -181,7 +192,7 @@ public class MergePullRequestActivity extends BaseActivity {
 					if(deleteBranch) {
 
 						if(issue.prIsFork()) {
-							String repoFullName = issue.getPullRequest().getHead().getRepo().getFull_name();
+							String repoFullName = issue.getPullRequest().getHead().getRepo().getFullName();
 							String[] parts = repoFullName.split("/");
 							final String repoOwner = parts[0];
 							final String repoName = parts[1];
@@ -189,21 +200,25 @@ public class MergePullRequestActivity extends BaseActivity {
 							PullRequestActions.deleteHeadBranch(ctx, repoOwner, repoName, issue.getPullRequest().getHead().getRef(), false);
 						}
 						else {
-							PullRequestActions.deleteHeadBranch(ctx, issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getPullRequest().getHead().getRef(), false);
+							PullRequestActions.deleteHeadBranch(ctx, issue.getRepository().getOwner(), issue.getRepository().getName(),
+								issue.getPullRequest().getHead().getRef(), false);
 						}
 
 					}
+
 					Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
 					Intent result = new Intent();
 					PullRequestsFragment.resumePullRequests = true;
+					IssueDetailActivity.singleIssueUpdate = true;
+					RepoDetailActivity.updateRepo = true;
 					setResult(200, result);
 					finish();
-
 				}
 				else if(response.code() == 401) {
 
 					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
+						getResources().getString(R.string.navLogout));
 				}
 				else if(response.code() == 404) {
 
@@ -213,7 +228,7 @@ public class MergePullRequestActivity extends BaseActivity {
 				else if(response.code() == 405) {
 
 					enableProcessButton();
-					Toasty.warning(ctx, getString(R.string.mergeNotAllowed));;
+					Toasty.warning(ctx, getString(R.string.mergeNotAllowed));
 				}
 				else {
 
@@ -225,13 +240,9 @@ public class MergePullRequestActivity extends BaseActivity {
 
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
 				enableProcessButton();
 			}
-
 		});
-
 	}
 
 	private void disableProcessButton() {
@@ -249,5 +260,4 @@ public class MergePullRequestActivity extends BaseActivity {
 		super.onResume();
 		issue.getRepository().checkAccountSwitch(this);
 	}
-
 }

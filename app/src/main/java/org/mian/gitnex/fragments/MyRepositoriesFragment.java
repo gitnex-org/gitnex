@@ -60,20 +60,20 @@ public class MyRepositoriesFragment extends Fragment {
 
 			page = 1;
 			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), userLogin);
+			fetchDataAsync(userLogin);
 			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), userLogin);
+		fetchDataAsync(userLogin);
 
 		return fragmentRepositoriesBinding.getRoot();
 	};
 
-	private void fetchDataAsync(String instanceToken, String userLogin) {
+	private void fetchDataAsync(String userLogin) {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(instanceToken, page, resultLimit, userLogin, "myRepos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(page, resultLimit, userLogin, "myRepos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -82,7 +82,7 @@ public class MyRepositoriesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, userLogin, "myRepos", null, getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(page, resultLimit, userLogin, "myRepos", null, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -113,7 +113,8 @@ public class MyRepositoriesFragment extends Fragment {
         final String userLogin = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
         if(MainActivity.repoCreated) {
-            RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, userLogin, "myRepos", null, getContext()  );
+			page = 1;
+			fetchDataAsync(userLogin);
 	        MainActivity.repoCreated = false;
         }
 

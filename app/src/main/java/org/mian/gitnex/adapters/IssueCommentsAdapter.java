@@ -17,9 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.JsonElement;
 import com.vdurmont.emoji.EmojiParser;
-import org.gitnex.tea4j.models.IssueComments;
+import org.gitnex.tea4j.v2.models.Comment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
@@ -52,13 +51,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	private final Context context;
 	private final TinyDB tinyDB;
 	private final Bundle bundle;
-	private final List<IssueComments> issuesComments;
+	private final List<Comment> issuesComments;
 	private final FragmentManager fragmentManager;
 	private final Runnable onInteractedListener;
 	private final Locale locale;
 	private final IssueContext issue;
 
-	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<IssueComments> issuesCommentsMain, FragmentManager fragmentManager, Runnable onInteractedListener, IssueContext issue) {
+	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<Comment> issuesCommentsMain, FragmentManager fragmentManager, Runnable onInteractedListener, IssueContext issue) {
 
 		this.context = ctx;
 		this.bundle = bundle;
@@ -73,7 +72,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
 		private String userLoginId;
-		private IssueComments issueComment;
+		private Comment issueComment;
 
 		private final ImageView avatar;
 		private final TextView author;
@@ -113,7 +112,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 					linearLayout.setVisibility(View.GONE);
 				}
 
-				if(!loginUid.contentEquals(issueComment.getUser().getUsername()) && !issue.getRepository().getPermissions().canPush()) {
+				if(!loginUid.contentEquals(issueComment.getUser().getLogin()) && !issue.getRepository().getPermissions().isPush()) {
 					commentMenuEdit.setVisibility(View.GONE);
 					commentMenuDelete.setVisibility(View.GONE);
 				}
@@ -134,7 +133,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				Bundle bundle1 = new Bundle();
 				bundle1.putAll(bundle);
-				bundle1.putInt("commentId", issueComment.getId());
+				bundle1.putInt("commentId", Math.toIntExact(issueComment.getId()));
 
 				ReactionSpinner reactionSpinner = new ReactionSpinner(context, bundle1);
 				reactionSpinner.setOnInteractedListener(() -> {
@@ -150,7 +149,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				commentMenuEdit.setOnClickListener(v1 -> {
 					Bundle bundle = new Bundle();
-					bundle.putInt("commentId", issueComment.getId());
+					bundle.putInt("commentId", Math.toIntExact(issueComment.getId()));
 					bundle.putString("commentAction", "edit");
 					bundle.putString("commentBody", issueComment.getBody());
 
@@ -163,7 +162,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				commentShare.setOnClickListener(v1 -> {
 					// get comment Url
-					CharSequence commentUrl = issueComment.getHtml_url();
+					CharSequence commentUrl = issueComment.getHtmlUrl();
 
 					// share issue comment
 					Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -178,7 +177,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				issueCommentCopyUrl.setOnClickListener(v1 -> {
 					// comment Url
-					CharSequence commentUrl = issueComment.getHtml_url();
+					CharSequence commentUrl = issueComment.getHtmlUrl();
 
 					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(context).getSystemService(Context.CLIPBOARD_SERVICE);
 					assert clipboard != null;
@@ -192,7 +191,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 				commentMenuQuote.setOnClickListener(v1 -> {
 					StringBuilder stringBuilder = new StringBuilder();
-					String commenterName = issueComment.getUser().getUsername();
+					String commenterName = issueComment.getUser().getLogin();
 
 					if(!commenterName.equals(((BaseActivity) context).getAccount().getAccount().getUserName())) {
 						stringBuilder.append("@").append(commenterName).append("\n\n");
@@ -226,7 +225,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				});
 
 				commentMenuDelete.setOnClickListener(v1 -> {
-					deleteIssueComment(context, issueComment.getId(), getAdapterPosition());
+					deleteIssueComment(context, Math.toIntExact(issueComment.getId()), getAdapterPosition());
 					dialog.dismiss();
 				});
 
@@ -254,14 +253,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
 
-		Call<JsonElement> call = RetrofitClient
+		Call<Void> call = RetrofitClient
 				.getApiInterface(ctx)
-				.deleteComment(((BaseActivity) context).getAccount().getAuthorization(), issue.getRepository().getOwner(), issue.getRepository().getName(), commentId);
+				.issueDeleteComment(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) commentId);
 
-		call.enqueue(new Callback<JsonElement>() {
+		call.enqueue(new Callback<Void>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 				switch(response.code()) {
 
@@ -293,7 +292,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
@@ -311,16 +310,16 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 	public void onBindViewHolder(@NonNull IssueCommentsAdapter.IssueCommentViewHolder holder, int position) {
 
 		String timeFormat = tinyDB.getString("dateFormat", "pretty");
-		IssueComments issueComment = issuesComments.get(position);
+		Comment issueComment = issuesComments.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		holder.userLoginId = issueComment.getUser().getLogin();
 
 		holder.issueComment = issueComment;
-		holder.author.setText(issueComment.getUser().getUsername());
+		holder.author.setText(issueComment.getUser().getLogin());
 
 		PicassoService.getInstance(context).get()
-			.load(issueComment.getUser().getAvatar_url())
+			.load(issueComment.getUser().getAvatarUrl())
 			.placeholder(R.drawable.loader_animated)
 			.transform(new RoundedTransformation(imgRadius, 0))
 			.resize(AppUtil.getPixelsFromDensity(context, 35), AppUtil.getPixelsFromDensity(context, 35))
@@ -330,17 +329,17 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		Markdown.render(context, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment, issue.getRepository());
 
 		StringBuilder informationBuilder = null;
-		if(issueComment.getCreated_at() != null) {
+		if(issueComment.getCreatedAt() != null) {
 
 			if(timeFormat.equals("pretty")) {
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), locale, "pretty", context));
-				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreated_at()));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "pretty", context));
+				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreatedAt()));
 			}
 			else if(timeFormat.equals("normal")) {
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreated_at(), locale, "normal", context));
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "normal", context));
 			}
 
-			if(!issueComment.getCreated_at().equals(issueComment.getUpdated_at())) {
+			if(!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
 				if(informationBuilder != null) {
 					informationBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
 				}
@@ -351,7 +350,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 		Bundle bundle1 = new Bundle();
 		bundle1.putAll(bundle);
-		bundle1.putInt("commentId", issueComment.getId());
+		bundle1.putInt("commentId", Math.toIntExact(issueComment.getId()));
 
 		ReactionList reactionList = new ReactionList(context, bundle1);
 

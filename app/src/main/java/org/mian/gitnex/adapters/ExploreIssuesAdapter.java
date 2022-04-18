@@ -19,7 +19,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
-import org.gitnex.tea4j.models.Issues;
+import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -50,12 +50,12 @@ import java.util.Locale;
 public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private List<Issues> searchedList;
+	private List<Issue> searchedList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final TinyDB tinyDb;
 
-	public ExploreIssuesAdapter(List<Issues> dataList, Context ctx) {
+	public ExploreIssuesAdapter(List<Issue> dataList, Context ctx) {
 		this.context = ctx;
 		this.searchedList = dataList;
 		this.tinyDb = TinyDB.getInstance(context);
@@ -90,7 +90,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
 
-		private Issues issue;
+		private Issue issue;
 
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
@@ -115,7 +115,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			new Handler().postDelayed(() -> {
 
-				String[] parts = issue.getRepository().getFull_name().split("/");
+				String[] parts = issue.getRepository().getFullName().split("/");
 				final String repoOwner = parts[0];
 				final String repoName = parts[1];
 
@@ -156,7 +156,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			});
 		}
 
-		void bindData(Issues issue) {
+		void bindData(Issue issue) {
 
 			this.issue = issue;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
@@ -165,14 +165,14 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			PicassoService.getInstance(context).get()
-				.load(issue.getUser().getAvatar_url())
+				.load(issue.getUser().getAvatarUrl())
 				.placeholder(R.drawable.loader_animated)
 				.transform(new RoundedTransformation(imgRadius, 0))
 				.resize(120, 120)
 				.centerCrop()
 				.into(issueAssigneeAvatar);
 
-			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + issue.getRepository().getFull_name() + context.getResources().getString(R.string.hash) + issue.getNumber() + "</font>";
+			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + issue.getRepository().getFullName() + context.getResources().getString(R.string.hash) + issue.getNumber() + "</font>";
 
 			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + issue.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 			issueCommentsCount.setText(String.valueOf(issue.getComments()));
@@ -242,20 +242,20 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			switch(timeFormat) {
 				case "pretty": {
 					PrettyTime prettyTime = new PrettyTime(locale);
-					String createdTime = prettyTime.format(issue.getCreated_at());
+					String createdTime = prettyTime.format(issue.getCreatedAt());
 					issueCreatedTime.setText(createdTime);
-					issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreated_at()), context));
+					issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()), context));
 					break;
 				}
 				case "normal": {
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreated_at());
+					String createdTime = formatter.format(issue.getCreatedAt());
 					issueCreatedTime.setText(createdTime);
 					break;
 				}
 				case "normal1": {
 					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreated_at());
+					String createdTime = formatter.format(issue.getCreatedAt());
 					issueCreatedTime.setText(createdTime);
 					break;
 				}
@@ -287,7 +287,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<Issues> list) {
+	public void updateList(List<Issue> list) {
 		searchedList = list;
 		notifyDataChanged();
 	}

@@ -19,7 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
-import org.gitnex.tea4j.models.OrgPermissions;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
@@ -42,7 +42,7 @@ import retrofit2.Response;
 
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
 
-	public OrgPermissions permissions;
+	public OrganizationPermissions permissions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,10 +112,10 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 	    if(getAccount().requiresVersion("1.16.0")) {
 		    RetrofitClient.getApiInterface(this)
-			    .getOrgPermissions(getAccount().getAuthorization(), getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<OrgPermissions>() {
+			    .orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<OrganizationPermissions>() {
 
 			    @Override
-			    public void onResponse(@NonNull Call<OrgPermissions> call, @NonNull Response<OrgPermissions> response) {
+			    public void onResponse(@NonNull Call<OrganizationPermissions> call, @NonNull Response<OrganizationPermissions> response) {
 			    	if(response.isSuccessful()) {
 					    permissions = response.body();
 				    }
@@ -125,7 +125,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 			    }
 
 			    @Override
-			    public void onFailure(@NonNull Call<OrgPermissions> call, @NonNull Throwable t) {
+			    public void onFailure(@NonNull Call<OrganizationPermissions> call, @NonNull Throwable t) {
 					permissions = null;
 			    }
 		    });

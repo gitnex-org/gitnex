@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class DiffAdapter extends BaseAdapter {
@@ -82,7 +82,7 @@ public class DiffAdapter extends BaseAdapter {
 			textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 			textView.setTextColor(COLOR_FONT);
 			textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-			textView.setPadding(15, 0, 15, 0);
+			textView.setPadding(32, 0, 32, 0);
 			textView.setTypeface(typeface);
 
 			convertView = textView;

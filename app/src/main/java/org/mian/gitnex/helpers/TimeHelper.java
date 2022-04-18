@@ -6,6 +6,8 @@ import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -27,10 +29,9 @@ public class TimeHelper {
 			createdTime = formatter.parse(part1);
 		} catch(ParseException ignored) {}
 
-		DateFormat format = DateFormat.getDateTimeInstance();
 		assert createdTime != null;
 
-		return format.format(createdTime);
+		return customDateFormatForToastDateFormat(createdTime);
 
 	}
 
@@ -88,6 +89,10 @@ public class TimeHelper {
 
 		return cal.after(from) && cal.before(to);
 
+	}
+
+	public static Date parseIso8601(String iso8601) {
+		return Date.from(Instant.from(DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse(iso8601)));
 	}
 
 }

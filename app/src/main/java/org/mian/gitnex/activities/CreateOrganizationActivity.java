@@ -11,7 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.UserOrganizations;
+import org.gitnex.tea4j.v2.models.CreateOrgOption;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateOrganizationBinding;
@@ -123,23 +124,25 @@ public class CreateOrganizationActivity extends BaseActivity {
         else {
 
             disableProcessButton();
-            createNewOrganization(getAccount().getAuthorization(), newOrgName, newOrgDesc);
+            createNewOrganization(newOrgName, newOrgDesc);
         }
 
     }
 
-    private void createNewOrganization(final String token, String orgName, String orgDesc) {
+    private void createNewOrganization(String orgName, String orgDesc) {
 
-        UserOrganizations createOrganization = new UserOrganizations(orgName, null, orgDesc, null, null);
+        CreateOrgOption createOrganization = new CreateOrgOption();
+		createOrganization.setDescription(orgDesc);
+		createOrganization.setUsername(orgName);
 
-        Call<UserOrganizations> call = RetrofitClient
+        Call<Organization> call = RetrofitClient
             .getApiInterface(ctx)
-            .createNewOrganization(token, createOrganization);
+            .orgCreate(createOrganization);
 
-        call.enqueue(new Callback<UserOrganizations>() {
+        call.enqueue(new Callback<Organization>() {
 
             @Override
-            public void onResponse(@NonNull Call<UserOrganizations> call, @NonNull retrofit2.Response<UserOrganizations> response) {
+            public void onResponse(@NonNull Call<Organization> call, @NonNull retrofit2.Response<Organization> response) {
 
                 if(response.code() == 201) {
                 	OrganizationsFragment.orgCreated = true;
@@ -181,7 +184,7 @@ public class CreateOrganizationActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserOrganizations> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
                 enableProcessButton();

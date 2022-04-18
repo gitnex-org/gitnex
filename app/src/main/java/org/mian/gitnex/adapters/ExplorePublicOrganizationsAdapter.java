@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.Organization;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -86,7 +86,7 @@ public class ExplorePublicOrganizationsAdapter extends RecyclerView.Adapter<Recy
 		    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 			orgName.setText(organization.getUsername());
 	        PicassoService.getInstance(context).get()
-		        .load(organization.getAvatar_url())
+		        .load(organization.getAvatarUrl())
 		        .placeholder(R.drawable.loader_animated)
 		        .transform(new RoundedTransformation(imgRadius, 0))
 		        .resize(120, 120)

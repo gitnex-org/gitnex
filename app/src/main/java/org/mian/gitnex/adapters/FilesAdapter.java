@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.io.FileUtils;
-import org.gitnex.tea4j.models.Files;
+import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ import java.util.List;
 
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> implements Filterable {
 
-	private final List<Files> originalFiles = new ArrayList<>();
-	private final List<Files> alteredFiles = new ArrayList<>();
+	private final List<ContentsResponse> originalFiles = new ArrayList<>();
+	private final List<ContentsResponse> alteredFiles = new ArrayList<>();
 
     private final Context context;
 
@@ -33,12 +33,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     public interface FilesAdapterListener {
 
-        void onClickFile(Files file);
+        void onClickFile(ContentsResponse file);
     }
 
 	class FilesViewHolder extends RecyclerView.ViewHolder {
 
-    	private Files file;
+    	private ContentsResponse file;
 
 		private final ImageView fileTypeIs;
         private final TextView fileName;
@@ -129,7 +129,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         this.filesListener = filesListener;
     }
 
-	public List<Files> getOriginalFiles() {
+	public List<ContentsResponse> getOriginalFiles() {
 		return originalFiles;
 	}
 
@@ -151,7 +151,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     @Override
     public void onBindViewHolder(@NonNull FilesAdapter.FilesViewHolder holder, int position) {
 
-        Files currentItem = alteredFiles.get(position);
+	    ContentsResponse currentItem = alteredFiles.get(position);
 
         holder.file = currentItem;
         holder.fileName.setText(currentItem.getName());
@@ -161,7 +161,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 	        case "file":
 		        holder.fileTypeIs.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_file));
 		        holder.fileInfo.setVisibility(View.VISIBLE);
-		        holder.fileInfo.setText(FileUtils.byteCountToDisplaySize(currentItem.getSize()));
+		        holder.fileInfo.setText(FileUtils.byteCountToDisplaySize(Math.toIntExact(currentItem.getSize())));
 	        	break;
 
 	        case "dir":
@@ -200,14 +200,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<Files> filteredList = new ArrayList<>();
+            List<ContentsResponse> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(originalFiles);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Files item : originalFiles) {
+                for (ContentsResponse item : originalFiles) {
                     if (item.getName().toLowerCase().contains(filterPattern) || item.getPath().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }

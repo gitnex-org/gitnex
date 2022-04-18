@@ -140,7 +140,7 @@ public class MyProfileFragment extends Fragment {
 	    TextView userLanguage = v.findViewById(R.id.userLanguage);
 	    ImageView userLanguageIcon = v.findViewById(R.id.userLanguageIcon);
 
-	    String[] userLanguageCodes = account.getUserInfo().getLang() != null ? account.getUserInfo().getLang().split("-") : new String[]{""};
+	    String[] userLanguageCodes = account.getUserInfo().getLanguage() != null ? account.getUserInfo().getLanguage().split("-") : new String[]{""};
 
 	    if(userLanguageCodes.length >= 2) {
 		    Locale locale = new Locale(userLanguageCodes[0], userLanguageCodes[1]);
@@ -158,9 +158,9 @@ public class MyProfileFragment extends Fragment {
 
 	    int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 3);
 
-	    PicassoService.getInstance(ctx).get().load(account.getUserInfo().getAvatar()).transform(new RoundedTransformation(avatarRadius, 0)).placeholder(R.drawable.loader_animated).resize(120, 120).centerCrop().into(userAvatar);
+	    PicassoService.getInstance(ctx).get().load(account.getUserInfo().getAvatarUrl()).transform(new RoundedTransformation(avatarRadius, 0)).placeholder(R.drawable.loader_animated).resize(120, 120).centerCrop().into(userAvatar);
 
-	    PicassoService.getInstance(ctx).get().load(account.getUserInfo().getAvatar()).transform(new BlurTransformation(ctx))
+	    PicassoService.getInstance(ctx).get().load(account.getUserInfo().getAvatarUrl()).transform(new BlurTransformation(ctx))
 		    .into(userAvatarBackground, new Callback() {
 
 			    @Override

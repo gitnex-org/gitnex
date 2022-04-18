@@ -23,9 +23,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
-import org.gitnex.tea4j.models.GiteaVersion;
-import org.gitnex.tea4j.models.NotificationCount;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.NotificationCount;
+import org.gitnex.tea4j.v2.models.ServerVersion;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserAccountsNavAdapter;
 import org.mian.gitnex.clients.PicassoService;
@@ -68,13 +68,13 @@ import retrofit2.Callback;
 @SuppressWarnings("ConstantConditions")
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetListener {
 
+	public static boolean refActivity = false;
 	public static boolean repoCreated = false;
 
 	private DrawerLayout drawer;
 	private TextView toolbarTitle;
 	private Typeface myTypeface;
 
-	private String instanceToken;
 	private boolean noConnection = false;
 
 	private View hView;
@@ -112,7 +112,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			return;
 		}
 
-		instanceToken = getAccount().getAuthorization();
 		noConnection = false;
 
 		Toolbar toolbar = activityMainBinding.toolbar;
@@ -170,7 +169,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
 		}
 
-		getNotificationsCount(instanceToken);
+		getNotificationsCount();
 
 		drawer = activityMainBinding.drawerLayout;
 		navigationView = activityMainBinding.navView;
@@ -207,7 +206,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				RecyclerView navRecyclerViewUserAccounts = hView.findViewById(R.id.userAccounts);
 				UserAccountsNavAdapter adapterUserAccounts = new UserAccountsNavAdapter(ctx, userAccountsList, drawer);
 
-				userAccountsApi.getAllLoggedInAccounts().observe((AppCompatActivity) ctx, userAccounts -> {
+				userAccountsApi.getAllAccounts().observe((AppCompatActivity) ctx, userAccounts -> {
 					if(userAccounts.size() > 0) {
 						userAccountsList.clear();
 						userAccountsList.addAll(userAccounts);
@@ -222,7 +221,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				if (getAccount().getUserInfo() != null) {
 					String userEmailNav = getAccount().getUserInfo().getEmail();
 					String userFullNameNav = getAccount().getFullName();
-					String userAvatarNav = getAccount().getUserInfo().getAvatar();
+					String userAvatarNav = getAccount().getUserInfo().getAvatarUrl();
 
 					if(!userEmailNav.equals("")) {
 						userEmail.setText(userEmailNav);
@@ -267,14 +266,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				});
 
-				getNotificationsCount(instanceToken);
+				getNotificationsCount();
 			}
 
 			@Override
 			public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
 				if (getAccount().getUserInfo() != null) {
-					navigationView.getMenu().findItem(R.id.nav_administration).setVisible(getAccount().getUserInfo().getIs_admin());
+					navigationView.getMenu().findItem(R.id.nav_administration).setVisible(getAccount().getUserInfo().isIsAdmin());
 				} else {
 					// hide first
 					navigationView.getMenu().findItem(R.id.nav_administration).setVisible(false);
@@ -456,6 +455,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if(refActivity) {
+			this.recreate();
+			this.overridePendingTransition(0, 0);
+			refActivity = false;
+		}
+	}
+
 	public void setActionBarTitle(String title) {
 
 		toolbarTitle.setText(title);
@@ -619,11 +629,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 	private void giteaVersion() {
 
-		Call<GiteaVersion> callVersion = RetrofitClient.getApiInterface(ctx).getGiteaVersionWithToken(getAccount().getAuthorization());
-		callVersion.enqueue(new Callback<GiteaVersion>() {
+		Call<ServerVersion> callVersion = RetrofitClient.getApiInterface(ctx).getVersion();
+		callVersion.enqueue(new Callback<ServerVersion>() {
 
 			@Override
-			public void onResponse(@NonNull final Call<GiteaVersion> callVersion, @NonNull retrofit2.Response<GiteaVersion> responseVersion) {
+			public void onResponse(@NonNull final Call<ServerVersion> callVersion, @NonNull retrofit2.Response<ServerVersion> responseVersion) {
 
 				if(responseVersion.code() == 200 && responseVersion.body() != null) {
 					String version = responseVersion.body().getVersion();
@@ -634,21 +644,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 				Log.e("onFailure-version", t.toString());
 			}
 		});
 	}
 
 	private void loadUserInfo() {
-		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx).getUserInfo(getAccount().getAuthorization());
+		Call<User> call = RetrofitClient.getApiInterface(ctx).userGetCurrent();
 
-		call.enqueue(new Callback<UserInfo>() {
+		call.enqueue(new Callback<User>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
-				UserInfo userDetails = response.body();
+				User userDetails = response.body();
 
 				if(response.isSuccessful()) {
 
@@ -657,12 +667,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 						assert userDetails != null;
 
 						getAccount().setUserInfo(userDetails);
-						navigationView.getMenu().findItem(R.id.nav_administration).setVisible(userDetails.getIs_admin());
-						if(!getAccount().getAccount().getUserName().equals(userDetails.getUsername())) {
+						navigationView.getMenu().findItem(R.id.nav_administration).setVisible(userDetails.isIsAdmin());
+						if(!getAccount().getAccount().getUserName().equals(userDetails.getLogin())) {
 							// user changed it's name -> update database
 							int accountId = getAccount().getAccount().getAccountId();
 							BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).updateUsername(accountId,
-								userDetails.getUsername());
+								userDetails.getLogin());
 							getAccount().setAccount(BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).getAccountById(accountId));
 						}
 						if(profileInitListener != null) profileInitListener.onButtonClicked(null);
@@ -680,7 +690,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
 				Log.e("onFailure", t.toString());
 			}
@@ -688,11 +698,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 	}
 
-	private void getNotificationsCount(String token) {
+	private void getNotificationsCount() {
 
-		Call<NotificationCount> call = RetrofitClient.getApiInterface(ctx).checkUnreadNotifications(token);
+		Call<NotificationCount> call = RetrofitClient.getApiInterface(ctx).notifyNewAvailable();
 
-		call.enqueue(new Callback<NotificationCount>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<NotificationCount> call, @NonNull retrofit2.Response<NotificationCount> response) {
@@ -703,7 +713,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 					assert notificationCount != null;
 					notificationCounter = navNotifications.getActionView().findViewById(R.id.counterBadgeNotification);
-					notificationCounter.setText(String.valueOf(notificationCount.getCounter()));
+					notificationCounter.setText(String.valueOf(notificationCount.getNew()));
 				}
 			}
 

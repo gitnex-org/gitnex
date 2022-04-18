@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.UserRepositories;
+import org.gitnex.tea4j.v2.models.Permission;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -42,7 +42,7 @@ public class RepositoryContext implements Serializable {
 	}
 
 	private final AccountContext account;
-	private UserRepositories repository;
+	private org.gitnex.tea4j.v2.models.Repository repository;
 	private final String owner;
 	private final String name;
 
@@ -60,7 +60,7 @@ public class RepositoryContext implements Serializable {
 	private int repositoryId = 0;
 	private Repository repositoryModel = null;
 
-	public RepositoryContext(UserRepositories repository, Context context) {
+	public RepositoryContext(org.gitnex.tea4j.v2.models.Repository repository, Context context) {
 		this.account = ((BaseActivity) context).getAccount();
 		this.repository = repository;
 		this.name = repository.getName();
@@ -88,7 +88,7 @@ public class RepositoryContext implements Serializable {
 		return prState;
 	}
 
-	public UserRepositories getRepository() {
+	public org.gitnex.tea4j.v2.models.Repository getRepository() {
 
 		return repository;
 	}
@@ -152,11 +152,11 @@ public class RepositoryContext implements Serializable {
 		return name;
 	}
 
-	public UserRepositories.permissionsObject getPermissions() {
-		return repository != null ? repository.getPermissions() : new UserRepositories.permissionsObject();
+	public Permission getPermissions() {
+		return repository != null ? repository.getPermissions() : new Permission();
 	}
 
-	public void setRepository(UserRepositories repository) {
+	public void setRepository(org.gitnex.tea4j.v2.models.Repository repository) {
 		this.repository = repository;
 		if(!repository.getFullName().equals(getFullName())) {
 			throw new IllegalArgumentException("repo does not match owner and name");
@@ -228,6 +228,11 @@ public class RepositoryContext implements Serializable {
 	public void setReleasesViewTypeIsTag(boolean releasesViewTypeIsTag) {
 
 		this.releasesViewTypeIsTag = releasesViewTypeIsTag;
+	}
+
+	public void removeRepository() {
+
+		repository = null;
 	}
 
 }

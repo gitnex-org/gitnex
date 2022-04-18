@@ -13,7 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.Milestones;
+import org.gitnex.tea4j.v2.models.CreateMilestoneOption;
+import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateMilestoneBinding;
@@ -22,6 +23,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.Calendar;
+import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -37,6 +39,8 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
     private EditText milestoneDescription;
     private Button createNewMilestoneButton;
     private RepositoryContext repository;
+
+	private Date currentDate = null;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -96,9 +100,8 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
         String newMilestoneTitle = milestoneTitle.getText().toString();
         String newMilestoneDescription = milestoneDescription.getText().toString();
-        String newMilestoneDueDate = milestoneDueDate.getText().toString();
 
-        if(!connToInternet) {
+	    if(!connToInternet) {
 
             Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
             return;
@@ -119,37 +122,27 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
             }
         }
 
-        String finalMilestoneDueDate = null;
-
-        if(!newMilestoneDueDate.isEmpty()) {
-
-            finalMilestoneDueDate = (AppUtil.customDateCombine(AppUtil.customDateFormat(newMilestoneDueDate)));
-        }
-        else if (!getAccount().requiresVersion("1.10.0")) {
-
-            // if Gitea version is less than 1.10.0 DueDate is required
-            Toasty.warning(ctx, getString(R.string.milestoneDateEmpty));
-            return;
-        }
-
         disableProcessButton();
-        createNewMilestone(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), newMilestoneTitle, newMilestoneDescription, finalMilestoneDueDate);
+        createNewMilestone(repository.getOwner(), repository.getName(), newMilestoneTitle, newMilestoneDescription);
     }
 
-    private void createNewMilestone(final String token, String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription, String newMilestoneDueDate) {
+    private void createNewMilestone(String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription) {
 
-        Milestones createMilestone = new Milestones(newMilestoneDescription, newMilestoneTitle, newMilestoneDueDate);
+        CreateMilestoneOption createMilestone = new CreateMilestoneOption();
+		createMilestone.setDescription(newMilestoneDescription);
+		createMilestone.setTitle(newMilestoneTitle);
+		createMilestone.setDueOn(currentDate);
 
-        Call<Milestones> call;
+        Call<Milestone> call;
 
         call = RetrofitClient
                 .getApiInterface(ctx)
-                .createMilestone(token, repoOwner, repoName, createMilestone);
+                .issueCreateMilestone(repoOwner, repoName, createMilestone);
 
-        call.enqueue(new Callback<Milestones>() {
+        call.enqueue(new Callback<Milestone>() {
 
             @Override
-            public void onResponse(@NonNull Call<Milestones> call, @NonNull retrofit2.Response<Milestones> response) {
+            public void onResponse(@NonNull Call<Milestone> call, @NonNull retrofit2.Response<Milestone> response) {
 
                 if(response.isSuccessful()) {
 
@@ -179,7 +172,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
             }
 
             @Override
-            public void onFailure(@NonNull Call<Milestones> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
@@ -199,7 +192,10 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
             final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-	            (view, year, monthOfYear, dayOfMonth) -> milestoneDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth)), mYear, mMonth, mDay);
+	            (view, year, monthOfYear, dayOfMonth) -> {
+				milestoneDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
+				currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
+	            }, mYear, mMonth, mDay);
             datePickerDialog.show();
         }
 

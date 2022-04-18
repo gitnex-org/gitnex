@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
@@ -20,26 +20,26 @@ import retrofit2.Response;
 
 public class RepoStargazersViewModel extends ViewModel {
 
-    private static MutableLiveData<List<UserInfo>> stargazersList;
+    private static MutableLiveData<List<User>> stargazersList;
 
-    public LiveData<List<UserInfo>> getRepoStargazers(String token, String repoOwner, String repoName, Context ctx) {
+    public LiveData<List<User>> getRepoStargazers(String repoOwner, String repoName, Context ctx) {
 
         stargazersList = new MutableLiveData<>();
-        loadRepoStargazers(token, repoOwner, repoName, ctx);
+        loadRepoStargazers(repoOwner, repoName, ctx);
 
         return stargazersList;
     }
 
-    private static void loadRepoStargazers(String token, String repoOwner, String repoName, Context ctx) {
+    private static void loadRepoStargazers(String repoOwner, String repoName, Context ctx) {
 
-        Call<List<UserInfo>> call = RetrofitClient
+        Call<List<User>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getRepoStargazers(token, repoOwner, repoName);
+                .repoListStargazers(repoOwner, repoName, null, null);
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+            @Override
+            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
 		        if(response.isSuccessful()) {
 			        stargazersList.postValue(response.body());
@@ -50,7 +50,7 @@ public class RepoStargazersViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }

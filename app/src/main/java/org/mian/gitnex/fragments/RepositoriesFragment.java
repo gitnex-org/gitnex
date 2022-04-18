@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
@@ -61,20 +60,20 @@ public class RepositoriesFragment extends Fragment {
 
 			page = 1;
 			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+			fetchDataAsync();
 			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+		fetchDataAsync();
 
 		return fragmentRepositoriesBinding.getRoot();
 	};
 
-	private void fetchDataAsync(String instanceToken) {
+	private void fetchDataAsync() {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(instanceToken, page, resultLimit, null, "repos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(page, resultLimit, null, "repos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -83,7 +82,7 @@ public class RepositoriesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, null, "repos", null, getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(page, resultLimit, null, "repos", null, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -113,7 +112,8 @@ public class RepositoriesFragment extends Fragment {
         super.onResume();
 
         if(MainActivity.repoCreated) {
-            RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "repos", null, getContext());
+			page = 1;
+            fetchDataAsync();
 	        MainActivity.repoCreated = false;
         }
     }

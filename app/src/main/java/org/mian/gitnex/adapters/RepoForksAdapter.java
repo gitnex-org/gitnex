@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -40,12 +39,12 @@ import java.util.Locale;
 public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private List<UserRepositories> forksList;
+	private List<org.gitnex.tea4j.v2.models.Repository> forksList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false;
 	private boolean isMoreDataAvailable = true;
 
-	public RepoForksAdapter(Context ctx, List<UserRepositories> forksListMain) {
+	public RepoForksAdapter(Context ctx, List<org.gitnex.tea4j.v2.models.Repository> forksListMain) {
 
 		this.context = ctx;
 		this.forksList = forksListMain;
@@ -80,7 +79,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	class ForksHolder extends RecyclerView.ViewHolder {
 
-		private UserRepositories userRepositories;
+		private org.gitnex.tea4j.v2.models.Repository userRepositories;
 
 		private final ImageView image;
 		private final TextView repoName;
@@ -103,7 +102,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(UserRepositories forksModel) {
+		void bindData(org.gitnex.tea4j.v2.models.Repository forksModel) {
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
@@ -113,7 +112,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			this.userRepositories = forksModel;
 			orgName.setText(forksModel.getFullName().split("/")[0]);
 			repoName.setText(forksModel.getFullName().split("/")[1]);
-			repoStars.setText(forksModel.getStars_count());
+			repoStars.setText(String.valueOf(forksModel.getStarsCount()));
 
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(forksModel.getName());
@@ -122,9 +121,9 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28)
 				.endConfig().buildRoundRect(firstCharacter, color, 3);
 
-			if(forksModel.getAvatar_url() != null) {
-				if(!forksModel.getAvatar_url().equals("")) {
-					PicassoService.getInstance(context).get().load(forksModel.getAvatar_url()).placeholder(R.drawable.loader_animated)
+			if(forksModel.getAvatarUrl() != null) {
+				if(!forksModel.getAvatarUrl().equals("")) {
+					PicassoService.getInstance(context).get().load(forksModel.getAvatarUrl()).placeholder(R.drawable.loader_animated)
 						.transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
 				}
 				else {
@@ -135,25 +134,25 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				image.setImageDrawable(drawable);
 			}
 
-			if(forksModel.getUpdated_at() != null) {
+			if(forksModel.getUpdatedAt() != null) {
 
 				switch(timeFormat) {
 					case "pretty": {
 						PrettyTime prettyTime = new PrettyTime(locale);
-						String createdTime = prettyTime.format(forksModel.getUpdated_at());
+						String createdTime = prettyTime.format(forksModel.getUpdatedAt());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(forksModel.getUpdated_at()), context));
+						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(forksModel.getUpdatedAt()), context));
 						break;
 					}
 					case "normal": {
 						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-						String createdTime = formatter.format(forksModel.getUpdated_at());
+						String createdTime = formatter.format(forksModel.getUpdatedAt());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 						break;
 					}
 					case "normal1": {
 						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-						String createdTime = formatter.format(forksModel.getUpdated_at());
+						String createdTime = formatter.format(forksModel.getUpdatedAt());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 						break;
 					}
@@ -221,7 +220,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<UserRepositories> list) {
+	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
 		forksList = list;
 		notifyDataChanged();
 	}

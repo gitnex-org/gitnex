@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.IssueComments;
+import org.gitnex.tea4j.v2.models.Comment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
@@ -20,30 +20,30 @@ import retrofit2.Response;
 
 public class IssueCommentsViewModel extends ViewModel {
 
-    private static MutableLiveData<List<IssueComments>> issueComments;
+    private MutableLiveData<List<Comment>> issueComments;
 
-    public LiveData<List<IssueComments>> getIssueCommentList(String token, String owner, String repo, int index, Context ctx) {
+    public LiveData<List<Comment>> getIssueCommentList(String owner, String repo, int index, Context ctx) {
 
         issueComments = new MutableLiveData<>();
-        loadIssueComments(token, owner, repo, index, ctx);
+        loadIssueComments(owner, repo, index, ctx);
 
         return issueComments;
     }
 
-	public static void loadIssueComments(String token, String owner, String repo, int index, Context ctx) {
-		loadIssueComments(token, owner, repo, index, ctx, null);
+	public void loadIssueComments(String owner, String repo, int index, Context ctx) {
+		loadIssueComments(owner, repo, index, ctx, null);
 	}
 
-    public static void loadIssueComments(String token, String owner, String repo, int index, Context ctx, Runnable onLoadingFinished) {
+    public void loadIssueComments(String owner, String repo, int index, Context ctx, Runnable onLoadingFinished) {
 
-        Call<List<IssueComments>> call = RetrofitClient
+        Call<List<Comment>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getIssueComments(token, owner, repo, index);
+                .issueGetComments(owner, repo, (long) index, null, null);
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<IssueComments>> call, @NonNull Response<List<IssueComments>> response) {
+            @Override
+            public void onResponse(@NonNull Call<List<Comment>> call, @NonNull Response<List<Comment>> response) {
 
 		        if(response.isSuccessful()) {
 			        issueComments.postValue(response.body());
@@ -57,7 +57,7 @@ public class IssueCommentsViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<IssueComments>> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<List<Comment>> call, @NonNull Throwable t) {
 
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }

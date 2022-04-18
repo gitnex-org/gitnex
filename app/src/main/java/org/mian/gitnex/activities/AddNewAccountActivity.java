@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import org.gitnex.tea4j.models.GiteaVersion;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.ServerVersion;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -23,12 +23,13 @@ import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
 import java.net.URI;
+import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class AddNewAccountActivity extends BaseActivity {
@@ -37,6 +38,7 @@ public class AddNewAccountActivity extends BaseActivity {
 	private ActivityAddNewAccountBinding viewBinding;
 
 	private String spinnerSelectedValue;
+	private Version giteaVersion;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +119,6 @@ public class AddNewAccountActivity extends BaseActivity {
 		}
 		catch(Exception e) {
 
-			Log.e("onFailure-login", e.toString());
 			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
 		}
 
@@ -125,16 +126,15 @@ public class AddNewAccountActivity extends BaseActivity {
 
 	private void versionCheck(final String instanceUrl, final String loginToken) {
 
-		Call<GiteaVersion> callVersion;
-		callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl).getGiteaVersionWithToken("token " + loginToken);
-		callVersion.enqueue(new Callback<GiteaVersion>() {
+		Call<ServerVersion> callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken).getVersion();
+		callVersion.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull final Call<GiteaVersion> callVersion, @NonNull retrofit2.Response<GiteaVersion> responseVersion) {
+			public void onResponse(@NonNull final Call<ServerVersion> callVersion, @NonNull retrofit2.Response<ServerVersion> responseVersion) {
 
 				if(responseVersion.code() == 200) {
 
-					GiteaVersion version = responseVersion.body();
+					ServerVersion version = responseVersion.body();
 
 					assert version != null;
 
@@ -144,7 +144,7 @@ public class AddNewAccountActivity extends BaseActivity {
 						return;
 					}
 
-					Version giteaVersion = new Version(version.getVersion());
+					giteaVersion = new Version(version.getVersion());
 
 					if(giteaVersion.less(getString(R.string.versionLow))) {
 
@@ -188,7 +188,7 @@ public class AddNewAccountActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<GiteaVersion> callVersion, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
 				Log.e("onFailure-versionCheck", t.toString());
 				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
@@ -198,14 +198,14 @@ public class AddNewAccountActivity extends BaseActivity {
 
 	private void setupNewAccountWithToken(String instanceUrl, final String loginToken) {
 
-		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx, instanceUrl).getUserInfo("token " + loginToken);
+		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken).userGetCurrent();
 
-		call.enqueue(new Callback<UserInfo>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserInfo> call, @NonNull retrofit2.Response<UserInfo> response) {
+			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
-				UserInfo userDetails = response.body();
+				User userDetails = response.body();
 
 				switch(response.code()) {
 
@@ -213,31 +213,32 @@ public class AddNewAccountActivity extends BaseActivity {
 
 						assert userDetails != null;
 						// insert new account to db if does not exist
-						String accountName = userDetails.getUsername() + "@" + instanceUrl;
+						String accountName = userDetails.getLogin() + "@" + instanceUrl;
 						UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
-						boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
+						boolean userAccountExists = Objects.requireNonNull(userAccountsApi).userAccountExists(accountName);
 
 						if(!userAccountExists) {
 
-							long id = userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getUsername(), loginToken, "");
+							long id = userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getLogin(), loginToken, giteaVersion.toString());
 							UserAccount account = userAccountsApi.getAccountById((int) id);
 							AppUtil.switchToAccount(AddNewAccountActivity.this, account);
 							Toasty.success(ctx, getResources().getString(R.string.accountAddedMessage));
+							MainActivity.refActivity = true;
 							finish();
-
 						}
 						else {
 							UserAccount account = userAccountsApi.getAccountByName(accountName);
 							if(account.isLoggedIn()) {
 								Toasty.warning(ctx, getResources().getString(R.string.accountAlreadyExistsError));
 								AppUtil.switchToAccount(ctx, account);
-							} else {
+							}
+							else {
 								userAccountsApi.updateTokenByAccountName(accountName, loginToken);
 								userAccountsApi.login(account.getAccountId());
 								AppUtil.switchToAccount(AddNewAccountActivity.this, account);
 							}
-							finish();
 						}
+						finish();
 						break;
 
 					case 401:
@@ -253,9 +254,8 @@ public class AddNewAccountActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-				Log.e("onFailure", t.toString());
 				Toasty.error(ctx, getResources().getString(R.string.genericError));
 			}
 		});
@@ -266,5 +266,4 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		onClickListener = view -> finish();
 	}
-
 }

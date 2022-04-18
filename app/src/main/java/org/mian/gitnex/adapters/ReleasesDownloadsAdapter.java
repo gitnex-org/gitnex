@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.Releases;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.mian.gitnex.R;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder> {
 
-	private final List<Releases.assetsObject> releasesDownloadsList;
+	private final List<Attachment> releasesDownloadsList;
 
 	static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,7 +31,7 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 		}
 	}
 
-	ReleasesDownloadsAdapter(List<Releases.assetsObject> releasesDownloadsMain) {
+	ReleasesDownloadsAdapter(List<Attachment> releasesDownloadsMain) {
 
 		this.releasesDownloadsList = releasesDownloadsMain;
 	}
@@ -46,12 +46,12 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 	@Override
 	public void onBindViewHolder(@NonNull ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder holder, int position) {
 
-		Releases.assetsObject currentItem = releasesDownloadsList.get(position);
+		Attachment currentItem = releasesDownloadsList.get(position);
 
 		if(currentItem.getName() != null) {
 
 			holder.downloadName.setText(
-				HtmlCompat.fromHtml("<a href='" + currentItem.getBrowser_download_url() + "'>" + currentItem.getName() + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
+				HtmlCompat.fromHtml("<a href='" + currentItem.getBrowserDownloadUrl() + "'>" + currentItem.getName() + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
 			holder.downloadName.setMovementMethod(LinkMovementMethod.getInstance());
 
 		}

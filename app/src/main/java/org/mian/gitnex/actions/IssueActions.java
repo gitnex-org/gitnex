@@ -2,13 +2,15 @@ package org.mian.gitnex.actions;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
-import org.gitnex.tea4j.models.IssueComments;
-import org.gitnex.tea4j.models.Issues;
-import org.gitnex.tea4j.models.UpdateIssueState;
+import org.gitnex.tea4j.v2.models.Comment;
+import org.gitnex.tea4j.v2.models.CreateIssueCommentOption;
+import org.gitnex.tea4j.v2.models.EditIssueCommentOption;
+import org.gitnex.tea4j.v2.models.EditIssueOption;
+import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
@@ -29,15 +31,18 @@ public class IssueActions {
 
 		ActionResult<Response<?>> actionResult = new ActionResult<>();
 
-		Call<IssueComments> call = RetrofitClient
+		EditIssueCommentOption commentObj = new EditIssueCommentOption();
+		commentObj.setBody(comment);
+
+		Call<Comment> call = RetrofitClient
 			.getApiInterface(context)
-			.patchIssueComment(((BaseActivity) context).getAccount().getAuthorization(), issue.getRepository().getOwner(),
-				issue.getRepository().getName(), commentId, new IssueComments(comment));
+			.issueEditComment(issue.getRepository().getOwner(),
+				issue.getRepository().getName(), (long) commentId, commentObj);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<IssueComments> call, @NonNull retrofit2.Response<IssueComments> response) {
+			public void onResponse(@NonNull Call<Comment> call, @NonNull retrofit2.Response<Comment> response) {
 
 				switch(response.code()) {
 
@@ -60,47 +65,56 @@ public class IssueActions {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<IssueComments> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Comment> call, @NonNull Throwable t) {
 
 				actionResult.finish(ActionResult.Status.FAILED);
 			}
 		});
 
 		return actionResult;
-
 	}
 
 	public static void closeReopenIssue(final Context ctx, final String issueState, IssueContext issue) {
 
-		UpdateIssueState issueStatJson = new UpdateIssueState(issueState);
-		Call<JsonElement> call;
-
-		call = RetrofitClient
+		EditIssueOption issueStatJson = new EditIssueOption();
+		issueStatJson.setState(issueState);
+		Call<Issue> call = RetrofitClient
 			.getApiInterface(ctx)
-			.closeReopenIssue(((BaseActivity) ctx).getAccount().getAuthorization(), issue.getRepository().getOwner(),
-				issue.getRepository().getName(), issue.getIssueIndex(), issueStatJson);
+			.issueEditIssue(issue.getRepository().getOwner(),
+				issue.getRepository().getName(), (long) issue.getIssueIndex(), issueStatJson);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<Issue> call, @NonNull retrofit2.Response<Issue> response) {
 
 				if(response.isSuccessful()) {
 					if(response.code() == 201) {
 
 						if(issue.hasIssue()) {
-							IssuesFragment.resumeIssues = issue.getIssue().getPull_request() == null;
-							PullRequestsFragment.resumePullRequests = issue.getIssue().getPull_request() != null;
+							IssuesFragment.resumeIssues = issue.getIssue().getPullRequest() == null;
+							PullRequestsFragment.resumePullRequests = issue.getIssue().getPullRequest() != null;
 						}
-						if(issueState.equals("closed")) {
-							Toasty.success(ctx, ctx.getString(R.string.issueStateClosed));
+						if(issue.getIssueType().equals("Pull")) {
+							if(issueState.equals("closed")) {
+								Toasty.success(ctx, ctx.getString(R.string.prClosed));
+							}
+							else if(issueState.equals("open")) {
+								Toasty.success(ctx, ctx.getString(R.string.prReopened));
+							}
 						}
-						else if(issueState.equals("open")) {
-							Toasty.success(ctx, ctx.getString(R.string.issueStateReopened));
+						else {
+							if(issueState.equals("closed")) {
+								Toasty.success(ctx, ctx.getString(R.string.issueStateClosed));
+							}
+							else if(issueState.equals("open")) {
+								Toasty.success(ctx, ctx.getString(R.string.issueStateReopened));
+							}
 						}
 
-						((IssueDetailActivity) ctx).singleIssueUpdate = true;
+						IssueDetailActivity.singleIssueUpdate = true;
 						((IssueDetailActivity) ctx).onResume();
+						RepoDetailActivity.updateRepo = true;
 					}
 				}
 				else if(response.code() == 401) {
@@ -124,7 +138,7 @@ public class IssueActions {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
@@ -138,8 +152,8 @@ public class IssueActions {
 
 		call = RetrofitClient
 			.getApiInterface(ctx)
-			.addIssueSubscriber(((BaseActivity) ctx).getAccount().getAuthorization(), issue.getRepository().getOwner(),
-				issue.getRepository().getName(), issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
+			.issueAddSubscription(issue.getRepository().getOwner(),
+				issue.getRepository().getName(), (long) issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
 
 		call.enqueue(new Callback<>() {
 
@@ -173,15 +187,14 @@ public class IssueActions {
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});
-
 	}
 
 	public static void unsubscribe(final Context ctx, IssueContext issue) {
 
 		Call<Void> call;
 
-		call = RetrofitClient.getApiInterface(ctx).delIssueSubscriber(((BaseActivity) ctx).getAccount().getAuthorization(), issue.getRepository().getOwner(),
-			issue.getRepository().getName(), issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
+		call = RetrofitClient.getApiInterface(ctx).issueDeleteSubscription(issue.getRepository().getOwner(),
+			issue.getRepository().getName(), (long) issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
 
 		call.enqueue(new Callback<>() {
 
@@ -223,24 +236,25 @@ public class IssueActions {
 
 		ActionResult<ActionResult.None> actionResult = new ActionResult<>();
 
-		Issues issueComment = new Issues(comment);
+		CreateIssueCommentOption issueComment = new CreateIssueCommentOption();
+		issueComment.setBody(comment);
 
-		Call<Issues> call = RetrofitClient
+		Call<Comment> call = RetrofitClient
 			.getApiInterface(context)
-			.replyCommentToIssue(((BaseActivity) context).getAccount().getAuthorization(), issue.getRepository().getOwner(),
-				issue.getRepository().getName(), issue.getIssueIndex(), issueComment);
+			.issueCreateComment(issue.getRepository().getOwner(),
+				issue.getRepository().getName(), (long) issue.getIssueIndex(), issueComment);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<Issues> call, @NonNull retrofit2.Response<Issues> response) {
+			public void onResponse(@NonNull Call<Comment> call, @NonNull retrofit2.Response<Comment> response) {
 
 				if(response.code() == 201) {
 					actionResult.finish(ActionResult.Status.SUCCESS);
 
 					if(issue.hasIssue()) {
-						IssuesFragment.resumeIssues = issue.getIssue().getPull_request() == null;
-						PullRequestsFragment.resumePullRequests = issue.getIssue().getPull_request() != null;
+						IssuesFragment.resumeIssues = issue.getIssue().getPullRequest() == null;
+						PullRequestsFragment.resumePullRequests = issue.getIssue().getPullRequest() != null;
 					}
 				}
 				else if(response.code() == 401) {
@@ -257,7 +271,7 @@ public class IssueActions {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<Issues> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Comment> call, @NonNull Throwable t) {
 
 				Toasty.error(context, context.getResources().getString(R.string.genericServerResponseError));
 			}

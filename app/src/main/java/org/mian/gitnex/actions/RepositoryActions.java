@@ -2,9 +2,8 @@ package org.mian.gitnex.actions;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
+import org.gitnex.tea4j.v2.models.WatchInfo;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -21,16 +20,14 @@ public class RepositoryActions {
 
     public static void starRepository(final Context context, RepositoryContext repository) {
 
-        Call<JsonElement> call;
-
-        call = RetrofitClient
+        Call<Void> call = RetrofitClient
                 .getApiInterface(context)
-                .starRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+                .userCurrentPutStar(repository.getOwner(), repository.getName());
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 		        if(response.isSuccessful()) {
 			        if(response.code() == 204) {
@@ -60,7 +57,7 @@ public class RepositoryActions {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
 	        }
@@ -69,16 +66,14 @@ public class RepositoryActions {
 
     public static void unStarRepository(final Context context, RepositoryContext repository) {
 
-        Call<JsonElement> call;
-
-        call = RetrofitClient
+        Call<Void> call = RetrofitClient
                 .getApiInterface(context)
-                .unStarRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+                .userCurrentDeleteStar(repository.getOwner(), repository.getName());
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 		        if(response.isSuccessful()) {
 			        if(response.code() == 204) {
@@ -108,7 +103,7 @@ public class RepositoryActions {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
 	        }
@@ -117,16 +112,14 @@ public class RepositoryActions {
 
     public static void watchRepository(final Context context, RepositoryContext repository) {
 
-        Call<JsonElement> call;
-
-        call = RetrofitClient
+        Call<WatchInfo> call = RetrofitClient
                 .getApiInterface(context)
-                .watchRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+                .userCurrentPutSubscription(repository.getOwner(), repository.getName());
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+            @Override
+            public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
 
 		        if(response.isSuccessful()) {
 			        if(response.code() == 200) {
@@ -157,7 +150,7 @@ public class RepositoryActions {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
 
 		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
 	        }
@@ -166,16 +159,14 @@ public class RepositoryActions {
 
     public static void unWatchRepository(final Context context, RepositoryContext repository) {
 
-        Call<JsonElement> call;
-
-        call = RetrofitClient
+        Call<Void> call = RetrofitClient
                 .getApiInterface(context)
-                .unWatchRepository(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+                .userCurrentDeleteStar(repository.getOwner(), repository.getName());
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 		        if(response.code() == 204) {
 
@@ -202,7 +193,7 @@ public class RepositoryActions {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 		        Toasty.error(context, context.getString(R.string.genericServerResponseError));
 	        }

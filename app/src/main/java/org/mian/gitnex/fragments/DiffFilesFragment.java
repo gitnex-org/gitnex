@@ -7,19 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import org.gitnex.tea4j.models.FileDiffView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentDiffFilesBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -51,7 +49,7 @@ public class DiffFilesFragment extends Fragment {
 
 		binding.diffFiles.setOnItemClickListener((parent, view, position, id) -> requireActivity().getSupportFragmentManager()
 			.beginTransaction()
-			.replace(R.id.fragment_container, DiffFragment.newInstance((FileDiffView) parent.getItemAtPosition(position), issue))
+			.replace(R.id.fragment_container, DiffFragment.newInstance((FileDiffView) parent.getItemAtPosition(position), issue.getIssueType().toLowerCase()))
 			.commit());
 
 		getPullDiffFiles(issue.getRepository().getOwner(), issue.getRepository().getName(), String.valueOf(issue.getIssueIndex()));
@@ -64,13 +62,11 @@ public class DiffFilesFragment extends Fragment {
 
 		Thread thread = new Thread(() -> {
 
-			Call<ResponseBody> call = ((BaseActivity) ctx).getAccount().requiresVersion("1.13.0") ?
-				RetrofitClient.getApiInterface(ctx).getPullDiffContent(((BaseActivity) requireActivity()).getAccount().getAuthorization(), owner, repo, pullIndex) :
-				RetrofitClient.getWebInterface(ctx).getPullDiffContent(((BaseActivity) requireActivity()).getAccount().getWebAuthorization(), owner, repo, pullIndex);
+			Call<String> call = RetrofitClient.getApiInterface(ctx).repoDownloadPullDiffOrPatch(owner, repo, Long.valueOf(pullIndex), "diff", null);
 
 			try {
 
-				Response<ResponseBody> response = call.execute();
+				Response<String> response = call.execute();
 				if(response.body() == null) {
 					Toasty.error(requireContext(), getString(R.string.genericError));
 					requireActivity().finish();
@@ -80,7 +76,7 @@ public class DiffFilesFragment extends Fragment {
 				switch(response.code()) {
 
 					case 200:
-						List<FileDiffView> fileDiffViews = ParseDiff.getFileDiffViewArray(response.body().string());
+						List<FileDiffView> fileDiffViews = ParseDiff.getFileDiffViewArray(response.body());
 
 						int filesCount = fileDiffViews.size();
 

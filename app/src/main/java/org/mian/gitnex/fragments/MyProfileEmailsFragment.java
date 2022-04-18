@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.MyProfileEmailsAdapter;
 import org.mian.gitnex.databinding.FragmentProfileEmailsBinding;
 import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
@@ -58,21 +57,21 @@ public class MyProfileEmailsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            ProfileEmailsViewModel.loadEmailsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext());
+            ProfileEmailsViewModel.loadEmailsList(getContext());
 
         }, 200));
 
-        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+        fetchDataAsync();
 
         return fragmentProfileEmailsBinding.getRoot();
 
     }
 
-    private void fetchDataAsync(String instanceToken) {
+    private void fetchDataAsync() {
 
         ProfileEmailsViewModel profileEmailModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
 
-        profileEmailModel.getEmailsList(instanceToken, getContext()).observe(getViewLifecycleOwner(), emailsListMain -> {
+        profileEmailModel.getEmailsList(getContext()).observe(getViewLifecycleOwner(), emailsListMain -> {
             adapter = new MyProfileEmailsAdapter(getContext(), emailsListMain);
             if(adapter.getItemCount() > 0) {
                 mRecyclerView.setAdapter(adapter);
@@ -94,7 +93,7 @@ public class MyProfileEmailsFragment extends Fragment {
 		super.onResume();
 
 		if(refreshEmails) {
-			ProfileEmailsViewModel.loadEmailsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), getContext());
+			ProfileEmailsViewModel.loadEmailsList(getContext());
 			refreshEmails = false;
 		}
 	}

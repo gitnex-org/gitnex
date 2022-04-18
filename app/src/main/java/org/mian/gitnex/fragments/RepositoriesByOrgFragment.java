@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -73,20 +72,20 @@ public class RepositoriesByOrgFragment extends Fragment {
 
 			page = 1;
 			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+			fetchDataAsync();
 			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+		fetchDataAsync();
 
 		return fragmentRepositoriesBinding.getRoot();
 	};
 
-	private void fetchDataAsync(String instanceToken) {
+	private void fetchDataAsync() {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(instanceToken, page, resultLimit, "", "org", orgName, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(page, resultLimit, "", "org", orgName, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -95,7 +94,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, "", "org", orgName, getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(page, resultLimit, "", "org", orgName, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -126,7 +125,7 @@ public class RepositoriesByOrgFragment extends Fragment {
         super.onResume();
 
         if(MainActivity.repoCreated) {
-            RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, null, "org", orgName, getContext());
+            RepositoriesViewModel.loadReposList(page, resultLimit, null, "org", orgName, getContext());
 	        MainActivity.repoCreated = false;
         }
 

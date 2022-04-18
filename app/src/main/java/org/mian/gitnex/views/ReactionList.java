@@ -13,11 +13,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.gson.Gson;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
-import org.gitnex.tea4j.models.IssueReaction;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.Reaction;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ReactionAuthorsAdapter;
@@ -77,35 +76,35 @@ public class ReactionList extends HorizontalScrollView {
 
 			try {
 
-				Response<List<IssueReaction>> response = null;
+				Response<List<Reaction>> response = null;
 
 				switch(reactionType) {
 
 					case ISSUE:
 						response = RetrofitClient
 							.getApiInterface(context)
-							.getIssueReactions(((BaseActivity) context).getAccount().getAuthorization(), repoOwner, repoName, id)
+							.issueGetIssueReactions(repoOwner, repoName, (long) id, null, null)
 							.execute();
 						break;
 
 					case COMMENT:
 						response = RetrofitClient
 							.getApiInterface(context)
-							.getIssueCommentReactions(((BaseActivity) context).getAccount().getAuthorization(), repoOwner, repoName, id)
+							.issueGetCommentReactions(repoOwner, repoName, (long) id)
 							.execute();
 						break;
 				}
 
 				if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
 
-					Map<String, List<IssueReaction>> sortedReactions = new HashMap<>();
+					Map<String, List<Reaction>> sortedReactions = new HashMap<>();
 
-					for(IssueReaction issueReaction : response.body()) {
+					for(Reaction issueReaction : response.body()) {
 
 						if(sortedReactions.containsKey(issueReaction.getContent())) {
 							sortedReactions.get(issueReaction.getContent()).add(issueReaction);
 						} else {
-							List<IssueReaction> issueReactions = new ArrayList<>();
+							List<Reaction> issueReactions = new ArrayList<>();
 							issueReactions.add(issueReaction);
 
 							sortedReactions.put(issueReaction.getContent(), issueReactions);
@@ -114,11 +113,11 @@ public class ReactionList extends HorizontalScrollView {
 
 					for(String content : sortedReactions.keySet()) {
 
-						List<IssueReaction> issueReactions = sortedReactions.get(content);
+						List<Reaction> issueReactions = sortedReactions.get(content);
 
 						@SuppressLint("InflateParams") CardView reactionBadge = (CardView) LayoutInflater.from(context).inflate(R.layout.layout_reaction_badge, this, false);
 
-						for(IssueReaction issueReaction : issueReactions) {
+						for(Reaction issueReaction : issueReactions) {
 							if(issueReaction.getUser().getLogin().equals(loginUid)) {
 								reactionBadge.setCardBackgroundColor(AppUtil.getColorFromAttribute(context, R.attr.inputSelectedColor));
 								break;
@@ -131,10 +130,7 @@ public class ReactionList extends HorizontalScrollView {
 
 						reactionBadge.setOnClickListener(v -> {
 
-							List<UserInfo> userData = issueReactions.stream().map(issueReaction -> {
-								Gson gson = new Gson();
-								return gson.fromJson(gson.toJson(issueReaction.getUser()), UserInfo.class); // FIXME Remove when transitioned to tea4j-autodeploy
-							}).collect(Collectors.toList());
+							List<User> userData = issueReactions.stream().map(Reaction::getUser).collect(Collectors.toList());
 
 							ReactionAuthorsAdapter adapter = new ReactionAuthorsAdapter(context, userData);
 

@@ -2,11 +2,9 @@ package org.mian.gitnex.actions;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.Collaborators;
-import org.gitnex.tea4j.models.Permission;
+import org.gitnex.tea4j.v2.models.AddCollaboratorOption;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddCollaboratorToRepositoryActivity;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -23,14 +21,14 @@ public class CollaboratorActions {
 
     public static void deleteCollaborator(final Context context, String userName, RepositoryContext repository) {
 
-        Call<Collaborators> call = RetrofitClient
+        Call<Void> call = RetrofitClient
                 .getApiInterface(context)
-                .deleteCollaborator(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), userName);
+                .repoDeleteCollaborator(repository.getOwner(), repository.getName(), userName);
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<Collaborators> call, @NonNull retrofit2.Response<Collaborators> response) {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 		        if(response.isSuccessful()) {
 			        if(response.code() == 204) {
@@ -61,7 +59,7 @@ public class CollaboratorActions {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<Collaborators> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 		        Toasty.error(context, context.getResources().getString(R.string.genericServerResponseError));
 	        }
@@ -71,16 +69,17 @@ public class CollaboratorActions {
 
     public static void addCollaborator(final Context context, String permission, String userName, RepositoryContext repository) {
 
-        Permission permissionString = new Permission(permission);
+        AddCollaboratorOption permissionString = new AddCollaboratorOption();
+		permissionString.setPermission(permission);
 
-        Call<Permission> call = RetrofitClient
+        Call<Void> call = RetrofitClient
                 .getApiInterface(context)
-                .addCollaborator(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), userName, permissionString);
+                .repoAddCollaborator(repository.getOwner(), repository.getName(), userName, permissionString);
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<Permission> call, @NonNull retrofit2.Response<Permission> response) {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 		        if(response.isSuccessful()) {
 			        if(response.code() == 204) {
@@ -111,7 +110,7 @@ public class CollaboratorActions {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<Permission> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 		        Toasty.error(context, context.getResources().getString(R.string.genericServerResponseError));
 	        }

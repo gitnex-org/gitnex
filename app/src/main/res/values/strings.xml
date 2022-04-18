@@ -697,6 +697,8 @@
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="prClosed">Pull Request closed</string>
+    <string name="prReopened">Pull Request reopened</string>
 
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>

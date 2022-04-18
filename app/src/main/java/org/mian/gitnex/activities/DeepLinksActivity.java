@@ -9,11 +9,11 @@ import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
 import org.apache.commons.lang3.StringUtils;
-import org.gitnex.tea4j.models.Files;
-import org.gitnex.tea4j.models.Organization;
-import org.gitnex.tea4j.models.PullRequests;
-import org.gitnex.tea4j.models.UserInfo;
-import org.gitnex.tea4j.models.UserRepositories;
+import org.gitnex.tea4j.v2.models.ContentsResponse;
+import org.gitnex.tea4j.v2.models.Organization;
+import org.gitnex.tea4j.v2.models.PullRequest;
+import org.gitnex.tea4j.v2.models.Repository;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -41,8 +41,6 @@ import retrofit2.Response;
 public class DeepLinksActivity extends BaseActivity {
 
 	private ActivityDeeplinksBinding viewBinding;
-	private String currentInstance;
-	private String instanceToken;
 	private boolean accountFound = false;
 
 	private Intent mainIntent;
@@ -86,8 +84,6 @@ public class DeepLinksActivity extends BaseActivity {
 
 			String hostUri = userAccount.getInstanceUrl();
 
-			currentInstance = userAccount.getInstanceUrl();
-			instanceToken = userAccount.getToken();
 			String host = data.getHost();
 			if (host == null) host = "";
 
@@ -127,7 +123,7 @@ public class DeepLinksActivity extends BaseActivity {
 				}
 				else {
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						getUserOrOrg(currentInstance, instanceToken, data.getLastPathSegment()), 500);
+						getUserOrOrg(data.getLastPathSegment()), 500);
 				}
 			}
 			else if(data.getPathSegments().size() == 2) {
@@ -159,7 +155,7 @@ public class DeepLinksActivity extends BaseActivity {
 					}
 					String finalRepo = repo;
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), finalRepo, "repo"), 500);
+						goToRepoSection(data.getPathSegments().get(0), finalRepo, "repo"), 500);
 				}
 				else { // no action, show options
 					showNoActionButtons();
@@ -207,11 +203,11 @@ public class DeepLinksActivity extends BaseActivity {
 					}
 					else if(Objects.requireNonNull(data.getLastPathSegment()).contains("issues")) {
 						new Handler(Looper.getMainLooper()).postDelayed(() ->
-							goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "issue"), 500);
+							goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "issue"), 500);
 					}
 					else if(data.getLastPathSegment().equals("new")) {
 						new Handler(Looper.getMainLooper()).postDelayed(() ->
-							goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "issueNew"), 500);
+							goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "issueNew"), 500);
 					}
 					else {
 						ctx.startActivity(mainIntent);
@@ -229,18 +225,18 @@ public class DeepLinksActivity extends BaseActivity {
 								issueIntent.putExtra("issueComment", urlSplitted[1]);
 							}
 
-							getPullRequest(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), Integer.parseInt(data.getLastPathSegment()));
+							getPullRequest(data.getPathSegments().get(0), data.getPathSegments().get(1), Integer.parseInt(data.getLastPathSegment()));
 						}, 500);
 
 					}
 					else if(Objects.requireNonNull(data.getLastPathSegment()).contains("pulls")) {
 						new Handler(Looper.getMainLooper()).postDelayed(() ->
-							goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "pull"), 500);
+							goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "pull"), 500);
 					}
 					else if(data.getLastPathSegment().equals("files")) { // pr diff
 						new Handler(Looper.getMainLooper()).postDelayed(() -> {
 							issueIntent.putExtra("openPrDiff", "true");
-							getPullRequest(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), Integer.parseInt(data.getPathSegments().get(3)));
+							getPullRequest(data.getPathSegments().get(0), data.getPathSegments().get(1), Integer.parseInt(data.getPathSegments().get(3)));
 						}, 500);
 					}
 					else {
@@ -251,35 +247,35 @@ public class DeepLinksActivity extends BaseActivity {
 
 				else if(data.getPathSegments().get(2).equals("compare")) { // new pull request
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "pullNew"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "pullNew"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("commit")) {
 					repoIntent.putExtra("sha", data.getLastPathSegment());
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "commit"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "commit"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("commits")) { // commits list
 					String branch = data.getLastPathSegment();
 					repoIntent.putExtra("branchName", branch);
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "commitsList"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "commitsList"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("milestones") && data.getLastPathSegment().equals("new")) { // new milestone
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "milestonesNew"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "milestonesNew"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("milestones")) { // milestones
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "milestones"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "milestones"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("milestone")) { // milestone
 					repoIntent.putExtra("milestoneId", data.getLastPathSegment());
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "milestones"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "milestones"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("releases") && data.getLastPathSegment().equals("new")) { // new release
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "newRelease"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "newRelease"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("releases")) { // releases
 					if(data.getPathSegments().size() == 5) {
@@ -288,25 +284,25 @@ public class DeepLinksActivity extends BaseActivity {
 						}
 					}
 					new Handler(Looper.getMainLooper()).postDelayed(
-						() -> goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1),
+						() -> goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1),
 							"releases"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("labels")) { // labels
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "labels"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "labels"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("settings")) { // repo settings
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "settings"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "settings"), 500);
 				}
 				else if(data.getLastPathSegment().equals("branches")) { // branches list
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "branchesList"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "branchesList"), 500);
 				}
 				else if(data.getPathSegments().size() == 5 && data.getPathSegments().get(2).equals("src") && data.getPathSegments().get(3).equals("branch")) { // branch
 					repoIntent.putExtra("selectedBranch", data.getLastPathSegment());
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						goToRepoSection(currentInstance, instanceToken, data.getPathSegments().get(0), data.getPathSegments().get(1), "branch"), 500);
+						goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "branch"), 500);
 				}
 				else if(data.getPathSegments().get(2).equals("src") && data.getPathSegments().get(3).equals("branch")) { // file/dir
 					StringBuilder filePath = new StringBuilder();
@@ -318,7 +314,7 @@ public class DeepLinksActivity extends BaseActivity {
 					}
 					filePath.deleteCharAt(filePath.toString().length() - 1);
 					new Handler(Looper.getMainLooper()).postDelayed(() ->
-						getFile(currentInstance, instanceToken, data.getPathSegments().get(0),
+						getFile(data.getPathSegments().get(0),
 							data.getPathSegments().get(1), filePath.toString(), data.getPathSegments().get(4)), 500);
 				}
 				else { // no action, show options
@@ -367,18 +363,18 @@ public class DeepLinksActivity extends BaseActivity {
 		}
 	}
 
-	private void getPullRequest(String url, String token, String repoOwner, String repoName, int index) {
+	private void getPullRequest(String repoOwner, String repoName, int index) {
 
-		Call<PullRequests> call = RetrofitClient
-			.getApiInterface(ctx, url)
-			.getPullRequestByIndex(token, repoOwner, repoName, index);
+		Call<PullRequest> call = RetrofitClient
+			.getApiInterface(ctx)
+			.repoGetPullRequest(repoOwner, repoName, (long) index);
 
-		call.enqueue(new Callback<PullRequests>() {
+		call.enqueue(new Callback<PullRequest>() {
 
 			@Override
-			public void onResponse(@NonNull Call<PullRequests> call, @NonNull retrofit2.Response<PullRequests> response) {
+			public void onResponse(@NonNull Call<PullRequest> call, @NonNull retrofit2.Response<PullRequest> response) {
 
-				PullRequests prInfo = response.body();
+				PullRequest prInfo = response.body();
 
 				if (response.code() == 200) {
 
@@ -417,7 +413,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<PullRequests> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
 
 				ctx.startActivity(issueIntent);
 				finish();
@@ -426,17 +422,17 @@ public class DeepLinksActivity extends BaseActivity {
 		});
 	}
 
-	private void goToRepoSection(String url, String token, String repoOwner, String repoName, String type) {
+	private void goToRepoSection(String repoOwner, String repoName, String type) {
 
-		Call<UserRepositories> call = RetrofitClient
-			.getApiInterface(ctx, url)
-			.getUserRepository(token, repoOwner, repoName);
+		Call<Repository> call = RetrofitClient
+			.getApiInterface(ctx)
+			.repoGet(repoOwner, repoName);
 
-		call.enqueue(new Callback<UserRepositories>() {
+		call.enqueue(new Callback<Repository>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserRepositories> call, @NonNull retrofit2.Response<UserRepositories> response) {
-				UserRepositories repoInfo = response.body();
+			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
+				Repository repoInfo = response.body();
 
 				if (response.code() == 200) {
 					assert repoInfo != null;
@@ -473,7 +469,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserRepositories> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
 				ctx.startActivity(mainIntent);
 				finish();
@@ -482,8 +478,8 @@ public class DeepLinksActivity extends BaseActivity {
 		});
 	}
 
-	private void getUserOrOrg(String url, String instanceToken, String userOrgName) {
-		Call<Organization> call = RetrofitClient.getApiInterface(ctx, url).getOrganization(instanceToken, userOrgName);
+	private void getUserOrOrg(String userOrgName) {
+		Call<Organization> call = RetrofitClient.getApiInterface(ctx).orgGet(userOrgName);
 
 		call.enqueue(new Callback<Organization>() {
 
@@ -491,7 +487,7 @@ public class DeepLinksActivity extends BaseActivity {
 			public void onResponse(@NonNull Call<Organization> call, @NonNull Response<Organization> response) {
 				if(response.code() == 404) { // org doesn't exist or it's a user user
 					Log.d("getUserOrOrg-404", String.valueOf(response.code()));
-					getUser(url, instanceToken, userOrgName);
+					getUser(userOrgName);
 				}
 				else if(response.code() == 200) { // org
 					assert response.body() != null;
@@ -515,13 +511,13 @@ public class DeepLinksActivity extends BaseActivity {
 		});
 	}
 
-	private void getUser(String url, String instanceToken, String userName) {
-		Call<UserInfo> call = RetrofitClient.getApiInterface(ctx, url).getUserProfile(instanceToken, userName);
+	private void getUser(String userName) {
+		Call<User> call = RetrofitClient.getApiInterface(ctx).userGet(userName);
 
-		call.enqueue(new Callback<UserInfo>() {
+		call.enqueue(new Callback<User>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserInfo> call, @NonNull Response<UserInfo> response) {
+			public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
 				if(response.code() == 200) {
 					assert response.body() != null;
 					userIntent.putExtra("username", response.body().getLogin());
@@ -535,7 +531,7 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 				Log.e("onFailure-getUser", t.toString());
 				ctx.startActivity(mainIntent);
 				finish();
@@ -543,21 +539,21 @@ public class DeepLinksActivity extends BaseActivity {
 		});
 	}
 
-	private void getFile(String url, String instanceToken, String owner, String repo, String filePath, String branch) {
-		Call<Files> call = RetrofitClient.getApiInterface(ctx, url).getSingleFileContents(instanceToken, owner, repo, filePath, branch);
+	private void getFile(String owner, String repo, String filePath, String branch) {
+		Call<ContentsResponse> call = RetrofitClient.getApiInterface(ctx).repoGetContents(owner, repo, filePath, branch);
 
-		call.enqueue(new Callback<Files>() {
+		call.enqueue(new Callback<ContentsResponse>() {
 
 			@Override
-			public void onResponse(@NonNull Call<Files> call, @NonNull Response<Files> response) {
+			public void onResponse(@NonNull Call<ContentsResponse> call, @NonNull Response<ContentsResponse> response) {
 				if(response.code() == 200) {
 					// check if file and open file/dir
-					Files file = response.body();
+					ContentsResponse file = response.body();
 					assert file != null;
 					if(file.getType().equals("file")) {
 						repoIntent.putExtra("file", file);
 						repoIntent.putExtra("branch", branch);
-						goToRepoSection(url, instanceToken, owner, repo, "file");
+						goToRepoSection(owner, repo, "file");
 					}
 				}
 				else {
@@ -568,18 +564,18 @@ public class DeepLinksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<Files> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<ContentsResponse> call, @NonNull Throwable t) {
 				Log.e("getFile-onFailure", t.toString());
 				// maybe it's a directory
-				getDir(url, instanceToken, owner, repo, filePath, branch);
+				getDir(owner, repo, filePath, branch);
 			}
 		});
 	}
 
-	private void getDir(String url, String instanceToken, String owner, String repo, String filePath, String branch) {
+	private void getDir(String owner, String repo, String filePath, String branch) {
 		repoIntent.putExtra("branch", branch);
 		repoIntent.putExtra("dir", filePath);
-		goToRepoSection(url, instanceToken, owner, repo, "dir");
+		goToRepoSection(owner, repo, "dir");
 	}
 
 	private void showNoActionButtons()  {

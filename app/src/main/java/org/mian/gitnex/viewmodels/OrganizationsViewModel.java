@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.UserOrganizations;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -21,26 +21,26 @@ import retrofit2.Response;
 
 public class OrganizationsViewModel extends ViewModel {
 
-    private static MutableLiveData<List<UserOrganizations>> orgList;
+    private static MutableLiveData<List<Organization>> orgList;
 
-    public LiveData<List<UserOrganizations>> getUserOrg(String token, int page, int resultLimit, Context ctx) {
+    public LiveData<List<Organization>> getUserOrg(int page, int resultLimit, Context ctx) {
 
 	    orgList = new MutableLiveData<>();
-    	loadOrgList(token, page, resultLimit, ctx);
+    	loadOrgList(page, resultLimit, ctx);
 
         return orgList;
     }
 
-    public static void loadOrgList(String token, int page, int resultLimit, Context ctx) {
+    public static void loadOrgList(int page, int resultLimit, Context ctx) {
 
-        Call<List<UserOrganizations>> call = RetrofitClient
+        Call<List<Organization>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getUserOrgs(token, page, resultLimit);
+                .orgListCurrentUserOrgs(page, resultLimit);
 
         call.enqueue(new Callback<>() {
 
 	        @Override
-	        public void onResponse(@NonNull Call<List<UserOrganizations>> call, @NonNull Response<List<UserOrganizations>> response) {
+	        public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 
 		        if(response.isSuccessful()) {
 		        	orgList.postValue(response.body());
@@ -51,26 +51,26 @@ public class OrganizationsViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<UserOrganizations>> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }
 
-	public static void loadMoreOrgList(String token, int page, int resultLimit, Context ctx, OrganizationsListAdapter adapter) {
+	public static void loadMoreOrgList(int page, int resultLimit, Context ctx, OrganizationsListAdapter adapter) {
 
-		Call<List<UserOrganizations>> call = RetrofitClient
+		Call<List<Organization>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getUserOrgs(token, page, resultLimit);
+			.orgListCurrentUserOrgs(page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserOrganizations>> call, @NonNull Response<List<UserOrganizations>> response) {
+			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 
 				if(response.isSuccessful()) {
-					List<UserOrganizations> list = orgList.getValue();
+					List<Organization> list = orgList.getValue();
 					assert list != null;
 					assert response.body() != null;
 
@@ -88,7 +88,7 @@ public class OrganizationsViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserOrganizations>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}

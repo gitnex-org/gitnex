@@ -428,4 +428,5 @@ public class AppUtil {
 		}
 		return Uri.parse(scheme+raw);
 	}
+
 }

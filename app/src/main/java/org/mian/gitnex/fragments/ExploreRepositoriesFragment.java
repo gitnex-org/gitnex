@@ -18,10 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.ExploreRepositories;
-import org.gitnex.tea4j.models.UserRepositories;
+import org.gitnex.tea4j.v2.models.Repository;
+import org.gitnex.tea4j.v2.models.SearchResults;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomExploreRepositoriesDialogBinding;
@@ -49,7 +49,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private final String sort = "updated";
 	private final String order = "desc";
 	private int resultLimit;
-	private List<UserRepositories> dataList;
+	private List<Repository> dataList;
 	private ExploreRepositoriesAdapter adapter;
 
 	private Dialog dialogFilterOptions;
@@ -59,6 +59,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private boolean includeDescription = false;
 	private boolean includeTemplate = false;
 	private boolean onlyArchived = false;
+	private String searchQuery = "";
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,18 +99,16 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 	private void loadInitial(String searchKeyword, int resultLimit) {
 
-		Call<ExploreRepositories> call = RetrofitClient
-			.getApiInterface(context).queryRepos(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, repoTypeInclude, sort, order, includeTopic, includeDescription, includeTemplate, onlyArchived, resultLimit, 1);
-
+		Call<SearchResults> call = RetrofitClient
+			.getApiInterface(context).repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null,
+				null, null, includeTemplate, onlyArchived, null, null, null, null, 1, resultLimit);
 		call.enqueue(new Callback<>() {
-
 			@Override
-			public void onResponse(@NonNull Call<ExploreRepositories> call, @NonNull Response<ExploreRepositories> response) {
-
+			public void onResponse(@NonNull Call<SearchResults> call, @NonNull Response<SearchResults> response) {
 				if(response.isSuccessful()) {
-					if(response.body() != null && response.body().getSearchedData().size() > 0) {
+					if(response.body() != null && response.body().getData().size() > 0) {
 						dataList.clear();
-						dataList.addAll(response.body().getSearchedData());
+						dataList.addAll(response.body().getData());
 						adapter.notifyDataChanged();
 						viewBinding.noData.setVisibility(View.GONE);
 					}
@@ -130,7 +129,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<ExploreRepositories> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
 
 				Toasty.error(requireActivity(), requireActivity().getResources().getString(R.string.genericServerResponseError));
 			}
@@ -140,17 +139,16 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private void loadMore(String searchKeyword, int resultLimit, int page) {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<ExploreRepositories> call = RetrofitClient.getApiInterface(context)
-			.queryRepos(((BaseActivity) requireActivity()).getAccount().getAuthorization(), searchKeyword, repoTypeInclude, sort, order, includeTopic, includeDescription, includeTemplate, onlyArchived, resultLimit, page);
+		Call<SearchResults> call = RetrofitClient.getApiInterface(context)
+			.repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null,
+				null, null, includeTemplate, onlyArchived, null, null, null, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
-
 			@Override
-			public void onResponse(@NonNull Call<ExploreRepositories> call, @NonNull Response<ExploreRepositories> response) {
-
+			public void onResponse(@NonNull Call<SearchResults> call, @NonNull Response<SearchResults> response) {
 				if(response.isSuccessful()) {
 					assert response.body() != null;
-					List<UserRepositories> result = response.body().getSearchedData();
+					List<Repository> result = response.body().getData();
 					if(result.size() > 0) {
 						pageSize = result.size();
 						dataList.addAll(result);
@@ -168,7 +166,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<ExploreRepositories> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
 
 				Toasty.error(requireActivity(), requireActivity().getResources().getString(R.string.genericServerResponseError));
 			}
@@ -206,6 +204,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 						loadMore(query, resultLimit, page);
 					}
 				}));
+				searchQuery = query;
 				searchView.setQuery(null, false);
 				searchItem.collapseActionView();
 				return false;
@@ -247,5 +246,17 @@ public class ExploreRepositoriesFragment extends Fragment {
 		filterBinding.cancel.setOnClickListener(editProperties -> dialogFilterOptions.dismiss());
 
 		dialogFilterOptions.show();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if(MainActivity.repoCreated) {
+			dataList.clear();
+			loadInitial(searchQuery, resultLimit);
+			MainActivity.repoCreated = false;
+		}
+
 	}
 }

@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.gitnex.tea4j.models.UserRepositories;
+import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoForksAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -46,7 +46,7 @@ public class RepoForksActivity extends BaseActivity {
 	private int pageSize = 1;
 
 	private RecyclerView recyclerView;
-	private List<UserRepositories> forksList;
+	private List<Repository> forksList;
 	private RepoForksAdapter adapter;
 	private ProgressBar progressLoadMore;
 
@@ -91,8 +91,9 @@ public class RepoForksActivity extends BaseActivity {
 
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
+			pageSize = 1;
 			swipeRefresh.setRefreshing(false);
-			loadInitial(getAccount().getAuthorization(), repoOwner, repoName, pageSize, resultLimit);
+			loadInitial(repoOwner, repoName, pageSize, resultLimit);
 			adapter.notifyDataChanged();
 
 		}, 200));
@@ -103,7 +104,7 @@ public class RepoForksActivity extends BaseActivity {
 			if(forksList.size() == resultLimit || pageSize == resultLimit) {
 
 				int page = (forksList.size() + resultLimit) / resultLimit;
-				loadMore(getAccount().getAuthorization(), repoOwner, repoName, page, resultLimit);
+				loadMore(repoOwner, repoName, page, resultLimit);
 			}
 		}));
 
@@ -111,19 +112,19 @@ public class RepoForksActivity extends BaseActivity {
 		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 		recyclerView.setAdapter(adapter);
 
-		loadInitial(getAccount().getAuthorization(), repoOwner, repoName, pageSize, resultLimit);
+		loadInitial(repoOwner, repoName, pageSize, resultLimit);
 	}
 
-	private void loadInitial(String instanceToken, String repoOwner, String repoName, int pageSize, int resultLimit) {
+	private void loadInitial(String repoOwner, String repoName, int pageSize, int resultLimit) {
 
-		Call<List<UserRepositories>> call = RetrofitClient
+		Call<List<Repository>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getRepositoryForks(instanceToken, repoOwner, repoName, pageSize, resultLimit);
+			.listForks(repoOwner, repoName, pageSize, resultLimit);
 
-		call.enqueue(new Callback<List<UserRepositories>>() {
+		call.enqueue(new Callback<List<Repository>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserRepositories>> call, @NonNull Response<List<UserRepositories>> response) {
+			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
 				if(response.isSuccessful()) {
 
@@ -147,32 +148,32 @@ public class RepoForksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 				Log.e(TAG, t.toString());
 			}
 		});
 
 	}
 
-	private void loadMore(String instanceToken, String repoOwner, String repoName, int page, int resultLimit) {
+	private void loadMore(String repoOwner, String repoName, int page, int resultLimit) {
 
 		progressLoadMore.setVisibility(View.VISIBLE);
 
-		Call<List<UserRepositories>> call = RetrofitClient
+		Call<List<Repository>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getRepositoryForks(instanceToken, repoOwner, repoName, page, resultLimit);
+			.listForks(repoOwner, repoName, page, resultLimit);
 
-		call.enqueue(new Callback<List<UserRepositories>>() {
+		call.enqueue(new Callback<List<Repository>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserRepositories>> call, @NonNull Response<List<UserRepositories>> response) {
+			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
 				if(response.isSuccessful()) {
 
 					//remove loading view
 					forksList.remove(forksList.size() - 1);
 
-					List<UserRepositories> result = response.body();
+					List<Repository> result = response.body();
 					assert result != null;
 
 					if(result.size() > 0) {
@@ -190,7 +191,7 @@ public class RepoForksActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 				Log.e(TAG, t.toString());
 			}
 
@@ -226,9 +227,9 @@ public class RepoForksActivity extends BaseActivity {
 	}
 
 	private void filter(String text) {
-		List<UserRepositories> userRepositories = new ArrayList<>();
+		List<Repository> userRepositories = new ArrayList<>();
 
-		for(UserRepositories d : forksList) {
+		for(Repository d : forksList) {
 			if(d.getName().toLowerCase().contains(text) ||
 				d.getDescription().toLowerCase().contains(text)) {
 

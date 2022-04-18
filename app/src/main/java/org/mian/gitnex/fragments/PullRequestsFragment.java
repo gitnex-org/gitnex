@@ -18,9 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.gitnex.tea4j.models.PullRequests;
+import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -35,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class PullRequestsFragment extends Fragment {
@@ -45,7 +44,7 @@ public class PullRequestsFragment extends Fragment {
 	private FragmentPullRequestsBinding fragmentPullRequestsBinding;
 	private Menu menu;
 
-	private List<PullRequests> prList;
+	private List<PullRequest> prList;
 	private PullRequestsAdapter adapter;
 	private final String TAG = Constants.tagPullRequestsList;
 	private Context context;
@@ -76,7 +75,7 @@ public class PullRequestsFragment extends Fragment {
 
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			swipeRefresh.setRefreshing(false);
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), pageSize, repository.getPrState().toString(), resultLimit);
+			loadInitial(repository.getOwner(), repository.getName(), pageSize, repository.getPrState().toString(), resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -85,7 +84,7 @@ public class PullRequestsFragment extends Fragment {
 
 			if(prList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (prList.size() + resultLimit) / resultLimit;
-				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, repository.getPrState().toString(), resultLimit);
+				loadMore(repository.getOwner(), repository.getName(), page, repository.getPrState().toString(), resultLimit);
 			}
 
 		}));
@@ -112,7 +111,7 @@ public class PullRequestsFragment extends Fragment {
 
 				if(prList.size() == resultLimit || pageSize == resultLimit) {
 					int page = (prList.size() + resultLimit) / resultLimit;
-					loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, repository.getPrState().toString(), resultLimit);
+					loadMore(repository.getOwner(), repository.getName(), page, repository.getPrState().toString(), resultLimit);
 				}
 
 			}));
@@ -120,11 +119,11 @@ public class PullRequestsFragment extends Fragment {
 			fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentPullRequestsBinding.noData.setVisibility(View.GONE);
 
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), pageSize, prState, resultLimit);
+			loadInitial(repository.getOwner(), repository.getName(), pageSize, prState, resultLimit);
 			fragmentPullRequestsBinding.recyclerView.setAdapter(adapter);
 		});
 
-		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), pageSize, repository.getPrState().toString(), resultLimit);
+		loadInitial(repository.getOwner(), repository.getName(), pageSize, repository.getPrState().toString(), resultLimit);
 
 		return fragmentPullRequestsBinding.getRoot();
 	}
@@ -135,19 +134,20 @@ public class PullRequestsFragment extends Fragment {
 		super.onResume();
 
 		if(resumePullRequests) {
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), pageSize, repository.getPrState().toString(), resultLimit);
+			loadInitial(repository.getOwner(), repository.getName(), pageSize, repository.getPrState().toString(), resultLimit);
 			resumePullRequests = false;
 		}
 	}
 
-	private void loadInitial(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
+	private void loadInitial(String repoOwner, String repoName, int page, String prState, int resultLimit) {
 
-		Call<List<PullRequests>> call = RetrofitClient.getApiInterface(context).getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
+		Call<List<PullRequest>> call = RetrofitClient.getApiInterface(context).repoListPullRequests(repoOwner, repoName, prState, null,
+			null, null, page, resultLimit);
 
-		call.enqueue(new Callback<List<PullRequests>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<PullRequests>> call, @NonNull Response<List<PullRequests>> response) {
+			public void onResponse(@NonNull Call<List<PullRequest>> call, @NonNull Response<List<PullRequest>> response) {
 
 				if(response.code() == 200) {
 
@@ -176,29 +176,29 @@ public class PullRequestsFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<PullRequests>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<PullRequest>> call, @NonNull Throwable t) {
 
-				Log.e(TAG, t.toString());
 			}
 		});
 	}
 
-	private void loadMore(String token, String repoOwner, String repoName, int page, String prState, int resultLimit) {
+	private void loadMore(String repoOwner, String repoName, int page, String prState, int resultLimit) {
 
 		fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<PullRequests>> call = RetrofitClient.getApiInterface(context).getPullRequests(token, repoOwner, repoName, page, prState, resultLimit);
+		Call<List<PullRequest>> call = RetrofitClient.getApiInterface(context).repoListPullRequests(repoOwner, repoName, prState, null,
+			null, null, page, resultLimit);
 
-		call.enqueue(new Callback<List<PullRequests>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<PullRequests>> call, @NonNull Response<List<PullRequests>> response) {
+			public void onResponse(@NonNull Call<List<PullRequest>> call, @NonNull Response<List<PullRequest>> response) {
 
 				if(response.code() == 200) {
 
 					//remove loading view
 					prList.remove(prList.size() - 1);
-					List<PullRequests> result = response.body();
+					List<PullRequest> result = response.body();
 
 					assert result != null;
 					if(result.size() > 0) {
@@ -219,8 +219,8 @@ public class PullRequestsFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<PullRequests>> call, @NonNull Throwable t) {
-				Log.e(TAG, t.toString());
+			public void onFailure(@NonNull Call<List<PullRequest>> call, @NonNull Throwable t) {
+
 			}
 		});
 	}
@@ -261,9 +261,9 @@ public class PullRequestsFragment extends Fragment {
 
 	private void filter(String text) {
 
-		List<PullRequests> arr = new ArrayList<>();
+		List<PullRequest> arr = new ArrayList<>();
 
-		for(PullRequests d : prList) {
+		for(PullRequest d : prList) {
 			if(d == null || d.getTitle() == null || d.getBody() == null) {
 				continue;
 			}

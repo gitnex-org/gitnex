@@ -17,9 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.Milestones;
+import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.MilestonesAdapter;
 import org.mian.gitnex.databinding.FragmentMilestonesBinding;
@@ -36,7 +35,7 @@ public class MilestonesFragment extends Fragment {
 
     private FragmentMilestonesBinding viewBinding;
     private Menu menu;
-    private List<Milestones> dataList;
+    private List<Milestone> dataList;
     private MilestonesAdapter adapter;
     private RepositoryContext repository;
     private String milestoneId;
@@ -80,7 +79,7 @@ public class MilestonesFragment extends Fragment {
 	        page = 1;
             dataList.clear();
             viewBinding.pullToRefresh.setRefreshing(false);
-	        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), state);
+	        fetchDataAsync(repository.getOwner(), repository.getName(), state);
         }, 50));
 
         ((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerMilestone(milestoneState -> {
@@ -98,18 +97,18 @@ public class MilestonesFragment extends Fragment {
             viewBinding.progressBar.setVisibility(View.VISIBLE);
             viewBinding.noDataMilestone.setVisibility(View.GONE);
 
-	        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), milestoneState);
+	        fetchDataAsync(repository.getOwner(), repository.getName(), milestoneState);
         });
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), state);
+		fetchDataAsync(repository.getOwner(), repository.getName(), state);
         return viewBinding.getRoot();
     }
 
-	private void fetchDataAsync(String instanceToken, String repoOwner, String repoName, String state) {
+	private void fetchDataAsync(String repoOwner, String repoName, String state) {
 
 		MilestonesViewModel milestonesViewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
 
-		milestonesViewModel.getMilestonesList(instanceToken, repoOwner, repoName, state, getContext()).observe(getViewLifecycleOwner(), milestonesListMain -> {
+		milestonesViewModel.getMilestonesList(repoOwner, repoName, state, getContext()).observe(getViewLifecycleOwner(), milestonesListMain -> {
 
 			adapter = new MilestonesAdapter(getContext(), milestonesListMain, repository);
 			adapter.setLoadMoreListener(new MilestonesAdapter.OnLoadMoreListener() {
@@ -118,7 +117,7 @@ public class MilestonesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					MilestonesViewModel.loadMoreMilestones(instanceToken, repoOwner, repoName, page, state, getContext(), adapter);
+					MilestonesViewModel.loadMoreMilestones(repoOwner, repoName, page, state, getContext(), adapter);
 					viewBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -147,8 +146,8 @@ public class MilestonesFragment extends Fragment {
 		});
 	}
 
-	private static int getMilestoneIndex(int milestoneId, List<Milestones> milestones) {
-		for (Milestones milestone : milestones) {
+	private static int getMilestoneIndex(int milestoneId, List<Milestone> milestones) {
+		for (Milestone milestone : milestones) {
 			if(milestone.getId() == milestoneId) {
 				return milestones.indexOf(milestone);
 			}
@@ -187,9 +186,9 @@ public class MilestonesFragment extends Fragment {
 
     private void filter(String text) {
 
-        List<Milestones> arr = new ArrayList<>();
+        List<Milestone> arr = new ArrayList<>();
 
-        for(Milestones d : dataList) {
+        for(Milestone d : dataList) {
 	        if(d == null || d.getTitle() == null || d.getDescription() == null) {
 		        continue;
 	        }

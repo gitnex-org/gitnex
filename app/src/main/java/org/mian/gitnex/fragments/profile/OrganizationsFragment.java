@@ -16,9 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.UserOrganizations;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.profile.OrganizationsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
@@ -41,7 +40,7 @@ public class OrganizationsFragment extends Fragment {
 	private Context context;
 	private FragmentOrganizationsBinding fragmentOrganizationsBinding;
 
-	private List<UserOrganizations> organizationsList;
+	private List<Organization> organizationsList;
 	private OrganizationsAdapter adapter;
 
 	private int pageSize;
@@ -83,7 +82,7 @@ public class OrganizationsFragment extends Fragment {
 
 		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentOrganizationsBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
+			loadInitial(username, resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -91,7 +90,7 @@ public class OrganizationsFragment extends Fragment {
 		adapter.setLoadMoreListener(() -> fragmentOrganizationsBinding.recyclerView.post(() -> {
 			if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (organizationsList.size() + resultLimit) / resultLimit;
-				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, page, resultLimit);
+				loadMore(username, page, resultLimit);
 			}
 		}));
 
@@ -101,20 +100,20 @@ public class OrganizationsFragment extends Fragment {
 		fragmentOrganizationsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
 
-		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
+		loadInitial(username, resultLimit);
 
 		return fragmentOrganizationsBinding.getRoot();
 	}
 
-	private void loadInitial(String token, String username, int resultLimit) {
+	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<UserOrganizations>> call = RetrofitClient
+		Call<List<Organization>> call = RetrofitClient
 			.getApiInterface(context)
-			.getUserProfileOrganizations(token, username, 1, resultLimit);
+			.orgListUserOrgs(username, 1, resultLimit);
 
-		call.enqueue(new Callback<List<UserOrganizations>>() {
+		call.enqueue(new Callback<List<Organization>>() {
 			@Override
-			public void onResponse(@NonNull Call<List<UserOrganizations>> call, @NonNull Response<List<UserOrganizations>> response) {
+			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 
 				if(response.isSuccessful()) {
 
@@ -158,30 +157,30 @@ public class OrganizationsFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserOrganizations>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 				Toasty.error(context, getString(R.string.genericError));
 			}
 		});
 	}
 
-	private void loadMore(String token, String username, int page, int resultLimit) {
+	private void loadMore(String username, int page, int resultLimit) {
 
 		fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<UserOrganizations>> call = RetrofitClient
+		Call<List<Organization>> call = RetrofitClient
 			.getApiInterface(context)
-			.getUserProfileOrganizations(token, username, page, resultLimit);
+			.orgListUserOrgs(username, page, resultLimit);
 
-		call.enqueue(new Callback<List<UserOrganizations>>() {
+		call.enqueue(new Callback<List<Organization>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserOrganizations>> call, @NonNull Response<List<UserOrganizations>> response) {
+			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 
 				if(response.isSuccessful()) {
 
 					switch(response.code()) {
 						case 200:
-							List<UserOrganizations> result = response.body();
+							List<Organization> result = response.body();
 							assert result != null;
 							if(result.size() > 0) {
 								pageSize = result.size();
@@ -218,7 +217,7 @@ public class OrganizationsFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserOrganizations>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 				Toasty.error(context, getString(R.string.genericError));
 			}
 		});
@@ -251,9 +250,9 @@ public class OrganizationsFragment extends Fragment {
 
 	private void filter(String text) {
 
-		List<UserOrganizations> arr = new ArrayList<>();
+		List<Organization> arr = new ArrayList<>();
 
-		for(UserOrganizations d : organizationsList) {
+		for(Organization d : organizationsList) {
 			if(d == null || d.getUsername() == null || d.getDescription() == null) {
 				continue;
 			}

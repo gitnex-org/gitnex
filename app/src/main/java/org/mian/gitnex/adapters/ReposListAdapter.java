@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -43,13 +42,13 @@ import java.util.Locale;
 public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
 	private final Context context;
-	private List<UserRepositories> reposList;
-	private final List<UserRepositories> reposListFull;
+	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
+	private final List<org.gitnex.tea4j.v2.models.Repository> reposListFull;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final TinyDB tinyDb;
 
-	public ReposListAdapter(List<UserRepositories> reposListMain, Context ctx) {
+	public ReposListAdapter(List<org.gitnex.tea4j.v2.models.Repository> reposListMain, Context ctx) {
 		this.context = ctx;
 		this.reposList = reposListMain;
 		reposListFull = new ArrayList<>(reposList);
@@ -85,7 +84,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	class ReposHolder extends RecyclerView.ViewHolder {
 
-		private UserRepositories userRepositories;
+		private org.gitnex.tea4j.v2.models.Repository userRepositories;
 
 		private final ImageView image;
 		private final TextView repoName;
@@ -133,7 +132,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(UserRepositories repositories) {
+		void bindData(org.gitnex.tea4j.v2.models.Repository repositories) {
 
 			this.userRepositories = repositories;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
@@ -142,7 +141,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 			orgName.setText(repositories.getFullName().split("/")[0]);
 			repoName.setText(repositories.getFullName().split("/")[1]);
-			repoStars.setText(repositories.getStars_count());
+			repoStars.setText(String.valueOf(repositories.getStarsCount()));
 
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(repositories.getName());
@@ -150,9 +149,9 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
 
-			if(repositories.getAvatar_url() != null) {
-				if(!repositories.getAvatar_url().equals("")) {
-					PicassoService.getInstance(context).get().load(repositories.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+			if(repositories.getAvatarUrl() != null) {
+				if(!repositories.getAvatarUrl().equals("")) {
+					PicassoService.getInstance(context).get().load(repositories.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
 				}
 				else {
 					image.setImageDrawable(drawable);
@@ -162,25 +161,25 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				image.setImageDrawable(drawable);
 			}
 
-			if(repositories.getUpdated_at() != null) {
+			if(repositories.getUpdatedAt() != null) {
 
 				switch(timeFormat) {
 					case "pretty": {
 						PrettyTime prettyTime = new PrettyTime(locale);
-						String createdTime = prettyTime.format(repositories.getUpdated_at());
+						String createdTime = prettyTime.format(repositories.getUpdatedAt());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repositories.getUpdated_at()), context));
+						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(repositories.getUpdatedAt()), context));
 						break;
 					}
 					case "normal": {
 						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-						String createdTime = formatter.format(repositories.getUpdated_at());
+						String createdTime = formatter.format(repositories.getUpdatedAt());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 						break;
 					}
 					case "normal1": {
 						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-						String createdTime = formatter.format(repositories.getUpdated_at());
+						String createdTime = formatter.format(repositories.getUpdatedAt());
 						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
 						break;
 					}
@@ -230,7 +229,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<UserRepositories> list) {
+	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
 		reposList = list;
 		notifyDataChanged();
 	}
@@ -245,7 +244,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 
-			List<UserRepositories> filteredList = new ArrayList<>();
+			List<org.gitnex.tea4j.v2.models.Repository> filteredList = new ArrayList<>();
 
 			if(constraint == null || constraint.length() == 0) {
 				filteredList.addAll(reposListFull);
@@ -253,7 +252,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			else {
 				String filterPattern = constraint.toString().toLowerCase().trim();
 
-				for(UserRepositories item : reposListFull) {
+				for(org.gitnex.tea4j.v2.models.Repository item : reposListFull) {
 					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
 						filteredList.add(item);
 					}

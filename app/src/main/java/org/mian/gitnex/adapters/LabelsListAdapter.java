@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.Labels;
+import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -22,7 +22,7 @@ import java.util.List;
 public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.LabelsViewHolder> {
 
 	private List<Integer> currentLabelsIds;
-	private final List<Labels> labels;
+	private final List<Label> labels;
 	private final List<String> labelsStrings = new ArrayList<>();
 	private List<Integer> labelsIds = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 		void labelsIdsInterface(List<Integer> data);
 	}
 
-	public LabelsListAdapter(List<Labels> labelsMain, LabelsListAdapterListener labelsListener, List<Integer> currentLabelsIds) {
+	public LabelsListAdapter(List<Label> labelsMain, LabelsListAdapterListener labelsListener, List<Integer> currentLabelsIds) {
 
 		this.labels = labelsMain;
 		this.labelsListener = labelsListener;
@@ -69,7 +69,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 	@Override
 	public void onBindViewHolder(@NonNull LabelsListAdapter.LabelsViewHolder holder, int position) {
 
-		Labels currentItem = labels.get(position);
+		Label currentItem = labels.get(position);
 
 		String labelColor = currentItem.getColor();
 		int color = Color.parseColor("#" + labelColor);
@@ -89,7 +89,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 
 		for(int i = 0; i < currentLabelsIds.size(); i++) {
 
-			if(currentLabelsIds.contains(currentItem.getId())) {
+			if(currentLabelsIds.contains(currentItem.getId().intValue())) {
 
 				holder.labelSelection.setChecked(true);
 				labelsIds.add(currentLabelsIds.get(i));
@@ -103,12 +103,12 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 			if(isChecked) {
 
 				labelsStrings.add(currentItem.getName());
-				labelsIds.add(currentItem.getId());
+				labelsIds.add(currentItem.getId().intValue());
 			}
 			else {
 
 				labelsStrings.remove(currentItem.getName());
-				labelsIds.remove(Integer.valueOf(currentItem.getId()));
+				labelsIds.remove(Integer.valueOf(currentItem.getId().intValue()));
 			}
 
 			labelsListener.labelsInterface(labelsStrings);

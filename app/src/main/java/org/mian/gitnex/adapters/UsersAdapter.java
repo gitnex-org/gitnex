@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -26,11 +26,11 @@ import java.util.List;
 public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private List<UserInfo> followersList;
+	private List<User> followersList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public UsersAdapter(List<UserInfo> dataList, Context ctx) {
+	public UsersAdapter(List<User> dataList, Context ctx) {
 		this.context = ctx;
 		this.followersList = dataList;
 	}
@@ -62,7 +62,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 	}
 
 	class UsersHolder extends RecyclerView.ViewHolder {
-		private UserInfo userInfo;
+		private User userInfo;
 		private final ImageView userAvatar;
 		private final TextView userFullName;
 		private final TextView userName;
@@ -87,20 +87,20 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(UserInfo userInfo) {
+		void bindData(User userInfo) {
 			this.userInfo = userInfo;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-			if(!userInfo.getFullname().equals("")) {
-				userFullName.setText(Html.fromHtml(userInfo.getFullname()));
-				userName.setText(context.getResources().getString(R.string.usernameWithAt, userInfo.getUsername()));
+			if(!userInfo.getFullName().equals("")) {
+				userFullName.setText(Html.fromHtml(userInfo.getFullName()));
+				userName.setText(context.getResources().getString(R.string.usernameWithAt, userInfo.getLogin()));
 			}
 			else {
-				userFullName.setText(userInfo.getUsername());
+				userFullName.setText(userInfo.getLogin());
 				userName.setVisibility(View.GONE);
 			}
 
-			PicassoService.getInstance(context).get().load(userInfo.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
+			PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<UserInfo> list) {
+	public void updateList(List<User> list) {
 		followersList = list;
 		notifyDataChanged();
 	}

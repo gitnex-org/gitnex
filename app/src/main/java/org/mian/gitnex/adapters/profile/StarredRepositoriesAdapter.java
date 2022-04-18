@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import org.gitnex.tea4j.models.UserRepositories;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -37,11 +36,11 @@ import java.util.Locale;
 public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private List<UserRepositories> reposList;
+	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public StarredRepositoriesAdapter(Context ctx, List<UserRepositories> reposListMain) {
+	public StarredRepositoriesAdapter(Context ctx, List<org.gitnex.tea4j.v2.models.Repository> reposListMain) {
 		this.context = ctx;
 		this.reposList = reposListMain;
 	}
@@ -76,7 +75,7 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 
 	class StarredRepositoriesHolder extends RecyclerView.ViewHolder {
 
-		private UserRepositories userRepositories;
+		private org.gitnex.tea4j.v2.models.Repository userRepositories;
 
 		private final ImageView avatar;
 		private final TextView repoName;
@@ -122,7 +121,7 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(UserRepositories userRepositories) {
+		void bindData(org.gitnex.tea4j.v2.models.Repository userRepositories) {
 
 			this.userRepositories = userRepositories;
 			TinyDB tinyDb = TinyDB.getInstance(context);
@@ -133,7 +132,7 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 
 			orgName.setText(userRepositories.getFullName().split("/")[0]);
 			repoName.setText(userRepositories.getFullName().split("/")[1]);
-			repoStars.setText(userRepositories.getStars_count());
+			repoStars.setText(String.valueOf(userRepositories.getStarsCount()));
 
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(userRepositories.getName());
@@ -141,10 +140,10 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 
 			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
 
-			if(userRepositories.getAvatar_url() != null) {
-				if(!userRepositories.getAvatar_url().equals("")) {
+			if(userRepositories.getAvatarUrl() != null) {
+				if(!userRepositories.getAvatarUrl().equals("")) {
 					PicassoService
-						.getInstance(context).get().load(userRepositories.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(avatar);
+						.getInstance(context).get().load(userRepositories.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(avatar);
 				}
 				else {
 					avatar.setImageDrawable(drawable);
@@ -154,12 +153,12 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 				avatar.setImageDrawable(drawable);
 			}
 
-			if(userRepositories.getUpdated_at() != null) {
+			if(userRepositories.getUpdatedAt() != null) {
 
 				repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, TimeHelper
-					.formatTime(userRepositories.getUpdated_at(), locale, timeFormat, context)));
+					.formatTime(userRepositories.getUpdatedAt(), locale, timeFormat, context)));
 				if(timeFormat.equals("pretty")) {
-					repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(userRepositories.getUpdated_at()), context));
+					repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(userRepositories.getUpdatedAt()), context));
 				}
 			}
 			else {
@@ -195,7 +194,7 @@ public class StarredRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<UserRepositories> list) {
+	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
 		reposList = list;
 		notifyDataChanged();
 	}

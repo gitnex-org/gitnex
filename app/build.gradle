@@ -30,15 +30,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        //checkReleaseBuilds false
-        abortOnError false
-    }
     compileOptions {
         coreLibraryDesugaringEnabled true
 
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
+    }
+    lint {
+        abortOnError false
     }
     defaultConfig{
         vectorDrawables.useSupportLibrary = true
@@ -107,10 +106,12 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
     implementation "io.mikael:urlbuilder:2.0.9"
     implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
-    implementation "org.codeberg.gitnex:tea4j:1.1.4"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.github.chrisvest:stormpot:2.4.2'
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation('org.codeberg.gitnex:tea4j-autodeploy:4cd6803f8f') {
+        exclude module: 'org.apache.oltu.oauth2.common'
+    }
 }

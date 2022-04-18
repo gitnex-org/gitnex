@@ -12,7 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
-import org.gitnex.tea4j.models.Teams;
+import org.gitnex.tea4j.v2.models.CreateTeamOption;
+import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateTeamByOrgBinding;
@@ -223,7 +224,6 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
     private void processCreateTeam() {
 
-        final String instanceToken = getAccount().getAuthorization();
         final String orgName = getIntent().getStringExtra("orgName");
 
         boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
@@ -278,23 +278,35 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             newTeamAccessControls_.set(i, newTeamAccessControls_.get(i).trim());
         }
 
-        createNewTeamCall(instanceToken, orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_, getAccount().getAccount().getUserName());
+        createNewTeamCall(orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_);
     }
 
-    private void createNewTeamCall(final String instanceToken, String orgName, String newTeamName, String newTeamDesc, String newTeamPermission, List<String> newTeamAccessControls, String loginUid) {
+    private void createNewTeamCall(String orgName, String newTeamName, String newTeamDesc, String newTeamPermission, List<String> newTeamAccessControls) {
 
-        Teams createNewTeamJson = new Teams(newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls);
+        CreateTeamOption createNewTeamJson = new CreateTeamOption();
+		createNewTeamJson.setName(newTeamName);
+		createNewTeamJson.setDescription(newTeamDesc);
+		switch(newTeamPermission) {
+			case "Read":
+				createNewTeamJson.setPermission(CreateTeamOption.PermissionEnum.READ);
+				break;
+			case "Write":
+				createNewTeamJson.setPermission(CreateTeamOption.PermissionEnum.WRITE);
+				break;
+			case "Admin":
+				createNewTeamJson.setPermission(CreateTeamOption.PermissionEnum.ADMIN);
+				break;
+		}
+		createNewTeamJson.setUnits(newTeamAccessControls);
 
-        Call<Teams> call3;
-
-        call3 = RetrofitClient
+        Call<Team> call3 = RetrofitClient
                 .getApiInterface(ctx)
-                .createTeamsByOrg(getAccount().getAuthorization(), orgName, createNewTeamJson);
+                .orgCreateTeam(orgName, createNewTeamJson);
 
-        call3.enqueue(new Callback<Teams>() {
+        call3.enqueue(new Callback<Team>() {
 
             @Override
-            public void onResponse(@NonNull Call<Teams> call, @NonNull retrofit2.Response<Teams> response2) {
+            public void onResponse(@NonNull Call<Team> call, @NonNull retrofit2.Response<Team> response2) {
 
                 if(response2.isSuccessful()) {
 
@@ -324,7 +336,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             }
 
             @Override
-            public void onFailure(@NonNull Call<Teams> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Team> call, @NonNull Throwable t) {
                 Log.e("onFailure", t.toString());
             }
         });

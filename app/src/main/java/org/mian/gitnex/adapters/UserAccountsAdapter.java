@@ -29,7 +29,7 @@ import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapter.UserAccountsViewHolder> {
@@ -67,7 +67,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 					.setMessage(context.getResources().getString(R.string.removeAccountPopupMessage))
 					.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, which) -> {
 
-						updateLayoutByPosition(getAdapterPosition());
+						updateLayoutByPosition(getBindingAdapterPosition());
 						UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
 						assert userAccountsApi != null;
 						userAccountsApi.deleteAccount(Integer.parseInt(String.valueOf(accountId)));

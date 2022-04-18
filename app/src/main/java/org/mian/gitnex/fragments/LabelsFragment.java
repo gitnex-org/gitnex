@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
@@ -73,10 +72,10 @@ public class LabelsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            LabelsViewModel.loadLabelsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
+            LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
         }, 200));
 
-        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+        fetchDataAsync(repository.getOwner(), repository.getName());
 
         return fragmentLabelsBinding.getRoot();
     }
@@ -88,16 +87,16 @@ public class LabelsFragment extends Fragment {
 
 	    if(CreateLabelActivity.refreshLabels) {
 
-            LabelsViewModel.loadLabelsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
+            LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
 	        CreateLabelActivity.refreshLabels = false;
         }
     }
 
-    private void fetchDataAsync(String instanceToken, String owner, String repo) {
+    private void fetchDataAsync(String owner, String repo) {
 
         LabelsViewModel labelsModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
-        labelsModel.getLabelsList(instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), labelsListMain -> {
+        labelsModel.getLabelsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), labelsListMain -> {
 
             adapter = new LabelsAdapter(getContext(), labelsListMain, "repo", owner);
 

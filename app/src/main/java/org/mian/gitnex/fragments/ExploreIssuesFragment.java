@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
 import org.mian.gitnex.databinding.FragmentSearchIssuesBinding;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
@@ -40,7 +39,7 @@ public class ExploreIssuesFragment extends Fragment {
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			viewBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "");
+			fetchDataAsync("");
 			viewBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
@@ -49,16 +48,16 @@ public class ExploreIssuesFragment extends Fragment {
 		viewBinding.recyclerViewSearchIssues.addItemDecoration(dividerItemDecoration);
 		viewBinding.recyclerViewSearchIssues.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "");
+		fetchDataAsync("");
 
 		return viewBinding.getRoot();
 	}
 
-	private void fetchDataAsync(String instanceToken, String searchKeyword) {
+	private void fetchDataAsync(String searchKeyword) {
 
 		IssuesViewModel issuesModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
-		issuesModel.getIssuesList(instanceToken, searchKeyword, "issues", null, "open", getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
+		issuesModel.getIssuesList(searchKeyword, "issues", null, "open", getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
 
 			adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
 			adapter.setLoadMoreListener(new ExploreIssuesAdapter.OnLoadMoreListener() {
@@ -67,7 +66,7 @@ public class ExploreIssuesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					IssuesViewModel.loadMoreIssues(instanceToken, searchKeyword, "issues", null, "open", page, getContext(), adapter);
+					IssuesViewModel.loadMoreIssues(searchKeyword, "issues", null, "open", page, getContext(), adapter);
 					viewBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -108,7 +107,7 @@ public class ExploreIssuesFragment extends Fragment {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				viewBinding.progressBar.setVisibility(View.VISIBLE);
-				fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), query);
+				fetchDataAsync(query);
 				searchView.setQuery(null, false);
 				searchItem.collapseActionView();
 				return false;

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.UserRepositories;
+import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -21,39 +21,39 @@ import retrofit2.Response;
 
 public class RepositoriesViewModel extends ViewModel {
 
-    private static MutableLiveData<List<UserRepositories>> reposList;
+    private static MutableLiveData<List<Repository>> reposList;
 
-    public LiveData<List<UserRepositories>> getRepositories(String token, int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
+    public LiveData<List<Repository>> getRepositories(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
 
     	reposList = new MutableLiveData<>();
-    	loadReposList(token, page, resultLimit, userLogin, type, orgName, ctx);
+    	loadReposList(page, resultLimit, userLogin, type, orgName, ctx);
 
         return reposList;
     }
 
-    public static void loadReposList(String token, int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
+    public static void loadReposList(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
 
-	    Call<List<UserRepositories>> call;
+	    Call<List<Repository>> call;
 
 	    switch(type) {
 		    case "starredRepos":
-			    call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
+			    call = RetrofitClient.getApiInterface(ctx).userCurrentListStarred(page, resultLimit);
 			    break;
 		    case "myRepos":
-			    call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
+			    call = RetrofitClient.getApiInterface(ctx).userListRepos(userLogin, page, resultLimit);
 			    break;
 		    case "org":
-			    call = RetrofitClient.getApiInterface(ctx).getReposByOrg(token, orgName, page, resultLimit);
+			    call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
 			    break;
 		    default:
-			    call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+			    call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
 			    break;
 	    }
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<UserRepositories>> call, @NonNull Response<List<UserRepositories>> response) {
+            @Override
+            public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
 		        if(response.isSuccessful()) {
 			        if(response.code() == 200) {
@@ -66,7 +66,7 @@ public class RepositoriesViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
@@ -74,32 +74,32 @@ public class RepositoriesViewModel extends ViewModel {
         });
     }
 
-	public static void loadMoreRepos(String token, int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, ReposListAdapter adapter) {
+	public static void loadMoreRepos(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, ReposListAdapter adapter) {
 
-		Call<List<UserRepositories>> call;
+		Call<List<Repository>> call;
 
 		switch(type) {
 			case "starredRepos":
-				call = RetrofitClient.getApiInterface(ctx).getUserStarredRepos(token, page, resultLimit);
+				call = RetrofitClient.getApiInterface(ctx).userCurrentListStarred(page, resultLimit);
 				break;
 			case "myRepos":
-				call = RetrofitClient.getApiInterface(ctx).getCurrentUserRepositories(token, userLogin, page, resultLimit);
+				call = RetrofitClient.getApiInterface(ctx).userListRepos(userLogin, page, resultLimit);
 				break;
 			case "org":
-				call = RetrofitClient.getApiInterface(ctx).getReposByOrg(token, orgName, page, resultLimit);
+				call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
 				break;
 			default:
-				call = RetrofitClient.getApiInterface(ctx).getUserRepositories(token, page, resultLimit);
+				call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
 				break;
 		}
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserRepositories>> call, @NonNull Response<List<UserRepositories>> response) {
+			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
 				if(response.isSuccessful()) {
-					List<UserRepositories> list = reposList.getValue();
+					List<Repository> list = reposList.getValue();
 					assert list != null;
 					assert response.body() != null;
 
@@ -117,7 +117,7 @@ public class RepositoriesViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}

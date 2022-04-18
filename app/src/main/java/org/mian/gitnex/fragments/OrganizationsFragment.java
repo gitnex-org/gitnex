@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
@@ -62,20 +61,20 @@ public class OrganizationsFragment extends Fragment {
 
 			page = 1;
 			fragmentOrganizationsBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+			fetchDataAsync();
 			fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+		fetchDataAsync();
 
 		return fragmentOrganizationsBinding.getRoot();
 	};
 
-	private void fetchDataAsync(String instanceToken) {
+	private void fetchDataAsync() {
 
 		OrganizationsViewModel orgModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 
-		orgModel.getUserOrg(instanceToken, page, resultLimit, getContext()).observe(getViewLifecycleOwner(), orgListMain -> {
+		orgModel.getUserOrg(page, resultLimit, getContext()).observe(getViewLifecycleOwner(), orgListMain -> {
 
 			adapter = new OrganizationsListAdapter(orgListMain, getContext());
 			adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
@@ -84,7 +83,7 @@ public class OrganizationsFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					OrganizationsViewModel.loadMoreOrgList(instanceToken, page, resultLimit, getContext(), adapter);
+					OrganizationsViewModel.loadMoreOrgList(page, resultLimit, getContext(), adapter);
 					fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -114,7 +113,7 @@ public class OrganizationsFragment extends Fragment {
         super.onResume();
 
 	    if(orgCreated) {
-            OrganizationsViewModel.loadOrgList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, getContext());
+            OrganizationsViewModel.loadOrgList(page, resultLimit, getContext());
             orgCreated = false;
         }
     }

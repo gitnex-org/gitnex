@@ -2,9 +2,7 @@ package org.mian.gitnex.actions;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
@@ -19,14 +17,14 @@ import retrofit2.Response;
 public class PullRequestActions {
 
 	public static void deleteHeadBranch(Context context, String repoOwner, String repoName, String headBranch, boolean showToasts) {
-		Call<JsonElement> call = RetrofitClient
+		Call<Void> call = RetrofitClient
 				.getApiInterface(context)
-				.deleteBranch(((BaseActivity) context).getAccount().getAuthorization(), repoOwner, repoName, headBranch);
+				.repoDeleteBranch(repoOwner, repoName, headBranch);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 				if(response.code() == 204) {
 
@@ -61,7 +59,7 @@ public class PullRequestActions {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 				if(showToasts) {
 					Toasty.error(context, context.getString(R.string.deleteBranchError));
@@ -83,8 +81,7 @@ public class PullRequestActions {
 		else {
 			strategy = "rebase";
 		}
-
-		RetrofitClient.getApiInterface(context).updatePullRequest(((BaseActivity) context).getAccount().getAuthorization(), repoOwner, repoName, Integer.parseInt(index), strategy)
+		RetrofitClient.getApiInterface(context).repoUpdatePullRequest(repoOwner, repoName, Long.valueOf(index), strategy)
 			.enqueue(new Callback<>() {
 
 			@Override

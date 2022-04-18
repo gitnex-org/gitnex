@@ -12,9 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import org.gitnex.tea4j.models.Organization;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationInfoBinding;
@@ -77,17 +76,17 @@ public class OrganizationInfoFragment extends Fragment {
 
         orgNameInfo.setText(orgName);
 
-        getOrgInfo(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName);
+        getOrgInfo(orgName);
 
         return fragmentOrganizationInfoBinding.getRoot();
 
     }
 
-    private void getOrgInfo(String token, final String owner) {
+    private void getOrgInfo(final String owner) {
 
         Call<Organization> call = RetrofitClient
                 .getApiInterface(getContext())
-                .getOrganization(token, owner);
+                .orgGet(owner);
 
         call.enqueue(new Callback<Organization>() {
 
@@ -103,7 +102,7 @@ public class OrganizationInfoFragment extends Fragment {
                     assert orgInfo != null;
 
                     PicassoService.getInstance(ctx).get()
-	                    .load(orgInfo.getAvatar_url())
+	                    .load(orgInfo.getAvatarUrl())
 	                    .placeholder(R.drawable.loader_animated)
 	                    .transform(new RoundedTransformation(8, 0))
 	                    .resize(230, 230)

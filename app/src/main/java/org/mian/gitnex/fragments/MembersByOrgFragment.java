@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.FragmentMembersByOrgBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -65,16 +64,16 @@ public class MembersByOrgFragment extends Fragment {
 	    progressBar = fragmentMembersByOrgBinding.progressBar;
         mGridView = fragmentMembersByOrgBinding.gridView;
 
-        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), orgName);
+        fetchDataAsync(orgName);
 
         return fragmentMembersByOrgBinding.getRoot();
     }
 
-    private void fetchDataAsync(String instanceToken, String owner) {
+    private void fetchDataAsync(String owner) {
 
         MembersByOrgViewModel membersModel= new ViewModelProvider(this).get(MembersByOrgViewModel.class);
 
-        membersModel.getMembersList(instanceToken, owner, getContext()).observe(getViewLifecycleOwner(), membersListMain -> {
+        membersModel.getMembersList(owner, getContext()).observe(getViewLifecycleOwner(), membersListMain -> {
             adapter = new UserGridAdapter(getContext(), membersListMain);
             if(adapter.getCount() > 0) {
                 mGridView.setAdapter(adapter);

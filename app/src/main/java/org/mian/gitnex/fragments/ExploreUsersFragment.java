@@ -15,10 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.UserInfo;
-import org.gitnex.tea4j.models.UserSearch;
+import org.gitnex.tea4j.v2.models.InlineResponse2001;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentExploreUsersBinding;
@@ -40,7 +39,7 @@ public class ExploreUsersFragment extends Fragment {
 	private FragmentExploreUsersBinding viewBinding;
 	private Context context;
 
-	private List<UserInfo> usersList;
+	private List<User> usersList;
 	private UsersAdapter adapter;
 	private int pageSize;
 	private int resultLimit;
@@ -59,14 +58,14 @@ public class ExploreUsersFragment extends Fragment {
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			viewBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "", resultLimit);
+			loadInitial("", resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
 		adapter.setLoadMoreListener(() -> viewBinding.recyclerViewExploreUsers.post(() -> {
 			if(usersList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (usersList.size() + resultLimit) / resultLimit;
-				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "", resultLimit, page);
+				loadMore("", resultLimit, page);
 			}
 		}));
 
@@ -76,21 +75,18 @@ public class ExploreUsersFragment extends Fragment {
 		viewBinding.recyclerViewExploreUsers.setLayoutManager(new LinearLayoutManager(context));
 		viewBinding.recyclerViewExploreUsers.setAdapter(adapter);
 
-		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), "", resultLimit);
+		loadInitial("", resultLimit);
 
 		return viewBinding.getRoot();
 	}
 
-	private void loadInitial(String token, String searchKeyword, int resultLimit) {
+	private void loadInitial(String searchKeyword, int resultLimit) {
 
-		Call<UserSearch> call = RetrofitClient
-			.getApiInterface(context).getUserBySearch(token, searchKeyword, resultLimit, 1);
-
+		Call<InlineResponse2001> call = RetrofitClient
+			.getApiInterface(context).userSearch(searchKeyword, null, resultLimit, 1);
 		call.enqueue(new Callback<>() {
-
 			@Override
-			public void onResponse(@NonNull Call<UserSearch> call, @NonNull Response<UserSearch> response) {
-
+			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 				if(response.isSuccessful()) {
 					if(response.body() != null && response.body().getData().size() > 0) {
 						usersList.clear();
@@ -115,26 +111,23 @@ public class ExploreUsersFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserSearch> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
 
 				Toasty.error(requireActivity(), requireActivity().getResources().getString(R.string.genericServerResponseError));
 			}
 		});
 	}
 
-	private void loadMore(String token, String searchKeyword, int resultLimit, int page) {
+	private void loadMore(String searchKeyword, int resultLimit, int page) {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<UserSearch> call = RetrofitClient.getApiInterface(context).getUserBySearch(token, searchKeyword, resultLimit, page);
-
+		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(context).userSearch(searchKeyword, null, resultLimit, page);
 		call.enqueue(new Callback<>() {
-
 			@Override
-			public void onResponse(@NonNull Call<UserSearch> call, @NonNull Response<UserSearch> response) {
-
+			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 				if(response.isSuccessful()) {
 					assert response.body() != null;
-					List<UserInfo> result = response.body().getData();
+					List<User> result = response.body().getData();
 					if(result != null) {
 						if(result.size() > 0) {
 							pageSize = result.size();
@@ -154,7 +147,7 @@ public class ExploreUsersFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserSearch> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
 
 				Toasty.error(requireActivity(), requireActivity().getResources().getString(R.string.genericServerResponseError));
 			}
@@ -177,11 +170,11 @@ public class ExploreUsersFragment extends Fragment {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				viewBinding.progressBar.setVisibility(View.VISIBLE);
-				loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), query, resultLimit);
+				loadInitial(query, resultLimit);
 				adapter.setLoadMoreListener(() -> viewBinding.recyclerViewExploreUsers.post(() -> {
 					if(usersList.size() == resultLimit || pageSize == resultLimit) {
 						int page = (usersList.size() + resultLimit) / resultLimit;
-						loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), query, resultLimit, page);
+						loadMore(query, resultLimit, page);
 					}
 				}));
 				searchView.setQuery(null, false);

@@ -16,9 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.UserRepositories;
+import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.profile.RepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -41,7 +40,7 @@ public class RepositoriesFragment extends Fragment {
 	private Context context;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 
-	private List<UserRepositories> reposList;
+	private List<Repository> reposList;
 	private RepositoriesAdapter adapter;
 
 	private int pageSize;
@@ -83,7 +82,7 @@ public class RepositoriesFragment extends Fragment {
 
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
+			loadInitial(username, resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -91,7 +90,7 @@ public class RepositoriesFragment extends Fragment {
 		adapter.setLoadMoreListener(() -> fragmentRepositoriesBinding.recyclerView.post(() -> {
 			if(reposList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (reposList.size() + resultLimit) / resultLimit;
-				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, page, resultLimit);
+				loadMore(username, page, resultLimit);
 			}
 		}));
 
@@ -101,19 +100,19 @@ public class RepositoriesFragment extends Fragment {
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
 
-		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
+		loadInitial(username, resultLimit);
 
 		return fragmentRepositoriesBinding.getRoot();
 	}
 
-	private void loadInitial(String token, String username, int resultLimit) {
+	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<UserRepositories>> call = RetrofitClient
-			.getApiInterface(context).getUserProfileRepositories(token, username, 1, resultLimit);
+		Call<List<Repository>> call = RetrofitClient
+			.getApiInterface(context).userListRepos(username, 1, resultLimit);
 
-		call.enqueue(new Callback<List<UserRepositories>>() {
+		call.enqueue(new Callback<List<Repository>>() {
 			@Override
-			public void onResponse(@NonNull Call<List<UserRepositories>> call, @NonNull Response<List<UserRepositories>> response) {
+			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
 				if(response.isSuccessful()) {
 
@@ -157,28 +156,28 @@ public class RepositoriesFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 				Toasty.error(context, getString(R.string.genericError));
 			}
 		});
 	}
 
-	private void loadMore(String token, String username, int page, int resultLimit) {
+	private void loadMore(String username, int page, int resultLimit) {
 
 		fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<UserRepositories>> call = RetrofitClient.getApiInterface(context).getUserProfileRepositories(token, username, page, resultLimit);
+		Call<List<Repository>> call = RetrofitClient.getApiInterface(context).userListRepos(username, page, resultLimit);
 
-		call.enqueue(new Callback<List<UserRepositories>>() {
+		call.enqueue(new Callback<List<Repository>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserRepositories>> call, @NonNull Response<List<UserRepositories>> response) {
+			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
 				if(response.isSuccessful()) {
 
 					switch(response.code()) {
 						case 200:
-							List<UserRepositories> result = response.body();
+							List<Repository> result = response.body();
 							assert result != null;
 							if(result.size() > 0) {
 								pageSize = result.size();
@@ -215,7 +214,7 @@ public class RepositoriesFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserRepositories>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 				Toasty.error(context, getString(R.string.genericError));
 			}
 		});
@@ -248,9 +247,9 @@ public class RepositoriesFragment extends Fragment {
 
 	private void filter(String text) {
 
-		List<UserRepositories> arr = new ArrayList<>();
+		List<Repository> arr = new ArrayList<>();
 
-		for(UserRepositories d : reposList) {
+		for(Repository d : reposList) {
 			if(d == null || d.getFullName() == null || d.getDescription() == null) {
 				continue;
 			}

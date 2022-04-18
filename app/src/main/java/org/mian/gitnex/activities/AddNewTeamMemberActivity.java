@@ -14,14 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserInfo;
-import org.gitnex.tea4j.models.UserSearch;
+import org.gitnex.tea4j.v2.models.InlineResponse2001;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.adapters.UserSearchForTeamMemberAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityAddNewTeamMemberBinding;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,10 +37,10 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 	private ProgressBar mProgressBar;
 
 	private RecyclerView mRecyclerView;
-	private List<UserInfo> dataList;
+	private List<User> dataList;
 	private UserSearchForTeamMemberAdapter adapter;
 
-	private String teamId;
+	private long teamId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,14 +65,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		if(getIntent().getStringExtra("teamId") != null && !Objects.requireNonNull(getIntent().getStringExtra("teamId")).equals("")) {
-
-			teamId = getIntent().getStringExtra("teamId");
-		}
-		else {
-
-			teamId = "0";
-		}
+		teamId = getIntent().getLongExtra("teamId", 0);
 
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -90,7 +82,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 				if(!addNewTeamMember.getText().toString().equals("") && addNewTeamMember.getText().toString().length() > 1) {
 
-					adapter = new UserSearchForTeamMemberAdapter(dataList, ctx, Integer.parseInt(teamId), getIntent().getStringExtra("orgName"));
+					adapter = new UserSearchForTeamMemberAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"));
 					loadUserSearchList(addNewTeamMember.getText().toString());
 				}
 			}
@@ -109,14 +101,14 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 	public void loadUserSearchList(String searchKeyword) {
 
-		Call<UserSearch> call = RetrofitClient.getApiInterface(ctx).getUserBySearch(getAccount().getAuthorization(), searchKeyword, 10, 1);
+		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(ctx).userSearch(searchKeyword, null, 1, 10);
 
 		mProgressBar.setVisibility(View.VISIBLE);
 
-		call.enqueue(new Callback<UserSearch>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<UserSearch> call, @NonNull Response<UserSearch> response) {
+			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 
 				if(response.isSuccessful()) {
 
@@ -139,7 +131,8 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<UserSearch> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
+
 				Log.e("onFailure", t.toString());
 			}
 

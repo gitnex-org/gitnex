@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
@@ -59,20 +58,20 @@ public class StarredRepositoriesFragment extends Fragment {
 
 			page = 1;
 			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+			fetchDataAsync();
 			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization());
+		fetchDataAsync();
 
 		return fragmentRepositoriesBinding.getRoot();
 	};
 
-	private void fetchDataAsync(String instanceToken) {
+	private void fetchDataAsync() {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(instanceToken, page, resultLimit, "", "starredRepos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(page, resultLimit, "", "starredRepos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -81,7 +80,7 @@ public class StarredRepositoriesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(instanceToken, page, resultLimit, "", "starredRepos", null, getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(page, resultLimit, "", "starredRepos", null, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -138,7 +137,8 @@ public class StarredRepositoriesFragment extends Fragment {
 		super.onResume();
 
 		if(MainActivity.repoCreated) {
-			RepositoriesViewModel.loadReposList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit, "", "starredRepos", null, getContext());
+			page = 1;
+			fetchDataAsync();
 			MainActivity.repoCreated = false;
 		}
 

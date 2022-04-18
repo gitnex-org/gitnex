@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserInfo;
-import org.gitnex.tea4j.models.UserSearch;
+import org.gitnex.tea4j.v2.models.InlineResponse2001;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CollaboratorSearchAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -83,14 +83,14 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
     public void loadUserSearchList(String searchKeyword) {
 
-        Call<UserSearch> call = RetrofitClient
+        Call<InlineResponse2001> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getUserBySearch(getAccount().getAuthorization(), searchKeyword, 10, 1);
+                .userSearch(searchKeyword, null, 1, 10);
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<UserSearch> call, @NonNull Response<UserSearch> response) {
+            @Override
+            public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 
 		        mProgressBar.setVisibility(View.GONE);
 
@@ -105,15 +105,14 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 		        }
 	        }
 
-	        @Override
-	        public void onFailure(@NonNull Call<UserSearch> call, @NonNull Throwable t) {
-
+            @Override
+            public void onFailure(@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }
 
-    private void getUsersList(List<UserInfo> dataList, Context context) {
+    private void getUsersList(List<User> dataList, Context context) {
 
         CollaboratorSearchAdapter adapter = new CollaboratorSearchAdapter(dataList, context, repository);
 

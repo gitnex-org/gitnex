@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.Collaborators;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
@@ -27,7 +27,7 @@ import java.util.List;
 public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdapter.AssigneesViewHolder> {
 
 	private final Context context;
-	private final List<Collaborators> assigneesList;
+	private final List<User> assigneesList;
 	private List<String> assigneesStrings = new ArrayList<>();
 	private List<String> currentAssignees;
 
@@ -38,7 +38,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		void assigneesInterface(List<String> data);
 	}
 
-	public AssigneesListAdapter(Context ctx, List<Collaborators> dataMain, AssigneesListAdapterListener assigneesListener, List<String> currentAssignees) {
+	public AssigneesListAdapter(Context ctx, List<User> dataMain, AssigneesListAdapterListener assigneesListener, List<String> currentAssignees) {
 
 		this.context = ctx;
 		this.assigneesList = dataMain;
@@ -74,19 +74,19 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 	@Override
 	public void onBindViewHolder(@NonNull AssigneesListAdapter.AssigneesViewHolder holder, int position) {
 
-		Collaborators currentItem = assigneesList.get(position);
+		User currentItem = assigneesList.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		if(currentItem.getFull_name().equals("")) {
+		if(currentItem.getFullName().equals("")) {
 
 			holder.assigneesName.setText(currentItem.getLogin());
 		}
 		else {
 
-			holder.assigneesName.setText(Html.fromHtml(currentItem.getFull_name()));
+			holder.assigneesName.setText(Html.fromHtml(currentItem.getFullName()));
 		}
 		PicassoService
-			.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(holder.assigneesAvatar);
+			.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(holder.assigneesAvatar);
 
 		for(int i = 0; i < assigneesList.size(); i++) {
 

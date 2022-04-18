@@ -13,8 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.Collaborators;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.activities.BaseActivity;
@@ -36,11 +35,11 @@ import retrofit2.Response;
 
 public class CollaboratorSearchAdapter extends RecyclerView.Adapter<CollaboratorSearchAdapter.CollaboratorSearchViewHolder> {
 
-    private final List<UserInfo> usersSearchList;
+    private final List<User> usersSearchList;
     private final Context context;
     private final RepositoryContext repository;
 
-    public CollaboratorSearchAdapter(List<UserInfo> dataList, Context ctx, RepositoryContext repository) {
+    public CollaboratorSearchAdapter(List<User> dataList, Context ctx, RepositoryContext repository) {
         this.context = ctx;
         this.usersSearchList = dataList;
         this.repository = repository;
@@ -48,7 +47,7 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
 
     class CollaboratorSearchViewHolder extends RecyclerView.ViewHolder {
 
-	    private UserInfo userInfo;
+	    private User userInfo;
 
         private final ImageView userAvatar;
         private final TextView userFullName;
@@ -80,14 +79,14 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
                             ListView lw = ((AlertDialog)dialog).getListView();
                             Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getUsername(), repository);
+                            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getLogin(), repository);
                         });
 
                 AlertDialog pDialog = pBuilder.create();
                 pDialog.show();
             });
 
-            addCollaboratorButtonRemove.setOnClickListener(v -> AlertDialogs.collaboratorRemoveDialog(context, userInfo.getUsername(), repository));
+            addCollaboratorButtonRemove.setOnClickListener(v -> AlertDialogs.collaboratorRemoveDialog(context, userInfo.getLogin(), repository));
 
 	        userAvatar.setOnClickListener(loginId -> {
 		        Intent intent = new Intent(context, ProfileActivity.class);
@@ -113,40 +112,40 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
     @Override
     public void onBindViewHolder(@NonNull final CollaboratorSearchViewHolder holder, int position) {
 
-        UserInfo currentItem = usersSearchList.get(position);
+	    User currentItem = usersSearchList.get(position);
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 	    holder.userInfo = currentItem;
 
-        if (!currentItem.getFullname().equals("")) {
+        if (!currentItem.getFullName().equals("")) {
 
-            holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
+            holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
         }
         else {
 
-            holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+            holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
         }
 
-	    holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getUsername()));
+	    holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
-	    if (!currentItem.getAvatar().equals("")) {
-            PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+	    if (!currentItem.getAvatarUrl().equals("")) {
+            PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
         }
 
         if(getItemCount() > 0) {
 
             final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 
-            Call<Collaborators> call = RetrofitClient
+            Call<Void> call = RetrofitClient
                     .getApiInterface(context)
-                    .checkRepoCollaborator(((BaseActivity) context).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), currentItem.getUsername());
+                    .repoCheckCollaborator(repository.getOwner(), repository.getName(), currentItem.getLogin());
 
-            call.enqueue(new Callback<Collaborators>() {
+            call.enqueue(new Callback<Void>() {
 
                 @Override
-                public void onResponse(@NonNull Call<Collaborators> call, @NonNull Response<Collaborators> response) {
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 
                     if(response.code() == 204) {
-                        if(!currentItem.getUsername().equals(loginUid) && !currentItem.getUsername().equals(repository.getOwner())) {
+                        if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repository.getOwner())) {
                             holder.addCollaboratorButtonRemove.setVisibility(View.VISIBLE);
                         }
                         else {
@@ -154,7 +153,7 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
                         }
                     }
                     else if(response.code() == 404) {
-                        if(!currentItem.getUsername().equals(loginUid) && !currentItem.getUsername().equals(repository.getOwner())) {
+                        if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repository.getOwner())) {
                             holder.addCollaboratorButtonAdd.setVisibility(View.VISIBLE);
                         }
                         else {
@@ -169,7 +168,7 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<Collaborators> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                     Log.i("onFailure", t.toString());
                 }
 

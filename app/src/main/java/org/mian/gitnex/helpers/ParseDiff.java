@@ -1,6 +1,5 @@
 package org.mian.gitnex.helpers;
 
-import org.gitnex.tea4j.models.FileDiffView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

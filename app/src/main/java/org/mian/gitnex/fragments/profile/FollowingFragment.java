@@ -16,9 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
@@ -41,7 +40,7 @@ public class FollowingFragment extends Fragment {
 	private Context context;
 	private FragmentProfileFollowersFollowingBinding fragmentProfileFollowersFollowingBinding;
 
-	private List<UserInfo> usersList;
+	private List<User> usersList;
 	private UsersAdapter adapter;
 
 	private int pageSize;
@@ -81,7 +80,7 @@ public class FollowingFragment extends Fragment {
 
 		fragmentProfileFollowersFollowingBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentProfileFollowersFollowingBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
+			loadInitial(username, resultLimit);
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -89,7 +88,7 @@ public class FollowingFragment extends Fragment {
 		adapter.setLoadMoreListener(() -> fragmentProfileFollowersFollowingBinding.recyclerView.post(() -> {
 			if(usersList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (usersList.size() + resultLimit) / resultLimit;
-				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, page, resultLimit);
+				loadMore(username, page, resultLimit);
 			}
 		}));
 
@@ -99,20 +98,20 @@ public class FollowingFragment extends Fragment {
 		fragmentProfileFollowersFollowingBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentProfileFollowersFollowingBinding.recyclerView.setAdapter(adapter);
 
-		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), username, resultLimit);
+		loadInitial(username, resultLimit);
 
 		return fragmentProfileFollowersFollowingBinding.getRoot();
 	}
 
-	private void loadInitial(String token, String username, int resultLimit) {
+	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<UserInfo>> call = RetrofitClient
+		Call<List<User>> call = RetrofitClient
 			.getApiInterface(context)
-			.getUserFollowing(token, username, 1, resultLimit);
+			.userListFollowing(username, 1, resultLimit);
 
-		call.enqueue(new Callback<List<UserInfo>>() {
+		call.enqueue(new Callback<List<User>>() {
 			@Override
-			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
 				if(response.isSuccessful()) {
 
@@ -156,30 +155,30 @@ public class FollowingFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 				Toasty.error(context, getString(R.string.genericError));
 			}
 		});
 	}
 
-	private void loadMore(String token, String username, int page, int resultLimit) {
+	private void loadMore(String username, int page, int resultLimit) {
 
 		fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<UserInfo>> call = RetrofitClient
+		Call<List<User>> call = RetrofitClient
 			.getApiInterface(context)
-			.getUserFollowing(token, username, page, resultLimit);
+			.userListFollowing(username, page, resultLimit);
 
-		call.enqueue(new Callback<List<UserInfo>>() {
+		call.enqueue(new Callback<List<User>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
 				if(response.isSuccessful()) {
 
 					switch(response.code()) {
 						case 200:
-							List<UserInfo> result = response.body();
+							List<User> result = response.body();
 							assert result != null;
 							if(result.size() > 0) {
 								pageSize = result.size();
@@ -216,7 +215,7 @@ public class FollowingFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 				Toasty.error(context, getString(R.string.genericError));
 			}
 		});
@@ -249,13 +248,13 @@ public class FollowingFragment extends Fragment {
 
 	private void filter(String text) {
 
-		List<UserInfo> arr = new ArrayList<>();
+		List<User> arr = new ArrayList<>();
 
-		for(UserInfo d : usersList) {
-			if(d == null || d.getUsername() == null || d.getFullname() == null) {
+		for(User d : usersList) {
+			if(d == null || d.getLogin() == null || d.getFullName() == null) {
 				continue;
 			}
-			if(d.getUsername().toLowerCase().contains(text) || d.getFullname().toLowerCase().contains(text)) {
+			if(d.getLogin().toLowerCase().contains(text) || d.getFullName().toLowerCase().contains(text)) {
 				arr.add(d);
 			}
 		}

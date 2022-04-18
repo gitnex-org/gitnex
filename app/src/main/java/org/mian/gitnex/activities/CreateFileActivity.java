@@ -11,11 +11,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import com.google.gson.JsonElement;
-import org.gitnex.tea4j.models.Branches;
-import org.gitnex.tea4j.models.DeleteFile;
-import org.gitnex.tea4j.models.EditFile;
-import org.gitnex.tea4j.models.NewFile;
+import org.gitnex.tea4j.v2.models.Branch;
+import org.gitnex.tea4j.v2.models.CreateFileOptions;
+import org.gitnex.tea4j.v2.models.DeleteFileOptions;
+import org.gitnex.tea4j.v2.models.FileDeleteResponse;
+import org.gitnex.tea4j.v2.models.FileResponse;
+import org.gitnex.tea4j.v2.models.UpdateFileOptions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateFileBinding;
@@ -175,18 +176,23 @@ public class CreateFileActivity extends BaseActivity {
 
     private void createNewFile(String repoOwner, String repoName, String fileName, String fileContent, String fileCommitMessage, String branchName) {
 
-        NewFile createNewFileJsonStr = branches.contains(branchName) ?
-	        new NewFile(branchName, fileContent, fileCommitMessage, "") :
-	        new NewFile("", fileContent, fileCommitMessage, branchName);
+        CreateFileOptions createNewFileJsonStr = new CreateFileOptions();
+		createNewFileJsonStr.setContent(fileContent);
+		createNewFileJsonStr.setMessage(fileCommitMessage);
+		if(branches.contains(branchName)) {
+			createNewFileJsonStr.setBranch(branchName);
+		} else {
+			createNewFileJsonStr.setNewBranch(branchName);
+		}
 
-        Call<JsonElement> call = RetrofitClient
+        Call<FileResponse> call = RetrofitClient
                 .getApiInterface(ctx)
-                .createNewFile(getAccount().getAuthorization(), repoOwner, repoName, fileName, createNewFileJsonStr);
+                .repoCreateFile(createNewFileJsonStr, repoOwner, repoName, fileName);
 
-        call.enqueue(new Callback<JsonElement>() {
+        call.enqueue(new Callback<FileResponse>() {
 
             @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+            public void onResponse(@NonNull Call<FileResponse> call, @NonNull retrofit2.Response<FileResponse> response) {
 
             	switch(response.code()) {
 
@@ -195,6 +201,7 @@ public class CreateFileActivity extends BaseActivity {
 			            Toasty.success(ctx, getString(R.string.newFileSuccessMessage));
 			            Intent result = new Intent();
 			            result.putExtra("fileModified", true);
+						result.putExtra("fileAction", fileAction);
 			            setResult(200, result);
 			            finish();
 		            	break;
@@ -221,7 +228,7 @@ public class CreateFileActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
@@ -233,18 +240,23 @@ public class CreateFileActivity extends BaseActivity {
 
 	private void deleteFile(String repoOwner, String repoName, String fileName, String fileCommitMessage, String branchName, String fileSha) {
 
-    	DeleteFile deleteFileJsonStr = branches.contains(branchName) ?
-		    new DeleteFile(branchName, fileCommitMessage, "", fileSha) :
-		    new DeleteFile("", fileCommitMessage, branchName, fileSha);
+    	DeleteFileOptions deleteFileJsonStr = new DeleteFileOptions();
+		deleteFileJsonStr.setMessage(fileCommitMessage);
+		deleteFileJsonStr.setSha(fileSha);
+		if(branches.contains(branchName)) {
+			deleteFileJsonStr.setBranch(branchName);
+		} else {
+			deleteFileJsonStr.setNewBranch(branchName);
+		}
 
-		Call<JsonElement> call = RetrofitClient
+		Call<FileDeleteResponse> call = RetrofitClient
 			.getApiInterface(ctx)
-			.deleteFile(getAccount().getAuthorization(), repoOwner, repoName, fileName, deleteFileJsonStr);
+			.repoDeleteFileWithBody(repoOwner, repoName, fileName, deleteFileJsonStr);
 
-		call.enqueue(new Callback<JsonElement>() {
+		call.enqueue(new Callback<FileDeleteResponse>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<FileDeleteResponse> call, @NonNull retrofit2.Response<FileDeleteResponse> response) {
 
 				switch(response.code()) {
 
@@ -253,6 +265,7 @@ public class CreateFileActivity extends BaseActivity {
 						Toasty.info(ctx, getString(R.string.deleteFileMessage, repository.getBranchRef()));
 						Intent result = new Intent();
 						result.putExtra("fileModified", true);
+						result.putExtra("fileAction", fileAction);
 						setResult(200, result);
 						finish();
 						break;
@@ -279,7 +292,7 @@ public class CreateFileActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<FileDeleteResponse> call, @NonNull Throwable t) {
 
 				Log.e("onFailure", t.toString());
 				enableProcessButton();
@@ -290,18 +303,24 @@ public class CreateFileActivity extends BaseActivity {
 
 	private void editFile(String repoOwner, String repoName, String fileName, String fileContent, String fileCommitMessage, String branchName, String fileSha) {
 
-		EditFile editFileJsonStr = branches.contains(branchName) ?
-			new EditFile(branchName, fileCommitMessage, "", fileSha, fileContent) :
-			new EditFile("", fileCommitMessage, branchName, fileSha, fileContent);
+		UpdateFileOptions editFileJsonStr = new UpdateFileOptions();
+		editFileJsonStr.setContent(fileContent);
+		editFileJsonStr.setMessage(fileCommitMessage);
+		editFileJsonStr.setSha(fileSha);
+		if(branches.contains(branchName)) {
+			editFileJsonStr.setBranch(branchName);
+		} else {
+			editFileJsonStr.setNewBranch(branchName);
+		}
 
-		Call<JsonElement> call = RetrofitClient
+		Call<FileResponse> call = RetrofitClient
 			.getApiInterface(ctx)
-			.editFile(getAccount().getAuthorization(), repoOwner, repoName, fileName, editFileJsonStr);
+			.repoUpdateFile(editFileJsonStr, repoOwner, repoName, fileName);
 
-		call.enqueue(new Callback<JsonElement>() {
+		call.enqueue(new Callback<FileResponse>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<FileResponse> call, @NonNull retrofit2.Response<FileResponse> response) {
 
 				switch(response.code()) {
 
@@ -310,6 +329,7 @@ public class CreateFileActivity extends BaseActivity {
 						Toasty.info(ctx, getString(R.string.editFileMessage, branchName));
 						Intent result = new Intent();
 						result.putExtra("fileModified", true);
+						result.putExtra("fileAction", fileAction);
 						setResult(200, result);
 						finish();
 						break;
@@ -336,7 +356,7 @@ public class CreateFileActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {
 
 				Log.e("onFailure", t.toString());
 				enableProcessButton();
@@ -348,19 +368,19 @@ public class CreateFileActivity extends BaseActivity {
 
     private void getBranches(String repoOwner, String repoName) {
 
-        Call<List<Branches>> call = RetrofitClient
+        Call<List<Branch>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getBranches(getAccount().getAuthorization(), repoOwner, repoName);
+                .repoListBranches(repoOwner, repoName, null, null);
 
-        call.enqueue(new Callback<List<Branches>>() {
+        call.enqueue(new Callback<List<Branch>>() {
 
             @Override
-            public void onResponse(@NonNull Call<List<Branches>> call, @NonNull retrofit2.Response<List<Branches>> response) {
+            public void onResponse(@NonNull Call<List<Branch>> call, @NonNull retrofit2.Response<List<Branch>> response) {
 
                 if(response.code() == 200) {
 
                 	assert response.body() != null;
-                    for(Branches branch : response.body()) branches.add(branch.getName());
+                    for(Branch branch : response.body()) branches.add(branch.getName());
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateFileActivity.this, R.layout.list_spinner_items, branches);
 
@@ -373,7 +393,7 @@ public class CreateFileActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Branches>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
             }

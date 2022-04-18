@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
@@ -21,9 +21,9 @@ import java.util.List;
 public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMembersByOrgPreviewAdapter.ViewHolder> {
 
 	private final Context context;
-	private final List<UserInfo> userData;
+	private final List<User> userData;
 
-	public TeamMembersByOrgPreviewAdapter(Context context, List<UserInfo> userInfo) {
+	public TeamMembersByOrgPreviewAdapter(Context context, List<User> userInfo) {
 		this.context = context;
 		this.userData = userInfo;
 	}
@@ -37,10 +37,10 @@ public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMem
 
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-		UserInfo userInfo = userData.get(position);
+		User userInfo = userData.get(position);
 
 		PicassoService.getInstance(context).get()
-			.load(userInfo.getAvatar())
+			.load(userInfo.getAvatarUrl())
 			.placeholder(R.drawable.loader_animated)
 			.transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 3), 0))
 			.resize(120, 120)

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
@@ -31,12 +31,12 @@ import retrofit2.Response;
 
 public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSearchForTeamMemberAdapter.UserSearchViewHolder> {
 
-	private final List<UserInfo> usersSearchList;
+	private final List<User> usersSearchList;
 	private final Context context;
 	private final int teamId;
 	private final String orgName;
 
-	public UserSearchForTeamMemberAdapter(List<UserInfo> dataList, Context ctx, int teamId, String orgName) {
+	public UserSearchForTeamMemberAdapter(List<User> dataList, Context ctx, int teamId, String orgName) {
 		this.context = ctx;
 		this.usersSearchList = dataList;
 		this.teamId = teamId;
@@ -45,7 +45,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 	class UserSearchViewHolder extends RecyclerView.ViewHolder {
 
-		private UserInfo userInfo;
+		private User userInfo;
 
 		private final ImageView userAvatar;
 		private final TextView userFullName;
@@ -102,13 +102,13 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 	@Override
 	public void onBindViewHolder(@NonNull final UserSearchForTeamMemberAdapter.UserSearchViewHolder holder, int position) {
 
-		UserInfo currentItem = usersSearchList.get(position);
+		User currentItem = usersSearchList.get(position);
 		holder.userInfo = currentItem;
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		if (!currentItem.getFullname().equals("")) {
+		if (!currentItem.getFullName().equals("")) {
 
-			holder.userFullName.setText(Html.fromHtml(currentItem.getFullname()));
+			holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
 		}
 		else {
 
@@ -117,22 +117,22 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 		holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
-		if (!currentItem.getAvatar().equals("")) {
-			PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+		if (!currentItem.getAvatarUrl().equals("")) {
+			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
 		}
 
 		if(getItemCount() > 0) {
 
 			final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 
-			Call<UserInfo> call = RetrofitClient
+			Call<User> call = RetrofitClient
 					.getApiInterface(context)
-					.checkTeamMember(((BaseActivity) context).getAccount().getAuthorization(), teamId, currentItem.getLogin());
+					.orgListTeamMember((long) teamId, currentItem.getLogin());
 
-			call.enqueue(new Callback<UserInfo>() {
+			call.enqueue(new Callback<>() {
 
 				@Override
-				public void onResponse(@NonNull Call<UserInfo> call, @NonNull Response<UserInfo> response) {
+				public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
 
 					if(response.code() == 200) {
 
@@ -162,7 +162,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 				}
 
 				@Override
-				public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
+				public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
 					Toasty.error(context, context.getResources().getString(R.string.genericServerResponseError));
 				}

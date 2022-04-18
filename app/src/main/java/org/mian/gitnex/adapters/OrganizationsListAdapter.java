@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserOrganizations;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -28,12 +28,12 @@ import java.util.List;
 public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
 	private final Context context;
-	private List<UserOrganizations> orgList;
-	private final List<UserOrganizations> orgListFull;
+	private List<Organization> orgList;
+	private final List<Organization> orgListFull;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public OrganizationsListAdapter(List<UserOrganizations> orgListMain, Context ctx) {
+	public OrganizationsListAdapter(List<Organization> orgListMain, Context ctx) {
 		this.context = ctx;
 		this.orgList = orgListMain;
 		orgListFull = new ArrayList<>(orgList);
@@ -68,7 +68,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 
 	class OrgHolder extends RecyclerView.ViewHolder {
 
-		private UserOrganizations userOrganizations;
+		private Organization userOrganizations;
 
 		private final ImageView image;
 		private final TextView orgName;
@@ -89,14 +89,14 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 			});
 		}
 
-		void bindData(UserOrganizations org) {
+		void bindData(Organization org) {
 
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			this.userOrganizations = org;
 			orgName.setText(org.getUsername());
 
-			PicassoService.getInstance(context).get().load(org.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+			PicassoService.getInstance(context).get().load(org.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
 
 			if(!org.getDescription().equals("")) {
 				orgDescription.setVisibility(View.VISIBLE);
@@ -132,7 +132,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<UserOrganizations> list) {
+	public void updateList(List<Organization> list) {
 		orgList = list;
 		notifyDataChanged();
 	}
@@ -147,7 +147,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 
-			List<UserOrganizations> filteredList = new ArrayList<>();
+			List<Organization> filteredList = new ArrayList<>();
 
 			if(constraint == null || constraint.length() == 0) {
 
@@ -157,7 +157,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 
 				String filterPattern = constraint.toString().toLowerCase().trim();
 
-				for(UserOrganizations item : orgListFull) {
+				for(Organization item : orgListFull) {
 					if(item.getUsername().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
 						filteredList.add(item);
 					}

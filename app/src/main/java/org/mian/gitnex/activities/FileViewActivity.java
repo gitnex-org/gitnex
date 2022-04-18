@@ -17,7 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.NotificationCompat;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.io.FilenameUtils;
-import org.gitnex.tea4j.models.Files;
+import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityFileViewBinding;
@@ -45,7 +45,7 @@ import retrofit2.Response;
 public class FileViewActivity extends BaseActivity implements BottomSheetListener {
 
 	private ActivityFileViewBinding binding;
-	private Files file;
+	private ContentsResponse file;
 	private RepositoryContext repository;
 	private boolean renderMd = false;
 
@@ -54,7 +54,14 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			if(result.getResultCode() == 200) {
 				assert result.getData() != null;
 				if(result.getData().getBooleanExtra("fileModified", false)) {
-					getSingleFileContents(repository.getOwner(), repository.getName(), file.getPath(), repository.getBranchRef());
+					switch(result.getData().getIntExtra("fileAction", CreateFileActivity.FILE_ACTION_EDIT)) {
+						case CreateFileActivity.FILE_ACTION_CREATE:
+						case CreateFileActivity.FILE_ACTION_EDIT:
+							getSingleFileContents(repository.getOwner(), repository.getName(), file.getPath(), repository.getBranchRef());
+							break;
+						default:
+							finish();
+					}
 				}
 			}
 		});
@@ -70,7 +77,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		setContentView(binding.getRoot());
 		setSupportActionBar(binding.toolbar);
 
-		file = (Files) getIntent().getSerializableExtra("file");
+		file = (ContentsResponse) getIntent().getSerializableExtra("file");
 
 		binding.close.setOnClickListener(view -> finish());
 
@@ -86,7 +93,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 			Call<ResponseBody> call = RetrofitClient
 				.getWebInterface(ctx)
-				.getFileContents(getAccount().getWebAuthorization(), owner, repo, ref, filename);
+				.getFileContents(owner, repo, ref, filename);
 
 			try {
 
@@ -296,7 +303,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 				intent.putExtra("fileSha", file.getSha());
 				intent.putExtra("fileContents", binding.contents.getContent());
 
-				ctx.startActivity(intent);
+				editFileLauncher.launch(intent);
 
 			} else {
 				Toasty.error(ctx, getString(R.string.fileTypeCannotBeEdited));
@@ -346,7 +353,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 						Call<ResponseBody> call = RetrofitClient
 							.getWebInterface(ctx)
-							.getFileContents(getAccount().getWebAuthorization(), repository.getOwner(), repository.getName(), repository.getBranchRef(), file.getPath());
+							.getFileContents(repository.getOwner(), repository.getName(), repository.getBranchRef(), file.getPath());
 
 						Response<ResponseBody> response = call.execute();
 

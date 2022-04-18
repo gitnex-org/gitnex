@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import org.gitnex.tea4j.models.Collaborators;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CollaboratorsAdapter extends BaseAdapter  {
 
-    private final List<Collaborators> collaboratorsList;
+    private final List<User> collaboratorsList;
     private final Context context;
 
     private class ViewHolder {
@@ -52,7 +52,7 @@ public class CollaboratorsAdapter extends BaseAdapter  {
         }
     }
 
-    public CollaboratorsAdapter(Context ctx, List<Collaborators> collaboratorsListMain) {
+    public CollaboratorsAdapter(Context ctx, List<User> collaboratorsListMain) {
 
         this.context = ctx;
         this.collaboratorsList = collaboratorsListMain;
@@ -98,14 +98,14 @@ public class CollaboratorsAdapter extends BaseAdapter  {
 
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-        Collaborators currentItem = collaboratorsList.get(position);
-        PicassoService.getInstance(context).get().load(currentItem.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
+	    User currentItem = collaboratorsList.get(position);
+        PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
 
 	    viewHolder.userLoginId = currentItem.getLogin();
 
-        if(!currentItem.getFull_name().equals("")) {
+        if(!currentItem.getFullName().equals("")) {
 
-            viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFull_name()));
+            viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
         }
         else {
 

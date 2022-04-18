@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.Releases;
+import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -70,15 +70,15 @@ public class ReleasesFragment extends Fragment {
 
 		    fragmentReleasesBinding.pullToRefresh.setRefreshing(false);
 	        if(repository.isReleasesViewTypeIsTag()) {
-		        ReleasesViewModel.loadTagsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
+		        ReleasesViewModel.loadTagsList(repository.getOwner(), repository.getName(), getContext());
 	        } else {
-		        ReleasesViewModel.loadReleasesList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
+		        ReleasesViewModel.loadReleasesList(repository.getOwner(), repository.getName(), getContext());
 	        }
 	        fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 
         }, 50));
 
-        fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+        fetchDataAsync(repository.getOwner(), repository.getName());
 
         setHasOptionsMenu(true);
 	    ((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerReleases(type -> {
@@ -86,9 +86,9 @@ public class ReleasesFragment extends Fragment {
 			page = 1;
 			pageReleases = 1;
 		    if(repository.isReleasesViewTypeIsTag()) {
-			    ReleasesViewModel.loadTagsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
+			    ReleasesViewModel.loadTagsList(repository.getOwner(), repository.getName(), getContext());
 		    } else {
-			    ReleasesViewModel.loadReleasesList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), getContext());
+			    ReleasesViewModel.loadReleasesList(repository.getOwner(), repository.getName(), getContext());
 		    }
 		    fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 	    });
@@ -96,11 +96,11 @@ public class ReleasesFragment extends Fragment {
         return fragmentReleasesBinding.getRoot();
     }
 
-    private void fetchDataAsync(String instanceToken, String owner, String repo) {
+    private void fetchDataAsync(String owner, String repo) {
 
         ReleasesViewModel releasesModel = new ViewModelProvider(this).get(ReleasesViewModel.class);
 
-        releasesModel.getReleasesList(instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), releasesListMain -> {
+        releasesModel.getReleasesList(owner, repo, getContext()).observe(getViewLifecycleOwner(), releasesListMain -> {
 	        if(!repository.isReleasesViewTypeIsTag()) {
 		        adapter = new ReleasesAdapter(getContext(), releasesListMain);
 		        adapter.setLoadMoreListener(new ReleasesAdapter.OnLoadMoreListener() {
@@ -108,7 +108,7 @@ public class ReleasesFragment extends Fragment {
 			        @Override
 			        public void onLoadMore() {
 				        pageReleases += 1;
-				        ReleasesViewModel.loadMoreReleases(instanceToken, owner, repo, pageReleases, getContext(), adapter);
+				        ReleasesViewModel.loadMoreReleases(owner, repo, pageReleases, getContext(), adapter);
 				        fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 			        }
 
@@ -137,7 +137,7 @@ public class ReleasesFragment extends Fragment {
 	        }
         });
 
-	    releasesModel.getTagsList(instanceToken, owner, repo, getContext()).observe(getViewLifecycleOwner(), tagList -> {
+	    releasesModel.getTagsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), tagList -> {
 		    if(repository.isReleasesViewTypeIsTag()) {
 			    tagsAdapter = new TagsAdapter(getContext(), tagList, owner, repo);
 			    tagsAdapter.setLoadMoreListener(new TagsAdapter.OnLoadMoreListener() {
@@ -145,7 +145,7 @@ public class ReleasesFragment extends Fragment {
 				    @Override
 				    public void onLoadMore() {
 					    page += 1;
-					    ReleasesViewModel.loadMoreTags(instanceToken, owner, repo , page, getContext(), tagsAdapter);
+					    ReleasesViewModel.loadMoreTags(owner, repo , page, getContext(), tagsAdapter);
 					    fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 				    }
 
@@ -169,9 +169,9 @@ public class ReleasesFragment extends Fragment {
 
     }
 
-	private static int getReleaseIndex(String tag, List<Releases> releases) {
-		for (Releases release : releases) {
-			if(release.getTag_name().equals(tag)) {
+	private static int getReleaseIndex(String tag, List<Release> releases) {
+		for (Release release : releases) {
+			if(release.getTagName().equals(tag)) {
 				return releases.indexOf(release);
 			}
 		}

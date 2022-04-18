@@ -13,8 +13,9 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
-import org.gitnex.tea4j.models.IssueReaction;
-import org.gitnex.tea4j.models.UISettings;
+import org.gitnex.tea4j.v2.models.EditReactionOption;
+import org.gitnex.tea4j.v2.models.GeneralUISettings;
+import org.gitnex.tea4j.v2.models.Reaction;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -22,7 +23,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AppUtil;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import retrofit2.Response;
@@ -75,7 +75,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 			try {
 
-				List<IssueReaction> allReactions = getReactions(repoOwner, repoName, reactionType, id);
+				List<Reaction> allReactions = getReactions(repoOwner, repoName, reactionType, id);
 				List<String> allowedReactions = getAllowedReactions();
 
 				if(!allowedReactions.isEmpty()) {
@@ -102,9 +102,9 @@ public class ReactionSpinner extends HorizontalScrollView {
 						reactionButton.setOnClickListener(v -> new Thread(() -> {
 
 							try {
-								if(react(repoOwner, repoName, reactionType, reactionAction, new IssueReaction(allowedReaction), id)) {
+								if(react(repoOwner, repoName, reactionType, reactionAction, new EditReactionOption().content(allowedReaction), id)) {
 									v.post(() -> {
-										((IssueDetailActivity) context).singleIssueUpdate = reactionType == ReactionType.ISSUE;
+										IssueDetailActivity.singleIssueUpdate = reactionType == ReactionType.ISSUE;
 										((IssueDetailActivity) context).commentEdited = reactionType == ReactionType.COMMENT;
 										onInteractedListener.run();
 									});
@@ -137,7 +137,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 	}
 
-	private boolean react(String repoOwner, String repoName, ReactionType reactionType, ReactionAction reactionAction, IssueReaction issueReaction, int id) throws IOException {
+	private boolean react(String repoOwner, String repoName, ReactionType reactionType, ReactionAction reactionAction, EditReactionOption issueReaction, int id) throws IOException {
 
 		Response<?> response = null;
 
@@ -149,7 +149,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case ADD:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.setIssueReaction(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id, issueReaction)
+							.issuePostIssueReaction(repoOwner, repoName, (long) id, issueReaction)
 							.execute();
 						break;
 
@@ -157,7 +157,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case REMOVE:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.removeIssueReaction((((BaseActivity) getContext()).getAccount().getAuthorization()), repoOwner, repoName, id, issueReaction)
+							.issueDeleteIssueReactionWithBody(repoOwner, repoName, (long) id, issueReaction)
 							.execute();
 						break;
 
@@ -170,7 +170,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case ADD:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.setIssueCommentReaction(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id, issueReaction)
+							.issuePostCommentReaction(repoOwner, repoName, (long) id, issueReaction)
 							.execute();
 						break;
 
@@ -178,7 +178,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					case REMOVE:
 						response = RetrofitClient
 							.getApiInterface(getContext())
-							.removeIssueCommentReaction(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id, issueReaction)
+							.issueDeleteCommentReactionWithBody(repoOwner, repoName, (long) id, issueReaction)
 							.execute();
 						break;
 
@@ -191,23 +191,23 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 	}
 
-	private List<IssueReaction> getReactions(String repoOwner, String repoName, ReactionType reactionType, int id) throws IOException {
+	private List<Reaction> getReactions(String repoOwner, String repoName, ReactionType reactionType, int id) throws IOException {
 
-		Response<List<IssueReaction>> response = null;
+		Response<List<Reaction>> response = null;
 
 		switch(reactionType) {
 
 			case ISSUE:
 				response = RetrofitClient
 					.getApiInterface(getContext())
-					.getIssueReactions(((BaseActivity) getContext()).getAccount().getAuthorization(), repoOwner, repoName, id)
+					.issueGetIssueReactions(repoOwner, repoName, (long) id, null, null)
 					.execute();
 				break;
 
 			case COMMENT:
 				response = RetrofitClient
 					.getApiInterface(getContext())
-					.getIssueCommentReactions((((BaseActivity) getContext()).getAccount().getAuthorization()), repoOwner, repoName, id)
+					.issueGetCommentReactions(repoOwner, repoName, (long) id)
 					.execute();
 				break;
 
@@ -225,13 +225,13 @@ public class ReactionSpinner extends HorizontalScrollView {
 
 		if(allowedReactionsCache.isEmpty()) {
 
-			Response<UISettings> response = RetrofitClient
+			Response<GeneralUISettings> response = RetrofitClient
 				.getApiInterface(getContext())
-				.getUISettings(((BaseActivity) getContext()).getAccount().getAuthorization())
+				.getGeneralUISettings()
 				.execute();
 
 			if(response.isSuccessful() && response.body() != null) {
-				allowedReactionsCache.addAll(Arrays.asList(response.body().getAllowed_reactions()));
+				allowedReactionsCache.addAll(response.body().getAllowedReactions());
 			}
 		}
 

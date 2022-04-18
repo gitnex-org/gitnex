@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
@@ -22,9 +22,9 @@ import java.util.List;
 public class ReactionAuthorsAdapter extends RecyclerView.Adapter<ReactionAuthorsAdapter.ViewHolder> {
 
 	private final Context context;
-	private final List<UserInfo> userInfos;
+	private final List<User> userInfos;
 
-	public ReactionAuthorsAdapter(Context context, List<UserInfo> userInfos) {
+	public ReactionAuthorsAdapter(Context context, List<User> userInfos) {
 		this.context = context;
 		this.userInfos = userInfos;
 	}
@@ -37,19 +37,19 @@ public class ReactionAuthorsAdapter extends RecyclerView.Adapter<ReactionAuthors
 
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-		UserInfo userInfo = userInfos.get(position);
+		User userInfo = userInfos.get(position);
 
 		PicassoService.getInstance(context).get()
-			.load(userInfo.getAvatar())
+			.load(userInfo.getAvatarUrl())
 			.placeholder(R.drawable.loader_animated)
 			.resize(240, 240)
 			.transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 6), 0))
 			.centerCrop().into(holder.authorAvatar);
 
-		if(userInfo.getFullname() == null || userInfo.getFullname().isEmpty()) {
+		if(userInfo.getFullName() == null || userInfo.getFullName().isEmpty()) {
 			holder.authorFullName.setVisibility(View.GONE);
 		} else {
-			holder.authorFullName.setText(userInfo.getFullname());
+			holder.authorFullName.setText(userInfo.getFullName());
 			holder.authorFullName.setVisibility(View.VISIBLE);
 		}
 

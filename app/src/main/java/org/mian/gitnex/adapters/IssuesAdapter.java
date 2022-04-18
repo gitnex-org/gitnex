@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.vdurmont.emoji.EmojiParser;
-import org.gitnex.tea4j.models.Issues;
+import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
@@ -47,12 +46,12 @@ import java.util.Locale;
 public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private List<Issues> issuesList;
+	private List<Issue> issuesList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	TinyDB tinyDb;
 
-	public IssuesAdapter(Context ctx, List<Issues> issuesListMain) {
+	public IssuesAdapter(Context ctx, List<Issue> issuesListMain) {
 
 		this.context = ctx;
 		this.issuesList = issuesListMain;
@@ -90,7 +89,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
 
-		private Issues issueObject;
+		private Issue issueObject;
 
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
@@ -118,18 +117,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				return true;
 			});
 
-			new Handler().postDelayed(() -> {
-
-				Intent intentIssueDetail = new IssueContext(issueObject, ((RepoDetailActivity) context).repository).getIntent(context, IssueDetailActivity.class);
-
-				itemView.setOnClickListener(layoutView -> {
-					context.startActivity(intentIssueDetail);
-				});
-				frameLabels.setOnClickListener(v -> context.startActivity(intentIssueDetail));
-				frameLabelsDots.setOnClickListener(v -> context.startActivity(intentIssueDetail));
-
-			}, 200);
-
 			issueAssigneeAvatar.setOnClickListener(v -> {
 				Intent intent = new Intent(context, ProfileActivity.class);
 				intent.putExtra("username", issueObject.getUser().getLogin());
@@ -138,7 +125,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(Issues issue) {
+		void bindData(Issue issue) {
 
 			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat", "pretty");
@@ -146,7 +133,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			PicassoService.getInstance(context).get()
-				.load(issue.getUser().getAvatar_url())
+				.load(issue.getUser().getAvatarUrl())
 				.placeholder(R.drawable.loader_animated)
 				.transform(new RoundedTransformation(imgRadius, 0))
 				.resize(120, 120)
@@ -158,6 +145,12 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			this.issueObject = issue;
 			this.issueCommentsCount.setText(String.valueOf(issue.getComments()));
+
+			Intent intentIssueDetail = new IssueContext(issueObject, ((RepoDetailActivity) context).repository).getIntent(context, IssueDetailActivity.class);
+
+			itemView.setOnClickListener(layoutView -> context.startActivity(intentIssueDetail));
+			frameLabels.setOnClickListener(v -> context.startActivity(intentIssueDetail));
+			frameLabelsDots.setOnClickListener(v -> context.startActivity(intentIssueDetail));
 
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -219,20 +212,20 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			switch(timeFormat) {
 				case "pretty": {
 					PrettyTime prettyTime = new PrettyTime(locale);
-					String createdTime = prettyTime.format(issue.getCreated_at());
+					String createdTime = prettyTime.format(issue.getCreatedAt());
 					this.issueCreatedTime.setText(createdTime);
-					this.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreated_at()), context));
+					this.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()), context));
 					break;
 				}
 				case "normal": {
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreated_at());
+					String createdTime = formatter.format(issue.getCreatedAt());
 					this.issueCreatedTime.setText(createdTime);
 					break;
 				}
 				case "normal1": {
 					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreated_at());
+					String createdTime = formatter.format(issue.getCreatedAt());
 					this.issueCreatedTime.setText(createdTime);
 					break;
 				}
@@ -256,7 +249,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<Issues> list) {
+	public void updateList(List<Issue> list) {
 		issuesList = list;
 		notifyDataChanged();
 	}

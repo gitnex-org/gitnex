@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.google.android.material.tabs.TabLayoutMediator;
-import org.gitnex.tea4j.models.OrgPermissions;
-import org.gitnex.tea4j.models.Teams;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
+import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding;
 import org.mian.gitnex.fragments.BottomSheetOrganizationTeamsFragment;
@@ -27,7 +27,7 @@ import org.mian.gitnex.structs.BottomSheetListener;
 
 public class OrganizationTeamInfoActivity extends BaseActivity implements BottomSheetListener {
 
-	private Teams team;
+	private Team team;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -40,7 +40,7 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 	    setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
-	    team = (Teams) getIntent().getSerializableExtra("team");
+	    team = (Team) getIntent().getSerializableExtra("team");
 
 	    if(team.getName() != null && !team.getName().isEmpty()) {
 		    binding.toolbarTitle.setText(team.getName());
@@ -87,8 +87,8 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	OrgPermissions permissions = (OrgPermissions) getIntent().getSerializableExtra("permissions");
-    	if(permissions == null || permissions.isOwner()) {
+    	OrganizationPermissions permissions = (OrganizationPermissions) getIntent().getSerializableExtra("permissions");
+    	if(permissions == null || permissions.isIsOwner()) {
 		    MenuInflater inflater = getMenuInflater();
 		    inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 	    }
@@ -117,7 +117,7 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
     public void onButtonClicked(String text) {
         if("newMember".equals(text)) {
             Intent intent = new Intent(OrganizationTeamInfoActivity.this, AddNewTeamMemberActivity.class);
-            intent.putExtra("team", team);
+            intent.putExtra("teamId", team.getId());
             startActivity(intent);
         }
     }

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.models.UserOrganizations;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -25,11 +25,11 @@ import java.util.List;
 public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private List<UserOrganizations> organizationsList;
+	private List<Organization> organizationsList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public OrganizationsAdapter(Context ctx, List<UserOrganizations> organizationsListMain) {
+	public OrganizationsAdapter(Context ctx, List<Organization> organizationsListMain) {
 		this.context = ctx;
 		this.organizationsList = organizationsListMain;
 	}
@@ -63,7 +63,7 @@ public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	class OrganizationsHolder extends RecyclerView.ViewHolder {
 
-		private UserOrganizations userOrganizations;
+		private Organization userOrganizations;
 
 		private final ImageView image;
 		private final TextView orgName;
@@ -85,14 +85,14 @@ public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(UserOrganizations userOrganizations) {
+		void bindData(Organization userOrganizations) {
 
 			this.userOrganizations = userOrganizations;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			orgName.setText(userOrganizations.getUsername());
 
-			PicassoService.getInstance(context).get().load(userOrganizations.getAvatar_url()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+			PicassoService.getInstance(context).get().load(userOrganizations.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
 
 			if (!userOrganizations.getDescription().equals("")) {
 				orgDescription.setText(userOrganizations.getDescription());
@@ -114,7 +114,7 @@ public class OrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<UserOrganizations> list) {
+	public void updateList(List<Organization> list) {
 		organizationsList = list;
 		notifyDataChanged();
 	}

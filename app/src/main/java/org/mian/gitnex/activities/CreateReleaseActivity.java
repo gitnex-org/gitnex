@@ -15,10 +15,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.Branches;
-import org.gitnex.tea4j.models.CreateTagOptions;
-import org.gitnex.tea4j.models.GitTag;
-import org.gitnex.tea4j.models.Releases;
+import org.gitnex.tea4j.v2.models.Branch;
+import org.gitnex.tea4j.v2.models.CreateReleaseOption;
+import org.gitnex.tea4j.v2.models.CreateTagOption;
+import org.gitnex.tea4j.v2.models.Release;
+import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateReleaseBinding;
@@ -32,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class CreateReleaseActivity extends BaseActivity {
@@ -51,7 +52,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
 	private RepositoryContext repository;
 
-    List<Branches> branchesList = new ArrayList<>();
+    List<String> branchesList = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -94,7 +95,7 @@ public class CreateReleaseActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         releaseBranch = activityCreateReleaseBinding.releaseBranch;
-        getBranches(getAccount().getAuthorization(), repository.getOwner(), repository.getName());
+        getBranches(repository.getOwner(), repository.getName());
 
         createNewRelease = activityCreateReleaseBinding.createNewRelease;
         createNewTag = activityCreateReleaseBinding.createNewTag;
@@ -136,16 +137,19 @@ public class CreateReleaseActivity extends BaseActivity {
 
 	    disableProcessButton();
 
-	    CreateTagOptions createReleaseJson = new CreateTagOptions(message, tagName, selectedBranch);
+	    CreateTagOption createReleaseJson = new CreateTagOption();
+		createReleaseJson.setMessage(message);
+		createReleaseJson.setTagName(tagName);
+		createReleaseJson.setTarget(selectedBranch);
 
-	    Call<GitTag> call = RetrofitClient
+	    Call<Tag> call = RetrofitClient
 		    .getApiInterface(ctx)
-		    .createTag(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), createReleaseJson);
+		    .repoCreateTag(repository.getOwner(), repository.getName(), createReleaseJson);
 
-	    call.enqueue(new Callback<GitTag>() {
+	    call.enqueue(new Callback<Tag>() {
 
 		    @Override
-		    public void onResponse(@NonNull Call<GitTag> call, @NonNull retrofit2.Response<GitTag> response) {
+		    public void onResponse(@NonNull Call<Tag> call, @NonNull retrofit2.Response<Tag> response) {
 
 			    if (response.code() == 201) {
 				    Toasty.success(ctx, getString(R.string.tagCreated));
@@ -173,14 +177,11 @@ public class CreateReleaseActivity extends BaseActivity {
 		    }
 
 		    @Override
-		    public void onFailure(@NonNull Call<GitTag> call, @NonNull Throwable t) {
+		    public void onFailure(@NonNull Call<Tag> call, @NonNull Throwable t) {
 			    Log.e("onFailure", t.toString());
 			    enableProcessButton();
 		    }
 	    });
-
-
-
     }
 
     private final View.OnClickListener createReleaseListener = v -> processNewRelease();
@@ -221,117 +222,110 @@ public class CreateReleaseActivity extends BaseActivity {
 	    }
 
         disableProcessButton();
-        createNewReleaseFunc(getAccount().getAuthorization(), repository.getOwner(), repository.getName(), newReleaseTagName, newReleaseTitle, newReleaseContent, selectedBranch, newReleaseType, newReleaseDraft);
+        createNewReleaseFunc(repository.getOwner(), repository.getName(), newReleaseTagName, newReleaseTitle, newReleaseContent, selectedBranch, newReleaseType, newReleaseDraft);
     }
 
-    private void createNewReleaseFunc(final String token, String repoOwner, String repoName, String newReleaseTagName, String newReleaseTitle, String newReleaseContent, String selectedBranch, boolean newReleaseType, boolean newReleaseDraft) {
+    private void createNewReleaseFunc(String repoOwner, String repoName, String newReleaseTagName, String newReleaseTitle, String newReleaseContent,
+	    String selectedBranch, boolean newReleaseType, boolean newReleaseDraft) {
 
-        Releases createReleaseJson = new Releases(newReleaseContent, newReleaseDraft, newReleaseTitle, newReleaseType, newReleaseTagName, selectedBranch);
+        CreateReleaseOption createReleaseJson = new CreateReleaseOption();
+	    createReleaseJson.setName(newReleaseTitle);
+		createReleaseJson.setTagName(newReleaseTagName);
+		createReleaseJson.setBody(newReleaseContent);
+		createReleaseJson.setDraft(newReleaseDraft);
+		createReleaseJson.setPrerelease(newReleaseType);
+		createReleaseJson.setTargetCommitish(selectedBranch);
 
-        Call<Releases> call;
-
-        call = RetrofitClient
+        Call<Release> call = RetrofitClient
                 .getApiInterface(ctx)
-                .createNewRelease(token, repoOwner, repoName, createReleaseJson);
+                .repoCreateRelease(repoOwner, repoName, createReleaseJson);
 
-        call.enqueue(new Callback<Releases>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<Releases> call, @NonNull retrofit2.Response<Releases> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<Release> call, @NonNull retrofit2.Response<Release> response) {
 
-                if (response.code() == 201) {
+		        if(response.code() == 201) {
 
-                    Intent result = new Intent();
-	                result.putExtra("updateReleases", true);
-	                setResult(201, result);
-                    Toasty.success(ctx, getString(R.string.releaseCreatedText));
-                    finish();
-                }
-                else if(response.code() == 401) {
+			        Intent result = new Intent();
+			        result.putExtra("updateReleases", true);
+			        setResult(201, result);
+			        Toasty.success(ctx, getString(R.string.releaseCreatedText));
+			        finish();
+		        }
+		        else if(response.code() == 401) {
 
-                    enableProcessButton();
-                     AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                             ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                             ctx.getResources().getString(R.string.cancelButton),
-                             ctx.getResources().getString(R.string.navLogout));
-                }
-                else if(response.code() == 403) {
+			        enableProcessButton();
+			        AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
+				        ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.cancelButton),
+				        ctx.getResources().getString(R.string.navLogout));
+		        }
+		        else if(response.code() == 403) {
 
-                    enableProcessButton();
-                    Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-                }
-                else if(response.code() == 404) {
+			        enableProcessButton();
+			        Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+		        }
+		        else if(response.code() == 404) {
 
-                    enableProcessButton();
-                    Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-                }
-                else {
+			        enableProcessButton();
+			        Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+		        }
+		        else {
 
-                    enableProcessButton();
-                    Toasty.error(ctx, ctx.getString(R.string.genericError));
-                }
-            }
+			        enableProcessButton();
+			        Toasty.error(ctx, ctx.getString(R.string.genericError));
+		        }
+	        }
 
-            @Override
-            public void onFailure(@NonNull Call<Releases> call, @NonNull Throwable t) {
-
-                Log.e("onFailure", t.toString());
-                enableProcessButton();
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<Release> call, @NonNull Throwable t) {
+		        enableProcessButton();
+	        }
         });
 
     }
 
-    private void getBranches(String instanceToken, final String repoOwner, final String repoName) {
+    private void getBranches(final String repoOwner, final String repoName) {
 
-        Call<List<Branches>> call = RetrofitClient
+        Call<List<Branch>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getBranches(instanceToken, repoOwner, repoName);
+                .repoListBranches(repoOwner, repoName, null, null);
 
-        call.enqueue(new Callback<List<Branches>>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Branches>> call, @NonNull retrofit2.Response<List<Branches>> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<List<Branch>> call, @NonNull retrofit2.Response<List<Branch>> response) {
 
-                if(response.isSuccessful()) {
+		        if(response.isSuccessful()) {
 
-                    if(response.code() == 200) {
+			        if(response.code() == 200) {
 
-                        List<Branches> branchesList_ = response.body();
+				        List<Branch> branchesList_ = response.body();
 
-                        assert branchesList_ != null;
-                        if(branchesList_.size() > 0) {
+				        assert branchesList_ != null;
+				        for(Branch i : branchesList_) {
+					        branchesList.add(i.getName());
+				        }
 
-	                        branchesList.addAll(branchesList_);
-                        }
+				        ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateReleaseActivity.this, R.layout.list_spinner_items, branchesList);
 
-	                    ArrayAdapter<Branches> adapter = new ArrayAdapter<>(CreateReleaseActivity.this,
-		                    R.layout.list_spinner_items, branchesList);
+				        releaseBranch.setAdapter(adapter);
+				        enableProcessButton();
 
-                        releaseBranch.setAdapter(adapter);
-                        enableProcessButton();
+				        releaseBranch.setOnItemClickListener((parent, view, position, id) -> selectedBranch = branchesList.get(position));
+			        }
+		        }
+		        else if(response.code() == 401) {
 
-	                    releaseBranch.setOnItemClickListener ((parent, view, position, id) ->
+			        AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage),
+				        getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
+		        }
 
-		                    selectedBranch = branchesList.get(position).getName()
-	                    );
-                    }
-                }
-                else if(response.code() == 401) {
+	        }
 
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.cancelButton),
-                            getResources().getString(R.string.navLogout));
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Branches>> call, @NonNull Throwable t) {
-
-                Log.e("onFailure", t.toString());
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
+	        }
         });
 
     }
@@ -356,5 +350,4 @@ public class CreateReleaseActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }

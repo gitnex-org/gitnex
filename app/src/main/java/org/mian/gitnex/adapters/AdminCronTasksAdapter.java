@@ -10,11 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.gson.JsonElement;
 import org.apache.commons.lang3.StringUtils;
-import org.gitnex.tea4j.models.CronTasks;
+import org.gitnex.tea4j.v2.models.Cron;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -31,11 +29,11 @@ import retrofit2.Callback;
 
 public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAdapter.CronTasksViewHolder> {
 
-	private final List<CronTasks> tasksList;
+	private final List<Cron> tasksList;
 
 	static class CronTasksViewHolder extends RecyclerView.ViewHolder {
 
-		private CronTasks cronTasks;
+		private Cron cronTasks;
 
 		private final TextView taskName;
 
@@ -74,7 +72,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 				taskScheduleContent.setText(cronTasks.getSchedule());
 				nextRunContent.setText(nextRun);
 				lastRunContent.setText(lastRun);
-				execTimeContent.setText(String.valueOf(cronTasks.getExec_times()));
+				execTimeContent.setText(String.valueOf(cronTasks.getExecTimes()));
 
 				AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
 
@@ -92,7 +90,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 		}
 	}
 
-	public AdminCronTasksAdapter(List<CronTasks> tasksListMain) {
+	public AdminCronTasksAdapter(List<Cron> tasksListMain) {
 		this.tasksList = tasksListMain;
 	}
 
@@ -107,7 +105,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 	@Override
 	public void onBindViewHolder(@NonNull AdminCronTasksAdapter.CronTasksViewHolder holder, int position) {
 
-		CronTasks currentItem = tasksList.get(position);
+		Cron currentItem = tasksList.get(position);
 
 		holder.cronTasks = currentItem;
 		holder.taskName.setText(StringUtils.capitalize(currentItem.getName().replace("_", " ")));
@@ -115,14 +113,14 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 
 	private static void runCronTask(final Context ctx, final String taskName) {
 
-		Call<JsonElement> call = RetrofitClient
+		Call<Void> call = RetrofitClient
 			.getApiInterface(ctx)
-			.adminRunCronTask(((BaseActivity) ctx).getAccount().getAuthorization(), taskName);
+			.adminCronRun(taskName);
 
-		call.enqueue(new Callback<JsonElement>() {
+		call.enqueue(new Callback<Void>() {
 
 			@Override
-			public void onResponse(@NonNull Call<JsonElement> call, @NonNull retrofit2.Response<JsonElement> response) {
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
 				switch(response.code()) {
 
@@ -152,7 +150,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}

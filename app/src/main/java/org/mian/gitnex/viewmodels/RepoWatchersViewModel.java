@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
@@ -20,26 +20,26 @@ import retrofit2.Response;
 
 public class RepoWatchersViewModel extends ViewModel {
 
-    private static MutableLiveData<List<UserInfo>> watchersList;
+    private static MutableLiveData<List<User>> watchersList;
 
-    public LiveData<List<UserInfo>> getRepoWatchers(String token, String repoOwner, String repoName, Context ctx) {
+    public LiveData<List<User>> getRepoWatchers(String repoOwner, String repoName, Context ctx) {
 
         watchersList = new MutableLiveData<>();
-        loadRepoWatchers(token, repoOwner, repoName, ctx);
+        loadRepoWatchers(repoOwner, repoName, ctx);
 
         return watchersList;
     }
 
-    private static void loadRepoWatchers(String token, String repoOwner, String repoName, Context ctx) {
+    private static void loadRepoWatchers(String repoOwner, String repoName, Context ctx) {
 
-        Call<List<UserInfo>> call = RetrofitClient
+        Call<List<User>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getRepoWatchers(token, repoOwner, repoName);
+                .repoListSubscribers(repoOwner, repoName, null, null);
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+            @Override
+            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
 		        if(response.isSuccessful()) {
 			        watchersList.postValue(response.body());
@@ -50,7 +50,7 @@ public class RepoWatchersViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<UserInfo>> call, Throwable t) {
+	        public void onFailure(@NonNull Call<List<User>> call, Throwable t) {
 
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }

@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.Files;
+import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
@@ -25,30 +25,29 @@ import retrofit2.Response;
 
 public class FilesViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Files>> filesList;
-    private static MutableLiveData<List<Files>> filesList2;
+    private static MutableLiveData<List<ContentsResponse>> filesList;
+    private static MutableLiveData<List<ContentsResponse>> filesList2;
 
-    public LiveData<List<Files>> getFilesList(String token, String owner, String repo, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    public LiveData<List<ContentsResponse>> getFilesList(String owner, String repo, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         filesList = new MutableLiveData<>();
-        loadFilesList(token, owner, repo, ref, ctx, progressBar, noDataFiles);
+        loadFilesList(owner, repo, ref, ctx, progressBar, noDataFiles);
 
         return filesList;
     }
 
-    private static void loadFilesList(String token, String owner, String repo, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    private static void loadFilesList(String owner, String repo, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
-        Call<List<Files>> call = RetrofitClient
+        Call<List<ContentsResponse>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getFiles(token, owner, repo, ref);
+                .repoGetContentsList(owner, repo, ref);
 
         call.enqueue(new Callback<>() {
-
-	        @Override
-	        public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
+            @Override
+            public void onResponse(@NonNull Call<List<ContentsResponse>> call, @NonNull Response<List<ContentsResponse>> response) {
 
 		        if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-			        Collections.sort(response.body(), Comparator.comparing(Files::getType));
+			        Collections.sort(response.body(), Comparator.comparing(ContentsResponse::getType));
 			        filesList.postValue(response.body());
 		        }
 		        else {
@@ -59,34 +58,33 @@ public class FilesViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<List<ContentsResponse>> call, @NonNull Throwable t) {
 
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }
         });
     }
 
-    public LiveData<List<Files>> getFilesList2(String token, String owner, String repo, String filesDir, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    public LiveData<List<ContentsResponse>> getFilesList2(String owner, String repo, String filesDir, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         filesList2 = new MutableLiveData<>();
-        loadFilesList2(token, owner, repo, filesDir, ref, ctx, progressBar, noDataFiles);
+        loadFilesList2(owner, repo, filesDir, ref, ctx, progressBar, noDataFiles);
 
         return filesList2;
     }
 
-    private static void loadFilesList2(String token, String owner, String repo, String filesDir, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    private static void loadFilesList2(String owner, String repo, String filesDir, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
-        Call<List<Files>> call = RetrofitClient
+        Call<List<ContentsResponse>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getDirFiles(token, owner, repo, filesDir, ref);
+                .repoGetContentsList(owner, repo, filesDir, ref);
 
         call.enqueue(new Callback<>() {
-
-	        @Override
-	        public void onResponse(@NonNull Call<List<Files>> call, @NonNull Response<List<Files>> response) {
+            @Override
+            public void onResponse(@NonNull Call<List<ContentsResponse>> call, @NonNull Response<List<ContentsResponse>> response) {
 
 		        if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-			        Collections.sort(response.body(), Comparator.comparing(Files::getType));
+			        Collections.sort(response.body(), Comparator.comparing(ContentsResponse::getType));
 			        filesList2.postValue(response.body());
 		        }
 		        else {
@@ -97,7 +95,7 @@ public class FilesViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<Files>> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<List<ContentsResponse>> call, @NonNull Throwable t) {
 
 		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 	        }

@@ -4,10 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.Collaborators;
-import org.gitnex.tea4j.models.Issues;
+import org.gitnex.tea4j.v2.models.Issue;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
@@ -24,18 +23,18 @@ public class AssigneesActions {
 
 	public static void getCurrentIssueAssignees(Context ctx, String repoOwner, String repoName, int issueIndex, List<String> currentAssignees) {
 
-		Call<Issues> callSingleIssueLabels = RetrofitClient
+		Call<Issue> callSingleIssueLabels = RetrofitClient
 			.getApiInterface(ctx)
-			.getIssueByIndex(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName, issueIndex);
+			.issueGetIssue(repoOwner, repoName, (long) issueIndex);
 
 		callSingleIssueLabels.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<Issues> call, @NonNull retrofit2.Response<Issues> response) {
+			public void onResponse(@NonNull Call<Issue> call, @NonNull retrofit2.Response<Issue> response) {
 
 				if(response.code() == 200) {
 
-					Issues issueAssigneesList = response.body();
+					Issue issueAssigneesList = response.body();
 					assert issueAssigneesList != null;
 
 					if(issueAssigneesList.getAssignees() != null) {
@@ -56,26 +55,26 @@ public class AssigneesActions {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<Issues> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});
 	}
 
-	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<Collaborators> assigneesList, Dialog dialogAssignees, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding) {
+	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<User> assigneesList, Dialog dialogAssignees, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding) {
 
-		Call<List<Collaborators>> call = RetrofitClient
+		Call<List<User>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.getAllAssignees(((BaseActivity) ctx).getAccount().getAuthorization(), repoOwner, repoName);
+			.repoGetAssignees(repoOwner, repoName);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<Collaborators>> call, @NonNull retrofit2.Response<List<Collaborators>> response) {
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull retrofit2.Response<List<User>> response) {
 
 				assigneesList.clear();
-				List<Collaborators> assigneesList_ = response.body();
+				List<User> assigneesList_ = response.body();
 
 				assigneesBinding.progressBar.setVisibility(View.GONE);
 				assigneesBinding.dialogFrame.setVisibility(View.VISIBLE);
@@ -104,7 +103,7 @@ public class AssigneesActions {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Collaborators>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}

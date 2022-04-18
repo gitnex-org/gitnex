@@ -15,7 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import org.gitnex.tea4j.models.Labels;
+import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
@@ -31,13 +31,13 @@ import java.util.List;
 
 public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder>  {
 
-    private final List<Labels> labelsList;
+    private final List<Label> labelsList;
     private final String type;
 	private final String orgName;
 
     class LabelsViewHolder extends RecyclerView.ViewHolder {
 
-    	private Labels labels;
+    	private Label labels;
 
         private final CardView labelView;
         private final ImageView labelIcon;
@@ -51,8 +51,8 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
             labelName = itemView.findViewById(R.id.labelName);
             ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
 
-            if((type.equals("repo") && !((RepoDetailActivity) itemView.getContext()).repository.getPermissions().canPush()) ||
-	            (type.equals("org") && !((OrganizationDetailActivity) itemView.getContext()).permissions.isOwner())) {
+            if((type.equals("repo") && !((RepoDetailActivity) itemView.getContext()).repository.getPermissions().isPush()) ||
+	            (type.equals("org") && !((OrganizationDetailActivity) itemView.getContext()).permissions.isIsOwner())) {
 	            labelsOptionsMenu.setVisibility(View.GONE);
             }
             labelsOptionsMenu.setOnClickListener(v -> {
@@ -80,7 +80,9 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
                     intent.putExtra("labelAction", "edit");
 	                intent.putExtra("type", type);
 	                intent.putExtra("orgName", orgName);
-	                intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
+					if(type.equals("repo")) {
+						intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
+					}
                     context.startActivity(intent);
                     dialog.dismiss();
                 });
@@ -103,7 +105,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         }
     }
 
-    public LabelsAdapter(Context ctx, List<Labels> labelsMain, String type, String orgName) {
+    public LabelsAdapter(Context ctx, List<Label> labelsMain, String type, String orgName) {
 
 	    this.labelsList = labelsMain;
         this.type = type;
@@ -120,7 +122,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
     @Override
     public void onBindViewHolder(@NonNull LabelsAdapter.LabelsViewHolder holder, int position) {
 
-        Labels currentItem = labelsList.get(position);
+        Label currentItem = labelsList.get(position);
 	    holder.labels = currentItem;
 
         String labelColor = currentItem.getColor();

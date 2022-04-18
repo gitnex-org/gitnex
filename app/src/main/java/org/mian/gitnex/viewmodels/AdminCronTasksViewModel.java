@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.CronTasks;
+import org.gitnex.tea4j.v2.models.Cron;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -21,26 +21,26 @@ import retrofit2.Response;
 
 public class AdminCronTasksViewModel extends ViewModel {
 
-	private static MutableLiveData<List<CronTasks>> tasksList;
+	private static MutableLiveData<List<Cron>> tasksList;
 
-	public LiveData<List<CronTasks>> getCronTasksList(Context ctx, String token, int page, int limit) {
+	public LiveData<List<Cron>> getCronTasksList(Context ctx, int page, int limit) {
 
 		tasksList = new MutableLiveData<>();
-		loadCronTasksList(ctx, token, page, limit);
+		loadCronTasksList(ctx, page, limit);
 
 		return tasksList;
 	}
 
-	public static void loadCronTasksList(final Context ctx, String token, int page, int limit) {
+	public static void loadCronTasksList(final Context ctx, int page, int limit) {
 
-		Call<List<CronTasks>> call = RetrofitClient
+		Call<List<Cron>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.adminGetCronTasks(token, page, limit);
+			.adminCronList(page, limit);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<CronTasks>> call, @NonNull Response<List<CronTasks>> response) {
+			public void onResponse(@NonNull Call<List<Cron>> call, @NonNull Response<List<Cron>> response) {
 
 				if(response.isSuccessful()) {
 					tasksList.postValue(response.body());
@@ -62,7 +62,7 @@ public class AdminCronTasksViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<CronTasks>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Cron>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}

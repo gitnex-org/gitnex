@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import org.gitnex.tea4j.models.GitTag;
+import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder> {
 
-    private List<GitTag> tags;
+    private List<Tag> tags;
     private final Context context;
     private final String repo;
     private final String owner;
@@ -60,7 +60,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
         }
     }
 
-    public TagsAdapter(Context ctx, List<GitTag> releasesMain, String repoOwner, String repoName) {
+    public TagsAdapter(Context ctx, List<Tag> releasesMain, String repoOwner, String repoName) {
         this.context = ctx;
         this.tags = releasesMain;
         owner = repoOwner;
@@ -77,7 +77,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
     @Override
     public void onBindViewHolder(@NonNull TagsViewHolder holder, int position) {
 
-        GitTag currentItem = tags.get(position);
+	    Tag currentItem = tags.get(position);
 
 	    holder.tagName.setText(currentItem.getName());
 
@@ -102,7 +102,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 		    }
 	    });
 
-	    if(!((RepoDetailActivity) context).repository.getPermissions().canPush()) {
+	    if(!((RepoDetailActivity) context).repository.getPermissions().isPush()) {
             holder.options.setVisibility(View.GONE);
         }
 
@@ -165,7 +165,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<GitTag> list) {
+	public void updateList(List<Tag> list) {
 		tags = list;
 		notifyDataChanged();
 	}

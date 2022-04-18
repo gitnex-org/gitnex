@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.Issues;
+import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
@@ -23,10 +23,10 @@ import retrofit2.Response;
 
 public class IssuesViewModel extends ViewModel {
 
-	private static MutableLiveData<List<Issues>> issuesList;
+	private static MutableLiveData<List<Issue>> issuesList;
 	private static int resultLimit = Constants.resultLimitOldGiteaInstances;
 
-	public LiveData<List<Issues>> getIssuesList(String token, String searchKeyword, String type, Boolean created, String state, Context ctx) {
+	public LiveData<List<Issue>> getIssuesList(String searchKeyword, String type, Boolean created, String state, Context ctx) {
 
 		issuesList = new MutableLiveData<>();
 
@@ -35,21 +35,22 @@ public class IssuesViewModel extends ViewModel {
 			resultLimit = Constants.resultLimitNewGiteaInstances;
 		}
 
-		loadIssuesList(token, searchKeyword, type, created, state, ctx);
+		loadIssuesList(searchKeyword, type, created, state, ctx);
 
 		return issuesList;
 	}
 
-	public static void loadIssuesList(String token, String searchKeyword, String type, Boolean created, String state, Context ctx) {
+	public static void loadIssuesList(String searchKeyword, String type, Boolean created, String state, Context ctx) {
 
-		Call<List<Issues>> call = RetrofitClient
+		Call<List<Issue>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.queryIssues(token, searchKeyword, type, created, state, resultLimit, 1);
+			.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null,
+				null, created, null, null, null, null, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
+			public void onResponse(@NonNull Call<List<Issue>> call, @NonNull Response<List<Issue>> response) {
 
 				if(response.isSuccessful()) {
 					issuesList.postValue(response.body());
@@ -60,27 +61,28 @@ public class IssuesViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
 		});
 	}
 
-	public static void loadMoreIssues(String token, String searchKeyword, String type, Boolean created, String state, int page, Context ctx, ExploreIssuesAdapter adapter) {
+	public static void loadMoreIssues(String searchKeyword, String type, Boolean created, String state, int page, Context ctx, ExploreIssuesAdapter adapter) {
 
-		Call<List<Issues>> call = RetrofitClient
+		Call<List<Issue>> call = RetrofitClient
 			.getApiInterface(ctx)
-			.queryIssues(token, searchKeyword, type, created, state, resultLimit, page);
+			.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null,
+				null, created, null, null, null, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
+			public void onResponse(@NonNull Call<List<Issue>> call, @NonNull Response<List<Issue>> response) {
 
 				if(response.isSuccessful()) {
 
-					List<Issues> list = issuesList.getValue();
+					List<Issue> list = issuesList.getValue();
 					assert list != null;
 					assert response.body() != null;
 
@@ -98,7 +100,7 @@ public class IssuesViewModel extends ViewModel {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
 
 				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}

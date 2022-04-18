@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import org.gitnex.tea4j.models.Teams;
+import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
@@ -23,26 +23,26 @@ import retrofit2.Response;
 
 public class TeamsByOrgViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Teams>> teamsList;
+    private static MutableLiveData<List<Team>> teamsList;
 
-    public LiveData<List<Teams>> getTeamsByOrg(String token, String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
+    public LiveData<List<Team>> getTeamsByOrg(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
 
         teamsList = new MutableLiveData<>();
-        loadTeamsByOrgList(token, orgName, ctx, noDataTeams, mProgressBar);
+        loadTeamsByOrgList(orgName, ctx, noDataTeams, mProgressBar);
 
         return teamsList;
     }
 
-    public static void loadTeamsByOrgList(String token, String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
+    public static void loadTeamsByOrgList(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
 
-        Call<List<Teams>> call = RetrofitClient
+        Call<List<Team>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getTeamsByOrg(token, orgName);
+                .orgListTeams(orgName, null, null);
 
         call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<Teams>> call, @NonNull Response<List<Teams>> response) {
+            @Override
+            public void onResponse(@NonNull Call<List<Team>> call, @NonNull Response<List<Team>> response) {
 
 		        if(response.isSuccessful()) {
 			        teamsList.postValue(response.body());
@@ -60,7 +60,7 @@ public class TeamsByOrgViewModel extends ViewModel {
 	        }
 
 	        @Override
-	        public void onFailure(@NonNull Call<List<Teams>> call, @NonNull Throwable t) {
+	        public void onFailure(@NonNull Call<List<Team>> call, @NonNull Throwable t) {
 
 		        mProgressBar.setVisibility(View.GONE);
 		        noDataTeams.setVisibility(View.GONE);

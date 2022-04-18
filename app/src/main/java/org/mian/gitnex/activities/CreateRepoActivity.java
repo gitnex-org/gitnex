@@ -14,8 +14,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.models.OrgOwner;
-import org.gitnex.tea4j.models.OrganizationRepository;
+import org.gitnex.tea4j.v2.models.CreateRepoOption;
+import org.gitnex.tea4j.v2.models.Organization;
+import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateRepoBinding;
@@ -47,7 +48,7 @@ public class CreateRepoActivity extends BaseActivity {
 
 	private String selectedOwner;
 
-	List<OrgOwner> organizationsList = new ArrayList<>();
+	List<String> organizationsList = new ArrayList<>();
 
     //https://github.com/go-gitea/gitea/blob/52cfd2743c0e85b36081cf80a850e6a5901f1865/models/repo.go#L964-L967
     final List<String> reservedRepoNames = Arrays.asList(".", "..");
@@ -80,7 +81,7 @@ public class CreateRepoActivity extends BaseActivity {
         closeActivity.setOnClickListener(onClickListener);
 
         spinner = activityCreateRepoBinding.ownerSpinner;
-        getOrganizations(getAccount().getAuthorization(), loginUid);
+        getOrganizations(loginUid);
 
         createRepo = activityCreateRepoBinding.createNewRepoButton;
         disableProcessButton();
@@ -143,32 +144,37 @@ public class CreateRepoActivity extends BaseActivity {
         else {
 
             disableProcessButton();
-            createNewRepository(getAccount().getAuthorization(), loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
+            createNewRepository(loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
         }
     }
 
-    private void createNewRepository(final String token, String loginUid, String repoName, String repoDesc, String selectedOwner, boolean isPrivate) {
+    private void createNewRepository(String loginUid, String repoName, String repoDesc, String selectedOwner, boolean isPrivate) {
 
-        OrganizationRepository createRepository = new OrganizationRepository(true, repoDesc, null, null, repoName, isPrivate, "Default");
+	    CreateRepoOption createRepository = new CreateRepoOption();
+		createRepository.setAutoInit(true);
+		createRepository.setDescription(repoDesc);
+		createRepository.setPrivate(isPrivate);
+		createRepository.setReadme("Default");
+		createRepository.setName(repoName);
 
-        Call<OrganizationRepository> call;
+        Call<Repository> call;
         if(selectedOwner.equals(loginUid)) {
 
             call = RetrofitClient
                     .getApiInterface(ctx)
-                    .createNewUserRepository(token, createRepository);
+                    .createCurrentUserRepo(createRepository);
         }
         else {
 
             call = RetrofitClient
                     .getApiInterface(ctx)
-                    .createNewUserOrgRepository(token, selectedOwner, createRepository);
+                    .createOrgRepo(selectedOwner, createRepository);
         }
 
-        call.enqueue(new Callback<OrganizationRepository>() {
+        call.enqueue(new Callback<Repository>() {
 
             @Override
-            public void onResponse(@NonNull Call<OrganizationRepository> call, @NonNull retrofit2.Response<OrganizationRepository> response) {
+            public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
 
                 if(response.code() == 201) {
 
@@ -198,7 +204,7 @@ public class CreateRepoActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<OrganizationRepository> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
                 enableProcessButton();
@@ -206,54 +212,53 @@ public class CreateRepoActivity extends BaseActivity {
         });
     }
 
-    private void getOrganizations(String instanceToken, final String userLogin) {
+    private void getOrganizations(final String userLogin) {
 
-        Call<List<OrgOwner>> call = RetrofitClient
+        Call<List<Organization>> call = RetrofitClient
                 .getApiInterface(ctx)
-                .getOrgOwners(instanceToken, 1, 50);
+                .orgListCurrentUserOrgs(1, 50);
 
-        call.enqueue(new Callback<List<OrgOwner>>() {
+        call.enqueue(new Callback<List<Organization>>() {
 
             @Override
-            public void onResponse(@NonNull Call<List<OrgOwner>> call, @NonNull retrofit2.Response<List<OrgOwner>> response) {
+            public void onResponse(@NonNull Call<List<Organization>> call, @NonNull retrofit2.Response<List<Organization>> response) {
 
 	            if(response.code() == 200) {
 
 		            int organizationId = 0;
 
-		            List<OrgOwner> organizationsList_ = response.body();
+		            List<Organization> organizationsList_ = response.body();
 
-		            organizationsList.add(new OrgOwner(userLogin));
+		            organizationsList.add(userLogin);
 		            assert organizationsList_ != null;
 
 		            if(organizationsList_.size() > 0) {
 
 			            for(int i = 0; i < organizationsList_.size(); i++) {
 
-				            if(!getIntent().getStringExtra("orgName").equals("")) {
+				            if(getIntent().getStringExtra("orgName") != null && !"".equals(getIntent().getStringExtra("orgName"))) {
 					            if(getIntent().getStringExtra("orgName").equals(organizationsList_.get(i).getUsername())) {
 						            organizationId = i + 1;
 					            }
 				            }
 
-				            OrgOwner data = new OrgOwner(organizationsList_.get(i).getUsername());
-				            organizationsList.add(data);
+							organizationsList.add(organizationsList_.get(i).getUsername());
 			            }
 		            }
 
-		            ArrayAdapter<OrgOwner> adapter = new ArrayAdapter<>(CreateRepoActivity.this, R.layout.list_spinner_items, organizationsList);
+		            ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateRepoActivity.this, R.layout.list_spinner_items, organizationsList);
 
 		            spinner.setAdapter(adapter);
 
-		            spinner.setOnItemClickListener ((parent, view, position, id) -> selectedOwner = organizationsList.get(position).getUsername());
+		            spinner.setOnItemClickListener ((parent, view, position, id) -> selectedOwner = organizationsList.get(position));
 
 		            if(getIntent().getBooleanExtra("organizationAction", false) && organizationId != 0) {
 
 			            int selectOwnerById = organizationId;
 			            new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-				            spinner.setText(organizationsList.get(selectOwnerById).getUsername(), false);
-				            selectedOwner = organizationsList.get(selectOwnerById).getUsername();
+				            spinner.setText(organizationsList.get(selectOwnerById), false);
+				            selectedOwner = organizationsList.get(selectOwnerById);
 			            }, 500);
 			            getIntent().removeExtra("organizationAction");
 		            }
@@ -270,7 +275,7 @@ public class CreateRepoActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<OrgOwner>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 
                 Log.e("onFailure", t.toString());
                 enableProcessButton();

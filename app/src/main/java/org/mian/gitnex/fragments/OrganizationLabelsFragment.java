@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
@@ -78,11 +77,11 @@ public class OrganizationLabelsFragment extends Fragment {
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
-			OrganizationLabelsViewModel.loadOrgLabelsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repoOwner, getContext(), mProgressBar, noData);
+			OrganizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
 
 		}, 200));
 
-		fetchDataAsync(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repoOwner);
+		fetchDataAsync(repoOwner);
 
 		return fragmentLabelsBinding.getRoot();
 
@@ -95,16 +94,16 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		if(CreateLabelActivity.refreshLabels) {
 
-			OrganizationLabelsViewModel.loadOrgLabelsList(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repoOwner, getContext(), mProgressBar, noData);
+			OrganizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
 			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
-	private void fetchDataAsync(String instanceToken, String owner) {
+	private void fetchDataAsync(String owner) {
 
 		OrganizationLabelsViewModel organizationLabelsViewModel = new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
 
-		organizationLabelsViewModel.getOrgLabelsList(instanceToken, owner, getContext(), mProgressBar, noData).observe(getViewLifecycleOwner(), labelsListMain -> {
+		organizationLabelsViewModel.getOrgLabelsList(owner, getContext(), mProgressBar, noData).observe(getViewLifecycleOwner(), labelsListMain -> {
 
 			adapter = new LabelsAdapter(getContext(), labelsListMain, type, owner);
 

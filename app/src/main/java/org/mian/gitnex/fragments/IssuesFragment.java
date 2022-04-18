@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.Issues;
+import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -45,7 +45,7 @@ public class IssuesFragment extends Fragment {
 	private Context context;
 
 	private Menu menu;
-	private List<Issues> issuesList;
+	private List<Issue> issuesList;
 	private IssuesAdapter adapter;
 
 	private int pageSize = Constants.issuesPageInit;
@@ -80,7 +80,7 @@ public class IssuesFragment extends Fragment {
 
 		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), "");
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -88,7 +88,7 @@ public class IssuesFragment extends Fragment {
 		adapter.setLoadMoreListener(() -> fragmentIssuesBinding.recyclerView.post(() -> {
 			if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 				int page = (issuesList.size() + resultLimit) / resultLimit;
-				loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), "");
+				loadMore(repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 			}
 		}));
 
@@ -114,14 +114,14 @@ public class IssuesFragment extends Fragment {
 
 				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 					int page = (issuesList.size() + resultLimit) / resultLimit;
-					loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+					loadMore(repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 				}
 			}));
 
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, issueState, repository.getIssueMilestoneFilterName());
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, issueState, repository.getIssueMilestoneFilterName());
 			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
@@ -134,18 +134,18 @@ public class IssuesFragment extends Fragment {
 
 				if(issuesList.size() == resultLimit || pageSize == resultLimit) {
 					int page = (issuesList.size() + resultLimit) / resultLimit;
-					loadMore(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+					loadMore(repository.getOwner(), repository.getName(), page, resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 				}
 			}));
 
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), filterIssueByMilestone);
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), filterIssueByMilestone);
 			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
-		loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+		loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 
 		return fragmentIssuesBinding.getRoot();
 	}
@@ -154,18 +154,19 @@ public class IssuesFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if(resumeIssues) {
-			loadInitial(((BaseActivity) requireActivity()).getAccount().getAuthorization(), repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
 			resumeIssues = false;
 		}
 	}
 
-	private void loadInitial(String token, String repoOwner, String repoName, int resultLimit, String requestType, String issueState, String filterByMilestone) {
+	private void loadInitial(String repoOwner, String repoName, int resultLimit, String requestType, String issueState, String filterByMilestone) {
 
-		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, 1, resultLimit, requestType, issueState, filterByMilestone);
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, null, requestType,
+			filterByMilestone, null, null, null, null, null, 1, resultLimit);
 
-		call.enqueue(new Callback<List<Issues>>() {
+		call.enqueue(new Callback<List<Issue>>() {
 			@Override
-			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
+			public void onResponse(@NonNull Call<List<Issue>> call, @NonNull Response<List<Issue>> response) {
 
 				if(response.code() == 200) {
 					assert response.body() != null;
@@ -192,24 +193,24 @@ public class IssuesFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
 				Log.e(TAG, t.toString());
 			}
 		});
 	}
 
-	private void loadMore(String token, String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState, String filterByMilestone) {
+	private void loadMore(String repoOwner, String repoName, int page, int resultLimit, String requestType, String issueState, String filterByMilestone) {
 
 		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<Issues>> call = RetrofitClient.getApiInterface(context).getIssues(token, repoOwner, repoName, page, resultLimit, requestType, issueState, filterByMilestone);
-
-		call.enqueue(new Callback<List<Issues>>() {
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, null, requestType,
+			filterByMilestone, null, null, null, null, null, page, resultLimit);
+		call.enqueue(new Callback<List<Issue>>() {
 
 			@Override
-			public void onResponse(@NonNull Call<List<Issues>> call, @NonNull Response<List<Issues>> response) {
+			public void onResponse(@NonNull Call<List<Issue>> call, @NonNull Response<List<Issue>> response) {
 				if(response.code() == 200) {
-					List<Issues> result = response.body();
+					List<Issue> result = response.body();
 					assert result != null;
 					if(result.size() > 0) {
 						pageSize = result.size();
@@ -228,7 +229,7 @@ public class IssuesFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Issues>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
 				Log.e(TAG, t.toString());
 			}
 		});
@@ -270,9 +271,9 @@ public class IssuesFragment extends Fragment {
 
 	private void filter(String text) {
 
-		List<Issues> arr = new ArrayList<>();
+		List<Issue> arr = new ArrayList<>();
 
-		for(Issues d : issuesList) {
+		for(Issue d : issuesList) {
 			if(d == null || d.getTitle() == null || d.getBody() == null) {
 				continue;
 			}

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.gitnex.tea4j.models.OrgPermissions;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.databinding.BottomSheetOrganizationBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
@@ -19,9 +19,9 @@ import org.mian.gitnex.structs.BottomSheetListener;
 public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 
     private BottomSheetListener bmListener;
-    private final OrgPermissions permissions;
+    private final OrganizationPermissions permissions;
 
-    public BottomSheetOrganizationFragment(OrgPermissions org) {
+    public BottomSheetOrganizationFragment(OrganizationPermissions org) {
     	permissions = org;
     }
 
@@ -32,14 +32,14 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 	    BottomSheetOrganizationBinding bottomSheetOrganizationBinding = BottomSheetOrganizationBinding.inflate(inflater, container, false);
 
 	    if(permissions != null) {
-		    if(!permissions.canCreateRepositories()) {
+		    if(!permissions.isCanCreateRepository()) {
 			    bottomSheetOrganizationBinding.createRepository.setVisibility(View.GONE);
 		    }
-		    if(!permissions.isOwner()) {
+		    if(!permissions.isIsOwner()) {
 			    bottomSheetOrganizationBinding.createLabel.setVisibility(View.GONE);
 			    bottomSheetOrganizationBinding.createTeam.setVisibility(View.GONE);
 		    }
-		    if(!permissions.canCreateRepositories() || !permissions.isOwner()) {
+		    if(!permissions.isCanCreateRepository() || !permissions.isIsOwner()) {
 			    bottomSheetOrganizationBinding.orgCreate.setVisibility(View.GONE);
 			    bottomSheetOrganizationBinding.orgCreateSection.setVisibility(View.GONE);
 			    bottomSheetOrganizationBinding.orgDivider.setVisibility(View.GONE);

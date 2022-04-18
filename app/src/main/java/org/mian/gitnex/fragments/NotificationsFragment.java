@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
-import org.gitnex.tea4j.models.NotificationThread;
+import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.NotificationsAdapter;
@@ -36,6 +35,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +57,6 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	private int pageCurrentIndex = 1;
 	private int pageResultLimit;
 	private String currentFilterMode = "unread";
-	private String instanceToken;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +73,6 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		activity = requireActivity();
 		context = getContext();
-
-		instanceToken = ((BaseActivity) requireActivity()).getAccount().getAuthorization();
 
 		pageResultLimit = Constants.getCurrentResultLimit(context);
 
@@ -118,8 +115,8 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		viewBinding.markAllAsRead.setOnClickListener(v1 ->
 			RetrofitClient.getApiInterface(context)
-				.markNotificationThreadsAsRead(instanceToken, AppUtil.getTimestampFromDate(context, new Date()), true, new String[]{"unread", "pinned"}, "read")
-				.enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
+				.notifyReadList(new Date(), "true", Arrays.asList("unread", "pinned"), "read")
+				.enqueue((SimpleCallback<List<NotificationThread>>) (call, voidResponse) -> {
 
 					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
 						Toasty.success(context, getString(R.string.markedNotificationsAsRead));
@@ -150,7 +147,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		RetrofitClient
 			.getApiInterface(context)
-			.getNotificationThreads(instanceToken, false, filter, Constants.defaultOldestTimestamp, "", pageCurrentIndex, pageResultLimit)
+			.notifyGetList(false, Arrays.asList(filter), null, null, null, pageCurrentIndex, pageResultLimit)
 			.enqueue((SimpleCallback<List<NotificationThread>>) (call1, listResponse) -> {
 
 				if(listResponse.isPresent() && listResponse.get().isSuccessful() && listResponse.get().body() != null) {
@@ -238,7 +235,7 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	public void onNotificationClicked(NotificationThread notificationThread) {
 
 		if(notificationThread.isUnread() && !notificationThread.isPinned()) {
-			RetrofitClient.getApiInterface(context).markNotificationThreadAsRead(instanceToken, notificationThread.getId(), "read").enqueue((SimpleCallback<Void>) (call, voidResponse) -> {
+			RetrofitClient.getApiInterface(context).notifyReadThread(String.valueOf(notificationThread.getId()), "read").enqueue((SimpleCallback<NotificationThread>) (call, voidResponse) -> {
 				// reload without any checks, because Gitea returns a 205 and Java expects this to be empty
 				// but Gitea send a response -> results in a call of onFailure and no response is present
 				//if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {

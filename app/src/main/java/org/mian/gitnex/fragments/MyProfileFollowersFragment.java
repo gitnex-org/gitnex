@@ -12,9 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
@@ -35,7 +34,7 @@ public class MyProfileFollowersFragment extends Fragment {
 	private FragmentProfileFollowersFollowingBinding viewBinding;
 	private Context context;
 
-	private List<UserInfo> dataList;
+	private List<User> dataList;
 	private UsersAdapter adapter;
 	private int pageSize;
 	private final String TAG = Constants.tagFollowers;
@@ -78,12 +77,12 @@ public class MyProfileFollowersFragment extends Fragment {
 
 	private void loadInitial(int resultLimit) {
 
-		Call<List<UserInfo>> call = RetrofitClient
+		Call<List<User>> call = RetrofitClient
 			.getApiInterface(context)
-			.getFollowers(((BaseActivity) requireActivity()).getAccount().getAuthorization(), 1, resultLimit);
-		call.enqueue(new Callback<List<UserInfo>>() {
+			.userCurrentListFollowers(1, resultLimit);
+		call.enqueue(new Callback<List<User>>() {
 			@Override
-			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 				if(response.isSuccessful()) {
 					if(response.body() != null && response.body().size() > 0) {
 						dataList.clear();
@@ -108,7 +107,7 @@ public class MyProfileFollowersFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 				Log.e(TAG, t.toString());
 			}
 		});
@@ -117,14 +116,14 @@ public class MyProfileFollowersFragment extends Fragment {
 	private void loadMore(int resultLimit, int page) {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<List<UserInfo>> call = RetrofitClient.getApiInterface(context)
-			.getFollowers(((BaseActivity) requireActivity()).getAccount().getAuthorization(), page, resultLimit);
-		call.enqueue(new Callback<List<UserInfo>>() {
+		Call<List<User>> call = RetrofitClient.getApiInterface(context)
+			.userCurrentListFollowers(page, resultLimit);
+		call.enqueue(new Callback<List<User>>() {
 			@Override
-			public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 				if(response.isSuccessful()) {
 					assert response.body() != null;
-					List<UserInfo> result = response.body();
+					List<User> result = response.body();
 					if(result.size() > 0) {
 						pageSize = result.size();
 						dataList.addAll(result);
@@ -142,7 +141,7 @@ public class MyProfileFollowersFragment extends Fragment {
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 				Log.e(TAG, t.toString());
 			}
 		});

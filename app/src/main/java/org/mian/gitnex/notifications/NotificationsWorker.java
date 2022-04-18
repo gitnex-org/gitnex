@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import org.gitnex.tea4j.models.NotificationThread;
+import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -22,7 +22,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
-import org.mian.gitnex.helpers.contexts.AccountContext;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -98,9 +98,9 @@ public class NotificationsWorker extends Worker {
 			try {
 				assert userAccountParameters != null;
 				Call<List<NotificationThread>> call = RetrofitClient
-					.getApiInterface(context, userAccount.getInstanceUrl())
-					.getNotificationThreads(new AccountContext(userAccount).getAuthorization(), false, new String[]{"unread"},
-						userAccountParameters.get("previousTimestamp"), null, 1, Integer.MAX_VALUE);
+					.getApiInterface(context, userAccount.getInstanceUrl(), userAccount.getToken())
+					.notifyGetList(false, Arrays.asList("unread"), null, new Date(userAccountParameters.get("previousTimestamp")), null,
+						null, 1);
 
 				Response<List<NotificationThread>> response = call.execute();
 
@@ -137,7 +137,7 @@ public class NotificationsWorker extends Worker {
 
 			String subjectUrl = notificationThread.getSubject().getUrl();
 			String issueId = context.getResources().getString(R.string.hash) + subjectUrl.substring(subjectUrl.lastIndexOf("/") + 1);
-			String notificationHeader = issueId + " " + notificationThread.getSubject().getTitle() + " " + String.format(context.getResources().getString(R.string.notificationExtraInfo), notificationThread.getRepository().getFull_name(), notificationThread.getSubject().getType());
+			String notificationHeader = issueId + " " + notificationThread.getSubject().getTitle() + " " + String.format(context.getResources().getString(R.string.notificationExtraInfo), notificationThread.getRepository().getFullName(), notificationThread.getSubject().getType());
 
 			NotificationCompat.Builder builder1 = getBaseNotificationBuilder()
 				.setContentTitle(notificationHeader)

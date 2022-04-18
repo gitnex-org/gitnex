@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -30,13 +30,13 @@ import java.util.List;
 
 public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-	private List<UserInfo> usersList;
-	private final List<UserInfo> usersListFull;
+	private List<User> usersList;
+	private final List<User> usersListFull;
 	private final Context context;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public AdminGetUsersAdapter(List<UserInfo> usersListMain, Context ctx) {
+	public AdminGetUsersAdapter(List<User> usersListMain, Context ctx) {
 		this.context = ctx;
 		this.usersList = usersListMain;
 		usersListFull = new ArrayList<>(usersList);
@@ -99,20 +99,20 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 			});
 		}
 
-		void bindData(UserInfo users) {
+		void bindData(User users) {
 
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			userLoginId = users.getLogin();
 
-			if(!users.getFullname().equals("")) {
+			if(!users.getFullName().equals("")) {
 
-				userFullName.setText(Html.fromHtml(users.getFullname()));
-				userName.setText(context.getResources().getString(R.string.usernameWithAt, users.getUsername()));
+				userFullName.setText(Html.fromHtml(users.getFullName()));
+				userName.setText(context.getResources().getString(R.string.usernameWithAt, users.getLogin()));
 			}
 			else {
 
-				userFullName.setText(context.getResources().getString(R.string.usernameWithAt, users.getUsername()));
+				userFullName.setText(context.getResources().getString(R.string.usernameWithAt, users.getLogin()));
 				userName.setVisibility(View.GONE);
 			}
 
@@ -123,7 +123,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 				userEmail.setVisibility(View.GONE);
 			}
 
-			if(users.getIs_admin()) {
+			if(users.isIsAdmin()) {
 
 				userRole.setVisibility(View.VISIBLE);
 				TextDrawable drawable = TextDrawable.builder().beginConfig()
@@ -136,7 +136,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 				userRole.setVisibility(View.GONE);
 			}
 
-			PicassoService.getInstance(context).get().load(users.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
+			PicassoService.getInstance(context).get().load(users.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
 		}
 	}
 
@@ -163,7 +163,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<UserInfo> list) {
+	public void updateList(List<User> list) {
 		usersList = list;
 		notifyDataChanged();
 	}
@@ -176,7 +176,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final Filter usersFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<UserInfo> filteredList = new ArrayList<>();
+            List<User> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(usersListFull);
@@ -184,8 +184,8 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
             else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (UserInfo item : usersListFull) {
-                    if (item.getEmail().toLowerCase().contains(filterPattern) || item.getFullname().toLowerCase().contains(filterPattern) || item.getUsername().toLowerCase().contains(filterPattern)) {
+                for (User item : usersListFull) {
+                    if (item.getEmail().toLowerCase().contains(filterPattern) || item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

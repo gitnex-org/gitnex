@@ -12,7 +12,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import org.gitnex.tea4j.models.UserInfo;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -27,9 +27,9 @@ import java.util.List;
 
 public class UserGridAdapter extends BaseAdapter implements Filterable {
 
-    private final List<UserInfo> membersList;
+    private final List<User> membersList;
     private final Context context;
-    private final List<UserInfo> membersListFull;
+    private final List<User> membersListFull;
 
     private class ViewHolder {
 
@@ -56,7 +56,7 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    public UserGridAdapter(Context ctx, List<UserInfo> membersListMain) {
+    public UserGridAdapter(Context ctx, List<User> membersListMain) {
 
         this.context = ctx;
         this.membersList = membersListMain;
@@ -101,16 +101,16 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 
     private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
 
-        UserInfo currentItem = membersList.get(position);
+	    User currentItem = membersList.get(position);
 	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-        PicassoService.getInstance(context).get().load(currentItem.getAvatar()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
+        PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
 
 	    viewHolder.userLoginId = currentItem.getLogin();
 
-        if(!currentItem.getFullname().equals("")) {
+        if(!currentItem.getFullName().equals("")) {
 
-            viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullname()));
+            viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
         }
         else {
 
@@ -126,7 +126,7 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
     private final Filter membersFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<UserInfo> filteredList = new ArrayList<>();
+            List<User> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
 
@@ -136,8 +136,8 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (UserInfo item : membersListFull) {
-                    if (item.getFullname().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
+                for (User item : membersListFull) {
+                    if (item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

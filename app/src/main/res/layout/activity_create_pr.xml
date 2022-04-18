@@ -175,7 +175,6 @@
                 android:layout_marginBottom="8dp"
                 android:hint="@string/newIssueMilestoneTitle"
                 app:endIconTint="?attr/iconsColor"
-                android:visibility="gone"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
                 <AutoCompleteTextView
