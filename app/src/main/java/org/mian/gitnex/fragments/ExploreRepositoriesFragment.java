@@ -101,7 +101,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 		Call<SearchResults> call = RetrofitClient
 			.getApiInterface(context).repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null,
-				null, null, includeTemplate, onlyArchived, null, null, null, null, 1, resultLimit);
+				repoTypeInclude, null, includeTemplate, onlyArchived, null, null, sort, order, 1, resultLimit);
 		call.enqueue(new Callback<>() {
 			@Override
 			public void onResponse(@NonNull Call<SearchResults> call, @NonNull Response<SearchResults> response) {
@@ -141,7 +141,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<SearchResults> call = RetrofitClient.getApiInterface(context)
 			.repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null,
-				null, null, includeTemplate, onlyArchived, null, null, null, null, page, resultLimit);
+				repoTypeInclude, null, includeTemplate, onlyArchived, null, null, sort, order, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 			@Override
