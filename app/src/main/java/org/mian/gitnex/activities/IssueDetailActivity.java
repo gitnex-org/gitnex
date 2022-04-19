@@ -20,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
@@ -440,6 +442,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+		if(issue.getIssueType().equalsIgnoreCase("pull")) {
+			inflater.inflate(R.menu.pr_info_menu, menu);
+		}
 		return true;
 	}
 
@@ -464,6 +469,24 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment(issue, issueCreator);
 				bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
 			}
+			return true;
+		}
+		else if(id == R.id.prInfo) {
+
+			View view = LayoutInflater.from(ctx).inflate(R.layout.custom_pr_info_dialog, null);
+
+			TextView baseBranch = view.findViewById(R.id.baseBranch);
+			TextView headBranch = view.findViewById(R.id.headBranch);
+
+			baseBranch.setText(issue.getPullRequest().getHead().getRef());
+			headBranch.setText(issue.getPullRequest().getHead().getRef());
+
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+
+			alertDialog.setTitle(getResources().getString(R.string.prMergeInfo));
+			alertDialog.setView(view);
+			alertDialog.setPositiveButton(getString(R.string.okButton), null);
+			alertDialog.create().show();
 			return true;
 		}
 		else {
@@ -780,7 +803,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		}
 		else {
 
-			viewBinding.issueDueDate.setVisibility(View.GONE);
+			viewBinding.dueDateFrame.setVisibility(View.GONE);
 		}
 
 		String edited;
@@ -847,12 +870,12 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		if(issue.getIssue().getMilestone() != null) {
 
-			viewBinding.issueMilestone.setVisibility(View.VISIBLE);
-			viewBinding.issueMilestone.setText(getString(R.string.issueMilestone, issue.getIssue().getMilestone().getTitle()));
+			viewBinding.milestoneFrame.setVisibility(View.VISIBLE);
+			viewBinding.issueMilestone.setText(issue.getIssue().getMilestone().getTitle());
 		}
 		else {
 
-			viewBinding.issueMilestone.setVisibility(View.GONE);
+			viewBinding.milestoneFrame.setVisibility(View.GONE);
 		}
 
 		/*if(!issue.getIssue().getUser().getFull_name().equals("")) {

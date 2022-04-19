@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -111,36 +112,66 @@
                             android:textIsSelectable="true"
                             android:textSize="16sp" />
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:id="@+id/msdueFrame"
                             android:layout_toEndOf="@+id/assigneeAvatar"
                             android:layout_below="@+id/issueTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp" >
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/issueDueDate"
-                                android:gravity="start"
-                                android:layout_alignParentStart="true"
-                                android:layout_gravity="start"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/dueDateFrame"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="14sp" />
+                                android:gravity="end|center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
 
-                            <TextView
-                                android:layout_toEndOf="@+id/issueDueDate"
-                                android:id="@+id/issueMilestone"
-                                android:gravity="end"
-                                android:layout_gravity="end"
-                                android:layout_alignParentEnd="true"
-                                android:layout_width="wrap_content"
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="wrap_content"
+                                    app:srcCompat="@drawable/ic_calendar"
+                                    android:contentDescription="@string/generalImgContentText" />
+
+                                <TextView
+                                    android:id="@+id/issueDueDate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:singleLine="true"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/milestoneFrame"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="14sp" />
+                                android:gravity="end|center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
 
-                        </RelativeLayout>
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="wrap_content"
+                                    app:srcCompat="@drawable/ic_milestone"
+                                    android:contentDescription="@string/generalImgContentText" />
+
+                                <TextView
+                                    android:id="@+id/issueMilestone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:singleLine="true"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
 
                         <HorizontalScrollView
                             android:layout_below="@+id/msdueFrame"
