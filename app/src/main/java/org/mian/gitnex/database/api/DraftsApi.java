@@ -8,7 +8,7 @@ import org.mian.gitnex.database.models.DraftWithRepository;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class DraftsApi extends BaseApi {

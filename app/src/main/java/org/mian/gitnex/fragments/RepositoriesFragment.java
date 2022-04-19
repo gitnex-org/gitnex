@@ -36,7 +36,7 @@ public class RepositoriesFragment extends Fragment {
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +45,8 @@ public class RepositoriesFragment extends Fragment {
 		setHasOptionsMenu(true);
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navRepos));
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+
+		resultLimit = Constants.getCurrentResultLimit(getContext());
 
 		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(view -> {
 			Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);

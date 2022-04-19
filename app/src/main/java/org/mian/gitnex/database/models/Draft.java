@@ -9,7 +9,7 @@ import java.io.Serializable;
 import static androidx.room.ForeignKey.CASCADE;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 @Entity(tableName = "Drafts", foreignKeys = @ForeignKey(entity = Repository.class, parentColumns = "repositoryId", childColumns = "draftRepositoryId", onDelete = CASCADE), indices = {@Index("draftRepositoryId")})

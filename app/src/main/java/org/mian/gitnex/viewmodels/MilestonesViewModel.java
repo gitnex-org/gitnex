@@ -23,13 +23,13 @@ import retrofit2.Response;
 public class MilestonesViewModel extends ViewModel {
 
 	private MutableLiveData<List<Milestone>> milestonesList;
-	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 
 	public LiveData<List<Milestone>> getMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
 
 		milestonesList = new MutableLiveData<>();
 		loadMilestonesList(repoOwner, repoName, milestoneState, ctx);
-
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		return milestonesList;
 	}
 

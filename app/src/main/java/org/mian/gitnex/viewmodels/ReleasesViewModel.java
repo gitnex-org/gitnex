@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -26,19 +25,13 @@ import retrofit2.Response;
 public class ReleasesViewModel extends ViewModel {
 
     private MutableLiveData<List<Release>> releasesList;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 
     public LiveData<List<Release>> getReleasesList(String owner, String repo, Context ctx) {
 
         releasesList = new MutableLiveData<>();
-
-	    // if gitea is 1.12 or higher use the new limit
-	    if(((BaseActivity) ctx).getAccount().requiresVersion("1.12.0")) {
-		    resultLimit = Constants.resultLimitNewGiteaInstances;
-	    }
-
+	    resultLimit = Constants.getCurrentResultLimit(ctx);
         loadReleasesList(owner, repo, ctx);
-
         return releasesList;
     }
 
@@ -111,14 +104,8 @@ public class ReleasesViewModel extends ViewModel {
 	public LiveData<List<Tag>> getTagsList(String owner, String repo, Context ctx) {
 
 		tagsList = new MutableLiveData<>();
-
-		// if gitea is 1.12 or higher use the new limit
-		if(((BaseActivity) ctx).getAccount().requiresVersion("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
-
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		loadTagsList(owner, repo, ctx);
-
 		return tagsList;
 	}
 

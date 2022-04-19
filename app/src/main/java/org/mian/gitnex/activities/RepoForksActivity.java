@@ -42,7 +42,7 @@ public class RepoForksActivity extends BaseActivity {
 	private TextView noData;
 	private ProgressBar progressBar;
 	private final String TAG = "RepositoryForks";
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 	private int pageSize = 1;
 
 	private RecyclerView recyclerView;
@@ -78,11 +78,7 @@ public class RepoForksActivity extends BaseActivity {
 
 		closeActivity.setOnClickListener(v -> finish());
 
-		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
-		if(getAccount().requiresVersion("1.12")) {
-
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 
 		recyclerView = activityRepoForksBinding.recyclerView;
 		forksList = new ArrayList<>();

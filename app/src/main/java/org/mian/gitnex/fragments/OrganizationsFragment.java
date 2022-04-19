@@ -37,7 +37,7 @@ public class OrganizationsFragment extends Fragment {
 	private FragmentOrganizationsBinding fragmentOrganizationsBinding;
 	private OrganizationsListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +47,8 @@ public class OrganizationsFragment extends Fragment {
 		setHasOptionsMenu(true);
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navOrg));
 		organizationsViewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
+
+		resultLimit = Constants.getCurrentResultLimit(getContext());
 
 		fragmentOrganizationsBinding.addNewOrganization.setOnClickListener(view -> {
 			Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);

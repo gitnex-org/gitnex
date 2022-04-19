@@ -15,11 +15,11 @@ import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 @Database(entities = {Draft.class, Repository.class, UserAccount.class},
-        version = 4, exportSchema = false)
+        version = 5, exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
 	private static final String DB_NAME = "gitnex";
@@ -52,6 +52,15 @@ public abstract class GitnexDatabase extends RoomDatabase {
 		}
 	};
 
+	private static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+
+		@Override
+		public void migrate(@NonNull SupportSQLiteDatabase database) {
+			database.execSQL("ALTER TABLE 'userAccounts' ADD COLUMN 'maxResponseItems' INTEGER NOT NULL DEFAULT 50");
+			database.execSQL("ALTER TABLE 'userAccounts' ADD COLUMN 'defaultPagingNumber' INTEGER NOT NULL DEFAULT 25");
+		}
+	};
+
 	public static GitnexDatabase getDatabaseInstance(Context context) {
 
 		if (gitnexDatabase == null) {
@@ -61,7 +70,7 @@ public abstract class GitnexDatabase extends RoomDatabase {
 					gitnexDatabase = Room.databaseBuilder(context, GitnexDatabase.class, DB_NAME)
 						// .fallbackToDestructiveMigration()
 						.allowMainThreadQueries()
-						.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+						.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
 						.build();
 
 				}

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -39,6 +40,8 @@ public class AddNewAccountActivity extends BaseActivity {
 
 	private String spinnerSelectedValue;
 	private Version giteaVersion;
+	private int maxResponseItems = 50;
+	private int defaultPagingNumber = 25;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,7 @@ public class AddNewAccountActivity extends BaseActivity {
 				.toUri();
 
 			versionCheck(instanceUrl.toString(), loginToken);
+			serverPageLimitSettings();
 
 		}
 		catch(Exception e) {
@@ -196,6 +200,31 @@ public class AddNewAccountActivity extends BaseActivity {
 		});
 	}
 
+	private void serverPageLimitSettings() {
+
+		Call<GeneralAPISettings> generalAPISettings = RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
+		generalAPISettings.enqueue(new Callback<>() {
+
+			@Override
+			public void onResponse(@NonNull final Call<GeneralAPISettings> generalAPISettings, @NonNull retrofit2.Response<GeneralAPISettings> response) {
+
+				if(response.code() == 200 && response.body() != null) {
+
+					if(response.body().getMaxResponseItems() != null) {
+						maxResponseItems = Math.toIntExact(response.body().getMaxResponseItems());
+					}
+					if(response.body().getDefaultPagingNum() != null) {
+						defaultPagingNumber = Math.toIntExact(response.body().getDefaultPagingNum());
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<GeneralAPISettings> generalAPISettings, @NonNull Throwable t) {
+			}
+		});
+	}
+
 	private void setupNewAccountWithToken(String instanceUrl, final String loginToken) {
 
 		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken).userGetCurrent();
@@ -219,7 +248,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 						if(!userAccountExists) {
 
-							long id = userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getLogin(), loginToken, giteaVersion.toString());
+							long id = userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getLogin(), loginToken, giteaVersion.toString(), maxResponseItems, defaultPagingNumber);
 							UserAccount account = userAccountsApi.getAccountById((int) id);
 							AppUtil.switchToAccount(AddNewAccountActivity.this, account);
 							Toasty.success(ctx, getResources().getString(R.string.accountAddedMessage));

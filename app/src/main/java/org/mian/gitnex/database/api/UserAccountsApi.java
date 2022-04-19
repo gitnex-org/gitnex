@@ -7,7 +7,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class UserAccountsApi extends BaseApi {
@@ -19,7 +19,7 @@ public class UserAccountsApi extends BaseApi {
 		userAccountsDao = gitnexDatabase.userAccountsDao();
 	}
 
-	public long createNewAccount(String accountName, String instanceUrl, String userName, String token, String serverVersion) {
+	public long createNewAccount(String accountName, String instanceUrl, String userName, String token, String serverVersion, int maxResponseItems, int defaultPagingNumber) {
 
 		UserAccount userAccount = new UserAccount();
 		userAccount.setAccountName(accountName);
@@ -28,6 +28,8 @@ public class UserAccountsApi extends BaseApi {
 		userAccount.setToken(token);
 		userAccount.setServerVersion(serverVersion);
 		userAccount.setLoggedIn(true);
+		userAccount.setMaxResponseItems(maxResponseItems);
+		userAccount.setDefaultPagingNumber(defaultPagingNumber);
 
 		return userAccountsDao.createAccount(userAccount);
 
@@ -35,6 +37,10 @@ public class UserAccountsApi extends BaseApi {
 
 	public void updateServerVersion(final String serverVersion, final int accountId) {
 		executorService.execute(() -> userAccountsDao.updateServerVersion(serverVersion, accountId));
+	}
+
+	public void updateServerPagingLimit(final int maxResponseItems, final int defaultPagingNumber, final int accountId) {
+		executorService.execute(() -> userAccountsDao.updateServerPagingLimit(maxResponseItems, defaultPagingNumber, accountId));
 	}
 
 	public void updateToken(final int accountId, final String token) {

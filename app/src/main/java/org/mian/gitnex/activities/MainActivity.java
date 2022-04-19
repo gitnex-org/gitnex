@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
+import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
@@ -439,9 +439,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				loadUserInfo();
 				giteaVersion();
+				serverPageLimitSettings();
 				noConnection = false;
 			}
-			Log.e("Network status is: ", String.valueOf(connToInternet));
 		}, 1500);
 
 		// Changelog popup
@@ -630,6 +630,36 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void serverPageLimitSettings() {
+
+		Call<GeneralAPISettings> generalAPISettings = RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
+		generalAPISettings.enqueue(new Callback<>() {
+
+			@Override
+			public void onResponse(@NonNull final Call<GeneralAPISettings> generalAPISettings, @NonNull retrofit2.Response<GeneralAPISettings> response) {
+
+				if(response.code() == 200 && response.body() != null) {
+
+					int maxResponseItems = 50;
+					int defaultPagingNumber = 25;
+
+					if(response.body().getMaxResponseItems() != null) {
+						maxResponseItems = Math.toIntExact(response.body().getMaxResponseItems());
+					}
+					if(response.body().getDefaultPagingNum() != null) {
+						defaultPagingNumber = Math.toIntExact(response.body().getDefaultPagingNum());
+					}
+
+					BaseApi.getInstance(ctx, UserAccountsApi.class).updateServerPagingLimit(maxResponseItems, defaultPagingNumber, tinyDB.getInt("currentActiveAccountId"));
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<GeneralAPISettings> generalAPISettings, @NonNull Throwable t) {
+			}
+		});
 	}
 
 	private void giteaVersion() {

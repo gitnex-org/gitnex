@@ -45,7 +45,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 	private View.OnClickListener onClickListener;
 	private ActivityCreatePrBinding viewBinding;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 	private Dialog dialogLabels;
 	private List<Integer> labelsIds = new ArrayList<>();
 	private final List<String> assignees = new ArrayList<>();
@@ -71,11 +71,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		// require gitea 1.12 or higher
-		if(getAccount().requiresVersion("1.12.0")) {
-
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 
 		viewBinding.prBody.setOnTouchListener((touchView, motionEvent) -> {
 

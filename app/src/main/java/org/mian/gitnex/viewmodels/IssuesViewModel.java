@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Constants;
@@ -24,19 +23,13 @@ import retrofit2.Response;
 public class IssuesViewModel extends ViewModel {
 
 	private MutableLiveData<List<Issue>> issuesList;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 
 	public LiveData<List<Issue>> getIssuesList(String searchKeyword, String type, Boolean created, String state, Boolean assignedToMe, Context ctx) {
 
 		issuesList = new MutableLiveData<>();
-
-		// if gitea is 1.12 or higher use the new limit
-		if(((BaseActivity) ctx).getAccount().requiresVersion("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
-
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		loadIssuesList(searchKeyword, type, created, state, assignedToMe, ctx);
-
 		return issuesList;
 	}
 

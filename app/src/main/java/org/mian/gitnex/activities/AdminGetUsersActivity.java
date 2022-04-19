@@ -34,7 +34,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 	private ActivityAdminGetUsersBinding activityAdminGetUsersBinding;
 	private AdminGetUsersAdapter adapter;
 	private int page = 1;
-	private int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 	private Boolean searchFilter = false;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,8 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 
 		initCloseListener();
 		activityAdminGetUsersBinding.close.setOnClickListener(onClickListener);
+
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 
 		activityAdminGetUsersBinding.recyclerView.setHasFixedSize(true);
 		activityAdminGetUsersBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));

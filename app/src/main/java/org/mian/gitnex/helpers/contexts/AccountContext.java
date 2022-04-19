@@ -48,6 +48,14 @@ public class AccountContext implements Serializable {
 		return getServerVersion().higherOrEqual(version);
 	}
 
+	public int getDefaultPageLimit() {
+		return getAccount().getDefaultPagingNumber();
+	}
+
+	public int getMaxPageLimit() {
+		return getAccount().getMaxResponseItems();
+	}
+
 	public User getUserInfo() {
 
 		return userInfo;

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 @Entity(tableName = "userAccounts")
@@ -23,6 +23,8 @@ public class UserAccount implements Serializable {
     @Nullable
     private String serverVersion;
     private boolean isLoggedIn;
+	private int maxResponseItems;
+	private int defaultPagingNumber;
 
     public int getAccountId() {
         return accountId;
@@ -80,6 +82,22 @@ public class UserAccount implements Serializable {
 
 	public void setLoggedIn(boolean loggedIn) {
 		isLoggedIn = loggedIn;
+	}
+
+	public int getMaxResponseItems() {
+		return maxResponseItems;
+	}
+
+	public void setMaxResponseItems(int maxResponseItems) {
+		this.maxResponseItems = maxResponseItems;
+	}
+
+	public int getDefaultPagingNumber() {
+		return defaultPagingNumber;
+	}
+
+	public void setDefaultPagingNumber(int defaultPagingNumber) {
+		this.defaultPagingNumber = defaultPagingNumber;
 	}
 
 }

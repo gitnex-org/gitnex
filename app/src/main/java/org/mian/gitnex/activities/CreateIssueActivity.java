@@ -53,7 +53,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	private CustomLabelsSelectionDialogBinding labelsBinding;
 	private CustomAssigneesSelectionDialogBinding assigneesBinding;
     private View.OnClickListener onClickListener;
-    private int resultLimit = Constants.resultLimitOldGiteaInstances;
+    private int resultLimit;
 	private Dialog dialogLabels;
 	private Dialog dialogAssignees;
 	private String labelsSetter;
@@ -87,11 +87,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         repository = RepositoryContext.fromIntent(getIntent());
 
-        // require gitea 1.12 or higher
-        if(getAccount().requiresVersion("1.12.0")) {
-
-            resultLimit = Constants.resultLimitNewGiteaInstances;
-        }
+	    resultLimit = Constants.getCurrentResultLimit(ctx);
 
 	    viewBinding.newIssueTitle.requestFocus();
         assert imm != null;

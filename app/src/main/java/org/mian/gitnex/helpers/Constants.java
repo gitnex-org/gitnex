@@ -4,22 +4,16 @@ import android.content.Context;
 import org.mian.gitnex.activities.BaseActivity;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class Constants {
 
-	// generic values
-	public static final int resultLimitNewGiteaInstances = 25; // Gitea 1.12 and above
-	public static final int resultLimitOldGiteaInstances = 10; // Gitea 1.11 and below
-	public static final String defaultOldestTimestamp = "1970-01-01T00:00:00+00:00";
-
 	public static int getCurrentResultLimit(Context context) {
-		return ((BaseActivity) context).getAccount().requiresVersion("1.12") ? resultLimitNewGiteaInstances : resultLimitOldGiteaInstances;
+		return ((BaseActivity) context).getAccount().requiresVersion("1.15") ? ((BaseActivity) context).getAccount().getDefaultPageLimit() : ((BaseActivity) context).getAccount().getMaxPageLimit();
 	}
 
 	// tags
-	public static final String tagMilestonesFragment = "MilestonesFragment";
 	public static final String tagPullRequestsList = "PullRequestFragment";
 	public static final String tagIssuesList = "IssuesListFragment";
 	public static final String tagMilestonesAdapter = "MilestonesAdapter";
@@ -30,8 +24,6 @@ public class Constants {
 	public static final String publicOrganizations = "PublicOrganizations";
 	public static final String exploreUsers = "ExploreUsers";
 	public static final String exploreIssues = "ExploreIssues";
-	public static final String exploreRepositories = "ExploreRepositories";
-	public static final String tagNotifications = "TagNotifications";
 	public static final String tagFollowers = "TagFollowers";
 	public static final String tagFollowing = "TagFollowing";
 
@@ -41,9 +33,6 @@ public class Constants {
 
 	// pull request
 	public static final int prPageInit = 1;
-
-	// milestone
-	public static final int milestonesPageInit = 1;
 
 	// drafts
 	public static final String draftTypeComment = "comment";
@@ -69,5 +58,4 @@ public class Constants {
 
 	// work managers
 	public static final String notificationsWorkerId  = "notifications_worker";
-
 }

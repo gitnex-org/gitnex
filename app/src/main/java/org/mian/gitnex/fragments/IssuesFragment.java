@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -50,7 +49,7 @@ public class IssuesFragment extends Fragment {
 
 	private int pageSize = Constants.issuesPageInit;
 	private final String TAG = Constants.tagIssuesList;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 	private final String requestType = Constants.issuesRequestType;
 
 	private RepositoryContext repository;
@@ -71,10 +70,7 @@ public class IssuesFragment extends Fragment {
 
 		repository = RepositoryContext.fromBundle(requireArguments());
 
-		// if gitea is 1.12 or higher use the new limit
-		if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
+		resultLimit = Constants.getCurrentResultLimit(context);
 
 		issuesList = new ArrayList<>();
 

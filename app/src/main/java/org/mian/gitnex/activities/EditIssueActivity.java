@@ -49,7 +49,7 @@ import retrofit2.Callback;
 public class EditIssueActivity extends BaseActivity implements View.OnClickListener {
 
     private View.OnClickListener onClickListener;
-    private int resultLimit = Constants.resultLimitOldGiteaInstances;
+    private int resultLimit;
 
     private EditText editIssueTitle;
     private EditText editIssueDescription;
@@ -76,6 +76,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        resultLimit = Constants.getCurrentResultLimit(ctx);
         issue = IssueContext.fromIntent(getIntent());
 
         ImageView closeActivity = activityEditIssueBinding.close;
@@ -84,12 +85,6 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
         editIssueTitle = activityEditIssueBinding.editIssueTitle;
         editIssueDescription = activityEditIssueBinding.editIssueDescription;
         editIssueDueDate = activityEditIssueBinding.editIssueDueDate;
-
-        // if gitea is 1.12 or higher use the new limit
-        if(getAccount().requiresVersion("1.12.0")) {
-
-            resultLimit = Constants.resultLimitNewGiteaInstances;
-        }
 
         editIssueTitle.requestFocus();
         assert imm != null;

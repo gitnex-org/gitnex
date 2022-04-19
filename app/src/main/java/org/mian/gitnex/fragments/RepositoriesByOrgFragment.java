@@ -32,7 +32,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 	private static final String getOrgName = null;
 	private String orgName;
 
@@ -60,6 +60,8 @@ public class RepositoriesByOrgFragment extends Fragment {
 		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+
+		resultLimit = Constants.getCurrentResultLimit(getContext());
 
 		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 

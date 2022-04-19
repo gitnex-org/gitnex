@@ -42,7 +42,7 @@ public class CommitsActivity extends BaseActivity {
 	private TextView noData;
 	private ProgressBar progressBar;
 	private final String TAG = "CommitsActivity";
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 	private int pageSize = 1;
 
 	private RecyclerView recyclerView;
@@ -80,11 +80,7 @@ public class CommitsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		// if gitea is 1.12 or higher use the new limit (resultLimitNewGiteaInstances)
-		if(getAccount().requiresVersion("1.12")) {
-
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 
 		recyclerView = activityCommitsBinding.recyclerView;
 		commitsList = new ArrayList<>();
