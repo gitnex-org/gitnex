@@ -25,8 +25,8 @@ import retrofit2.Response;
 
 public class ReleasesViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Release>> releasesList;
-	private static int resultLimit = Constants.resultLimitOldGiteaInstances;
+    private MutableLiveData<List<Release>> releasesList;
+	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 
     public LiveData<List<Release>> getReleasesList(String owner, String repo, Context ctx) {
 
@@ -42,7 +42,7 @@ public class ReleasesViewModel extends ViewModel {
         return releasesList;
     }
 
-    public static void loadReleasesList(String owner, String repo, Context ctx) {
+    public void loadReleasesList(String owner, String repo, Context ctx) {
 
         Call<List<Release>> call = RetrofitClient
                 .getApiInterface(ctx)
@@ -69,7 +69,7 @@ public class ReleasesViewModel extends ViewModel {
         });
     }
 
-	public static void loadMoreReleases(String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
+	public void loadMoreReleases(String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
 
 		Call<List<Release>> call = RetrofitClient
 			.getApiInterface(ctx)
@@ -106,7 +106,7 @@ public class ReleasesViewModel extends ViewModel {
 		});
 	}
 
-	private static MutableLiveData<List<Tag>> tagsList;
+	private MutableLiveData<List<Tag>> tagsList;
 
 	public LiveData<List<Tag>> getTagsList(String owner, String repo, Context ctx) {
 
@@ -122,7 +122,7 @@ public class ReleasesViewModel extends ViewModel {
 		return tagsList;
 	}
 
-	public static void loadTagsList(String owner, String repo, Context ctx) {
+	public void loadTagsList(String owner, String repo, Context ctx) {
 
 		Call<List<Tag>> call = RetrofitClient
 			.getApiInterface(ctx)
@@ -149,7 +149,7 @@ public class ReleasesViewModel extends ViewModel {
 		});
 	}
 
-	public static void loadMoreTags(String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
+	public void loadMoreTags(String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
 
 		Call<List<Tag>> call = RetrofitClient
 			.getApiInterface(ctx)
