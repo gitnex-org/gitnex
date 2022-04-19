@@ -286,7 +286,6 @@
     <string name="teamShowAll">show all</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
-    <string name="addNewMember">Add / Remove New Member</string>
     <string name="removeTeamMemberTitle">Remove\u0020</string>
     <string name="addTeamMemberTitle">Add\u0020</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
@@ -361,7 +360,7 @@
     <string name="repoMetaData">Repository Meta</string>
 
     <!-- admin -->
-    <string name="adminCreateNewUser">Add New User</string>
+    <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Admin</string>
     <string name="adminCron">Cron Tasks</string>
@@ -498,6 +497,8 @@
     <string name="repository">Repository</string>
     <string name="team">Team</string>
     <string name="organization">Organization</string>
+    <string name="addRemove">Add / Remove</string>
+    <string name="download">Download</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -550,7 +551,6 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
 
-    <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -637,9 +637,9 @@
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-    <string name="markAsRead">Mark as Read</string>
-    <string name="markAsUnread">Mark as Unread</string>
-    <string name="pinNotification">Pin Notification</string>
+    <string name="markAsRead">Mark Read</string>
+    <string name="markAsUnread">Mark Unread</string>
+    <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
