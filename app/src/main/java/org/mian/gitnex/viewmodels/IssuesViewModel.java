@@ -23,8 +23,8 @@ import retrofit2.Response;
 
 public class IssuesViewModel extends ViewModel {
 
-	private static MutableLiveData<List<Issue>> issuesList;
-	private static int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private MutableLiveData<List<Issue>> issuesList;
+	private int resultLimit = Constants.resultLimitOldGiteaInstances;
 
 	public LiveData<List<Issue>> getIssuesList(String searchKeyword, String type, Boolean created, String state, Boolean assignedToMe, Context ctx) {
 
@@ -40,7 +40,7 @@ public class IssuesViewModel extends ViewModel {
 		return issuesList;
 	}
 
-	public static void loadIssuesList(String searchKeyword, String type, Boolean created, String state, Boolean assignedToMe, Context ctx) {
+	public void loadIssuesList(String searchKeyword, String type, Boolean created, String state, Boolean assignedToMe, Context ctx) {
 
 		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx)
 				.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, 1,
@@ -67,7 +67,7 @@ public class IssuesViewModel extends ViewModel {
 		});
 	}
 
-	public static void loadMoreIssues(String searchKeyword, String type, Boolean created, String state, int page, Boolean assignedToMe, Context ctx, ExploreIssuesAdapter adapter) {
+	public void loadMoreIssues(String searchKeyword, String type, Boolean created, String state, int page, Boolean assignedToMe, Context ctx, ExploreIssuesAdapter adapter) {
 
 		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx)
 				.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, page, resultLimit);

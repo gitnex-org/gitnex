@@ -25,8 +25,8 @@ import retrofit2.Response;
 
 public class FilesViewModel extends ViewModel {
 
-    private static MutableLiveData<List<ContentsResponse>> filesList;
-    private static MutableLiveData<List<ContentsResponse>> filesList2;
+    private MutableLiveData<List<ContentsResponse>> filesList;
+    private MutableLiveData<List<ContentsResponse>> filesList2;
 
     public LiveData<List<ContentsResponse>> getFilesList(String owner, String repo, String ref, Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
@@ -36,7 +36,7 @@ public class FilesViewModel extends ViewModel {
         return filesList;
     }
 
-    private static void loadFilesList(String owner, String repo, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    private void loadFilesList(String owner, String repo, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         Call<List<ContentsResponse>> call = RetrofitClient
                 .getApiInterface(ctx)
@@ -73,7 +73,7 @@ public class FilesViewModel extends ViewModel {
         return filesList2;
     }
 
-    private static void loadFilesList2(String owner, String repo, String filesDir, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
+    private void loadFilesList2(String owner, String repo, String filesDir, String ref, final Context ctx, ProgressBar progressBar, TextView noDataFiles) {
 
         Call<List<ContentsResponse>> call = RetrofitClient
                 .getApiInterface(ctx)

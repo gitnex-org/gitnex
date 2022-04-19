@@ -25,7 +25,7 @@ import org.mian.gitnex.viewmodels.ReleasesViewModel;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ReleasesFragment extends Fragment {

@@ -29,6 +29,7 @@ import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 
 public class AdminGetUsersActivity extends BaseActivity implements BottomSheetListener {
 
+	private AdminGetUsersViewModel adminGetUsersViewModel;
 	private View.OnClickListener onClickListener;
 	private ActivityAdminGetUsersBinding activityAdminGetUsersBinding;
 	private AdminGetUsersAdapter adapter;
@@ -42,6 +43,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 
 		activityAdminGetUsersBinding = ActivityAdminGetUsersBinding.inflate(getLayoutInflater());
 		setContentView(activityAdminGetUsersBinding.getRoot());
+		adminGetUsersViewModel = new ViewModelProvider(this).get(AdminGetUsersViewModel.class);
 
 		Toolbar toolbar = activityAdminGetUsersBinding.toolbar;
 		setSupportActionBar(toolbar);
@@ -79,7 +81,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 				public void onLoadMore() {
 
 					page += 1;
-					AdminGetUsersViewModel.loadMoreUsersList(page, resultLimit, ctx, adapter);
+					adminGetUsersViewModel.loadMoreUsersList(page, resultLimit, ctx, adapter);
 					activityAdminGetUsersBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

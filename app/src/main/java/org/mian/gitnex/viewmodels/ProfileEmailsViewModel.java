@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 public class ProfileEmailsViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Email>> emailsList;
+    private MutableLiveData<List<Email>> emailsList;
 
     public LiveData<List<Email>> getEmailsList(Context ctx) {
 
@@ -30,7 +30,7 @@ public class ProfileEmailsViewModel extends ViewModel {
         return emailsList;
     }
 
-    public static void loadEmailsList(Context ctx) {
+    public void loadEmailsList(Context ctx) {
 
         Call<List<Email>> call = RetrofitClient
                 .getApiInterface(ctx)

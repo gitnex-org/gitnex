@@ -26,6 +26,7 @@ import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 public class ExploreIssuesFragment extends Fragment {
 
+	private IssuesViewModel issuesViewModel;
 	private FragmentSearchIssuesBinding viewBinding;
 	private ExploreIssuesAdapter adapter;
 	private int page = 1;
@@ -35,6 +36,7 @@ public class ExploreIssuesFragment extends Fragment {
 
 		viewBinding = FragmentSearchIssuesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
+		issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -55,9 +57,7 @@ public class ExploreIssuesFragment extends Fragment {
 
 	private void fetchDataAsync(String searchKeyword) {
 
-		IssuesViewModel issuesModel = new ViewModelProvider(this).get(IssuesViewModel.class);
-
-		issuesModel.getIssuesList(searchKeyword, "issues", null, "open", null, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
+		issuesViewModel.getIssuesList(searchKeyword, "issues", null, "open", null, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
 
 			adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
 			adapter.setLoadMoreListener(new ExploreIssuesAdapter.OnLoadMoreListener() {
@@ -66,7 +66,7 @@ public class ExploreIssuesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					IssuesViewModel.loadMoreIssues(searchKeyword, "issues", null, "open", page, null, getContext(), adapter);
+					issuesViewModel.loadMoreIssues(searchKeyword, "issues", null, "open", page, null, getContext(), adapter);
 					viewBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

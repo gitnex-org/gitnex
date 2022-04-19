@@ -33,6 +33,7 @@ import java.util.List;
 
 public class MilestonesFragment extends Fragment {
 
+	private MilestonesViewModel milestonesViewModel;
     private FragmentMilestonesBinding viewBinding;
     private Menu menu;
     private List<Milestone> dataList;
@@ -60,6 +61,7 @@ public class MilestonesFragment extends Fragment {
         viewBinding = FragmentMilestonesBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 		Context ctx = getContext();
+		milestonesViewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
 
 		milestoneId = requireActivity().getIntent().getStringExtra("milestoneId");
         requireActivity().getIntent().removeExtra("milestoneId");
@@ -106,8 +108,6 @@ public class MilestonesFragment extends Fragment {
 
 	private void fetchDataAsync(String repoOwner, String repoName, String state) {
 
-		MilestonesViewModel milestonesViewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
-
 		milestonesViewModel.getMilestonesList(repoOwner, repoName, state, getContext()).observe(getViewLifecycleOwner(), milestonesListMain -> {
 
 			adapter = new MilestonesAdapter(getContext(), milestonesListMain, repository);
@@ -117,7 +117,7 @@ public class MilestonesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					MilestonesViewModel.loadMoreMilestones(repoOwner, repoName, page, state, getContext(), adapter);
+					milestonesViewModel.loadMoreMilestones(repoOwner, repoName, page, state, getContext(), adapter);
 					viewBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

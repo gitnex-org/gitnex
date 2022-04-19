@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class AdminGetUsersViewModel extends ViewModel {
 
-    private static MutableLiveData<List<User>> usersList;
+    private MutableLiveData<List<User>> usersList;
 
     public LiveData<List<User>> getUsersList(int page, int resultLimit, Context ctx) {
 
@@ -31,7 +31,7 @@ public class AdminGetUsersViewModel extends ViewModel {
         return usersList;
     }
 
-    public static void loadUsersList(int page, int resultLimit, Context ctx) {
+    public void loadUsersList(int page, int resultLimit, Context ctx) {
 
         Call<List<User>> call = RetrofitClient
                 .getApiInterface(ctx)
@@ -57,7 +57,7 @@ public class AdminGetUsersViewModel extends ViewModel {
         });
     }
 
-	public static void loadMoreUsersList(int page, int resultLimit, Context ctx, AdminGetUsersAdapter adapter) {
+	public void loadMoreUsersList(int page, int resultLimit, Context ctx, AdminGetUsersAdapter adapter) {
 
 		Call<List<User>> call = RetrofitClient
 			.getApiInterface(ctx)

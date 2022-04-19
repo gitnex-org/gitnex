@@ -27,6 +27,7 @@ import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 public class MyIssuesFragment extends Fragment {
 
+	private IssuesViewModel issuesViewModel;
 	private FragmentIssuesBinding fragmentIssuesBinding;
 	private ExploreIssuesAdapter adapter;
 	private int page = 1;
@@ -39,6 +40,7 @@ public class MyIssuesFragment extends Fragment {
 
 		fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
+		issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
 		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
 		fragmentIssuesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -68,7 +70,7 @@ public class MyIssuesFragment extends Fragment {
 
 			page = 1;
 			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
-			IssuesViewModel.loadIssuesList(null, "issues", true, state, assignedToMe, getContext());
+			issuesViewModel.loadIssuesList(null, "issues", true, state, assignedToMe, getContext());
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
@@ -79,9 +81,7 @@ public class MyIssuesFragment extends Fragment {
 
 	private void fetchDataAsync(String query, String state, boolean assignedToMe) {
 
-		IssuesViewModel issuesModel = new ViewModelProvider(this).get(IssuesViewModel.class);
-
-		issuesModel.getIssuesList(query, "issues", true, state, assignedToMe, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
+		issuesViewModel.getIssuesList(query, "issues", true, state, assignedToMe, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
 
 			adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
 			adapter.setLoadMoreListener(new ExploreIssuesAdapter.OnLoadMoreListener() {
@@ -90,7 +90,7 @@ public class MyIssuesFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					IssuesViewModel.loadMoreIssues(query, "issues", true, state, page, assignedToMe, getContext(), adapter);
+					issuesViewModel.loadMoreIssues(query, "issues", true, state, page, assignedToMe, getContext(), adapter);
 					fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

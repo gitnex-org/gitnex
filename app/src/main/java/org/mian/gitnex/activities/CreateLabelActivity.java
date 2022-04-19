@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import org.gitnex.tea4j.v2.models.CreateLabelOption;
 import org.gitnex.tea4j.v2.models.EditLabelOption;
@@ -30,13 +31,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class CreateLabelActivity extends BaseActivity {
 
 	public static boolean refreshLabels = false;
 
+	private OrganizationLabelsViewModel organizationLabelsViewModel;
+	private LabelsViewModel labelsViewModel;
     private View.OnClickListener onClickListener;
     private TextView colorPicker;
     private EditText labelName;
@@ -53,6 +56,8 @@ public class CreateLabelActivity extends BaseActivity {
 
 	    ActivityCreateLabelBinding activityCreateLabelBinding = ActivityCreateLabelBinding.inflate(getLayoutInflater());
 	    setContentView(activityCreateLabelBinding.getRoot());
+	    labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
+	    organizationLabelsViewModel = new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -345,11 +350,11 @@ public class CreateLabelActivity extends BaseActivity {
                         Toasty.success(ctx, getString(R.string.labelDeleteText));
 	                    if(getIntent().getStringExtra("type") != null && Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
 
-	                    	OrganizationLabelsViewModel.loadOrgLabelsList(getIntent().getStringExtra("orgName"), ctx, null, null);
+		                    organizationLabelsViewModel.loadOrgLabelsList(getIntent().getStringExtra("orgName"), ctx, null, null);
 	                    }
 	                    else {
 
-		                    LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), ctx);
+		                    labelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), ctx);
 	                    }
                     }
                 }
