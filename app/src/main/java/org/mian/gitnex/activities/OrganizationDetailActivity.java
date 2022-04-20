@@ -1,8 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -28,7 +25,7 @@ import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
 import org.mian.gitnex.fragments.TeamsByOrgFragment;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
@@ -37,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
@@ -168,6 +165,11 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
     @Override
     public void onButtonClicked(String text) {
 
+	    String url = UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl())
+		    .withPath("/")
+		    .toString();
+	    url = url + getIntent().getStringExtra("orgName");
+
         switch (text) {
             case "repository":
             	Intent intentRepo = new Intent(this, CreateRepoActivity.class);
@@ -189,15 +191,13 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
                 startActivity(intentTeam);
                 break;
 	        case "copyOrgUrl":
-
-		        String url = UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl())
-			        .withPath("/")
-			        .toString();
-		        ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-		        ClipData clip = ClipData.newPlainText("orgUrl", url + getIntent().getStringExtra("orgName"));
-		        assert clipboard != null;
-		        clipboard.setPrimaryClip(clip);
-		        Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
+		        AppUtil.copyToClipboard(this, url, ctx.getString(R.string.copyIssueUrlToastMsg));
+		        break;
+	        case "share":
+		        AppUtil.sharingIntent(this, url);
+		        break;
+	        case "open":
+		        AppUtil.openUrlInBrowser(this, url);
 		        break;
         }
     }

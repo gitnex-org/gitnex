@@ -1,9 +1,6 @@
 package org.mian.gitnex.fragments;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,7 +20,7 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.views.ReactionSpinner;
@@ -174,25 +171,19 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		binding.shareIssue.setOnClickListener(v1 -> {
 
-			Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-			sharingIntent.setType("text/plain");
-			sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.hash) + issue.getIssueIndex() + " " + issue.getIssue().getTitle());
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, issue.getIssue().getHtmlUrl());
-			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + issue.getIssueIndex() + " " + issue.getIssue().getTitle()));
-
+			AppUtil.sharingIntent(ctx, issue.getIssue().getHtmlUrl());
 			dismiss();
 		});
 
 		binding.copyIssueUrl.setOnClickListener(v12 -> {
 
-			// copy to clipboard
-			ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-			ClipData clip = ClipData.newPlainText("issueUrl", issue.getIssue().getHtmlUrl());
-			assert clipboard != null;
-			clipboard.setPrimaryClip(clip);
+			AppUtil.copyToClipboard(ctx, issue.getIssue().getHtmlUrl(), ctx.getString(R.string.copyIssueUrlToastMsg));
+			dismiss();
+		});
 
-			Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
+		binding.open.setOnClickListener(v12 -> {
 
+			AppUtil.openUrlInBrowser(ctx, issue.getIssue().getHtmlUrl());
 			dismiss();
 		});
 

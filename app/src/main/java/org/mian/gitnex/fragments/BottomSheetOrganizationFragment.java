@@ -13,7 +13,7 @@ import org.mian.gitnex.databinding.BottomSheetOrganizationBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
@@ -67,6 +67,18 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 	    bottomSheetOrganizationBinding.copyOrgUrl.setOnClickListener(v1 -> {
 
 		    bmListener.onButtonClicked("copyOrgUrl");
+		    dismiss();
+	    });
+
+	    bottomSheetOrganizationBinding.share.setOnClickListener(v1 -> {
+
+		    bmListener.onButtonClicked("share");
+		    dismiss();
+	    });
+
+	    bottomSheetOrganizationBinding.open.setOnClickListener(v1 -> {
+
+		    bmListener.onButtonClicked("open");
 		    dismiss();
 	    });
 

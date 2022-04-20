@@ -43,7 +43,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class AppUtil {
@@ -363,7 +363,6 @@ public class AppUtil {
 		clipboard.setPrimaryClip(clip);
 
 		Toasty.info(ctx, message);
-
 	}
 
 	public static boolean switchToAccount(Context context, UserAccount userAccount) {
@@ -372,6 +371,15 @@ public class AppUtil {
 
 	public static boolean switchToAccount(Context context, UserAccount userAccount, boolean tmp) {
 		return ((MainApplication) context.getApplicationContext()).switchToAccount(userAccount, tmp);
+	}
+
+	public static void sharingIntent(Context ctx, String url) {
+
+		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+		sharingIntent.setType("text/plain");
+		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, url);
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url);
+		ctx.startActivity(Intent.createChooser(sharingIntent, url));
 	}
 
 	public static void openUrlInBrowser(Context context, String url) {

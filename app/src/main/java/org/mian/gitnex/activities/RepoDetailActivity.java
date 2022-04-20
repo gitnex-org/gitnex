@@ -2,9 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
@@ -279,20 +276,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtmlUrl());
 				break;
 			case "shareRepo":
-
-				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, repository.getRepository().getHtmlUrl());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, repository.getRepository().getHtmlUrl());
-				startActivity(Intent.createChooser(sharingIntent, repository.getRepository().getHtmlUrl()));
+				AppUtil.sharingIntent(this, repository.getRepository().getHtmlUrl());
 				break;
 			case "copyRepoUrl":
-
-				ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-				ClipData clip = ClipData.newPlainText("repoUrl", repository.getRepository().getHtmlUrl());
-				assert clipboard != null;
-				clipboard.setPrimaryClip(clip);
-				Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
+				AppUtil.copyToClipboard(this, repository.getRepository().getHtmlUrl(), ctx.getString(R.string.copyIssueUrlToastMsg));
 				break;
 			case "newFile":
 
