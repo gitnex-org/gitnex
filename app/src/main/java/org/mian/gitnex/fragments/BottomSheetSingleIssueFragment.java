@@ -264,6 +264,10 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.commentReactionButtons.setVisibility(View.GONE);
 			binding.shareDivider.setVisibility(View.GONE);
 		}
+		else if(!canPush) {
+			binding.addRemoveAssignees.setVisibility(View.GONE);
+			binding.editLabels.setVisibility(View.GONE);
+		}
 
 		return binding.getRoot();
 	}

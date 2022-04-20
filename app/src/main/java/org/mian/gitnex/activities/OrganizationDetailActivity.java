@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
+import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
@@ -43,6 +44,8 @@ import retrofit2.Response;
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
 
 	public OrganizationPermissions permissions;
+	private String orgName;
+	private boolean isMember = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,89 +54,118 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 	    setContentView(R.layout.activity_org_detail);
 
-	    String orgName = getIntent().getStringExtra("orgName");
+	    orgName = getIntent().getStringExtra("orgName");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter = new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
-
-        ViewPager mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = findViewById(R.id.tabs);
-
-        Typeface myTypeface;
-
-        switch(tinyDB.getInt("customFontId", -1)) {
-
-            case 0:
-
-                myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
-                break;
-            case 2:
-
-                myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
-                break;
-            default:
-
-                myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
-                break;
-        }
-
-        toolbarTitle.setTypeface(myTypeface);
-        toolbarTitle.setText(orgName);
-
-        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
-        int tabsCount = vg.getChildCount();
-
-        for (int j = 0; j < tabsCount; j++) {
-
-            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-            int tabChildCount = vgTab.getChildCount();
-
-            for (int i = 0; i < tabChildCount; i++) {
-
-                View tabViewChild = vgTab.getChildAt(i);
-
-                if (tabViewChild instanceof TextView) {
-
-                    ((TextView) tabViewChild).setTypeface(myTypeface);
-                }
-            }
-        }
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+		checkIsMember();
 
 	    if(getAccount().requiresVersion("1.16.0")) {
 		    RetrofitClient.getApiInterface(this)
-			    .orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<OrganizationPermissions>() {
+			    .orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<>() {
 
-			    @Override
-			    public void onResponse(@NonNull Call<OrganizationPermissions> call, @NonNull Response<OrganizationPermissions> response) {
-			    	if(response.isSuccessful()) {
-					    permissions = response.body();
-				    }
-			    	else {
-			    		permissions = null;
-				    }
-			    }
+				    @Override
+				    public void onResponse(@NonNull Call<OrganizationPermissions> call, @NonNull Response<OrganizationPermissions> response) {
 
-			    @Override
-			    public void onFailure(@NonNull Call<OrganizationPermissions> call, @NonNull Throwable t) {
-					permissions = null;
-			    }
-		    });
+					    if(response.isSuccessful()) {
+						    permissions = response.body();
+					    }
+					    else {
+						    permissions = null;
+					    }
+				    }
+
+				    @Override
+				    public void onFailure(@NonNull Call<OrganizationPermissions> call, @NonNull Throwable t) {
+
+					    permissions = null;
+				    }
+			    });
 	    } else {
 	    	permissions = null;
 	    }
     }
 
+	public void checkIsMember() {
+		RetrofitClient.getApiInterface(this).orgIsMember(orgName, getAccount().getAccount().getUserName()).enqueue(new Callback<>() {
+
+			@Override
+			public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+				isMember = response.code() != 404;
+				init();
+			}
+
+			@Override
+			public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+				isMember = false;
+				init();
+			}
+		});
+	}
+
+	public void init() {
+		OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter = new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
+
+		ViewPager mViewPager = findViewById(R.id.container);
+		mViewPager.setVisibility(View.VISIBLE);
+		mViewPager.setAdapter(mSectionsPagerAdapter);
+
+		TabLayout tabLayout = findViewById(R.id.tabs);
+		tabLayout.setVisibility(View.VISIBLE);
+
+		if(!isMember) {
+			tabLayout.removeTabAt(3);
+		}
+
+		Typeface myTypeface;
+
+		switch(tinyDB.getInt("customFontId", -1)) {
+
+			case 0:
+
+				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
+				break;
+			case 2:
+
+				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
+				break;
+			default:
+
+				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
+				break;
+		}
+
+		TextView toolbarTitle = findViewById(R.id.toolbar_title);
+
+		toolbarTitle.setTypeface(myTypeface);
+		toolbarTitle.setText(orgName);
+
+		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+		int tabsCount = vg.getChildCount();
+
+		for (int j = 0; j < tabsCount; j++) {
+
+			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+			int tabChildCount = vgTab.getChildCount();
+
+			for (int i = 0; i < tabChildCount; i++) {
+
+				View tabViewChild = vgTab.getChildAt(i);
+
+				if (tabViewChild instanceof TextView) {
+
+					((TextView) tabViewChild).setTypeface(myTypeface);
+				}
+			}
+		}
+
+		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -226,19 +258,29 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 	            case 2: // labels
 
                     return OrganizationLabelsFragment.newInstance(orgName);
-                case 3: // teams
+                case 3: // teams / members
 
-                    return TeamsByOrgFragment.newInstance(orgName, permissions);
+	                if(isMember) {
+		                return TeamsByOrgFragment.newInstance(orgName, permissions);
+	                } else {
+		                return MembersByOrgFragment.newInstance(orgName);
+	                }
                 case 4: // members
 
-                    return MembersByOrgFragment.newInstance(orgName);
+	                if(isMember) {
+		                return MembersByOrgFragment.newInstance(orgName);
+	                }
             }
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 5;
+			if(isMember) {
+				return 5;
+			} else {
+				return 4;
+			}
         }
     }
 }
