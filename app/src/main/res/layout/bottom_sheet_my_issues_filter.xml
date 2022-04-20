@@ -19,9 +19,9 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/myIssuesFilterHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/repoCreate"
                 android:padding="8dp"
                 android:orientation="vertical">
 
@@ -37,9 +37,9 @@
             </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/myIssuesSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/repoCreateSection"
                 app:flexWrap="wrap"
                 app:alignItems="stretch"
                 android:padding="8dp"

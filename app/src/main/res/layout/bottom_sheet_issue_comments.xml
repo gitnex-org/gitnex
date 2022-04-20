@@ -29,14 +29,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:id="@+id/reactionDivider"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
                 android:background="?attr/dividerColor" />
 
             <LinearLayout
+                android:id="@+id/issueComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/orgCreate"
                 android:padding="8dp"
                 android:orientation="vertical">
 
@@ -52,9 +52,9 @@
             </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/issueCommentsSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/issueCommentSection"
                 app:flexWrap="wrap"
                 app:alignItems="stretch"
                 android:padding="8dp"
@@ -115,16 +115,16 @@
             </com.google.android.flexbox.FlexboxLayout>
 
             <View
+                android:id="@+id/commentDivider"
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:id="@+id/commentDivider"
                 android:layout_marginBottom="16dp"
                 android:background="?attr/dividerColor" />
 
             <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/issueOtherSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/issueOtherSection"
                 app:flexWrap="wrap"
                 app:alignItems="stretch"
                 android:padding="8dp"

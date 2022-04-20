@@ -19,9 +19,9 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/organizationHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/orgCreate"
                 android:padding="8dp"
                 android:orientation="vertical">
 
@@ -37,9 +37,9 @@
             </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/orgCreateSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/orgCreateSection"
                 app:flexWrap="wrap"
                 app:alignItems="stretch"
                 android:padding="8dp"
@@ -94,6 +94,7 @@
                 android:background="?attr/dividerColor" />
 
             <LinearLayout
+                android:id="@+id/organizationShareHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"

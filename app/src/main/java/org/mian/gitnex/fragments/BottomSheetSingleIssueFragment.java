@@ -84,9 +84,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 
-			binding.editIssue.setText(R.string.editPrText);
-			binding.copyIssueUrl.setText(R.string.copyPrUrlText);
-			binding.shareIssue.setText(R.string.sharePr);
+			binding.editIssue.setText(R.string.menuEditText);
 
 			boolean canPushPullSource = issue.getPullRequest().getHead().getRepo().getPermissions().isPush();
 			if(issue.getPullRequest().isMerged() || issue.getIssue().getState().equals("closed")) {
@@ -198,13 +196,16 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			dismiss();
 		});
 
+		if(issue.getIssueType().equalsIgnoreCase("pull")) {
+			binding.bottomSheetHeader.setText(R.string.pullRequest);
+		}
+
 		if(issue.getIssue().getState().equals("open")) { // close issue
 			if(!userIsCreator && !canPush) {
 				binding.closeIssue.setVisibility(View.GONE);
-				binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			}
 			else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
-				binding.closeIssue.setText(R.string.closePr);
+				binding.closeIssue.setText(R.string.close);
 			}
 			binding.closeIssue.setOnClickListener(closeSingleIssue -> {
 				IssueActions.closeReopenIssue(ctx, "closed", issue);
@@ -213,16 +214,10 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		}
 		else if(issue.getIssue().getState().equals("closed")) {
 			if(userIsCreator || canPush) {
-				if(issue.getIssueType().equalsIgnoreCase("Pull")) {
-					binding.closeIssue.setText(R.string.reopenPr);
-				}
-				else {
-					binding.closeIssue.setText(R.string.reOpenIssue);
-				}
+				binding.closeIssue.setText(R.string.reopen);
 			}
 			else {
 				binding.closeIssue.setVisibility(View.GONE);
-				binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			}
 			binding.closeIssue.setOnClickListener(closeSingleIssue -> {
 				IssueActions.closeReopenIssue(ctx, "open", issue);
@@ -259,10 +254,11 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.editIssue.setVisibility(View.GONE);
 			binding.editLabels.setVisibility(View.GONE);
 			binding.closeIssue.setVisibility(View.GONE);
-			binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			binding.addRemoveAssignees.setVisibility(View.GONE);
 			binding.commentReactionButtons.setVisibility(View.GONE);
-			binding.shareDivider.setVisibility(View.GONE);
+			binding.reactionDivider.setVisibility(View.GONE);
+			binding.bottomSheetHeaderFrame.setVisibility(View.GONE);
+			binding.issuePrDivider.setVisibility(View.GONE);
 		}
 
 		return binding.getRoot();

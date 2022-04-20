@@ -123,6 +123,7 @@
     <string name="tabTextBranches">Branches</string>
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
+    <string name="pullRequest">Pull Request</string>
 
     <string name="infoTabRepoSize">Size</string>
     <string name="infoTabRepoDefaultBranch">Default Branch</string>
@@ -499,6 +500,7 @@
     <string name="organization">Organization</string>
     <string name="addRemove">Add / Remove</string>
     <string name="download">Download</string>
+    <string name="reopen">Reopen</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -522,8 +524,6 @@
     <string name="loginTokenError">Token is required</string>
 
     <string name="prDeletedFork">Deleted Fork</string>
-    <string name="editPrText">Edit Pull Request</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
     <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull Request updated</string>
     <string name="fileDiffViewHeader">%1$s Files Changed</string>
@@ -531,7 +531,6 @@
     <string name="updatePullRequestText">Update Pull Request</string>
     <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
-    <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
     <string name="deleteBranchErrorNotFound">Branch does not exist</string>
@@ -563,7 +562,6 @@
 
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
-    <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
@@ -739,8 +737,6 @@
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
 
-    <string name="closePr">Close Pull Request</string>
-    <string name="reopenPr">Reopen Pull Request</string>
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>

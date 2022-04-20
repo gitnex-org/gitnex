@@ -40,7 +40,7 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 			    bottomSheetOrganizationBinding.createTeam.setVisibility(View.GONE);
 		    }
 		    if(!permissions.isCanCreateRepository() || !permissions.isIsOwner()) {
-			    bottomSheetOrganizationBinding.orgCreate.setVisibility(View.GONE);
+			    bottomSheetOrganizationBinding.organizationHeadFrame.setVisibility(View.GONE);
 			    bottomSheetOrganizationBinding.orgCreateSection.setVisibility(View.GONE);
 			    bottomSheetOrganizationBinding.orgDivider.setVisibility(View.GONE);
 		    }
