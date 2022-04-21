@@ -33,6 +33,15 @@ public class BottomSheetOrganizationTeamsFragment extends BottomSheetDialogFragm
 
 		});
 
+		if(!requireArguments().getBoolean("showRepo")) {
+			bottomSheetOrganizationTeamsBinding.addRepo.setVisibility(View.GONE);
+		}
+		bottomSheetOrganizationTeamsBinding.addRepo.setOnClickListener(v1 -> {
+			bmListener.onButtonClicked("newRepo");
+			dismiss();
+
+		});
+
 		return bottomSheetOrganizationTeamsBinding.getRoot();
 
 	}

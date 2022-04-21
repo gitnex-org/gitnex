@@ -286,12 +286,17 @@
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
     <string name="addNewMember">Add / Remove New Member</string>
+    <string name="addRmRepo">Add Repository</string>
     <string name="removeTeamMemberTitle">Remove\u0020</string>
     <string name="addTeamMemberTitle">Add\u0020</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
     <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
     <string name="memberAddedMessage">Member added to the team successfully</string>
     <string name="memberRemovedMessage">Member removed from the team successfully</string>
+    <string name="repoAddedMessage">Repository added to the team successfully</string>
+    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
+    <string name="repoAddToTeamMessage">Add repository %s to organization %s team %s</string>
+    <string name="repoRemoveTeamMessage">Remove repository %s from team %s</string>
     <!-- org tabbed layout str -->
 
     <!-- create team -->

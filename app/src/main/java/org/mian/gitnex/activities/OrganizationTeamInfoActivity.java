@@ -19,6 +19,7 @@ import org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding;
 import org.mian.gitnex.fragments.BottomSheetOrganizationTeamsFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoMembersFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoPermissionsFragment;
+import org.mian.gitnex.fragments.OrganizationTeamInfoReposFragment;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
@@ -50,14 +51,17 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 	    }
 
 	    binding.close.setOnClickListener(view -> finish());
+	    binding.pager.setOffscreenPageLimit(1);
 	    binding.pager.setAdapter(new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
 		    @NonNull
 		    @Override
 		    public Fragment createFragment(int position) {
 			    switch(position) {
 				    case 0:
-					    return OrganizationTeamInfoMembersFragment.newInstance(team);
+					    return OrganizationTeamInfoReposFragment.newInstance(team);
 				    case 1:
+					    return OrganizationTeamInfoMembersFragment.newInstance(team);
+				    case 2:
 					    return OrganizationTeamInfoPermissionsFragment.newInstance(team);
 			    }
 			    return null;
@@ -65,20 +69,23 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 
 		    @Override
 		    public int getItemCount() {
-			    return 2;
+			    return 3;
 		    }
 	    });
 
 	    new TabLayoutMediator(binding.tabs, binding.pager, (tab, position) -> {
-		    TextView textView = (TextView) LayoutInflater.from(ctx).inflate(R.layout.layout_tab_text, null);
+		    TextView textView = (TextView) LayoutInflater.from(ctx).inflate(R.layout.layout_tab_text, findViewById(android.R.id.content), false);
 
 		    switch(position) {
 			    case 0:
-				    textView.setText(R.string.orgTabMembers);
+				    textView.setText(R.string.navRepos);
 				    break;
 			    case 1:
-				    textView.setText(R.string.teamPermissions);
+				    textView.setText(R.string.orgTabMembers);
 				    break;
+			    case 2:
+				    textView.setText(R.string.teamPermissions);
+					break;
 		    }
 
 		    tab.setCustomView(textView);
@@ -105,6 +112,9 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 	    }
 	    else if(id == R.id.genericMenu) {
 		    BottomSheetOrganizationTeamsFragment bottomSheet = new BottomSheetOrganizationTeamsFragment();
+			Bundle args = new Bundle();
+			args.putBoolean("showRepo", !team.isIncludesAllRepositories());
+			bottomSheet.setArguments(args);
 		    bottomSheet.show(getSupportFragmentManager(), "orgTeamsBottomSheet");
 		    return true;
 	    }
@@ -119,6 +129,12 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
             Intent intent = new Intent(OrganizationTeamInfoActivity.this, AddNewTeamMemberActivity.class);
             intent.putExtra("teamId", team.getId());
             startActivity(intent);
+        } else if("newRepo".equals(text)) {
+	        Intent intent = new Intent(OrganizationTeamInfoActivity.this, AddNewTeamRepoActivity.class);
+	        intent.putExtra("teamId", team.getId());
+	        intent.putExtra("teamName", team.getName());
+			intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
+	        startActivity(intent);
         }
     }
 }

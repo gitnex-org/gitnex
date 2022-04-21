@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,47 +12,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.DividerItemDecorator;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
  * @author M M Arif
  */
 
-public class RepositoriesByOrgFragment extends Fragment {
+public class OrganizationTeamInfoReposFragment extends Fragment {
+
+	public static boolean repoAdded = false;
 
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
 	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
-	private static final String getOrgName = null;
-	private String orgName;
 
-    public RepositoriesByOrgFragment() { }
+	private Team team;
 
-    public static RepositoriesByOrgFragment newInstance(String orgName) {
-        RepositoriesByOrgFragment fragment = new RepositoriesByOrgFragment();
-        Bundle args = new Bundle();
-        args.putString(getOrgName, orgName);
-        fragment.setArguments(args);
-        return fragment;
-    }
+	public static OrganizationTeamInfoReposFragment newInstance(Team team) {
+		OrganizationTeamInfoReposFragment fragment = new OrganizationTeamInfoReposFragment();
 
-	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            orgName = getArguments().getString(getOrgName);
-        }
-    }
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("team", team);
+		fragment.setArguments(bundle);
+
+		return fragment;
+	}
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,13 +58,14 @@ public class RepositoriesByOrgFragment extends Fragment {
 		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
 
 		setHasOptionsMenu(true);
+		team = (Team) requireArguments().getSerializable("team");
 
 		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentRepositoriesBinding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
+
+		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(requireContext(), R.drawable.shape_list_divider));
 		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -76,17 +76,16 @@ public class RepositoriesByOrgFragment extends Fragment {
 			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		page = 1;
 		fetchDataAsync();
 
 		return fragmentRepositoriesBinding.getRoot();
-	};
+	}
 
 	private void fetchDataAsync() {
 
 		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		reposModel.getRepositories(page, resultLimit, "", "org", orgName, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		reposModel.getRepositories(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -95,7 +94,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(page, resultLimit, "", "org", orgName, getContext(), adapter);
+					RepositoriesViewModel.loadMoreRepos(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -120,41 +119,41 @@ public class RepositoriesByOrgFragment extends Fragment {
 		});
 	}
 
-    @Override
-    public void onResume() {
+	@Override
+	public void onResume() {
+		super.onResume();
 
-        super.onResume();
+		if(repoAdded) {
+			page = 1;
+			fetchDataAsync();
+			MainActivity.repoCreated = false;
+		}
+	}
 
-        if(MainActivity.repoCreated) {
-            RepositoriesViewModel.loadReposList(page, resultLimit, null, "org", orgName, getContext());
-	        MainActivity.repoCreated = false;
-        }
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-    }
+		inflater.inflate(R.menu.search_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
-                    adapter.getFilter().filter(newText);
-                }
-                return false;
-            }
-        });
-    }
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				if(fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
+					adapter.getFilter().filter(newText);
+				}
+				return false;
+			}
+		});
+	}
 }
+
