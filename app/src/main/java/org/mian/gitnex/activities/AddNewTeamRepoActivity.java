@@ -10,6 +10,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.TeamRepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.AddNewTeamRepositoryBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 	private View.OnClickListener onClickListener;
 	private List<Repository> dataList;
 	private TeamRepositoriesAdapter adapter;
+	private int resultLimit;
 
 	private long teamId;
 	private String teamName;
@@ -39,6 +41,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 		addNewTeamRepositoryBinding = AddNewTeamRepositoryBinding.inflate(getLayoutInflater());
 		setContentView(addNewTeamRepositoryBinding.getRoot());
 
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		initCloseListener();
 		addNewTeamRepositoryBinding.close.setOnClickListener(onClickListener);
 
@@ -58,7 +61,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 
 	public void loadRepos() {
 
-		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).orgListRepos(getIntent().getStringExtra("orgName"), 1, 50);
+		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).orgListRepos(getIntent().getStringExtra("orgName"), 1, resultLimit);
 
 		addNewTeamRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
 

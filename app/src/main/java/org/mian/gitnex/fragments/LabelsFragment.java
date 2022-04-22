@@ -22,11 +22,12 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class LabelsFragment extends Fragment {
 
+	private LabelsViewModel labelsViewModel;
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private LabelsAdapter adapter;
@@ -55,6 +56,7 @@ public class LabelsFragment extends Fragment {
 
 	    FragmentLabelsBinding fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
+	    labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
         final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
         noData = fragmentLabelsBinding.noData;
@@ -72,7 +74,7 @@ public class LabelsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
+	        labelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
         }, 200));
 
         fetchDataAsync(repository.getOwner(), repository.getName());
@@ -87,7 +89,7 @@ public class LabelsFragment extends Fragment {
 
 	    if(CreateLabelActivity.refreshLabels) {
 
-            LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
+		    labelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
 	        CreateLabelActivity.refreshLabels = false;
         }
     }

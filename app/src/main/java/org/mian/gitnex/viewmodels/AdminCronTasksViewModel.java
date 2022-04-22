@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class AdminCronTasksViewModel extends ViewModel {
 
-	private static MutableLiveData<List<Cron>> tasksList;
+	private MutableLiveData<List<Cron>> tasksList;
 
 	public LiveData<List<Cron>> getCronTasksList(Context ctx, int page, int limit) {
 
@@ -31,7 +31,7 @@ public class AdminCronTasksViewModel extends ViewModel {
 		return tasksList;
 	}
 
-	public static void loadCronTasksList(final Context ctx, int page, int limit) {
+	public void loadCronTasksList(final Context ctx, int page, int limit) {
 
 		Call<List<Cron>> call = RetrofitClient
 			.getApiInterface(ctx)

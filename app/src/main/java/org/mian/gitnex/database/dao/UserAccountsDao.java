@@ -8,7 +8,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 @Dao
@@ -43,6 +43,9 @@ public interface UserAccountsDao {
 
     @Query("UPDATE UserAccounts SET serverVersion = :serverVersion WHERE accountId = :accountId")
     void updateServerVersion(String serverVersion, int accountId);
+
+	@Query("UPDATE UserAccounts SET maxResponseItems = :maxResponseItems, defaultPagingNumber = :defaultPagingNumber WHERE accountId = :accountId")
+	void updateServerPagingLimit(int maxResponseItems, int defaultPagingNumber, int accountId);
 
     @Query("UPDATE UserAccounts SET accountName = :accountName WHERE accountId = :accountId")
     void updateAccountName(String accountName, int accountId);

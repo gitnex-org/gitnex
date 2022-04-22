@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class TeamsByOrgViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Team>> teamsList;
+    private MutableLiveData<List<Team>> teamsList;
 
     public LiveData<List<Team>> getTeamsByOrg(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
 
@@ -33,7 +33,7 @@ public class TeamsByOrgViewModel extends ViewModel {
         return teamsList;
     }
 
-    public static void loadTeamsByOrgList(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
+    public void loadTeamsByOrgList(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
 
         Call<List<Team>> call = RetrofitClient
                 .getApiInterface(ctx)

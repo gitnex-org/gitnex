@@ -8,7 +8,7 @@ import org.mian.gitnex.database.models.Repository;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 @Dao

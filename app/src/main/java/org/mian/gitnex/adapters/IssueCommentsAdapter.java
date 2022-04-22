@@ -43,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdapter.IssueCommentViewHolder> {
@@ -103,6 +103,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				TextView commentMenuCopy = vw.findViewById(R.id.commentMenuCopy);
 				TextView commentMenuDelete = vw.findViewById(R.id.commentMenuDelete);
 				TextView issueCommentCopyUrl = vw.findViewById(R.id.issueCommentCopyUrl);
+				TextView open = vw.findViewById(R.id.open);
 				LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
 
 				if(issue.getRepository().getRepository().isArchived()) {
@@ -161,32 +162,21 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				});
 
 				commentShare.setOnClickListener(v1 -> {
-					// get comment Url
-					CharSequence commentUrl = issueComment.getHtmlUrl();
 
-					// share issue comment
-					Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-					sharingIntent.setType("text/plain");
-					String intentHeader = issue.getIssueIndex() + context.getResources().getString(R.string.hash) + "issuecomment-" + issueComment.getId() + " " + issue.getIssue().getTitle();
-					sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, intentHeader);
-					sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, commentUrl);
-					context.startActivity(Intent.createChooser(sharingIntent, intentHeader));
-
+					AppUtil.sharingIntent(context, issueComment.getHtmlUrl());
 					dialog.dismiss();
 				});
 
 				issueCommentCopyUrl.setOnClickListener(v1 -> {
-					// comment Url
-					CharSequence commentUrl = issueComment.getHtmlUrl();
 
-					ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(context).getSystemService(Context.CLIPBOARD_SERVICE);
-					assert clipboard != null;
-
-					ClipData clip = ClipData.newPlainText(commentUrl, commentUrl);
-					clipboard.setPrimaryClip(clip);
-
+					AppUtil.copyToClipboard(context, issueComment.getHtmlUrl(), context.getString(R.string.copyIssueUrlToastMsg));
 					dialog.dismiss();
-					Toasty.success(context, context.getString(R.string.copyIssueUrlToastMsg));
+				});
+
+				open.setOnClickListener(v1 -> {
+
+					AppUtil.openUrlInBrowser(context, issueComment.getHtmlUrl());
+					dialog.dismiss();
 				});
 
 				commentMenuQuote.setOnClickListener(v1 -> {

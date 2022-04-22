@@ -20,11 +20,12 @@ import org.mian.gitnex.databinding.FragmentProfileEmailsBinding;
 import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MyProfileEmailsFragment extends Fragment {
 
+	private ProfileEmailsViewModel profileEmailsViewModel;
 	public static boolean refreshEmails = false;
 
     private ProgressBar mProgressBar;
@@ -40,6 +41,7 @@ public class MyProfileEmailsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 	    FragmentProfileEmailsBinding fragmentProfileEmailsBinding = FragmentProfileEmailsBinding.inflate(inflater, container, false);
+	    profileEmailsViewModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
 
         final SwipeRefreshLayout swipeRefresh = fragmentProfileEmailsBinding.pullToRefresh;
 
@@ -57,21 +59,18 @@ public class MyProfileEmailsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            ProfileEmailsViewModel.loadEmailsList(getContext());
+	        profileEmailsViewModel.loadEmailsList(getContext());
 
         }, 200));
 
         fetchDataAsync();
 
         return fragmentProfileEmailsBinding.getRoot();
-
     }
 
     private void fetchDataAsync() {
 
-        ProfileEmailsViewModel profileEmailModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
-
-        profileEmailModel.getEmailsList(getContext()).observe(getViewLifecycleOwner(), emailsListMain -> {
+	    profileEmailsViewModel.getEmailsList(getContext()).observe(getViewLifecycleOwner(), emailsListMain -> {
             adapter = new MyProfileEmailsAdapter(getContext(), emailsListMain);
             if(adapter.getItemCount() > 0) {
                 mRecyclerView.setAdapter(adapter);
@@ -89,13 +88,11 @@ public class MyProfileEmailsFragment extends Fragment {
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
 
 		if(refreshEmails) {
-			ProfileEmailsViewModel.loadEmailsList(getContext());
+			profileEmailsViewModel.loadEmailsList(getContext());
 			refreshEmails = false;
 		}
 	}
-
 }

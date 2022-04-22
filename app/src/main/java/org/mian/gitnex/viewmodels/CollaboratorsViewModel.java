@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 public class CollaboratorsViewModel extends ViewModel {
 
-    private static MutableLiveData<List<User>> collaboratorsList;
+    private MutableLiveData<List<User>> collaboratorsList;
 
     public LiveData<List<User>> getCollaboratorsList(String owner, String repo, Context ctx) {
 
@@ -30,7 +30,7 @@ public class CollaboratorsViewModel extends ViewModel {
         return collaboratorsList;
     }
 
-    private static void loadCollaboratorsListList(String owner, String repo, Context ctx) {
+    private void loadCollaboratorsListList(String owner, String repo, Context ctx) {
 
         Call<List<User>> call = RetrofitClient
                 .getApiInterface(ctx)

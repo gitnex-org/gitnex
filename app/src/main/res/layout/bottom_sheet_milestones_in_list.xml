@@ -18,35 +18,60 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/closeMilestone"
+            <LinearLayout
+                android:id="@+id/milestonesListHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/closeMilestone"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_close" />
+                android:padding="8dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/openMilestone"
+                <TextView
+                    android:id="@+id/bottomSheetHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/newIssueMilestoneTitle"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/milestonesListSection"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/openMilestone"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_check" />
+                android:layout_height="match_parent"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                android:padding="8dp"
+                app:alignContent="stretch" >
+
+                <TextView
+                    android:id="@+id/closeMilestone"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_close"
+                    android:text="@string/close"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/openMilestone"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_check"
+                    android:text="@string/isOpen"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
 
         </LinearLayout>
 

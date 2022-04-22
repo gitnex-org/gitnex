@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 public class LabelsViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Label>> labelsList;
+    private MutableLiveData<List<Label>> labelsList;
 
     public LiveData<List<Label>> getLabelsList(String owner, String repo, Context ctx) {
 
@@ -30,7 +30,7 @@ public class LabelsViewModel extends ViewModel {
         return labelsList;
     }
 
-    public static void loadLabelsList(String owner, String repo, Context ctx) {
+    public void loadLabelsList(String owner, String repo, Context ctx) {
 
         Call<List<Label>> call = RetrofitClient
                 .getApiInterface(ctx)

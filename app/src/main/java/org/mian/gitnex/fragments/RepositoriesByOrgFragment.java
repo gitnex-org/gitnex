@@ -28,10 +28,11 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 public class RepositoriesByOrgFragment extends Fragment {
 
+	private RepositoriesViewModel repositoriesViewModel;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 	private static final String getOrgName = null;
 	private String orgName;
 
@@ -57,8 +58,10 @@ public class RepositoriesByOrgFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
-
 		setHasOptionsMenu(true);
+		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+
+		resultLimit = Constants.getCurrentResultLimit(getContext());
 
 		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 
@@ -84,9 +87,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 
 	private void fetchDataAsync() {
 
-		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
-
-		reposModel.getRepositories(page, resultLimit, "", "org", orgName, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		repositoriesViewModel.getRepositories(page, resultLimit, "", "org", orgName, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -95,7 +96,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(page, resultLimit, "", "org", orgName, getContext(), adapter);
+					repositoriesViewModel.loadMoreRepos(page, resultLimit, "", "org", orgName, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -126,7 +127,7 @@ public class RepositoriesByOrgFragment extends Fragment {
         super.onResume();
 
         if(MainActivity.repoCreated) {
-            RepositoriesViewModel.loadReposList(page, resultLimit, null, "org", orgName, getContext());
+	        repositoriesViewModel.loadReposList(page, resultLimit, null, "org", orgName, getContext());
 	        MainActivity.repoCreated = false;
         }
 

@@ -1,70 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:paddingTop="6dp"
-android:paddingBottom="12dp"
-android:background="?attr/primaryBackgroundColor">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="6dp"
+    android:paddingBottom="12dp"
+    android:background="?attr/primaryBackgroundColor">
 
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/markPinned"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="?android:attr/selectableItemBackground"
-            android:focusable="true"
-            android:clickable="true"
-            android:drawablePadding="24dp"
-            android:padding="12dp"
-            android:text="@string/pinNotification"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_pin" />
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/markRead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="?android:attr/selectableItemBackground"
-            android:focusable="true"
-            android:clickable="true"
-            android:drawablePadding="24dp"
-            android:padding="12dp"
-            android:text="@string/markAsRead"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_unwatch" />
+            <LinearLayout
+                android:id="@+id/notificationsHeadFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/markUnread"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="?android:attr/selectableItemBackground"
-            android:focusable="true"
-            android:clickable="true"
-            android:drawablePadding="24dp"
-            android:padding="12dp"
-            android:text="@string/markAsUnread"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_watchers" />
+                <TextView
+                    android:id="@+id/bottomSheetHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/pageTitleNotifications"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
 
-    </LinearLayout>
+            </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/notificationsListSection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                android:padding="8dp"
+                app:alignContent="stretch" >
+
+                <TextView
+                    android:id="@+id/markPinned"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_pin"
+                    android:text="@string/pinNotification"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/markRead"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_unwatch"
+                    android:text="@string/markAsRead"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/markUnread"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_watchers"
+                    android:text="@string/markAsUnread"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

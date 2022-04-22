@@ -46,7 +46,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RetrofitClient {

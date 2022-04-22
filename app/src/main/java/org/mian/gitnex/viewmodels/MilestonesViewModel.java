@@ -22,18 +22,18 @@ import retrofit2.Response;
 
 public class MilestonesViewModel extends ViewModel {
 
-	private static MutableLiveData<List<Milestone>> milestonesList;
-	private static final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private MutableLiveData<List<Milestone>> milestonesList;
+	private int resultLimit;
 
 	public LiveData<List<Milestone>> getMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
 
 		milestonesList = new MutableLiveData<>();
 		loadMilestonesList(repoOwner, repoName, milestoneState, ctx);
-
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		return milestonesList;
 	}
 
-	public static void loadMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
+	public void loadMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
 
 		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, milestoneState, null, 1, resultLimit);
 
@@ -58,7 +58,7 @@ public class MilestonesViewModel extends ViewModel {
 		});
 	}
 
-	public static void loadMoreMilestones(String repoOwner, String repoName, int page, String milestoneState, Context ctx, MilestonesAdapter adapter) {
+	public void loadMoreMilestones(String repoOwner, String repoName, int page, String milestoneState, Context ctx, MilestonesAdapter adapter) {
 
 		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, milestoneState, null, page, resultLimit);
 

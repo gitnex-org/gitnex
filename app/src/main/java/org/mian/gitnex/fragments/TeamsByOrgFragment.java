@@ -31,6 +31,7 @@ import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
 
 public class TeamsByOrgFragment extends Fragment {
 
+	private TeamsByOrgViewModel teamsByOrgViewModel;
 	public static boolean resumeTeams = false;
 
     private ProgressBar mProgressBar;
@@ -68,6 +69,7 @@ public class TeamsByOrgFragment extends Fragment {
 
 	    FragmentTeamsByOrgBinding fragmentTeamsByOrgBinding = FragmentTeamsByOrgBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
+	    teamsByOrgViewModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
 
         noDataTeams = fragmentTeamsByOrgBinding.noDataTeams;
 
@@ -86,7 +88,7 @@ public class TeamsByOrgFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-            TeamsByOrgViewModel.loadTeamsByOrgList(orgName, getContext(), noDataTeams, mProgressBar);
+	        teamsByOrgViewModel.loadTeamsByOrgList(orgName, getContext(), noDataTeams, mProgressBar);
 
         }, 200));
 
@@ -99,16 +101,14 @@ public class TeamsByOrgFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(resumeTeams) {
-            TeamsByOrgViewModel.loadTeamsByOrgList(orgName, getContext(), noDataTeams, mProgressBar);
+	        teamsByOrgViewModel.loadTeamsByOrgList(orgName, getContext(), noDataTeams, mProgressBar);
 	        resumeTeams = false;
         }
     }
 
     private void fetchDataAsync(String owner) {
 
-        TeamsByOrgViewModel teamModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
-
-        teamModel.getTeamsByOrg(owner, getContext(), noDataTeams, mProgressBar).observe(getViewLifecycleOwner(), orgTeamsListMain -> {
+	    teamsByOrgViewModel.getTeamsByOrg(owner, getContext(), noDataTeams, mProgressBar).observe(getViewLifecycleOwner(), orgTeamsListMain -> {
             adapter = new TeamsByOrgAdapter(getContext(), orgTeamsListMain, permissions, orgName);
             if(adapter.getItemCount() > 0) {
                 mRecyclerView.setAdapter(adapter);

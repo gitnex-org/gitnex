@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,13 +18,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class IssuesFragment extends Fragment {
@@ -49,8 +48,7 @@ public class IssuesFragment extends Fragment {
 	private IssuesAdapter adapter;
 
 	private int pageSize = Constants.issuesPageInit;
-	private final String TAG = Constants.tagIssuesList;
-	private int resultLimit = Constants.resultLimitOldGiteaInstances;
+	private int resultLimit;
 	private final String requestType = Constants.issuesRequestType;
 
 	private RepositoryContext repository;
@@ -71,16 +69,13 @@ public class IssuesFragment extends Fragment {
 
 		repository = RepositoryContext.fromBundle(requireArguments());
 
-		// if gitea is 1.12 or higher use the new limit
-		if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
+		resultLimit = Constants.getCurrentResultLimit(context);
 
 		issuesList = new ArrayList<>();
 
 		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName(), null);
 			adapter.notifyDataChanged();
 		}, 200));
 
@@ -121,7 +116,7 @@ public class IssuesFragment extends Fragment {
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, issueState, repository.getIssueMilestoneFilterName());
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, issueState, repository.getIssueMilestoneFilterName(), null);
 			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
@@ -141,11 +136,11 @@ public class IssuesFragment extends Fragment {
 			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), filterIssueByMilestone);
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), filterIssueByMilestone, null);
 			fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 		});
 
-		loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+		loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName(), null);
 
 		return fragmentIssuesBinding.getRoot();
 	}
@@ -154,17 +149,18 @@ public class IssuesFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if(resumeIssues) {
-			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName());
+			loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName(), null);
 			resumeIssues = false;
 		}
 	}
 
-	private void loadInitial(String repoOwner, String repoName, int resultLimit, String requestType, String issueState, String filterByMilestone) {
+	private void loadInitial(String repoOwner, String repoName, int resultLimit, String requestType, String issueState, String filterByMilestone, String query) {
 
-		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, null, requestType,
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, query, requestType,
 			filterByMilestone, null, null, null, null, null, 1, resultLimit);
 
-		call.enqueue(new Callback<List<Issue>>() {
+		call.enqueue(new Callback<>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<Issue>> call, @NonNull Response<List<Issue>> response) {
 
@@ -188,13 +184,13 @@ public class IssuesFragment extends Fragment {
 					fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
-					Log.e(TAG, String.valueOf(response.code()));
+					Toasty.error(context, getString(R.string.genericError));
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-				Log.e(TAG, t.toString());
+				Toasty.error(context, getString(R.string.genericServerResponseError));
 			}
 		});
 	}
@@ -205,10 +201,11 @@ public class IssuesFragment extends Fragment {
 
 		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, null, requestType,
 			filterByMilestone, null, null, null, null, null, page, resultLimit);
-		call.enqueue(new Callback<List<Issue>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Issue>> call, @NonNull Response<List<Issue>> response) {
+
 				if(response.code() == 200) {
 					List<Issue> result = response.body();
 					assert result != null;
@@ -224,13 +221,13 @@ public class IssuesFragment extends Fragment {
 					fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
-					Log.e(TAG, String.valueOf(response.code()));
+					Toasty.error(context, getString(R.string.genericError));
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-				Log.e(TAG, t.toString());
+				Toasty.error(context, getString(R.string.genericServerResponseError));
 			}
 		});
 	}
@@ -258,30 +255,16 @@ public class IssuesFragment extends Fragment {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
+				loadInitial(repository.getOwner(), repository.getName(), resultLimit, requestType, repository.getIssueState().toString(), repository.getIssueMilestoneFilterName(), query);
+				searchView.setQuery(null, false);
+				searchItem.collapseActionView();
 				return false;
 			}
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
-				filter(newText);
 				return false;
 			}
 		});
-	}
-
-	private void filter(String text) {
-
-		List<Issue> arr = new ArrayList<>();
-
-		for(Issue d : issuesList) {
-			if(d == null || d.getTitle() == null || d.getBody() == null) {
-				continue;
-			}
-			if(d.getTitle().toLowerCase().contains(text) || d.getBody().toLowerCase().contains(text) || String.valueOf(d.getNumber()).startsWith(text)) {
-				arr.add(d);
-			}
-		}
-
-		adapter.updateList(arr);
 	}
 }

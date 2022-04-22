@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
+import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
@@ -439,9 +439,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 				loadUserInfo();
 				giteaVersion();
+				serverPageLimitSettings();
 				noConnection = false;
 			}
-			Log.e("Network status is: ", String.valueOf(connToInternet));
 		}, 1500);
 
 		// Changelog popup
@@ -518,6 +518,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			case "closedMyIssues":
 				if(getFragmentRefreshListener() != null) {
 					getFragmentRefreshListener().onRefresh("closed");
+				}
+				break;
+			case "assignedToMe":
+				if(getFragmentRefreshListener() != null) {
+					getFragmentRefreshListener().onRefresh("assignedToMe");
 				}
 				break;
 		}
@@ -627,10 +632,40 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void serverPageLimitSettings() {
+
+		Call<GeneralAPISettings> generalAPISettings = RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
+		generalAPISettings.enqueue(new Callback<>() {
+
+			@Override
+			public void onResponse(@NonNull final Call<GeneralAPISettings> generalAPISettings, @NonNull retrofit2.Response<GeneralAPISettings> response) {
+
+				if(response.code() == 200 && response.body() != null) {
+
+					int maxResponseItems = 50;
+					int defaultPagingNumber = 25;
+
+					if(response.body().getMaxResponseItems() != null) {
+						maxResponseItems = Math.toIntExact(response.body().getMaxResponseItems());
+					}
+					if(response.body().getDefaultPagingNum() != null) {
+						defaultPagingNumber = Math.toIntExact(response.body().getDefaultPagingNum());
+					}
+
+					BaseApi.getInstance(ctx, UserAccountsApi.class).updateServerPagingLimit(maxResponseItems, defaultPagingNumber, tinyDB.getInt("currentActiveAccountId"));
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<GeneralAPISettings> generalAPISettings, @NonNull Throwable t) {
+			}
+		});
+	}
+
 	private void giteaVersion() {
 
 		Call<ServerVersion> callVersion = RetrofitClient.getApiInterface(ctx).getVersion();
-		callVersion.enqueue(new Callback<ServerVersion>() {
+		callVersion.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull final Call<ServerVersion> callVersion, @NonNull retrofit2.Response<ServerVersion> responseVersion) {
@@ -645,7 +680,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			@Override
 			public void onFailure(@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
-				Log.e("onFailure-version", t.toString());
 			}
 		});
 	}
@@ -653,7 +687,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	private void loadUserInfo() {
 		Call<User> call = RetrofitClient.getApiInterface(ctx).userGetCurrent();
 
-		call.enqueue(new Callback<User>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
@@ -671,16 +705,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 						if(!getAccount().getAccount().getUserName().equals(userDetails.getLogin())) {
 							// user changed it's name -> update database
 							int accountId = getAccount().getAccount().getAccountId();
-							BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).updateUsername(accountId,
-								userDetails.getLogin());
+							BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).updateUsername(accountId, userDetails.getLogin());
 							getAccount().setAccount(BaseApi.getInstance(MainActivity.this, UserAccountsApi.class).getAccountById(accountId));
 						}
-						if(profileInitListener != null) profileInitListener.onButtonClicked(null);
+						if(profileInitListener != null) {
+							profileInitListener.onButtonClicked(null);
+						}
 					}
 				}
 				else if(response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
+						getResources().getString(R.string.navLogout));
 				}
 				else {
 
@@ -691,8 +727,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			@Override
 			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
 			}
 		});
 
@@ -719,8 +753,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			@Override
 			public void onFailure(@NonNull Call<NotificationCount> call, @NonNull Throwable t) {
-
-				Log.e("onFailure-notification", t.toString());
 			}
 		});
 	}
@@ -730,7 +762,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		this.profileInitListener = profileInitListener;
 	}
 
-	// My issues-open-close interface
+	// My issues interface
 	public FragmentRefreshListener getFragmentRefreshListener() { return fragmentRefreshListenerMyIssues; }
 	public void setFragmentRefreshListenerMyIssues(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListenerMyIssues = fragmentRefreshListener; }
 }

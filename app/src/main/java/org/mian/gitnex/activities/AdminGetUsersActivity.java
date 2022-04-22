@@ -29,11 +29,12 @@ import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 
 public class AdminGetUsersActivity extends BaseActivity implements BottomSheetListener {
 
+	private AdminGetUsersViewModel adminGetUsersViewModel;
 	private View.OnClickListener onClickListener;
 	private ActivityAdminGetUsersBinding activityAdminGetUsersBinding;
 	private AdminGetUsersAdapter adapter;
 	private int page = 1;
-	private int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 	private Boolean searchFilter = false;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,12 +43,15 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 
 		activityAdminGetUsersBinding = ActivityAdminGetUsersBinding.inflate(getLayoutInflater());
 		setContentView(activityAdminGetUsersBinding.getRoot());
+		adminGetUsersViewModel = new ViewModelProvider(this).get(AdminGetUsersViewModel.class);
 
 		Toolbar toolbar = activityAdminGetUsersBinding.toolbar;
 		setSupportActionBar(toolbar);
 
 		initCloseListener();
 		activityAdminGetUsersBinding.close.setOnClickListener(onClickListener);
+
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 
 		activityAdminGetUsersBinding.recyclerView.setHasFixedSize(true);
 		activityAdminGetUsersBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -79,7 +83,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 				public void onLoadMore() {
 
 					page += 1;
-					AdminGetUsersViewModel.loadMoreUsersList(page, resultLimit, ctx, adapter);
+					adminGetUsersViewModel.loadMoreUsersList(page, resultLimit, ctx, adapter);
 					activityAdminGetUsersBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

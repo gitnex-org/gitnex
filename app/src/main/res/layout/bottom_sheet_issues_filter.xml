@@ -18,51 +18,73 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/filterByMilestone"
+            <LinearLayout
+                android:id="@+id/issuesFilterHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/newIssueMilestoneTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:drawableStartCompat="@drawable/ic_milestone" />
+                android:padding="8dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/openIssues"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/isOpen"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_issue" />
+                <TextView
+                    android:id="@+id/bottomSheetHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/strFilter"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/closedIssues"
+            </LinearLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/issuesFilterSection"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/isClosed"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_issue_closed" />
+                android:layout_height="match_parent"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                android:padding="8dp"
+                app:alignContent="stretch" >
+
+                <TextView
+                    android:id="@+id/filterByMilestone"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_milestone"
+                    android:text="@string/newIssueMilestoneTitle"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/openIssues"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_issue"
+                    android:text="@string/isOpen"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/closedIssues"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_issue_closed"
+                    android:text="@string/isClosed"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
 
         </LinearLayout>
 

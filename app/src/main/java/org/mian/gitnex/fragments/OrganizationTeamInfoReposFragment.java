@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -33,12 +31,13 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 public class OrganizationTeamInfoReposFragment extends Fragment {
 
+	private RepositoriesViewModel repositoriesViewModel;
 	public static boolean repoAdded = false;
 
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 
 	private Team team;
 
@@ -57,8 +56,11 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
 
+		resultLimit = Constants.getCurrentResultLimit(getContext());
 		setHasOptionsMenu(true);
 		team = (Team) requireArguments().getSerializable("team");
+
+		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
 		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 
@@ -83,9 +85,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 	private void fetchDataAsync() {
 
-		RepositoriesViewModel reposModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
-
-		reposModel.getRepositories(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		repositoriesViewModel.getRepositories(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
@@ -94,7 +94,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					RepositoriesViewModel.loadMoreRepos(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext(), adapter);
+					repositoriesViewModel.loadMoreRepos(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext(), adapter);
 					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 

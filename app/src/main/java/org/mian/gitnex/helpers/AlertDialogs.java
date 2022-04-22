@@ -6,21 +6,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.widget.Button;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.actions.TeamActions;
 import org.mian.gitnex.activities.CreateLabelActivity;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class AlertDialogs {
@@ -79,34 +74,6 @@ public class AlertDialogs {
             .setNeutralButton(R.string.cancelButton, null).show();
 
     }
-
-	public static void tagDeleteDialog(final Context context, final String tagName, final String owner, final String repo) {
-		new AlertDialog.Builder(context)
-			.setTitle(String.format(context.getString(R.string.deleteTagTitle), tagName))
-			.setMessage(R.string.deleteTagConfirmation)
-			.setIcon(R.drawable.ic_delete)
-			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient.getApiInterface(context).repoDeleteTag(owner, repo, tagName).enqueue(new Callback<Void>() {
-
-				@Override
-				public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-					if(response.isSuccessful()) {
-						Toasty.success(context, context.getString(R.string.tagDeleted));
-					}
-					else if(response.code() == 403) {
-						Toasty.error(context, context.getString(R.string.authorizeError));
-					}
-					else {
-						Toasty.error(context, context.getString(R.string.genericError));
-					}
-				}
-
-				@Override
-				public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-					Toasty.error(context, context.getString(R.string.genericError));
-				}
-			}))
-			.setNeutralButton(R.string.cancelButton, null).show();
-	}
 
     public static void collaboratorRemoveDialog(final Context context, final String userNameMain, RepositoryContext repository) {
 

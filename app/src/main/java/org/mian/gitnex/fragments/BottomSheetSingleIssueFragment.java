@@ -1,9 +1,6 @@
 package org.mian.gitnex.fragments;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,7 +20,7 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.views.ReactionSpinner;
@@ -84,9 +81,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 
-			binding.editIssue.setText(R.string.editPrText);
-			binding.copyIssueUrl.setText(R.string.copyPrUrlText);
-			binding.shareIssue.setText(R.string.sharePr);
+			binding.editIssue.setText(R.string.menuEditText);
 
 			boolean canPushPullSource = issue.getPullRequest().getHead().getRepo().getPermissions().isPush();
 			if(issue.getPullRequest().isMerged() || issue.getIssue().getState().equals("closed")) {
@@ -176,35 +171,32 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		binding.shareIssue.setOnClickListener(v1 -> {
 
-			Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-			sharingIntent.setType("text/plain");
-			sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.hash) + issue.getIssueIndex() + " " + issue.getIssue().getTitle());
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, issue.getIssue().getHtmlUrl());
-			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.hash) + issue.getIssueIndex() + " " + issue.getIssue().getTitle()));
-
+			AppUtil.sharingIntent(ctx, issue.getIssue().getHtmlUrl());
 			dismiss();
 		});
 
 		binding.copyIssueUrl.setOnClickListener(v12 -> {
 
-			// copy to clipboard
-			ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(ctx).getSystemService(Context.CLIPBOARD_SERVICE);
-			ClipData clip = ClipData.newPlainText("issueUrl", issue.getIssue().getHtmlUrl());
-			assert clipboard != null;
-			clipboard.setPrimaryClip(clip);
-
-			Toasty.info(ctx, ctx.getString(R.string.copyIssueUrlToastMsg));
-
+			AppUtil.copyToClipboard(ctx, issue.getIssue().getHtmlUrl(), ctx.getString(R.string.copyIssueUrlToastMsg));
 			dismiss();
 		});
+
+		binding.open.setOnClickListener(v12 -> {
+
+			AppUtil.openUrlInBrowser(ctx, issue.getIssue().getHtmlUrl());
+			dismiss();
+		});
+
+		if(issue.getIssueType().equalsIgnoreCase("pull")) {
+			binding.bottomSheetHeader.setText(R.string.pullRequest);
+		}
 
 		if(issue.getIssue().getState().equals("open")) { // close issue
 			if(!userIsCreator && !canPush) {
 				binding.closeIssue.setVisibility(View.GONE);
-				binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			}
 			else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
-				binding.closeIssue.setText(R.string.closePr);
+				binding.closeIssue.setText(R.string.close);
 			}
 			binding.closeIssue.setOnClickListener(closeSingleIssue -> {
 				IssueActions.closeReopenIssue(ctx, "closed", issue);
@@ -213,16 +205,10 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		}
 		else if(issue.getIssue().getState().equals("closed")) {
 			if(userIsCreator || canPush) {
-				if(issue.getIssueType().equalsIgnoreCase("Pull")) {
-					binding.closeIssue.setText(R.string.reopenPr);
-				}
-				else {
-					binding.closeIssue.setText(R.string.reOpenIssue);
-				}
+				binding.closeIssue.setText(R.string.reopen);
 			}
 			else {
 				binding.closeIssue.setVisibility(View.GONE);
-				binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			}
 			binding.closeIssue.setOnClickListener(closeSingleIssue -> {
 				IssueActions.closeReopenIssue(ctx, "open", issue);
@@ -259,10 +245,15 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.editIssue.setVisibility(View.GONE);
 			binding.editLabels.setVisibility(View.GONE);
 			binding.closeIssue.setVisibility(View.GONE);
-			binding.dividerCloseReopenIssue.setVisibility(View.GONE);
 			binding.addRemoveAssignees.setVisibility(View.GONE);
 			binding.commentReactionButtons.setVisibility(View.GONE);
-			binding.shareDivider.setVisibility(View.GONE);
+			binding.reactionDivider.setVisibility(View.GONE);
+			binding.bottomSheetHeaderFrame.setVisibility(View.GONE);
+			binding.mergePullRequest.setVisibility(View.GONE);
+			binding.updatePullRequest.setVisibility(View.GONE);
+			if(issue.getIssueType().equalsIgnoreCase("issue")) {
+				binding.issuePrDivider.setVisibility(View.GONE);
+			}
 		}
 		else if(!canPush) {
 			binding.addRemoveAssignees.setVisibility(View.GONE);

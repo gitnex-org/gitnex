@@ -8,7 +8,7 @@ import java.io.Serializable;
 import static androidx.room.ForeignKey.CASCADE;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 @Entity(tableName = "Repositories", foreignKeys = @ForeignKey(entity = UserAccount.class,

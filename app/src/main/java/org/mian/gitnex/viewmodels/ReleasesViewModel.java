@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -25,24 +24,18 @@ import retrofit2.Response;
 
 public class ReleasesViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Release>> releasesList;
-	private static int resultLimit = Constants.resultLimitOldGiteaInstances;
+    private MutableLiveData<List<Release>> releasesList;
+	private int resultLimit;
 
     public LiveData<List<Release>> getReleasesList(String owner, String repo, Context ctx) {
 
         releasesList = new MutableLiveData<>();
-
-	    // if gitea is 1.12 or higher use the new limit
-	    if(((BaseActivity) ctx).getAccount().requiresVersion("1.12.0")) {
-		    resultLimit = Constants.resultLimitNewGiteaInstances;
-	    }
-
+	    resultLimit = Constants.getCurrentResultLimit(ctx);
         loadReleasesList(owner, repo, ctx);
-
         return releasesList;
     }
 
-    public static void loadReleasesList(String owner, String repo, Context ctx) {
+    public void loadReleasesList(String owner, String repo, Context ctx) {
 
         Call<List<Release>> call = RetrofitClient
                 .getApiInterface(ctx)
@@ -69,7 +62,7 @@ public class ReleasesViewModel extends ViewModel {
         });
     }
 
-	public static void loadMoreReleases(String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
+	public void loadMoreReleases(String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
 
 		Call<List<Release>> call = RetrofitClient
 			.getApiInterface(ctx)
@@ -106,23 +99,17 @@ public class ReleasesViewModel extends ViewModel {
 		});
 	}
 
-	private static MutableLiveData<List<Tag>> tagsList;
+	private MutableLiveData<List<Tag>> tagsList;
 
 	public LiveData<List<Tag>> getTagsList(String owner, String repo, Context ctx) {
 
 		tagsList = new MutableLiveData<>();
-
-		// if gitea is 1.12 or higher use the new limit
-		if(((BaseActivity) ctx).getAccount().requiresVersion("1.12.0")) {
-			resultLimit = Constants.resultLimitNewGiteaInstances;
-		}
-
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		loadTagsList(owner, repo, ctx);
-
 		return tagsList;
 	}
 
-	public static void loadTagsList(String owner, String repo, Context ctx) {
+	public void loadTagsList(String owner, String repo, Context ctx) {
 
 		Call<List<Tag>> call = RetrofitClient
 			.getApiInterface(ctx)
@@ -149,7 +136,7 @@ public class ReleasesViewModel extends ViewModel {
 		});
 	}
 
-	public static void loadMoreTags(String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
+	public void loadMoreTags(String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
 
 		Call<List<Tag>> call = RetrofitClient
 			.getApiInterface(ctx)

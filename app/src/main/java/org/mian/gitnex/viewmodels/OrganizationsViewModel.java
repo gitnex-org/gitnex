@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class OrganizationsViewModel extends ViewModel {
 
-    private static MutableLiveData<List<Organization>> orgList;
+    private MutableLiveData<List<Organization>> orgList;
 
     public LiveData<List<Organization>> getUserOrg(int page, int resultLimit, Context ctx) {
 
@@ -31,7 +31,7 @@ public class OrganizationsViewModel extends ViewModel {
         return orgList;
     }
 
-    public static void loadOrgList(int page, int resultLimit, Context ctx) {
+    public void loadOrgList(int page, int resultLimit, Context ctx) {
 
         Call<List<Organization>> call = RetrofitClient
                 .getApiInterface(ctx)
@@ -58,7 +58,7 @@ public class OrganizationsViewModel extends ViewModel {
         });
     }
 
-	public static void loadMoreOrgList(int page, int resultLimit, Context ctx, OrganizationsListAdapter adapter) {
+	public void loadMoreOrgList(int page, int resultLimit, Context ctx, OrganizationsListAdapter adapter) {
 
 		Call<List<Organization>> call = RetrofitClient
 			.getApiInterface(ctx)

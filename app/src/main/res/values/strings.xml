@@ -123,6 +123,7 @@
     <string name="tabTextBranches">Branches</string>
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
+    <string name="pullRequest">Pull Request</string>
 
     <string name="infoTabRepoSize">Size</string>
     <string name="infoTabRepoDefaultBranch">Default Branch</string>
@@ -145,6 +146,7 @@
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
+    <string name="assignedToMe">Assigned to Me</string>
     <string name="commentButtonText">Comment</string>
     <string name="commentEmptyError">Please write your comment</string>
     <string name="commentSuccess">Comment posted</string>
@@ -285,8 +287,6 @@
     <string name="teamShowAll">show all</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
-    <string name="addNewMember">Add / Remove New Member</string>
-    <string name="addRmRepo">Add Repository</string>
     <string name="removeTeamMemberTitle">Remove\u0020</string>
     <string name="addTeamMemberTitle">Add\u0020</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
@@ -365,7 +365,7 @@
     <string name="repoMetaData">Repository Meta</string>
 
     <!-- admin -->
-    <string name="adminCreateNewUser">Add New User</string>
+    <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Admin</string>
     <string name="adminCron">Cron Tasks</string>
@@ -502,6 +502,10 @@
     <string name="repository">Repository</string>
     <string name="team">Team</string>
     <string name="organization">Organization</string>
+    <string name="addRemove">Add / Remove</string>
+    <string name="download">Download</string>
+    <string name="reopen">Reopen</string>
+    <string name="openInBrowser">Open in Browser</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -525,8 +529,6 @@
     <string name="loginTokenError">Token is required</string>
 
     <string name="prDeletedFork">Deleted Fork</string>
-    <string name="editPrText">Edit Pull Request</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
     <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull Request updated</string>
     <string name="fileDiffViewHeader">%1$s Files Changed</string>
@@ -534,7 +536,6 @@
     <string name="updatePullRequestText">Update Pull Request</string>
     <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
-    <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
     <string name="deleteBranchErrorNotFound">Branch does not exist</string>
@@ -553,8 +554,8 @@
     <string name="mergeStrategy">Merge Strategy</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
+    <string name="deleteBranch">Delete Branch</string>
 
-    <string name="downloadFile">Download This File</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -567,7 +568,6 @@
 
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
-    <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
@@ -641,9 +641,9 @@
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-    <string name="markAsRead">Mark as Read</string>
-    <string name="markAsUnread">Mark as Unread</string>
-    <string name="pinNotification">Pin Notification</string>
+    <string name="markAsRead">Mark Read</string>
+    <string name="markAsUnread">Mark Unread</string>
+    <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
@@ -704,6 +704,7 @@
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
+    <string name="prMergeInfo">Pull Request Info</string>
 
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
@@ -742,8 +743,6 @@
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
 
-    <string name="closePr">Close Pull Request</string>
-    <string name="reopenPr">Reopen Pull Request</string>
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -753,6 +752,7 @@
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
     <string name="deleteTagTitle">Delete tag %s</string>
     <string name="tagDeleted">Tag deleted</string>
+    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
     <string name="logInAgain">Log in again</string>

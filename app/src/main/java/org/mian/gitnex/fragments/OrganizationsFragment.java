@@ -32,11 +32,12 @@ import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 public class OrganizationsFragment extends Fragment {
 
+	private OrganizationsViewModel organizationsViewModel;
 	public static boolean orgCreated = false;
 	private FragmentOrganizationsBinding fragmentOrganizationsBinding;
 	private OrganizationsListAdapter adapter;
 	private int page = 1;
-	private final int resultLimit = Constants.resultLimitNewGiteaInstances;
+	private int resultLimit;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +46,9 @@ public class OrganizationsFragment extends Fragment {
 
 		setHasOptionsMenu(true);
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navOrg));
+		organizationsViewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
+
+		resultLimit = Constants.getCurrentResultLimit(getContext());
 
 		fragmentOrganizationsBinding.addNewOrganization.setOnClickListener(view -> {
 			Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
@@ -72,9 +76,7 @@ public class OrganizationsFragment extends Fragment {
 
 	private void fetchDataAsync() {
 
-		OrganizationsViewModel orgModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
-
-		orgModel.getUserOrg(page, resultLimit, getContext()).observe(getViewLifecycleOwner(), orgListMain -> {
+		organizationsViewModel.getUserOrg(page, resultLimit, getContext()).observe(getViewLifecycleOwner(), orgListMain -> {
 
 			adapter = new OrganizationsListAdapter(orgListMain, getContext());
 			adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
@@ -83,7 +85,7 @@ public class OrganizationsFragment extends Fragment {
 				public void onLoadMore() {
 
 					page += 1;
-					OrganizationsViewModel.loadMoreOrgList(page, resultLimit, getContext(), adapter);
+					organizationsViewModel.loadMoreOrgList(page, resultLimit, getContext(), adapter);
 					fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
 				}
 
@@ -113,7 +115,7 @@ public class OrganizationsFragment extends Fragment {
         super.onResume();
 
 	    if(orgCreated) {
-            OrganizationsViewModel.loadOrgList(page, resultLimit, getContext());
+		    organizationsViewModel.loadOrgList(page, resultLimit, getContext());
             orgCreated = false;
         }
     }

@@ -35,6 +35,11 @@ public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment
 			dismiss();
 		});
 
+		bottomSheetIssuesFilterBinding.assignedToMe.setOnClickListener(v12 -> {
+			bmListener.onButtonClicked("assignedToMe");
+			dismiss();
+		});
+
 		return bottomSheetIssuesFilterBinding.getRoot();
 	}
 

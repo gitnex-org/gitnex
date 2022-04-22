@@ -19,9 +19,9 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/repoCreateHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/repoCreate"
                 android:padding="8dp"
                 android:orientation="vertical">
 
@@ -37,9 +37,9 @@
             </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/repoCreateSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/repoCreateSection"
                 app:flexWrap="wrap"
                 app:alignItems="stretch"
                 android:padding="8dp"
@@ -146,6 +146,7 @@
                 android:background="?attr/dividerColor" />
 
             <LinearLayout
+                android:id="@+id/repoOthersHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -163,6 +164,7 @@
             </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/repoOthersSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:flexWrap="wrap"
@@ -257,7 +259,7 @@
                     app:layout_alignSelf="flex_start"
                     android:gravity="center"
                     app:drawableTopCompat="@drawable/ic_browser"
-                    android:text="@string/isOpen"
+                    android:text="@string/openInBrowser"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
 

@@ -2,7 +2,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -26,207 +25,233 @@
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal" />
 
-            <TextView
-                android:id="@+id/openFilesDiff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/openFileDiffText"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:drawableStartCompat="@drawable/ic_file"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/mergePullRequest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/mergePullRequestText"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_pull_request" />
-
-            <TextView
-                android:id="@+id/updatePullRequest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/updatePullRequestText"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_update" />
-
-            <TextView
-                android:id="@+id/deletePrHeadBranch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/deletePrHeadBranch"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_branch" />
-
-            <TextView
-                android:id="@+id/editIssue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/editIssue"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_edit" />
-
-            <TextView
-                android:id="@+id/addRemoveAssignees"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/addRemoveAssignees"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_person_add" />
-
-            <TextView
-                android:id="@+id/editLabels"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/singleIssueEditLabels"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_label" />
-
-            <TextView
-                android:id="@+id/subscribeIssue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/singleIssueSubscribe"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_unwatch" />
-
-            <TextView
-                android:id="@+id/unsubscribeIssue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/singleIssueUnSubscribe"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:drawableStartCompat="@drawable/ic_watchers"
-                tools:visibility="visible" />
-
             <View
-                android:id="@+id/shareDivider"
+                android:id="@+id/reactionDivider"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="4dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginStart="64dp"
+                android:layout_marginBottom="16dp"
                 android:background="?attr/dividerColor" />
 
-            <TextView
-                android:id="@+id/shareIssue"
+            <LinearLayout
+                android:id="@+id/bottomSheetHeaderFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/shareIssue"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_share" />
+                android:padding="8dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/copyIssueUrl"
+                <TextView
+                    android:id="@+id/bottomSheetHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/issue"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/issuePrtSection"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/copyIssueUrl"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_copy" />
+                android:layout_height="match_parent"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                android:padding="8dp"
+                app:alignContent="stretch" >
+
+                <TextView
+                    android:id="@+id/openFilesDiff"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_file"
+                    android:text="@string/tabTextFiles"
+                    android:textColor="?attr/primaryTextColor"
+                    android:visibility="gone"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/mergePullRequest"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_pull_request"
+                    android:text="@string/mergePullRequestButtonText"
+                    android:textColor="?attr/primaryTextColor"
+                    android:visibility="gone"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/updatePullRequest"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_update"
+                    android:text="@string/newUpdateButtonCopy"
+                    android:textColor="?attr/primaryTextColor"
+                    android:visibility="gone"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/deletePrHeadBranch"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_branch"
+                    android:text="@string/deleteBranch"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/editIssue"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_edit"
+                    android:text="@string/menuEditText"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/addRemoveAssignees"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_person_add"
+                    android:text="@string/newIssueAssigneesListTitle"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/editLabels"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_label"
+                    android:text="@string/newIssueLabelsTitle"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/subscribeIssue"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_unwatch"
+                    android:text="@string/singleIssueSubscribe"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/unsubscribeIssue"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_watchers"
+                    android:text="@string/singleIssueUnSubscribe"
+                    android:textColor="?attr/primaryTextColor"
+                    android:visibility="gone"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/closeIssue"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_issue_closed"
+                    android:text="@string/close"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
 
             <View
-                android:id="@+id/dividerCloseReopenIssue"
+                android:id="@+id/issuePrDivider"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginStart="64dp"
+                android:layout_height="4dp"
+                android:layout_marginBottom="16dp"
                 android:background="?attr/dividerColor" />
 
-            <TextView
-                android:id="@+id/closeIssue"
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/issuePrShareSection"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:drawablePadding="24dp"
-                android:padding="12dp"
-                android:text="@string/closeIssue"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_issue_closed" />
+                android:layout_height="match_parent"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                android:padding="8dp"
+                app:alignContent="stretch" >
+
+                <TextView
+                    android:id="@+id/copyIssueUrl"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_copy"
+                    android:text="@string/genericCopyUrl"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/shareIssue"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_share"
+                    android:text="@string/share"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/open"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_browser"
+                    android:text="@string/openInBrowser"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
 
         </LinearLayout>
 

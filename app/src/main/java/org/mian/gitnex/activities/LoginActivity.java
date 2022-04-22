@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import org.gitnex.tea4j.v2.models.AccessToken;
 import org.gitnex.tea4j.v2.models.CreateAccessTokenOption;
+import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -53,6 +54,8 @@ public class LoginActivity extends BaseActivity {
 
 	private URI instanceUrl;
 	private Version giteaVersion;
+	private int maxResponseItems = 50;
+	private int defaultPagingNumber = 25;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -195,6 +198,7 @@ public class LoginActivity extends BaseActivity {
 				}
 
 				versionCheck(loginUid, loginPass, 123, loginToken, loginType);
+				serverPageLimitSettings();
 			}
 
 		}
@@ -203,6 +207,31 @@ public class LoginActivity extends BaseActivity {
 			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
 			enableProcessButton();
 		}
+	}
+
+	private void serverPageLimitSettings() {
+
+		Call<GeneralAPISettings> generalAPISettings = RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
+		generalAPISettings.enqueue(new Callback<>() {
+
+			@Override
+			public void onResponse(@NonNull final Call<GeneralAPISettings> generalAPISettings, @NonNull retrofit2.Response<GeneralAPISettings> response) {
+
+				if(response.code() == 200 && response.body() != null) {
+
+					if(response.body().getMaxResponseItems() != null) {
+						maxResponseItems = Math.toIntExact(response.body().getMaxResponseItems());
+					}
+					if(response.body().getDefaultPagingNum() != null) {
+						defaultPagingNumber = Math.toIntExact(response.body().getDefaultPagingNum());
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<GeneralAPISettings> generalAPISettings, @NonNull Throwable t) {
+			}
+		});
 	}
 
 	private void versionCheck(final String loginUid, final String loginPass, final int loginOTP, final String loginToken,
@@ -333,7 +362,7 @@ public class LoginActivity extends BaseActivity {
 						boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
 						UserAccount account;
 						if(!userAccountExists) {
-							long accountId = userAccountsApi.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), loginToken, giteaVersion.toString());
+							long accountId = userAccountsApi.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), loginToken, giteaVersion.toString(), maxResponseItems, defaultPagingNumber);
 							account = userAccountsApi.getAccountById((int) accountId);
 						}
 						else {
@@ -515,7 +544,7 @@ public class LoginActivity extends BaseActivity {
 										if(!userAccountExists) {
 											long accountId = userAccountsApi
 												.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), newToken.getSha1(),
-													giteaVersion.toString());
+													giteaVersion.toString(), maxResponseItems, defaultPagingNumber);
 											account = userAccountsApi.getAccountById((int) accountId);
 										}
 										else {

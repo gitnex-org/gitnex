@@ -111,7 +111,6 @@ public class CreateReleaseActivity extends BaseActivity {
         }
 
         createNewTag.setOnClickListener(v -> createNewTag());
-
     }
 
     private void createNewTag() {
@@ -152,6 +151,10 @@ public class CreateReleaseActivity extends BaseActivity {
 		    public void onResponse(@NonNull Call<Tag> call, @NonNull retrofit2.Response<Tag> response) {
 
 			    if (response.code() == 201) {
+
+				    Intent result = new Intent();
+				    result.putExtra("updateReleases", true);
+				    setResult(201, result);
 				    Toasty.success(ctx, getString(R.string.tagCreated));
 				    finish();
 			    }

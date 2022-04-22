@@ -21,11 +21,12 @@ import org.mian.gitnex.databinding.FragmentLabelsBinding;
 import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class OrganizationLabelsFragment extends Fragment {
 
+	private OrganizationLabelsViewModel organizationLabelsViewModel;
 	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
 	private LabelsAdapter adapter;
@@ -60,6 +61,7 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		FragmentLabelsBinding fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
+		organizationLabelsViewModel = new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
 
 		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
 		noData = fragmentLabelsBinding.noData;
@@ -77,7 +79,7 @@ public class OrganizationLabelsFragment extends Fragment {
 		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			swipeRefresh.setRefreshing(false);
-			OrganizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
+			organizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
 
 		}, 200));
 
@@ -94,14 +96,12 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		if(CreateLabelActivity.refreshLabels) {
 
-			OrganizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
+			organizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
 			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
 	private void fetchDataAsync(String owner) {
-
-		OrganizationLabelsViewModel organizationLabelsViewModel = new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
 
 		organizationLabelsViewModel.getOrgLabelsList(owner, getContext(), mProgressBar, noData).observe(getViewLifecycleOwner(), labelsListMain -> {
 

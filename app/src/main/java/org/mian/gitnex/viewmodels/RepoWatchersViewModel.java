@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 public class RepoWatchersViewModel extends ViewModel {
 
-    private static MutableLiveData<List<User>> watchersList;
+    private MutableLiveData<List<User>> watchersList;
 
     public LiveData<List<User>> getRepoWatchers(String repoOwner, String repoName, Context ctx) {
 
@@ -30,7 +30,7 @@ public class RepoWatchersViewModel extends ViewModel {
         return watchersList;
     }
 
-    private static void loadRepoWatchers(String repoOwner, String repoName, Context ctx) {
+    private void loadRepoWatchers(String repoOwner, String repoName, Context ctx) {
 
         Call<List<User>> call = RetrofitClient
                 .getApiInterface(ctx)

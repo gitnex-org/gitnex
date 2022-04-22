@@ -14,11 +14,12 @@ import org.mian.gitnex.databinding.ActivityAdminCronTasksBinding;
 import org.mian.gitnex.viewmodels.AdminCronTasksViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class AdminCronTasksActivity extends BaseActivity {
 
+	private AdminCronTasksViewModel adminCronTasksViewModel;
 	private View.OnClickListener onClickListener;
 	private AdminCronTasksAdapter adapter;
 
@@ -34,6 +35,7 @@ public class AdminCronTasksActivity extends BaseActivity {
 
 		activityAdminCronTasksBinding = ActivityAdminCronTasksBinding.inflate(getLayoutInflater());
 		setContentView(activityAdminCronTasksBinding.getRoot());
+		adminCronTasksViewModel = new ViewModelProvider(this).get(AdminCronTasksViewModel.class);
 
 		initCloseListener();
 		activityAdminCronTasksBinding.close.setOnClickListener(onClickListener);
@@ -51,7 +53,7 @@ public class AdminCronTasksActivity extends BaseActivity {
 		activityAdminCronTasksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			activityAdminCronTasksBinding.pullToRefresh.setRefreshing(false);
-			AdminCronTasksViewModel.loadCronTasksList(ctx, PAGE, LIMIT);
+			adminCronTasksViewModel.loadCronTasksList(ctx, PAGE, LIMIT);
 
 		}, 500));
 

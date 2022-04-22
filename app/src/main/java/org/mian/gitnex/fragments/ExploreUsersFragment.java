@@ -83,7 +83,7 @@ public class ExploreUsersFragment extends Fragment {
 	private void loadInitial(String searchKeyword, int resultLimit) {
 
 		Call<InlineResponse2001> call = RetrofitClient
-			.getApiInterface(context).userSearch(searchKeyword, null, resultLimit, 1);
+			.getApiInterface(context).userSearch(searchKeyword, null, 1, resultLimit);
 		call.enqueue(new Callback<>() {
 			@Override
 			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
@@ -121,7 +121,7 @@ public class ExploreUsersFragment extends Fragment {
 	private void loadMore(String searchKeyword, int resultLimit, int page) {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(context).userSearch(searchKeyword, null, resultLimit, page);
+		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(context).userSearch(searchKeyword, null, page, resultLimit);
 		call.enqueue(new Callback<>() {
 			@Override
 			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
