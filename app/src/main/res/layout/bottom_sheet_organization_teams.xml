@@ -46,6 +46,19 @@
                 app:alignContent="stretch" >
 
                 <TextView
+                    android:id="@+id/addRepo"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_repo"
+                    android:text="@string/addButton"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
+                <TextView
                     android:id="@+id/addNewMember"
                     android:layout_width="98dp"
                     android:layout_height="100dp"

@@ -45,6 +45,9 @@ public class RepositoriesViewModel extends ViewModel {
 		    case "org":
 			    call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
 			    break;
+		    case "team":
+				call = RetrofitClient.getApiInterface(ctx).orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
+				break;
 		    default:
 			    call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
 			    break;
@@ -87,6 +90,9 @@ public class RepositoriesViewModel extends ViewModel {
 				break;
 			case "org":
 				call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
+				break;
+			case "team":
+				call = RetrofitClient.getApiInterface(ctx).orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
 				break;
 			default:
 				call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);

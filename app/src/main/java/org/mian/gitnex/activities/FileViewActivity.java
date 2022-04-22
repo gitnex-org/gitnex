@@ -48,6 +48,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 	private ContentsResponse file;
 	private RepositoryContext repository;
 	private boolean renderMd = false;
+	private boolean processable = false;
 
 	public ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 		result -> {
@@ -107,8 +108,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 						runOnUiThread(() -> binding.progressBar.setVisibility(View.GONE));
 						String fileExtension = FilenameUtils.getExtension(filename);
-
-						boolean processable = false;
 
 						switch(AppUtil.getFileType(fileExtension)) {
 
@@ -246,7 +245,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		} else if(id == R.id.genericMenu) {
 
 			BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
-			bottomSheet.setArguments(repository.getBundle());
+			Bundle opts = repository.getBundle();
+			opts.putBoolean("editable", processable);
+			bottomSheet.setArguments(opts);
 			bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
 			return true;
 

@@ -137,6 +137,9 @@
             android:name=".activities.AddNewTeamMemberActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
         <activity
+            android:name=".activities.AddNewTeamRepoActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
+        <activity
             android:name=".activities.SettingsDraftsActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
         <activity
