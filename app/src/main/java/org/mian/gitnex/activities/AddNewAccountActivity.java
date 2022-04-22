@@ -41,7 +41,7 @@ public class AddNewAccountActivity extends BaseActivity {
 	private String spinnerSelectedValue;
 	private Version giteaVersion;
 	private int maxResponseItems = 50;
-	private int defaultPagingNumber = 25;
+	private int defaultPagingNumber = 30;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

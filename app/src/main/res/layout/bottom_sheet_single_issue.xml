@@ -85,6 +85,7 @@
                     app:drawableTopCompat="@drawable/ic_pull_request"
                     android:text="@string/mergePullRequestButtonText"
                     android:textColor="?attr/primaryTextColor"
+                    android:visibility="gone"
                     android:textSize="16sp" />
 
                 <TextView
@@ -98,6 +99,7 @@
                     app:drawableTopCompat="@drawable/ic_update"
                     android:text="@string/newUpdateButtonCopy"
                     android:textColor="?attr/primaryTextColor"
+                    android:visibility="gone"
                     android:textSize="16sp" />
 
                 <TextView
@@ -109,7 +111,7 @@
                     android:gravity="center"
                     app:layout_alignSelf="flex_start"
                     app:drawableTopCompat="@drawable/ic_branch"
-                    android:text="@string/menuDeleteText"
+                    android:text="@string/deleteBranch"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
 
@@ -245,7 +247,7 @@
                     android:gravity="center"
                     app:layout_alignSelf="flex_start"
                     app:drawableTopCompat="@drawable/ic_browser"
-                    android:text="@string/isOpen"
+                    android:text="@string/openInBrowser"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
 

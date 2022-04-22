@@ -57,7 +57,7 @@ public abstract class GitnexDatabase extends RoomDatabase {
 		@Override
 		public void migrate(@NonNull SupportSQLiteDatabase database) {
 			database.execSQL("ALTER TABLE 'userAccounts' ADD COLUMN 'maxResponseItems' INTEGER NOT NULL DEFAULT 50");
-			database.execSQL("ALTER TABLE 'userAccounts' ADD COLUMN 'defaultPagingNumber' INTEGER NOT NULL DEFAULT 25");
+			database.execSQL("ALTER TABLE 'userAccounts' ADD COLUMN 'defaultPagingNumber' INTEGER NOT NULL DEFAULT 30");
 		}
 	};
 

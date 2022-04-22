@@ -259,7 +259,7 @@
                     app:layout_alignSelf="flex_start"
                     android:gravity="center"
                     app:drawableTopCompat="@drawable/ic_browser"
-                    android:text="@string/isOpen"
+                    android:text="@string/openInBrowser"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
 

@@ -249,7 +249,11 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.commentReactionButtons.setVisibility(View.GONE);
 			binding.reactionDivider.setVisibility(View.GONE);
 			binding.bottomSheetHeaderFrame.setVisibility(View.GONE);
-			binding.issuePrDivider.setVisibility(View.GONE);
+			binding.mergePullRequest.setVisibility(View.GONE);
+			binding.updatePullRequest.setVisibility(View.GONE);
+			if(issue.getIssueType().equalsIgnoreCase("issue")) {
+				binding.issuePrDivider.setVisibility(View.GONE);
+			}
 		}
 		else if(!canPush) {
 			binding.addRemoveAssignees.setVisibility(View.GONE);

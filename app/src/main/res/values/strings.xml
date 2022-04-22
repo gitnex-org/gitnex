@@ -505,6 +505,7 @@
     <string name="addRemove">Add / Remove</string>
     <string name="download">Download</string>
     <string name="reopen">Reopen</string>
+    <string name="openInBrowser">Open in Browser</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -553,6 +554,7 @@
     <string name="mergeStrategy">Merge Strategy</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
+    <string name="deleteBranch">Delete Branch</string>
 
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
