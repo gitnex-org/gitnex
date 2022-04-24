@@ -1,5 +1,10 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,11 +13,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
@@ -20,9 +29,22 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
 import org.mian.gitnex.databinding.FragmentReleasesBinding;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
+import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.viewmodels.ReleasesViewModel;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
+import okhttp3.*;
 
 /**
  * @author M M Arif
@@ -38,6 +60,8 @@ public class ReleasesFragment extends Fragment {
     private String releaseTag;
     private int page = 1;
     private int pageReleases = 1;
+
+	public static String currentDownloadUrl = null;
 
 	public ReleasesFragment() {
     }
@@ -104,7 +128,7 @@ public class ReleasesFragment extends Fragment {
 
         releasesModel.getReleasesList(owner, repo, getContext()).observe(getViewLifecycleOwner(), releasesListMain -> {
 	        if(!repository.isReleasesViewTypeIsTag()) {
-		        adapter = new ReleasesAdapter(getContext(), releasesListMain);
+		        adapter = new ReleasesAdapter(getContext(), releasesListMain, this::requestFileDownload);
 		        adapter.setLoadMoreListener(new ReleasesAdapter.OnLoadMoreListener() {
 
 			        @Override
@@ -141,7 +165,7 @@ public class ReleasesFragment extends Fragment {
 
 	    releasesModel.getTagsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), tagList -> {
 		    if(repository.isReleasesViewTypeIsTag()) {
-			    tagsAdapter = new TagsAdapter(getContext(), tagList, owner, repo);
+			    tagsAdapter = new TagsAdapter(getContext(), tagList, owner, repo, this::requestFileDownload);
 			    tagsAdapter.setLoadMoreListener(new TagsAdapter.OnLoadMoreListener() {
 
 				    @Override
@@ -187,4 +211,78 @@ public class ReleasesFragment extends Fragment {
 		inflater.inflate(R.menu.filter_menu_releases, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
+
+	private void requestFileDownload(String url) {
+		currentDownloadUrl = url;
+
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.putExtra(Intent.EXTRA_TITLE, Uri.parse(url).getLastPathSegment());
+		intent.setType("*/*");
+		downloadLauncher.launch(intent);
+	}
+
+	ActivityResultLauncher<Intent> downloadLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+
+		if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+
+			try {
+
+				NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), requireContext().getPackageName())
+					.setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
+					.setContentText(getString(R.string.fileViewerNotificationDescriptionStarted, Uri.parse(currentDownloadUrl).getLastPathSegment()))
+					.setSmallIcon(R.drawable.gitnex_transparent).setPriority(NotificationCompat.PRIORITY_LOW)
+					.setChannelId(Constants.downloadNotificationChannelId).setOngoing(true);
+
+				int notificationId = Notifications.uniqueNotificationId(requireContext());
+
+				NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+				notificationManager.notify(notificationId, builder.build());
+
+				SSLContext sslContext = SSLContext.getInstance("TLS");
+				MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(requireContext());
+				sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
+
+				ApiKeyAuth auth = new ApiKeyAuth("header", "Authorization");
+				auth.setApiKey(((BaseActivity) requireActivity()).getAccount().getWebAuthorization());
+				OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(auth)
+					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).build();
+
+				okHttpClient.newCall(new Request.Builder().url(currentDownloadUrl).build()).enqueue(new Callback() {
+
+					@Override
+					public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFailed))
+							.setContentText(getString(R.string.fileViewerNotificationDescriptionFailed,
+								Uri.parse(currentDownloadUrl).getLastPathSegment())).setOngoing(false);
+						notificationManager.notify(notificationId, builder.build());
+					}
+
+					@Override
+					public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+						if(!response.isSuccessful() || response.body() == null) {
+							onFailure(call, new IOException());
+							return;
+						}
+
+						OutputStream outputStream = requireContext().getContentResolver().openOutputStream(result.getData().getData());
+
+						AppUtil.copyProgress(response.body().byteStream(), outputStream, 0, p -> {});
+						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFinished))
+							.setContentText(getString(R.string.fileViewerNotificationDescriptionFinished,
+								Uri.parse(currentDownloadUrl).getLastPathSegment())).setOngoing(false);
+						notificationManager.notify(notificationId, builder.build());
+					}
+				});
+			}
+			catch(NoSuchAlgorithmException | KeyManagementException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+	});
+
 }

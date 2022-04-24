@@ -35,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:background="@drawable/shape_stable_release"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="14sp" />
 
@@ -182,6 +182,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/downloadCopyFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -217,30 +218,34 @@
             android:paddingTop="8dp">
 
             <LinearLayout
+                android:id="@+id/releaseZipDownloadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     app:srcCompat="@drawable/ic_download"
                     android:contentDescription="@string/generalImgContentText" />
 
                 <TextView
                     android:id="@+id/releaseZipDownload"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textColor="?attr/primaryTextColor"
+                    android:text="@string/zipArchiveDownloadReleasesTab"
                     android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/releaseTarDownloadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -249,17 +254,18 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     app:srcCompat="@drawable/ic_download"
                     android:contentDescription="@string/generalImgContentText" />
 
                 <TextView
                     android:id="@+id/releaseTarDownload"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textColor="?attr/primaryTextColor"
+                    android:text="@string/tarArchiveDownloadReleasesTab"
                     android:textSize="12sp" />
 
             </LinearLayout>

@@ -2,7 +2,6 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.gitnex.tea4j.v2.models.Tag;
@@ -20,6 +18,7 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.structs.FragmentRefreshListener;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,8 +32,9 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 
     private List<Tag> tags;
     private final Context context;
-    private static String repo;
-    private static String owner;
+    private final String repo;
+    private final String owner;
+	private final FragmentRefreshListener startDownload;
 
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -44,10 +44,10 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 		private Tag tagsHolder;
         private final TextView tagName;
         private final TextView tagBody;
-        private final LinearLayout downloadFrame;
+        private final LinearLayout downloadCopyFrame;
         private final LinearLayout downloads;
-        private final TextView releaseZipDownload;
-	    private final TextView releaseTarDownload;
+		private final LinearLayout releaseZipDownloadFrame;
+		private final LinearLayout releaseTarDownloadFrame;
 	    private final ImageView downloadDropdownIcon;
 	    private final ImageView options;
 
@@ -57,10 +57,10 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 
 	        tagName = itemView.findViewById(R.id.tagName);
 	        tagBody = itemView.findViewById(R.id.tagBodyContent);
-	        downloadFrame = itemView.findViewById(R.id.downloadFrame);
+	        downloadCopyFrame = itemView.findViewById(R.id.downloadCopyFrame);
 	        downloads = itemView.findViewById(R.id.downloads);
-	        releaseZipDownload = itemView.findViewById(R.id.releaseZipDownload);
-	        releaseTarDownload = itemView.findViewById(R.id.releaseTarDownload);
+	        releaseZipDownloadFrame = itemView.findViewById(R.id.releaseZipDownloadFrame);
+	        releaseTarDownloadFrame = itemView.findViewById(R.id.releaseTarDownloadFrame);
 	        downloadDropdownIcon = itemView.findViewById(R.id.downloadDropdownIcon);
 	        options = itemView.findViewById(R.id.tagsOptionsMenu);
 
@@ -84,11 +84,12 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
         }
     }
 
-    public TagsAdapter(Context ctx, List<Tag> releasesMain, String repoOwner, String repoName) {
+    public TagsAdapter(Context ctx, List<Tag> releasesMain, String repoOwner, String repoName, FragmentRefreshListener startDownload) {
         this.context = ctx;
         this.tags = releasesMain;
         owner = repoOwner;
         repo = repoName;
+		this.startDownload = startDownload;
     }
 
     @NonNull
@@ -113,7 +114,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 	        holder.tagBody.setVisibility(View.GONE);
         }
 
-	    holder.downloadFrame.setOnClickListener(v -> {
+	    holder.downloadCopyFrame.setOnClickListener(v -> {
 
 		    if(holder.downloads.getVisibility() == View.GONE) {
 
@@ -131,13 +132,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
             holder.options.setVisibility(View.GONE);
         }
 
-        holder.releaseZipDownload.setText(
-                HtmlCompat.fromHtml("<a href='" + currentItem.getZipballUrl() + "'>" + context.getResources().getString(R.string.zipArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
-        holder.releaseZipDownload.setMovementMethod(LinkMovementMethod.getInstance());
-
-        holder.releaseTarDownload.setText(
-                HtmlCompat.fromHtml("<a href='" + currentItem.getTarballUrl() + "'>" + context.getResources().getString(R.string.tarArchiveDownloadReleasesTab) + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
-        holder.releaseTarDownload.setMovementMethod(LinkMovementMethod.getInstance());
+	    holder.releaseZipDownloadFrame.setOnClickListener(v -> startDownload.onRefresh(currentItem.getZipballUrl()));
+	    holder.releaseTarDownloadFrame.setOnClickListener(v -> startDownload.onRefresh(currentItem.getTarballUrl()));
 
 	    if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
 		    isLoading = true;

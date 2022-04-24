@@ -1,15 +1,14 @@
 package org.mian.gitnex.adapters;
 
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.v2.models.Attachment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.structs.FragmentRefreshListener;
 import java.util.List;
 
 /**
@@ -19,6 +18,7 @@ import java.util.List;
 public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder> {
 
 	private final List<Attachment> releasesDownloadsList;
+	private final FragmentRefreshListener startDownload;
 
 	static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,9 +31,10 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 		}
 	}
 
-	ReleasesDownloadsAdapter(List<Attachment> releasesDownloadsMain) {
+	ReleasesDownloadsAdapter(List<Attachment> releasesDownloadsMain, FragmentRefreshListener startDownload) {
 
 		this.releasesDownloadsList = releasesDownloadsMain;
+		this.startDownload = startDownload;
 	}
 
 	@NonNull
@@ -50,9 +51,8 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 
 		if(currentItem.getName() != null) {
 
-			holder.downloadName.setText(
-				HtmlCompat.fromHtml("<a href='" + currentItem.getBrowserDownloadUrl() + "'>" + currentItem.getName() + "</a> ", HtmlCompat.FROM_HTML_MODE_LEGACY));
-			holder.downloadName.setMovementMethod(LinkMovementMethod.getInstance());
+			holder.downloadName.setText(currentItem.getName());
+			holder.downloadName.setOnClickListener(v -> startDownload.onRefresh(currentItem.getBrowserDownloadUrl()));
 
 		}
 	}
