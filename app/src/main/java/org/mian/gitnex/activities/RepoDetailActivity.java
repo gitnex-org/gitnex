@@ -142,22 +142,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repository.getName());
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		switch(tinyDB.getInt("customFontId", -1)) {
-
-			case 0:
-
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
-				break;
-			case 2:
-
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
-				break;
-			default:
-
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
-				break;
-		}
-
+		myTypeface = AppUtil.getTypeface(this);
 		toolbarTitle.setTypeface(myTypeface);
 
 		getRepoInfo(repository.getOwner(), repository.getName());

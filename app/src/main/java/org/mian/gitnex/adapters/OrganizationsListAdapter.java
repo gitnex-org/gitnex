@@ -33,7 +33,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public OrganizationsListAdapter(List<Organization> orgListMain, Context ctx) {
+	public OrganizationsListAdapter(Context ctx, List<Organization> orgListMain) {
 		this.context = ctx;
 		this.orgList = orgListMain;
 		orgListFull = new ArrayList<>(orgList);
@@ -123,9 +123,10 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 		loadMoreListener.onLoadFinished();
 	}
 
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-		void onLoadFinished();
+	public abstract static class OnLoadMoreListener {
+		protected abstract void onLoadMore();
+		public void onLoadFinished() {}
+
 	}
 
 	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {

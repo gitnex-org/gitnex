@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 
 /**
@@ -41,23 +42,7 @@ public class ExploreFragment extends Fragment {
 
 		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
 
-		Typeface myTypeface;
-
-		switch(tinyDB.getInt("customFontId", -1)) {
-
-			case 0:
-				myTypeface = Typeface.createFromAsset(ctx != null ? ctx.getAssets() : null, "fonts/roboto.ttf");
-				break;
-
-			case 2:
-				myTypeface = Typeface.createFromAsset(ctx != null ? ctx.getAssets() : null, "fonts/sourcecodeproregular.ttf");
-				break;
-
-			default:
-				myTypeface = Typeface.createFromAsset(ctx != null ? ctx.getAssets() : null, "fonts/manroperegular.ttf");
-				break;
-		}
-
+		Typeface myTypeface = AppUtil.getTypeface(requireContext());
 		viewPager.setAdapter(new ViewPagerAdapter(this));
 
 		String[] tabTitles = {getResources().getString(R.string.navRepos), getResources().getString(R.string.pageTitleIssues), getResources().getString(R.string.navOrg), getResources().getString(R.string.pageTitleUsers)};

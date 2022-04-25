@@ -7,18 +7,22 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class FontsOverride {
 
-    public static void setDefaultFont(Context context,
-                                      String staticTypefaceFieldName, String fontAssetName) {
+    public static void setDefaultFont(Context context) {
+	    final Typeface regular = AppUtil.getTypeface(context);
 
-        final Typeface regular = Typeface.createFromAsset(context.getAssets(),
-                fontAssetName);
-        replaceFont(staticTypefaceFieldName, regular);
-
+	    for(String field : new String[]{
+			"DEFAULT",
+		    "MONOSPACE",
+	        "SERIF",
+	        "SANS_SERIF"
+		}) {
+		    replaceFont(field, regular);
+	    }
     }
 
     private static void replaceFont(String staticTypefaceFieldName,
@@ -34,7 +38,7 @@ public class FontsOverride {
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
 
-            Log.e("error", Objects.requireNonNull(e.getMessage()));
+            Log.e("replaceFont", Objects.requireNonNull(e.getMessage()));
 
         }
 

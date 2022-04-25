@@ -187,26 +187,11 @@ public class Markdown {
 
 					private Typeface tf;
 
-					private void setupTf(Context context) {
-
-						switch(TinyDB.getInstance(context).getInt("customFontId", -1)) {
-							case 0:
-								tf = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
-								break;
-							case 2:
-								tf = Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf");
-								break;
-							default:
-								tf = Typeface.createFromAsset(context.getAssets(), "fonts/manroperegular.ttf");
-								break;
-						}
-					}
-
 					@Override
 					public void beforeSetText(@NonNull TextView textView, @NonNull Spanned markdown) {
 
 						if(tf == null) {
-							setupTf(textView.getContext());
+							tf = AppUtil.getTypeface(textView.getContext());
 						}
 						textView.setTypeface(tf);
 						super.beforeSetText(textView, markdown);
@@ -223,7 +208,7 @@ public class Markdown {
 						builder.linkColor(ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null));
 
 						if(tf == null) {
-							setupTf(context);
+							tf = AppUtil.getTypeface(context);
 						}
 						builder.headingTypeface(tf);
 					}
@@ -319,26 +304,11 @@ public class Markdown {
 					private final Context context = RecyclerViewRenderer.this.context;
 					private Typeface tf;
 
-					private void setupTf(Context context) {
-
-						switch(TinyDB.getInstance(context).getInt("customFontId", -1)) {
-							case 0:
-								tf = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
-								break;
-							case 2:
-								tf = Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf");
-								break;
-							default:
-								tf = Typeface.createFromAsset(context.getAssets(), "fonts/manroperegular.ttf");
-								break;
-						}
-					}
-
 					@Override
 					public void beforeSetText(@NonNull TextView textView, @NonNull Spanned markdown) {
 
 						if(tf == null) {
-							setupTf(textView.getContext());
+							tf = AppUtil.getTypeface(context);
 						}
 						textView.setTypeface(tf);
 						super.beforeSetText(textView, markdown);
@@ -362,7 +332,7 @@ public class Markdown {
 						builder.linkColor(ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null));
 
 						if(tf == null) {
-							setupTf(context);
+							tf = AppUtil.getTypeface(context);
 						}
 						builder.headingTypeface(Typeface.create(tf, Typeface.BOLD));
 					}

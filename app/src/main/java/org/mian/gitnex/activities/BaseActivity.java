@@ -116,17 +116,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 					super.onAuthenticationError(errorCode, errString);
 
 					// Authentication error, close the app
-					if(errorCode == BiometricPrompt.ERROR_USER_CANCELED ||
-						errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-						finish();
-					}
+					finish();
 				}
 
 				// Authentication succeeded, continue to app
-				@Override public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) { super.onAuthenticationSucceeded(result); tinyDB.putBoolean("biometricLifeCycle", true); }
+				@Override
+				public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+					super.onAuthenticationSucceeded(result);
+					tinyDB.putBoolean("biometricLifeCycle", true);
+				}
 
 				// Authentication failed, close the app
-				@Override public void onAuthenticationFailed() { super.onAuthenticationFailed(); }
+				@Override public void onAuthenticationFailed() {
+					super.onAuthenticationFailed();
+				}
 
 			});
 

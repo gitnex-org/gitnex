@@ -117,21 +117,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		Toolbar toolbar = activityMainBinding.toolbar;
 		toolbarTitle = activityMainBinding.toolbarTitle;
 
-		switch(tinyDB.getInt("customFontId", -1)) {
-
-			case 0:
-				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/roboto.ttf");
-				break;
-
-			case 2:
-				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/sourcecodeproregular.ttf");
-				break;
-
-			default:
-				myTypeface = Typeface.createFromAsset(getAssets(), "fonts/manroperegular.ttf");
-				break;
-		}
-
+		myTypeface = AppUtil.getTypeface(this);
 		toolbarTitle.setTypeface(myTypeface);
 		setSupportActionBar(toolbar);
 

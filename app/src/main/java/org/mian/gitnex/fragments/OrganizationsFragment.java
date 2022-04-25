@@ -78,7 +78,7 @@ public class OrganizationsFragment extends Fragment {
 
 		organizationsViewModel.getUserOrg(page, resultLimit, getContext()).observe(getViewLifecycleOwner(), orgListMain -> {
 
-			adapter = new OrganizationsListAdapter(orgListMain, getContext());
+			adapter = new OrganizationsListAdapter(requireContext(), orgListMain);
 			adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
 
 				@Override

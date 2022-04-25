@@ -3,6 +3,7 @@ package org.mian.gitnex.helpers;
 import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +17,7 @@ public class Version {
 	private String raw;
 	// the version numbers in its order (dot separated)
 	private List<Integer> values;
+	private boolean dev;
 
 	public Version(String value) {
 
@@ -35,8 +37,8 @@ public class Version {
 		if(value == null) {
 			return false;
 		}
-		final Pattern pattern_valid = Pattern.compile("^[v,V]?(\\d+)+(\\.(\\d+))*([_,\\-,+][\\w,\\d,_,\\-,+]*)?$");
-		return pattern_valid.matcher(value).find();
+		final Pattern patternValid = Pattern.compile("^[v,V]?(\\d+)+(\\.(\\d+))*([_,\\-,+][\\w,\\d,_,\\-,+]*)?$");
+		return value.equals("main") || patternValid.matcher(value).find();
 	}
 
 	/**
@@ -47,19 +49,25 @@ public class Version {
 	 */
 	private void init() {
 
-		final Pattern pattern_number_dot_number = Pattern.compile("^\\d+(\\.(\\d)+)*");
+		final Pattern patternNumberDotNumber = Pattern.compile("^\\d+(\\.(\\d)+)*");
 
-		if(!valid(raw)) {
-			throw new IllegalArgumentException("Invalid version format: " + raw);
+		if(!valid(raw) || raw.equals("main")) {
+			dev = true;
+			values = new ArrayList<>();
+			return;
 		}
 
 		if(raw.charAt(0) == 'v' || raw.charAt(0) == 'V') {
 			raw = raw.substring(1);
 		}
 
-		values = new ArrayList<Integer>();
-		Matcher match = pattern_number_dot_number.matcher(raw);
-		match.find();
+		values = new ArrayList<>();
+		Matcher match = patternNumberDotNumber.matcher(raw);
+		if(!match.find()) {
+			dev = true;
+			values = new ArrayList<>();
+			return;
+		}
 		for(String i : match.group().split("\\.")) {
 			values.add(Integer.parseInt(i));
 		}
@@ -86,9 +94,13 @@ public class Version {
 	 */
 	public boolean equal(@NonNull Version v) {
 
+		if(dev || v.dev) { // equal if raw is equal
+			return Objects.equals(raw, v.raw);
+		}
+
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
-			if(this.values.get(i) != v.values.get(i)) {
+			if(!Objects.equals(this.values.get(i), v.values.get(i))) {
 				return false;
 			}
 		}
@@ -141,6 +153,12 @@ public class Version {
 	 * @return
 	 */
 	public boolean higher(@NonNull Version v) {
+
+		if(dev) {
+			return !v.dev;
+		} else if(v.dev) {
+			return false;
+		}
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {
@@ -206,6 +224,10 @@ public class Version {
 	 * @return
 	 */
 	public boolean higherOrEqual(@NonNull Version v) {
+
+		if(dev || v.dev) { // if one is a dev version, only true if both are dev
+			return v.dev && dev;
+		}
 
 		int rounds = Math.min(this.values.size(), v.values.size());
 		for(int i = 0; i < rounds; i++) {

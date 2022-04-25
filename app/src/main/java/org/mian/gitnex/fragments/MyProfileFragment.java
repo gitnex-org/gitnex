@@ -187,24 +187,7 @@ public class MyProfileFragment extends Fragment {
 	    ViewPager mViewPager = v.findViewById(R.id.container);
 	    mViewPager.setAdapter(mSectionsPagerAdapter);
 
-	    Typeface myTypeface;
-
-	    switch(tinyDb.getInt("customFontId", -1)) {
-
-		    case 0:
-			    myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/roboto.ttf");
-			    break;
-
-		    case 2:
-			    myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/sourcecodeproregular.ttf");
-			    break;
-
-		    default:
-			    myTypeface = Typeface.createFromAsset(requireContext().getAssets(), "fonts/manroperegular.ttf");
-			    break;
-
-	    }
-
+	    Typeface myTypeface = AppUtil.getTypeface(requireContext());
 	    TabLayout tabLayout = v.findViewById(R.id.tabs);
 
 	    ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);

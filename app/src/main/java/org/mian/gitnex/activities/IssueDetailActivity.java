@@ -184,24 +184,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		}, 500));
 
-		Typeface myTypeface;
-
-		switch(tinyDB.getInt("customFontId", -1)) {
-
-			case 1:
-				myTypeface = Typeface.createFromAsset(Objects.requireNonNull(ctx).getAssets(), "fonts/manroperegular.ttf");
-				break;
-
-			case 2:
-				myTypeface = Typeface.createFromAsset(Objects.requireNonNull(ctx).getAssets(), "fonts/sourcecodeproregular.ttf");
-				break;
-
-			default:
-				myTypeface = Typeface.createFromAsset(Objects.requireNonNull(ctx).getAssets(), "fonts/roboto.ttf");
-				break;
-
-		}
-
+		Typeface myTypeface = AppUtil.getTypeface(this);
 		viewBinding.toolbarTitle.setTypeface(myTypeface);
 		viewBinding.toolbarTitle.setText(repoName);
 

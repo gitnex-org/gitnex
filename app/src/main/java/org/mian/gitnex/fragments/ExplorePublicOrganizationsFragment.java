@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.ExplorePublicOrganizationsAdapter;
+import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -34,7 +34,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 
 	private FragmentOrganizationsBinding fragmentPublicOrgBinding;
 	private List<Organization> organizationsList;
-	private ExplorePublicOrganizationsAdapter adapter;
+	private OrganizationsListAdapter adapter;
 	private Context context;
 	private int pageSize;
 	private final String TAG = Constants.publicOrganizations;
@@ -58,13 +58,18 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 			adapter.notifyDataChanged();
 		}, 200));
 
-		adapter = new ExplorePublicOrganizationsAdapter(getContext(), organizationsList);
-		adapter.setLoadMoreListener(() -> fragmentPublicOrgBinding.recyclerView.post(() -> {
-			if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
-				int page = (organizationsList.size() + resultLimit) / resultLimit;
-				loadMore(page, resultLimit);
+		adapter = new OrganizationsListAdapter(requireContext(), organizationsList);
+		adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
+			@Override
+			public void onLoadMore() {
+				fragmentPublicOrgBinding.recyclerView.post(() -> {
+					if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
+						int page = (organizationsList.size() + resultLimit) / resultLimit;
+						loadMore(page, resultLimit);
+					}
+				});
 			}
-		}));
+		});
 
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentPublicOrgBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		fragmentPublicOrgBinding.recyclerView.setHasFixedSize(true);

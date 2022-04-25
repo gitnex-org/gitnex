@@ -1,16 +1,17 @@
 package org.mian.gitnex.helpers.ssl;
 
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.util.Base64;
 import android.util.SparseArray;
 import androidx.core.app.NotificationCompat;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,7 +40,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * Author Georg Lukas, modified by opyale
+ * @author Georg Lukas, modified by opyale
  */
 
 public class MemorizingTrustManager implements X509TrustManager {
@@ -50,10 +51,9 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	private Context context;
 	private NotificationManager notificationManager;
-	private static int decisionId = 0;
-	private static final SparseArray<MTMDecision> openDecisions = new SparseArray<>();
+	private int decisionId = 0;
+	private final SparseArray<MTMDecision> openDecisions = new SparseArray<>();
 
-	private Handler masterHandler;
 	private SharedPreferences keyStoreStorage;
 	private KeyStore appKeyStore;
 	private final X509TrustManager defaultTrustManager;
@@ -103,7 +103,6 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private void init(Context m) {
 
 		context = m;
-		masterHandler = new Handler(m.getMainLooper());
 		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		keyStoreStorage = m.getSharedPreferences(KEYSTORE_NAME, Context.MODE_PRIVATE);
@@ -387,7 +386,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 		return defaultTrustManager.getAcceptedIssuers();
 	}
 
-	private static int createDecisionId(MTMDecision d) {
+	private int createDecisionId(MTMDecision d) {
 
 		int myId;
 		synchronized(openDecisions) {
@@ -562,24 +561,16 @@ public class MemorizingTrustManager implements X509TrustManager {
 		MTMDecision choice = new MTMDecision();
 		final int myId = createDecisionId(choice);
 
-		masterHandler.post(new Runnable() {
+		((BaseActivity) context).runOnUiThread(() -> {
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			builder.setTitle(titleId);
+			builder.setMessage(message);
 
-			public void run() {
+			builder.setPositiveButton(R.string.mtmDecisionAlways, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ALWAYS));
+			builder.setNeutralButton(R.string.mtmDecisionAbort, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ABORT));
+			builder.setOnCancelListener(dialog -> interactResult(myId, MTMDecision.DECISION_ABORT));
 
-				Intent intent = new Intent(context, MemorizingActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				intent.putExtra("DECISION_INTENT_ID", myId);
-				intent.putExtra("DECISION_INTENT_CERT", message);
-				intent.putExtra("DECISION_TITLE_ID", titleId);
-
-				try {
-					context.startActivity(intent);
-				}
-				catch(Exception e) {
-					startActivityNotification(intent, myId, message);
-				}
-			}
+			builder.create().show();
 		});
 
 		try {
@@ -613,7 +604,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 		return false;
 	}
 
-	static void interactResult(int decisionId, int choice) {
+	private void interactResult(int decisionId, int choice) {
 
 		MTMDecision d;
 

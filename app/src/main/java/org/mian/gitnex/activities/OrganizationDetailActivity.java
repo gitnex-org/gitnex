@@ -118,24 +118,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 			tabLayout.removeTabAt(3);
 		}
 
-		Typeface myTypeface;
-
-		switch(tinyDB.getInt("customFontId", -1)) {
-
-			case 0:
-
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
-				break;
-			case 2:
-
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
-				break;
-			default:
-
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
-				break;
-		}
-
+		Typeface myTypeface = AppUtil.getTypeface(this);
 		TextView toolbarTitle = findViewById(R.id.toolbar_title);
 
 		toolbarTitle.setTypeface(myTypeface);

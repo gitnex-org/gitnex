@@ -1,4 +1,4 @@
-package org.mian.gitnex.helpers.views;
+package org.mian.gitnex.views;
 
 import android.app.Activity;
 import android.content.Context;

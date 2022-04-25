@@ -25,6 +25,7 @@ import org.mian.gitnex.fragments.profile.FollowingFragment;
 import org.mian.gitnex.fragments.profile.OrganizationsFragment;
 import org.mian.gitnex.fragments.profile.RepositoriesFragment;
 import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
@@ -47,7 +48,6 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		Intent profileIntent = getIntent();
-		Typeface myTypeface;
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		TextView toolbarTitle = findViewById(R.id.toolbarTitle);
@@ -68,18 +68,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		viewPager.setOffscreenPageLimit(1);
 		TabLayout tabLayout = findViewById(R.id.tabs);
 
-		switch(tinyDB.getInt("customFontId", -1)) {
-			case 0:
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/roboto.ttf");
-				break;
-			case 2:
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf");
-				break;
-			default:
-				myTypeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/manroperegular.ttf");
-				break;
-		}
-
+		Typeface myTypeface = AppUtil.getTypeface(this);
 		toolbarTitle.setTypeface(myTypeface);
 		toolbarTitle.setText(username);
 

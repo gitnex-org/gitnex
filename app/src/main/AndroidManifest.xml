@@ -115,10 +115,6 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".helpers.ssl.MemorizingActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
-            android:theme="@android:style/Theme.Material.Dialog" />
-        <activity
             android:name=".activities.SettingsAppearanceActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
         <activity

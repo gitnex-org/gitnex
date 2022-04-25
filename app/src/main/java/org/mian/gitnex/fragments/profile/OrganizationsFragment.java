@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.profile.OrganizationsAdapter;
+import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -41,7 +41,7 @@ public class OrganizationsFragment extends Fragment {
 	private FragmentOrganizationsBinding fragmentOrganizationsBinding;
 
 	private List<Organization> organizationsList;
-	private OrganizationsAdapter adapter;
+	private OrganizationsListAdapter adapter;
 
 	private int pageSize;
 	private int resultLimit;
@@ -86,13 +86,19 @@ public class OrganizationsFragment extends Fragment {
 			adapter.notifyDataChanged();
 		}, 200));
 
-		adapter = new OrganizationsAdapter(context, organizationsList);
-		adapter.setLoadMoreListener(() -> fragmentOrganizationsBinding.recyclerView.post(() -> {
-			if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
-				int page = (organizationsList.size() + resultLimit) / resultLimit;
-				loadMore(username, page, resultLimit);
+		adapter = new OrganizationsListAdapter(context, organizationsList);
+		adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
+
+			@Override
+			protected void onLoadMore() {
+				fragmentOrganizationsBinding.recyclerView.post(() -> {
+					if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
+						int page = (organizationsList.size() + resultLimit) / resultLimit;
+						loadMore(username, page, resultLimit);
+					}
+				});
 			}
-		}));
+		});
 
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		fragmentOrganizationsBinding.recyclerView.setHasFixedSize(true);
