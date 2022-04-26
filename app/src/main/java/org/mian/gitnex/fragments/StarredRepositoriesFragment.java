@@ -12,16 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.DividerItemDecorator;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
@@ -53,9 +55,12 @@ public class StarredRepositoriesFragment extends Fragment {
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentRepositoriesBinding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
+
+		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(requireContext(), R.drawable.shape_list_divider));
 		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+
+		fragmentRepositoriesBinding.recyclerView.setPadding(0, 0, 0, 200);
+		fragmentRepositoriesBinding.recyclerView.setClipToPadding(false);
 
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 

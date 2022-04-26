@@ -4,7 +4,7 @@ android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "org.mian.gitnex"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 31
         versionCode 425
         versionName "4.3.0"

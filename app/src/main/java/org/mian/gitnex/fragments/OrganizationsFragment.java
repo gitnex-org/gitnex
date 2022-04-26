@@ -61,6 +61,9 @@ public class OrganizationsFragment extends Fragment {
 		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(requireContext(), R.drawable.shape_list_divider));
 		fragmentOrganizationsBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
+		fragmentOrganizationsBinding.recyclerView.setPadding(0, 0, 0, 200);
+		fragmentOrganizationsBinding.recyclerView.setClipToPadding(false);
+
 		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			page = 1;
