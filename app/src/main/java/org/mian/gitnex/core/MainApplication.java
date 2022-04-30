@@ -17,7 +17,6 @@ import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.notifications.Notifications;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author opyale
@@ -59,7 +58,7 @@ public class MainApplication extends Application {
 			ACRABuilder.withBuildConfigClass(BuildConfig.class).withReportContent(ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
 				ReportField.STACK_TRACE, ReportField.AVAILABLE_MEM_SIZE, ReportField.BRAND).setReportFormat(StringFormat.KEY_VALUE_LIST);
 			ACRABuilder.getPluginConfigurationBuilder(NotificationConfigurationBuilder.class).withResTitle(R.string.crashTitle)
-				.withResIcon(R.drawable.gitnex_transparent).withResChannelName(R.string.setCrashReports).withResText(R.string.crashMessage);
+				.withResIcon(R.drawable.gitnex_transparent).withResChannelName(R.string.setCrashReports).withResText(R.string.crashMessage).withEnabled(true);
 			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).withMailTo(getResources().getString(R.string.appEmail))
 				.withSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil
 					.getAppBuildNo(context)))

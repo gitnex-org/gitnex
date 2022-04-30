@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Author 6543
+ * @author 6543
  */
 
 public class ParseDiff {
@@ -107,6 +107,9 @@ public class ParseDiff {
 						String[] rawDiff = rawDiffs[j].split("^\\d+(,\\d+)? \\+\\d+(,\\d+)? @@");
 						if(rawDiff.length <= 1) {
 							continue;
+						}
+						if(rawDiff[1].startsWith("\n")) {
+							rawDiff[1] = rawDiff[1].substring(1);
 						}
 
 						// extract the diff stats info of the first line

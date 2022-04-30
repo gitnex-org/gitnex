@@ -55,8 +55,7 @@
         android:focusable="true"
         android:clickable="true"
         android:orientation="vertical"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/tvLanguageHeaderSelector"
@@ -78,18 +77,20 @@
             android:textColor="?attr/selectedTextColor"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/helpTranslate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
-            android:autoLink="web"
-            android:text="@string/settingsHelpTranslateText"
-            android:textColor="@color/lightBlue"
-            android:textSize="16sp" />
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/helpTranslate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="39dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="24dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:autoLink="web"
+        android:text="@string/settingsHelpTranslateText"
+        android:textColor="@color/lightBlue"
+        android:textSize="16sp" />
 
 </LinearLayout>
