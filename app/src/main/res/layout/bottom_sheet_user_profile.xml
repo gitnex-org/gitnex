@@ -46,7 +46,7 @@
                 app:alignContent="stretch" >
 
                 <TextView
-                    android:id="@+id/followUnfollowUser"
+                    android:id="@+id/followUser"
                     android:layout_width="98dp"
                     android:layout_height="100dp"
                     android:padding="8dp"
@@ -57,6 +57,20 @@
                     android:text="@string/userFollow"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/unfollowUser"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    app:layout_alignSelf="flex_start"
+                    app:drawableTopCompat="@drawable/ic_person_remove"
+                    android:text="@string/unfollowUser"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
             </com.google.android.flexbox.FlexboxLayout>
 

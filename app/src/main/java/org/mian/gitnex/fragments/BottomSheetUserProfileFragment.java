@@ -1,16 +1,13 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetUserProfileBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
@@ -36,18 +33,21 @@ public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {
 	    BottomSheetUserProfileBinding bottomSheetUserProfileBinding = BottomSheetUserProfileBinding.inflate(inflater, container, false);
 
 	    if(following) {
-	    	bottomSheetUserProfileBinding.followUnfollowUser.setText(R.string.unfollowUser);
-		    Drawable drawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_person_remove); assert drawable != null;
-		    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-	    	bottomSheetUserProfileBinding.followUnfollowUser.setCompoundDrawablesRelative(drawable, null, null, null);
+		    bottomSheetUserProfileBinding.unfollowUser.setVisibility(View.VISIBLE);
+		    bottomSheetUserProfileBinding.followUser.setVisibility(View.GONE);
 	    }
 
-        bottomSheetUserProfileBinding.followUnfollowUser.setOnClickListener(v1 -> {
+        bottomSheetUserProfileBinding.followUser.setOnClickListener(v1 -> {
 
             bmListener.onButtonClicked("follow");
             dismiss();
-
         });
+
+	    bottomSheetUserProfileBinding.unfollowUser.setOnClickListener(v1 -> {
+
+		    bmListener.onButtonClicked("follow");
+		    dismiss();
+	    });
 
         return bottomSheetUserProfileBinding.getRoot();
     }
@@ -60,8 +60,7 @@ public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {
             bmListener = (BottomSheetListener) context;
         }
         catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement BottomSheetListener");
+            throw new ClassCastException(context + " must implement BottomSheetListener");
         }
     }
-
 }

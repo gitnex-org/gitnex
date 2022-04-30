@@ -469,7 +469,7 @@
     <string name="menuEditText">Edit</string>
     <string name="menuDeleteText">Delete</string>
     <string name="menuCopyText">Copy</string>
-    <string name="menuQuoteText">Quote and Reply</string>
+    <string name="menuQuoteText">Quote Reply</string>
     <string name="colorfulBulletSpan" translatable="false">\u0020\u0020\u0020\u25CF\u0020\u0020\u0020</string>
     <string name="modifiedText">edited</string>
     <string name="saveButton">Save</string>
