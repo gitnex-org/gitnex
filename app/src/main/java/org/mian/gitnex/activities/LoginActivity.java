@@ -241,7 +241,7 @@ public class LoginActivity extends BaseActivity {
 
 		if(!loginToken.equals("")) {
 
-			callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken).getVersion();
+			callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken, null).getVersion();
 		}
 		else {
 
@@ -249,10 +249,10 @@ public class LoginActivity extends BaseActivity {
 
 			if (loginOTP != 0) {
 
-				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).getVersion(loginOTP);
+				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).getVersion(loginOTP);
 			} else {
 
-				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).getVersion();
+				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).getVersion();
 			}
 		}
 
@@ -340,7 +340,7 @@ public class LoginActivity extends BaseActivity {
 
 	private void setupUsingExistingToken(final String loginToken) {
 
-		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken).userGetCurrent();
+		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken, null).userGetCurrent();
 
 		call.enqueue(new Callback<>() {
 
@@ -407,11 +407,11 @@ public class LoginActivity extends BaseActivity {
 		Call<List<AccessToken>> call;
 		if(loginOTP != 0) {
 
-			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).userGetTokens(loginOTP, loginUid, null, null);
+			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userGetTokens(loginOTP, loginUid, null, null);
 		}
 		else {
 
-			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).userGetTokens(loginUid, null, null);
+			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userGetTokens(loginUid, null, null);
 		}
 
 		call.enqueue(new Callback<>() {
@@ -435,12 +435,12 @@ public class LoginActivity extends BaseActivity {
 							Call<Void> delToken;
 							if(loginOTP != 0) {
 
-								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential)
+								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
 									.userDeleteAccessToken(loginOTP, loginUid, String.valueOf(t.getId()));
 							}
 							else {
 
-								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential).userDeleteAccessToken(loginUid, String.valueOf(t.getId()));
+								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userDeleteAccessToken(loginUid, String.valueOf(t.getId()));
 							}
 
 							delToken.enqueue(new Callback<>() {
@@ -498,12 +498,12 @@ public class LoginActivity extends BaseActivity {
 
 		if(loginOTP != 0) {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential)
+			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
 				.userCreateToken(loginOTP, loginUid, createUserToken);
 		}
 		else {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential)
+			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
 				.userCreateToken(loginUid, createUserToken);
 		}
 
@@ -519,7 +519,7 @@ public class LoginActivity extends BaseActivity {
 
 					if(!newToken.getSha1().equals("")) {
 
-						Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + newToken.getSha1()).userGetCurrent();
+						Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + newToken.getSha1(), null).userGetCurrent();
 
 						call.enqueue(new Callback<>() {
 

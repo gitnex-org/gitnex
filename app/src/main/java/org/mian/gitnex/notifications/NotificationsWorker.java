@@ -31,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class NotificationsWorker extends Worker {
@@ -98,7 +98,7 @@ public class NotificationsWorker extends Worker {
 			try {
 				assert userAccountParameters != null;
 				Call<List<NotificationThread>> call = RetrofitClient
-					.getApiInterface(context, userAccount.getInstanceUrl(), userAccount.getToken())
+					.getApiInterface(context, userAccount.getInstanceUrl(), userAccount.getToken(), null)
 					.notifyGetList(false, Arrays.asList("unread"), null, new Date(userAccountParameters.get("previousTimestamp")), null,
 						null, 1);
 

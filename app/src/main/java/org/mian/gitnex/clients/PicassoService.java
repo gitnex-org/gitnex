@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.helpers.PicassoCache;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import java.io.File;
@@ -14,7 +15,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class PicassoService {
@@ -25,7 +26,7 @@ public class PicassoService {
 
 	private PicassoService(Context context) {
 
-		cachePath = new File(context.getCacheDir() + "/picasso_cache/");
+		cachePath = ((BaseActivity) context).getAccount().getPicassoCacheDir(context);
 		Picasso.Builder builder = new Picasso.Builder(context);
 
 		try {

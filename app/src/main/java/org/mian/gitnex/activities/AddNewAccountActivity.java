@@ -130,7 +130,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 	private void versionCheck(final String instanceUrl, final String loginToken) {
 
-		Call<ServerVersion> callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken).getVersion();
+		Call<ServerVersion> callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null).getVersion();
 		callVersion.enqueue(new Callback<>() {
 
 			@Override
@@ -227,7 +227,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 	private void setupNewAccountWithToken(String instanceUrl, final String loginToken) {
 
-		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken).userGetCurrent();
+		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null).userGetCurrent();
 
 		call.enqueue(new Callback<>() {
 
