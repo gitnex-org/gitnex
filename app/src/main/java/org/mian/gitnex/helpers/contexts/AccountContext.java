@@ -5,6 +5,7 @@ import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.Version;
+import java.io.File;
 import java.io.Serializable;
 import java.util.Objects;
 import okhttp3.Credentials;
@@ -69,6 +70,18 @@ public class AccountContext implements Serializable {
 	public String getFullName() {
 		return userInfo != null ? !userInfo.getFullName().equals("") ?
 			userInfo.getFullName() : userInfo.getLogin() : account.getUserName();
+	}
+
+	public File getCacheDir(Context context) {
+
+		assert account.getAccountName() != null;
+		return new File(context.getCacheDir() + "responses", account.getAccountName());
+	}
+
+	public File getPicassoCacheDir(Context context) {
+
+		assert account.getAccountName() != null;
+		return new File(context.getCacheDir() + "/picasso_cache/", account.getAccountName());
 	}
 
 }
