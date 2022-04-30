@@ -1,11 +1,12 @@
 package org.mian.gitnex.helpers;
 
+import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * Author M M Arif
- * Author 6543
+ * @author M M Arif
+ * @author 6543
  */
 
 public class FileDiffView implements Serializable {
@@ -137,12 +138,17 @@ public class FileDiffView implements Serializable {
 		return fileInfo;
 	}
 
+	@NonNull
+	@Override
 	public String toString() {
 
 		StringBuilder raw = new StringBuilder();
 		if(this.contents != null) {
 			for(Content c : this.contents) {
 				raw.append(c.getRaw());
+				if(!c.getRaw().endsWith("\n")) {
+					raw.append("\n");
+				}
 			}
 		}
 		return raw.toString();

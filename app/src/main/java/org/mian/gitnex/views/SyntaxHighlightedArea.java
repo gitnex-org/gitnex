@@ -107,15 +107,7 @@ public class SyntaxHighlightedArea extends LinearLayout {
 						.create(new Prism4j(mainGrammarLocator), prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE)
 						.highlight(mainGrammarLocator.fromExtension(extension), source);
 
-					getActivity().runOnUiThread(() -> {
-						if(highlightedSource.charAt(highlightedSource.length() - 1) == '\n') {
-							// Removes a line break which is probably added by Prism4j but not actually present in the source.
-							// This line should be altered in case this gets fixed.
-							sourceView.setText(highlightedSource.subSequence(0, highlightedSource.length() - 1));
-						} else {
-							sourceView.setText(highlightedSource);
-						}
-					});
+					getActivity().runOnUiThread(() -> sourceView.setText(highlightedSource));
 
 				} catch(Throwable ignored) {
 					// Fall back to plaintext if something fails

@@ -338,18 +338,15 @@ public class AppUtil {
 
 	public static long getLineCount(String s) {
 
-		long lines = 0;
+		if(s.length() < 1) return 0;
+
+		long lines = 1; // we start counting at 1 because there is always at least one line
 
 		Pattern pattern = Pattern.compile("(\r\n|\n)");
 		Matcher matcher = pattern.matcher(s);
 
 		while(matcher.find())
 			lines++;
-
-		// Sometimes there may be text, but no line breaks.
-		// This should still count as one line.
-		if(s.length() > 0 && lines == 0)
-			return 1;
 
 		return lines;
 
