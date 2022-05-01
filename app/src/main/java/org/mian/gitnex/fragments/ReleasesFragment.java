@@ -41,6 +41,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Objects;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
@@ -128,7 +129,7 @@ public class ReleasesFragment extends Fragment {
 
         releasesModel.getReleasesList(owner, repo, getContext()).observe(getViewLifecycleOwner(), releasesListMain -> {
 	        if(!repository.isReleasesViewTypeIsTag()) {
-		        adapter = new ReleasesAdapter(getContext(), releasesListMain, this::requestFileDownload);
+		        adapter = new ReleasesAdapter(getContext(), releasesListMain, this::requestFileDownload, repository.getOwner(), repository.getName(), fragmentReleasesBinding);
 		        adapter.setLoadMoreListener(new ReleasesAdapter.OnLoadMoreListener() {
 
 			        @Override
@@ -165,7 +166,7 @@ public class ReleasesFragment extends Fragment {
 
 	    releasesModel.getTagsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), tagList -> {
 		    if(repository.isReleasesViewTypeIsTag()) {
-			    tagsAdapter = new TagsAdapter(getContext(), tagList, owner, repo, this::requestFileDownload);
+			    tagsAdapter = new TagsAdapter(getContext(), tagList, owner, repo, this::requestFileDownload, fragmentReleasesBinding);
 			    tagsAdapter.setLoadMoreListener(new TagsAdapter.OnLoadMoreListener() {
 
 				    @Override
@@ -270,7 +271,7 @@ public class ReleasesFragment extends Fragment {
 
 						OutputStream outputStream = requireContext().getContentResolver().openOutputStream(result.getData().getData());
 
-						AppUtil.copyProgress(response.body().byteStream(), outputStream, 0, p -> {});
+						AppUtil.copyProgress(Objects.requireNonNull(response.body()).byteStream(), outputStream, 0, p -> {});
 						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFinished))
 							.setContentText(getString(R.string.fileViewerNotificationDescriptionFinished,
 								Uri.parse(currentDownloadUrl).getLastPathSegment())).setOngoing(false);

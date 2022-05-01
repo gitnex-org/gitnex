@@ -69,7 +69,7 @@ import retrofit2.Callback;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetListener {
 
 	public static boolean refActivity = false;
-	public static boolean repoCreated = false;
+	public static boolean reloadRepos = false;
 
 	private DrawerLayout drawer;
 	private TextView toolbarTitle;

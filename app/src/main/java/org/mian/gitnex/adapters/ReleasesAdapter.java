@@ -10,21 +10,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentReleasesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.FragmentRefreshListener;
 import java.util.List;
 import java.util.Locale;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
@@ -34,12 +44,15 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
     private List<Release> releasesList;
     private final Context context;
+	private final String repoOwner;
+	private final String repoName;
 
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final FragmentRefreshListener startDownload;
+	private final FragmentReleasesBinding fragmentReleasesBinding;
 
-	static class ReleasesViewHolder extends RecyclerView.ViewHolder {
+	protected class ReleasesViewHolder extends RecyclerView.ViewHolder {
 
 		private Release releases;
 
@@ -56,6 +69,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	    private final LinearLayout releaseTarDownloadFrame;
 	    private final ImageView downloadDropdownIcon;
 	    private final RecyclerView downloadList;
+		private final ImageView optionsMenu;
 
         private ReleasesViewHolder(View itemView) {
 
@@ -75,6 +89,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	        releaseTarDownloadFrame = itemView.findViewById(R.id.releaseTarDownloadFrame);
 	        downloadDropdownIcon = itemView.findViewById(R.id.downloadDropdownIcon);
 	        downloadList = itemView.findViewById(R.id.downloadList);
+	        optionsMenu = itemView.findViewById(R.id.releasesOptionsMenu);
 
 	        downloadList.setHasFixedSize(true);
 	        downloadList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
@@ -86,13 +101,34 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		        intent.putExtra("username", releases.getAuthor().getLogin());
 		        context.startActivity(intent);
 	        });
+
+	        optionsMenu.setOnClickListener(v -> {
+		        final Context context = v.getContext();
+
+		        @SuppressLint("InflateParams")
+		        View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_release_in_list, null);
+
+		        TextView deleteRelease = view.findViewById(R.id.deleteRelease);
+
+		        BottomSheetDialog dialog = new BottomSheetDialog(context);
+		        dialog.setContentView(view);
+		        dialog.show();
+
+		        deleteRelease.setOnClickListener(v1 -> {
+			        deleteRelease(context, releases.getName(), releases.getId(), repoOwner, repoName, getBindingAdapterPosition());
+			        dialog.dismiss();
+		        });
+	        });
         }
     }
 
-    public ReleasesAdapter(Context ctx, List<Release> releasesMain, FragmentRefreshListener startDownload) {
+    public ReleasesAdapter(Context ctx, List<Release> releasesMain, FragmentRefreshListener startDownload, String repoOwner, String repoName, FragmentReleasesBinding fragmentReleasesBinding) {
         this.context = ctx;
         this.releasesList = releasesMain;
 	    this.startDownload = startDownload;
+	    this.repoOwner = repoOwner;
+	    this.repoName = repoName;
+	    this.fragmentReleasesBinding = fragmentReleasesBinding;
     }
 
     @NonNull
@@ -178,6 +214,10 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		    isLoading = true;
 		    loadMoreListener.onLoadMore();
 	    }
+
+	    if(!((RepoDetailActivity) context).repository.getPermissions().isPush()) {
+		    holder.optionsMenu.setVisibility(View.GONE);
+	    }
     }
 
     @Override
@@ -212,5 +252,48 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	public void updateList(List<Release> list) {
 		releasesList = list;
 		notifyDataChanged();
+	}
+
+	private void updateAdapter(int position) {
+		releasesList.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, releasesList.size());
+	}
+
+	private void deleteRelease(final Context context, final String releaseName, final Long releaseId, final String owner, final String repo, int position) {
+
+		new AlertDialog.Builder(context)
+			.setTitle(String.format(context.getString(R.string.deleteGenericTitle), releaseName))
+			.setMessage(R.string.deleteReleaseConfirmation)
+			.setIcon(R.drawable.ic_delete)
+			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
+				.getApiInterface(context).repoDeleteRelease(owner, repo, releaseId).enqueue(new Callback<>() {
+
+					@Override
+					public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+
+						if(response.isSuccessful()) {
+							updateAdapter(position);
+							Toasty.success(context, context.getString(R.string.releaseDeleted));
+							MainActivity.reloadRepos = true;
+							if(getItemCount() == 0) {
+								fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
+							}
+						}
+						else if(response.code() == 403) {
+							Toasty.error(context, context.getString(R.string.authorizeError));
+						}
+						else {
+							Toasty.error(context, context.getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+						Toasty.error(context, context.getString(R.string.genericError));
+					}
+				}))
+			.setNeutralButton(R.string.cancelButton, null).show();
 	}
 }

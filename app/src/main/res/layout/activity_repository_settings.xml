@@ -85,7 +85,6 @@
                 android:orientation="vertical"
                 android:focusable="true"
                 android:clickable="true"
-                android:visibility="gone"
                 tools:visibility="visible">
 
                 <TextView
@@ -122,6 +121,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/deleteRepositoryFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"

@@ -15,11 +15,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/usersProfileHeadFrame"
+                android:id="@+id/releasesListHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -30,14 +30,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/pageTitleUsers"
+                    android:text="@string/release"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
 
             </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/usersProfileSection"
+                android:id="@+id/releasesListSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:flexWrap="wrap"
@@ -46,31 +46,17 @@
                 app:alignContent="stretch" >
 
                 <TextView
-                    android:id="@+id/followUser"
+                    android:id="@+id/deleteRelease"
                     android:layout_width="98dp"
                     android:layout_height="100dp"
                     android:padding="8dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
                     app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_person_add"
-                    android:text="@string/userFollow"
+                    app:drawableTopCompat="@drawable/ic_delete"
+                    android:text="@string/menuDeleteText"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/unfollowUser"
-                    android:layout_width="98dp"
-                    android:layout_height="100dp"
-                    android:padding="8dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_person_remove"
-                    android:text="@string/unfollowUser"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:visibility="gone" />
 
             </com.google.android.flexbox.FlexboxLayout>
 

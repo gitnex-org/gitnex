@@ -23,11 +23,12 @@ import org.mian.gitnex.databinding.CustomRepositoryEditPropertiesDialogBinding;
 import org.mian.gitnex.databinding.CustomRepositoryTransferDialogBinding;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepositorySettingsActivity extends BaseActivity {
@@ -58,15 +59,9 @@ public class RepositorySettingsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		// require gitea 1.12 or higher
-		if(getAccount().requiresVersion("1.12.0")) {
-
-			viewBinding.transferOwnerFrame.setVisibility(View.VISIBLE);
-		}
-
 		viewBinding.editProperties.setOnClickListener(editProperties -> showRepositoryProperties());
 
-		viewBinding.deleteRepository.setOnClickListener(deleteRepository -> showDeleteRepository());
+		viewBinding.deleteRepositoryFrame.setOnClickListener(deleteRepository -> showDeleteRepository());
 
 		viewBinding.transferOwnerFrame.setOnClickListener(transferRepositoryOwnership -> showTransferRepository());
 	}
@@ -133,7 +128,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
 
 					finish();
-					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository(repository.getRepositoryId());
+					Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -214,7 +209,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
 
 					finish();
-					BaseApi.getInstance(ctx, RepositoriesApi.class).deleteRepository(repository.getRepositoryId());
+					Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
 				}
@@ -346,7 +341,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 					repository.setRepository(response.body());
 
 					if(!repository.getName().equals(repoName)) {
-						BaseApi.getInstance(ctx, RepositoriesApi.class).updateRepositoryOwnerAndName(repository.getOwner(), repoName, repository.getRepositoryId());
+						Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class))
+							.updateRepositoryOwnerAndName(repository.getOwner(), repoName, repository.getRepositoryId());
 						Intent result = new Intent();
 						result.putExtra("nameChanged", true);
 						setResult(200, result);

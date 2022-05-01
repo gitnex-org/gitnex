@@ -59,6 +59,9 @@ public class RepositoriesFragment extends Fragment {
 		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(requireContext(), R.drawable.shape_list_divider));
 		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
+		fragmentRepositoriesBinding.recyclerView.setPadding(0, 0, 0, 200);
+		fragmentRepositoriesBinding.recyclerView.setClipToPadding(false);
+
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			page = 1;
@@ -112,10 +115,10 @@ public class RepositoriesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(MainActivity.repoCreated) {
+        if(MainActivity.reloadRepos) {
 			page = 1;
             fetchDataAsync();
-	        MainActivity.repoCreated = false;
+	        MainActivity.reloadRepos = false;
         }
     }
 

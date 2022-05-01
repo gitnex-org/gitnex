@@ -252,10 +252,10 @@ public class ExploreRepositoriesFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 
-		if(MainActivity.repoCreated) {
+		if(MainActivity.reloadRepos) {
 			dataList.clear();
 			loadInitial(searchQuery, resultLimit);
-			MainActivity.repoCreated = false;
+			MainActivity.reloadRepos = false;
 		}
 
 	}

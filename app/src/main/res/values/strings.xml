@@ -270,7 +270,6 @@
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="deleteLabelTitle">Delete %s</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
 
     <!-- org tabbed layout str -->
@@ -404,6 +403,8 @@
     <string name="tagNameErrorEmpty">Tag name is empty</string>
     <string name="titleErrorEmpty">Title is empty</string>
     <string name="releaseCreatedText">New release created</string>
+    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
+    <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
 
     <string name="loginOTPTypeError">OTP code should be numbers</string>
@@ -469,7 +470,7 @@
     <string name="menuEditText">Edit</string>
     <string name="menuDeleteText">Delete</string>
     <string name="menuCopyText">Copy</string>
-    <string name="menuQuoteText">Quote and Reply</string>
+    <string name="menuQuoteText">Quote Reply</string>
     <string name="colorfulBulletSpan" translatable="false">\u0020\u0020\u0020\u25CF\u0020\u0020\u0020</string>
     <string name="modifiedText">edited</string>
     <string name="saveButton">Save</string>
@@ -506,6 +507,7 @@
     <string name="download">Download</string>
     <string name="reopen">Reopen</string>
     <string name="openInBrowser">Open in Browser</string>
+    <string name="deleteGenericTitle">Delete %s</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -561,7 +563,6 @@
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
-    <string name="deleteFileText">Delete %1$s</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">Edit %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
@@ -750,7 +751,7 @@
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="deleteTagTitle">Delete tag %s</string>
+
     <string name="tagDeleted">Tag deleted</string>
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>

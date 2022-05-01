@@ -16,6 +16,7 @@ import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentReleasesBinding;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.FragmentRefreshListener;
@@ -35,11 +36,11 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
     private final String repo;
     private final String owner;
 	private final FragmentRefreshListener startDownload;
-
+	private final FragmentReleasesBinding fragmentReleasesBinding;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	class TagsViewHolder extends RecyclerView.ViewHolder {
+	protected class TagsViewHolder extends RecyclerView.ViewHolder {
 
 		private Tag tagsHolder;
         private final TextView tagName;
@@ -84,12 +85,13 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
         }
     }
 
-    public TagsAdapter(Context ctx, List<Tag> releasesMain, String repoOwner, String repoName, FragmentRefreshListener startDownload) {
+    public TagsAdapter(Context ctx, List<Tag> releasesMain, String repoOwner, String repoName, FragmentRefreshListener startDownload, FragmentReleasesBinding fragmentReleasesBinding) {
         this.context = ctx;
         this.tags = releasesMain;
         owner = repoOwner;
         repo = repoName;
 		this.startDownload = startDownload;
+		this.fragmentReleasesBinding = fragmentReleasesBinding;
     }
 
     @NonNull
@@ -180,10 +182,10 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 		notifyItemRangeChanged(position, tags.size());
 	}
 
-	public void tagDeleteDialog(final Context context, final String tagName, final String owner, final String repo, int position) {
+	private void tagDeleteDialog(final Context context, final String tagName, final String owner, final String repo, int position) {
 
 		new AlertDialog.Builder(context)
-			.setTitle(String.format(context.getString(R.string.deleteTagTitle), tagName))
+			.setTitle(String.format(context.getString(R.string.deleteGenericTitle), tagName))
 			.setMessage(R.string.deleteTagConfirmation)
 			.setIcon(R.drawable.ic_delete)
 			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
@@ -195,6 +197,9 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 						if(response.isSuccessful()) {
 							updateAdapter(position);
 							Toasty.success(context, context.getString(R.string.tagDeleted));
+							if(getItemCount() == 0) {
+								fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
+							}
 						}
 						else if(response.code() == 403) {
 							Toasty.error(context, context.getString(R.string.authorizeError));
