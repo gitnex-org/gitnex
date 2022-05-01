@@ -183,7 +183,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 	public void tagDeleteDialog(final Context context, final String tagName, final String owner, final String repo, int position) {
 
 		new AlertDialog.Builder(context)
-			.setTitle(String.format(context.getString(R.string.deleteTagTitle), tagName))
+			.setTitle(String.format(context.getString(R.string.deleteGenericTitle), tagName))
 			.setMessage(R.string.deleteTagConfirmation)
 			.setIcon(R.drawable.ic_delete)
 			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient

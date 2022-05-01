@@ -91,7 +91,7 @@ public class CreateFileActivity extends BaseActivity {
 		    filePath = getIntent().getStringExtra("filePath");
 		    fileSha = getIntent().getStringExtra("fileSha");
 
-		    toolbarTitle.setText(getString(R.string.deleteFileText, filePath));
+		    toolbarTitle.setText(getString(R.string.deleteGenericTitle, filePath));
 
 		    binding.newFileCreate.setText(R.string.deleteFile);
 

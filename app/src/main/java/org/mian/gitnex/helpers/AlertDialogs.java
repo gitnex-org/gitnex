@@ -57,7 +57,7 @@ public class AlertDialogs {
 	    RepositoryContext repository) {
 
         new AlertDialog.Builder(context)
-            .setTitle(context.getString(R.string.deleteLabelTitle, labelTitle))
+            .setTitle(context.getString(R.string.deleteGenericTitle, labelTitle))
             .setMessage(R.string.labelDeleteMessage)
             .setIcon(R.drawable.ic_delete)
             .setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> {
