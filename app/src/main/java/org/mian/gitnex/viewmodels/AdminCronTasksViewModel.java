@@ -46,9 +46,7 @@ public class AdminCronTasksViewModel extends ViewModel {
 					tasksList.postValue(response.body());
 				}
 				else if(response.code() == 401) {
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-						ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.cancelButton),
-						ctx.getResources().getString(R.string.navLogout));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
 				}
 				else if(response.code() == 403) {
 					Toasty.error(ctx, ctx.getString(R.string.authorizeError));

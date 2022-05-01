@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.TeamActions;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -62,21 +64,8 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 			addMemberButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
 			addMemberButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
 
-			addMemberButtonAdd.setOnClickListener(v -> {
-				AlertDialogs.addMemberDialog(context, userInfo.getLogin(),
-						context.getResources().getString(R.string.addTeamMemberTitle),
-						context.getResources().getString(R.string.addTeamMemberMessage),
-						context.getResources().getString(R.string.addButton),
-						context.getResources().getString(R.string.cancelButton), Integer.parseInt(String.valueOf(teamId)));
-			});
-
-			addMemberButtonRemove.setOnClickListener(v -> {
-				AlertDialogs.removeMemberDialog(context, userInfo.getLogin(),
-						context.getResources().getString(R.string.removeTeamMemberTitle),
-						context.getResources().getString(R.string.removeTeamMemberMessage),
-						context.getResources().getString(R.string.removeButton),
-						context.getResources().getString(R.string.cancelButton), Integer.parseInt(String.valueOf(teamId)));
-			});
+			addMemberButtonAdd.setOnClickListener(v -> AlertDialogs.addMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
+			addMemberButtonRemove.setOnClickListener(v -> AlertDialogs.removeMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
 
 			userAvatar.setOnClickListener(loginId -> {
 				Intent intent = new Intent(context, ProfileActivity.class);

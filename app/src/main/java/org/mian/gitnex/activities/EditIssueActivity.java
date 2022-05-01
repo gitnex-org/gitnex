@@ -194,10 +194,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
                 else if(response.code() == 401) {
 
                     enableProcessButton();
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.cancelButton),
-                            getResources().getString(R.string.navLogout));
+                    AlertDialogs.authorizationTokenRevokedDialog(ctx);
                 }
                 else {
 
@@ -340,8 +337,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 		        }
 		        else if(response.code() == 401) {
 
-			        AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage),
-				        getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
+			        AlertDialogs.authorizationTokenRevokedDialog(ctx);
 		        }
 		        else {
 

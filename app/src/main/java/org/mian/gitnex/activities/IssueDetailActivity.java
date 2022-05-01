@@ -332,10 +332,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				}
 				else if(response2.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-						getResources().getString(R.string.alertDialogTokenRevokedMessage),
-						getResources().getString(R.string.cancelButton),
-						getResources().getString(R.string.navLogout));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
 				}
 				else if(response2.code() == 403) {
 
@@ -393,9 +390,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				}
 				else if(response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-						getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
-						getResources().getString(R.string.navLogout));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
 				}
 				else if(response.code() == 403) {
 
@@ -461,7 +456,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			TextView baseBranch = view.findViewById(R.id.baseBranch);
 			TextView headBranch = view.findViewById(R.id.headBranch);
 
-			baseBranch.setText(issue.getPullRequest().getHead().getRef());
+			baseBranch.setText(issue.getPullRequest().getBase().getRef());
 			headBranch.setText(issue.getPullRequest().getHead().getRef());
 
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
@@ -573,9 +568,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				}
 				else if(response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-						getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
-						getResources().getString(R.string.navLogout));
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
 
 				}
 				else if(response.code() == 404) {

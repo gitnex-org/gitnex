@@ -262,10 +262,7 @@ public class RepoInfoFragment extends Fragment {
 							break;
 
 						case 401:
-							AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-								getResources().getString(R.string.alertDialogTokenRevokedMessage),
-								getResources().getString(R.string.cancelButton),
-								getResources().getString(R.string.navLogout));
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 							break;
 
 						case 403:

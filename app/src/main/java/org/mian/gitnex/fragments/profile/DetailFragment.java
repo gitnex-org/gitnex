@@ -136,7 +136,7 @@ public class DetailFragment extends Fragment {
 
 						case 401:
 							AlertDialogs
-								.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle), context.getResources().getString(R.string.alertDialogTokenRevokedMessage), context.getResources().getString(R.string.cancelButton), context.getResources().getString(R.string.navLogout));
+								.authorizationTokenRevokedDialog(context);
 							break;
 
 						case 403:

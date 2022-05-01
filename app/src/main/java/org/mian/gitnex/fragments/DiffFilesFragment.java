@@ -94,11 +94,7 @@ public class DiffFilesFragment extends Fragment {
 						break;
 
 					case 401:
-						requireActivity().runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx,
-							getString(R.string.alertDialogTokenRevokedTitle),
-							getString(R.string.alertDialogTokenRevokedMessage),
-							getString(R.string.cancelButton),
-							getString(R.string.cancelButton)));
+						requireActivity().runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx));
 						break;
 
 					case 403:

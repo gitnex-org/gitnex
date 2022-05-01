@@ -324,10 +324,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
                 }
                 else if(response2.code() == 401) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-                            getResources().getString(R.string.alertDialogTokenRevokedMessage),
-                            getResources().getString(R.string.cancelButton),
-                            getResources().getString(R.string.navLogout));
+                    AlertDialogs.authorizationTokenRevokedDialog(ctx);
                 }
                 else {
 

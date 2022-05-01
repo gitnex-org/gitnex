@@ -40,9 +40,7 @@ public class CollaboratorActions {
 		        }
 		        else if(response.code() == 401) {
 
-			        AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-				        context.getResources().getString(R.string.alertDialogTokenRevokedMessage), context.getResources().getString(R.string.cancelButton),
-				        context.getResources().getString(R.string.navLogout));
+			        AlertDialogs.authorizationTokenRevokedDialog(context);
 		        }
 		        else if(response.code() == 403) {
 
@@ -91,9 +89,7 @@ public class CollaboratorActions {
 		        }
 		        else if(response.code() == 401) {
 
-			        AlertDialogs.authorizationTokenRevokedDialog(context, context.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-				        context.getResources().getString(R.string.alertDialogTokenRevokedMessage), context.getResources().getString(R.string.cancelButton),
-				        context.getResources().getString(R.string.navLogout));
+			        AlertDialogs.authorizationTokenRevokedDialog(context);
 		        }
 		        else if(response.code() == 403) {
 

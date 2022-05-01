@@ -103,8 +103,7 @@ public class CommitDetailFragment extends Fragment {
 						break;
 
 					case 401:
-						requireActivity().runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(requireContext(), getString(R.string.alertDialogTokenRevokedTitle),
-							getString(R.string.alertDialogTokenRevokedMessage), getString(R.string.cancelButton), getString(R.string.cancelButton)));
+						requireActivity().runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(requireContext()));
 						break;
 
 					case 403:

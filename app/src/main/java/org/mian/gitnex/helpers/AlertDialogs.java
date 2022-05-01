@@ -20,40 +20,18 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 public class AlertDialogs {
 
-    public static void authorizationTokenRevokedDialog(final Context context, String title, String message, String copyNegativeButton, String copyPositiveButton) {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
-	        .setTitle(title)
-            .setMessage(message)
+    public static void authorizationTokenRevokedDialog(final Context context) {
+		new AlertDialog.Builder(context)
+	        .setTitle(R.string.alertDialogTokenRevokedTitle)
+            .setMessage(R.string.alertDialogTokenRevokedMessage)
             .setCancelable(true)
             .setIcon(R.drawable.ic_warning)
-            .setNeutralButton(copyNegativeButton, (dialog, which) -> dialog.dismiss())
-            .setPositiveButton(copyPositiveButton, (dialog, which) -> {
-                AppUtil.logout(context);
-                dialog.dismiss();
-            });
-
-        alertDialogBuilder.create().show();
-
+            .setNeutralButton(R.string.cancelButton, null)
+            .setPositiveButton(R.string.navLogout, (dialog, which) -> AppUtil.logout(context))
+	        .show();
     }
 
-    public static void forceLogoutDialog(final Context context, String title, String message, String copyPositiveButton) {
-
-	    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
-		    .setTitle(title)
-		    .setMessage(message)
-		    .setCancelable(false)
-		    .setIcon(R.drawable.ic_info)
-		    .setPositiveButton(copyPositiveButton, (dialog, which) -> {
-		    	AppUtil.logout(context);
-			    dialog.dismiss();
-
-		    });
-
-	    alertDialogBuilder.create().show();
-    }
-
-    public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String type, String orgName,
+	public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String type, String orgName,
 	    RepositoryContext repository) {
 
         new AlertDialog.Builder(context)
@@ -85,30 +63,30 @@ public class AlertDialogs {
 
     }
 
-    public static void addMemberDialog(final Context context, final String userNameMain, String title, String message, String positiveButton, String negativeButton, int teamId) {
+    public static void addMemberDialog(final Context context, final String userNameMain, int teamId) {
 
         new AlertDialog.Builder(context)
-                .setTitle(title + userNameMain)
-                .setMessage(message)
-                .setPositiveButton(positiveButton, (dialog, whichButton) -> TeamActions.addTeamMember(context, userNameMain, teamId))
-                .setNeutralButton(negativeButton, null).show();
+                .setTitle(context.getResources().getString(R.string.addTeamMember, userNameMain))
+                .setMessage(R.string.addTeamMemberMessage)
+                .setPositiveButton(R.string.addButton, (dialog, whichButton) -> TeamActions.addTeamMember(context, userNameMain, teamId))
+                .setNeutralButton(R.string.cancelButton, null).show();
 
     }
 
-    public static void removeMemberDialog(final Context context, final String userNameMain, String title, String message, String positiveButton, String negativeButton, int teamId) {
+    public static void removeMemberDialog(final Context context, final String userNameMain, int teamId) {
 
         new AlertDialog.Builder(context)
-                .setTitle(title + userNameMain)
-                .setMessage(message)
-                .setPositiveButton(positiveButton, (dialog, whichButton) -> TeamActions.removeTeamMember(context, userNameMain, teamId))
-                .setNeutralButton(negativeButton, null).show();
+                .setTitle(context.getResources().getString(R.string.removeTeamMember, userNameMain))
+                .setMessage(R.string.removeTeamMemberMessage)
+                .setPositiveButton(R.string.removeButton, (dialog, whichButton) -> TeamActions.removeTeamMember(context, userNameMain, teamId))
+                .setNeutralButton(R.string.cancelButton, null).show();
 
     }
 
 	public static void addRepoDialog(final Context context, final String orgName, String repo, int teamId, String teamName) {
 
 		new AlertDialog.Builder(context)
-			.setTitle(context.getResources().getString(R.string.addTeamMemberTitle) + repo)
+			.setTitle(context.getResources().getString(R.string.addTeamMember) + repo)
 			.setMessage(context.getResources().getString(R.string.repoAddToTeamMessage, repo, orgName, teamName))
 			.setPositiveButton(context.getResources().getString(R.string.addButton), (dialog, whichButton) -> TeamActions.addTeamRepo(context, orgName, teamId, repo))
 			.setNeutralButton(context.getResources().getString(R.string.cancelButton), null).show();
@@ -118,7 +96,7 @@ public class AlertDialogs {
 	public static void removeRepoDialog(final Context context, final String orgName, String repo, int teamId, String teamName) {
 
 		new AlertDialog.Builder(context)
-			.setTitle(context.getResources().getString(R.string.removeTeamMemberTitle) + repo)
+			.setTitle(context.getResources().getString(R.string.removeTeamMember) + repo)
 			.setMessage(context.getResources().getString(R.string.repoRemoveTeamMessage, repo, teamName))
 			.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, whichButton) -> TeamActions.removeTeamRepo(context, orgName, teamId, repo))
 			.setNeutralButton(context.getResources().getString(R.string.cancelButton), null).show();

@@ -134,9 +134,7 @@ public class RepositoriesFragment extends Fragment {
 							break;
 
 						case 401:
-							AlertDialogs.authorizationTokenRevokedDialog(context, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-								getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
-								getResources().getString(R.string.navLogout));
+							AlertDialogs.authorizationTokenRevokedDialog(context);
 							break;
 
 						case 403:
@@ -192,9 +190,7 @@ public class RepositoriesFragment extends Fragment {
 							break;
 
 						case 401:
-							AlertDialogs.authorizationTokenRevokedDialog(context, getResources().getString(R.string.alertDialogTokenRevokedTitle),
-								getResources().getString(R.string.alertDialogTokenRevokedMessage), getResources().getString(R.string.cancelButton),
-								getResources().getString(R.string.navLogout));
+							AlertDialogs.authorizationTokenRevokedDialog(context);
 							break;
 
 						case 403:

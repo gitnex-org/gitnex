@@ -160,10 +160,7 @@ public class CreateReleaseActivity extends BaseActivity {
 			    }
 			    else if(response.code() == 401) {
 				    enableProcessButton();
-				    AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-					    ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage),
-					    ctx.getResources().getString(R.string.cancelButton),
-					    ctx.getResources().getString(R.string.navLogout));
+				    AlertDialogs.authorizationTokenRevokedDialog(ctx);
 			    }
 			    else if(response.code() == 403) {
 				    enableProcessButton();
@@ -259,9 +256,7 @@ public class CreateReleaseActivity extends BaseActivity {
 		        else if(response.code() == 401) {
 
 			        enableProcessButton();
-			        AlertDialogs.authorizationTokenRevokedDialog(ctx, ctx.getResources().getString(R.string.alertDialogTokenRevokedTitle),
-				        ctx.getResources().getString(R.string.alertDialogTokenRevokedMessage), ctx.getResources().getString(R.string.cancelButton),
-				        ctx.getResources().getString(R.string.navLogout));
+			        AlertDialogs.authorizationTokenRevokedDialog(ctx);
 		        }
 		        else if(response.code() == 403) {
 
@@ -320,8 +315,7 @@ public class CreateReleaseActivity extends BaseActivity {
 		        }
 		        else if(response.code() == 401) {
 
-			        AlertDialogs.authorizationTokenRevokedDialog(ctx, getResources().getString(R.string.alertDialogTokenRevokedTitle), getResources().getString(R.string.alertDialogTokenRevokedMessage),
-				        getResources().getString(R.string.cancelButton), getResources().getString(R.string.navLogout));
+			        AlertDialogs.authorizationTokenRevokedDialog(ctx);
 		        }
 
 	        }

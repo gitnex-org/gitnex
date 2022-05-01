@@ -101,7 +101,7 @@
     <string name="orgCreated">Organization created successfully</string>
     <string name="orgExistsError">Organization already exists</string>
 
-    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
+    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
 
     <string name="processingText">Processing</string>
     <string name="search">Search</string>
@@ -140,9 +140,6 @@
 
     <string name="timeAtText">at</string>
     <string name="hash" translatable="false">#</string>
-    <string name="createdText">Opened\u0020</string>
-    <string name="issueCreator">Creator :\u0020</string>
-    <string name="issueCommenter">Commenter:\u0020</string>
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>
@@ -286,16 +283,16 @@
     <string name="teamShowAll">show all</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
-    <string name="removeTeamMemberTitle">Remove\u0020</string>
-    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="removeTeamMember">Remove %s</string>
+    <string name="addTeamMember">Add %s</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
     <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
     <string name="memberAddedMessage">Member added to the team successfully</string>
     <string name="memberRemovedMessage">Member removed from the team successfully</string>
     <string name="repoAddedMessage">Repository added to the team successfully</string>
     <string name="repoRemovedMessage">Repository removed from the team successfully</string>
-    <string name="repoAddToTeamMessage">Add repository %s to organization %s team %s</string>
-    <string name="repoRemoveTeamMessage">Remove repository %s from team %s</string>
+    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
+    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
     <!-- org tabbed layout str -->
 
     <!-- create team -->
@@ -572,8 +569,8 @@
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
     <string name="viewCommits">View Commits</string>
     <string name="changelogTitle" translatable="false">Changelog</string>
 

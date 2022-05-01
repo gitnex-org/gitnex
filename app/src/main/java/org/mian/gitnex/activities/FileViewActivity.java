@@ -187,11 +187,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 					switch(response.code()) {
 
 						case 401:
-							runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx,
-								getResources().getString(R.string.alertDialogTokenRevokedTitle),
-								getResources().getString(R.string.alertDialogTokenRevokedMessage),
-								getResources().getString(R.string.cancelButton),
-								getResources().getString(R.string.navLogout)));
+							runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx));
 							break;
 
 						case 403:
