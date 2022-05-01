@@ -126,7 +126,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 		if(repoAdded) {
 			page = 1;
 			fetchDataAsync();
-			MainActivity.repoCreated = false;
+			MainActivity.reloadRepos = false;
 		}
 	}
 

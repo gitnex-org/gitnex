@@ -21,6 +21,7 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentReleasesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
@@ -49,8 +50,9 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final FragmentRefreshListener startDownload;
+	private final FragmentReleasesBinding fragmentReleasesBinding;
 
-	class ReleasesViewHolder extends RecyclerView.ViewHolder {
+	protected class ReleasesViewHolder extends RecyclerView.ViewHolder {
 
 		private Release releases;
 
@@ -120,12 +122,13 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
         }
     }
 
-    public ReleasesAdapter(Context ctx, List<Release> releasesMain, FragmentRefreshListener startDownload, String repoOwner, String repoName) {
+    public ReleasesAdapter(Context ctx, List<Release> releasesMain, FragmentRefreshListener startDownload, String repoOwner, String repoName, FragmentReleasesBinding fragmentReleasesBinding) {
         this.context = ctx;
         this.releasesList = releasesMain;
 	    this.startDownload = startDownload;
 	    this.repoOwner = repoOwner;
 	    this.repoName = repoName;
+	    this.fragmentReleasesBinding = fragmentReleasesBinding;
     }
 
     @NonNull
@@ -272,7 +275,10 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 						if(response.isSuccessful()) {
 							updateAdapter(position);
 							Toasty.success(context, context.getString(R.string.releaseDeleted));
-							MainActivity.repoCreated = true;
+							MainActivity.reloadRepos = true;
+							if(getItemCount() == 0) {
+								fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
+							}
 						}
 						else if(response.code() == 403) {
 							Toasty.error(context, context.getString(R.string.authorizeError));

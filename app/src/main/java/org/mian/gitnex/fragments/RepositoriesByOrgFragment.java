@@ -126,9 +126,9 @@ public class RepositoriesByOrgFragment extends Fragment {
 
         super.onResume();
 
-        if(MainActivity.repoCreated) {
+        if(MainActivity.reloadRepos) {
 	        repositoriesViewModel.loadReposList(page, resultLimit, null, "org", orgName, getContext());
-	        MainActivity.repoCreated = false;
+	        MainActivity.reloadRepos = false;
         }
 
     }

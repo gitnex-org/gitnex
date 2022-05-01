@@ -256,7 +256,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 			        Toasty.success(ctx, getString(R.string.issueCreated));
 			        enableProcessButton();
 			        RepoDetailActivity.updateRepo = true;
-			        MainActivity.repoCreated = true;
+			        MainActivity.reloadRepos = true;
 			        finish();
 		        }
 		        else if(response2.code() == 401) {

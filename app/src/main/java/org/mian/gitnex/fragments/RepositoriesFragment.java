@@ -115,10 +115,10 @@ public class RepositoriesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(MainActivity.repoCreated) {
+        if(MainActivity.reloadRepos) {
 			page = 1;
             fetchDataAsync();
-	        MainActivity.repoCreated = false;
+	        MainActivity.reloadRepos = false;
         }
     }
 

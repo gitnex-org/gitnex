@@ -119,10 +119,10 @@ public class MyRepositoriesFragment extends Fragment {
         super.onResume();
         final String userLogin = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
-        if(MainActivity.repoCreated) {
+        if(MainActivity.reloadRepos) {
 			page = 1;
 			fetchDataAsync(userLogin);
-	        MainActivity.repoCreated = false;
+	        MainActivity.reloadRepos = false;
         }
 
     }

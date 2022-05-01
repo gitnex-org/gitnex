@@ -32,7 +32,7 @@ public class RepositoryActions {
 		        if(response.isSuccessful()) {
 			        if(response.code() == 204) {
 
-				        MainActivity.repoCreated = true;
+				        MainActivity.reloadRepos = true;
 				        Toasty.success(context, context.getString(R.string.starRepositorySuccess));
 			        }
 		        }
@@ -78,7 +78,7 @@ public class RepositoryActions {
 		        if(response.isSuccessful()) {
 			        if(response.code() == 204) {
 
-				        MainActivity.repoCreated = true;
+				        MainActivity.reloadRepos = true;
 				        Toasty.success(context, context.getString(R.string.unStarRepositorySuccess));
 			        }
 		        }

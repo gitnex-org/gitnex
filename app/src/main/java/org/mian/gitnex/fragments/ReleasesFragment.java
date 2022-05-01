@@ -129,7 +129,7 @@ public class ReleasesFragment extends Fragment {
 
         releasesModel.getReleasesList(owner, repo, getContext()).observe(getViewLifecycleOwner(), releasesListMain -> {
 	        if(!repository.isReleasesViewTypeIsTag()) {
-		        adapter = new ReleasesAdapter(getContext(), releasesListMain, this::requestFileDownload, repository.getOwner(), repository.getName());
+		        adapter = new ReleasesAdapter(getContext(), releasesListMain, this::requestFileDownload, repository.getOwner(), repository.getName(), fragmentReleasesBinding);
 		        adapter.setLoadMoreListener(new ReleasesAdapter.OnLoadMoreListener() {
 
 			        @Override
@@ -166,7 +166,7 @@ public class ReleasesFragment extends Fragment {
 
 	    releasesModel.getTagsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), tagList -> {
 		    if(repository.isReleasesViewTypeIsTag()) {
-			    tagsAdapter = new TagsAdapter(getContext(), tagList, owner, repo, this::requestFileDownload);
+			    tagsAdapter = new TagsAdapter(getContext(), tagList, owner, repo, this::requestFileDownload, fragmentReleasesBinding);
 			    tagsAdapter.setLoadMoreListener(new TagsAdapter.OnLoadMoreListener() {
 
 				    @Override

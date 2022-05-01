@@ -180,7 +180,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 					Toasty.success(ctx, getString(R.string.prCreateSuccess));
 					RepoDetailActivity.updateRepo = true;
 					PullRequestsFragment.resumePullRequests = true;
-					MainActivity.repoCreated = true;
+					MainActivity.reloadRepos = true;
 					finish();
 				}
 				else if(response.code() == 409 || response.message().equals("Conflict")) {
