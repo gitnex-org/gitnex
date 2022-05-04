@@ -80,7 +80,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		activitySettingsAppearanceBinding.darkThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, darkHour,
 			darkMinute));
 		activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[timeSelectedChoice]);
-		activitySettingsAppearanceBinding.customFontSelected.setText(tinyDB.getString("customFontStr", "Manrope"));
+		activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[customFontSelectedChoice]);
 		activitySettingsAppearanceBinding.themeSelected.setText(themeList[themeSelectedChoice]);
 
 		if(themeList[themeSelectedChoice].startsWith("Auto")) {
@@ -159,7 +159,6 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 				customFontSelectedChoice = i;
 				activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[i]);
-				tinyDB.putString("customFontStr", customFontList[i]);
 				tinyDB.putInt("customFontId", i);
 				AppUtil.typeface = null; // reset typeface
 				FontsOverride.setDefaultFont(this);
@@ -187,7 +186,6 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 				timeSelectedChoice = i;
 				activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[i]);
-				tinyDB.putString("timeStr", timeList[i]);
 				tinyDB.putInt("timeId", i);
 
 				switch(i) {

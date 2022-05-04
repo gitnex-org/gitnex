@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -229,6 +230,17 @@ public class RepoInfoFragment extends Fragment {
 				binding.repoIsArchived.setVisibility(View.GONE);
 			}
 
+			if(repoInfo.isFork()) {
+				binding.repoForkFrame.setVisibility(View.VISIBLE);
+				binding.repoForkFrame.setOnClickListener((v) -> {
+					Intent parent = new RepositoryContext(repoInfo.getParent(), requireContext()).getIntent(requireContext(), RepoDetailActivity.class);
+					startActivity(parent);
+				});
+				binding.repoFork.setText(getString(R.string.repoForkOf, repoInfo.getParent().getFullName()));
+			} else {
+				binding.repoForkFrame.setVisibility(View.GONE);
+			}
+
 			getFileContents(repository.getOwner(), repository.getName(), getResources().getString(R.string.defaultFilename), repoInfo.getDefaultBranch());
 
 			pageContent.setVisibility(View.VISIBLE);
@@ -242,12 +254,12 @@ public class RepoInfoFragment extends Fragment {
 				.getWebInterface(getContext())
 				.getFileContents(owner, repo, defBranch, filename);
 
-		call.enqueue(new Callback<ResponseBody>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
 
-				if (isAdded()) {
+				if(isAdded()) {
 
 					switch(response.code()) {
 
@@ -288,6 +300,7 @@ public class RepoInfoFragment extends Fragment {
 
 			@Override
 			public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
 				Log.e("onFailure", t.toString());
 			}
 
