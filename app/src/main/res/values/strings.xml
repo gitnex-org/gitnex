@@ -653,6 +653,7 @@
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <string name="notificationExtraInfo" translatable="false">- %s (%s)</string>
+    <string name="youHaveNewNotifications">You have %s notification(s).</string>
 
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>

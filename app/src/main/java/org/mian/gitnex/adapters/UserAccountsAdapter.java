@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
+import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewAccountActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
@@ -27,6 +30,8 @@ import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
 import java.util.Objects;
 import io.mikael.urlbuilder.UrlBuilder;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * @author M M Arif
@@ -118,6 +123,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 						.toString();
 
 					Toasty.success(context,  context.getResources().getString(R.string.switchAccountSuccess, userAccount.getUserName(), url));
+					getNotificationsCount();
 					((Activity) context).recreate();
 					dialog.dismiss();
 
@@ -140,6 +146,32 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, userAccountsList.size());
 		Toasty.success(context, context.getResources().getString(R.string.accountDeletedMessage));
+	}
+
+	private void getNotificationsCount() {
+
+		Call<NotificationCount> call = RetrofitClient.getApiInterface(context).notifyNewAvailable();
+
+		call.enqueue(new Callback<>() {
+
+			@Override
+			public void onResponse(@NonNull Call<NotificationCount> call, @NonNull retrofit2.Response<NotificationCount> response) {
+
+				NotificationCount notificationCount = response.body();
+
+				if(response.code() == 200) {
+
+					assert notificationCount != null;
+					if(notificationCount.getNew() > 0) {
+						new Handler().postDelayed(() -> Toasty.info(context, context.getString(R.string.youHaveNewNotifications, String.valueOf(notificationCount.getNew()))), 5000);
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<NotificationCount> call, @NonNull Throwable t) {
+			}
+		});
 	}
 
 	@NonNull
