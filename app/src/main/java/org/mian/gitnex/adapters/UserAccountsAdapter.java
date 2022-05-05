@@ -163,7 +163,8 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 
 					assert notificationCount != null;
 					if(notificationCount.getNew() > 0) {
-						new Handler().postDelayed(() -> Toasty.info(context, context.getString(R.string.youHaveNewNotifications, String.valueOf(notificationCount.getNew()))), 5000);
+						String toastMsg = context.getResources().getQuantityString(R.plurals.youHaveNewNotifications, Math.toIntExact(notificationCount.getNew()), Math.toIntExact(notificationCount.getNew()));
+						new Handler().postDelayed(() -> Toasty.info(context, toastMsg), 5000);
 					}
 				}
 			}
