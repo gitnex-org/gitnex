@@ -762,6 +762,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		if(issue.getIssue().getDueDate() != null) {
 
+			viewBinding.dueDateFrame.setVisibility(View.VISIBLE);
 			if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
 
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);

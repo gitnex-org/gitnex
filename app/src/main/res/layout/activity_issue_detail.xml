@@ -127,6 +127,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="end|center_vertical"
                                 android:orientation="horizontal"
+                                android:visibility="gone"
                                 tools:ignore="UseCompoundDrawables">
 
                                 <ImageView
@@ -152,6 +153,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="end|center_vertical"
                                 android:orientation="horizontal"
+                                android:visibility="gone"
                                 tools:ignore="UseCompoundDrawables">
 
                                 <ImageView

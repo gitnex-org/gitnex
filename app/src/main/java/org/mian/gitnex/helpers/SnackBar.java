@@ -7,7 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 import org.mian.gitnex.R;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class SnackBar {
@@ -16,7 +16,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		textView.setTextColor(context.getResources().getColor(R.color.colorWhite));
+		textView.setTextColor(context.getColor(R.color.colorWhite));
 		snackBar.show();
 	}
 
@@ -24,7 +24,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		textView.setTextColor(context.getResources().getColor(R.color.colorLightGreen));
+		textView.setTextColor(context.getColor(R.color.colorLightGreen));
 		snackBar.show();
 	}
 
@@ -32,7 +32,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		textView.setTextColor(context.getResources().getColor(R.color.lightYellow));
+		textView.setTextColor(context.getColor(R.color.lightYellow));
 		snackBar.show();
 	}
 
@@ -40,7 +40,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		textView.setTextColor(context.getResources().getColor(R.color.darkRed));
+		textView.setTextColor(context.getColor(R.color.darkRed));
 		snackBar.show();
 	}
 }

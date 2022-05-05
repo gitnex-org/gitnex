@@ -25,12 +25,12 @@ import java.util.List;
 import io.mikael.urlbuilder.UrlBuilder;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNavAdapter.UserAccountsViewHolder> {
 
-	private static DrawerLayout drawer;
+	private final DrawerLayout drawer;
 	private final List<UserAccount> userAccountsList;
 	private final Context context;
 
@@ -38,7 +38,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 
 		this.context = ctx;
 		this.userAccountsList = userAccountsListMain;
-		drawer = drawerLayout;
+		this.drawer = drawerLayout;
 	}
 
 	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
@@ -55,9 +55,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 				customDialogUserAccountsList();
 				drawer.closeDrawers();
 			});
-
 		}
-
 	}
 
 	@NonNull
