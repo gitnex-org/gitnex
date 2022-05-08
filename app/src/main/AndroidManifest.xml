@@ -41,6 +41,9 @@
             android:name=".activities.AdminGetUsersActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
         <activity
+            android:name=".activities.AdminUnadoptedReposActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
+        <activity
             android:name=".activities.CreateReleaseActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
         <activity

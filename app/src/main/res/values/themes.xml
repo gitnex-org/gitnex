@@ -247,6 +247,7 @@
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@color/darkGreen</item>
+        <item name="android:layout_marginEnd">16dp</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -309,6 +310,7 @@
 
     <style name="RetroNegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@color/retroThemeTextColor</item>
+        <item name="android:layout_marginEnd">16dp</item>
     </style>
 
     <style name="RetroPositiveButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">

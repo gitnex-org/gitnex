@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.adapters.AdminCronTasksAdapter;
 import org.mian.gitnex.databinding.ActivityAdminCronTasksBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.AdminCronTasksViewModel;
 
 /**
@@ -25,8 +26,8 @@ public class AdminCronTasksActivity extends BaseActivity {
 
 	private ActivityAdminCronTasksBinding activityAdminCronTasksBinding;
 
-	public static final int PAGE = 1;
-	public static final int LIMIT = 50;
+	private final int PAGE = 1;
+	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class AdminCronTasksActivity extends BaseActivity {
 		setContentView(activityAdminCronTasksBinding.getRoot());
 		adminCronTasksViewModel = new ViewModelProvider(this).get(AdminCronTasksViewModel.class);
 
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		initCloseListener();
 		activityAdminCronTasksBinding.close.setOnClickListener(onClickListener);
 
@@ -52,8 +54,9 @@ public class AdminCronTasksActivity extends BaseActivity {
 
 		activityAdminCronTasksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
+			activityAdminCronTasksBinding.progressBar.setVisibility(View.VISIBLE);
 			activityAdminCronTasksBinding.pullToRefresh.setRefreshing(false);
-			adminCronTasksViewModel.loadCronTasksList(ctx, PAGE, LIMIT);
+			adminCronTasksViewModel.loadCronTasksList(ctx, PAGE, resultLimit);
 
 		}, 500));
 
@@ -62,26 +65,19 @@ public class AdminCronTasksActivity extends BaseActivity {
 
 	private void fetchDataAsync(Context ctx) {
 
-		AdminCronTasksViewModel cronTasksViewModel = new ViewModelProvider(this).get(AdminCronTasksViewModel.class);
-
-		cronTasksViewModel.getCronTasksList(ctx, PAGE, LIMIT).observe(this, cronTasksListMain -> {
+		adminCronTasksViewModel.getCronTasksList(ctx, PAGE, resultLimit).observe(this, cronTasksListMain -> {
 
 			adapter = new AdminCronTasksAdapter(cronTasksListMain);
 
 			if(adapter.getItemCount() > 0) {
-
-				activityAdminCronTasksBinding.recyclerView.setVisibility(View.VISIBLE);
 				activityAdminCronTasksBinding.recyclerView.setAdapter(adapter);
 				activityAdminCronTasksBinding.noData.setVisibility(View.GONE);
+				activityAdminCronTasksBinding.progressBar.setVisibility(View.GONE);
 			}
 			else {
-
-				activityAdminCronTasksBinding.recyclerView.setVisibility(View.GONE);
 				activityAdminCronTasksBinding.noData.setVisibility(View.VISIBLE);
 			}
-
 		});
-
 	}
 
 	private void initCloseListener() {

@@ -11,21 +11,51 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/adminUsers"
+            <LinearLayout
+                android:id="@+id/systemUsersFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/adminUsers"
-                android:drawablePadding="32dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="16dp"
                 android:background="?android:attr/selectableItemBackground"
-                app:drawableStartCompat="@drawable/ic_people" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_people" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/adminUsers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="@string/adminUsers"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_chevron_right"
+                    android:contentDescription="@string/generalImgContentText" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -33,19 +63,96 @@
                 android:id="@+id/divider"
                 android:background="?attr/dividerColor" />
 
-            <TextView
-                android:id="@+id/adminCron"
+            <LinearLayout
+                android:id="@+id/adminCronFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/adminCron"
-                android:drawablePadding="32dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                android:padding="16dp"
-                android:visibility="gone"
                 android:background="?android:attr/selectableItemBackground"
-                app:drawableStartCompat="@drawable/ic_tasks" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_tasks" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/adminCron"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="@string/adminCron"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_chevron_right"
+                    android:contentDescription="@string/generalImgContentText" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+
+            <LinearLayout
+                android:id="@+id/unadoptedReposFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_directory" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/unadoptedRepos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="@string/unadoptedRepos"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_chevron_right"
+                    android:contentDescription="@string/generalImgContentText" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

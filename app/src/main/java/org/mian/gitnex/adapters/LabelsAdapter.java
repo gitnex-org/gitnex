@@ -52,7 +52,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
             ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
 
             if((type.equals("repo") && !((RepoDetailActivity) itemView.getContext()).repository.getPermissions().isPush()) ||
-	            (type.equals("org") && !((OrganizationDetailActivity) itemView.getContext()).permissions.isIsOwner())) {
+	            (type.equals("org") && (((OrganizationDetailActivity) itemView.getContext()).permissions == null || !((OrganizationDetailActivity) itemView.getContext()).permissions.isIsOwner()))) {
 	            labelsOptionsMenu.setVisibility(View.GONE);
             }
             labelsOptionsMenu.setOnClickListener(v -> {

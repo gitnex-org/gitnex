@@ -762,4 +762,8 @@
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
     <string name="repoForkOf">Fork of: %s</string>
+    <string name="adoptRepo">Adopt</string>
+    <string name="repoAdopted">Adopted repository %s</string>
+    <string name="unadoptedRepos">Unadopted Repositories</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
 </resources>
