@@ -11,6 +11,7 @@
     <string name="navRate">Оцени GitNex</string>
     <string name="navLogout">Одјави ме</string>
     <string name="navAdministration">Administration</string>
+    <string name="navMyIssues">My Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Нови репозиторијум</string>
@@ -33,9 +34,7 @@
     <!-- page titles -->
     <string name="repoName">Демо репозиторијум</string>
     <string name="repoDescription">Демо опис</string>
-    <string name="noData">Ниједан репозиторијум није пронађен</string>
     <string name="orgName">Демо организација</string>
-    <string name="noDataOrg">Ниједна организација није пронађена</string>
     <string name="newCreateButtonCopy">Креирај</string>
     <string name="newUpdateButtonCopy">Ажурирај</string>
     <string name="newRepoTintCopy">Назив</string>
@@ -67,16 +66,14 @@
     <string name="repoNameErrorReservedPatterns">Назив репозиторијума садржи резервисане речи</string>
     <string name="repoDescError">Опис је дужи од максималних 255 карактера</string>
     <string name="repoCreated">Репозиторијум је успешно креиран</string>
-    <string name="repoCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="repoExistsError">Репозиторијум већ постоји</string>
     <string name="repoOwnerError">Select owner for the repository</string>
     <string name="orgNameErrorEmpty">Назив организације је обавезан</string>
     <string name="orgNameErrorInvalid">Назив организације није валидан [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Опис је дужи од максималних 255 карактера</string>
     <string name="orgCreated">Организација је успешно креирана</string>
-    <string name="orgCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="orgExistsError">Организација већ постоји</string>
-    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
+    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
     <string name="processingText">Пријављивање у току</string>
     <string name="search">Претражи</string>
     <string name="close">Затвори</string>
@@ -85,16 +82,15 @@
     <string name="repoContentAvatar">Репо</string>
     <string name="privateAvatar">При</string>
     <string name="removeContent">Уклони</string>
-    <string name="genericApiStatusError">Сервер је вратио грешку: код\u0020</string>
+    <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextInfo">Детаљи</string>
     <string name="tabTextFiles">Фајлови</string>
     <string name="tabTextMl">Фазе</string>
     <string name="tabTextReleases">Издања</string>
     <string name="tabTextBranches">Гране</string>
-    <string name="tabTextLabels">Ознаке</string>
     <string name="tabTextCollaborators">Сарадници</string>
     <string name="tabPullRequests">Пул захтеви</string>
-    <string name="noDataIssueTab">Ниједан задатак није пронађен</string>
+    <string name="pullRequest">Pull Request</string>
     <string name="infoTabRepoSize">Величина</string>
     <string name="infoTabRepoDefaultBranch">Подразумевана грана</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -106,32 +102,25 @@
     <string name="infoShowMoreInformation">Прикажи више информација</string>
     <string name="infoMoreInformation">Више информација</string>
     <string name="timeAtText">у</string>
-    <string name="createdText">Пријављен\u0020</string>
-    <string name="issueCreator">Аутор:\u0020</string>
-    <string name="issueCommenter">Коментатор:\u0020</string>
     <string name="issueMilestone">Фаза %1$s</string>
     <string name="dueDate">Рок: </string>
     <string name="assignedTo">Додељен: %1$s</string>
+    <string name="assignedToMe">Assigned to Me</string>
     <string name="commentButtonText">Коментар</string>
     <string name="commentEmptyError">Унеси коментар</string>
     <string name="commentSuccess">Коментар је послат</string>
-    <string name="commentError">Нешто је пошло наопако, покушај поново</string>
     <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="generalImgContentText">Image</string>
-    <string name="noDataMilestonesTab">Ниједна фаза није пронађена</string>
     <string name="commitAuthor">Аутор комита: %1$s</string>
     <string name="releaseDownloadText">Преузимања</string>
-    <string name="noDataReleasesTab">Ниједно издање није пронађено</string>
     <string name="releasePublishedBy">Published by @%1$s</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
-    <string name="noDataCollaboratorTab">Ниједан сарадник није пронађен</string>
     <string name="newMilestoneTitle">Наслов</string>
     <string name="newMilestoneDescription">Опис</string>
     <string name="newMilestoneDueDate">Рок</string>
     <string name="milestoneNameErrorEmpty">Назив фазе је обавезан</string>
     <string name="milestoneDescError">Опис је дужи од максималних 255 карактера</string>
     <string name="milestoneCreated">Фаза је успешно креирана</string>
-    <string name="milestoneCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="milestoneDateEmpty">Унеси рок</string>
     <string name="milestoneNoDueDate">No due date</string>
     <string name="milestoneNoDescription">No description</string>
@@ -149,10 +138,8 @@
     <string name="issueTitleEmpty">Наслов проблема је обавезан</string>
     <string name="issueDescriptionEmpty">Опис проблема је обавезан</string>
     <string name="issueCreated">Проблем је успешно креиран</string>
-    <string name="issueCreatedError">Нешто је пошло наопако, покушај поново</string>
     <string name="issueCreatedNoMilestone">Без назива фазе</string>
     <string name="noAssigneesFound">No assignees found</string>
-    <string name="noLabelsFound">Ниједна ознака није пронађена</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Превод</string>
     <string name="settingsLanguageSystem">System</string>
@@ -201,6 +188,8 @@
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
+    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
+    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
     <!-- settings -->
     <string name="noMoreData">Нема више података</string>
     <string name="createLabel">Нова ознака</string>
@@ -209,25 +198,17 @@
     <string name="labelColor">Боја ознаке</string>
     <string name="labelEmptyError">Назив ознаке је обавезан</string>
     <string name="labelNameError">Назив ознаке није валидан</string>
-    <string name="labelCreated">Ознака је креирана</string>
-    <string name="labelGeneralError">Нешто је пошло наопако, покушај поново</string>
-    <string name="labelUpdated">Ознака је ажурирана</string>
-    <string name="noDataLabelsTab">Ниједна ознака није пронађена</string>
+    <string name="labelCreated">Label created</string>
+    <string name="labelUpdated">Label updated</string>
     <string name="labelMenuContentDesc">Опис</string>
     <string name="labelDeleteText">Ознака је избрисана</string>
-    <string name="labelDeleteErrorText">Нешто је пошло наопако, покушај поново</string>
-    <string name="noDataBranchesTab">Ниједна грана није пронађена</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Грешка приликом ауторизације</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Да ли желиш да избришеш ову ознаку?</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">Репозиторијуми</string>
     <string name="orgTabTeams">Тимови</string>
     <string name="orgTabMembers">Чланови</string>
-    <string name="orgCreateTeam">Нови тим</string>
-    <string name="noDataTeams">Ниједан тим није пронађен</string>
     <string name="teamTitle">Назив тима</string>
     <string name="teamDescription">Опис тима</string>
     <string name="teamPermissions">Permissions</string>
@@ -237,16 +218,18 @@
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
-    <string name="noDataMembers">Ниједан члан није пронађен</string>
     <string name="orgMember">Чланови организације</string>
     <string name="orgTeamMembers">Чланови тима</string>
-    <string name="addNewMember">Add / Remove New Member</string>
-    <string name="removeTeamMemberTitle">Remove\u0020</string>
-    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="removeTeamMember">Remove %s</string>
+    <string name="addTeamMember">Add %s</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
     <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
     <string name="memberAddedMessage">Member added to the team successfully</string>
     <string name="memberRemovedMessage">Member removed from the team successfully</string>
+    <string name="repoAddedMessage">Repository added to the team successfully</string>
+    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
+    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
+    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Назив тима</string>
@@ -262,7 +245,6 @@
     <string name="teamDescError">Опис тима није валидан</string>
     <string name="teamDescLimit">Назив је дужи од максималних 100 карактера</string>
     <string name="teamCreated">Тим је успешно креиран</string>
-    <string name="teamCreatedError">Нешто је пошло наопако, покушај поново</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Уреди коментар</string>
@@ -272,7 +254,6 @@
     <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">Додај или уклони сарадника</string>
     <string name="addCollaboratorSearchHint">Претражи кориснике</string>
     <string name="addCollaboratorViewUserDesc">Корисничко име</string>
     <string name="removeCollaboratorDialogTitle">Remove %s?</string>
@@ -307,7 +288,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Основни подаци</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">Додај новог корисника</string>
+    <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Администратор</string>
     <string name="adminCron">Cron Tasks</string>
@@ -343,6 +324,8 @@
     <string name="tagNameErrorEmpty">Назив тага је обавезан</string>
     <string name="titleErrorEmpty">Наслов је обавезан</string>
     <string name="releaseCreatedText">Ново издање је креирано</string>
+    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
+    <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
     <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">OTP код (опционо)</string>
@@ -377,9 +360,9 @@
     <string name="copyIssueUrl">Копирај URL проблема</string>
     <string name="copyIssueUrlToastMsg">URL је копиран</string>
     <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
+    <string name="copyShaToastMsg">SHA copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 завршен</string>
     <!-- files -->
-    <string name="noDataFilesTab">Ниједан фајл није пронађен</string>
     <string name="filesGenericError">Нешто је пошло наопако, покушај поново</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
@@ -389,7 +372,7 @@
     <string name="cancelButton">Откажи</string>
     <string name="genericError">Нешто је пошло наопако, покушај поново</string>
     <string name="apiNotFound">Ова активност захтева новију верзију програма Gitea</string>
-    <string name="noDataFound">Ниједан податак није пронађен</string>
+    <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Додај</string>
     <string name="removeButton">Уклони</string>
     <string name="authorizeError">Потребан ти је виши ниво привилегија да урадиш ово</string>
@@ -397,7 +380,7 @@
     <string name="menuEditText">Уреди</string>
     <string name="menuDeleteText">Избриши</string>
     <string name="menuCopyText">Copy</string>
-    <string name="menuQuoteText">Quote and Reply</string>
+    <string name="menuQuoteText">Quote Reply</string>
     <string name="modifiedText">ажурирано</string>
     <string name="saveButton">Сачувај</string>
     <string name="websiteText">Веб-сајт</string>
@@ -412,16 +395,30 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
     <string name="genericWaitFor">Hold on ☕</string>
+    <string name="file">File</string>
+    <string name="issue">Issue</string>
+    <string name="label">Label</string>
+    <string name="release">Release</string>
+    <string name="pr">Pull Request</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="unstar">Unstar</string>
+    <string name="watch">Watch</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="share">Share</string>
+    <string name="repository">Repository</string>
+    <string name="team">Team</string>
+    <string name="organization">Organization</string>
+    <string name="addRemove">Add / Remove</string>
+    <string name="download">Download</string>
+    <string name="reopen">Reopen</string>
+    <string name="openInBrowser">Open in Browser</string>
+    <string name="deleteGenericTitle">Delete %s</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Претражи репозиторијуме</string>
-    <string name="starRepository">Додај у омиљене</string>
-    <string name="unStarRepository">Уклони из омиљених</string>
     <string name="starRepositorySuccess">Репозиторијум је додат у омиљене</string>
     <string name="unStarRepositorySuccess">Репозиторијум је уклоњен из омиљених</string>
-    <string name="watchRepository">Прати репозиторијум</string>
-    <string name="unWatchRepository">Престани да пратиш репозиторијум</string>
     <string name="watchRepositorySuccess">Сад пратиш овај репозиторијум</string>
     <string name="unWatchRepositorySuccess">Више не пратиш овај репозиторијум</string>
     <string name="titleDrafts">Drafts</string>
@@ -434,9 +431,6 @@
     <string name="unauthorizedApiError">Грешка. Провери креденцијале и покушај поново.</string>
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
-    <string name="noDataPullRequests">Ниједан пул захтев није пронађен</string>
-    <string name="editPrText">Уреди пул захтев</string>
-    <string name="copyPrUrlText">Копирај URL пул захтева</string>
     <string name="editPrNavHeader">Уреди пул захтев #%1$s</string>
     <string name="editPrSuccessMessage">Пул захтев је ажуриран</string>
     <string name="fileDiffViewHeader">%1$s фајлова је измењено</string>
@@ -444,7 +438,6 @@
     <string name="updatePullRequestText">Update Pull Request</string>
     <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Обједини пул захтев</string>
-    <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
     <string name="deleteBranchErrorNotFound">Branch does not exist</string>
@@ -463,24 +456,22 @@
     <string name="mergeStrategy">Merge Strategy</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
-    <string name="downloadFile">Преузми овај фајл</string>
+    <string name="deleteBranch">Delete Branch</string>
     <string name="waitLoadingDownloadFile">Сачекај да се фајл учита у меморију</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
-    <string name="deleteFileText">Delete %1$s</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">Edit %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Величина</string>
     <string name="shareIssue">Подели проблем</string>
-    <string name="sharePr">Подели пул захтев</string>
     <string name="shareRepository">Подели репозиторијум</string>
     <string name="createRepository">Креирај репозиторијум</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
     <string name="viewCommits">Прегледај комитове</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Провера сертификата</string>
@@ -502,7 +493,6 @@
     <string name="closeMilestone">Затвори фазу</string>
     <string name="openMilestone">Отвори фазу</string>
     <string name="milestoneStatusUpdate">Фаза је ажурирана</string>
-    <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
@@ -539,9 +529,9 @@
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-    <string name="markAsRead">Mark as Read</string>
-    <string name="markAsUnread">Mark as Unread</string>
-    <string name="pinNotification">Pin Notification</string>
+    <string name="markAsRead">Mark Read</string>
+    <string name="markAsUnread">Mark Unread</string>
+    <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
@@ -552,6 +542,11 @@
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
+    <plurals name="youHaveNewNotifications">
+        <item quantity="one">You have %s new notification.</item>
+        <item quantity="few">You have %s new notifications.</item>
+        <item quantity="other">You have %s new notifications.</item>
+    </plurals>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -595,6 +590,9 @@
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="prClosed">Pull Request closed</string>
+    <string name="prReopened">Pull Request reopened</string>
+    <string name="prMergeInfo">Pull Request Info</string>
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
@@ -626,8 +624,6 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
-    <string name="closePr">Close Pull Request</string>
-    <string name="reopenPr">Reopen Pull Request</string>
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -635,8 +631,17 @@
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="deleteTagTitle">Delete tag %s</string>
     <string name="tagDeleted">Tag deleted</string>
+    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="logInAgain">Log in again</string>
+    <string name="notLoggedIn">%s \u25CF not logged in</string>
+    <string name="followSystem">Follow system (Light/Dark)</string>
+    <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="repoForkOf">Fork of: %s</string>
+    <string name="adoptRepo">Adopt</string>
+    <string name="repoAdopted">Adopted repository %s</string>
+    <string name="unadoptedRepos">Unadopted Repositories</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
 </resources>

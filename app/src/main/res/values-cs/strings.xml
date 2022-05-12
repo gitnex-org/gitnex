@@ -11,6 +11,7 @@
     <string name="navRate">Ohodnotit GitNex</string>
     <string name="navLogout">Odhlásit se</string>
     <string name="navAdministration">Administrace</string>
+    <string name="navMyIssues">My Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nový repozitář</string>
@@ -33,9 +34,7 @@
     <!-- page titles -->
     <string name="repoName">Demo repozitář</string>
     <string name="repoDescription">Demo popis</string>
-    <string name="noData">Nebyly nalezeny žádné repozitáře</string>
     <string name="orgName">Demo organizace</string>
-    <string name="noDataOrg">Nebyly nalezeny žádné organizace</string>
     <string name="newCreateButtonCopy">Vytvořit</string>
     <string name="newUpdateButtonCopy">Aktualizovat</string>
     <string name="newRepoTintCopy">Název repositáře</string>
@@ -67,16 +66,14 @@
     <string name="repoNameErrorReservedPatterns">Název repozitáře obsahuje vyhrazená slova</string>
     <string name="repoDescError">Popis repozitáře překračuje maximální limit 255 znaků</string>
     <string name="repoCreated">Repozitář byl úspěšně vytvořen</string>
-    <string name="repoCreatedError">Něco se pokazilo, zkuste to prosím znovu</string>
     <string name="repoExistsError">Repozitář tohoto jména již existuje pod vybraným vlastníkem</string>
     <string name="repoOwnerError">Zvolte vlastníka repozitáře</string>
     <string name="orgNameErrorEmpty">Název organizace je prázdný</string>
     <string name="orgNameErrorInvalid">Název organizace není platný, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Popis organizace překračuje maximální limit 255 znaků</string>
     <string name="orgCreated">Organizace byla úspěšně vytvořena</string>
-    <string name="orgCreatedError">Něco se pokazilo, zkuste to prosím znovu</string>
     <string name="orgExistsError">Organizace již existuje</string>
-    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
+    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
     <string name="processingText">Zpracovávání</string>
     <string name="search">Hledat</string>
     <string name="close">Zavřít</string>
@@ -85,16 +82,15 @@
     <string name="repoContentAvatar">Repozitář</string>
     <string name="privateAvatar">Soukromý avatar</string>
     <string name="removeContent">Odebrat</string>
-    <string name="genericApiStatusError">Instance vrátila chybu. Kód\u0020</string>
+    <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextInfo">Podrobnosti</string>
     <string name="tabTextFiles">Soubory</string>
     <string name="tabTextMl">Milníky</string>
     <string name="tabTextReleases">Vydání</string>
     <string name="tabTextBranches">Větve</string>
-    <string name="tabTextLabels">Štítky</string>
     <string name="tabTextCollaborators">Spolupracovníci</string>
     <string name="tabPullRequests">Pull Requesty</string>
-    <string name="noDataIssueTab">Nebyla nalezena žádná issue</string>
+    <string name="pullRequest">Pull Request</string>
     <string name="infoTabRepoSize">Velikost</string>
     <string name="infoTabRepoDefaultBranch">Výchozí větev</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -106,32 +102,25 @@
     <string name="infoShowMoreInformation">Zobrazit více informací</string>
     <string name="infoMoreInformation">Více informací</string>
     <string name="timeAtText">v(ve)</string>
-    <string name="createdText">Otevřeno\u0020</string>
-    <string name="issueCreator">Tvůrce:\u0020</string>
-    <string name="issueCommenter">Komentující:\u0020</string>
     <string name="issueMilestone">Milník %1$s</string>
     <string name="dueDate">Termín do %1$s</string>
     <string name="assignedTo">Přiřazeno uživateli %1$s</string>
+    <string name="assignedToMe">Assigned to Me</string>
     <string name="commentButtonText">Komentář</string>
     <string name="commentEmptyError">Zadejte svůj komentář</string>
     <string name="commentSuccess">Komentář byl zveřejněn</string>
-    <string name="commentError">Něco se pokazilo, zkuste to prosím znovu</string>
     <string name="featureDeprecated">Tato funkce bude v budoucnu odstraněna</string>
     <string name="generalImgContentText">Obrázek</string>
-    <string name="noDataMilestonesTab">Nebyly nalezeny žádné milníky</string>
     <string name="commitAuthor">Autor commitu: %1$s</string>
     <string name="releaseDownloadText">Stahování</string>
-    <string name="noDataReleasesTab">Nebyly nalezeny žádná vydání</string>
     <string name="releasePublishedBy">Zveřejnil/a %1$s</string>
     <string name="noReleaseBodyContent">Poznámky k verzi nejsou poskytnuty vydavatelem.</string>
-    <string name="noDataCollaboratorTab">Nebyli nalezeni žádní spolupracovníci</string>
     <string name="newMilestoneTitle">Název</string>
     <string name="newMilestoneDescription">Popis</string>
     <string name="newMilestoneDueDate">Splnit do</string>
     <string name="milestoneNameErrorEmpty">Název milníku je prázdný</string>
     <string name="milestoneDescError">Popis repozitáře překračuje maximální limit 255 znaků</string>
     <string name="milestoneCreated">Milník byl úspěšně vytvořen</string>
-    <string name="milestoneCreatedError">Něco se pokazilo, zkuste to prosím znovu</string>
     <string name="milestoneDateEmpty">Vyberte prosím datum dokončení</string>
     <string name="milestoneNoDueDate">Bez termínu dokončení</string>
     <string name="milestoneNoDescription">Bez popisu</string>
@@ -149,10 +138,8 @@
     <string name="issueTitleEmpty">Název problému je prázdný</string>
     <string name="issueDescriptionEmpty">Popis je prázdný</string>
     <string name="issueCreated">Problém úspěšně vytvořen</string>
-    <string name="issueCreatedError">Něco se pokazilo, zkuste to prosím znovu</string>
     <string name="issueCreatedNoMilestone">Žádný milník</string>
     <string name="noAssigneesFound">Žádný zpracovatel nenalezen</string>
-    <string name="noLabelsFound">Nebyly nalezeny žádné popisky</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Překlad</string>
     <string name="settingsLanguageSystem">Systém</string>
@@ -201,6 +188,8 @@
     <string name="generalDeepLinkSelectedText">Není k dispozici</string>
     <string name="linkSelectorDialogTitle">Zvolte výchozí obrazovku zpracování odkazů</string>
     <string name="settingsBiometricHeader">Biometrické odemknutí</string>
+    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
+    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
     <!-- settings -->
     <string name="noMoreData">Nejsou k dispozici žádná data</string>
     <string name="createLabel">Nový štítek</string>
@@ -209,25 +198,17 @@
     <string name="labelColor">Barva štítku</string>
     <string name="labelEmptyError">Název štítku je prázdný</string>
     <string name="labelNameError">Název štítku není platný</string>
-    <string name="labelCreated">Štítek byl vytvořen.</string>
-    <string name="labelGeneralError">Něco se pokazilo, zkuste to prosím znovu</string>
-    <string name="labelUpdated">Štítek byl upraven.</string>
-    <string name="noDataLabelsTab">Nebyly nalezeny žádné štítky</string>
+    <string name="labelCreated">Label created</string>
+    <string name="labelUpdated">Label updated</string>
     <string name="labelMenuContentDesc">Sestupně</string>
     <string name="labelDeleteText">Štítek byl smazán</string>
-    <string name="labelDeleteErrorText">Něco se pokazilo, zkuste to prosím znovu</string>
-    <string name="noDataBranchesTab">Nebyly nalezeny žádné větve</string>
     <string name="selectBranchError">Zvolte větev k vydání</string>
     <string name="alertDialogTokenRevokedTitle">Chyba ověření</string>
     <string name="alertDialogTokenRevokedMessage">Zdá se, že Přístupový token byl zneplatněn nebo nemáte oprávnění přístupu k těmto datům.\n\nV případě zneplatněného tokenu se prosím odhlaste a znovu přihlašte</string>
-    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Opravdu chcete smazat tento štítek?</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">Repozitáře</string>
     <string name="orgTabTeams">Týmy</string>
     <string name="orgTabMembers">Členové</string>
-    <string name="orgCreateTeam">Nový tým</string>
-    <string name="noDataTeams">Nebyly nalezeny žádné týmy</string>
     <string name="teamTitle">Název týmu</string>
     <string name="teamDescription">Popis týmu</string>
     <string name="teamPermissions">Permissions</string>
@@ -237,16 +218,18 @@
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
-    <string name="noDataMembers">Žádný člen nenalezen</string>
     <string name="orgMember">Členové organizace</string>
     <string name="orgTeamMembers">Členové organizace</string>
-    <string name="addNewMember">Add / Remove New Member</string>
-    <string name="removeTeamMemberTitle">Remove\u0020</string>
-    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="removeTeamMember">Remove %s</string>
+    <string name="addTeamMember">Add %s</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
     <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
     <string name="memberAddedMessage">Member added to the team successfully</string>
     <string name="memberRemovedMessage">Member removed from the team successfully</string>
+    <string name="repoAddedMessage">Repository added to the team successfully</string>
+    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
+    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
+    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Team Name</string>
@@ -262,7 +245,6 @@
     <string name="teamDescError">Team description have illegal characters</string>
     <string name="teamDescLimit">Team description have more than 100 characters</string>
     <string name="teamCreated">Team created successfully</string>
-    <string name="teamCreatedError">Something went wrong, please try again</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Edit Comment</string>
@@ -272,7 +254,6 @@
     <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">Add / Remove Collaborator</string>
     <string name="addCollaboratorSearchHint">Search users</string>
     <string name="addCollaboratorViewUserDesc">Username</string>
     <string name="removeCollaboratorDialogTitle">Remove %s?</string>
@@ -307,7 +288,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Metadata repozitáře</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">Přidat nového uživatele</string>
+    <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">Systémoví uživatelé</string>
     <string name="userRoleAdmin">Administrátor</string>
     <string name="adminCron">Úlohy plánovače</string>
@@ -343,6 +324,8 @@
     <string name="tagNameErrorEmpty">Název štítku je prázdný</string>
     <string name="titleErrorEmpty">Název je prázdný</string>
     <string name="releaseCreatedText">Nové vydání vytvořeno</string>
+    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
+    <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
     <string name="loginOTPTypeError">OTP kód obsahuje pouze čísla</string>
     <string name="loginOTP">OTP Kód (volitelně)</string>
@@ -377,9 +360,9 @@
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
+    <string name="copyShaToastMsg">SHA copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
     <!-- files -->
-    <string name="noDataFilesTab">No files found</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
@@ -389,7 +372,7 @@
     <string name="cancelButton">Cancel</string>
     <string name="genericError">Something went wrong, please try again</string>
     <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
-    <string name="noDataFound">No data found</string>
+    <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Add</string>
     <string name="removeButton">Remove</string>
     <string name="authorizeError">You are not authorized to perform this action.</string>
@@ -397,7 +380,7 @@
     <string name="menuEditText">Edit</string>
     <string name="menuDeleteText">Delete</string>
     <string name="menuCopyText">Copy</string>
-    <string name="menuQuoteText">Quote and Reply</string>
+    <string name="menuQuoteText">Quote Reply</string>
     <string name="modifiedText">edited</string>
     <string name="saveButton">Save</string>
     <string name="websiteText">Website</string>
@@ -412,16 +395,30 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
     <string name="genericWaitFor">Hold on ☕</string>
+    <string name="file">File</string>
+    <string name="issue">Issue</string>
+    <string name="label">Label</string>
+    <string name="release">Release</string>
+    <string name="pr">Pull Request</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="unstar">Unstar</string>
+    <string name="watch">Watch</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="share">Share</string>
+    <string name="repository">Repository</string>
+    <string name="team">Team</string>
+    <string name="organization">Organization</string>
+    <string name="addRemove">Add / Remove</string>
+    <string name="download">Download</string>
+    <string name="reopen">Reopen</string>
+    <string name="openInBrowser">Open in Browser</string>
+    <string name="deleteGenericTitle">Delete %s</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
-    <string name="starRepository">Star Repository</string>
-    <string name="unStarRepository">Unstar Repository</string>
     <string name="starRepositorySuccess">Repository added to starred list</string>
     <string name="unStarRepositorySuccess">Repository removed from starred list</string>
-    <string name="watchRepository">Watch Repository</string>
-    <string name="unWatchRepository">Unwatch Repository</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="titleDrafts">Drafts</string>
@@ -434,9 +431,6 @@
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
-    <string name="noDataPullRequests">No pull requests found</string>
-    <string name="editPrText">Edit Pull Request</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
     <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull Request updated</string>
     <string name="fileDiffViewHeader">%1$s Files Changed</string>
@@ -444,7 +438,6 @@
     <string name="updatePullRequestText">Update Pull Request</string>
     <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
-    <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
     <string name="deleteBranchErrorNotFound">Branch does not exist</string>
@@ -463,24 +456,22 @@
     <string name="mergeStrategy">Merge Strategy</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
-    <string name="downloadFile">Download This File</string>
+    <string name="deleteBranch">Delete Branch</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
-    <string name="deleteFileText">Delete %1$s</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">Edit %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
-    <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
     <string name="viewCommits">Zobrazit commity</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Certificate Verification</string>
@@ -502,7 +493,6 @@
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
@@ -539,9 +529,9 @@
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-    <string name="markAsRead">Mark as Read</string>
-    <string name="markAsUnread">Mark as Unread</string>
-    <string name="pinNotification">Pin Notification</string>
+    <string name="markAsRead">Mark Read</string>
+    <string name="markAsUnread">Mark Unread</string>
+    <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
@@ -552,6 +542,12 @@
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
+    <plurals name="youHaveNewNotifications">
+        <item quantity="one">You have %s new notification.</item>
+        <item quantity="few">You have %s new notifications.</item>
+        <item quantity="many">You have %s new notifications.</item>
+        <item quantity="other">You have %s new notifications.</item>
+    </plurals>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -595,6 +591,9 @@
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="prClosed">Pull Request closed</string>
+    <string name="prReopened">Pull Request reopened</string>
+    <string name="prMergeInfo">Pull Request Info</string>
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
@@ -626,8 +625,6 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
-    <string name="closePr">Close Pull Request</string>
-    <string name="reopenPr">Reopen Pull Request</string>
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -635,8 +632,17 @@
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="deleteTagTitle">Delete tag %s</string>
     <string name="tagDeleted">Tag deleted</string>
+    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="logInAgain">Log in again</string>
+    <string name="notLoggedIn">%s \u25CF not logged in</string>
+    <string name="followSystem">Follow system (Light/Dark)</string>
+    <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="repoForkOf">Fork of: %s</string>
+    <string name="adoptRepo">Adopt</string>
+    <string name="repoAdopted">Adopted repository %s</string>
+    <string name="unadoptedRepos">Unadopted Repositories</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
 </resources>

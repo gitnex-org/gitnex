@@ -11,6 +11,7 @@
     <string name="navRate">Bewerte GitNex</string>
     <string name="navLogout">Ausloggen</string>
     <string name="navAdministration">Administration</string>
+    <string name="navMyIssues">Meine Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Repository erstellen</string>
@@ -33,9 +34,7 @@
     <!-- page titles -->
     <string name="repoName">Demo Repo</string>
     <string name="repoDescription">Demo Beschreibung</string>
-    <string name="noData">Keine Repositories gefunden</string>
     <string name="orgName">Demo-Organisation</string>
-    <string name="noDataOrg">Keine Organisation gefunden</string>
     <string name="newCreateButtonCopy">Erstellen</string>
     <string name="newUpdateButtonCopy">Aktualisieren</string>
     <string name="newRepoTintCopy">Name des Repositories</string>
@@ -67,16 +66,14 @@
     <string name="repoNameErrorReservedPatterns">Repository-Name enthält reservierte Schlüsselwörter</string>
     <string name="repoDescError">Die Repository Beschreibung überschreitet die maximale Anzahl von 255 Zeichen</string>
     <string name="repoCreated">Repository erfolgreich erstellt!</string>
-    <string name="repoCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="repoExistsError">Ein Repository mit diesem Namen existiert bereits unter dem ausgewählten Besitzer</string>
     <string name="repoOwnerError">Wähle den Besitzer für das Repository aus</string>
     <string name="orgNameErrorEmpty">Name der Organisation ist leer</string>
     <string name="orgNameErrorInvalid">Organisationsname ist nicht gültig, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organisationsbeschreibung überschreitet maximale Anzahl von 255 Zeichen</string>
     <string name="orgCreated">Organisation erfolgreich erstellt!</string>
-    <string name="orgCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="orgExistsError">Organisation existiert bereits</string>
-    <string name="diffStatistics">%s Ergänzung(en) und %s Löschung(en)</string>
+    <string name="diffStatistics">%1$s Ergänzung(en) und %2$s Löschung(en)</string>
     <string name="processingText">verarbeite</string>
     <string name="search">Suche</string>
     <string name="close">Schließen</string>
@@ -85,16 +82,15 @@
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Entfernen</string>
-    <string name="genericApiStatusError">Die Instanz hat einen Fehler zurückgegeben. Code\u0020</string>
+    <string name="genericApiError">Die Instanz hat einen Fehler zurückgegeben. Code %d</string>
     <string name="tabTextInfo">Details</string>
     <string name="tabTextFiles">Dateien</string>
     <string name="tabTextMl">Meilensteine</string>
     <string name="tabTextReleases">Releases</string>
     <string name="tabTextBranches">Branches</string>
-    <string name="tabTextLabels">Labels</string>
     <string name="tabTextCollaborators">Mitarbeiter</string>
     <string name="tabPullRequests">Pull Requests</string>
-    <string name="noDataIssueTab">Keine Issues gefunden!</string>
+    <string name="pullRequest">Pull-Request</string>
     <string name="infoTabRepoSize">Größe</string>
     <string name="infoTabRepoDefaultBranch">Standard-Branch</string>
     <string name="infoTabRepoSshUrl">SSH-URL</string>
@@ -106,32 +102,25 @@
     <string name="infoShowMoreInformation">Mehr Informationen anzeigen</string>
     <string name="infoMoreInformation">Mehr Informationen</string>
     <string name="timeAtText">um</string>
-    <string name="createdText">Erstellt\u0020</string>
-    <string name="issueCreator">Ersteller:\u0020</string>
-    <string name="issueCommenter">Kommentator:\u0020</string>
     <string name="issueMilestone">Meilenstein %1$s</string>
     <string name="dueDate">Fällig am %1$s</string>
     <string name="assignedTo">Zugewiesen an: %1$s</string>
+    <string name="assignedToMe">Mir zugewiesen</string>
     <string name="commentButtonText">Kommentar</string>
     <string name="commentEmptyError">Bitte schreibe deinen Kommentar!</string>
     <string name="commentSuccess">Kommentar gepostet</string>
-    <string name="commentError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="featureDeprecated">Diese Funktion wird in Zukunft entfernt</string>
     <string name="generalImgContentText">Bild</string>
-    <string name="noDataMilestonesTab">Kein Meilenstein gefunden!</string>
     <string name="commitAuthor">Commit Autor: %1$s</string>
     <string name="releaseDownloadText">Downloads</string>
-    <string name="noDataReleasesTab">Kein Release gefunden!</string>
     <string name="releasePublishedBy">Veröffentlicht von @%1$s</string>
     <string name="noReleaseBodyContent">Veröffentlichungshinweise werden vom Herausgeber nicht zur Verfügung gestellt.</string>
-    <string name="noDataCollaboratorTab">Keine Mitarbeiter gefunden</string>
     <string name="newMilestoneTitle">Titel</string>
     <string name="newMilestoneDescription">Beschreibung</string>
     <string name="newMilestoneDueDate">Fälligkeitsdatum</string>
     <string name="milestoneNameErrorEmpty">Titel des Meilensteins ist leer</string>
     <string name="milestoneDescError">Die Beschreibung des Meilensteins überschreitet die maximale Anzahl von 255 Zeichen</string>
     <string name="milestoneCreated">Meilenstein erfolgreich erstellt!</string>
-    <string name="milestoneCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="milestoneDateEmpty">Fälligkeitsdatum auswählen</string>
     <string name="milestoneNoDueDate">Kein Datum</string>
     <string name="milestoneNoDescription">Keine Beschreibung</string>
@@ -149,10 +138,8 @@
     <string name="issueTitleEmpty">Der Titel des Issues ist leer!</string>
     <string name="issueDescriptionEmpty">Die Beschreibung des Issues ist leer!</string>
     <string name="issueCreated">Neues Issues wurde erfolgreich erstellt!</string>
-    <string name="issueCreatedError">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
     <string name="issueCreatedNoMilestone">Kein Meilenstein</string>
     <string name="noAssigneesFound">Keine Zuständigen gefunden</string>
-    <string name="noLabelsFound">Keine Labels gefunden!</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Übersetzung</string>
     <string name="settingsLanguageSystem">System</string>
@@ -201,6 +188,8 @@
     <string name="generalDeepLinkSelectedText">N/V</string>
     <string name="linkSelectorDialogTitle">Wähle Standard-Link-Handhaber</string>
     <string name="settingsBiometricHeader">Biometrisches Entsperren</string>
+    <string name="settingsLabelsInListHeader">Labels mit Text</string>
+    <string name="settingsLabelsInListHint">Dies wird Labels mit Text in Issue- und Pull-Request-Lister anzeigen, Standard sind farbige Punkte</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -209,25 +198,17 @@
     <string name="labelColor">Farbe des Labels</string>
     <string name="labelEmptyError">Name des Namens ist leer.</string>
     <string name="labelNameError">Label Name ist ungültig.</string>
-    <string name="labelCreated">Label wurde erfolgreich erstellt!</string>
-    <string name="labelGeneralError">Etwas ist schief gelaufen, bitte versuche es erneut.</string>
-    <string name="labelUpdated">Label aktualisiert!</string>
-    <string name="noDataLabelsTab">Keine Labels gefunden!</string>
+    <string name="labelCreated">Label erstellt</string>
+    <string name="labelUpdated">Label aktualisiert</string>
     <string name="labelMenuContentDesc">Beschreibung</string>
     <string name="labelDeleteText">Label gelöscht!</string>
-    <string name="labelDeleteErrorText">Etwas ist schief gelaufen. Bitte versuche es erneut</string>
-    <string name="noDataBranchesTab">Keine Branch gefunden!</string>
     <string name="selectBranchError">Wähle einen Branch für das Release</string>
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
     <string name="alertDialogTokenRevokedMessage">Es scheint, dass der Access Token widerrufen wurde ODER du diese Inhalte nicht sehen darfst.\n\nFalls der Token wiederrufen wurde, melde dich bitte ab und wieder an</string>
-    <string name="labelDeleteTitle">%s löschen</string>
     <string name="labelDeleteMessage">Möchtest du dieses Label wirklich löschen?</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">Repositories</string>
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Mitglieder</string>
-    <string name="orgCreateTeam">Team erstellen</string>
-    <string name="noDataTeams">Keine Teams gefunden!</string>
     <string name="teamTitle">Name des Teams</string>
     <string name="teamDescription">Beschreibung des Teams</string>
     <string name="teamPermissions">Berechtigungen</string>
@@ -237,16 +218,18 @@
     <string name="teamPermissionAdmin">• Mitglieder dieses Teams können auf und von Team-Repositories pushen und Mitarbeiter hinzufügen.</string>
     <string name="teamPermissionOwner">• Mitglieder dieses Teams haben Besitzerrechte.</string>
     <string name="teamShowAll">alle anzeigen</string>
-    <string name="noDataMembers">Keine Mitglieder gefunden!</string>
     <string name="orgMember">Org Mitglieder</string>
     <string name="orgTeamMembers">Mitglieder der Organisation</string>
-    <string name="addNewMember">Mitglied hinzufügen / entfernen</string>
-    <string name="removeTeamMemberTitle">Entfernen\u0020</string>
-    <string name="addTeamMemberTitle">Hinzufügen\u0020</string>
+    <string name="removeTeamMember">%s entfernen</string>
+    <string name="addTeamMember">%s hinzufügen</string>
     <string name="addTeamMemberMessage">Möchtest du diesen Benutzer dem Team hinzufügen?</string>
     <string name="removeTeamMemberMessage">Soll dieser Benutzer aus dem Team entfernt werden?</string>
     <string name="memberAddedMessage">Mitglied wurde erfolgreich zum Team hinzugefügt</string>
     <string name="memberRemovedMessage">Mitglied wurde erfolgreich aus dem Team entfernt</string>
+    <string name="repoAddedMessage">Repository wurde erfolgreich zum Team hinzugefügt</string>
+    <string name="repoRemovedMessage">Repository wurde erfolgreich aus dem Team entfernt</string>
+    <string name="repoAddToTeamMessage">Repository %1$s zur Organisation %2$s, Team %3$s hinzufügen</string>
+    <string name="repoRemoveTeamMessage">Repository %1$s vom Team %2$s entfernen</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Name des Teams</string>
@@ -262,7 +245,6 @@
     <string name="teamDescError">Die Team Beschreibung hat illegale Zeichen.</string>
     <string name="teamDescLimit">Team Beschreibung hat mehr als 100 Zeichen.</string>
     <string name="teamCreated">Team erfolgreich erstellt.</string>
-    <string name="teamCreatedError">Etwas ist schief gelaufen, bitte versuche es erneut.</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Kommentar bearbeiten</string>
@@ -272,7 +254,6 @@
     <string name="copyCommentText">Kommentar kopieren</string>
     <!-- issue comments -->
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">Mitarbeiter hinzufügen</string>
     <string name="addCollaboratorSearchHint">Benutzer durchsuchen</string>
     <string name="addCollaboratorViewUserDesc">Benutzername</string>
     <string name="removeCollaboratorDialogTitle">%s entfernen?</string>
@@ -307,7 +288,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Repository-Informationen</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">Neuen Benutzer erstellen</string>
+    <string name="adminCreateNewUser">Neuer Benutzer</string>
     <string name="adminUsers">Systembenutzer</string>
     <string name="userRoleAdmin">Admin</string>
     <string name="adminCron">Cron-Jobs</string>
@@ -343,6 +324,8 @@
     <string name="tagNameErrorEmpty">Der Tag ist leer</string>
     <string name="titleErrorEmpty">Der Titel ist leer</string>
     <string name="releaseCreatedText">Neuer Release erstellt</string>
+    <string name="deleteReleaseConfirmation">Möchten Sie diese Release wirklich löschen?</string>
+    <string name="releaseDeleted">Release gelöscht</string>
     <!-- release -->
     <string name="loginOTPTypeError">Der OTP-Code muss aus Zahlen bestehen</string>
     <string name="loginOTP">OTP-Code (optional)</string>
@@ -353,7 +336,7 @@
     <string name="noDataWebsite">Keine Webseite gefunden</string>
     <string name="noDataDescription">Keine Beschreibung gefunden</string>
     <string name="noDataLocation">Kein Ort gefunden</string>
-    <string name="starMember">Favorisierer</string>
+    <string name="starMember">Favorisieren</string>
     <string name="watcherMember">Beobachter</string>
     <string name="zipArchiveDownloadReleasesTab">Quellcode (ZIP Archiv)</string>
     <string name="tarArchiveDownloadReleasesTab">Quellcode (TAR.GZ Archiv)</string>
@@ -377,9 +360,9 @@
     <string name="copyIssueUrl">Issue-URL kopieren</string>
     <string name="copyIssueUrlToastMsg">URL in Zwischenablage kopiert</string>
     <string name="copyIssueCommentToastMsg">Kommentar in die Zwischenablage kopiert</string>
+    <string name="copyShaToastMsg">SHA in Zwischenablage kopiert</string>
     <string name="milestoneCompletion">%1$d\uFF05 abgeschlossen</string>
     <!-- files -->
-    <string name="noDataFilesTab">Keine Dateien gefunden</string>
     <string name="filesGenericError">Leider kann diese Datei nicht angezeigt werden, da die API einen Fehler zurückgab</string>
     <string name="fileTypeCannotBeEdited">Dateien dieses Typs können nicht editiert werden</string>
     <string name="notSupported">Nicht unterstützt</string>
@@ -389,7 +372,7 @@
     <string name="cancelButton">Abbrechen</string>
     <string name="genericError">Etwas ist schief gelaufen. Bitte versuche es noch ein Mal</string>
     <string name="apiNotFound">Diese Anfrage erfordert eine neuere Gitea-Version als die, die aktuell installiert ist. Bitte aktualisiere deine Instanz auf die neuste Version.</string>
-    <string name="noDataFound">Keine Daten gefunden</string>
+    <string name="noDataFound">🌟 Hier ist nichts 🌟</string>
     <string name="addButton">Hinzufügen</string>
     <string name="removeButton">Entfernen</string>
     <string name="authorizeError">Du bist nicht berechtigt, diese Aktion durchzuführen.</string>
@@ -397,7 +380,7 @@
     <string name="menuEditText">Bearbeiten</string>
     <string name="menuDeleteText">Löschen</string>
     <string name="menuCopyText">Kopieren</string>
-    <string name="menuQuoteText">Zitierte und Antworte</string>
+    <string name="menuQuoteText">Antwort zitieren</string>
     <string name="modifiedText">Bearbeitet</string>
     <string name="saveButton">Speichern</string>
     <string name="websiteText">Website</string>
@@ -412,16 +395,30 @@
     <string name="genericServerResponseError">Wir können den Server im Moment nicht erreichen. Bitte überprüfe den Serverstatus und versuche es erneut</string>
     <string name="genericCopyUrl">Link kopieren</string>
     <string name="genericWaitFor">Laden ... ☕</string>
+    <string name="file">Datei</string>
+    <string name="issue">Issue</string>
+    <string name="label">Label</string>
+    <string name="release">Release</string>
+    <string name="pr">Pull-Request</string>
+    <string name="collaborator">Mitarbeiter</string>
+    <string name="unstar">Nicht favorisieren</string>
+    <string name="watch">Beobachten</string>
+    <string name="unwatch">Nicht beobachten</string>
+    <string name="share">Teilen</string>
+    <string name="repository">Repository</string>
+    <string name="team">Team</string>
+    <string name="organization">Organisation</string>
+    <string name="addRemove">Hinzufügen / Entfernen</string>
+    <string name="download">Herunterladen</string>
+    <string name="reopen">Erneut öffnen</string>
+    <string name="openInBrowser">Im Browser öffnen</string>
+    <string name="deleteGenericTitle">%s löschen</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
     <string name="exploreTextBoxHint">Repositories entdecken</string>
-    <string name="starRepository">Repository favorisieren</string>
-    <string name="unStarRepository">Repository nicht mehr favorisieren</string>
     <string name="starRepositorySuccess">Repository zur Favoriten hinzugefügt</string>
     <string name="unStarRepositorySuccess">Repository von Favoriten entfernt</string>
-    <string name="watchRepository">Repository beobachten</string>
-    <string name="unWatchRepository">Repository nicht mehr beobachten</string>
     <string name="watchRepositorySuccess">Repository zur Merkliste hinzugefügt</string>
     <string name="unWatchRepositorySuccess">Repository von der Merkliste entfernt</string>
     <string name="titleDrafts">Entwürfe</string>
@@ -434,9 +431,6 @@
     <string name="unauthorizedApiError">Gitea hat einen Fehler zurückgegeben - Nicht autorisiert. Überprüfe deine Anmeldeinformationen und versuche es erneut</string>
     <string name="loginTokenError">Token ist erforderlich</string>
     <string name="prDeletedFork">Gelöschter Fork</string>
-    <string name="noDataPullRequests">Keine Pull-Requests gefunden</string>
-    <string name="editPrText">Pull-Request bearbeiten</string>
-    <string name="copyPrUrlText">Pull-Request URL kopieren</string>
     <string name="editPrNavHeader">Bearbeite Pull-Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull-Request aktualisiert</string>
     <string name="fileDiffViewHeader">%1$s Dateien geändert</string>
@@ -444,7 +438,6 @@
     <string name="updatePullRequestText">Pull Request aktualisieren</string>
     <string name="openFileDiffText">Geänderte Dateien anzeigen</string>
     <string name="mergePullRequestText">Pull-Request zusammenführen</string>
-    <string name="deletePrHeadBranch">Quell-Branch löschen</string>
     <string name="deleteBranchSuccess">Branch erfolgreich gelöscht</string>
     <string name="deleteBranchError">Branch konnte nicht gelöscht werden</string>
     <string name="deleteBranchErrorNotFound">Branch existiert nicht</string>
@@ -463,24 +456,22 @@
     <string name="mergeStrategy">Merge-Strategie</string>
     <string name="selectMergeStrategy">Wähle eine Merge-Strategie</string>
     <string name="mergeNotAllowed">Mergen nicht erlaubt [Grund: Hat nicht genügend Genehmigungen]</string>
-    <string name="downloadFile">Datei herunterladen</string>
+    <string name="deleteBranch">Branch löschen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
     <string name="excludeFilesInFileViewer">Diese(r) Dateityp / Dateigröße wird vom Dateibetrachter nicht unterstützt. Du kannst es über das Menü herunterladen.</string>
     <string name="deleteFile">Diese Datei löschen</string>
     <string name="editFile">Diese Datei bearbeiten</string>
-    <string name="deleteFileText">Lösche %1$s</string>
     <string name="deleteFileMessage">Datei zum Löschen durch Branch %1$s gesetzt</string>
     <string name="editFileText">Bearbeite %1$s</string>
     <string name="editFileMessage">Datei wurde von Branch %1$s geändert</string>
     <string name="sizeCopy">Größe</string>
     <string name="shareIssue">Issue teilen</string>
-    <string name="sharePr">Pull-Request teilen</string>
     <string name="shareRepository">Repository teilen</string>
     <string name="createRepository">Repository erstellen</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> hat erstellt und <b>%s</b> gecommitet %s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> hat %s gecommitet]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> hat erstellt und <b>%2$s</b> gecommitet %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> hat %2$s gecommitet]]></string>
     <string name="viewCommits">Commits anzeigen</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Zertifikatsüberprüfung</string>
@@ -502,7 +493,6 @@
     <string name="closeMilestone">Meilenstein schließen</string>
     <string name="openMilestone">Meilenstein wieder öffnen</string>
     <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>
-    <string name="errorOnLogin">Der Server kann nicht erreicht werden, bitte überprüfe deinen Serverstatus</string>
     <string name="reportViewerHeader">Absturzberichte</string>
     <string name="settingsEnableReportsText">Absturzberichte aktivieren</string>
     <string name="crashTitle">GitNex ist abgestürzt :(</string>
@@ -541,7 +531,7 @@
     <string name="pollingDelayDialogDescriptionText">Wähle eine minütige Verzögerung, die GitNex wartet, bevor erneut nach neuen Benachrichtigungen abgefragt wird</string>
     <string name="markAsRead">Als gelesen markieren</string>
     <string name="markAsUnread">Als ungelesen markieren</string>
-    <string name="pinNotification">Nachricht anpinnen</string>
+    <string name="pinNotification">Anheften</string>
     <string name="markedNotificationsAsRead">Alle Benachrichtigungen erfolgreich als gelesen markiert</string>
     <string name="notificationsHintText">Intervall, Licht, Vibration</string>
     <string name="enableNotificationsHeaderText">Benachrichtigungen aktivieren</string>
@@ -552,6 +542,10 @@
     <string name="youHaveGotNewNotifications">Du hast %d neue Nachrichten.</string>
     <string name="mainNotificationChannelName">Benachrichtigungen</string>
     <string name="mainNotificationChannelDescription">Das ist der Haupt-Nachrichten-Kanal von GitNex.</string>
+    <plurals name="youHaveNewNotifications">
+        <item quantity="one">Du hast %s neue Benachrichtigung.</item>
+        <item quantity="other">Du hast %s neue Benachrichtigungen.</item>
+    </plurals>
     <string name="isRead">Gelesen</string>
     <string name="isUnread">Ungelesen</string>
     <string name="repoSettingsTitle">Repository Einstellungen</string>
@@ -595,6 +589,9 @@
     <string name="titleError">Titel wird benötigt</string>
     <string name="prCreateSuccess">Pull-Request erfolgreich erstellt</string>
     <string name="prAlreadyExists">Zwischen diesen Branches existiert bereits ein Pull-Request</string>
+    <string name="prClosed">Pull-Request geschlossen</string>
+    <string name="prReopened">Pull-Request wieder geöffnet</string>
+    <string name="prMergeInfo">Pull-Request-Info</string>
     <string name="accountDoesNotExist">Es sieht so aus als würde das Konto für den Link %1$s nicht existieren. Du kannst es hinzufügen, indem du auf \"Neues Konto hinzufügen\" klickst.</string>
     <string name="launchApp">App aufrufen</string>
     <string name="noActionText">GitNex kann den Link nicht handhaben, du kannst ein Issue im Projekt-Repository öffnen, so dass es ausgebessert werden kann. Bitte gebe alle nötigen Details an. Um die Standard-Ansicht zu öffnen, einfach den Button unten anklicken.</string>
@@ -626,8 +623,6 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Update-Strategie auswählen</string>
-    <string name="closePr">Pull Request schließen</string>
-    <string name="reopenPr">Pull-Request neu öffnen</string>
     <string name="userAvatar">Profilbild</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -635,8 +630,17 @@
     <string name="tagCreated">Tag erstellt</string>
     <string name="asRef">Als Referenz verwenden</string>
     <string name="deleteTagConfirmation">Wollen Sie dieses Tag wirklich löschen?</string>
-    <string name="deleteTagTitle">Tag %s löschen</string>
     <string name="tagDeleted">Tag gelöscht</string>
+    <string name="tagDeleteError">Ein Tag, der zu einem Release zugewiesen ist, kann nicht gelöscht werden</string>
     <string name="useCustomTabs">Custom Tabs verwenden</string>
     <string name="browserOpenFailed">Keine Anwendung zum Öffnen des Links gefunden. SSH-URLs und URLs mit anderen Präfixen als http:// und https:// werden von den meisten Browsern nicht unterstützt</string>
+    <string name="logInAgain">Erneut anmelden</string>
+    <string name="notLoggedIn">%s \u25CF nicht angemeldet</string>
+    <string name="followSystem">System folgen (Light/Dark)</string>
+    <string name="followSystemBlack">System folgen (Light/Pitch Black)</string>
+    <string name="repoForkOf">Fork von: %s</string>
+    <string name="adoptRepo">Übernehmen</string>
+    <string name="repoAdopted">Repository %s wurde übernommen</string>
+    <string name="unadoptedRepos">Nicht übernommene Repositories</string>
+    <string name="unadoptedReposMessage">- Übernehmen wird das Repository %s zur Organisation / zum Benutzer %s hinzufügen.\n - Löschen entfernt es aus dem System.</string>
 </resources>

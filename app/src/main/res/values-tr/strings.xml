@@ -11,6 +11,7 @@
     <string name="navRate">GitNex\'i Puanla</string>
     <string name="navLogout">Çıkış Yap</string>
     <string name="navAdministration">Administration</string>
+    <string name="navMyIssues">My Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Yeni Depo</string>
@@ -33,9 +34,7 @@
     <!-- page titles -->
     <string name="repoName">Demo deposu</string>
     <string name="repoDescription">Demo açıklaması</string>
-    <string name="noData">Depo bulunamadı</string>
     <string name="orgName">Demo organizasyonu</string>
-    <string name="noDataOrg">Organizasyon bulunamadı</string>
     <string name="newCreateButtonCopy">Oluştur</string>
     <string name="newUpdateButtonCopy">Güncelle</string>
     <string name="newRepoTintCopy">Depo Adı</string>
@@ -67,16 +66,14 @@
     <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
     <string name="repoDescError">Depo açıklaması maksimum 255 karakter sınırını aşıyor</string>
     <string name="repoCreated">Depo başarıyla oluşturuldu</string>
-    <string name="repoCreatedError">Bir şeyler ters gitti lütfen tekrar deneyin</string>
     <string name="repoExistsError">Bu adın deposu, seçilen Sahibi altında zaten var</string>
     <string name="repoOwnerError">Select owner for the repository</string>
     <string name="orgNameErrorEmpty">Organizasyon adı boş</string>
     <string name="orgNameErrorInvalid">Organizasyon adı geçerli değil, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organizasyon açıklaması maksimum 255 karakter sınırını aşıyor</string>
     <string name="orgCreated">Organizasyon başarıyla oluşturuldu</string>
-    <string name="orgCreatedError">Bir şeyler ters gitti lütfen tekrar deneyin</string>
     <string name="orgExistsError">Organizasyon zaten var</string>
-    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
+    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
     <string name="processingText">İşlem devam ediyor</string>
     <string name="search">Ara</string>
     <string name="close">Kapat</string>
@@ -85,16 +82,15 @@
     <string name="repoContentAvatar">Depo</string>
     <string name="privateAvatar">Gizli</string>
     <string name="removeContent">Kaldır</string>
-    <string name="genericApiStatusError">Örnek bir hata döndürdü. Kod\u0020</string>
+    <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextInfo">Ayrıntılar</string>
     <string name="tabTextFiles">Dosyalar</string>
     <string name="tabTextMl">Kilometre Taşları</string>
     <string name="tabTextReleases">Sürümler</string>
     <string name="tabTextBranches">Dallar</string>
-    <string name="tabTextLabels">Etiketler</string>
     <string name="tabTextCollaborators">İşbirlikçiler</string>
     <string name="tabPullRequests">İstekleri Çek</string>
-    <string name="noDataIssueTab">Konu bulunamadı</string>
+    <string name="pullRequest">Pull Request</string>
     <string name="infoTabRepoSize">Boyut</string>
     <string name="infoTabRepoDefaultBranch">Varsayılan Dal</string>
     <string name="infoTabRepoSshUrl">SSH Adresi</string>
@@ -106,32 +102,25 @@
     <string name="infoShowMoreInformation">Show More Information</string>
     <string name="infoMoreInformation">More Information</string>
     <string name="timeAtText">de</string>
-    <string name="createdText">Açıldı\u0020</string>
-    <string name="issueCreator">Oluşturan:\u0020</string>
-    <string name="issueCommenter">Yorumlayıcı:\u0020</string>
     <string name="issueMilestone">Kilometre taşı %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">Atanmış: %1$s</string>
+    <string name="assignedToMe">Assigned to Me</string>
     <string name="commentButtonText">Yorum Yap</string>
     <string name="commentEmptyError">Lütfen yorumunuzu yazın</string>
     <string name="commentSuccess">Yorum gönderildi</string>
-    <string name="commentError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="featureDeprecated">This function will be removed in the future</string>
     <string name="generalImgContentText">Image</string>
-    <string name="noDataMilestonesTab">Kilometre taşı bulunamadı</string>
     <string name="commitAuthor">İşleme yazarı: %1$s</string>
     <string name="releaseDownloadText">İndirmeler</string>
-    <string name="noDataReleasesTab">Sürüm bulunamadı</string>
     <string name="releasePublishedBy">Published by @%1$s</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
-    <string name="noDataCollaboratorTab">İşbirlikçi bulunamadı</string>
     <string name="newMilestoneTitle">Başlık</string>
     <string name="newMilestoneDescription">Açıklama</string>
     <string name="newMilestoneDueDate">Bitiş Tarihi</string>
     <string name="milestoneNameErrorEmpty">Kilometre taşı başlığı boş</string>
     <string name="milestoneDescError">Kilometre taşı açıklaması 255 karakter limitini aşıyor</string>
     <string name="milestoneCreated">Kilometre taşı başarıyla oluşturuldu</string>
-    <string name="milestoneCreatedError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="milestoneDateEmpty">Lütfen bitiş tarihi seçin</string>
     <string name="milestoneNoDueDate">No due date</string>
     <string name="milestoneNoDescription">No description</string>
@@ -149,10 +138,8 @@
     <string name="issueTitleEmpty">Konu başlığı boş</string>
     <string name="issueDescriptionEmpty">Konu açıklaması boş</string>
     <string name="issueCreated">Yeni konu başarıyla oluşturuldu</string>
-    <string name="issueCreatedError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">No assignees found</string>
-    <string name="noLabelsFound">Etiket bulunamadı</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Çeviri</string>
     <string name="settingsLanguageSystem">System</string>
@@ -201,6 +188,8 @@
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
+    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
+    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
     <!-- settings -->
     <string name="noMoreData">Daha fazla veri yok</string>
     <string name="createLabel">Yeni Etiket</string>
@@ -209,25 +198,17 @@
     <string name="labelColor">Etiket Rengi</string>
     <string name="labelEmptyError">Etiket adı boş</string>
     <string name="labelNameError">Etiket adı geçerli değil</string>
-    <string name="labelCreated">Etiket oluşturuldu.</string>
-    <string name="labelGeneralError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
-    <string name="labelUpdated">Etiket güncellendi.</string>
-    <string name="noDataLabelsTab">Etiket bulunamadı</string>
+    <string name="labelCreated">Label created</string>
+    <string name="labelUpdated">Label updated</string>
     <string name="labelMenuContentDesc">Açıklama</string>
     <string name="labelDeleteText">Etiket silindi</string>
-    <string name="labelDeleteErrorText">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
-    <string name="noDataBranchesTab">Dal bulunamadı</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Yetkilendirme Hatası</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Bu etiketi gerçekten silmek istiyor musunuz?</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">Depolar</string>
     <string name="orgTabTeams">Takımlar</string>
     <string name="orgTabMembers">Üyeler</string>
-    <string name="orgCreateTeam">Yeni Takım</string>
-    <string name="noDataTeams">Hiçbir takım bulunamadı</string>
     <string name="teamTitle">Takım adı</string>
     <string name="teamDescription">Takım açıklaması</string>
     <string name="teamPermissions">Permissions</string>
@@ -237,16 +218,18 @@
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
-    <string name="noDataMembers">Üye bulunamadı</string>
     <string name="orgMember">Organizasyon üyeleri</string>
     <string name="orgTeamMembers">Organizasyon takım üyeleri</string>
-    <string name="addNewMember">Add / Remove New Member</string>
-    <string name="removeTeamMemberTitle">Remove\u0020</string>
-    <string name="addTeamMemberTitle">Add\u0020</string>
+    <string name="removeTeamMember">Remove %s</string>
+    <string name="addTeamMember">Add %s</string>
     <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
     <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
     <string name="memberAddedMessage">Member added to the team successfully</string>
     <string name="memberRemovedMessage">Member removed from the team successfully</string>
+    <string name="repoAddedMessage">Repository added to the team successfully</string>
+    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
+    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
+    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Takım Adı</string>
@@ -262,7 +245,6 @@
     <string name="teamDescError">Takım açıklamasında uygun olmayan karakterler var</string>
     <string name="teamDescLimit">Takım açıklamasında 100\'den fazla karakter var</string>
     <string name="teamCreated">Takım başarıyla oluşturuldu</string>
-    <string name="teamCreatedError">Bir şeyler ters gitti lütfen tekrar deneyin</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Yorumu Düzenle</string>
@@ -272,7 +254,6 @@
     <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">İşbirlikçi Ekle / Kaldır</string>
     <string name="addCollaboratorSearchHint">Kullanıcıları ara</string>
     <string name="addCollaboratorViewUserDesc">Kullanıcı Adı</string>
     <string name="removeCollaboratorDialogTitle">Remove %s?</string>
@@ -307,7 +288,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Depo Meta</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">Yeni Kullanıcı Ekle</string>
+    <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">System Users</string>
     <string name="userRoleAdmin">Yönetici</string>
     <string name="adminCron">Cron Tasks</string>
@@ -343,6 +324,8 @@
     <string name="tagNameErrorEmpty">Etiket adı boş</string>
     <string name="titleErrorEmpty">Başlık boş</string>
     <string name="releaseCreatedText">Yeni sürüm oluşturuldu</string>
+    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
+    <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
     <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">OTP Kodu (İsteğe Bağlı)</string>
@@ -377,9 +360,9 @@
     <string name="copyIssueUrl">Konu Adresini Kopyala</string>
     <string name="copyIssueUrlToastMsg">URL panoya kopyalandı</string>
     <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
+    <string name="copyShaToastMsg">SHA copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 tamamlandı</string>
     <!-- files -->
-    <string name="noDataFilesTab">Dosya bulunamadı</string>
     <string name="filesGenericError">Üzgünüz, bu dosya API hata döndürdüğü için görüntülenemiyor</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
@@ -389,7 +372,7 @@
     <string name="cancelButton">İptal</string>
     <string name="genericError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
     <string name="apiNotFound">Bu isteğin yüklü olandan daha yüksek Gitea sürümü gerekiyor. Lütfen örneğinizi Gitea\'nin en son sürümüne yükseltin.</string>
-    <string name="noDataFound">Veri bulunamadı</string>
+    <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Ekle</string>
     <string name="removeButton">Kaldır</string>
     <string name="authorizeError">Bu işlemi gerçekleştirmek için yetkiniz yok.</string>
@@ -397,7 +380,7 @@
     <string name="menuEditText">Düzenle</string>
     <string name="menuDeleteText">Sil</string>
     <string name="menuCopyText">Copy</string>
-    <string name="menuQuoteText">Quote and Reply</string>
+    <string name="menuQuoteText">Quote Reply</string>
     <string name="modifiedText">düzenlendi</string>
     <string name="saveButton">Kaydet</string>
     <string name="websiteText">Website</string>
@@ -412,16 +395,30 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
     <string name="genericWaitFor">Hold on ☕</string>
+    <string name="file">File</string>
+    <string name="issue">Issue</string>
+    <string name="label">Label</string>
+    <string name="release">Release</string>
+    <string name="pr">Pull Request</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="unstar">Unstar</string>
+    <string name="watch">Watch</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="share">Share</string>
+    <string name="repository">Repository</string>
+    <string name="team">Team</string>
+    <string name="organization">Organization</string>
+    <string name="addRemove">Add / Remove</string>
+    <string name="download">Download</string>
+    <string name="reopen">Reopen</string>
+    <string name="openInBrowser">Open in Browser</string>
+    <string name="deleteGenericTitle">Delete %s</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Depoları keşfet</string>
-    <string name="starRepository">Depoyu Yıldızla</string>
-    <string name="unStarRepository">Depo Yıldızını Kaldır</string>
     <string name="starRepositorySuccess">Depo yıldızlılar listesine eklendi</string>
     <string name="unStarRepositorySuccess">Depo yıldızlılar listesinden kaldırıldı</string>
-    <string name="watchRepository">Depoyu İzle</string>
-    <string name="unWatchRepository">Depoyu İzlemeyi Bırak</string>
     <string name="watchRepositorySuccess">Depo izleme listesine eklendi</string>
     <string name="unWatchRepositorySuccess">Depo izleme listesinden kaldırıldı</string>
     <string name="titleDrafts">Drafts</string>
@@ -434,9 +431,6 @@
     <string name="unauthorizedApiError">Örnek bir hata döndürdü - Yetkisiz. Kimlik bilgilerinizi kontrol edin ve tekrar deneyin</string>
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
-    <string name="noDataPullRequests">Çekme isteği bulunamadı</string>
-    <string name="editPrText">Çekme İsteğini Düzenle</string>
-    <string name="copyPrUrlText">Çekme İsteği URL’sini Kopyala</string>
     <string name="editPrNavHeader">Çekme İsteği Düzenle #%1$s</string>
     <string name="editPrSuccessMessage">Çekme İsteği güncellendi</string>
     <string name="fileDiffViewHeader">%1$s Dosya Değiştirildi</string>
@@ -444,7 +438,6 @@
     <string name="updatePullRequestText">Update Pull Request</string>
     <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Değişiklik İsteğini Birleştir</string>
-    <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
     <string name="deleteBranchErrorNotFound">Branch does not exist</string>
@@ -463,24 +456,22 @@
     <string name="mergeStrategy">Merge Strategy</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
-    <string name="downloadFile">Download This File</string>
+    <string name="deleteBranch">Delete Branch</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">Delete This File</string>
     <string name="editFile">Edit This File</string>
-    <string name="deleteFileText">Delete %1$s</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">Edit %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
-    <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
     <string name="viewCommits">View Commits</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Sertifika doğrulama</string>
@@ -502,7 +493,6 @@
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
@@ -539,9 +529,9 @@
     <string name="pollingDelaySelectedText">%d Minutes</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-    <string name="markAsRead">Mark as Read</string>
-    <string name="markAsUnread">Mark as Unread</string>
-    <string name="pinNotification">Pin Notification</string>
+    <string name="markAsRead">Mark Read</string>
+    <string name="markAsUnread">Mark Unread</string>
+    <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
@@ -552,6 +542,10 @@
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
+    <plurals name="youHaveNewNotifications">
+        <item quantity="one">You have %s new notification.</item>
+        <item quantity="other">You have %s new notifications.</item>
+    </plurals>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -595,6 +589,9 @@
     <string name="titleError">Title is required</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="prClosed">Pull Request closed</string>
+    <string name="prReopened">Pull Request reopened</string>
+    <string name="prMergeInfo">Pull Request Info</string>
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
@@ -626,8 +623,6 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
-    <string name="closePr">Close Pull Request</string>
-    <string name="reopenPr">Reopen Pull Request</string>
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -635,8 +630,17 @@
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="deleteTagTitle">Delete tag %s</string>
     <string name="tagDeleted">Tag deleted</string>
+    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="logInAgain">Log in again</string>
+    <string name="notLoggedIn">%s \u25CF not logged in</string>
+    <string name="followSystem">Follow system (Light/Dark)</string>
+    <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="repoForkOf">Fork of: %s</string>
+    <string name="adoptRepo">Adopt</string>
+    <string name="repoAdopted">Adopted repository %s</string>
+    <string name="unadoptedRepos">Unadopted Repositories</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
 </resources>
