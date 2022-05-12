@@ -59,7 +59,17 @@ public class Path {
 
 	}
 
-	public int size() {
+	public Path addWithoutEncoding(String segment) {
+
+		if(segment != null && !segment.trim().isEmpty()) {
+			segments.add(segment);
+		}
+
+		pathChanged();
+		return this;
+	}
+
+		public int size() {
 
 		return segments.size();
 	}

@@ -38,7 +38,7 @@ import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapterListener {
@@ -151,7 +151,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		switch(file.getType()) {
 
 			case "dir":
-				path.add(file.getName());
+				path.addWithoutEncoding(file.getName());
 				binding.breadcrumbsView.addItem(new BreadcrumbItem(Collections.singletonList(file.getName())));
 				refresh();
 				break;
@@ -173,6 +173,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 				String host = url.getHost();
 
 				UserAccountsApi userAccountsApi = BaseApi.getInstance(requireContext(), UserAccountsApi.class);
+				assert userAccountsApi != null;
 				List<UserAccount> userAccounts = userAccountsApi.loggedInUserAccounts();
 				UserAccount account = null;
 
@@ -252,7 +253,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding.progressBar.setVisibility(View.VISIBLE);
 
 		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
-
 		filesModel.getFilesList2(owner, repo, filesDir, ref, getContext(), binding.progressBar, binding.noDataFiles).observe(getViewLifecycleOwner(), filesListMain2 -> {
 
 			filesAdapter.getOriginalFiles().clear();

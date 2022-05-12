@@ -3,7 +3,6 @@ package org.mian.gitnex.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepoInfoFragment extends Fragment {
@@ -164,7 +163,7 @@ public class RepoInfoFragment extends Fragment {
 
 			binding.repoMetaForks.setText(String.valueOf(repoInfo.getForksCount()));
 			binding.repoMetaWatchers.setText(String.valueOf(repoInfo.getWatchersCount()));
-			binding.repoMetaSize.setText(FileUtils.byteCountToDisplaySize(repoInfo.getSize().intValue() * 1024));
+			binding.repoMetaSize.setText(FileUtils.byteCountToDisplaySize(repoInfo.getSize() * 1024));
 
 			binding.repoMetaCreatedAt.setText(TimeHelper.formatTime(repoInfo.getCreatedAt(), locale, timeFormat, ctx));
 			if(timeFormat.equals("pretty")) {
@@ -300,12 +299,8 @@ public class RepoInfoFragment extends Fragment {
 
 			@Override
 			public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 			}
-
 		});
-
 	}
-
 }
