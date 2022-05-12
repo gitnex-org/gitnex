@@ -11,6 +11,7 @@
     <string name="navRate">五星好评！</string>
     <string name="navLogout">退出</string>
     <string name="navAdministration">管理</string>
+    <string name="navMyIssues">我的问题</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">创建仓库</string>
@@ -33,9 +34,7 @@
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
     <string name="repoDescription">演示描述</string>
-    <string name="noData">没有任何仓库</string>
     <string name="orgName">演示组织</string>
-    <string name="noDataOrg">没有任何组织</string>
     <string name="newCreateButtonCopy">创建</string>
     <string name="newUpdateButtonCopy">更新</string>
     <string name="newRepoTintCopy">仓库名称</string>
@@ -67,16 +66,14 @@
     <string name="repoNameErrorReservedPatterns">仓库名称包含保留关键字</string>
     <string name="repoDescError">仓库描述超出最大255个字符限制</string>
     <string name="repoCreated">仓库创建成功</string>
-    <string name="repoCreatedError">出错了，请重试</string>
     <string name="repoExistsError">当前所有者已拥有同名仓库</string>
     <string name="repoOwnerError">选择仓库所有者</string>
     <string name="orgNameErrorEmpty">组织名称为空</string>
     <string name="orgNameErrorInvalid">组织名称无效, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">组织描述超过最大255个字符限制</string>
     <string name="orgCreated">组织创建成功</string>
-    <string name="orgCreatedError">出错了，请重试</string>
     <string name="orgExistsError">组织已存在</string>
-    <string name="diffStatistics">%s 处添加和 %s 处删除</string>
+    <string name="diffStatistics">%1$s 处添加和 %2$s 处删除</string>
     <string name="processingText">处理中</string>
     <string name="search">搜索</string>
     <string name="close">关闭</string>
@@ -85,16 +82,15 @@
     <string name="repoContentAvatar">仓库</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">移除</string>
-    <string name="genericApiStatusError">实例返回了一个错误。代码\u0020</string>
+    <string name="genericApiError">实例返回了一个错误。代码 %d</string>
     <string name="tabTextInfo">详情</string>
     <string name="tabTextFiles">文件</string>
     <string name="tabTextMl">里程碑</string>
     <string name="tabTextReleases">版本发布</string>
     <string name="tabTextBranches">分支</string>
-    <string name="tabTextLabels">标签</string>
     <string name="tabTextCollaborators">协作者</string>
     <string name="tabPullRequests">拉取请求</string>
-    <string name="noDataIssueTab">没有工单</string>
+    <string name="pullRequest">合并请求</string>
     <string name="infoTabRepoSize">尺寸</string>
     <string name="infoTabRepoDefaultBranch">默认分支</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -106,32 +102,25 @@
     <string name="infoShowMoreInformation">显示更多信息</string>
     <string name="infoMoreInformation">更多信息</string>
     <string name="timeAtText">在</string>
-    <string name="createdText">已打开\u0020</string>
-    <string name="issueCreator">创建者:\u0020</string>
-    <string name="issueCommenter">评论者: \u0020</string>
     <string name="issueMilestone">里程碑 %1$s</string>
     <string name="dueDate">截止日期为 %1$s</string>
     <string name="assignedTo">分配给： %1$s</string>
+    <string name="assignedToMe">分配给我</string>
     <string name="commentButtonText">评论</string>
     <string name="commentEmptyError">请输入您的评论</string>
     <string name="commentSuccess">评论已发表</string>
-    <string name="commentError">出错了，请重试</string>
     <string name="featureDeprecated">该功能今后将被移除</string>
     <string name="generalImgContentText">图片</string>
-    <string name="noDataMilestonesTab">未发现里程碑</string>
     <string name="commitAuthor">提交作者： %1$s</string>
     <string name="releaseDownloadText">下载</string>
-    <string name="noDataReleasesTab">未发布任何版本</string>
     <string name="releasePublishedBy">由 @%1$s 发布</string>
     <string name="noReleaseBodyContent">发布者没有提供发行日志</string>
-    <string name="noDataCollaboratorTab">没有协作者</string>
     <string name="newMilestoneTitle">标题</string>
     <string name="newMilestoneDescription">描述</string>
     <string name="newMilestoneDueDate">截止日期</string>
     <string name="milestoneNameErrorEmpty">里程碑标题为空</string>
     <string name="milestoneDescError">里程碑描述超过最大255个字符限制</string>
     <string name="milestoneCreated">里程碑创建成功</string>
-    <string name="milestoneCreatedError">出了错，请重试</string>
     <string name="milestoneDateEmpty">请选择截止日期</string>
     <string name="milestoneNoDueDate">没有到期日</string>
     <string name="milestoneNoDescription">无描述</string>
@@ -149,10 +138,8 @@
     <string name="issueTitleEmpty">问题标题为空</string>
     <string name="issueDescriptionEmpty">说明为空</string>
     <string name="issueCreated">新问题创建成功</string>
-    <string name="issueCreatedError">出了错，请重试</string>
     <string name="issueCreatedNoMilestone">没有里程碑</string>
     <string name="noAssigneesFound">未找到受让人</string>
-    <string name="noLabelsFound">未找到标签</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">翻译</string>
     <string name="settingsLanguageSystem">系统</string>
@@ -201,6 +188,8 @@
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">选择默认链接处理程序屏幕</string>
     <string name="settingsBiometricHeader">生物识别支持</string>
+    <string name="settingsLabelsInListHeader">带文本的标签</string>
+    <string name="settingsLabelsInListHint">启用此功能将在问题和 pr 列表中显示带有文本的标签，默认是色点</string>
     <!-- settings -->
     <string name="noMoreData">没有更多可用数据</string>
     <string name="createLabel">创建标签</string>
@@ -209,25 +198,17 @@
     <string name="labelColor">标签颜色</string>
     <string name="labelEmptyError">标签名称为空</string>
     <string name="labelNameError">标签名称无效</string>
-    <string name="labelCreated">标签已创建。</string>
-    <string name="labelGeneralError">出了错，请重试</string>
-    <string name="labelUpdated">标签已更新。</string>
-    <string name="noDataLabelsTab">未找到标签</string>
+    <string name="labelCreated">标签已创建</string>
+    <string name="labelUpdated">标签已更新</string>
     <string name="labelMenuContentDesc">描述</string>
     <string name="labelDeleteText">标签已删除</string>
-    <string name="labelDeleteErrorText">出了错，请重试</string>
-    <string name="noDataBranchesTab">未找到分支</string>
     <string name="selectBranchError">选择用于发行的分支</string>
     <string name="alertDialogTokenRevokedTitle">授权错误</string>
     <string name="alertDialogTokenRevokedMessage">看来访问令牌已被吊销，或者您不被允许查看这些内容。\n\n如果令牌被吊销，请注销并重新登录</string>
-    <string name="labelDeleteTitle">删除 %s</string>
     <string name="labelDeleteMessage">您真的想要删除此标签吗？</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">仓库列表</string>
     <string name="orgTabTeams">团队</string>
     <string name="orgTabMembers">成员</string>
-    <string name="orgCreateTeam">创建团队</string>
-    <string name="noDataTeams">未找到团队</string>
     <string name="teamTitle">团队名称</string>
     <string name="teamDescription">团队描述</string>
     <string name="teamPermissions">权限</string>
@@ -237,16 +218,18 @@
     <string name="teamPermissionAdmin">• 此团队的成员可以团队存储库为目标和来源进行推送，并添加协作者。</string>
     <string name="teamPermissionOwner">• 此团队成员拥有所有者权限。</string>
     <string name="teamShowAll">全部显示</string>
-    <string name="noDataMembers">未找到成员</string>
     <string name="orgMember">组织成员</string>
     <string name="orgTeamMembers">组织团队成员</string>
-    <string name="addNewMember">添加/删除新成员</string>
-    <string name="removeTeamMemberTitle">删除\u0020</string>
-    <string name="addTeamMemberTitle">添加\u0020</string>
+    <string name="removeTeamMember">删除 %s</string>
+    <string name="addTeamMember">添加 %s</string>
     <string name="addTeamMemberMessage">您想要将此用户添加到团队吗？</string>
     <string name="removeTeamMemberMessage">您想要从团队中删除此用户吗？</string>
     <string name="memberAddedMessage">成功添加成员到团队</string>
     <string name="memberRemovedMessage">成功从团队中移除成员</string>
+    <string name="repoAddedMessage">成功添加仓库到团队</string>
+    <string name="repoRemovedMessage">成功从团队中移除仓库</string>
+    <string name="repoAddToTeamMessage">添加仓库 %1$s 到组织 %2$s 的团队 %3$s</string>
+    <string name="repoRemoveTeamMessage">从团队 %2$s 处删除了仓库 %1$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">团队名称</string>
@@ -262,7 +245,6 @@
     <string name="teamDescError">团队描述有非法字符</string>
     <string name="teamDescLimit">团队描述有超过 100 个字符</string>
     <string name="teamCreated">团队创建成功</string>
-    <string name="teamCreatedError">出了错，请重试</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">编辑评论</string>
@@ -272,7 +254,6 @@
     <string name="copyCommentText">复制评论</string>
     <!-- issue comments -->
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">添加/删除协作者</string>
     <string name="addCollaboratorSearchHint">搜索用户</string>
     <string name="addCollaboratorViewUserDesc">用户名</string>
     <string name="removeCollaboratorDialogTitle">删除 %s？</string>
@@ -307,7 +288,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">仓库元数据</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">添加新用户</string>
+    <string name="adminCreateNewUser">新用户</string>
     <string name="adminUsers">系统用户</string>
     <string name="userRoleAdmin">管理员</string>
     <string name="adminCron">Cron 任务</string>
@@ -343,6 +324,8 @@
     <string name="tagNameErrorEmpty">标签名称为空</string>
     <string name="titleErrorEmpty">标题为空</string>
     <string name="releaseCreatedText">已创建新版本</string>
+    <string name="deleteReleaseConfirmation">您真想删除此发布吗？</string>
+    <string name="releaseDeleted">版本发布已删除</string>
     <!-- release -->
     <string name="loginOTPTypeError">OTP 代码应该是数字。</string>
     <string name="loginOTP">OTP 代码(可选)</string>
@@ -377,9 +360,9 @@
     <string name="copyIssueUrl">复制问题 URL</string>
     <string name="copyIssueUrlToastMsg">已复制链接</string>
     <string name="copyIssueCommentToastMsg">已复制评论到剪贴板</string>
+    <string name="copyShaToastMsg">已复制 SHA 值到剪贴板</string>
     <string name="milestoneCompletion">%1$d\uFF05 已完成</string>
     <!-- files -->
-    <string name="noDataFilesTab">找不到文件</string>
     <string name="filesGenericError">抱歉，此文件无法查看，因为API返回了错误</string>
     <string name="fileTypeCannotBeEdited">不能编辑此类型的文件</string>
     <string name="notSupported">不受支持</string>
@@ -389,7 +372,7 @@
     <string name="cancelButton">取消</string>
     <string name="genericError">出了错，请重试</string>
     <string name="apiNotFound">此请求需要比安装版本更高的Gitea版本。请将您的实例升级到最新版本的Gitea。</string>
-    <string name="noDataFound">没有找到数据</string>
+    <string name="noDataFound">🌟 这里什么都没有 🌟</string>
     <string name="addButton">添加</string>
     <string name="removeButton">删除</string>
     <string name="authorizeError">您无权执行此操作。</string>
@@ -397,7 +380,7 @@
     <string name="menuEditText">编辑</string>
     <string name="menuDeleteText">删除</string>
     <string name="menuCopyText">复制</string>
-    <string name="menuQuoteText">引用和回复</string>
+    <string name="menuQuoteText">引用回复</string>
     <string name="modifiedText">已编辑</string>
     <string name="saveButton">保存</string>
     <string name="websiteText">网站</string>
@@ -412,16 +395,30 @@
     <string name="genericServerResponseError">目前我们无法访问服务器，请检查您的服务器状态，然后重试</string>
     <string name="genericCopyUrl">复制 URL</string>
     <string name="genericWaitFor">等一下 ☕</string>
+    <string name="file">文件</string>
+    <string name="issue">问题</string>
+    <string name="label">标签</string>
+    <string name="release">发布</string>
+    <string name="pr">合并请求</string>
+    <string name="collaborator">协作者</string>
+    <string name="unstar">取消星标</string>
+    <string name="watch">关注</string>
+    <string name="unwatch">取消关注</string>
+    <string name="share">分享</string>
+    <string name="repository">仓库</string>
+    <string name="team">团队</string>
+    <string name="organization">组织</string>
+    <string name="addRemove">添加/删除</string>
+    <string name="download">下载</string>
+    <string name="reopen">重新打开</string>
+    <string name="openInBrowser">在浏览器中打开</string>
+    <string name="deleteGenericTitle">删除 %s</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索用户</string>
     <string name="exploreIssues">探索问题</string>
     <string name="exploreTextBoxHint">探索仓库</string>
-    <string name="starRepository">星级仓库</string>
-    <string name="unStarRepository">从仓库中删除星星</string>
     <string name="starRepositorySuccess">仓库已添加到星标列表</string>
     <string name="unStarRepositorySuccess">从星标列表中删除仓库</string>
-    <string name="watchRepository">关注仓库</string>
-    <string name="unWatchRepository">取消关注仓库</string>
     <string name="watchRepositorySuccess">仓库已添加到关注列表</string>
     <string name="unWatchRepositorySuccess">仓库已从关注列表中删除</string>
     <string name="titleDrafts">草稿</string>
@@ -434,9 +431,6 @@
     <string name="unauthorizedApiError">令牌可能已失效，请检查后重试</string>
     <string name="loginTokenError">令牌是必需的。</string>
     <string name="prDeletedFork">已删除分叉</string>
-    <string name="noDataPullRequests">未找到拉取请求</string>
-    <string name="editPrText">编辑拉取请求</string>
-    <string name="copyPrUrlText">复制拉取请求 URL</string>
     <string name="editPrNavHeader">编辑拉取请求 #%1$s</string>
     <string name="editPrSuccessMessage">拉取请求已更新</string>
     <string name="fileDiffViewHeader">%1$s 文件已更改</string>
@@ -444,7 +438,6 @@
     <string name="updatePullRequestText">更新拉取请求</string>
     <string name="openFileDiffText">显示变更的文件</string>
     <string name="mergePullRequestText">合并拉取请求</string>
-    <string name="deletePrHeadBranch">删除 head 分支</string>
     <string name="deleteBranchSuccess">已成功删除分支</string>
     <string name="deleteBranchError">无法删除分支</string>
     <string name="deleteBranchErrorNotFound">分支不存在</string>
@@ -463,24 +456,22 @@
     <string name="mergeStrategy">合并策略</string>
     <string name="selectMergeStrategy">选择合并策略</string>
     <string name="mergeNotAllowed">不允许合并 [理由：没有足够多的认可]</string>
-    <string name="downloadFile">下载此文件</string>
+    <string name="deleteBranch">删除分支</string>
     <string name="waitLoadingDownloadFile">请等待文件加载到内存</string>
     <string name="downloadFileSaved">文件保存成功</string>
     <string name="excludeFilesInFileViewer">文件查看器不支持此文件类型/大小。你可以从菜单下载。</string>
     <string name="deleteFile">删除此文件</string>
     <string name="editFile">编辑此文件</string>
-    <string name="deleteFileText">删除 %1$s</string>
     <string name="deleteFileMessage">文件被分支%1$s设定为删除</string>
     <string name="editFileText">编辑 %1$s</string>
     <string name="editFileMessage">文件已被分支 %1$s 修改</string>
     <string name="sizeCopy">大小</string>
     <string name="shareIssue">分享问题</string>
-    <string name="sharePr">分享拉取请求</string>
     <string name="shareRepository">共享存储库</string>
     <string name="createRepository">创建仓库</string>
     <string name="commitTitle">提交</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[%s 的作者为 <b>%s</b>，提交者为 <b>%s</b>]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> 提交了 %s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> 撰写，<b>%2$s</b>提交了%3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b>提交了 %2$s]]></string>
     <string name="viewCommits">查看提交</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">证书验证</string>
@@ -502,7 +493,6 @@
     <string name="closeMilestone">关闭里程碑</string>
     <string name="openMilestone">打开里程碑</string>
     <string name="milestoneStatusUpdate">里程碑状态更新成功</string>
-    <string name="errorOnLogin">我们无法连接到服务器，请检查您的服务器状态</string>
     <string name="reportViewerHeader">崩溃报告</string>
     <string name="settingsEnableReportsText">启用崩溃报告</string>
     <string name="crashTitle">GitNex 已停止 :(</string>
@@ -541,7 +531,7 @@
     <string name="pollingDelayDialogDescriptionText">以分钟为单位，选择GitNex尝试轮询新通知的延迟。</string>
     <string name="markAsRead">标记为已读</string>
     <string name="markAsUnread">标记为未读</string>
-    <string name="pinNotification">固定通知</string>
+    <string name="pinNotification">固定</string>
     <string name="markedNotificationsAsRead">成功将所有通知标记为已读</string>
     <string name="notificationsHintText">轮询延迟、light、振动</string>
     <string name="enableNotificationsHeaderText">启用通知</string>
@@ -552,6 +542,9 @@
     <string name="youHaveGotNewNotifications">您有%d条新通知</string>
     <string name="mainNotificationChannelName">通知</string>
     <string name="mainNotificationChannelDescription">这是 GitNex 的主通知通道。</string>
+    <plurals name="youHaveNewNotifications">
+        <item quantity="other">你有 %s 则新通知。</item>
+    </plurals>
     <string name="isRead">已读</string>
     <string name="isUnread">未读</string>
     <string name="repoSettingsTitle">存储库设置</string>
@@ -595,6 +588,9 @@
     <string name="titleError">标题不可为空</string>
     <string name="prCreateSuccess">拉取请求创建成功</string>
     <string name="prAlreadyExists">这些分支之间的拉取请求已存在</string>
+    <string name="prClosed">拉取请求已关闭</string>
+    <string name="prReopened">拉取请求已重新打开</string>
+    <string name="prMergeInfo">合并请求信息</string>
     <string name="accountDoesNotExist">似乎应用程序中并不存在URI%1$s的账户。您可以通过点击添加新帐户按钮来添加一个。</string>
     <string name="launchApp">前往应用</string>
     <string name="noActionText">GitNex无法处理所请求的资源，您可以在项目代码库中发起一个问题，提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。</string>
@@ -626,8 +622,6 @@
     <string name="updateStrategyMerge">合并</string>
     <string name="updateStrategyRebase">变基</string>
     <string name="selectUpdateStrategy">选择更新策略</string>
-    <string name="closePr">关闭拉取请求</string>
-    <string name="reopenPr">重新打开拉取请求</string>
     <string name="userAvatar">头像</string>
     <string name="tags">标签</string>
     <string name="releasesTags">发行/标签</string>
@@ -635,8 +629,17 @@
     <string name="tagCreated">标签已创建</string>
     <string name="asRef">用作参考</string>
     <string name="deleteTagConfirmation">您真想删除此标签吗？</string>
-    <string name="deleteTagTitle">删除标签 %s</string>
     <string name="tagDeleted">标签已删除</string>
+    <string name="tagDeleteError">无法直接删除附加到发布的标签</string>
     <string name="useCustomTabs">使用自定义标签</string>
     <string name="browserOpenFailed">未找到打开此链接的程序。大多数浏览器不支持 SSH URL 及在 http:// 或 https:// 前另有前缀的 URL</string>
+    <string name="logInAgain">再次登录</string>
+    <string name="notLoggedIn">%s \u25CF 未登录</string>
+    <string name="followSystem">跟随系统 (浅色 / 深色)</string>
+    <string name="followSystemBlack">跟随系统 (浅色/漆黑)</string>
+    <string name="repoForkOf">此仓库衍生自：%s</string>
+    <string name="adoptRepo">采用</string>
+    <string name="repoAdopted">已采用仓库 %s</string>
+    <string name="unadoptedRepos">已取消采用仓库</string>
+    <string name="unadoptedReposMessage">- 采用将添加仓库 %s 到组织/用户 %s。\n- 删除将从系统中移除它。</string>
 </resources>

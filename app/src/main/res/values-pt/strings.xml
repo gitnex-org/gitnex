@@ -11,6 +11,7 @@
     <string name="navRate">Avalie o GitNex</string>
     <string name="navLogout">Sair</string>
     <string name="navAdministration">Administração</string>
+    <string name="navMyIssues">Meus Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Novo repositório</string>
@@ -29,13 +30,11 @@
     <string name="pageTitleExplore">Explorar</string>
     <string name="pageTitleAdministration">Administração de Gitea</string>
     <string name="pageTitleNewPullRequest">Novo Pull Request</string>
-    <string name="pageTitleUsers">Users</string>
+    <string name="pageTitleUsers">Usuários</string>
     <!-- page titles -->
     <string name="repoName">Repo demo</string>
     <string name="repoDescription">Descrição demo</string>
-    <string name="noData">Nenhum repositório encontrado</string>
     <string name="orgName">Organização demo</string>
-    <string name="noDataOrg">Nenhuma organização encontrada</string>
     <string name="newCreateButtonCopy">Criar</string>
     <string name="newUpdateButtonCopy">Atualizar</string>
     <string name="newRepoTintCopy">Nome do repositório</string>
@@ -59,7 +58,7 @@
     <string name="emptyFieldURL">A URL da instância é necessária</string>
     <string name="emptyFieldUsername">Nome de usuário é necessário</string>
     <string name="emptyFieldPassword">A senha é necessária</string>
-    <string name="protocolEmptyError">Protocol is required</string>
+    <string name="protocolEmptyError">Necessário especificar o protocolo</string>
     <string name="checkNetConnection">Não é possível acessar a rede, por favor, verifique sua conexão com a Internet</string>
     <string name="repoNameErrorEmpty">Nome do repositório está vazio</string>
     <string name="repoNameErrorInvalid">O nome do repositório não é válido. [um&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -67,16 +66,14 @@
     <string name="repoNameErrorReservedPatterns">Nome do repositório contém palavras-chave reservadas</string>
     <string name="repoDescError">Descrição do repositório excede o limite máximo de 255 caracteres</string>
     <string name="repoCreated">Repositório criado com êxito</string>
-    <string name="repoCreatedError">Algo deu errado, por favor, tente de novo</string>
     <string name="repoExistsError">Um repositório com este nome já existe sob o proprietário selecionado</string>
-    <string name="repoOwnerError">Select owner for the repository</string>
+    <string name="repoOwnerError">Selecione o proprietário do repositório</string>
     <string name="orgNameErrorEmpty">O nome da organização está vazio</string>
     <string name="orgNameErrorInvalid">O nome da organização não é válido, [&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Descrição da organização excede o limite máximo de 255 caracteres</string>
     <string name="orgCreated">Organização criada com sucesso</string>
-    <string name="orgCreatedError">Algo deu errado, por favor, tente de novo</string>
     <string name="orgExistsError">Organização já existe</string>
-    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
+    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
     <string name="processingText">Processando</string>
     <string name="search">Pesquisar</string>
     <string name="close">Fechar</string>
@@ -85,16 +82,15 @@
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Remover</string>
-    <string name="genericApiStatusError">A instância retornou um erro. Código\u0020</string>
+    <string name="genericApiError">A instância retornou um erro. Código %d</string>
     <string name="tabTextInfo">Detalhes</string>
     <string name="tabTextFiles">Arquivos</string>
     <string name="tabTextMl">Metas</string>
     <string name="tabTextReleases">Versões</string>
     <string name="tabTextBranches">Branches</string>
-    <string name="tabTextLabels">Marcadores</string>
     <string name="tabTextCollaborators">Colaboradores</string>
     <string name="tabPullRequests">Pull requests</string>
-    <string name="noDataIssueTab">Nenhum incidente encontrado</string>
+    <string name="pullRequest">Pull Request</string>
     <string name="infoTabRepoSize">Tamanho</string>
     <string name="infoTabRepoDefaultBranch">Branch padrão</string>
     <string name="infoTabRepoSshUrl">URL de SSH</string>
@@ -106,38 +102,31 @@
     <string name="infoShowMoreInformation">Mostrar Mais Informações</string>
     <string name="infoMoreInformation">Mais informações</string>
     <string name="timeAtText">em</string>
-    <string name="createdText">Aberto\u0020</string>
-    <string name="issueCreator">Criador :\u0020</string>
-    <string name="issueCommenter">Autor do comentário:\u0020</string>
     <string name="issueMilestone">Meta %1$s</string>
     <string name="dueDate">Prazo de entrega em %1$s</string>
     <string name="assignedTo">Atribuído a: %1$s</string>
+    <string name="assignedToMe">Atribuídos a mim</string>
     <string name="commentButtonText">Comentar</string>
     <string name="commentEmptyError">Por favor escreva o seu comentário</string>
     <string name="commentSuccess">Comentário publicado</string>
-    <string name="commentError">Algo deu errado, por favor, tente de novo</string>
     <string name="featureDeprecated">Esta funcionalidade será removida no futuro</string>
-    <string name="generalImgContentText">Image</string>
-    <string name="noDataMilestonesTab">Nenhuma meta encontrada</string>
+    <string name="generalImgContentText">Imagem</string>
     <string name="commitAuthor">Autor do commit: %1$s</string>
     <string name="releaseDownloadText">Downloads</string>
-    <string name="noDataReleasesTab">Nenhuma versão encontrada</string>
     <string name="releasePublishedBy">Publicado por @%1$s</string>
     <string name="noReleaseBodyContent">Notas de versão não são fornecidas pelo editor.</string>
-    <string name="noDataCollaboratorTab">Nenhum colaborador encontrado</string>
     <string name="newMilestoneTitle">Título</string>
     <string name="newMilestoneDescription">Descrição</string>
     <string name="newMilestoneDueDate">Data Limite</string>
     <string name="milestoneNameErrorEmpty">Título da meta está vazio</string>
     <string name="milestoneDescError">Descrição da meta excede o limite máximo de 255 caracteres</string>
     <string name="milestoneCreated">Meta criada com sucesso</string>
-    <string name="milestoneCreatedError">Algo deu errado, por favor, tente de novo</string>
     <string name="milestoneDateEmpty">Por favor, escolha uma data limite</string>
     <string name="milestoneNoDueDate">Não há prazo</string>
     <string name="milestoneNoDescription">Sem descrição</string>
     <string name="milestoneIssueStatusOpen">%1$d Aberto</string>
     <string name="milestoneIssueStatusClosed">%1$d Fechado</string>
-    <string name="selectMilestone">Select Milestone</string>
+    <string name="selectMilestone">Selecionar marco (milestone)</string>
     <string name="newIssueSelectAssigneesListTitle">Selecionar designados</string>
     <string name="newIssueSelectLabelsListTitle">Selecionar marcadores</string>
     <string name="newIssueTitle">Título</string>
@@ -149,13 +138,11 @@
     <string name="issueTitleEmpty">O título do incidente está vazio</string>
     <string name="issueDescriptionEmpty">A descrição do incidente está vazia</string>
     <string name="issueCreated">Novo incidente criado com sucesso</string>
-    <string name="issueCreatedError">Algo deu errado, por favor, tente de novo</string>
     <string name="issueCreatedNoMilestone">Sem meta</string>
-    <string name="noAssigneesFound">No assignees found</string>
-    <string name="noLabelsFound">Nenhuma marcador encontrado</string>
+    <string name="noAssigneesFound">Nenhum administrador (assignee) encontrado</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Tradução</string>
-    <string name="settingsLanguageSystem">System</string>
+    <string name="settingsLanguageSystem">Sistema</string>
     <string name="settingsSecurityHeader">Segurança</string>
     <string name="settingsCertsSelectorHeader">Excluir Certificados Confiáveis</string>
     <string name="settingsCertsPopupTitle">Excluir Certificados Confiáveis?</string>
@@ -201,6 +188,8 @@
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
+    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
+    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
     <!-- settings -->
     <string name="noMoreData">Não há mais dados disponíveis</string>
     <string name="createLabel">Novo marcador</string>
@@ -209,25 +198,17 @@
     <string name="labelColor">Cor do marcador</string>
     <string name="labelEmptyError">Nome do marcador está vazio</string>
     <string name="labelNameError">Nome do marcador é inválido</string>
-    <string name="labelCreated">Marcador criado.</string>
-    <string name="labelGeneralError">Algo deu errado, por favor, tente de novo</string>
-    <string name="labelUpdated">Marcador atualizado.</string>
-    <string name="noDataLabelsTab">Nenhum marcador encontrado</string>
+    <string name="labelCreated">Label created</string>
+    <string name="labelUpdated">Label updated</string>
     <string name="labelMenuContentDesc">Descrição</string>
     <string name="labelDeleteText">Marcador excluído</string>
-    <string name="labelDeleteErrorText">Algo deu errado, por favor, tente de novo</string>
-    <string name="noDataBranchesTab">Nenhuma branch encontrada</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Erro de autorização</string>
     <string name="alertDialogTokenRevokedMessage">Parece que o Token de Acesso foi revogado OU você não está autorizado para ver esses conteúdos.\n\nNo caso de token ser revogado, faça o logout e login de novo</string>
-    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">Você realmente deseja excluir este marcador?</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">Repositórios</string>
     <string name="orgTabTeams">Equipes</string>
     <string name="orgTabMembers">Membros</string>
-    <string name="orgCreateTeam">Nova equipe</string>
-    <string name="noDataTeams">Nenhuma equipe encontrada</string>
     <string name="teamTitle">Nome da equipe</string>
     <string name="teamDescription">Descrição da equipe</string>
     <string name="teamPermissions">Permissions</string>
@@ -237,16 +218,18 @@
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
-    <string name="noDataMembers">Nenhum membro encontrado</string>
     <string name="orgMember">Membros da organização</string>
     <string name="orgTeamMembers">Membros da equipe da organização</string>
-    <string name="addNewMember">Adicionar / Excluir Novo Membro</string>
-    <string name="removeTeamMemberTitle">Excluir\u0020</string>
-    <string name="addTeamMemberTitle">Adicionar\u0020</string>
+    <string name="removeTeamMember">Remove %s</string>
+    <string name="addTeamMember">Add %s</string>
     <string name="addTeamMemberMessage">Você quer adicionar este usuário à equipe?</string>
     <string name="removeTeamMemberMessage">Você quer remover este usuário da equipe?</string>
     <string name="memberAddedMessage">Membro adicionado à equipe com êxito</string>
     <string name="memberRemovedMessage">Membro excluído da equipe com êxito</string>
+    <string name="repoAddedMessage">Repository added to the team successfully</string>
+    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
+    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
+    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nome da equipe</string>
@@ -262,7 +245,6 @@
     <string name="teamDescError">Descrição da equipe tem caracteres ilegais</string>
     <string name="teamDescLimit">Descrição da equipe tem mais de 100 caracteres</string>
     <string name="teamCreated">Equipe adicionada com sucesso</string>
-    <string name="teamCreatedError">Algo deu errado, por favor, tente de novo</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">Editar Comentário</string>
@@ -272,7 +254,6 @@
     <string name="copyCommentText">Copiar comentário</string>
     <!-- issue comments -->
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">Adicionar/Remover colaborador</string>
     <string name="addCollaboratorSearchHint">Pesquisar usuários</string>
     <string name="addCollaboratorViewUserDesc">Usuário</string>
     <string name="removeCollaboratorDialogTitle">Remove %s?</string>
@@ -307,7 +288,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Metadados do repositório</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">Adicionar novo usuário</string>
+    <string name="adminCreateNewUser">Novo Usuário</string>
     <string name="adminUsers">Usuários do Sistema</string>
     <string name="userRoleAdmin">Admin</string>
     <string name="adminCron">Cron Tasks</string>
@@ -343,6 +324,8 @@
     <string name="tagNameErrorEmpty">Nome da tag está vazio</string>
     <string name="titleErrorEmpty">Título está vazio</string>
     <string name="releaseCreatedText">Nova versão criada</string>
+    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
+    <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
     <string name="loginOTPTypeError">O código OTP deve ter apenas números</string>
     <string name="loginOTP">Código OTP (Opcional)</string>
@@ -377,9 +360,9 @@
     <string name="copyIssueUrl">Copiar URL do incidente</string>
     <string name="copyIssueUrlToastMsg">URL copiada para a área de transferência</string>
     <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
+    <string name="copyShaToastMsg">SHA copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 concluída</string>
     <!-- files -->
-    <string name="noDataFilesTab">Nenhum arquivo encontrado</string>
     <string name="filesGenericError">Desculpe, este arquivo não pode ser visto pois a API retornou um erro</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Não suportado</string>
@@ -389,7 +372,7 @@
     <string name="cancelButton">Cancelar</string>
     <string name="genericError">Algo deu errado, por favor, tente de novo</string>
     <string name="apiNotFound">Esta solicitação precisa de uma versão do Gitea maior do que a instalada. Por favor, atualize sua instância para a versão mais recente do Gitea.</string>
-    <string name="noDataFound">Nenhum dado encontrado</string>
+    <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Adicionar</string>
     <string name="removeButton">Remover</string>
     <string name="authorizeError">Você não está autorizado a executar esta ação.</string>
@@ -397,7 +380,7 @@
     <string name="menuEditText">Editar</string>
     <string name="menuDeleteText">Excluir</string>
     <string name="menuCopyText">Copiar</string>
-    <string name="menuQuoteText">Citar e Responder</string>
+    <string name="menuQuoteText">Quote Reply</string>
     <string name="modifiedText">editado</string>
     <string name="saveButton">Salvar</string>
     <string name="websiteText">Website</string>
@@ -412,16 +395,30 @@
     <string name="genericServerResponseError">Não conseguimos encontrar o servidor no momento, por favor, verifique o status do seu servidor e tente novamente</string>
     <string name="genericCopyUrl">Copiar URL</string>
     <string name="genericWaitFor">Hold on ☕</string>
+    <string name="file">File</string>
+    <string name="issue">Issue</string>
+    <string name="label">Label</string>
+    <string name="release">Release</string>
+    <string name="pr">Pull Request</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="unstar">Unstar</string>
+    <string name="watch">Watch</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="share">Share</string>
+    <string name="repository">Repository</string>
+    <string name="team">Team</string>
+    <string name="organization">Organization</string>
+    <string name="addRemove">Adicionar / Remover</string>
+    <string name="download">Baixar</string>
+    <string name="reopen">Reabrir</string>
+    <string name="openInBrowser">Abrir no Navegador</string>
+    <string name="deleteGenericTitle">Delete %s</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Explorar repositórios</string>
-    <string name="starRepository">Favoritar repositório</string>
-    <string name="unStarRepository">Desfavoritar repositório</string>
     <string name="starRepositorySuccess">Repositório adicionado à lista de favoritos</string>
     <string name="unStarRepositorySuccess">Repositório removido da lista de favoritos</string>
-    <string name="watchRepository">Observar repositório</string>
-    <string name="unWatchRepository">Deixar de observar</string>
     <string name="watchRepositorySuccess">Repositório adicionado à lista de observação</string>
     <string name="unWatchRepositorySuccess">Repositório removido da lista de observação</string>
     <string name="titleDrafts">Rascunhos</string>
@@ -434,9 +431,6 @@
     <string name="unauthorizedApiError">A instância retornou um erro - Não autorizado. Verifique suas credenciais e tente novamente</string>
     <string name="loginTokenError">Token é obrigatório</string>
     <string name="prDeletedFork">Fork excluído</string>
-    <string name="noDataPullRequests">Nenhum pull request encontrado</string>
-    <string name="editPrText">Editar Pull Request</string>
-    <string name="copyPrUrlText">Copiar URL do Pull Request</string>
     <string name="editPrNavHeader">Editar Pull Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull Request atualizado</string>
     <string name="fileDiffViewHeader">%1$s Arquivos Alterados</string>
@@ -444,7 +438,6 @@
     <string name="updatePullRequestText">Update Pull Request</string>
     <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Aplicar merge do Pull Request</string>
-    <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
     <string name="deleteBranchErrorNotFound">Branch does not exist</string>
@@ -463,24 +456,22 @@
     <string name="mergeStrategy">Merge Strategy</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
-    <string name="downloadFile">Baixar este arquivo</string>
+    <string name="deleteBranch">Excluir Branch</string>
     <string name="waitLoadingDownloadFile">Aguarde que o arquivo seja carregado para a memória</string>
     <string name="downloadFileSaved">Arquivo salvo com êxito</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">Excluir Este Arquivo</string>
     <string name="editFile">Editar Este Arquivo</string>
-    <string name="deleteFileText">Excluir %1$s</string>
     <string name="deleteFileMessage">O arquivo é definido para ser excluído pelo branch %1$s</string>
     <string name="editFileText">Editar %1$s</string>
     <string name="editFileMessage">O arquivo é modificado pelo branch %1$s</string>
     <string name="sizeCopy">Tamanho</string>
     <string name="shareIssue">Compartilhar problema</string>
-    <string name="sharePr">Compartilhar Pull Request</string>
     <string name="shareRepository">Compartilhar repositório</string>
     <string name="createRepository">Criar Repositório</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
     <string name="viewCommits">Ver Commits</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Certificado de Verificação</string>
@@ -502,7 +493,6 @@
     <string name="closeMilestone">Fechar marco</string>
     <string name="openMilestone">Nova meta</string>
     <string name="milestoneStatusUpdate">Estado do Marco atualizado com êxito</string>
-    <string name="errorOnLogin">Não conseguimos alcançar o servidor, por favor, verifique o status do seu servidor</string>
     <string name="reportViewerHeader">Relatórios de erros</string>
     <string name="settingsEnableReportsText">Ativar relatórios de erros</string>
     <string name="crashTitle">GitNex parou :(</string>
@@ -539,9 +529,9 @@
     <string name="pollingDelaySelectedText">%d Minutos</string>
     <string name="pollingDelayDialogHeaderText">Selecionar atraso da votação</string>
     <string name="pollingDelayDialogDescriptionText">Escolha um atraso no qual o GitNex tenta fazer pesquisa de novas notificações</string>
-    <string name="markAsRead">Marcar como Lida</string>
-    <string name="markAsUnread">Marcar como não lida</string>
-    <string name="pinNotification">Notificação do Pin</string>
+    <string name="markAsRead">Marcar como lido</string>
+    <string name="markAsUnread">Marcar como não lido</string>
+    <string name="pinNotification">Fixar</string>
     <string name="markedNotificationsAsRead">Todas as notificações marcadas como lidas</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
@@ -552,6 +542,10 @@
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
+    <plurals name="youHaveNewNotifications">
+        <item quantity="one">You have %s new notification.</item>
+        <item quantity="other">You have %s new notifications.</item>
+    </plurals>
     <string name="isRead">Lida</string>
     <string name="isUnread">Não Lida</string>
     <string name="repoSettingsTitle">Configurações do repositório</string>
@@ -595,6 +589,9 @@
     <string name="titleError">Título é obrigatório</string>
     <string name="prCreateSuccess">Pull Request criado com sucesso</string>
     <string name="prAlreadyExists">Já existe um pull request entre estas branches</string>
+    <string name="prClosed">Pull Request closed</string>
+    <string name="prReopened">Pull Request reopened</string>
+    <string name="prMergeInfo">Pull Request Info</string>
     <string name="accountDoesNotExist">Parece que a conta para a URI %1$s não existe no aplicativo. Você pode adicionar uma tocando no botão de Adicionar Uma Conta.</string>
     <string name="launchApp">Ir para o Aplicativo</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
@@ -626,8 +623,6 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
-    <string name="closePr">Close Pull Request</string>
-    <string name="reopenPr">Reopen Pull Request</string>
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -635,8 +630,17 @@
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="deleteTagTitle">Delete tag %s</string>
     <string name="tagDeleted">Tag deleted</string>
+    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="logInAgain">Log in again</string>
+    <string name="notLoggedIn">%s \u25CF not logged in</string>
+    <string name="followSystem">Follow system (Light/Dark)</string>
+    <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="repoForkOf">Fork of: %s</string>
+    <string name="adoptRepo">Adopt</string>
+    <string name="repoAdopted">Adopted repository %s</string>
+    <string name="unadoptedRepos">Unadopted Repositories</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
 </resources>

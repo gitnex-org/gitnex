@@ -11,6 +11,7 @@
     <string name="navRate">به GitNex امتیاز دهید</string>
     <string name="navLogout">خروج از حساب کاربری</string>
     <string name="navAdministration">مدیریت</string>
+    <string name="navMyIssues">My Issues</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">ایجاد مخزن جدید</string>
@@ -33,9 +34,7 @@
     <!-- page titles -->
     <string name="repoName">مخزن پیش نمایشی</string>
     <string name="repoDescription">توضیحات پیش نمایشی</string>
-    <string name="noData">هیچ مخزنی یافت نشد</string>
     <string name="orgName">سازمان پیش نمایشی</string>
-    <string name="noDataOrg">هیچ سازمانی یافت نشد</string>
     <string name="newCreateButtonCopy">ایجاد</string>
     <string name="newUpdateButtonCopy">به‌روزرسانی</string>
     <string name="newRepoTintCopy">نام مخزن</string>
@@ -70,16 +69,14 @@
     <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
     <string name="repoDescError">توضیحات مخزن از سقف 255 کاراکتر بیشتر است</string>
     <string name="repoCreated">مخزن با موفقیت ساخته شد</string>
-    <string name="repoCreatedError">مشکلی پیش آمده. لطفا دوباره تلاش کنید</string>
     <string name="repoExistsError">یک مخزن با این نام قبلا در لیست مخازن وجود دارد</string>
     <string name="repoOwnerError">Select owner for the repository</string>
     <string name="orgNameErrorEmpty">نام سازمان خالی است</string>
     <string name="orgNameErrorInvalid">نام سازمان صحیح نیست, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">توضیحات سازمان از سقف 255 کاراکتر بیشتر است</string>
     <string name="orgCreated">سازمان با موفقیت ساخته شد</string>
-    <string name="orgCreatedError">مشکلی پیش آمده. لطفا دوباره تلاش کنید</string>
     <string name="orgExistsError">نام سازمان از قبل وجود دارد</string>
-    <string name="diffStatistics">%s addition(s) and %s deletion(s)</string>
+    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
     <string name="processingText">در حال پردازش</string>
     <string name="search">جستجو</string>
     <string name="close">بستن</string>
@@ -88,16 +85,15 @@
     <string name="repoContentAvatar">مخزن</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">حذف</string>
-    <string name="genericApiStatusError">نمونه یک خطا اعلام کرد. کد\u0020</string>
+    <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextInfo">جزئیات</string>
     <string name="tabTextFiles">فایل ها</string>
     <string name="tabTextMl">نقاط عطف</string>
     <string name="tabTextReleases">انتشارها</string>
     <string name="tabTextBranches">شاخه‌ها</string>
-    <string name="tabTextLabels">برچسب‌ها</string>
     <string name="tabTextCollaborators">همکاران</string>
     <string name="tabPullRequests">درخواست‌های ادغام</string>
-    <string name="noDataIssueTab">هیچ مسئله‌ای یافت نشد</string>
+    <string name="pullRequest">Pull Request</string>
     <string name="infoTabRepoSize">اندازه‌</string>
     <string name="infoTabRepoDefaultBranch">شاخه پیش‌فرض</string>
     <string name="infoTabRepoSshUrl">نشانی SSH</string>
@@ -109,32 +105,25 @@
     <string name="infoShowMoreInformation">نمایش اطلاعات بیشتر</string>
     <string name="infoMoreInformation">اطلاعات بیشتر</string>
     <string name="timeAtText">در</string>
-    <string name="createdText">باز شده\u0020</string>
-    <string name="issueCreator">سازنده:\u0020</string>
-    <string name="issueCommenter">Commenter:\u0020</string>
     <string name="issueMilestone">نقطه عطف %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">واگذار شده به: %1$s</string>
+    <string name="assignedToMe">Assigned to Me</string>
     <string name="commentButtonText">دیدگاه</string>
     <string name="commentEmptyError">لطفا دیدگاه خود را بنویسید</string>
     <string name="commentSuccess">دیدگاه منتشر شد</string>
-    <string name="commentError">مشکلی پیش آمد. لطفا دوباره تلاش کنید</string>
     <string name="featureDeprecated">این عملگر در آینده حذف خواهد شد</string>
     <string name="generalImgContentText">Image</string>
-    <string name="noDataMilestonesTab">هیچ نقطه عطفی یافت نشد</string>
     <string name="commitAuthor">Commit author: %1$s</string>
     <string name="releaseDownloadText">بارگیری‌ها</string>
-    <string name="noDataReleasesTab">هیچ انتشاری یافت نشد</string>
     <string name="releasePublishedBy">منتشر شده توسط @%1$s</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
-    <string name="noDataCollaboratorTab">همکاری پیدا نشد</string>
     <string name="newMilestoneTitle">عنوان</string>
     <string name="newMilestoneDescription">توضیحات</string>
     <string name="newMilestoneDueDate">تاریخ مقرر</string>
     <string name="milestoneNameErrorEmpty">عنوان نقطه عطف خالی است</string>
     <string name="milestoneDescError">توضیحات نقطه عطف از سقف 255 کاراکتر بیشتر است</string>
     <string name="milestoneCreated">نقطه عطف با موفقیت ساخته شد</string>
-    <string name="milestoneCreatedError">مشکلی رخ داد، لطفا دوباره تلاش کنید</string>
     <string name="milestoneDateEmpty">لطفا تاریخ مقرر را انتخاب کنید</string>
     <string name="milestoneNoDueDate">No due date</string>
     <string name="milestoneNoDescription">بدون توضیح</string>
@@ -152,10 +141,8 @@
     <string name="issueTitleEmpty">عنوان مسئله خالی است</string>
     <string name="issueDescriptionEmpty">عنوان مسئله خالی است</string>
     <string name="issueCreated">مسئله جدید با موفقیت ساخته شد</string>
-    <string name="issueCreatedError">مشکلی پیش آمده. لطفا دوباره تلاش کنید</string>
     <string name="issueCreatedNoMilestone">نقطه عطفی وجود ندارد</string>
     <string name="noAssigneesFound">No assignees found</string>
-    <string name="noLabelsFound">برچسبی پیدا نشد</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">ترجمه</string>
     <string name="settingsLanguageSystem">System</string>
@@ -204,6 +191,8 @@
     <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
+    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
+    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
     <!-- settings -->
     <string name="noMoreData">اطلاعات بیشتری موجود نیست</string>
     <string name="createLabel">برچسب جدید</string>
@@ -212,25 +201,17 @@
     <string name="labelColor">رنگ برچسب</string>
     <string name="labelEmptyError">نام پرچسب خالی است</string>
     <string name="labelNameError">نام برچسب نامعتبر است</string>
-    <string name="labelCreated">برچسب ساخته شد.</string>
-    <string name="labelGeneralError">مشکلی رخ داد، لطفا دوباره تلاش کنید</string>
-    <string name="labelUpdated">برچسب به‌روزرسانی شد.</string>
-    <string name="noDataLabelsTab">هیچ برچسبی یافت نشد</string>
+    <string name="labelCreated">Label created</string>
+    <string name="labelUpdated">Label updated</string>
     <string name="labelMenuContentDesc">توضیح</string>
     <string name="labelDeleteText">برچسب حذف شد</string>
-    <string name="labelDeleteErrorText">مشکلی پیش آمد، لطفا دوباره تلاش کنید</string>
-    <string name="noDataBranchesTab">هیچ شاخه‌ای یافت نشد</string>
     <string name="selectBranchError">یک شاخه را برای انتشار انتخاب کنید</string>
     <string name="alertDialogTokenRevokedTitle">خطای ورود به سامانه</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="labelDeleteTitle">Delete %s</string>
     <string name="labelDeleteMessage">آیا شما واقعا می‌خواهید این برچسب را حذف کنید؟</string>
     <!-- org tabbed layout str -->
-    <string name="orgTabRepos">مخازن</string>
     <string name="orgTabTeams">تیم‌ها</string>
     <string name="orgTabMembers">اعضا</string>
-    <string name="orgCreateTeam">تیم جدید</string>
-    <string name="noDataTeams">هیچ تیمی یافت نشد</string>
     <string name="teamTitle">نام تیم</string>
     <string name="teamDescription">توضیحات تیم</string>
     <string name="teamPermissions">Permissions</string>
@@ -240,16 +221,18 @@
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
-    <string name="noDataMembers">هیچ عضوی یافت نشد</string>
     <string name="orgMember">اعضای سازمان</string>
     <string name="orgTeamMembers">اعضای تیم سازمان</string>
-    <string name="addNewMember">افزودن / حذف عضو جدید</string>
-    <string name="removeTeamMemberTitle">حذف\u0020</string>
-    <string name="addTeamMemberTitle">افزودن\u0020</string>
+    <string name="removeTeamMember">Remove %s</string>
+    <string name="addTeamMember">Add %s</string>
     <string name="addTeamMemberMessage">آیا می‌خواهید که این کاربر را به تیم بیفزایید؟</string>
     <string name="removeTeamMemberMessage">آیا می‌خواهید که این کاربر را از تیم حذف کنید؟</string>
     <string name="memberAddedMessage">عضو با موفقیت به تیم افزوده شد</string>
     <string name="memberRemovedMessage">عضو با موفقیت از تیم حذف شد</string>
+    <string name="repoAddedMessage">Repository added to the team successfully</string>
+    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
+    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
+    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">نام تیم</string>
@@ -265,7 +248,6 @@
     <string name="teamDescError">Team description have illegal characters</string>
     <string name="teamDescLimit">Team description have more than 100 characters</string>
     <string name="teamCreated">تیم با موفقیت ساخته شد</string>
-    <string name="teamCreatedError">مشکلی پیش آمد. لطفا دوباره تلاش کنید</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">ویرایش دیدگاه</string>
@@ -275,7 +257,6 @@
     <string name="copyCommentText">روگیری دیدگاه</string>
     <!-- issue comments -->
     <!-- add collaborator -->
-    <string name="addCollaboratorTitle">افزودن / حذف همکار</string>
     <string name="addCollaboratorSearchHint">جستجوی کاربران</string>
     <string name="addCollaboratorViewUserDesc">نام کاربری</string>
     <string name="removeCollaboratorDialogTitle">Remove %s?</string>
@@ -310,7 +291,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Repository Meta</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">افزودن کاربر جدید</string>
+    <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">کاربران سامانه</string>
     <string name="userRoleAdmin">مدیر</string>
     <string name="adminCron">Cron Tasks</string>
@@ -346,6 +327,8 @@
     <string name="tagNameErrorEmpty">Tag name is empty</string>
     <string name="titleErrorEmpty">عنوان خالی است</string>
     <string name="releaseCreatedText">انتشار جدید ایجاد شد</string>
+    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
+    <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
     <string name="loginOTPTypeError">رمز OTP باید رقم باشد</string>
     <string name="loginOTP">رمز OTP (دلخواه)</string>
@@ -380,9 +363,9 @@
     <string name="copyIssueUrl">روگیری نشانی مسئله</string>
     <string name="copyIssueUrlToastMsg">نشانی به کلیپ‌بورد روگیری شد</string>
     <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
+    <string name="copyShaToastMsg">SHA copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 کامل شد</string>
     <!-- files -->
-    <string name="noDataFilesTab">هیچ پرونده‌ای یافت نشد</string>
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">پشتیبانی نمی‎شود</string>
@@ -392,7 +375,7 @@
     <string name="cancelButton">لغو</string>
     <string name="genericError">Something went wrong, please try again</string>
     <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
-    <string name="noDataFound">هیچ داده‌ای یافت نشد</string>
+    <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">افزودن</string>
     <string name="removeButton">حذف</string>
     <string name="authorizeError">You are not authorized to perform this action.</string>
@@ -400,7 +383,7 @@
     <string name="menuEditText">ویرایش</string>
     <string name="menuDeleteText">حذف</string>
     <string name="menuCopyText">روگیری</string>
-    <string name="menuQuoteText">بازگفت و پاسخ</string>
+    <string name="menuQuoteText">Quote Reply</string>
     <string name="modifiedText">ویرایش شد</string>
     <string name="saveButton">ذخیره</string>
     <string name="websiteText">وب‌سایت</string>
@@ -415,16 +398,30 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">روگیری نشانی</string>
     <string name="genericWaitFor">Hold on ☕</string>
+    <string name="file">File</string>
+    <string name="issue">Issue</string>
+    <string name="label">Label</string>
+    <string name="release">Release</string>
+    <string name="pr">Pull Request</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="unstar">Unstar</string>
+    <string name="watch">Watch</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="share">Share</string>
+    <string name="repository">Repository</string>
+    <string name="team">Team</string>
+    <string name="organization">Organization</string>
+    <string name="addRemove">Add / Remove</string>
+    <string name="download">Download</string>
+    <string name="reopen">Reopen</string>
+    <string name="openInBrowser">Open in Browser</string>
+    <string name="deleteGenericTitle">Delete %s</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">کشف مخزن‌ها</string>
-    <string name="starRepository">Star Repository</string>
-    <string name="unStarRepository">Unstar Repository</string>
     <string name="starRepositorySuccess">Repository added to starred list</string>
     <string name="unStarRepositorySuccess">Repository removed from starred list</string>
-    <string name="watchRepository">Watch Repository</string>
-    <string name="unWatchRepository">Unwatch Repository</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="titleDrafts">پیش نویس‌ها</string>
@@ -437,9 +434,6 @@
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">توکن الزامی است</string>
     <string name="prDeletedFork">انشعاب پاک شده</string>
-    <string name="noDataPullRequests">No pull requests found</string>
-    <string name="editPrText">ویرایش درخواست ادغام</string>
-    <string name="copyPrUrlText">Copy Pull Request URL</string>
     <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull Request updated</string>
     <string name="fileDiffViewHeader">%1$s پرونده تغییر یافت</string>
@@ -447,7 +441,6 @@
     <string name="updatePullRequestText">Update Pull Request</string>
     <string name="openFileDiffText">Show Changed Files</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
-    <string name="deletePrHeadBranch">Delete head branch</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
     <string name="deleteBranchErrorNotFound">Branch does not exist</string>
@@ -466,24 +459,22 @@
     <string name="mergeStrategy">راهبرد ادغام</string>
     <string name="selectMergeStrategy">انتخاب راهبرد ادغام</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
-    <string name="downloadFile">بارگیری این پرونده</string>
+    <string name="deleteBranch">Delete Branch</string>
     <string name="waitLoadingDownloadFile">لطفا منتظر بمانید تا پرونده در حافظه بارگذاری شود</string>
     <string name="downloadFileSaved">پرونده با موفقیت ذخیره شد</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
     <string name="deleteFile">حذف این پرونده</string>
     <string name="editFile">ویرایش این پرونده</string>
-    <string name="deleteFileText">حذف %1$s</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">ویرایش %1$s</string>
     <string name="editFileMessage">پرونده توسط شاخه %1$s تغییر یافت</string>
     <string name="sizeCopy">اندازه‌</string>
     <string name="shareIssue">هم‌رسانی مسئله</string>
-    <string name="sharePr">Share Pull Request</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%s</b> authored and <b>%s</b> committed %s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%s</b> committed %s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
     <string name="viewCommits">View Commits</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Certificate Verification</string>
@@ -505,7 +496,6 @@
     <string name="closeMilestone">بستن نقطه عطف</string>
     <string name="openMilestone">باز کردن نقطه عطف</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="errorOnLogin">We cannot reach the server, please check your server status</string>
     <string name="reportViewerHeader">گزارش‌های خرابی</string>
     <string name="settingsEnableReportsText">فعال‌سازی گزارش‌های خرابی</string>
     <string name="crashTitle">GitNex متوقف شد :(</string>
@@ -542,9 +532,9 @@
     <string name="pollingDelaySelectedText">%d دقیقه</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-    <string name="markAsRead">نشان‌گذاری به‌عنوان خوانده شده</string>
-    <string name="markAsUnread">نشان‌گذاری به‌عنوان خوانده نشده</string>
-    <string name="pinNotification">Pin Notification</string>
+    <string name="markAsRead">Mark Read</string>
+    <string name="markAsUnread">Mark Unread</string>
+    <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
     <string name="notificationsHintText">Polling delay, light, vibration</string>
     <string name="enableNotificationsHeaderText">فعال‌سازی آگاهی‌ها</string>
@@ -555,6 +545,10 @@
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
+    <plurals name="youHaveNewNotifications">
+        <item quantity="one">You have %s new notification.</item>
+        <item quantity="other">You have %s new notifications.</item>
+    </plurals>
     <string name="isRead">خوانده شده</string>
     <string name="isUnread">خوانده نشده</string>
     <string name="repoSettingsTitle">تنظیمات مخزن</string>
@@ -598,6 +592,9 @@
     <string name="titleError">عنوان الزامی است</string>
     <string name="prCreateSuccess">Pull Request created successfully</string>
     <string name="prAlreadyExists">A pull request between these branches already exists</string>
+    <string name="prClosed">Pull Request closed</string>
+    <string name="prReopened">Pull Request reopened</string>
+    <string name="prMergeInfo">Pull Request Info</string>
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">برو به برنامه</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
@@ -629,8 +626,6 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
-    <string name="closePr">Close Pull Request</string>
-    <string name="reopenPr">Reopen Pull Request</string>
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -638,8 +633,17 @@
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="deleteTagTitle">Delete tag %s</string>
     <string name="tagDeleted">Tag deleted</string>
+    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="logInAgain">Log in again</string>
+    <string name="notLoggedIn">%s \u25CF not logged in</string>
+    <string name="followSystem">Follow system (Light/Dark)</string>
+    <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="repoForkOf">Fork of: %s</string>
+    <string name="adoptRepo">Adopt</string>
+    <string name="repoAdopted">Adopted repository %s</string>
+    <string name="unadoptedRepos">Unadopted Repositories</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
 </resources>
