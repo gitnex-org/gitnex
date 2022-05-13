@@ -1,0 +1,12 @@
+pipeline:
+  push:
+    image: crowdin/cli:3.7.8
+    commands:
+      - cp crowdin.example.yml crowdin.yml
+      - sed -i 's/-removed-/'"$CROWDIN_TOKEN"'/' crowdin.yml
+      - crowdin push
+    secrets: [ CROWDIN_TOKEN ]
+    when:
+      event: [ push, tag ]
+      branch: main
+      path: [ app/src/main/res/values/strings.xml ]
