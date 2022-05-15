@@ -14,16 +14,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class PicassoCache implements Cache {
 
 	private Context ctx;
-	private String TAG = "PicassoCache";
+	private final String TAG = "PicassoCache";
 
 	private static final Bitmap.CompressFormat COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
 	private static final int COMPRESSION_QUALITY = 50; // 0 = high compression (low file size) | 100 = no compression
@@ -56,24 +57,21 @@ public class PicassoCache implements Cache {
 
 			if(cacheMap.containsKey(key)) {
 
-				FileInputStream fileInputStream = new FileInputStream(new File(cachePath, cacheMap.get(key)));
+				FileInputStream fileInputStream = new FileInputStream(new File(cachePath, Objects.requireNonNull(cacheMap.get(key))));
 
 				Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
 				fileInputStream.close();
 
 				return bitmap;
-
 			}
 
 		}
 		catch(IOException e) {
 
 			Log.e(TAG, e.toString());
-
 		}
 
 		return null;
-
 	}
 
 	@Override
@@ -109,7 +107,7 @@ public class PicassoCache implements Cache {
 
 		for(String key : cacheMap.keySet()) {
 
-			currentSize += new File(cachePath, cacheMap.get(key)).length();
+			currentSize += new File(cachePath, Objects.requireNonNull(cacheMap.get(key))).length();
 
 		}
 
@@ -163,7 +161,7 @@ public class PicassoCache implements Cache {
 			if(match) {
 
 				//noinspection ResultOfMethodCallIgnored
-				new File(cachePath, cacheMap.get(key)).delete();
+				new File(cachePath, Objects.requireNonNull(cacheMap.get(key))).delete();
 				cacheMap.remove(key);
 
 			}

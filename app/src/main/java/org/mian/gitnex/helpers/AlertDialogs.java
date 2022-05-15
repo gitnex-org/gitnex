@@ -86,7 +86,7 @@ public class AlertDialogs {
 	public static void addRepoDialog(final Context context, final String orgName, String repo, int teamId, String teamName) {
 
 		new AlertDialog.Builder(context)
-			.setTitle(context.getResources().getString(R.string.addTeamMember) + repo)
+			.setTitle(context.getResources().getString(R.string.addTeamMember, repo))
 			.setMessage(context.getResources().getString(R.string.repoAddToTeamMessage, repo, orgName, teamName))
 			.setPositiveButton(context.getResources().getString(R.string.addButton), (dialog, whichButton) -> TeamActions.addTeamRepo(context, orgName, teamId, repo))
 			.setNeutralButton(context.getResources().getString(R.string.cancelButton), null).show();
@@ -96,7 +96,7 @@ public class AlertDialogs {
 	public static void removeRepoDialog(final Context context, final String orgName, String repo, int teamId, String teamName) {
 
 		new AlertDialog.Builder(context)
-			.setTitle(context.getResources().getString(R.string.removeTeamMember) + repo)
+			.setTitle(context.getResources().getString(R.string.removeTeamMember, repo))
 			.setMessage(context.getResources().getString(R.string.repoRemoveTeamMessage, repo, teamName))
 			.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, whichButton) -> TeamActions.removeTeamRepo(context, orgName, teamId, repo))
 			.setNeutralButton(context.getResources().getString(R.string.cancelButton), null).show();

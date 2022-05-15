@@ -134,7 +134,7 @@ public class RetrofitClient {
 			synchronized(RetrofitClient.class) {
 				if(!apiInterfaces.containsKey(key)) {
 
-					ApiInterface apiInterface = createRetrofit(context, url, true, token, cacheFile).create(ApiInterface.class);
+					ApiInterface apiInterface = Objects.requireNonNull(createRetrofit(context, url, true, token, cacheFile)).create(ApiInterface.class);
 					apiInterfaces.put(key, apiInterface);
 
 					return apiInterface;
@@ -153,7 +153,7 @@ public class RetrofitClient {
 			synchronized(RetrofitClient.class) {
 				if(!webInterfaces.containsKey(key)) {
 
-					WebApi webInterface = createRetrofit(context, url, false, token, cacheFile).create(WebApi.class);
+					WebApi webInterface = Objects.requireNonNull(createRetrofit(context, url, false, token, cacheFile)).create(WebApi.class);
 					webInterfaces.put(key, webInterface);
 
 					return webInterface;
