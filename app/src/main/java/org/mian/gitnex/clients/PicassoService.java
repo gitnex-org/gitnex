@@ -42,12 +42,12 @@ public class PicassoService {
 					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
 
 			builder.downloader(new OkHttp3Downloader(okHttpClient.build()));
-			builder.listener((picasso, uri, exception) -> {
+			/*builder.listener((picasso, uri, exception) -> {
 
 				Log.e("PicassoService", Objects.requireNonNull(uri.toString()));
 				Log.e("PicassoService", exception.toString());
 
-			});
+			});*/
 
 			picasso = builder.memoryCache(new PicassoCache(cachePath, context)).build();
 
