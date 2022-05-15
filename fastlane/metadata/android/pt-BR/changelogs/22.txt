@@ -1,0 +1,30 @@
+1.0.1
+- Fixed icons on some devices
+
+1.0.0
+  - My Repositories
+  - Repositories list
+  - Organizations list
+  - Create new repository
+  - Create new organization
+  - Search/filter repositories and organizations
+  - Profile view
+  - Repository stars, watchers, issues count
+  - Issues list
+  - Issue comments
+  - Comment on issues
+  - Search issues in issues list
+  - Create new issue with multiple assignees, labels and add milestone, due date to it
+  - Create label
+  - Edit / delete labels
+  - Repository information
+  - Milestones list
+  - Create new milestone
+  - Branches list
+  - Releases with source download
+  - Collaborators view for repository
+  - Markdown support
+  - Emoji support
+  - Settings : Pretty and Normal time format, language change
+  - Option to access local non-https installs
+  - Login/Logout

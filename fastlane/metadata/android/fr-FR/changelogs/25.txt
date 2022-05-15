@@ -1,0 +1,8 @@
+- New: Add collaborator to repository
+- New: User can now edit his/her own comments
+- New: See who are your followers
+- New: See who you are following
+- Enhancement: Redesign Profile screen
+- Enhancement: Added edited status for single issue and comments
+
+Release notes: https://codeberg.org/gitnex/GitNex/releases

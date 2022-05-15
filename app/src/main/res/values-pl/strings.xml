@@ -153,7 +153,7 @@
     <string name="settingsLanguageSelectedHeaderDefault">Angielski</string>
     <string name="settingsAppearanceHeader">Wygląd</string>
     <string name="settingsDateTimeHeaderDefault">Piękny</string>
-    <string name="settingsDateTimeNormal">Normal</string>
+    <string name="settingsDateTimeNormal">Normalny</string>
     <string name="settingsLanguageSelectorDialogTitle">Wybierz język</string>
     <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
@@ -220,13 +220,13 @@
     <string name="teamShowAll">pokaż wszystkie</string>
     <string name="orgMember">Członkowie organizacji</string>
     <string name="orgTeamMembers">Członkowie zespołu organizacji</string>
-    <string name="removeTeamMember">Remove %s</string>
-    <string name="addTeamMember">Add %s</string>
+    <string name="removeTeamMember">Usuń %s</string>
+    <string name="addTeamMember">Dodaj %s</string>
     <string name="addTeamMemberMessage">Czy chcesz dodać tego użytkownika do zespołu?</string>
     <string name="removeTeamMemberMessage">Czy chcesz usunąć tego użytkownika z zespołu?</string>
     <string name="memberAddedMessage">Użytkownik został pomyślnie dodany do zespołu</string>
     <string name="memberRemovedMessage">Użytkownik został pomyślnie usunięty z zespołu</string>
-    <string name="repoAddedMessage">Repository added to the team successfully</string>
+    <string name="repoAddedMessage">Repozytorium zostało pomyślnie dodane do zespołu</string>
     <string name="repoRemovedMessage">Repository removed from the team successfully</string>
     <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
     <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
@@ -256,7 +256,7 @@
     <!-- add collaborator -->
     <string name="addCollaboratorSearchHint">Szukaj użytkowników</string>
     <string name="addCollaboratorViewUserDesc">Nazwa użytkownika</string>
-    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
+    <string name="removeCollaboratorDialogTitle">Usunąć %s?</string>
     <string name="removeCollaboratorMessage">Czy chcesz usunąć tego użytkownika z repozytorium?</string>
     <string name="removeCollaboratorToastText">Użytkownik usunięty z repozytorium.</string>
     <string name="addCollaboratorToastText">Użytkownik dodany do repozytorium.</string>
@@ -267,7 +267,7 @@
     <string name="profileCreateNewEmailAddress">Dodaj adres e-mail</string>
     <string name="profileEmailTitle">Adres e-mail</string>
     <string name="emailAddedText">Nowy e-mail został dodany</string>
-    <string name="emailErrorEmpty">Email address is empty</string>
+    <string name="emailErrorEmpty">Adres e-mail jest pusty</string>
     <string name="emailErrorInvalid">Adres e-mail jest nieprawidłowy</string>
     <string name="emailErrorInUse">Adres e-mail jest już używany</string>
     <string name="emailTypeText">Podstawowy</string>
@@ -288,13 +288,13 @@
     <!-- single issue section -->
     <string name="repoMetaData">Meta repozytorium</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">New User</string>
-    <string name="adminUsers">System Users</string>
+    <string name="adminCreateNewUser">Nowy użytkownik</string>
+    <string name="adminUsers">Użytkownicy systemowi</string>
     <string name="userRoleAdmin">Administrator</string>
-    <string name="adminCron">Cron Tasks</string>
-    <string name="adminCronScheduleHeader">Schedule</string>
-    <string name="adminCronNextRunHeader">Next Run</string>
-    <string name="adminCronLastRunHeader">Last Run</string>
+    <string name="adminCron">Zadania cron</string>
+    <string name="adminCronScheduleHeader">Harmonogram</string>
+    <string name="adminCronNextRunHeader">Następne uruchomienie</string>
+    <string name="adminCronLastRunHeader">Ostatnie uruchomienie</string>
     <string name="adminCronExecutionHeader">Executions</string>
     <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
@@ -408,7 +408,7 @@
     <string name="repository">Repozytorium</string>
     <string name="team">Zespół</string>
     <string name="organization">Organizacja</string>
-    <string name="addRemove">Add / Remove</string>
+    <string name="addRemove">Dodaj / Usuń</string>
     <string name="download">Download</string>
     <string name="reopen">Reopen</string>
     <string name="openInBrowser">Open in Browser</string>
@@ -520,7 +520,7 @@
     <string name="addNewAccount">Nowe Konto</string>
     <string name="addNewAccountText">Dodaj Nowe Konto</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
-    <string name="accountAddedMessage">Account added successfully</string>
+    <string name="accountAddedMessage">Pomyślnie dodano konto</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Powiadomienia</string>

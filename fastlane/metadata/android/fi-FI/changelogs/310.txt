@@ -1,0 +1,13 @@
+3.1.0
+
+New: Multiple accounts support
+New: New Retro theme
+New: Delete OR Edit a file
+New: Repository forks
+New: Markdown support in file viewer
+New: New Progress indicators
+New: Copy repo / org / issue comment url to clipboard
+New: Create drafts per edit and improve it's UI
+New: Enhance App UI across all screens
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases

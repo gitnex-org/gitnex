@@ -1,0 +1,7 @@
+- New: Add or update milestone of an issue
+- New: Field for OTP on the login screen
+- Enhancement: Better handling of buttons on API calls
+- Fixed: Crash when empty password with OTP is used
+
+For more, check the release notes.
+https://codeberg.org/gitnex/GitNex/releases

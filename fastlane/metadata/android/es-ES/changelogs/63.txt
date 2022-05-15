@@ -1,0 +1,13 @@
+2.1.3
+Bugfix: another old Gitea instances API issue
+
+2.1.0
+- New: Font - Roboto
+- New: Milestone progress bar @6543
+- New: Redesign issues list
+- New: Copy issue URL to clipboard @6543
+- New: Redesign milestones list
+- New: Added repository avatars
+
+For more, check the release notes.
+https://codeberg.org/gitnex/GitNex/releases
