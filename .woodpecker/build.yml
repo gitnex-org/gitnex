@@ -13,10 +13,7 @@ pipeline:
       INSTANCE: "https://codeberg.org"
       KS_FILE: "gitnex_ci_keystore.jks"
     commands:
-      - >
-        KEYFILE=$(mktemp)
-        curl -X GET "${INSTANCE}/api/v1/repos/${KS_REPO}/contents/${KS_FILE}?token=${BOT_TOKEN}" -H  "accept: application/json" | sed 's|"content":"|#|g' | cut -d '#' -f 2 | cut -d '"' -f 1 | base64 -d > ${KEYFILE}
-        apksigner sign -v --ks-pass pass:$KS_PASS --key-pass pass:$KEY_PASS --ks-key-alias GitNexBot --ks ${KEYFILE} --out signed.apk $(find . -name "*release*.apk")
+      - ./scripts/sign-build.sh
     secrets: [ BOT_TOKEN, KS_PASS, KEY_PASS, KS_REPO ]
     when:
       event: [ push, tag ]
