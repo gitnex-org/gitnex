@@ -419,10 +419,14 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-		if(issue.getIssueType().equalsIgnoreCase("pull")) {
-			inflater.inflate(R.menu.pr_info_menu, menu);
-		}
+		new Handler().postDelayed(() -> {
+			inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+			if(issue.getIssueType() != null) {
+				if(issue.getIssueType().equalsIgnoreCase("pull")) {
+					inflater.inflate(R.menu.pr_info_menu, menu);
+				}
+			}
+		}, 800);
 		return true;
 	}
 

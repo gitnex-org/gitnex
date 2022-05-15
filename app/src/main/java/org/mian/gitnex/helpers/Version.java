@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Author 6543
+ * @author 6543
  */
 
 public class Version {
