@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.3.0" versioncode="430">
-        <change>- Support for issues/pr hashes</change>
-        <change>- Single commit screen with diff view</change>
-        <change>- UI enhancements and improvements(bottom sheets, settings)</change>
-        <change>- Show labels in issues and pr lists</change>
-        <change>- Repository forks</change>
-        <change>- My issues with remote search and filters</change>
-        <change>- Follow system theme option for dark and pitch black themes</change>
-        <change>- Remote search your project issues</change>
-        <change>- Share/Copy/Open actions across org/repository/issue/pr/comments</change>
-        <change>- Assign repository to a team in an organization</change>
-        <change>- Delete a release</change>
-        <change>- Browse user repositories/organizations</change>
-        <change>- Unadopted repository management for Admins</change>
-        <change>- Show notification count when switch accounts</change>
+    <release version="4.4.0-dev" versioncode="435">
+        <change>Under development</change>
     </release>
 
 </changelog>
