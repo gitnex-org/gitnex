@@ -39,6 +39,11 @@ public class DiffFilesFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+		if(binding != null) {
+			ctx = requireContext();
+			return binding.getRoot();
+		}
+
 		binding = FragmentDiffFilesBinding.inflate(inflater, container, false);
 		ctx = requireContext();
 		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
