@@ -136,6 +136,19 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp" />
 
+                <TextView
+                    android:id="@+id/create_wiki"
+                    android:layout_width="98dp"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:layout_alignSelf="flex_start"
+                    android:gravity="center"
+                    app:drawableTopCompat="@drawable/ic_wiki"
+                    android:text="@string/wiki"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp" />
+
             </com.google.android.flexbox.FlexboxLayout>
 
             <View

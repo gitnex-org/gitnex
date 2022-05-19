@@ -93,7 +93,7 @@ public class RepoInfoFragment extends Fragment {
 
 		binding.repoMetaForksFrame.setOnClickListener(metaForks -> ctx.startActivity(repository.getIntent(ctx, RepoForksActivity.class)));
 
-		binding.repoMetaPullRequestsFrame.setOnClickListener(metaPR -> ((RepoDetailActivity) requireActivity()).mViewPager.setCurrentItem(3));
+		binding.repoMetaPullRequestsFrame.setOnClickListener(metaPR -> ((RepoDetailActivity) requireActivity()).viewPager.setCurrentItem(3));
 
 		return binding.getRoot();
 	}

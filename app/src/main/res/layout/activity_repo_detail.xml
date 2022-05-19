@@ -55,7 +55,6 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             app:tabMode="scrollable"
-            android:visibility="gone"
             app:tabTextAppearance="@style/customTabLayout"
             android:layout_width="match_parent"
             android:background="?attr/primaryBackgroundColor"
@@ -63,62 +62,13 @@
             app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tabTextInfo" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_files"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tabTextFiles" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_issues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pageTitleIssues" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_pull_requests"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tabPullRequests" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_releases"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tabTextReleases" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_ml"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tabTextMl" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_labels"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/newIssueLabelsTitle" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_collaborators"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tabTextCollaborators" />
-
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/container"
-        android:visibility="gone"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/repositoryContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
