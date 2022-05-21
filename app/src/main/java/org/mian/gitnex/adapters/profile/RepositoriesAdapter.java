@@ -99,22 +99,8 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			itemView.setOnClickListener(v -> {
 				Context context = v.getContext();
 				RepositoryContext repo = new RepositoryContext(userRepositories, context);
+				repo.saveToDB(context);
 				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
-
-				int currentActiveAccountId = TinyDB.getInstance(context).getInt("currentActiveAccountId");
-				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
-
-				assert repositoryData != null;
-				Integer count = repositoryData.checkRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-
-				if(count == 0) {
-					long id = repositoryData.insertRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-					repo.setRepositoryId((int) id);
-				}
-				else {
-					org.mian.gitnex.database.models.Repository data = repositoryData.getRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-					repo.setRepositoryId(data.getRepositoryId());
-				}
 
 				context.startActivity(intent);
 			});

@@ -83,7 +83,8 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 			binding.editIssue.setText(R.string.menuEditText);
 
-			boolean canPushPullSource = issue.getPullRequest().getHead().getRepo().getPermissions().isPush();
+			boolean canPushPullSource = issue.getPullRequest().getHead().getRepo() != null ?
+				issue.getPullRequest().getHead().getRepo().getPermissions().isPush() : false;
 			if(issue.getPullRequest().isMerged() || issue.getIssue().getState().equals("closed")) {
 				binding.updatePullRequest.setVisibility(View.GONE);
 				binding.mergePullRequest.setVisibility(View.GONE);

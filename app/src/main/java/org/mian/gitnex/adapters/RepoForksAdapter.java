@@ -179,25 +179,9 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				Context context = v.getContext();
 
 				String[] parts = userRepositories.getFullName().split("/");
-				final String repoOwner = parts[0];
-				final String repoName = parts[1];
 				RepositoryContext repo = new RepositoryContext(userRepositories, context);
+				repo.saveToDB(context);
 				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
-
-				int currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
-
-				assert repositoryData != null;
-				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-
-				if(count == 0) {
-					long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-					repo.setRepositoryId((int) id);
-				}
-				else {
-					Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-					repo.setRepositoryId(data.getRepositoryId());
-				}
 
 				context.startActivity(intent);
 

@@ -29,6 +29,8 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.DraftsApi;
+import org.mian.gitnex.database.api.RepositoriesApi;
+import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
@@ -186,10 +188,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 						if(status == ActionResult.Status.SUCCESS) {
 
-							FragmentActivity activity = requireActivity();
-							if(activity instanceof IssueDetailActivity) {
-								((IssueDetailActivity) activity).commentPosted = true;
-							}
+							IssueDetailActivity.commentPosted = true;
 
 							Toasty.success(getContext(), getString(R.string.commentSuccess));
 
@@ -284,7 +283,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 			if(draftId == 0) {
 
-				draftId = draftsApi.insertDraft(issue.getRepository().getRepositoryId(), currentActiveAccountId, issue.getIssueIndex(), text, draftType, "TODO", issue.getIssueType());
+				draftId = draftsApi.insertDraft(issue.getRepository().saveToDB(requireContext()), currentActiveAccountId, issue.getIssueIndex(), text, draftType, "TODO", issue.getIssueType());
 			}
 			else {
 
