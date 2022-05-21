@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,11 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
 
 /**
@@ -78,6 +82,10 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 			wikiLastUpdatedBy = itemView.findViewById(R.id.wiki_last_updated_by);
 
 			itemView.setOnClickListener(v -> {
+				Intent intent = new Intent(ctx, WikiActivity.class);
+				intent.putExtra("pageName", wikiPageMeta.getTitle());
+				intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
+				ctx.startActivity(intent);
 			});
 		}
 
