@@ -10,18 +10,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.WikiActivity;
+import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentWikiBinding;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
@@ -33,10 +41,16 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 	private List<WikiPageMetaData> wikiList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
+	private final FragmentWikiBinding fragmentWikiBinding;
+	private final String repoOwner;
+	private final String repoName;
 
-	public WikiListAdapter(List<WikiPageMetaData> wikiListMain, Context ctx) {
+	public WikiListAdapter(List<WikiPageMetaData> wikiListMain, Context ctx, String repoOwner, String repoName, FragmentWikiBinding fragmentWikiBinding) {
 		this.ctx = ctx;
 		this.wikiList = wikiListMain;
+		this.repoOwner = repoOwner;
+		this.repoName = repoName;
+		this.fragmentWikiBinding = fragmentWikiBinding;
 	}
 
 	@NonNull
@@ -73,6 +87,7 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 		private final ImageView avatar;
 		private final TextView pageName;
 		private final TextView wikiLastUpdatedBy;
+		private final ImageView wikiMenu;
 
 		WikisHolder(View itemView) {
 
@@ -80,12 +95,39 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 			pageName = itemView.findViewById(R.id.page_name);
 			avatar = itemView.findViewById(R.id.image_avatar);
 			wikiLastUpdatedBy = itemView.findViewById(R.id.wiki_last_updated_by);
+			wikiMenu = itemView.findViewById(R.id.wiki_menu);
 
 			itemView.setOnClickListener(v -> {
+
 				Intent intent = new Intent(ctx, WikiActivity.class);
 				intent.putExtra("pageName", wikiPageMeta.getTitle());
 				intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
 				ctx.startActivity(intent);
+			});
+
+			wikiMenu.setOnClickListener(v -> {
+
+				Context ctx = v.getContext();
+
+				View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_wiki_in_list, itemView.findViewById(android.R.id.content), false);
+
+				TextView editWiki = view.findViewById(R.id.edit_wiki);
+				TextView deleteWiki = view.findViewById(R.id.delete_wiki);
+
+				BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+				dialog.setContentView(view);
+				dialog.show();
+
+				editWiki.setOnClickListener(v12 -> {
+
+					dialog.dismiss();
+				});
+
+				deleteWiki.setOnClickListener(v12 -> {
+
+					deleteWiki(repoOwner, repoName, wikiPageMeta.getTitle(), getAbsoluteAdapterPosition(), ctx);
+					dialog.dismiss();
+				});
 			});
 		}
 
@@ -108,6 +150,12 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
 			avatar.setImageDrawable(drawable);
 		}
+	}
+
+	private void updateAdapter(int position) {
+		wikiList.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, wikiList.size());
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
@@ -136,5 +184,41 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 	public void updateList(List<WikiPageMetaData> list) {
 		wikiList = list;
 		notifyDataChanged();
+	}
+
+	private void deleteWiki(final String owner, final String repo, final String pageName, int position, final Context context) {
+
+		new AlertDialog.Builder(context)
+			.setTitle(String.format(context.getString(R.string.deleteGenericTitle), pageName))
+			.setMessage(context.getString(R.string.deleteWikiPageMessage, pageName))
+			.setIcon(R.drawable.ic_delete)
+			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
+				.getApiInterface(context).repoDeleteWikiPage(owner, repo, pageName).enqueue(new Callback<>() {
+
+					@Override
+					public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+
+						if(response.isSuccessful()) {
+							updateAdapter(position);
+							Toasty.success(context, context.getString(R.string.wikiPageDeleted));
+							if(getItemCount() == 0) {
+								fragmentWikiBinding.noData.setVisibility(View.VISIBLE);
+							}
+						}
+						else if(response.code() == 403) {
+							Toasty.error(context, context.getString(R.string.authorizeError));
+						}
+						else {
+							Toasty.error(context, context.getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+						Toasty.error(context, context.getString(R.string.genericError));
+					}
+				}))
+			.setNeutralButton(R.string.cancelButton, null).show();
 	}
 }

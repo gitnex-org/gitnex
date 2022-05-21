@@ -78,7 +78,7 @@ public class WikiFragment extends Fragment {
 
 		wikiViewModel.getWiki(owner, repo, page, resultLimit, getContext(), fragmentWikiBinding).observe(getViewLifecycleOwner(), wikiListMain -> {
 
-			adapter = new WikiListAdapter(wikiListMain, getContext());
+			adapter = new WikiListAdapter(wikiListMain, getContext(), owner, repo, fragmentWikiBinding);
 			adapter.setLoadMoreListener(new WikiListAdapter.OnLoadMoreListener() {
 
 				@Override

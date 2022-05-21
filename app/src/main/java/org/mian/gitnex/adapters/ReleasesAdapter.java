@@ -105,8 +105,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	        optionsMenu.setOnClickListener(v -> {
 		        final Context context = v.getContext();
 
-		        @SuppressLint("InflateParams")
-		        View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_release_in_list, null);
+		        View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_release_in_list, itemView.findViewById(android.R.id.content), false);
 
 		        TextView deleteRelease = view.findViewById(R.id.deleteRelease);
 
