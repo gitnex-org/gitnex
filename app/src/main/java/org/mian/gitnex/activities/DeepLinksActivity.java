@@ -17,7 +17,6 @@ import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityDeeplinksBinding;
@@ -35,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class DeepLinksActivity extends BaseActivity {
@@ -78,6 +77,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 		// check for the links(URI) to be in the db
 		UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
+		assert userAccountsApi != null;
 		List<UserAccount> userAccounts = userAccountsApi.loggedInUserAccounts();
 
 		for(UserAccount userAccount : userAccounts) {
@@ -182,7 +182,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 						issue.getRepository().saveToDB(ctx);
 
-						issueIntent.putExtra(IssueContext.INTENT_EXTRA, issueIntent);
+						issueIntent.putExtra(IssueContext.INTENT_EXTRA, issue);
 
 						ctx.startActivity(issueIntent);
 						finish();
