@@ -99,7 +99,7 @@ public class MergePullRequestActivity extends BaseActivity {
 			viewBinding.mergeButton.setOnClickListener(mergePullRequest);
 		}
 
-		if(!issue.getPullRequest().getHead().getRepo().getPermissions().isPush()) {
+		if(!(issue.getPullRequest().getHead().getRepo() != null ? issue.getPullRequest().getHead().getRepo().getPermissions().isPush() : false)) {
 			viewBinding.deleteBranch.setVisibility(View.GONE);
 			viewBinding.deleteBranchForkInfo.setVisibility(View.GONE);
 		}

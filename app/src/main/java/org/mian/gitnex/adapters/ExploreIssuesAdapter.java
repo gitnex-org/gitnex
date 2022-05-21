@@ -119,22 +119,9 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 				final String repoOwner = parts[0];
 				final String repoName = parts[1];
 
-				int currentActiveAccountId = ((BaseActivity) context).getAccount().getAccount().getAccountId();
-				RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
-
-				assert repositoryData != null;
-				Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-
 				RepositoryContext repo = new RepositoryContext(repoOwner, repoName, context);
 
-				if(count == 0) {
-					long id = repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-					repo.setRepositoryId((int) id);
-				}
-				else {
-					Repository data = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName);
-					repo.setRepositoryId(data.getRepositoryId());
-				}
+				repo.saveToDB(context);
 
 				Intent intentIssueDetail = new IssueContext(issue, repo).getIntent(context, IssueDetailActivity.class);
 				intentIssueDetail.putExtra("openedFromLink", "true");

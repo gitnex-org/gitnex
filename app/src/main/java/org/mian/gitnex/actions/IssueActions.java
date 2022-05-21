@@ -93,7 +93,7 @@ public class IssueActions {
 							IssuesFragment.resumeIssues = issue.getIssue().getPullRequest() == null;
 							PullRequestsFragment.resumePullRequests = issue.getIssue().getPullRequest() != null;
 						}
-						if(issue.getIssueType().equals("Pull")) {
+						if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 							if(issueState.equals("closed")) {
 								Toasty.success(ctx, ctx.getString(R.string.prClosed));
 							}

@@ -89,7 +89,7 @@ public class DiffAdapter extends BaseAdapter {
 
 		}
 
-		if(type.equals("pull")) {
+		if(type.equalsIgnoreCase("pull")) {
 			convertView.setOnClickListener(v -> {
 
 				if(selectedLines.contains(position)) {

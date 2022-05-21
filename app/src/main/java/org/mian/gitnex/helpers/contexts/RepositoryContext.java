@@ -235,4 +235,23 @@ public class RepositoryContext implements Serializable {
 		repository = null;
 	}
 
+	public int saveToDB(Context context) {
+		int currentActiveAccountId = TinyDB.getInstance(context).getInt("currentActiveAccountId");
+		RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
+
+		assert repositoryData != null;
+		Integer count = repositoryData.checkRepository(currentActiveAccountId, getOwner(), getName());
+
+		if(count == 0) {
+			long id = repositoryData.insertRepository(currentActiveAccountId, getOwner(), getName());
+			setRepositoryId((int) id);
+			return (int) id;
+		}
+		else {
+			Repository data = repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
+			setRepositoryId(data.getRepositoryId());
+			return data.getRepositoryId();
+		}
+	}
+
 }

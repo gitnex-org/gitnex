@@ -180,23 +180,9 @@ public class DeepLinksActivity extends BaseActivity {
 							"Issue"
 						);
 
-						final String repoOwner = data.getPathSegments().get(0);
-						final String repoName = data.getPathSegments().get(1);
+						issue.getRepository().saveToDB(ctx);
 
-						int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-						RepositoriesApi repositoryData = BaseApi.getInstance(ctx, RepositoriesApi.class);
-						assert repositoryData != null;
-
-						Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-
-						int repoId;
-						if(count == 0) {
-							repoId = (int) repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-						}
-						else {
-							repoId = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName).getRepositoryId();
-						}
-						issue.getRepository().setRepositoryId(repoId);
+						issueIntent.putExtra(IssueContext.INTENT_EXTRA, issueIntent);
 
 						ctx.startActivity(issueIntent);
 						finish();
@@ -384,20 +370,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 					IssueContext issue = new IssueContext(prInfo, new RepositoryContext(repoOwner, repoName, ctx));
 
-					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-					RepositoriesApi repositoryData = BaseApi.getInstance(ctx, RepositoriesApi.class);
-					assert repositoryData != null;
-
-					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-
-					int id;
-					if(count == 0) {
-						id = (int) repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-					}
-					else {
-						id = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName).getRepositoryId();
-					}
-					issue.getRepository().setRepositoryId(id);
+					issue.getRepository().saveToDB(ctx);
 
 					issueIntent.putExtra(IssueContext.INTENT_EXTRA, issue);
 					ctx.startActivity(issueIntent);
@@ -442,20 +415,7 @@ public class DeepLinksActivity extends BaseActivity {
 					repoIntent.putExtra("goToSection", "yes");
 					repoIntent.putExtra("goToSectionType", type);
 
-					int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
-					RepositoriesApi repositoryData = BaseApi.getInstance(ctx, RepositoriesApi.class);
-
-					Integer count = repositoryData.checkRepository(currentActiveAccountId, repoOwner, repoName);
-
-					int id;
-					if(count == 0) {
-						id = (int) repositoryData.insertRepository(currentActiveAccountId, repoOwner, repoName);
-					}
-					else {
-						id = repositoryData.getRepository(currentActiveAccountId, repoOwner, repoName).getRepositoryId();
-					}
-
-					repo.setRepositoryId(id);
+					repo.saveToDB(ctx);
 					repoIntent.putExtra(RepositoryContext.INTENT_EXTRA, repo);
 
 					ctx.startActivity(repoIntent);

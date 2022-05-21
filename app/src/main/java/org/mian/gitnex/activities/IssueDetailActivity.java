@@ -116,7 +116,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 	public static boolean singleIssueUpdate = false;
 	public boolean commentEdited = false;
-	public boolean commentPosted = false;
+	public static boolean commentPosted = false;
 
 	private IssueCommentsViewModel issueCommentsModel;
 
@@ -415,18 +415,28 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		});
 	}
 
+	private Runnable showMenu = () -> {};
+	private boolean loadingFinishedIssue = false;
+	private boolean loadingFinishedPr = false;
+	private boolean loadingFinishedRepo = false;
+	private void updateMenuState() {
+		if(loadingFinishedIssue && loadingFinishedPr && loadingFinishedRepo) showMenu.run();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-		new Handler().postDelayed(() -> {
+		showMenu = () -> {
 			inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 			if(issue.getIssueType() != null) {
 				if(issue.getIssueType().equalsIgnoreCase("pull")) {
 					inflater.inflate(R.menu.pr_info_menu, menu);
 				}
 			}
-		}, 800);
+			showMenu = () -> {}; // reset Runnable
+		};
+		updateMenuState();
 		return true;
 	}
 
@@ -437,7 +447,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		if(id == android.R.id.home) {
 
-			if(getIntent().getStringExtra("openedFromLink") != null && getIntent().getStringExtra("openedFromLink").equals("true")) {
+			if(issue.hasIssue() && getIntent().getStringExtra("openedFromLink") != null &&
+				getIntent().getStringExtra("openedFromLink").equals("true")) {
 				Intent intent = issue.getRepository().getIntent(ctx, RepoDetailActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
@@ -455,20 +466,22 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		}
 		else if(id == R.id.prInfo) {
 
-			View view = LayoutInflater.from(ctx).inflate(R.layout.custom_pr_info_dialog, null);
+			if(issue.getPullRequest() != null) {
+				View view = LayoutInflater.from(ctx).inflate(R.layout.custom_pr_info_dialog, null);
 
-			TextView baseBranch = view.findViewById(R.id.baseBranch);
-			TextView headBranch = view.findViewById(R.id.headBranch);
+				TextView baseBranch = view.findViewById(R.id.baseBranch);
+				TextView headBranch = view.findViewById(R.id.headBranch);
 
-			baseBranch.setText(issue.getPullRequest().getBase().getRef());
-			headBranch.setText(issue.getPullRequest().getHead().getRef());
+				baseBranch.setText(issue.getPullRequest().getBase().getRef());
+				headBranch.setText(issue.getPullRequest().getHead().getRef());
 
-			AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
 
-			alertDialog.setTitle(getResources().getString(R.string.prMergeInfo));
-			alertDialog.setView(view);
-			alertDialog.setPositiveButton(getString(R.string.okButton), null);
-			alertDialog.create().show();
+				alertDialog.setTitle(getResources().getString(R.string.prMergeInfo));
+				alertDialog.setView(view);
+				alertDialog.setPositiveButton(getString(R.string.okButton), null);
+				alertDialog.create().show();
+			}
 			return true;
 		}
 		else {
@@ -623,7 +636,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	private void initWithIssue() {
 		if(!issue.getRepository().hasRepository()) {
 			getRepoInfo();
+		} else {
+			loadingFinishedRepo = true;
 		}
+		loadingFinishedIssue = true;
+		updateMenuState();
 
 		viewBinding.issuePrState.setVisibility(View.VISIBLE);
 
@@ -646,10 +663,13 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			}
 		}
 		else if(issue.getIssue().getState().equals("closed")) { // issue closed
-
+			loadingFinishedPr = true;
+			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
 			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor)));
 		} else {
+			loadingFinishedPr = true;
+			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
 			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen)));
 		}
@@ -878,6 +898,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			public void onResponse(@NonNull Call<PullRequest> call, @NonNull Response<PullRequest> response) {
 				if(response.isSuccessful() && response.body() != null) {
 					issue.setPullRequest(response.body());
+					loadingFinishedPr = true;
+					updateMenuState();
 				}
 			}
 
@@ -899,6 +921,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				if(response.code() == 200) {
 					assert repoInfo != null;
 					issue.getRepository().setRepository(repoInfo);
+					loadingFinishedRepo = true;
+					updateMenuState();
 				}
 				else {
 					Toasty.error(ctx, getString(R.string.genericError));

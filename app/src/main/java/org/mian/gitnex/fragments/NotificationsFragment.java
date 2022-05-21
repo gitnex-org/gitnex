@@ -247,25 +247,14 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
 
-			RepositoryContext repo = new RepositoryContext(notificationThread.getRepository(), context);
+			RepositoryContext repo = new RepositoryContext(notificationThread.getRepository().getOwner().getLogin(),
+				notificationThread.getRepository().getName(), context); // we can't use the repository object here directly because the permissions are missing
 			String issueUrl = notificationThread.getSubject().getUrl();
 
-			int currentActiveAccountId = TinyDB.getInstance(requireContext()).getInt("currentActiveAccountId");
-			RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
-
-			Integer count = repositoryData.checkRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-
-			if(count == 0) {
-				long id = repositoryData.insertRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-				repo.setRepositoryId((int) id);
-			}
-			else {
-				Repository data = repositoryData.getRepository(currentActiveAccountId, repo.getOwner(), repo.getName());
-				repo.setRepositoryId(data.getRepositoryId());
-			}
+			repo.saveToDB(context);
 
 			Intent intent = new IssueContext(
-				new RepositoryContext(notificationThread.getRepository(), context),
+				repo,
 				Integer.parseInt(issueUrl.substring(issueUrl.lastIndexOf("/") + 1)),
 				notificationThread.getSubject().getType()
 			).getIntent(context, IssueDetailActivity.class);
