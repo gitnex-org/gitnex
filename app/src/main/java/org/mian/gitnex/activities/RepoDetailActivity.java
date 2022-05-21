@@ -45,6 +45,7 @@ import org.mian.gitnex.fragments.MilestonesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
+import org.mian.gitnex.fragments.WikiFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -498,14 +499,14 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					break;
 				case 4: // Releases
 					return ReleasesFragment.newInstance(repository);
-				case 5: // Milestones
+				case 5: // Wiki
+					return WikiFragment.newInstance(repository);
+				case 6: // Milestones
 					fragment = MilestonesFragment.newInstance(repository);
 					break;
-				case 6: // Labels
+				case 7: // Labels
 					return LabelsFragment.newInstance(repository);
-				case 7: // Collaborators
-					return CollaboratorsFragment.newInstance(repository);
-				case 8: // Wiki
+				case 8: // Collaborators
 					return CollaboratorsFragment.newInstance(repository);
 			}
 			assert fragment != null;
@@ -575,16 +576,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 			viewPager.setAdapter(new ViewPagerAdapter(this));
 
-			String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.tabTextFiles), ctx.getResources().getString(R.string.pageTitleIssues), ctx.getResources().getString(R.string.tabPullRequests), ctx.getResources().getString(R.string.tabTextReleases), ctx.getResources().getString(R.string.tabTextMl), ctx.getResources().getString(R.string.newIssueLabelsTitle), ctx.getResources().getString(R.string.tabTextCollaborators), ctx.getResources().getString(R.string.wiki)};
+			String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.tabTextFiles), ctx.getResources().getString(R.string.pageTitleIssues), ctx.getResources().getString(R.string.tabPullRequests), ctx.getResources().getString(R.string.tabTextReleases), ctx.getResources().getString(R.string.wiki), ctx.getResources().getString(R.string.tabTextMl), ctx.getResources().getString(R.string.newIssueLabelsTitle), ctx.getResources().getString(R.string.tabTextCollaborators)};
 			new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
 
 			ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
 			int tabsCount = viewGroup.getChildCount();
-
-			if(getAccount().requiresVersionLess("1.16")) {
-				tabsCount = tabsCount - 1;
-				Objects.requireNonNull(tabLayout.getTabAt(8)).view.setVisibility(View.GONE);
-			}
 
 			for(int j = 0; j < tabsCount; j++) {
 

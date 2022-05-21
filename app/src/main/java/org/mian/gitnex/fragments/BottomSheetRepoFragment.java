@@ -10,12 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.actions.RepositoryActions;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.BottomSheetRepoBinding;
+import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
@@ -33,6 +35,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
 	    BottomSheetRepoBinding bottomSheetRepoBinding = BottomSheetRepoBinding.inflate(inflater, container, false);
 
+		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
+
 		TextView createLabel = bottomSheetRepoBinding.createLabel;
         TextView createIssue = bottomSheetRepoBinding.createNewIssue;
         TextView createMilestone = bottomSheetRepoBinding.createNewMilestone;
@@ -48,6 +52,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 	    TextView copyRepoUrl = bottomSheetRepoBinding.copyRepoUrl;
 	    TextView repoSettings = bottomSheetRepoBinding.repoSettings;
 	    TextView createPullRequest = bottomSheetRepoBinding.createPullRequest;
+		TextView createWiki = bottomSheetRepoBinding.createWiki;
 
 	    boolean canPush = repository.getPermissions().isPush();
 	    if(!canPush) {
@@ -57,6 +62,10 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		    newFile.setVisibility(View.GONE);
 	    }
 
+		if(account.requiresVersionLess("1.16")) {
+			createWiki.setVisibility(View.GONE);
+		}
+
 	    boolean archived = repository.getRepository().isArchived();
 	    if(archived) {
 	    	createIssue.setVisibility(View.GONE);
@@ -65,6 +74,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		    createLabel.setVisibility(View.GONE);
 		    createRelease.setVisibility(View.GONE);
 		    newFile.setVisibility(View.GONE);
+		    createWiki.setVisibility(View.GONE);
 	    }
 
         createLabel.setOnClickListener(v112 -> {
@@ -120,11 +130,18 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 				bmListener.onButtonClicked("addCollaborator");
 				dismiss();
 			});
+
+			createWiki.setOnClickListener(v1 -> {
+
+				bmListener.onButtonClicked("createWiki");
+				dismiss();
+			});
 		}
 		else {
 
 			addCollaborator.setVisibility(View.GONE);
 			repoSettings.setVisibility(View.GONE);
+			createWiki.setVisibility(View.GONE);
 		}
 
         createRelease.setOnClickListener(v14 -> {

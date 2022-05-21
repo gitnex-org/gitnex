@@ -769,4 +769,5 @@
 
     <!-- wiki -->
     <string name="wiki">Wiki</string>
+    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> updated %2$s]]></string>
 </resources>
