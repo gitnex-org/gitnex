@@ -111,8 +111,11 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 				View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_wiki_in_list, itemView.findViewById(android.R.id.content), false);
 
+				TextView bottomSheetHeader = view.findViewById(R.id.bottom_sheet_header);
 				TextView editWiki = view.findViewById(R.id.edit_wiki);
 				TextView deleteWiki = view.findViewById(R.id.delete_wiki);
+
+				bottomSheetHeader.setText(wikiPageMeta.getTitle());
 
 				BottomSheetDialog dialog = new BottomSheetDialog(ctx);
 				dialog.setContentView(view);
