@@ -146,8 +146,11 @@ public class CommitDetailFragment extends Fragment {
 						// we need a ClickListener here to prevent that the ItemClickListener of the diffFiles ListView handles clicks for the header
 					});
 					CommitDetailFragment.this.binding.diffFiles.addHeaderView(binding.getRoot());
-					assert response.body() != null;
 					Commit commitsModel = response.body();
+					if(commitsModel == null) {
+						onFailure(call, new Throwable());
+						return;
+					}
 					String[] commitMessageParts = commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
 
 					if(commitMessageParts.length > 1 && !commitMessageParts[1].trim().isEmpty()) {
