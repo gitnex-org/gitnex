@@ -770,6 +770,10 @@
     <!-- wiki -->
     <string name="wiki">Wiki</string>
     <string name="wikiAuthor"><![CDATA[<b>%1$s</b> updated %2$s]]></string>
-    <string name="deleteWikiPageMessage">Do you really want to delete %1$s?</string>
+    <string name="deleteWikiPageMessage">Do you really want to delete %s?</string>
     <string name="wikiPageDeleted">Wiki page deleted successfully</string>
+
+    <!-- code editor -->
+    <string name="sourcePosition" translatable="false">%1$d:%2$d</string>
+    <string name="codeEditor" translatable="false">Code Editor</string>
 </resources>

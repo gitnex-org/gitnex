@@ -62,7 +62,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		    newFile.setVisibility(View.GONE);
 	    }
 
-		if(account.requiresVersionLess("1.16")) {
+		if(!account.requiresVersion("1.16")) {
 			createWiki.setVisibility(View.GONE);
 		}
 

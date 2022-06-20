@@ -345,6 +345,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			case "star":
 				repository.setStarred(true);
 				break;
+			case "createWiki":
+
+				startActivity(repository.getIntent(ctx, CodeEditorActivity.class));
+				break;
 		}
 	}
 

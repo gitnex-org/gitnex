@@ -49,10 +49,6 @@ public class AccountContext implements Serializable {
 		return getServerVersion().higherOrEqual(version);
 	}
 
-	public boolean requiresVersionLess(String version) {
-		return getServerVersion().less(version);
-	}
-
 	public int getDefaultPageLimit() {
 		return getAccount().getDefaultPagingNumber();
 	}

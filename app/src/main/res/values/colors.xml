@@ -58,4 +58,14 @@
     <color name="pitchBlackThemeTextColor">#d2d2d2</color>
     <color name="pitchBlackThemeDividerColor">#0E0E0E</color>
     <color name="pitchBlackThemeGeneralBackgroundColor">#151515</color>
+
+    <!-- code editor colors -->
+    <color name="five_dark_black">#252526</color>
+    <color name="five_dark_blue">#267ae9</color>
+    <color name="five_dark_yellow">#fde92f</color>
+    <color name="five_dark_purple">#eb84f3</color>
+    <color name="five_dark_grey">#a9b1ae</color>
+    <color name="five_dark_white">#ffffff</color>
+    <color name="gold">#e6b121</color>
+    <color name="autocomplete_background">#0c0c0c</color>
 </resources>

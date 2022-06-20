@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -120,7 +119,6 @@ public class WikiActivity extends BaseActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.edit_menu, menu);
 		inflater.inflate(R.menu.files_view_menu, menu);
 
 		return true;
