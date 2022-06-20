@@ -263,13 +263,19 @@ public class RepoInfoFragment extends Fragment {
 					switch(response.code()) {
 
 						case 200:
-							try {
-								assert response.body() != null;
-								Markdown.render(ctx, response.body().string(), binding.repoFileContents, repository);
-							}
-							catch(IOException e) {
-								e.printStackTrace();
-							}
+							assert response.body() != null;
+							new Thread(() -> {
+								try {
+									Markdown.render(ctx, response.body().string(), binding.repoFileContents, repository);
+								}
+								catch(IOException e) {
+									requireActivity().runOnUiThread(() -> {
+										Toasty.error(ctx, ctx.getString(R.string.genericError));
+										binding.fileContentsFrameHeader.setVisibility(View.GONE);
+										binding.fileContentsFrame.setVisibility(View.GONE);
+									});
+								}
+							}).start();
 							break;
 
 						case 401:
