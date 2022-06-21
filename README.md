@@ -86,6 +86,7 @@ Thanks to all the open source libraries, contributors and donators.
 - [mikaelhg/urlbuilder](https://github.com/mikaelhg/urlbuilder)
 - [ACRA/acra](https://github.com/ACRA/acra)
 - [chrisvest/stormpot](https://github.com/chrisvest/stormpot)
+- [AmrDeveloper](https://github.com/AmrDeveloper/CodeView)
 
 #### Icon sets
 - [lucide-icons/lucide](https://github.com/lucide-icons/lucide)
