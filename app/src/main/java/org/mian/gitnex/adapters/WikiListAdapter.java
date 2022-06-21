@@ -123,6 +123,11 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 				editWiki.setOnClickListener(v12 -> {
 
+					Intent intent = new Intent(ctx, WikiActivity.class);
+					intent.putExtra("pageName", wikiPageMeta.getTitle());
+					intent.putExtra("action", "edit");
+					intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
+					ctx.startActivity(intent);
 					dialog.dismiss();
 				});
 
@@ -152,6 +157,10 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
 			avatar.setImageDrawable(drawable);
+
+			if(!((RepoDetailActivity) ctx).repository.getPermissions().isPush()) {
+				wikiMenu.setVisibility(View.GONE);
+			}
 		}
 	}
 

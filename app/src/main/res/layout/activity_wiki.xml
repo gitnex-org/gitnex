@@ -69,33 +69,117 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/markdown_frame"
+                android:id="@+id/render_wiki"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/primaryBackgroundColor"
-                android:orientation="vertical"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/markdown_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/primaryBackgroundColor"
+                    android:orientation="vertical"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:visibility="gone">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/markdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <org.mian.gitnex.views.SyntaxHighlightedArea
+                    android:id="@+id/contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_wiki"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingTop="0dp"
                 android:paddingBottom="16dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:visibility="gone">
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/title_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="?attr/inputBackgroundColor"
+                    android:textColorHint="?attr/hintColor"
+                    app:hintTextColor="?attr/hintColor"
+                    app:boxStrokeErrorColor="@color/darkRed"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="?attr/iconsColor"
+                    android:hint="@string/newIssueTitle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/wiki_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/inputTextColor"
+                        android:textColorHighlight="?attr/hintColor"
+                        android:textColorHint="?attr/hintColor"
+                        android:inputType="textCapSentences"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/content_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="?attr/inputBackgroundColor"
+                    android:textColorHint="?attr/hintColor"
+                    app:hintTextColor="?attr/hintColor"
+                    app:boxStrokeErrorColor="@color/darkRed"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/wiki_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="480dp"
+                        android:textColor="?attr/inputTextColor"
+                        android:textColorHighlight="?attr/hintColor"
+                        android:textColorHint="?attr/hintColor"
+                        android:gravity="top|start"
+                        android:singleLine="false"
+                        android:imeOptions="actionNext"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/markdown"
+                    android:id="@+id/markdown_preview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
                     android:textIsSelectable="true"
+                    android:layout_marginTop="@dimen/dimen8dp"
+                    android:layout_marginBottom="@dimen/dimen8dp"
                     android:textSize="14sp" />
 
             </LinearLayout>
-
-            <org.mian.gitnex.views.SyntaxHighlightedArea
-                android:id="@+id/contents"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible" />
 
         </LinearLayout>
 

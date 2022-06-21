@@ -26,6 +26,8 @@ import org.mian.gitnex.viewmodels.WikiViewModel;
 
 public class WikiFragment extends Fragment {
 
+	public static boolean resumeWiki = false;
+
 	private WikiViewModel wikiViewModel;
 	private FragmentWikiBinding fragmentWikiBinding;
 	private WikiListAdapter adapter;
@@ -73,6 +75,16 @@ public class WikiFragment extends Fragment {
 
 		return fragmentWikiBinding.getRoot();
 	};
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(resumeWiki) {
+			page = 1;
+			fetchDataAsync(repository.getOwner(), repository.getName());
+			resumeWiki = false;
+		}
+	}
 
 	private void fetchDataAsync(String owner, String repo) {
 

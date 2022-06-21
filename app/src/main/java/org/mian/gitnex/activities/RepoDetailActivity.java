@@ -347,7 +347,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				break;
 			case "createWiki":
 
-				startActivity(repository.getIntent(ctx, CodeEditorActivity.class));
+				Intent intent = new Intent(ctx, WikiActivity.class);
+				intent.putExtra("action", "add");
+				intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
+				ctx.startActivity(intent);
 				break;
 		}
 	}
