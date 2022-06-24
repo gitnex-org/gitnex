@@ -1,7 +1,7 @@
 <resources>
 
     <string name="appName" translatable="false">GitNex</string>
-    <string name="appEmail" translatable="false">gitnex@swatian.com</string>
+    <string name="appEmail" translatable="false">hello@gitnex.com</string>
     <string name="appRepo" translatable="false">Source code</string>
     <string name="appRepoLink" translatable="false">https://codeberg.org/gitnex/GitNex</string>
     <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
