@@ -219,7 +219,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-		inflater.inflate(R.menu.files_view_menu, menu);
+		inflater.inflate(R.menu.markdown_switcher, menu);
 
 		if(!FilenameUtils.getExtension(file.getName())
 			.equalsIgnoreCase("md")) {

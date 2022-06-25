@@ -266,7 +266,7 @@ public class WikiActivity extends BaseActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.files_view_menu, menu);
+		inflater.inflate(R.menu.markdown_switcher, menu);
 		if(action.equalsIgnoreCase("edit") || action.equalsIgnoreCase("add")) {
 			inflater.inflate(R.menu.save, menu);
 		}
