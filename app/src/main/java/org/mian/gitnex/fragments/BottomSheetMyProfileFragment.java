@@ -12,7 +12,7 @@ import org.mian.gitnex.activities.MyProfileEmailActivity;
 import org.mian.gitnex.databinding.BottomSheetProfileBinding;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class BottomSheetMyProfileFragment extends BottomSheetDialogFragment {

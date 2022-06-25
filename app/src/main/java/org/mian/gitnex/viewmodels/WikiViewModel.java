@@ -1,7 +1,6 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

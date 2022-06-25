@@ -18,8 +18,6 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;

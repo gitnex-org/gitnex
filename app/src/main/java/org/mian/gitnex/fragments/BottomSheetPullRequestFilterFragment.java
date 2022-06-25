@@ -12,7 +12,7 @@ import org.mian.gitnex.databinding.BottomSheetPullRequestFilterBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class BottomSheetPullRequestFilterFragment extends BottomSheetDialogFragment {

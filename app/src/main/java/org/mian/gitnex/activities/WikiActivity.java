@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
@@ -7,27 +8,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.v2.models.CreateWikiPageOptions;
 import org.gitnex.tea4j.v2.models.WikiPage;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityWikiBinding;
+import org.mian.gitnex.fragments.BottomSheetWikiFragment;
 import org.mian.gitnex.fragments.WikiFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
  */
 
-public class WikiActivity extends BaseActivity {
+public class WikiActivity extends BaseActivity implements BottomSheetListener {
 
 	private ActivityWikiBinding binding;
 	private String pageName;
@@ -262,6 +267,40 @@ public class WikiActivity extends BaseActivity {
 		});
 	}
 
+	private void deleteWiki(final String owner, final String repo, final String pageName) {
+
+		new AlertDialog.Builder(ctx)
+			.setTitle(String.format(ctx.getString(R.string.deleteGenericTitle), pageName))
+			.setMessage(ctx.getString(R.string.deleteWikiPageMessage, pageName))
+			.setIcon(R.drawable.ic_delete)
+			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
+				.getApiInterface(ctx).repoDeleteWikiPage(owner, repo, pageName).enqueue(new Callback<>() {
+
+					@Override
+					public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+
+						if(response.isSuccessful()) {
+							Toasty.success(ctx, getString(R.string.wikiPageDeleted));
+							WikiFragment.resumeWiki = true;
+							finish();
+						}
+						else if(response.code() == 403) {
+							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						}
+						else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+						Toasty.error(ctx, ctx.getString(R.string.genericError));
+					}
+				}))
+			.setNeutralButton(R.string.cancelButton, null).show();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -270,8 +309,31 @@ public class WikiActivity extends BaseActivity {
 		if(action.equalsIgnoreCase("edit") || action.equalsIgnoreCase("add")) {
 			inflater.inflate(R.menu.save, menu);
 		}
+		else {
+			if(repository.getPermissions().isPush()) {
+				inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+			}
+		}
 
 		return true;
+	}
+
+	@Override
+	public void onButtonClicked(String text) {
+		switch(text) {
+
+			case "editWiki":
+				Intent intent = new Intent(ctx, WikiActivity.class);
+				intent.putExtra("pageName", pageName);
+				intent.putExtra("action", "edit");
+				intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
+				ctx.startActivity(intent);
+				finish();
+				break;
+			case "delWiki":
+				deleteWiki(repository.getOwner(), repository.getName(), pageName);
+				break;
+		}
 	}
 
 	@Override
@@ -282,6 +344,12 @@ public class WikiActivity extends BaseActivity {
 		if(id == android.R.id.home) {
 
 			finish();
+			return true;
+		}
+		else if(id == R.id.genericMenu) {
+
+			BottomSheetWikiFragment bottomSheet = new BottomSheetWikiFragment();
+			bottomSheet.show(getSupportFragmentManager(), "wikiBottomSheet");
 			return true;
 		}
 		else if(id == R.id.save) {

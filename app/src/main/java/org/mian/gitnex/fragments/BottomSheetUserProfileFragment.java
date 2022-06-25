@@ -12,7 +12,7 @@ import org.mian.gitnex.databinding.BottomSheetUserProfileBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Template Author M M Arif
+ * @author M M Arif
  * @author qwerty287
  */
 

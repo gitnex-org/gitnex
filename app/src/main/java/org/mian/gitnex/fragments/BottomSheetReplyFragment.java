@@ -29,8 +29,6 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.DraftsApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
-import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
