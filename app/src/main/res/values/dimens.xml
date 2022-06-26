@@ -6,4 +6,24 @@
     <dimen name="list_avatar_size">24dp</dimen>
     <dimen name="list_avatar_size_medium">34dp</dimen>
     <dimen name="list_avatar_size_large">60dp</dimen>
+
+    <!--DP-->
+    <dimen name="dimen4dp">4dp</dimen>
+    <dimen name="dimen8dp">8dp</dimen>
+    <dimen name="dimen16dp">16dp</dimen>
+    <dimen name="dimen20dp">20dp</dimen>
+    <dimen name="dimen24dp">24dp</dimen>
+    <dimen name="dimen32dp">32dp</dimen>
+    <dimen name="dimen40dp">40dp</dimen>
+    <dimen name="dimen50dp">50dp</dimen>
+    <dimen name="dimen80dp">80dp</dimen>
+    <dimen name="dimen120dp">12dp</dimen>
+    <dimen name="dimen150dp">150dp</dimen>
+
+    <!--SP-->
+    <dimen name="dimen12sp">12sp</dimen>
+    <dimen name="dimen14sp">14sp</dimen>
+    <dimen name="dimen16sp">16sp</dimen>
+    <dimen name="dimen18sp">18sp</dimen>
+    <dimen name="dimen20sp">20sp</dimen>
 </resources>

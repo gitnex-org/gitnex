@@ -39,7 +39,6 @@
       <option name="KEEP_LINE_BREAKS" value="false" />
       <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
       <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
-      <option name="BLANK_LINES_BEFORE_METHOD_BODY" value="1" />
       <option name="BLANK_LINES_AROUND_FIELD_IN_INTERFACE" value="1" />
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
       <option name="BLANK_LINES_AFTER_ANONYMOUS_CLASS_HEADER" value="1" />

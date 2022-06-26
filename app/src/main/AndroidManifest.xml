@@ -161,7 +161,14 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
         <activity
             android:name=".activities.AdminCronTasksActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" /> <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:name=".activities.WikiActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name=".activities.CodeEditorActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
         <meta-data
             android:name="com.samsung.android.keepalive.density"
             android:value="true" /> <!-- Version >= 3.0. DeX Dual Mode support -->

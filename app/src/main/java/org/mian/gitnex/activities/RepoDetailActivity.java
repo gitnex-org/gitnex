@@ -20,11 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -44,6 +45,7 @@ import org.mian.gitnex.fragments.MilestonesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
+import org.mian.gitnex.fragments.WikiFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -74,8 +76,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
 
-	public ViewPager mViewPager;
-	private int tabsCount;
+	public ViewPager2 viewPager;
 
 	public RepositoryContext repository;
 
@@ -344,6 +345,13 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			case "star":
 				repository.setStarred(true);
 				break;
+			case "createWiki":
+
+				Intent intent = new Intent(ctx, WikiActivity.class);
+				intent.putExtra("action", "add");
+				intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
+				ctx.startActivity(intent);
+				break;
 		}
 	}
 
@@ -475,56 +483,46 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		});
 	}
 
-	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+	public class ViewPagerAdapter extends FragmentStateAdapter {
 
-		SectionsPagerAdapter(FragmentManager fm) {
-			super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-		}
+		public ViewPagerAdapter(@NonNull FragmentActivity fa) { super(fa); }
 
 		@NonNull
 		@Override
-		public Fragment getItem(int position) {
+		public Fragment createFragment(int position) {
+
 			Fragment fragment = null;
 
 			switch(position) {
-
 				case 0: // Repository details
-
 					return RepoInfoFragment.newInstance(repository);
 				case 1: // Files
-
 					return FilesFragment.newInstance(repository);
 				case 2: // Issues
-
 					fragment = IssuesFragment.newInstance(repository);
 					break;
 				case 3: // Pull requests
-
 					fragment = PullRequestsFragment.newInstance(repository);
 					break;
 				case 4: // Releases
-
 					return ReleasesFragment.newInstance(repository);
-				case 5: // Milestones
-
+				case 5: // Wiki
+					return WikiFragment.newInstance(repository);
+				case 6: // Milestones
 					fragment = MilestonesFragment.newInstance(repository);
 					break;
-				case 6: // Labels
-
+				case 7: // Labels
 					return LabelsFragment.newInstance(repository);
-				case 7: // Collaborators
-
+				case 8: // Collaborators
 					return CollaboratorsFragment.newInstance(repository);
 			}
-
 			assert fragment != null;
 			return fragment;
 		}
 
 		@Override
-		public int getCount() {
-
-			return tabsCount;
+		public int getItemCount() {
+			return 9;
 		}
 	}
 
@@ -577,35 +575,35 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		}
 
 		TabLayout tabLayout = findViewById(R.id.tabs);
-		tabLayout.setVisibility(View.VISIBLE);
 
-		ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
-		tabsCount = viewGroup.getChildCount();
+		if(viewPager == null) {
 
-		for(int j = 0; j < tabsCount; j++) {
+			viewPager = findViewById(R.id.repositoryContainer);
+			viewPager.setOffscreenPageLimit(1);
 
-			ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
-			int tabChildCount = vgTab.getChildCount();
+			viewPager.setAdapter(new ViewPagerAdapter(this));
 
-			for(int i = 0; i < tabChildCount; i++) {
+			String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.tabTextFiles), ctx.getResources().getString(R.string.pageTitleIssues), ctx.getResources().getString(R.string.tabPullRequests), ctx.getResources().getString(R.string.tabTextReleases), ctx.getResources().getString(R.string.wiki), ctx.getResources().getString(R.string.tabTextMl), ctx.getResources().getString(R.string.newIssueLabelsTitle), ctx.getResources().getString(R.string.tabTextCollaborators)};
+			new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
 
-				View tabViewChild = vgTab.getChildAt(i);
+			ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
+			int tabsCount = viewGroup.getChildCount();
 
-				if(tabViewChild instanceof TextView) {
+			for(int j = 0; j < tabsCount; j++) {
 
-					((TextView) tabViewChild).setTypeface(myTypeface);
+				ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
+				int tabChildCount = vgTab.getChildCount();
+
+				for(int i = 0; i < tabChildCount; i++) {
+
+					View tabViewChild = vgTab.getChildAt(i);
+
+					if(tabViewChild instanceof TextView) {
+
+						((TextView) tabViewChild).setTypeface(myTypeface);
+					}
 				}
 			}
-		}
-
-		if(mViewPager == null) {
-			mViewPager = findViewById(R.id.container);
-			mViewPager.setVisibility(View.VISIBLE);
-
-			mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-			tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-			SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-			mViewPager.setAdapter(mSectionsPagerAdapter);
 		}
 
 		if(tinyDB.getBoolean("enableCounterBadges", true)) {
@@ -685,11 +683,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 			switch(goToSectionType) {
 				case "branchesList":
-					mViewPager.setCurrentItem(1);
+					viewPager.setCurrentItem(1);
 					chooseBranch();
 					break;
 				case "branch":
-					mViewPager.setCurrentItem(1);
+					viewPager.setCurrentItem(1);
 					String selectedBranch = mainIntent.getStringExtra("selectedBranch");
 					repository.setBranchRef(selectedBranch);
 					if(getFragmentRefreshListenerFiles() != null) {
@@ -697,7 +695,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					}
 					break;
 				case "file":
-					mViewPager.setCurrentItem(1);
+					viewPager.setCurrentItem(1);
 					String branch1 = mainIntent.getStringExtra("branch");
 					repository.setBranchRef(branch1);
 					if(getFragmentRefreshListenerFiles() != null) {
@@ -708,7 +706,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					startActivity(intent);
 					break;
 				case "dir":
-					mViewPager.setCurrentItem(1);
+					viewPager.setCurrentItem(1);
 					String branch2 = mainIntent.getStringExtra("branch");
 					repository.setBranchRef(branch2);
 					if(getFragmentRefreshListenerFiles() != null) {
@@ -716,7 +714,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					}
 					break;
 				case "commitsList":
-					mViewPager.setCurrentItem(1);
+					viewPager.setCurrentItem(1);
 					String branch = mainIntent.getStringExtra("branchName");
 					repository.setBranchRef(branch);
 					if(getFragmentRefreshListenerFiles() != null) {
@@ -726,35 +724,35 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					ctx.startActivity(intent1);
 					break;
 				case "issue":
-					mViewPager.setCurrentItem(2);
+					viewPager.setCurrentItem(2);
 					break;
 				case "issueNew":
-					mViewPager.setCurrentItem(2);
+					viewPager.setCurrentItem(2);
 					startActivity(repository.getIntent(ctx, CreateIssueActivity.class));
 					break;
 				case "pull":
-					mViewPager.setCurrentItem(3);
+					viewPager.setCurrentItem(3);
 					break;
 				case "pullNew":
-					mViewPager.setCurrentItem(3);
+					viewPager.setCurrentItem(3);
 					startActivity(repository.getIntent(ctx, CreatePullRequestActivity.class));
 					break;
 				case "releases":
-					mViewPager.setCurrentItem(4);
+					viewPager.setCurrentItem(4);
 					break;
 				case "newRelease":
-					mViewPager.setCurrentItem(4);
+					viewPager.setCurrentItem(4);
 					createReleaseLauncher.launch(repository.getIntent(ctx, CreateReleaseActivity.class));
 					break;
 				case "milestones":
-					mViewPager.setCurrentItem(5);
+					viewPager.setCurrentItem(5);
 					break;
 				case "milestonesNew":
-					mViewPager.setCurrentItem(5);
+					viewPager.setCurrentItem(5);
 					createMilestoneLauncher.launch(repository.getIntent(ctx, CreateMilestoneActivity.class));
 					break;
 				case "labels":
-					mViewPager.setCurrentItem(6);
+					viewPager.setCurrentItem(6);
 					break;
 				case "settings":
 					settingsLauncher.launch(repository.getIntent(ctx, RepositorySettingsActivity.class));

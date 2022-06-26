@@ -16,7 +16,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.SimpleCallback;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment {

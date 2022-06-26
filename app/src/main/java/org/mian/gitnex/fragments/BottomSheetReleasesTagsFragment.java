@@ -12,7 +12,7 @@ import org.mian.gitnex.databinding.BottomSheetReleasesTagsBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class BottomSheetReleasesTagsFragment extends BottomSheetDialogFragment {

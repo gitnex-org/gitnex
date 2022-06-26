@@ -9,7 +9,6 @@ import org.mian.gitnex.helpers.PicassoCache;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import java.io.File;
 import java.security.SecureRandom;
-import java.util.Objects;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;

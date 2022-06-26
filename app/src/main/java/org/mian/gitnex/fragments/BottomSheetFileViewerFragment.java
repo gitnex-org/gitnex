@@ -13,7 +13,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {

@@ -11,7 +11,7 @@ import org.mian.gitnex.databinding.BottomSheetNotificationsFilterBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class BottomSheetNotificationsFilterFragment extends BottomSheetDialogFragment {
