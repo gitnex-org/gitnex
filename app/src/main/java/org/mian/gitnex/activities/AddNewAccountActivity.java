@@ -90,8 +90,8 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		try {
 
-			String instanceUrlET = String.valueOf(viewBinding.instanceUrl.getText());
-			String loginToken = String.valueOf(viewBinding.loginToken.getText());
+			String instanceUrlET = String.valueOf(viewBinding.instanceUrl.getText()).replaceAll("[\\uFEFF|#]", "").trim();
+			String loginToken = String.valueOf(viewBinding.loginToken.getText()).replaceAll("[\\uFEFF|#]", "").trim();
 			String protocol = spinnerSelectedValue;
 
 			if(protocol == null) {
