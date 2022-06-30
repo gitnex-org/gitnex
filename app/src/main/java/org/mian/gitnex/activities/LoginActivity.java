@@ -140,13 +140,13 @@ public class LoginActivity extends BaseActivity {
 				return;
 			}
 
-			String loginUid = loginUidET.getText().toString();
-			String loginPass = loginPassword.getText().toString();
-			String loginToken = loginTokenCode.getText().toString().trim();
+			String loginUid = loginUidET.getText().toString().replaceAll("[\\uFEFF]", "").trim();
+			String loginPass = loginPassword.getText().toString().trim();
+			String loginToken = loginTokenCode.getText().toString().replaceAll("[\\uFEFF|#]", "").trim();
 
 			LoginType loginType = (loginMethod.getCheckedRadioButtonId() == R.id.loginUsernamePassword) ? LoginType.BASIC : LoginType.TOKEN;
 
-			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET.getText().toString(), "http")).toUri();
+			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET.getText().toString().replaceAll("[\\uFEFF|#]", "").trim(), "http")).toUri();
 
 			instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(selectedProtocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
 				.toUri();
