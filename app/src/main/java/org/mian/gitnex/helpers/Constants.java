@@ -13,20 +13,6 @@ public class Constants {
 		return ((BaseActivity) context).getAccount().requiresVersion("1.15") ? ((BaseActivity) context).getAccount().getDefaultPageLimit() : ((BaseActivity) context).getAccount().getMaxPageLimit();
 	}
 
-	// tags
-	public static final String tagPullRequestsList = "PullRequestFragment";
-	public static final String tagIssuesList = "IssuesListFragment";
-	public static final String tagMilestonesAdapter = "MilestonesAdapter";
-	public static final String draftsApi = "DraftsApi";
-	public static final String repositoriesApi = "RepositoriesApi";
-	public static final String tagDraftsBottomSheet = "BottomSheetDraftsFragment";
-	public static final String userAccountsApi = "UserAccountsApi";
-	public static final String publicOrganizations = "PublicOrganizations";
-	public static final String exploreUsers = "ExploreUsers";
-	public static final String exploreIssues = "ExploreIssues";
-	public static final String tagFollowers = "TagFollowers";
-	public static final String tagFollowing = "TagFollowing";
-
 	// issues variables
 	public static final int issuesPageInit = 1;
 	public static final String issuesRequestType = "issues";

@@ -4,14 +4,16 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityDiffBinding;
-import org.mian.gitnex.fragments.DiffFilesFragment;
 import org.mian.gitnex.fragments.DiffFragment;
+import org.mian.gitnex.fragments.PullRequestChangesFragment;
 
 /**
  * @author opyale
  */
 
 public class DiffActivity extends BaseActivity {
+
+	public PullRequestChangesFragment fragment = PullRequestChangesFragment.newInstance();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,8 +23,6 @@ public class DiffActivity extends BaseActivity {
 		ActivityDiffBinding binding = ActivityDiffBinding.inflate(getLayoutInflater());
 
 		setContentView(binding.getRoot());
-
-		DiffFilesFragment fragment = DiffFilesFragment.newInstance();
 
 		getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
 

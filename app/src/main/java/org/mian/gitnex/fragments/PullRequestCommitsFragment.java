@@ -1,31 +1,30 @@
-package org.mian.gitnex.activities;
+package org.mian.gitnex.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.v2.models.Commit;
+import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCommitsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -33,82 +32,89 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author qwerty287
  */
+public class PullRequestCommitsFragment extends Fragment {
 
-public class CommitsActivity extends BaseActivity {
-
-	private View.OnClickListener onClickListener;
-	private TextView noData;
-	private ProgressBar progressBar;
-	private final String TAG = "CommitsActivity";
+	private ActivityCommitsBinding binding;
+	private Context ctx;
+	private final String TAG = "PullRequestCommitsFragment";
 	private int resultLimit;
 	private int pageSize = 1;
 
-	private RecyclerView recyclerView;
-	private List<Commit> commitsList;
+	private final List<Commit> commitsList = new ArrayList<>();
 	private CommitsAdapter adapter;
-	public RepositoryContext repository;
+
+	public PullRequestCommitsFragment() {}
+
+	public static PullRequestCommitsFragment newInstance() {
+		return new PullRequestCommitsFragment();
+	}
+
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		if(binding != null) {
+			ctx = requireContext();
+			return binding.getRoot();
+		}
+
+		binding = ActivityCommitsBinding.inflate(inflater, container, false);
+		ctx = requireContext();
+		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
+		binding.toolbar.setVisibility(View.GONE);
+
+		resultLimit = Constants.getCurrentResultLimit(ctx);
+
+		binding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+			binding.pullToRefresh.setRefreshing(false);
+			loadInitial(issue, resultLimit);
+			adapter.notifyDataChanged();
+		}, 200));
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+			RelativeLayout.LayoutParams.MATCH_PARENT,
+			RelativeLayout.LayoutParams.WRAP_CONTENT
+		);
+		params.setMargins(0, 0, 0, 0);
+		binding.pullToRefresh.setLayoutParams(params);
+		RelativeLayout.LayoutParams paramsProgressBar = new RelativeLayout.LayoutParams(
+			RelativeLayout.LayoutParams.MATCH_PARENT,
+			RelativeLayout.LayoutParams.WRAP_CONTENT
+		);
+		paramsProgressBar.setMargins(0, 0, 0, 0);
+		binding.progressBar.setLayoutParams(paramsProgressBar);
+
+		adapter = new CommitsAdapter(ctx, commitsList);
+		adapter.setLoadMoreListener(() -> binding.recyclerView.post(() -> {
+
+			if(commitsList.size() == resultLimit || pageSize == resultLimit) {
+
+				int page = (commitsList.size() + resultLimit) / resultLimit;
+				loadMore(page, issue, resultLimit);
+			}
+		}));
+
+		binding.recyclerView.setHasFixedSize(true);
+		binding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+		binding.recyclerView.setAdapter(adapter);
+
+		loadInitial(issue, resultLimit);
+
+		return binding.getRoot();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		this.getClass().getName();
-
-		ActivityCommitsBinding activityCommitsBinding = ActivityCommitsBinding.inflate(getLayoutInflater());
-		setContentView(activityCommitsBinding.getRoot());
-
-		Toolbar toolbar = activityCommitsBinding.toolbar;
-		setSupportActionBar(toolbar);
-
-		repository = RepositoryContext.fromIntent(getIntent());
-		String branchName = repository.getBranchRef();
-
-		TextView toolbar_title = activityCommitsBinding.toolbarTitle;
-		toolbar_title.setMovementMethod(new ScrollingMovementMethod());
-		toolbar_title.setText(branchName);
-
-		ImageView closeActivity = activityCommitsBinding.close;
-		noData = activityCommitsBinding.noDataCommits;
-		progressBar = activityCommitsBinding.progressBar;
-		SwipeRefreshLayout swipeRefresh = activityCommitsBinding.pullToRefresh;
-
-		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
-
-		resultLimit = Constants.getCurrentResultLimit(ctx);
-
-		recyclerView = activityCommitsBinding.recyclerView;
-		commitsList = new ArrayList<>();
-
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			swipeRefresh.setRefreshing(false);
-			loadInitial(repository.getOwner(), repository.getName(), branchName, resultLimit);
-			adapter.notifyDataChanged();
-		}, 200));
-
-		adapter = new CommitsAdapter(ctx, commitsList);
-		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
-
-			if(commitsList.size() == resultLimit || pageSize == resultLimit) {
-
-				int page = (commitsList.size() + resultLimit) / resultLimit;
-				loadMore(repository.getOwner(), repository.getName(), page, branchName, resultLimit);
-			}
-		}));
-
-		recyclerView.setHasFixedSize(true);
-		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-		recyclerView.setAdapter(adapter);
-
-		loadInitial(repository.getOwner(), repository.getName(), branchName, resultLimit);
 	}
 
-	private void loadInitial(String repoOwner, String repoName, String branchName, int resultLimit) {
+	private void loadInitial(IssueContext issue, int resultLimit) {
 
-		Call<List<Commit>> call = RetrofitClient.getApiInterface(ctx).repoGetAllCommits(repoOwner, repoName, branchName, null, 1, resultLimit);
+		Call<List<Commit>> call = RetrofitClient.getApiInterface(ctx).repoGetPullRequestCommits(issue.getRepository().getOwner(),
+			issue.getRepository().getName(), (long) issue.getIssueIndex(), 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -123,25 +129,25 @@ public class CommitsActivity extends BaseActivity {
 						commitsList.clear();
 						commitsList.addAll(response.body());
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.GONE);
+						binding.noDataCommits.setVisibility(View.GONE);
 					}
 					else {
 
 						commitsList.clear();
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.VISIBLE);
+						binding.noDataCommits.setVisibility(View.VISIBLE);
 					}
 				}
 				if(response.code() == 409) {
 
-					noData.setVisibility(View.VISIBLE);
+					binding.noDataCommits.setVisibility(View.VISIBLE);
 				}
 				else {
 
 					Log.e(TAG, String.valueOf(response.code()));
 				}
 
-				progressBar.setVisibility(View.GONE);
+				binding.progressBar.setVisibility(View.GONE);
 			}
 
 			@Override
@@ -154,11 +160,12 @@ public class CommitsActivity extends BaseActivity {
 
 	}
 
-	private void loadMore(String repoOwner, String repoName, final int page, String branchName, int resultLimit) {
+	private void loadMore(final int page, IssueContext issue, int resultLimit) {
 
-		progressBar.setVisibility(View.VISIBLE);
+		binding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<Commit>> call = RetrofitClient.getApiInterface(ctx).repoGetAllCommits(repoOwner, repoName, branchName, null, page, resultLimit);
+		Call<List<Commit>> call = RetrofitClient.getApiInterface(ctx).repoGetPullRequestCommits(issue.getRepository().getOwner(),
+			issue.getRepository().getName(), (long) issue.getIssueIndex(), page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -187,7 +194,7 @@ public class CommitsActivity extends BaseActivity {
 					Log.e(TAG, String.valueOf(response.code()));
 				}
 
-				progressBar.setVisibility(View.GONE);
+				binding.progressBar.setVisibility(View.GONE);
 			}
 
 			@Override
@@ -201,9 +208,8 @@ public class CommitsActivity extends BaseActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
 
-		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.search_menu, menu);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -226,8 +232,6 @@ public class CommitsActivity extends BaseActivity {
 			}
 
 		});
-
-		return super.onCreateOptionsMenu(menu);
 	}
 
 	private void filter(String text) {
@@ -245,17 +249,4 @@ public class CommitsActivity extends BaseActivity {
 		adapter.updateList(arr);
 	}
 
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		repository.checkAccountSwitch(this);
-	}
-
 }
-
-

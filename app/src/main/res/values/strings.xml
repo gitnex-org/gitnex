@@ -766,6 +766,7 @@
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
     <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="commits">Commits</string>
 
     <!-- wiki -->
     <string name="wiki">Wiki</string>

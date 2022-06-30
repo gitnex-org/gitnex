@@ -37,7 +37,7 @@ public class MyProfileFollowersFragment extends Fragment {
 	private List<User> dataList;
 	private UsersAdapter adapter;
 	private int pageSize;
-	private final String TAG = Constants.tagFollowers;
+	private final String TAG = "MyProfileFollowersFragment";
 	private int resultLimit;
 
     @Override

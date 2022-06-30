@@ -46,7 +46,7 @@ public class PullRequestsFragment extends Fragment {
 
 	private List<PullRequest> prList;
 	private PullRequestsAdapter adapter;
-	private final String TAG = Constants.tagPullRequestsList;
+	private final String TAG = "PullRequestFragment";
 	private Context context;
 	private int pageSize = Constants.prPageInit;
 	private int resultLimit;

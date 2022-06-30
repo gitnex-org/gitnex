@@ -27,7 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ExplorePublicOrganizationsFragment extends Fragment {
@@ -37,7 +37,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 	private OrganizationsListAdapter adapter;
 	private Context context;
 	private int pageSize;
-	private final String TAG = Constants.publicOrganizations;
+	private final String TAG = "PublicOrganizations";
 	private int resultLimit;
 
 	@Nullable

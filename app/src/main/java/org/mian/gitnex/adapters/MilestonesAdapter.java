@@ -18,7 +18,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.MilestoneActions;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -179,7 +178,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			if(dataModel.getDueOn() != null) {
 
-				String TAG = Constants.tagMilestonesAdapter;
+				String TAG = "MilestonesAdapter";
 				if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
 
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));

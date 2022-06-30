@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.v2.models.Commit;
 import org.mian.gitnex.R;
@@ -20,7 +21,6 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.CustomCommitHeaderBinding;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -29,7 +29,9 @@ import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import retrofit2.Call;
@@ -46,7 +48,8 @@ public class CommitDetailFragment extends Fragment {
 	private String repoOwner;
 	private String repoName;
 	private String sha;
-
+	private List<FileDiffView> fileDiffViews = new ArrayList<>();
+	private DiffFilesAdapter adapter;
 	private int loadingFinished = 0;
 
 	public static CommitDetailFragment newInstance() {
@@ -63,21 +66,23 @@ public class CommitDetailFragment extends Fragment {
 
 		binding = FragmentCommitDetailsBinding.inflate(getLayoutInflater(), container, false);
 
+		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
 		RepositoryContext repository = RepositoryContext.fromIntent(requireActivity().getIntent());
 		repoOwner = repository.getOwner();
 		repoName = repository.getName();
 		sha = requireActivity().getIntent().getStringExtra("sha");
 		binding.toolbarTitle.setText(sha.substring(0, Math.min(sha.length(), 10)));
 
+		adapter = new DiffFilesAdapter(requireContext(), fileDiffViews, issue, "commit");
+
+		binding.diffFiles.setHasFixedSize(true);
+		binding.diffFiles.setLayoutManager(new LinearLayoutManager(requireContext()));
+		binding.diffFiles.setAdapter(adapter);
+
 		getCommit();
 		getDiff();
 
 		binding.close.setOnClickListener((v) -> requireActivity().finish());
-
-		binding.diffFiles.setOnItemClickListener((parent, view, position, id) -> requireActivity().getSupportFragmentManager()
-			.beginTransaction()
-			.replace(R.id.fragment_container, DiffFragment.newInstance((FileDiffView) parent.getItemAtPosition(position), "commit"))
-			.commit());
 
 		return binding.getRoot();
 	}
@@ -93,15 +98,16 @@ public class CommitDetailFragment extends Fragment {
 			public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
 
 				checkLoading();
-				assert response.body() != null;
 				switch(response.code()) {
 
 					case 200:
-						List<FileDiffView> fileDiffViews;
+						assert response.body() != null;
 						fileDiffViews = ParseDiff.getFileDiffViewArray(response.body());
 
-						DiffFilesAdapter adapter = new DiffFilesAdapter(requireContext(), fileDiffViews);
-						requireActivity().runOnUiThread(() -> binding.diffFiles.setAdapter(adapter));
+						requireActivity().runOnUiThread(() -> {
+							adapter.updateList(fileDiffViews);
+							adapter.notifyDataChanged();
+						});
 						break;
 
 					case 401:
@@ -139,11 +145,6 @@ public class CommitDetailFragment extends Fragment {
 				public void onResponse(@NonNull Call<Commit> call, @NonNull Response<Commit> response) {
 
 					checkLoading();
-					CustomCommitHeaderBinding binding = CustomCommitHeaderBinding.inflate(getLayoutInflater());
-					binding.getRoot().setOnClickListener((v) -> {
-						// we need a ClickListener here to prevent that the ItemClickListener of the diffFiles ListView handles clicks for the header
-					});
-					CommitDetailFragment.this.binding.diffFiles.addHeaderView(binding.getRoot());
 					Commit commitsModel = response.body();
 					if(commitsModel == null) {
 						onFailure(call, new Throwable());

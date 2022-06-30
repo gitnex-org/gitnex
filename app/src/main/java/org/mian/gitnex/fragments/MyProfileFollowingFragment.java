@@ -26,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MyProfileFollowingFragment extends Fragment {
@@ -37,7 +37,7 @@ public class MyProfileFollowingFragment extends Fragment {
 	private List<User> dataList;
 	private UsersAdapter adapter;
 	private int pageSize;
-	private final String TAG = Constants.tagFollowing;
+	private final String TAG = "MyProfileFollowingFragment";
 	private int resultLimit;
 
 	@Override

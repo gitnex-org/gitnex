@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.DiffActivity;
 import org.mian.gitnex.adapters.DiffAdapter;
 import org.mian.gitnex.databinding.FragmentDiffBinding;
 import org.mian.gitnex.helpers.FileDiffView;
@@ -65,7 +66,7 @@ public class DiffFragment extends Fragment {
 		ctx = requireContext();
 
 		if(Objects.equals(type, "pull")) {
-			binding.close.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, DiffFilesFragment.newInstance()).commit());
+			binding.close.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, ((DiffActivity) requireActivity()).fragment).commit());
 		} else {
 			binding.close.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, CommitDetailFragment.newInstance()).commit());
 		}
