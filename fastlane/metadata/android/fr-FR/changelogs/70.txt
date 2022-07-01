@@ -1,13 +1,13 @@
 2.2.0
-- New: Explore repositories
-- New: Files and directory browser (Require Gitea 1.9)
-- New: Basic file viewer
-- New: Filter files/directories
-- New: Star/unstar a repository
-- New: Watch/unwatch a repository
-- Improvement: Added Corwdin for translation
-- Improvement: Bottomsheet scroll and line dividers
-- Improvement: New languages support
+- Nouveau : Rechercher des dépôts
+- Nouveau : Explorateur de fichiers et de dossiers (requiert Gitea 1.9)
+- Nouveau : Aperçu basique des fichiers
+- Nouveau : Filtrer les fichiers/dossiers
+- Nouveau : Ajouter/retirer un dépôt des favoris
+- Nouveau : Suivre/Ne plus suivre un dépôt
+- Amélioration : Lien vers Crowdin pour les traductions
+- Amélioration : Panneau inférieur animé et subdivisé
+- Amélioration : Traductions en de nouvelles langues
 
-For more, check the release notes.
+Pour plus de détails, consultez les notes de version.
 https://codeberg.org/gitnex/GitNex/releases

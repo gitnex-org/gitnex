@@ -1,13 +1,13 @@
-- New: Organization overview
-- New: Code block colors - change in settings
-- New: Home screen of your choice - change in settings
-- New: Close and reopen an issue
-- New: Create new release
-- New: Mention collaborators in issues, comments
-- New: 2FA OTP feature. Check the Troubleshoot wiki page for usage
-- Enhancement: Updated release tab layout
-- Enhancement: Added release tag in releases
-- Enhancement: German and Russian translation updates
+- Neu: Organisationsübersicht
+- Neu: Code-Block-Farben - in den Einstellungen ändern
+- Neu: Heomscreen deiner Wahl - in den Einstellungen ändern
+- Neu: Issues schließen und wieder öffnen
+- Neu: Release erstellen
+- Neu: Mitarbeiter in Issues und Kommentaren erwähnen
+- Neu: 2FA mit OTP. Siehe die "Troubeshooting" Wiki-Seite für Nutzung
+- Neu: überarbeitetes Release-Layout
+- Verbesserung: Release-Tags in Releases
+- Verbesserung: aktualisierte Übersetzungen für Deutsch und Russisch
 
-For more, check the release notes.
+Für mehr, siehe die Release-Anmerkungen.
 https://codeberg.org/gitnex/GitNex/releases

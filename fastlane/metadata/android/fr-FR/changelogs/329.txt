@@ -1,5 +1,5 @@
 3.3.0-rc3
 
-Last release candidate(rc) before 3.3.0 stable release, includes bug fixes, ui improvements and issue/pr emoji reactions.
+Cette dernière RC avant la version 3.3.0 stable apporte des corrections de bogues, des améliorations d’IHM ainsi que les réactions aux tickets et demandes d’ajout.
 
-Detail release notes will be published with stable release.
+Les notes de version détaillées seront publiées avec la version stable.

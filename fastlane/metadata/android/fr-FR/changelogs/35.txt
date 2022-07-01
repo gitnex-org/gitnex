@@ -1,12 +1,12 @@
-- New: Organization overview
-- New: Code block colors - change in settings
-- New: Home screen of your choice - change in settings
-- New: Close and reopen an issue
-- New: Create new release
-- Enhancement: Updated release tab layout
-- Enhancement: Added release tag in releases
-- Enhancement: German and Russian translation updates
-- Fixed: Crash when issues and info tabs are frequently switched
+- Nouveau : Aperçu des organisations
+- Nouveau : Coloration syntaxique (dans les réglages)
+- Nouveau : Choisir l’écran d’accueil (dans les réglages)
+- Nouveau : Fermer et rouvrir un ticket
+- Nouveau : Créer des versions
+- Amélioration : Agencement de l’onglet Version mis à jour
+- Amélioration : Tags de versions
+- Amélioration : Traductions en allemand et en russe mises à jour
+- Corrigé : Plantage lors de basculements fréquents entre les onglets Tickets et Infos
 
-For more, check the release notes.
+Pour plus de détails, consultez les notes de version.
 https://codeberg.org/gitnex/GitNex/releases

@@ -1,10 +1,10 @@
-- New: Add/remove assignees
-- New: Users list - Admin only
-- New: Search users - filter by name, username and email
-- Enhancement: Rate me link to play store
-- Enhancement: Enhance About screen
-- Enhancement: 4 cols in users gridview - collaborators
-- Fixed: Crash when issue badge is disabled
+- Neu: Zuständige hinzufügen/entfernen
+- Neu: Nutzerliste - nur Admins
+- Neu: Nutzer nach Name, Benutzername und E-Mail suchen
+- Verbesserung: Bewertungslink zum Play Store
+- Verbesserung: "Über"-Bildschirm
+- Verbesserung: 4 Spalten in Mitarbeiter-Tabellen-Layout
+- Fehler: Crash wenn Issue-Zähler deaktiviert ist
 
-For more, check the release notes.
+Für mehr, siehe die Release-Anmerkungen.
 https://codeberg.org/gitnex/GitNex/releases

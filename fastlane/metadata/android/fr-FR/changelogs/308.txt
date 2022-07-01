@@ -1,5 +1,5 @@
 3.1.0-rc2
 
-3.1.0 RC2 release brings enhanced multi accounts, delete and edit files, new progress indicators etc.
+Cette version RC améliore la gestion des comptes multiples et apporte la modification/suppression des fichiers, de nouveaux indicateurs de progression, etc.
 
-Detailed release notes will be published with stable release.
+Les notes de version détaillées seront publiées avec la version stable.

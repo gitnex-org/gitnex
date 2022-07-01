@@ -1,16 +1,16 @@
 1.0-rc6
-  * New: Added meta data and changelog for F-droid
+  - Nouveau : Métadonnées et journal des changements dans la fiche de F-Droid
   
 1.0-rc5
-  * New: Highlight usernames in issues and comments
-  * Bugfix: Default label creation bug
-  * Bugfix: Infinite loop of settings screen on some devices
+  - Nouveau : Noms d’utilisateur en surbrillance dans les tickets et les commentaires
+  - Corrigé : Bogue lors de la création d’étiquettes
+  - Corrigé : Boucle infinie dans l’écran des réglages sur certains appareils
 
 1.0-rc4
-  * New: Create label with color picker
-  * Bugfix: Fix label flag in creating new issue
-  * Bugfix: Fix pretty date on new app launch
-  * Enhanced: Moved create milestone and issue into bottom sheet
-  * Enhanced: Clean up issue and comments ui
-  * Enhanced: Enhance milestone open/close status
-  * Enhanced: Enhance milestone due date color and font size
+  - Nouveau : Sélecteur de couleur pour les étiquettes
+  - Corrigé : Bogue d’étiquetage à la création de tickets
+  - Corrigé : Bogue sur les dates relatives au lancement de l’application
+  - Amélioration : « Nouveau jalon » et « Nouveau ticket » déplacés dans le panneau glissant inférieur
+  - Amélioration : Écran des tickets et écran des commentaires réorganisés
+  - Amélioration : Statut ouvert/fermé des jalons plus visibles
+  - Amélioration : Couleur et police des dates d’échéance de jalon plus lisibles

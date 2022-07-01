@@ -543,9 +543,9 @@
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="zero">You have %s new notifications.</item>
-        <item quantity="one">You have %s new notification.</item>
-        <item quantity="other">You have %s new notifications.</item>
+        <item quantity="zero">You have %s new notifications</item>
+        <item quantity="one">You have %s new notification</item>
+        <item quantity="other">You have %s new notifications</item>
     </plurals>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
@@ -644,4 +644,15 @@
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
     <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="commits">Commits</string>
+    <!-- wiki -->
+    <string name="wiki">Wiki</string>
+    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> updated %2$s]]></string>
+    <string name="deleteWikiPageMessage">Do you really want to delete %s?</string>
+    <string name="wikiPageDeleted">Wiki page deleted successfully</string>
+    <string name="wikiPageNameAndContentError">Page name and page content can\'t be empty</string>
+    <string name="createWikiPage">Create Wiki Page</string>
+    <string name="wikiUpdated">Wiki page updated successfully</string>
+    <string name="wikiCreated">Wiki page created successfully</string>
+    <!-- code editor -->
 </resources>

@@ -1,1 +1,1 @@
-GitNex for Gitea
+GitNex pour Gitea

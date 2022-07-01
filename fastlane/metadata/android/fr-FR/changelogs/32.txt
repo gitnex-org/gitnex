@@ -1,7 +1,7 @@
-- New: Edit issue
-- New: Tabs for open and closed issues
-- Enhancement: German translation
-- Fixed: Layout fixes across the app
+- Nouveau : Modifier les tickets
+- Nouveau : Onglets pour les tickets ouverts et les tickets fermés
+- Amélioration : Traduction en allemand
+- Corrigé : Diverses incohérences dans l’agencement de l’IHM
 
-And many more, check the release notes.
+Pour plus de détails, consultez les notes de version.
 https://codeberg.org/gitnex/GitNex/releases

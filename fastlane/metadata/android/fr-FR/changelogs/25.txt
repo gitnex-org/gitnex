@@ -1,8 +1,8 @@
-- New: Add collaborator to repository
-- New: User can now edit his/her own comments
-- New: See who are your followers
-- New: See who you are following
-- Enhancement: Redesign Profile screen
-- Enhancement: Added edited status for single issue and comments
+- Nouveau : Ajouter des participants au dépôt
+- Nouveau : Modifier ses propres commentaires
+- Nouveau : Voir ses observateurs
+- Nouveau : Voir les utilisateurs suivis
+- Amélioration : Écran de profil refondu
+- Amélioration : Ajout d’un indicateur de modification pour les tickets et les commentaires
 
-Release notes: https://codeberg.org/gitnex/GitNex/releases
+Notes de version : https://codeberg.org/gitnex/GitNex/releases

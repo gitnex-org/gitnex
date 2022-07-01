@@ -1,16 +1,16 @@
-- New: Font - roboto
-- New: Milestone progress bar @6543
-- New: Redesign issues list
-- New: Copy issue URL to clipboard @6543
-- New: Redesign milestones list
-- New: Added repository avatars
-- Improvement: Repo info tab enhancements
-- Improvement: Bold font for labels
-- Improvement: Change search icon and text to filter
-- Improvement: Refactor markdown code to load images
-- Improvement: UI improvements for avatars and alignments
-- Improvement: Enable/disable create issue based on repo settings
-- Bugfix: Open issues tab color scheme
+- Nouveau : Fonte - Roboto
+- Nouveau : Barre de progression du jalon @6543
+- Nouveau : Refonte de la liste des tickets
+- Nouveau : Copier l’URL du ticket dans le presse-papier @6543
+- Nouveau : Refonte de la liste des jalons
+- Nouveau : Avatars de dépôt
+- Amélioration : Onglet « Infos » du dépôt retravaillé
+- Amélioration : Étiquettes en gras
+- Amélioration : Icône et texte « Rechercher » changés en « Filtrer »
+- Amélioration : Refonte du code gérant Markdown pour charger les images
+- Amélioration : Meilleur alignement des avatars et des éléments d’IHM
+- Amélioration : Activer/désactiver la création de tickets dans les réglages du dépôt
+- Corrigé : Thème de couleurs des tickets incorrect
 
-For more, check the release notes.
+Pour plus de détails, consultez les notes de version.
 https://codeberg.org/gitnex/GitNex/releases

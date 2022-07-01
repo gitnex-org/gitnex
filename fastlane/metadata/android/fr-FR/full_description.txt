@@ -1,47 +1,47 @@
-GitNex is a free/paid, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
+GitNex est un client Android open-source gratuit/payant pour gérer vos projets Git hébergés avec Gitea. Gitea est un projet communautaire dérivé de Gogs, une forge logicielle légère écrite en Go.
 
-# Features
+# Fonctionnalités
 
-- Multiple accounts support
-- File and directory browser
-- File viewer
-- Create files
-- Login via Token
-- Merge pull request
-- Offline mode(cache)
-- Explore repositories
-- Diff view of PR files for public repositories
-- Repositories list
-- Organizations list
-- Create new repository / organization
-- Search/filter repositories / organizations / issues etc
-- Profile view
-- Issues list
-- Issue comments
-- Comment on issues
-- Create new issue with multiple assignee, labels and add milestone, due date to it
-- Create labels
-- Edit / delete labels
-- Milestones list
-- Create new milestone
-- Branches list
-- Releases with source download
-- Collaborators view for repository
-- Markdown support
-- Emoji support
-- Extensive Settings
-- Option to access local non-https installs
-- 2FA OTP support
+- Comptes multiples
+- Explorateur de fichiers
+- Aperçu des fichiers
+- Création de fichiers
+- Autentification par jeton
+- Fusions de demandes d’ajout
+- Mode hors-ligne (cache)
+- Recherche de dépôts
+- Aperçu des diff dans les demandes d’ajout
+- Liste des dépôts
+- Liste des organisations
+- Création de dépôts et d’organisations
+- Filtres de liste
+- Aperçu des profils
+- Liste des tickets
+- Commentaires de ticket
+- Réponse aux commentaires de ticket
+- Création de tickets avec assignation multiple, étiquettes, jalons, date d’échéance, etc
+- Création d’étiquettes
+- Modification/suppression d’étiquettes
+- Liste des jalons
+- Création de jalons
+- Liste des branches
+- Versions téléchargeables avec la source
+- Aperçu des participants d’un dépôt
+- Syntaxe Markdown
+- Émoticônes
+- Réglages avancés
+- Option d’accès local non-HTTPS
+- Double authentification OTP
 - Notifications
-- Drafts
-- Switch branches in File browser
-- Repository commits
-- Self signed cert support
-- Theme auto switcher
-- Delete comments
-- Configure app cache from settings
+- Brouillons
+- Changement de branche depuis l’explorateur de fichiers
+- Révisions du dépôt
+- Gestion des certificats auto-signés
+- Thème jour/nuit
+- Suppression de commentaires
+- Cache de l’application configurable
 
-More features - https://codeberg.org/gitnex/GitNex/wiki/Features
+Toutes les fonctionnalités : https://codeberg.org/gitnex/GitNex/wiki/Features
 
-Source code: https://codeberg.org/gitnex/GitNex
-Developer: https://mastodon.social/@mmarif
+Code source : https://codeberg.org/gitnex/GitNex
+Développeur : https://mastodon.social/@mmarif

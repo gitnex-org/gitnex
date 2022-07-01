@@ -543,8 +543,8 @@
     <string name="mainNotificationChannelName">Benachrichtigungen</string>
     <string name="mainNotificationChannelDescription">Das ist der Haupt-Nachrichten-Kanal von GitNex.</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="one">Du hast %s neue Benachrichtigung.</item>
-        <item quantity="other">Du hast %s neue Benachrichtigungen.</item>
+        <item quantity="one">Du hast %s neue Benachrichtigung</item>
+        <item quantity="other">Du hast %s neue Benachrichtigungen</item>
     </plurals>
     <string name="isRead">Gelesen</string>
     <string name="isUnread">Ungelesen</string>
@@ -643,4 +643,15 @@
     <string name="repoAdopted">Repository %s wurde übernommen</string>
     <string name="unadoptedRepos">Nicht übernommene Repositories</string>
     <string name="unadoptedReposMessage">- Übernehmen wird das Repository %s zur Organisation / zum Benutzer %s hinzufügen.\n - Löschen entfernt es aus dem System.</string>
+    <string name="commits">Commits</string>
+    <!-- wiki -->
+    <string name="wiki">Wiki</string>
+    <string name="wikiAuthor"><![CDATA[aktualisiert von <b>%1$s</b> %2$s]]></string>
+    <string name="deleteWikiPageMessage">Möchtest du %s wirklich löschen?</string>
+    <string name="wikiPageDeleted">Wiki-Seite erfolgreich gelöscht</string>
+    <string name="wikiPageNameAndContentError">Seitenname und -inhalt dürfen nicht leer sein</string>
+    <string name="createWikiPage">Wiki-Seite erstellen</string>
+    <string name="wikiUpdated">Wiki-Seite erfolgreich aktualisiert</string>
+    <string name="wikiCreated">Wiki-Seite erfolgreich erstellt</string>
+    <!-- code editor -->
 </resources>

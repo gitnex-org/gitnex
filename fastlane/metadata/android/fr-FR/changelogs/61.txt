@@ -1,6 +1,6 @@
-Bugfix: crash when repo avatar in not present in api nodes. old Gitea instances
-Bugfix: Milestone progress bar fix
-Bugfix: Create new issue enable/disable fix
+Corrigé : Plantage en l’absence d’avatar de dépôt dans les nœuds de l’API. (Anciennes versions de Gitea)
+Corrigé : Problème de la barre de progression des jalons
+Corrigé : Problème pour activer/désactiver la création de nouveaux tickets
 
-For more, check the release notes.
+Pour plus de détails, consultez les notes de version.
 https://codeberg.org/gitnex/GitNex/releases

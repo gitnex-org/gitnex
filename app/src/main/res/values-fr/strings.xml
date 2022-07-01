@@ -23,9 +23,9 @@
     <string name="pageTitleCredits">Crédits</string>
     <string name="pageTitleChooseBranch">Branche</string>
     <string name="pageTitleLabelUpdate">Modifier l’étiquette</string>
-    <string name="pageTitleStarredRepos">Dépôts favoris</string>
+    <string name="pageTitleStarredRepos">Favoris</string>
     <string name="pageTitleCreateTeam">Nouvelle équipe</string>
-    <string name="pageTitleAddEmail">Ajouter une adresse e-mail</string>
+    <string name="pageTitleAddEmail">Ajouter une adresse courriel</string>
     <string name="pageTitleNewFile">Nouveau fichier</string>
     <string name="pageTitleExplore">Rechercher</string>
     <string name="pageTitleAdministration">Administration de Gitea</string>
@@ -60,15 +60,15 @@
     <string name="emptyFieldPassword">Mot de passe requis</string>
     <string name="protocolEmptyError">Le protocole est requis</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
-    <string name="repoNameErrorEmpty">Nom manquant</string>
+    <string name="repoNameErrorEmpty">Veuillez donner un nom à ce dépôt</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Ce nom de dépôt est réservé</string>
     <string name="repoNameErrorReservedPatterns">Ce nom de dépôt contient des mots clés réservés</string>
-    <string name="repoDescError">La description dépasse la limite de 255 caractères</string>
+    <string name="repoDescError">La description dépasse les 255 caractères</string>
     <string name="repoCreated">Dépôt créé</string>
     <string name="repoExistsError">Le propriétaire possède déjà un dépôt du même nom</string>
-    <string name="repoOwnerError">Propriétaire du dépôt</string>
-    <string name="orgNameErrorEmpty">Nom manquant</string>
+    <string name="repoOwnerError">Veuillez choisir un propriétaire</string>
+    <string name="orgNameErrorEmpty">L’organisation doit avoir un nom</string>
     <string name="orgNameErrorInvalid">Nom de l’organisation invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">La description dépasse la limite de 255 caractères</string>
     <string name="orgCreated">Organisation créée</string>
@@ -196,7 +196,7 @@
     <string name="menuTitleText">Menu du dépôt</string>
     <string name="labelName">Nom</string>
     <string name="labelColor">Couleur</string>
-    <string name="labelEmptyError">Nom manquant</string>
+    <string name="labelEmptyError">L’étiquette doit avoir un nom</string>
     <string name="labelNameError">Nom invalide</string>
     <string name="labelCreated">Étiquette créée</string>
     <string name="labelUpdated">Étiquette mise à jour</string>
@@ -262,16 +262,16 @@
     <string name="addCollaboratorToastText">Utilisateur ajouté au dépôt</string>
     <!-- add collaborator -->
     <!-- profile section -->
-    <string name="profileTabFollowers">Observateurs</string>
-    <string name="profileTabFollowing">Observateurs</string>
-    <string name="profileCreateNewEmailAddress">Ajouter une adresse e-mail</string>
-    <string name="profileEmailTitle">Adresse e-mail</string>
-    <string name="emailAddedText">Nouvelle adresse e-mail ajoutée</string>
-    <string name="emailErrorEmpty">Adresse e-mail manquante</string>
-    <string name="emailErrorInvalid">Adresse e-mail invalide</string>
-    <string name="emailErrorInUse">Adresse e-mail déjà utilisée</string>
+    <string name="profileTabFollowers">Abonnés</string>
+    <string name="profileTabFollowing">Abonnements</string>
+    <string name="profileCreateNewEmailAddress">Ajouter une adresse courriel</string>
+    <string name="profileEmailTitle">Adresse courriel</string>
+    <string name="emailAddedText">Adresse courriel ajoutée</string>
+    <string name="emailErrorEmpty">L’adresse courriel est requise</string>
+    <string name="emailErrorInvalid">Adresse courriel invalide</string>
+    <string name="emailErrorInUse">Adresse courriel déjà utilisée</string>
     <string name="emailTypeText">Principale</string>
-    <string name="profileTabEmails">E-mails</string>
+    <string name="profileTabEmails">Courriels</string>
     <!-- profile section -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Gérer les étiquettes</string>
@@ -300,12 +300,12 @@
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">Nom complet</string>
-    <string name="userEmail">Adresse e-mail</string>
+    <string name="userEmail">Adresse courriel</string>
     <string name="userUserName">Nom d’utilisateur</string>
     <string name="userPassword">Mot de passe</string>
     <string name="userInvalidFullName">Nom complet invalide</string>
     <string name="userInvalidUserName">Nom d’utilisateur invalide</string>
-    <string name="userInvalidEmail">Adresse e-mail invalide</string>
+    <string name="userInvalidEmail">Adresse courriel invalide</string>
     <string name="userCreatedText">Utilisateur créé</string>
     <string name="userExistsError">Nom d’utilisateur déjà existant</string>
     <!-- create user -->
@@ -383,7 +383,7 @@
     <string name="menuQuoteText">Citer la réponse</string>
     <string name="modifiedText">modifié</string>
     <string name="saveButton">Sauvegarder</string>
-    <string name="websiteText">Site Web</string>
+    <string name="websiteText">Site</string>
     <string name="locationText">Emplacement</string>
     <string name="characters255Limit">255 caractères maximum</string>
     <string name="emptyFields">Tous les champs sont requis</string>
@@ -543,8 +543,8 @@
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">Le canal de notifications principal de GitNex.</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="one">Vous avez %s nouvelle notification.</item>
-        <item quantity="other">Vous avez %s nouvelles notifications.</item>
+        <item quantity="one">Vous avez %s nouvelle notification</item>
+        <item quantity="other">Vous avez %s nouvelles notifications</item>
     </plurals>
     <string name="isRead">Lu</string>
     <string name="isUnread">Non lu</string>
@@ -643,4 +643,15 @@
     <string name="repoAdopted">Dépôt %s adopté</string>
     <string name="unadoptedRepos">Dépôts abandonnés</string>
     <string name="unadoptedReposMessage">- Adopter le dépôt %s l’ajoutera à l’organisation/utilisateur %s.\n- Le supprimer l’effacera du système.</string>
+    <string name="commits">Révisions</string>
+    <!-- wiki -->
+    <string name="wiki">Wiki</string>
+    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> a mis à jour %2$s]]></string>
+    <string name="deleteWikiPageMessage">Voulez-vous vraiment supprimer %s ?</string>
+    <string name="wikiPageDeleted">Page wiki supprimée</string>
+    <string name="wikiPageNameAndContentError">Une page ne peut être vide ou anonyme</string>
+    <string name="createWikiPage">Créer une page wiki</string>
+    <string name="wikiUpdated">Page wiki mise à jour</string>
+    <string name="wikiCreated">Page wiki créée</string>
+    <!-- code editor -->
 </resources>

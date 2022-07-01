@@ -1,13 +1,13 @@
 3.1.0
 
-New: Multiple accounts support
-New: New Retro theme
-New: Delete OR Edit a file
-New: Repository forks
-New: Markdown support in file viewer
-New: New Progress indicators
-New: Copy repo / org / issue comment url to clipboard
-New: Create drafts per edit and improve it's UI
-New: Enhance App UI across all screens
+- Nouveau : Comptes multiples
+- Nouveau : Thème Rétro
+- Nouveau : Modifier/supprimer un fichier
+- Nouveau : Bifurcations
+- Nouveau : Compatibilité Markdown dans l’aperçu des fichiers
+- Nouveau : Indicateurs de progression
+- Nouveau : Copier un commentaire dans le presse-papier
+- Nouveau : Copier le lien vers un commentaire dans le presse-papier
+- Nouveau : Rafraichissement général de l’IHM
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+Notes de version : https://codeberg.org/gitnex/GitNex/releases

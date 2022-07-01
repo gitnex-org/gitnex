@@ -1,16 +1,16 @@
 1.0-rc6
-  * New: Added meta data and changelog for F-droid
+  * Neu: Metadaten und Changelogs für F-Droid
   
 1.0-rc5
-  * New: Highlight usernames in issues and comments
-  * Bugfix: Default label creation bug
-  * Bugfix: Infinite loop of settings screen on some devices
+  * Neu: Benutzernamen in Issues und Kommentaren hervorheben
+  * Fehler: Fehler beim Erstellen der Standard-Label
+  * Fehler: Unendliche Schleife der Einstellungen auf einigen Geräten
 
 1.0-rc4
-  * New: Create label with color picker
-  * Bugfix: Fix label flag in creating new issue
-  * Bugfix: Fix pretty date on new app launch
-  * Enhanced: Moved create milestone and issue into bottom sheet
-  * Enhanced: Clean up issue and comments ui
-  * Enhanced: Enhance milestone open/close status
-  * Enhanced: Enhance milestone due date color and font size
+  * Neu: Labels mit Farbauswahl erstellen
+  * Fehler: Label-Flag beim Erstellen neuer Issues
+  * Fehler: schönes Datum beim App-Start
+  * Verbesserung: Optionen zum Erstellen neuer Issues/Meilensteine in Bottomsheet verschoben
+  * Verbessert: aufgeräumte Issue- und Kommentar-UI
+  * Verbessert: Status der Meilensteine
+  * Verbessert: Meilenstein-Datum und Schriftgröße

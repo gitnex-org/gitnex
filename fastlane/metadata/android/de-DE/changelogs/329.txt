@@ -1,5 +1,5 @@
 3.3.0-rc3
 
-Last release candidate(rc) before 3.3.0 stable release, includes bug fixes, ui improvements and issue/pr emoji reactions.
+Letzter Release-Kandidat (RC) vor 3.0.0, enthält Fehlerbehebungen, UI-Verbesserungen und Issue/PR-Reaktionen.
 
-Detail release notes will be published with stable release.
+Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

@@ -1,10 +1,10 @@
-- New: Add/remove assignees
-- New: Users list - Admin only
-- New: Search users - filter by name, username and email
-- Enhancement: Rate me link to play store
-- Enhancement: Enhance About screen
-- Enhancement: 4 cols in users gridview - collaborators
-- Fixed: Crash when issue badge is disabled
+- Nouveau : Ajouter/retirer des assignations
+- Nouveau : Liste des utilisateurs (admin seulement)
+- Nouveau : Trouver des utilisateurs par nom, pseudo ou adresse courriel
+- Amélioration : « Noter GitNex » mène au Play Store
+- Amélioration : Écran « À propos » remanié
+- Amélioration : Grille des participants sur 4 colonnes
+- Corrigé : Plantage en désactivant les pastilles de comptage
 
-For more, check the release notes.
+Pour plus de détails, consultez les notes de version.
 https://codeberg.org/gitnex/GitNex/releases

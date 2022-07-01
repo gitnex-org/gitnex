@@ -1,10 +1,10 @@
-- New: Add/remove labels from an issue
-- New: README is added to repo information tab
-- New: Basic HTTP authentication support. Use USERNAME@YOUR-DOMAIN.COM in URL field
-- New: Create a new user - Admin privilege required
-- Enhancement: Refactor multi dialogs to match the current app design
-- Enhancement: Update markdown library for better md support
-- Enhancement: New nav background image
+- Neu: Labels von Issue hinzufügen/entfernen
+- New: README wird angezeigt
+- Neu: Basic HTTP-Authentifizierung. USERNAME@DOMAIN.COM im URL-Feld
+- Neu: neuer Nutzer (nur Admins)
+- Verbesserung: UI mehrerer Dialoge
+- Verbesserung: besserer Markdown-Support
+- Verbesserung: Neues Navigations-Hintergrund-Bild
 
-Release Notes
+Release-Anmerkungen
 https://codeberg.org/gitnex/GitNex/releases

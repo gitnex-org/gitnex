@@ -2,18 +2,18 @@
 - Neu: Angepasstes App-Design der gesamten App der Farben, UX- und UI-Verbesserungen
 - Neu: Neue Schriftart
 - Neu: Issue-Zähler. Kann in den Einstellungen aktiviert/deaktiviert werden
-- New: Redesigned settings screen
-- New: Create a team in Organization
-- New: List organization members
-- New: List organization teams
-- New: List team members in organization by tapping on the team name
-- New: Repository list for the organization. Tap on organization.
-- New: Show the repositories list starred by the logged in user
-- Enhancement: Login api calls for http status code 500
-- Enhancement: Font sizes, color schemes
-- Enhancement: Labels, user avatars, menus
-- Enhancement: Added names to collaborators grid in repository view instead of tap
-- Enhancement: Refactored and redesigned About screen
-- Enhancement: Reply to issue button is now at the nav header
-- Fixed: Collaborators avatar layout grid
-- Fixed: Malformed json in logins
+- Neu: Überarbeitete Einstellungen
+- Neu: Team in Organisation erstellen
+- Neu: Organisationsmitglieder anzeigen
+- Neu: Organisationsteams anzeigen
+- Neu: Organisationsmiglieder in Organisationen durch Tippen auf Teamname
+- Neu: Repositoryliste für Organisationen. Klick auf Organisation.
+- Neu: Favoriten des angemeldeten Nutzers anzeigen
+- Verbesserung: Login-API-Aufrufe für Status 500
+- Verbesserung: Schriftgrößen, Farbschemen
+- Verbesserung: Labels, Benutzeravatare, Menüs
+- Verbesserung: Namen zur Mitarbeitertabelle in der Repository-Ansicht anstelle von Tippen
+- Verbesserung: überarbeiteter "Über"-Bildschirm
+- Verbesserung: Button zum Kommentieren in jetzt in Navigations-Bar
+- Fehler: Mitarbeiter-Tabellen-Layout
+- Fehler: Schlechte JSONs bei Logins

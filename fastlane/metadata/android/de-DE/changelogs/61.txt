@@ -1,6 +1,6 @@
-Bugfix: crash when repo avatar in not present in api nodes. old Gitea instances
-Bugfix: Milestone progress bar fix
-Bugfix: Create new issue enable/disable fix
+Fehler: Crash wenn Repo-Avatar in API-Knoten nicht verfügbar ist. alte Gitea-Instanzen
+- Fehler: Meilenstein-Fortschrittsleiste behoben
+Fehler: Aktivieren/Deaktivieren beim Erstellen neuer Issues behoben
 
-For more, check the release notes.
+Für mehr, siehe die Release-Anmerkungen.
 https://codeberg.org/gitnex/GitNex/releases

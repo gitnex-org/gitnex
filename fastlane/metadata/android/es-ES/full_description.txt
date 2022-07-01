@@ -1,47 +1,47 @@
-GitNex is a free/paid, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
+GitNex es un cliente para Android de código abierto para repositorios Git en GItea. Gitea es una rama de Gogs administrador por la comunidad, de código ligero escrito en Go.
 
-# Features
+# Características
 
-- Multiple accounts support
-- File and directory browser
-- File viewer
-- Create files
-- Login via Token
-- Merge pull request
-- Offline mode(cache)
-- Explore repositories
-- Diff view of PR files for public repositories
-- Repositories list
-- Organizations list
-- Create new repository / organization
-- Search/filter repositories / organizations / issues etc
-- Profile view
-- Issues list
-- Issue comments
-- Comment on issues
-- Create new issue with multiple assignee, labels and add milestone, due date to it
-- Create labels
-- Edit / delete labels
-- Milestones list
-- Create new milestone
-- Branches list
-- Releases with source download
-- Collaborators view for repository
-- Markdown support
-- Emoji support
-- Extensive Settings
-- Option to access local non-https installs
-- 2FA OTP support
-- Notifications
-- Drafts
-- Switch branches in File browser
-- Repository commits
-- Self signed cert support
-- Theme auto switcher
-- Delete comments
-- Configure app cache from settings
+- Soporte para varias cuentas
+- Buscador de archivos y directorios
+- Visor de archivos
+- Crear archivos
+- Inicio de sesión por Token
+- Fusionar Pull Request
+- Código sin conexión (caché)
+- Explorar repositorios
+- Vista diferencial de los archivos de PR para los repositorios públicos
+- Lista de repositorios
+- Lista de organizaciones
+- Crear nuevo repositorio u organización
+- Busca y filtra entre repositorios, organizaciones o incidencias
+- Vista de perfil
+- Lista de incidencias
+- Comentarios de las incidencias
+- Comentarios en incidencias
+- Crear nueva incidencia, con múltiples asignaciones, etiquetas e hitos
+- Crear etiquetas
+- Editar y eliminar etiquetas
+- Lista de hitos
+- Crear nuevo hito
+- Lista de ramas
+- Lanzamientos con descarga de código fuente
+- Vista de colaboradores en el repositorio
+- Soporte para Markdown
+- Soporte para emoticonos
+- Muy configurable
+- Compatiblidad con instalaciones locales http
+- Soporte 2FA OTP
+- Notificaciones
+- Borradores
+- Cambio de ramas en el explorador de archivos
+- Commits del repositorio
+- Soporte para certificados autofirmados
+- Gestor de temas
+- Eliminar comentarios
+- Configuración del caché en los ajustes
 
-More features - https://codeberg.org/gitnex/GitNex/wiki/Features
+Más detalles en - https://codeberg.org/gitnex/GitNex/wiki/Features
 
-Source code: https://codeberg.org/gitnex/GitNex
-Developer: https://mastodon.social/@mmarif
+Código fuente: https://codeberg.org/gitnex/GitNex
+Desarrollador: https://mastodon.social/@mmarif

@@ -1,5 +1,5 @@
 3.3.0-rc2
 
-A lot of bugs are squashed in this release including many UI improvements.
+Cette version contient de nombreuses corrections de bogues et d’améliorations d’IHM.
 
-Detail release notes will be published with stable release.
+Les notes de version détaillées seront publiées avec la version stable.

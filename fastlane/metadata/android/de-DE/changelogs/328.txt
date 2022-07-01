@@ -1,5 +1,5 @@
 3.3.0-rc2
 
-A lot of bugs are squashed in this release including many UI improvements.
+Viele Fehler wurden in diesem Release behoben, einschließlich vieler UI-Verbesserungen.
 
-Detail release notes will be published with stable release.
+Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

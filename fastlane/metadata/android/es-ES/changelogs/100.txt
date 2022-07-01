@@ -1,6 +1,6 @@
 2.5.0-rc1
 
-Release notes will be published with the stable release.
-In the mean time check the milestone for pull requests and issues that are merged/closed.
+Las notas de lanzamiento serán publicadas en el lanzamiento estable.
+Mientras tanto, puedes verificar las incidencias que se han unido o cerrado en CodeBerg.
 
 https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

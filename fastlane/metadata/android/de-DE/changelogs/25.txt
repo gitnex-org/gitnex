@@ -1,8 +1,8 @@
-- New: Add collaborator to repository
-- New: User can now edit his/her own comments
-- New: See who are your followers
-- New: See who you are following
-- Enhancement: Redesign Profile screen
-- Enhancement: Added edited status for single issue and comments
+- Neu: Mitarbeiter zu Repository hinzufügen
+- Neu: Kommentare bearbeiten
+- Neu: Follower anzeigen
+- Neu: Sehen, wem du folgst
+- Verbesserung: überarbeiteter Profilbildschirm
+- Verbesserung: "Bearbeitet"-Status für einzelne Issues und Kommentare hinzugefügt
 
-Release notes: https://codeberg.org/gitnex/GitNex/releases
+Release-Anmerkungen: https://codeberg.org/gitnex/GitNex/releases

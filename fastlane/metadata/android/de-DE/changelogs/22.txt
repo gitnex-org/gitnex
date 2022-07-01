@@ -1,30 +1,30 @@
 1.0.1
-- Fixed icons on some devices
+- Icon auf einigen Geräten behoben
 
 1.0.0
-  - My Repositories
-  - Repositories list
-  - Organizations list
-  - Create new repository
-  - Create new organization
-  - Search/filter repositories and organizations
-  - Profile view
-  - Repository stars, watchers, issues count
-  - Issues list
-  - Issue comments
-  - Comment on issues
-  - Search issues in issues list
-  - Create new issue with multiple assignees, labels and add milestone, due date to it
-  - Create label
-  - Edit / delete labels
-  - Repository information
-  - Milestones list
-  - Create new milestone
-  - Branches list
-  - Releases with source download
-  - Collaborators view for repository
-  - Markdown support
-  - Emoji support
-  - Settings : Pretty and Normal time format, language change
-  - Option to access local non-https installs
-  - Login/Logout
+  - Meine Repositories
+  - Repository-Liste
+  - Organisations-Liste
+  - Neues Repository erstellen
+  - Neue Organisation erstellen
+  - Suche/Filtere Repositories und Organisationen
+  - Profilansicht
+  - Repository-Favoriten, -Beobachter und Issueanzahl
+  - Issue-Liste
+  - Issue-Kommentare
+  - Kommentiere auf Issues
+  - Issues in Liste suchen
+  - Erstelle neue Issues und weise Nutzer, Labels, Zeitlimits und Meilensteine zu
+  - Erstelle Labels
+  - Editiere / Lösche Labels
+  - Repository Informationen
+  - Meilensteinliste
+  - Erstelle neue Meilensteine
+  - Branch-Liste
+  - Release-Liste mit Download-Option
+  - Zeige Mitarbeiter für Repos
+  - Markdown-Unterstützung
+  - Emoji-Unterstützung
+  - Einstellungen: schönes und normales Zeitformat, Sprachänderung
+  - Optionen, um lokale HTTP-Instanzen zu benutzen
+  - Anmelden/Abmelden

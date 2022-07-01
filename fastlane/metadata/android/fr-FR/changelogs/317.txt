@@ -1,5 +1,5 @@
 3.2.0-rc1
 
-3.2.0 RC1 release brings create pr, repository settings for admins and many more new features.
+Cette RC apporte la création des demandes d’ajout, des nouveaux réglages dans les dépôts pour l’administration des dépôts et bien d’autres choses.
 
-Detailed release notes will be published with stable release.
+Les notes de version détaillées seront publiées avec la version stable.

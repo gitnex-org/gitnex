@@ -1,19 +1,19 @@
 1.1.0-rc1
-- New: Redesign the whole app experience in terms of fonts, colors, ux adjustments and ui fixes
-- New: New font
-- New: Issues counter badge. Can be enabled/disabled from settings
-- New: Redesigned settings screen
-- New: Create a team in Organization
-- New: List organization members
-- New: List organization teams
-- New: List team members in organization by tapping on the team name
-- New: Repository list for the organization. Tap on organization.
-- New: Show the repositories list starred by the logged in user
-- Enhancement: Login api calls for http status code 500
-- Enhancement: Font sizes, color schemes
-- Enhancement: Labels, user avatars, menus
-- Enhancement: Added names to collaborators grid in repository view instead of tap
-- Enhancement: Refactored and redesigned About screen
-- Enhancement: Reply to issue button is now at the nav header
-- Fixed: Collaborators avatar layout grid
-- Fixed: Malformed json in logins
+- Nouveau : Expérience utilisateur entièrement refondue
+- Nouveau : Fonte par défaut
+- Nouveau : Pastilles de comptage (activables dans l’écran des réglages)
+- Nouveau : Écran « Réglages » refondu
+- Nouveau : Créer des équipes dans une organisation
+- Nouveau : Liste des membres d’une organisation
+- Nouveau : Liste des équipes d’une organisation
+- Nouveau : Liste des membres d’une équipe accessible en un clic
+- Nouveau : Liste des dépôts d’une organisation accessible en un clic
+- Nouveau : Liste des dépôts favoris de l’utilisateur
+- Amélioration : L’API de connexion vérifie d’abord la présence d’une erreur 500
+- Amélioration : Tailles des fontes, thèmes de couleurs plus lisibles
+- Amélioration : Étiquette, avatars utilisateurs, menus
+- Amélioration : Noms des participants directement visibles dans l’aperçu du dépôt
+- Nouveau : Écran « À propos » refondu
+- Amélioration : Bouton de réponse dans les tickets déplacé dans la partie supérieure de l’écran
+- Corrigé : Agencement de la grille d’avatars des participants
+- Corrigé : JSON malformé lors des connexions

@@ -1,14 +1,14 @@
 3.3.0
 
-New: New labels/assignees popups
-New: Transition to new input design
-New: New commenting screen
-New: Handle popular instances links (open from email etc)
-New: Syntax highlighting in code blocks
-New: Organization labels in issue labels
-New: Group notifications, settings screen to enable/disable, change delay, light color
-New: Issue/PR and comments emoji reactions
+- Nouveau : Popups d’étiquettes et d’assignations
+- Nouveau : Transition vers la nouvelle interface de saisie
+- Nouveau : Écran de commentaire
+- Nouveau : Gestion de l’ouverture des liens courants (depuis un courriel, etc)
+- Nouveau : Coloration syntaxique
+- Nouveau : Tickets étiquetables avec les étiquettes d’organisation
+- Nouveau : Notifications de groupe avec délais, couleur de la diode et activation paramétrables
+- Nouveau : Réactions aux tickets, demandes d’ajout et commentaires
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+Notes de version : https://codeberg.org/gitnex/GitNex/releases
 
-Release Blog: https://gitnex.codeberg.page/posts/330.html
+Billet : https://gitnex.codeberg.page/posts/330.html

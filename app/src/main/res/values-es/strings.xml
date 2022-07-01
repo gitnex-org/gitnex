@@ -11,7 +11,7 @@
     <string name="navRate">Valorar GitNex</string>
     <string name="navLogout">Cerrar sesión</string>
     <string name="navAdministration">Administración</string>
-    <string name="navMyIssues">My Issues</string>
+    <string name="navMyIssues">Mis incidencias</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nuevo repositorio</string>
@@ -73,7 +73,7 @@
     <string name="orgDescError">La descripción de la organización excede el límite de 255 caracteres maximamente</string>
     <string name="orgCreated">La organización se ha creado correctamente</string>
     <string name="orgExistsError">La organización ya existe</string>
-    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
+    <string name="diffStatistics">%1$s añadido(s) y %2$s eliminado(s)</string>
     <string name="processingText">En proceso</string>
     <string name="search">Buscar</string>
     <string name="close">Cerrar</string>
@@ -82,7 +82,7 @@
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">Eliminar</string>
-    <string name="genericApiError">Instance has returned an error. Code %d</string>
+    <string name="genericApiError">La instancia ha devuelto un error. Código %d</string>
     <string name="tabTextInfo">Detalles</string>
     <string name="tabTextFiles">Archivos</string>
     <string name="tabTextMl">Milestones</string>
@@ -105,7 +105,7 @@
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Vence el %1$s</string>
     <string name="assignedTo">Asignado a: %1$s</string>
-    <string name="assignedToMe">Assigned to Me</string>
+    <string name="assignedToMe">Asignado a mí</string>
     <string name="commentButtonText">Comentar</string>
     <string name="commentEmptyError">Por favor, escribe un comentario</string>
     <string name="commentSuccess">Comentario publicado</string>
@@ -126,7 +126,7 @@
     <string name="milestoneNoDescription">Sin descripción</string>
     <string name="milestoneIssueStatusOpen">%1$d abiertos</string>
     <string name="milestoneIssueStatusClosed">%1$d cerrados</string>
-    <string name="selectMilestone">Select Milestone</string>
+    <string name="selectMilestone">Seleccionar hito</string>
     <string name="newIssueSelectAssigneesListTitle">Selecciona personas asignadas</string>
     <string name="newIssueSelectLabelsListTitle">Selecciona etiquetas</string>
     <string name="newIssueTitle">Título</string>
@@ -155,8 +155,8 @@
     <string name="settingsDateTimeHeaderDefault">Bonito</string>
     <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Selecciona idioma</string>
-    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
-    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Tema claro, cambiar tema</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Tema oscuro, cambiar tema</string>
     <string name="settingsTimeSelectorDialogTitle">Selecciona un formato de hora</string>
     <string name="settingsHelpTranslateText">Traducir GitNex con Crowdin</string>
     <string name="codeBlockHeaderText">Color del bloque de códigos</string>
@@ -188,8 +188,8 @@
     <string name="generalDeepLinkSelectedText">N/D</string>
     <string name="linkSelectorDialogTitle">Seleccione la pantalla del gestor de enlaces por defecto</string>
     <string name="settingsBiometricHeader">Desbloqueo biométrico</string>
-    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
-    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="settingsLabelsInListHeader">Etiquetas con soporte de texto</string>
+    <string name="settingsLabelsInListHint">Activar esto mostrará etiquetas con texto en las incidencias y PR. Por defecto son puntos de colores</string>
     <!-- settings -->
     <string name="noMoreData">No hay más datos disponibles</string>
     <string name="createLabel">Nueva etiqueta</string>
@@ -198,8 +198,8 @@
     <string name="labelColor">Color de la etiqueta</string>
     <string name="labelEmptyError">Nombre de la etiqueta está vacía</string>
     <string name="labelNameError">Nombre de la etiqueta está invalida</string>
-    <string name="labelCreated">Label created</string>
-    <string name="labelUpdated">Label updated</string>
+    <string name="labelCreated">Etiqueta creada</string>
+    <string name="labelUpdated">Etiqueta actualizada</string>
     <string name="labelMenuContentDesc">Desc</string>
     <string name="labelDeleteText">Etiqueta borrada</string>
     <string name="selectBranchError">Seleccione una rama para el lanzamiento</string>
@@ -211,25 +211,25 @@
     <string name="orgTabMembers">Miembros</string>
     <string name="teamTitle">Nombre del equipo</string>
     <string name="teamDescription">Team desc</string>
-    <string name="teamPermissions">Permissions</string>
-    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
-    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
-    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
-    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
-    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
-    <string name="teamShowAll">show all</string>
+    <string name="teamPermissions">Permisos</string>
+    <string name="teamPermissionNone">Los miembros de este equipo no tienen permisos.</string>
+    <string name="teamPermissionRead">Los miembros de este equipo pueden ver los repositorios del equipo.</string>
+    <string name="teamPermissionWrite">Los miembros de este equipo pueden ver y aportar a los repositorios del equipo.</string>
+    <string name="teamPermissionAdmin">Los miembros de este equipo pueden aportar a y desde los repositorios del equipo y añadir colaboradores.</string>
+    <string name="teamPermissionOwner">Los miembros de este equipo tienen permisos completos.</string>
+    <string name="teamShowAll">ver todo</string>
     <string name="orgMember">Miembros de la organización</string>
     <string name="orgTeamMembers">Miembros de la organización</string>
-    <string name="removeTeamMember">Remove %s</string>
-    <string name="addTeamMember">Add %s</string>
+    <string name="removeTeamMember">Eliminar %s</string>
+    <string name="addTeamMember">Añadir %s</string>
     <string name="addTeamMemberMessage">¿Quieres añadir este usuario al equipo?</string>
     <string name="removeTeamMemberMessage">¿Quieres eleminar este usuario del equipo?</string>
     <string name="memberAddedMessage">Miembro fue añadido al equipo con éxito</string>
     <string name="memberRemovedMessage">Miembro fue eliminado del equipo con éxito</string>
-    <string name="repoAddedMessage">Repository added to the team successfully</string>
-    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
-    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
-    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
+    <string name="repoAddedMessage">Repositorio añadido al equipo correctamente</string>
+    <string name="repoRemovedMessage">Repositorio eliminado del equipo correctamente</string>
+    <string name="repoAddToTeamMessage">Añadir repositorio %1$s a la organización %2$s del equipo %3$s</string>
+    <string name="repoRemoveTeamMessage">Eliminar repositorio %1$s del equipo %2$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nombre del equipo</string>
@@ -256,7 +256,7 @@
     <!-- add collaborator -->
     <string name="addCollaboratorSearchHint">Buscar usuarios</string>
     <string name="addCollaboratorViewUserDesc">Nombre de usuario</string>
-    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
+    <string name="removeCollaboratorDialogTitle">¿Eliminar %s?</string>
     <string name="removeCollaboratorMessage">¿Quieres eliminar este usuario del repositorio?</string>
     <string name="removeCollaboratorToastText">El usuario fue eliminado del repositorio.</string>
     <string name="addCollaboratorToastText">El usuario fue añadido al repositorio.</string>
@@ -288,7 +288,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Informaciones del repositorio</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">New User</string>
+    <string name="adminCreateNewUser">Nuevo usuario</string>
     <string name="adminUsers">Usuarios del sistema</string>
     <string name="userRoleAdmin">Administrador</string>
     <string name="adminCron">Tareas de Cron</string>
@@ -324,8 +324,8 @@
     <string name="tagNameErrorEmpty">Nombre de la etiqueta está vacía</string>
     <string name="titleErrorEmpty">Título está vacío</string>
     <string name="releaseCreatedText">Nueva Release creada</string>
-    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
-    <string name="releaseDeleted">Release deleted</string>
+    <string name="deleteReleaseConfirmation">¿Seguro que quieres eliminar este lanzamiento?</string>
+    <string name="releaseDeleted">Lanzamiento eliminado</string>
     <!-- release -->
     <string name="loginOTPTypeError">Código de OTP debe consistir en números</string>
     <string name="loginOTP">Código de OTP (opcional)</string>
@@ -360,7 +360,7 @@
     <string name="copyIssueUrl">Copiar URL de la incidencia</string>
     <string name="copyIssueUrlToastMsg">URL copiada a los portapapeles</string>
     <string name="copyIssueCommentToastMsg">Comentario copiado en el portapapeles</string>
-    <string name="copyShaToastMsg">SHA copied to clipboard</string>
+    <string name="copyShaToastMsg">SHA copiado</string>
     <string name="milestoneCompletion">%1$d\uFF05 completado</string>
     <!-- files -->
     <string name="filesGenericError">Perdón, este archivo no se puede ver porque la API retorna un error</string>
@@ -372,7 +372,7 @@
     <string name="cancelButton">Cancelar</string>
     <string name="genericError">Algo salió mal, por favor, inténtalo de nuevo</string>
     <string name="apiNotFound">Este pedido necesita una Gitea versión más alta de la que está instalada. Por favor, actualiza tu instancia de Gitea a la versión más actual.</string>
-    <string name="noDataFound">🌟 Nothing in here 🌟</string>
+    <string name="noDataFound">🌟 Aquí no hay nada 🌟</string>
     <string name="addButton">Añadir</string>
     <string name="removeButton">Eliminar</string>
     <string name="authorizeError">No tienes permiso de hacer esta acción.</string>
@@ -380,7 +380,7 @@
     <string name="menuEditText">Editar</string>
     <string name="menuDeleteText">Eliminar</string>
     <string name="menuCopyText">Copiar</string>
-    <string name="menuQuoteText">Quote Reply</string>
+    <string name="menuQuoteText">Citar respuesta</string>
     <string name="modifiedText">modificado</string>
     <string name="saveButton">Guardar</string>
     <string name="websiteText">Página web</string>
@@ -394,35 +394,35 @@
     <string name="isClosed">Cerrado</string>
     <string name="genericServerResponseError">Por el momento no se puede contactar con el servidor. Por favor, compruebe el statús del servidor y intentalo de nuevo</string>
     <string name="genericCopyUrl">Copiar URL</string>
-    <string name="genericWaitFor">Hold on ☕</string>
-    <string name="file">File</string>
-    <string name="issue">Issue</string>
-    <string name="label">Label</string>
-    <string name="release">Release</string>
+    <string name="genericWaitFor">Espera ☕</string>
+    <string name="file">Archivo</string>
+    <string name="issue">Incidencia</string>
+    <string name="label">Etiqueta</string>
+    <string name="release">Lanzamiento</string>
     <string name="pr">Pull Request</string>
-    <string name="collaborator">Collaborator</string>
-    <string name="unstar">Unstar</string>
-    <string name="watch">Watch</string>
-    <string name="unwatch">Unwatch</string>
-    <string name="share">Share</string>
-    <string name="repository">Repository</string>
-    <string name="team">Team</string>
-    <string name="organization">Organization</string>
-    <string name="addRemove">Add / Remove</string>
-    <string name="download">Download</string>
-    <string name="reopen">Reopen</string>
-    <string name="openInBrowser">Open in Browser</string>
-    <string name="deleteGenericTitle">Delete %s</string>
+    <string name="collaborator">Colaborador</string>
+    <string name="unstar">No destacar</string>
+    <string name="watch">Seguir</string>
+    <string name="unwatch">Dejar de seguir</string>
+    <string name="share">Compartir</string>
+    <string name="repository">Repositorio</string>
+    <string name="team">Equipo</string>
+    <string name="organization">Organización</string>
+    <string name="addRemove">Añadir / Eliminar</string>
+    <string name="download">Descargar</string>
+    <string name="reopen">Reabrir</string>
+    <string name="openInBrowser">Abrir en el navegador</string>
+    <string name="deleteGenericTitle">Eliminar %s</string>
     <!-- generic copy -->
-    <string name="exploreUsers">Explore users</string>
-    <string name="exploreIssues">Explore issues</string>
+    <string name="exploreUsers">Explorar usuarios</string>
+    <string name="exploreIssues">Explorar incidencias</string>
     <string name="exploreTextBoxHint">Explorar repositorios</string>
     <string name="starRepositorySuccess">Repositorio añadido a los favoritos</string>
     <string name="unStarRepositorySuccess">Repositorio eliminado de los favoritos</string>
     <string name="watchRepositorySuccess">Añadido a la lista de los repositorios seguidos</string>
     <string name="unWatchRepositorySuccess">Eliminado de la lista de los repositorios seguidos</string>
     <string name="titleDrafts">Borradores</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedOld">Versión no soportada de Gitea (%1$s) detectada. Por favor actualiza a la última versión estable. Si continúas, algunas funciones pueden no funcionar.</string>
     <string name="versionUnsupportedNew">Se ha reconocido una nueva version de Gitea! Por favor, ACTUALICE GitNex!</string>
     <string name="versionUnknown">Gitea no reconocida!</string>
     <string name="versionAlertDialogHeader">Versión de Gitea no compatible</string>
@@ -435,8 +435,8 @@
     <string name="editPrSuccessMessage">Pull request actualizado</string>
     <string name="fileDiffViewHeader">%1$s archivos modificados</string>
     <string name="fileDiffViewHeaderSingle">%1$s archivo modificado</string>
-    <string name="updatePullRequestText">Update Pull Request</string>
-    <string name="openFileDiffText">Show Changed Files</string>
+    <string name="updatePullRequestText">Actualizar Pull Request</string>
+    <string name="openFileDiffText">Ver archivos modificados</string>
     <string name="mergePullRequestText">Fusionar pull request</string>
     <string name="deleteBranchSuccess">Rama eliminada con éxito</string>
     <string name="deleteBranchError">No se ha podido eliminar la rama</string>
@@ -456,7 +456,7 @@
     <string name="mergeStrategy">Estrategía de fusión</string>
     <string name="selectMergeStrategy">Seleccionar estrategia de fusión</string>
     <string name="mergeNotAllowed">Fusión no está permitida [Causa: Aprobaciones insuficientes]</string>
-    <string name="deleteBranch">Delete Branch</string>
+    <string name="deleteBranch">Eliminar rama</string>
     <string name="waitLoadingDownloadFile">Por favor espere que el dispositivo está cargando a la memoria</string>
     <string name="downloadFileSaved">Archivo guardado con éxito</string>
     <string name="excludeFilesInFileViewer">Este tipo o tamaño de archivo no está soportado en el visor de archivos. Puedes descargar el archivo via el menú.</string>
@@ -543,8 +543,8 @@
     <string name="mainNotificationChannelName">Notificaciones</string>
     <string name="mainNotificationChannelDescription">Este es el principal canal de notificación de GitNex.</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="one">You have %s new notification.</item>
-        <item quantity="other">You have %s new notifications.</item>
+        <item quantity="one">You have %s new notification</item>
+        <item quantity="other">You have %s new notifications</item>
     </plurals>
     <string name="isRead">Leer</string>
     <string name="isUnread">No leídos</string>
@@ -619,28 +619,39 @@
     <string name="unfollowingFailed">Couldn\'t unfollow user</string>
     <string name="followingFailed">Couldn\'t follow user</string>
     <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
-    <string name="updatePrSuccess">Pull Request updated successfully</string>
-    <string name="updateStrategyMerge">Merge</string>
+    <string name="updatePrSuccess">Pull Request actualizada correctamente</string>
+    <string name="updateStrategyMerge">Fusionar</string>
     <string name="updateStrategyRebase">Rebase</string>
-    <string name="selectUpdateStrategy">Select Update Strategy</string>
+    <string name="selectUpdateStrategy">Selecciona método de actualización</string>
     <string name="userAvatar">Avatar</string>
-    <string name="tags">Tags</string>
-    <string name="releasesTags">Releases/Tags</string>
-    <string name="create_tag">Create Tag Only</string>
-    <string name="tagCreated">Tag created</string>
-    <string name="asRef">Use as reference</string>
-    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="tagDeleted">Tag deleted</string>
-    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
-    <string name="useCustomTabs">Use Custom Tabs</string>
-    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Log in again</string>
-    <string name="notLoggedIn">%s \u25CF not logged in</string>
-    <string name="followSystem">Follow system (Light/Dark)</string>
-    <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
-    <string name="repoForkOf">Fork of: %s</string>
-    <string name="adoptRepo">Adopt</string>
-    <string name="repoAdopted">Adopted repository %s</string>
-    <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="tags">Etiquetas</string>
+    <string name="releasesTags">Lanzamientos / Etiquetas</string>
+    <string name="create_tag">Sólo crear etiqueta</string>
+    <string name="tagCreated">Etiqueta creada</string>
+    <string name="asRef">Usar como referencia</string>
+    <string name="deleteTagConfirmation">¿Estás seguro de que quieres eliminar esta etiqueta?</string>
+    <string name="tagDeleted">Etiqueta eliminada</string>
+    <string name="tagDeleteError">No se puede eliminar una etiqueta que está en uso</string>
+    <string name="useCustomTabs">Usar pestañas personalizadas</string>
+    <string name="browserOpenFailed">No se ha encontrado una aplicación para abrir este enlace. Las direcciones SSH y cualquiera diferente a http:// o https:// no están soportadas</string>
+    <string name="logInAgain">Inicia sesión de nuevo</string>
+    <string name="notLoggedIn">%s \u25CF no ha iniciado sesión</string>
+    <string name="followSystem">Sistema (Claro / Oscuro)</string>
+    <string name="followSystemBlack">Sistema (Claro / Pitch Black)</string>
+    <string name="repoForkOf">Rama de: %s</string>
+    <string name="adoptRepo">Adoptar</string>
+    <string name="repoAdopted">Repositorio adoptado %s</string>
+    <string name="unadoptedRepos">Repositorios no adoptados</string>
+    <string name="unadoptedReposMessage">- Adoptar el repositorio %s lo añadirá a la organización o usuario %s.\n - Eliminar lo borrará del sistema.</string>
+    <string name="commits">Commits</string>
+    <!-- wiki -->
+    <string name="wiki">Wiki</string>
+    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> actualizó %2$s]]></string>
+    <string name="deleteWikiPageMessage">¿Realmente quieres borrar %s?</string>
+    <string name="wikiPageDeleted">Página de la Wiki eliminada correctamente</string>
+    <string name="wikiPageNameAndContentError">El nombre y contenido de la página no puede estar vacío</string>
+    <string name="createWikiPage">Creada página de la Wiki</string>
+    <string name="wikiUpdated">Página de la Wiki actualizada correctamente</string>
+    <string name="wikiCreated">Página de la Wiki creada correctamente</string>
+    <!-- code editor -->
 </resources>

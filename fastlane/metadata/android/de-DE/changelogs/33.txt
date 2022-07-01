@@ -1,12 +1,12 @@
-- New: Add/remove labels from an issue
-- New: Repo README in information tab
-- New: Basic HTTP authentication support
-- New: Create a new user
-- New: Edit issue
-- New: Closed issues in new tab
-- Enhancement: German translation
-- Enhancement: Redesign multi select dialogs
-- Enhancement: New nav background image
+- Neu: Labels von Issue hinzufügen/entfernen
+- New: Repo-README unter den Informationen
+- Neu: Basic HTTP-Authentifizierung
+- New: Neuen Benutzer erstellen
+- Neu: Issue bearbeiten
+- Neu: geschlossene Issues in neuem Tab
+- Verbesserung: deutsche Übersetzung
+- Verbesserung: Redesign für Multi-Selection-Dialoge
+- Verbesserung: Neues Navigations-Hintergrund-Bild
 
-For more, check the release notes.
+Für mehr, siehe die Release-Anmerkungen.
 https://codeberg.org/gitnex/GitNex/releases

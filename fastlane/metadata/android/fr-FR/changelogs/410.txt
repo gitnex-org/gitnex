@@ -1,16 +1,16 @@
 4.1.0
 
-New: Follow/unfollow a user
-New: Explore users
-New: Update pull request (merge, rebase)
-New: Filter issues by milestone
-Improvement: Scroll to release tag via link handler
-Improvement: Search issue/pr by Id
-Improvement: Hide profile picture when scrolling
-Improvement: Render markdown in repository and organization descriptions
+- Nouveau : Suivre les utilisateurs
+- Nouveau : Rechercher des utilisateurs
+- Nouveau : Mettre à jour la demande d’ajout (fusion, rebasage)
+- Nouveau : Filtrer les tickets dans un jalon
+- Amélioration : Déroulement vers le tag de version via le gestionnaire de liens
+- Amélioration : Rechercher des tickets et des demandes d’ajout par ID
+- Amélioration : Cacher l’image de profil au déroulement
+- Amélioration : Rendu Markdown dans les descriptions des dépôts et des organisations
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+Notes de version : https://codeberg.org/gitnex/GitNex/releases
 
-Release Video: https://youtu.be/pcSdipx-Iyc
+Vidéo : https://youtu.be/pcSdipx-Iyc
 
-Release Blog: https://gitnex.codeberg.page/posts/410.html
+Billet : https://gitnex.codeberg.page/posts/410.html

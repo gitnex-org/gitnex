@@ -642,4 +642,15 @@
     <string name="repoAdopted">已采用仓库 %s</string>
     <string name="unadoptedRepos">已取消采用仓库</string>
     <string name="unadoptedReposMessage">- 采用将添加仓库 %s 到组织/用户 %s。\n- 删除将从系统中移除它。</string>
+    <string name="commits">提交</string>
+    <!-- wiki -->
+    <string name="wiki">维基</string>
+    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> 已更新 %2$s]]></string>
+    <string name="deleteWikiPageMessage">确实要删除 %s 吗？</string>
+    <string name="wikiPageDeleted">成功删除了维基页面</string>
+    <string name="wikiPageNameAndContentError">页面名臣和页面内容不能为空</string>
+    <string name="createWikiPage">创建维基页面</string>
+    <string name="wikiUpdated">成功更新了维基页面</string>
+    <string name="wikiCreated">成功创建了维基页面</string>
+    <!-- code editor -->
 </resources>

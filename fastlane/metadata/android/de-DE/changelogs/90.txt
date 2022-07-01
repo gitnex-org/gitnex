@@ -1,17 +1,17 @@
 2.4.0
-New: Light theme (choose from settings)
-New: Download files in Fileviewer (need write permissions)
-New: Custom fonts (choose from settings)
-New: PDF support in Fileviewer
-New: Night mode in PDF (Fileviewer)
-New: Default list of repositories in Explore screen
-New: Latvian language support
-Improvement: Support more files in file viewer syntax highlighter
-Improvement: Exclude BIN files rendering in diff viewer
-Improvement: Exclude specific files in file viewer like doc, xls etc
-Improvement: Single issue id and support copy title and description to clipborad
-Improvement: Translation updates
-Bugfix: Don't refresh repositories without action
+Neu: helles Thema (Einstellungen)
+Neu: Dateien herunterladen (benötigt Schreibberechtigung)
+Neu: eigene Schriftart (Einstellungen)
+Neu: PDFs im Dateiviewer
+Neu: Nachtmodus in PDFs (Dateiviewer)
+Neu: Standard-Liste von Repositories im Erkunden-Bildschirm
+New: Lettische Sprachunterstützung
+Verbesserung: mehr Dateien für Syntax-Highlighting unterstützt
+Verbesserung: keine BIN-Dateien im Diff-Viewer
+Verbesserung: Bestimmte Dateien wir doc, xls etc. im Dateiviewer ignorieren
+Verbesserung: einzelne Issue-IDs und Unterstützung für das Kopieren von Titel und Beschreibung
+Verbesserung: Übersetzungsaktualierungen
+Fehler: Repositories ohne Aktion nicht neuladen
 
-For more, check the release notes.
+Für mehr, siehe die Release-Anmerkungen.
 https://codeberg.org/gitnex/GitNex/releases

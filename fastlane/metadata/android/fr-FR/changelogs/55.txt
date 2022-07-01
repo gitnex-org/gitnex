@@ -1,14 +1,14 @@
-- New: Create new files
-- New: Open repository in browser from bottomsheet, @6543
-- New: List of repository stargazers
-- New: List of repository watchers
-- New: Open repository in browser from listview
-- Enhancement: Repo website linking
-- Enhancement: Reduce large text to small for links
-- Enhancement: Translations for french, german
-- Fixed: Crash on tapping search icon
-- Fixed: Crash when tabs are moved quickly
-- Fixed: Commit hash url in branches tab
+- Nouveau : Créer des fichiers
+- Nouveau : « Ouvrir le dépôt dans le navigateur » dans le panneau inférieur, @6543
+- Nouveau : Liste des fans du dépôt
+- Nouveau : Liste des observateurs du dépôt
+- Nouveau : « Ouvrir le dépôt dans le navigateur » depuis les vues en liste
+- Amélioration : Site du dépôt
+- Amélioration : Taille de la fonte réduite pour les liens
+- Amélioration : Tranductions en français et en allemand mises à jour
+- Corrigé : Plantage en cliquant sur l’icône de recherche
+- Corrigé : Plantage lorsque les onglets sont déplacés rapidement
+- Corrigé : Lien erroné du hash de commit dans l’onglet Branches
 
-For more, check the release notes.
+Pour plus de détails, consultez les notes de version.
 https://codeberg.org/gitnex/GitNex/releases

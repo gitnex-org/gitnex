@@ -1,0 +1,17 @@
+4.3.0
+
+Neu: Labels in Issue- und Pr-Listen anzeigen
+Neu: Meine Issues mit Remote-Suche und Filtern
+Neu: Commit-Ansicht mit Diff-Anzeige
+Neu: Verwaltung nicht übernommener Repos für Admins
+Neu: Release löschen
+Neu: UI-Verbesserungen
+Neu: Repositoy zu Team in Organisation zuweisen
+
+⚠️ Anmerkung: entfernt Support für Android 5 ⚠️
+
+Release-Anmerkungen: https://codeberg.org/gitnex/GitNex/releases
+
+Release-Video: https://youtu.be/DzJEm00V4qA
+
+Release-Blog: https://gitnex.codeberg.page/posts/430.html

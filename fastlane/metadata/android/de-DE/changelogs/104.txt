@@ -1,6 +1,6 @@
 2.5.0-rc4
 
-Release notes will be published with the stable release.
-In the mean time check the milestone for pull requests and issues that are merged/closed.
+Release-Anmerkungen werden mit stabilem Release veröffentlicht.
+Schaue den Meilenstein für geschlossene/zusammengeführte Pull-Requests und Issues an.
 
 https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed
