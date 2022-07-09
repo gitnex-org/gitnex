@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.4.0" versioncode="440">
-        <change>New: List/view wiki pages</change>
-        <change>New: Create/edit/delete wiki page</change>
-        <change>New: Add support for pull request commits</change>
-        <change>Bugfix: Fix crashes on login with spaces, new lines and unwanted characters</change>
-        <change>Bugfix: Fix crash on repository info view in some cases</change>
-        <change>Bugfix: Fix crash on commenting on PR when coming from notification</change>
-        <change>Bugfix: Fix crash on commenting on diff code</change>
+    <release version="4.5.0-dev" versioncode="445">
+        <change>Under development</change>
     </release>
 
 </changelog>
