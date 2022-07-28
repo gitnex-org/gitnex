@@ -20,6 +20,7 @@ public class VersionTest {
 		assertTrue(new Version("1.12.0").equal("v1.12"));
 		assertTrue(new Version("v1.12.0").equal("1.12.0"));
 		assertTrue(new Version("0").equal("0"));
+		assertTrue(new Version("").equal("0"));
 
 		assertFalse(new Version("1.12.1").equal("1.12.0+dev-211-g316db0fe7"));
 		assertFalse(new Version("v1.12.0").equal("1.10.0"));
@@ -35,6 +36,7 @@ public class VersionTest {
 	@Test
 	public void less() {
 
+		assertTrue(new Version("").less("1.11.0"));
 		assertTrue(new Version("1.11.0").less("1.12"));
 		assertTrue(new Version("v1.11").less("1.12.0+dev-211-g316db0fe7"));
 		assertTrue(new Version("1.12.0").less("v2"));

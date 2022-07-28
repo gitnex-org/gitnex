@@ -51,6 +51,10 @@ public class Version {
 
 		final Pattern patternNumberDotNumber = Pattern.compile("^\\d+(\\.(\\d)+)*");
 
+		if(raw.isEmpty()) {
+			raw = "0";
+		}
+
 		if(!valid(raw)) {
 			throw new IllegalArgumentException("Invalid version format: " + raw);
 		}
