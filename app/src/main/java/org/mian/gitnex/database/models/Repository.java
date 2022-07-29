@@ -24,6 +24,7 @@ public class Repository implements Serializable {
     private int repoAccountId;
     private String repositoryOwner;
     private String repositoryName;
+	private int mostVisited;
 
     public int getRepositoryId() {
         return repositoryId;
@@ -56,4 +57,12 @@ public class Repository implements Serializable {
     public void setRepositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
     }
+
+	public int getMostVisited() {
+		return mostVisited;
+	}
+
+	public void setMostVisited(int mostVisited) {
+		this.mostVisited = mostVisited;
+	}
 }

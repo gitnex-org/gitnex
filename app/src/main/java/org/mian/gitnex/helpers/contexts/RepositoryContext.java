@@ -244,15 +244,17 @@ public class RepositoryContext implements Serializable {
 
 		assert repositoryData != null;
 		Integer count = repositoryData.checkRepository(currentActiveAccountId, getOwner(), getName());
+		Repository getMostVisitedValue = repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
 
 		if(count == 0) {
-			long id = repositoryData.insertRepository(currentActiveAccountId, getOwner(), getName());
+			long id = repositoryData.insertRepository(currentActiveAccountId, getOwner(), getName(), getMostVisitedValue.getMostVisited() + 1);
 			setRepositoryId((int) id);
 			return (int) id;
 		}
 		else {
 			Repository data = repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
 			setRepositoryId(data.getRepositoryId());
+			repositoryData.updateRepositoryMostVisited(getMostVisitedValue.getMostVisited() + 1, data.getRepositoryId());
 			return data.getRepositoryId();
 		}
 	}

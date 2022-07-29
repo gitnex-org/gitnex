@@ -19,12 +19,13 @@ public class RepositoriesApi extends BaseApi {
 		repositoriesDao = gitnexDatabase.repositoriesDao();
 	}
 
-	public long insertRepository(int repoAccountId, String repositoryOwner, String repositoryName) {
+	public long insertRepository(int repoAccountId, String repositoryOwner, String repositoryName, int mostVisited) {
 
 		Repository repository = new Repository();
 		repository.setRepoAccountId(repoAccountId);
 		repository.setRepositoryOwner(repositoryOwner);
 		repository.setRepositoryName(repositoryName);
+		repository.setMostVisited(mostVisited);
 
 		return insertRepositoryAsyncTask(repository);
 	}
@@ -69,4 +70,7 @@ public class RepositoriesApi extends BaseApi {
 		executorService.execute(() -> repositoriesDao.deleteRepository(repositoryId));
 	}
 
+	public void updateRepositoryMostVisited(int mostVisited, int repositoryId) {
+		executorService.execute(() -> repositoriesDao.updateRepositoryMostVisited(mostVisited, repositoryId));
+	}
 }

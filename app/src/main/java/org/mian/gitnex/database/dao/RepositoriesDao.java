@@ -44,4 +44,6 @@ public interface RepositoriesDao {
     @Query("DELETE FROM Repositories WHERE repoAccountId = :repoAccountId")
     void deleteRepositoriesByAccount(int repoAccountId);
 
+	@Query("UPDATE Repositories SET mostVisited = :mostVisited WHERE repositoryId = :repositoryId")
+	void updateRepositoryMostVisited(int mostVisited, int repositoryId);
 }

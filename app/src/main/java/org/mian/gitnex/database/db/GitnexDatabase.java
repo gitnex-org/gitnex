@@ -19,11 +19,11 @@ import org.mian.gitnex.database.models.UserAccount;
  */
 
 @Database(entities = {Draft.class, Repository.class, UserAccount.class},
-        version = 5, exportSchema = false)
+        version = 6, exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
 	private static final String DB_NAME = "gitnex";
-    private static GitnexDatabase gitnexDatabase;
+    private static volatile GitnexDatabase gitnexDatabase;
 
     public abstract DraftsDao draftsDao();
     public abstract RepositoriesDao repositoriesDao();
@@ -61,6 +61,14 @@ public abstract class GitnexDatabase extends RoomDatabase {
 		}
 	};
 
+	private static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+
+		@Override
+		public void migrate(@NonNull SupportSQLiteDatabase database) {
+			database.execSQL("ALTER TABLE 'Repositories' ADD COLUMN 'mostVisited' INTEGER NOT NULL DEFAULT 0");
+		}
+	};
+
 	public static GitnexDatabase getDatabaseInstance(Context context) {
 
 		if (gitnexDatabase == null) {
@@ -68,9 +76,9 @@ public abstract class GitnexDatabase extends RoomDatabase {
 				if(gitnexDatabase == null) {
 
 					gitnexDatabase = Room.databaseBuilder(context, GitnexDatabase.class, DB_NAME)
-						// .fallbackToDestructiveMigration()
+						//.fallbackToDestructiveMigration()
 						.allowMainThreadQueries()
-						.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+						.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
 						.build();
 
 				}
