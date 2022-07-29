@@ -26,7 +26,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder>  {

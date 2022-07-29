@@ -8,7 +8,7 @@ import org.mian.gitnex.databinding.ActivitySettingsReportsBinding;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class SettingsReportsActivity extends BaseActivity {

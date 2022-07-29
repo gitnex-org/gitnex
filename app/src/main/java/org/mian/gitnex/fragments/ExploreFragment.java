@@ -20,7 +20,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ExploreFragment extends Fragment {

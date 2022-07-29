@@ -3,7 +3,7 @@ package org.mian.gitnex.helpers;
 import java.io.Serializable;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MergePullRequestSpinner implements Serializable {

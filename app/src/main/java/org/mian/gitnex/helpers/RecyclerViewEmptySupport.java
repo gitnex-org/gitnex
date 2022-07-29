@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Author com.github.abumoallim, modified by M M Arif
+ * @author com.github.abumoallim, modified by M M Arif
  */
 
 public class RecyclerViewEmptySupport extends RecyclerView {

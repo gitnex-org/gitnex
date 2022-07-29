@@ -8,7 +8,7 @@ import android.widget.Toast;
 import org.mian.gitnex.R;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class Toasty {

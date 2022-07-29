@@ -5,7 +5,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class LabelWidthCalculator {

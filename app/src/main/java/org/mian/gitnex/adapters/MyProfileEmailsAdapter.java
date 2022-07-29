@@ -15,7 +15,7 @@ import org.mian.gitnex.R;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MyProfileEmailsAdapter extends RecyclerView.Adapter<MyProfileEmailsAdapter.EmailsViewHolder> {

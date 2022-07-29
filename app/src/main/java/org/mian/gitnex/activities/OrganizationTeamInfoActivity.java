@@ -23,7 +23,7 @@ import org.mian.gitnex.fragments.OrganizationTeamInfoReposFragment;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class OrganizationTeamInfoActivity extends BaseActivity implements BottomSheetListener {

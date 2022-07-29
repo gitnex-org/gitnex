@@ -16,7 +16,7 @@ import org.mian.gitnex.helpers.TinyDB;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class Notifications {

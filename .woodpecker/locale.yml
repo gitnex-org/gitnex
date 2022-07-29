@@ -1,12 +1,59 @@
 pipeline:
-  push:
-    image: crowdin/cli:3.7.8
+  prepare:
+    image: alpine
     commands:
       - cp crowdin.example.yml crowdin.yml
       - sed -i 's/-removed-/'"$CROWDIN_TOKEN"'/' crowdin.yml
-      - crowdin push
     secrets: [ CROWDIN_TOKEN ]
     when:
       event: [ push, tag ]
       branch: main
+
+  push:
+    image: crowdin/cli:3.7.8
+    commands:
+      - crowdin push
+    when:
+      event: [ push, tag ]
+      branch: main
       path: [ app/src/main/res/values/strings.xml, fastlane/metadata/android/en-US/*.txt, fastlane/metadata/android/en-US/changelogs/*.txt ]
+
+  pull:
+    image: crowdin/cli:3.7.8
+    # we do not need to update the config file again since it persists
+    commands:
+      - crowdin pull
+    when:
+      event: [ push, tag ]
+      branch: main
+
+  push-git:
+    image: alpine/git
+    environment:
+      # Information that should be used when authoring a commit
+      - GIT_AUTHOR_NAME=gitnexbot
+      - GIT_AUTHOR_EMAIL=gitnexbot@noreply.codeberg.org
+      - GIT_COMMIT_MESSAGE=Translation updates from Crowdin [CI SKIP]
+      # Basic information concerning the repo that
+      - GITEA_HOST=codeberg.org
+      - GITEA_REPOSITORY=gitnex/GitNex
+      - GITEA_BRANCH=main
+      # Token that should be used to authenticate against the gitea instance
+      # - BOT_TOKEN=secret
+    secrets: [ BOT_TOKEN ]
+    commands:
+      # Setup git credentials and checkout target branch
+      - git config user.name  "$${GIT_AUTHOR_NAME}"
+      - git config user.email "$${GIT_AUTHOR_EMAIL}"
+      - git checkout "$${GITEA_BRANCH}"
+      # Stage all important files for commit
+      - git add -A .
+      # If files have changed, create a new commit and push it to the branch this pipeline was started on
+      - >
+        if git commit --message "$${GIT_COMMIT_MESSAGE}"; then
+          git remote set-url origin "https://$${BOT_TOKEN}@$${GITEA_HOST}/$${GITEA_REPOSITORY}"
+          git push origin "$${GITEA_BRANCH}"
+        fi
+    when:
+      branch: main
+      event: [ push, tag ]

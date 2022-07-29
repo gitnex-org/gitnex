@@ -15,7 +15,7 @@ import org.mian.gitnex.notifications.Notifications;
 
 /**
  * Template Author M M Arif
- * Author opyale
+ * @author opyale
  */
 
 public class SettingsNotificationsActivity extends BaseActivity {

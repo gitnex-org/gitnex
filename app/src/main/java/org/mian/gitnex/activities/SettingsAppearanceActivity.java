@@ -20,7 +20,7 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class SettingsAppearanceActivity extends BaseActivity {

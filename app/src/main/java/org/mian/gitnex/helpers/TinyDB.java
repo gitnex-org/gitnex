@@ -10,6 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * @author M M Arif
+ */
 public class TinyDB {
 
 	private static volatile TinyDB tinyDB;

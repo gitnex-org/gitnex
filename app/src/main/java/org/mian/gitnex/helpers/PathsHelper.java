@@ -1,7 +1,7 @@
 package org.mian.gitnex.helpers;
 
 /**
- * Author opyale
+ * @author opyale
  */
 
 public class PathsHelper {

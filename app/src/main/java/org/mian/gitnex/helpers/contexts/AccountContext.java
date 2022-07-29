@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import okhttp3.Credentials;
 
+/**
+ * @author qwerty287
+ */
 public class AccountContext implements Serializable {
 
 	private UserAccount account;

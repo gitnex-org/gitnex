@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Author 6543
+ * @author 6543
  */
 
 public class VersionTest {

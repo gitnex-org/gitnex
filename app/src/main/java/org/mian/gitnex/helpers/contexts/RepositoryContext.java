@@ -14,6 +14,9 @@ import org.mian.gitnex.helpers.TinyDB;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * @author qwerty287
+ */
 public class RepositoryContext implements Serializable {
 
 	public static final String INTENT_EXTRA = "repository";

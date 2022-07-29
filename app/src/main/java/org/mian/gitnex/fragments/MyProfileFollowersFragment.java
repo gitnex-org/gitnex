@@ -26,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MyProfileFollowersFragment extends Fragment {

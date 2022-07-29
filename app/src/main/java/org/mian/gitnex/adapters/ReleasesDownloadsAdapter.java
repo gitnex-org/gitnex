@@ -12,7 +12,7 @@ import org.mian.gitnex.structs.FragmentRefreshListener;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  **/
 
 public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder> {

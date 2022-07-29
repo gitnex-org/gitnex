@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class OrganizationInfoFragment extends Fragment {

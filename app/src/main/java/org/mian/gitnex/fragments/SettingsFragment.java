@@ -29,7 +29,7 @@ import org.mian.gitnex.databinding.FragmentSettingsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class SettingsFragment extends Fragment {

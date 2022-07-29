@@ -8,7 +8,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class ColorInverter {

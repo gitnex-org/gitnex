@@ -4,7 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class UrlHelper {

@@ -14,7 +14,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class RepoStargazersActivity extends BaseActivity {

@@ -1,7 +1,7 @@
 package org.mian.gitnex.helpers.ssl;
 
 /**
- * Author Georg Lukas, modified by opyale
+ * @author Georg Lukas, modified by opyale
  */
 
 class MTMDecision {

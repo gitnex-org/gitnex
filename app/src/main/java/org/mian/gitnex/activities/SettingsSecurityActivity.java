@@ -24,7 +24,7 @@ import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRON
 import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class SettingsSecurityActivity extends BaseActivity {

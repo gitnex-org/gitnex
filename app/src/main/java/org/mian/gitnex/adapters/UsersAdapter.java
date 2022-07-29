@@ -20,7 +20,7 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

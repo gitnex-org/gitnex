@@ -21,7 +21,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.viewmodels.MembersByOrgViewModel;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MembersByOrgFragment extends Fragment {

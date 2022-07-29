@@ -9,6 +9,9 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.activities.BaseActivity;
 import java.io.Serializable;
 
+/**
+ * @author qwerty287
+ */
 public class IssueContext implements Serializable {
 
 	public static final String INTENT_EXTRA = "issue";

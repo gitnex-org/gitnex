@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdapter.AssigneesViewHolder> {

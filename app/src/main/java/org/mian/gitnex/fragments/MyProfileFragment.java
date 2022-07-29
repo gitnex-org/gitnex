@@ -36,7 +36,7 @@ import java.util.Locale;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public class MyProfileFragment extends Fragment {

@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 
 /**
- * Author M M Arif
+ * @author M M Arif
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
