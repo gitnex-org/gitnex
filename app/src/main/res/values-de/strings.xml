@@ -96,7 +96,7 @@
     <string name="infoTabRepoSshUrl">SSH-URL</string>
     <string name="infoTabRepoCloneUrl">Klon-URL</string>
     <string name="infoTabRepoRepoUrl">Repo-URL</string>
-    <string name="infoTabRepoForksCount">Anzahl an Forks</string>
+    <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
     <string name="infoShowMoreInformation">Mehr Informationen anzeigen</string>

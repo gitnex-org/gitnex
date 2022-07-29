@@ -1,47 +1,47 @@
-GitNex is a free/paid, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
+ගිට්නෙක්ස් යනු නොමිලේ/ගෙවන, විවෘත මූලාශ්‍ර ඇන්ඩ්‍රොයිඩ් අනුග්‍රාහකයකි; ගිටියා සඳහා ගිට් කෝෂ්ඨ කළමනාකරණ මෙවලමකි. Gitea is a community managed fork of Gogs, lightweight code hosting solution written in Go.
 
-# Features
+විශේෂාංග
 
-- Multiple accounts support
-- File and directory browser
-- File viewer
-- Create files
+- ගිණුම් කිහිපයකට සහාය
+- ගොනු හා නාමාවලි අතිරික්සුව
+- ගොනු දැක්ම
+- ගොනු සෑදීම
 - Login via Token
-- Merge pull request
-- Offline mode(cache)
-- Explore repositories
+- තල්ලු ඉල්ලීම් සංයුක්තය
+- මාර්ගඅපගත අකාරය (නිහිතය)
+- කෝෂ්ඨ ගවේශණය
 - Diff view of PR files for public repositories
-- Repositories list
-- Organizations list
-- Create new repository / organization
+- කෝෂ්ඨ ලේඛනය
+- සංවිධාන ලේඛනය
+- නව කෝෂ්ඨ / සංවිධාන සෑදීම
 - Search/filter repositories / organizations / issues etc
-- Profile view
+- පැතිකඩ දැක්ම
 - Issues list
 - Issue comments
 - Comment on issues
 - Create new issue with multiple assignee, labels and add milestone, due date to it
-- Create labels
-- Edit / delete labels
+- නම්පත් සෑදීම
+- නම්පත් සංස්කරණය / මැකීම
 - Milestones list
 - Create new milestone
-- Branches list
-- Releases with source download
-- Collaborators view for repository
+- ශාඛා ලේඛනය
+- මූලාශ්‍රය සමඟ නිකුතු බාගැනීම
+- කෝෂ්ඨ සඳහා සහයෝගිත්ව දැක්ම
 - Markdown support
-- Emoji support
+- ඉමෝජි සහාය
 - Extensive Settings
-- Option to access local non-https installs
+- ස්ථානීය non-https ස්ථාපන සඳහා ප්‍රවේශය
 - 2FA OTP support
-- Notifications
-- Drafts
-- Switch branches in File browser
+- දැනුම්දීම්
+- කටුපිටපත්
+- ගොනු අතිරික්සුවෙන් ශාඛා මාරුවීම
 - Repository commits
 - Self signed cert support
-- Theme auto switcher
-- Delete comments
-- Configure app cache from settings
+- තේමා ස්වයං මාරුව
+- අදහස් මැකීම
+- යෙදුමේ නිහිතය සැකසුම්වල වින්‍යාසය
 
-More features - https://codeberg.org/gitnex/GitNex/wiki/Features
+තවත් විශේෂාංග - https://codeberg.org/gitnex/GitNex/wiki/Features
 
-Source code: https://codeberg.org/gitnex/GitNex
-Developer: https://mastodon.social/@mmarif
+ප්‍රභව කේතය: https://codeberg.org/gitnex/GitNex
+සංවර්ධක: https://mastodon.social/@mmarif

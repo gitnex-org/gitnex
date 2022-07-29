@@ -1,1 +1,1 @@
-Native client for Gitea
+ගිටියා සඳහා නිසග අනුග්‍රාහකයකි

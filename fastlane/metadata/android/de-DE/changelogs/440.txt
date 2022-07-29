@@ -1,0 +1,17 @@
+4.4.0
+
+🎉 Funktionen 🎉
+- Wiki-Seiten auflisten/anzeigen
+- Wiki-Seiten erstellen/bearbeiten/löschen
+- Unterstützung für Pull-Request-Commits
+
+🐛 Fehlerbehebungen 🐛
+- Crash beim Anmelden mit Leerzeichen, neuen Zeilen und ungewollten Zeichen
+- Crash beim Anzeigen der Repository-Infos in einigen Fällen
+- Crash beim Kommentieren von PRs, wenn man von Benachrichtigungen kommt
+
+Release-Anmerkungen: https://codeberg.org/gitnex/GitNex/releases
+
+Release-Video: https://youtu.be/VGjKRpRVvSc
+
+Release-Blog: https://gitnex.codeberg.page/posts/440.html
