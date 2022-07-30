@@ -18,10 +18,7 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author M M Arif
