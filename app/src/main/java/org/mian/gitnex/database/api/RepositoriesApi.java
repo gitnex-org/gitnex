@@ -73,4 +73,8 @@ public class RepositoriesApi extends BaseApi {
 	public void updateRepositoryMostVisited(int mostVisited, int repositoryId) {
 		executorService.execute(() -> repositoriesDao.updateRepositoryMostVisited(mostVisited, repositoryId));
 	}
+
+	public LiveData<List<Repository>> fetchAllMostVisited(int repoAccountId) {
+		return repositoriesDao.fetchAllMostVisited(repoAccountId);
+	}
 }

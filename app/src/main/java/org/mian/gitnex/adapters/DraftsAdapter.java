@@ -62,7 +62,6 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 	            DraftsApi draftsApi = BaseApi.getInstance(context, DraftsApi.class);
 	            assert draftsApi != null;
 	            draftsApi.deleteSingleDraft(getDraftId);
-
             });
 
 	        itemView.setOnClickListener(itemEdit -> {
@@ -98,9 +97,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 		        });
 		        bottomSheetReplyFragment.show(fragmentManager, "replyBottomSheet");
             });
-
         }
-
     }
 
     public DraftsAdapter(Context ctx, FragmentManager fragmentManager, List<DraftWithRepository> draftsListMain) {
@@ -152,9 +149,14 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
         return draftsList.size();
     }
 
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+	}
+
 	public void updateList(List<DraftWithRepository> list) {
 
 		draftsList = list;
-		notifyDataSetChanged();
+		notifyDataChanged();
 	}
 }

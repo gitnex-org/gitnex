@@ -85,7 +85,6 @@ public class DraftsFragment extends Fragment {
         fetchDataAsync(currentActiveAccountId);
 
         return fragmentDraftsBinding.getRoot();
-
     }
 
     private void fetchDataAsync(int accountId) {
@@ -99,18 +98,14 @@ public class DraftsFragment extends Fragment {
 	            draftsList_.clear();
                 noData.setVisibility(View.GONE);
 	            draftsList_.addAll(drafts);
-	            adapter.notifyDataSetChanged();
+	            adapter.notifyDataChanged();
                 mRecyclerView.setAdapter(adapter);
-
             }
             else {
 
                 noData.setVisibility(View.VISIBLE);
-
             }
-
         });
-
     }
 
 	@Override
@@ -126,9 +121,8 @@ public class DraftsFragment extends Fragment {
 
 		    BaseApi.getInstance(ctx, DraftsApi.class).deleteAllDrafts(accountId);
 		    draftsList_.clear();
-		    adapter.notifyDataSetChanged();
+		    adapter.notifyDataChanged();
 		    Toasty.success(ctx, getResources().getString(R.string.draftsDeleteSuccess));
-
 	    }
     	else {
 		    Toasty.warning(ctx, getResources().getString(R.string.draftsListEmpty));
@@ -160,10 +154,8 @@ public class DraftsFragment extends Fragment {
 
 				filter(newText);
 				return false;
-
 			}
 		});
-
 	}
 
 	private void filter(String text) {
@@ -184,5 +176,4 @@ public class DraftsFragment extends Fragment {
 
 		adapter.updateList(arr);
 	}
-
 }

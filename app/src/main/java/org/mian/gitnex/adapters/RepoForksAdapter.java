@@ -109,7 +109,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			this.userRepositories = forksModel;
 			orgName.setText(forksModel.getFullName().split("/")[0]);
 			repoName.setText(forksModel.getFullName().split("/")[1]);
-			repoStars.setText(String.valueOf(forksModel.getStarsCount()));
+			repoStars.setText(AppUtil.numberFormatter(forksModel.getStarsCount()));
 
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(forksModel.getName());
@@ -175,7 +175,6 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 				Context context = v.getContext();
 
-				String[] parts = userRepositories.getFullName().split("/");
 				RepositoryContext repo = new RepositoryContext(userRepositories, context);
 				repo.saveToDB(context);
 				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
@@ -184,7 +183,6 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			});
 		}
-
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {

@@ -39,6 +39,7 @@ import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
 import org.mian.gitnex.fragments.BottomSheetMyIssuesFilterFragment;
 import org.mian.gitnex.fragments.DraftsFragment;
 import org.mian.gitnex.fragments.ExploreFragment;
+import org.mian.gitnex.fragments.MostVisitedReposFragment;
 import org.mian.gitnex.fragments.MyIssuesFragment;
 import org.mian.gitnex.fragments.MyProfileFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
@@ -144,6 +145,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		}
 		else if(fragmentById instanceof MyProfileFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.navProfile));
+		}
+		else if(fragmentById instanceof MostVisitedReposFragment) {
+			toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
 		}
 		else if(fragmentById instanceof DraftsFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
@@ -591,6 +595,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
 			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyIssuesFragment()).commit();
+		}
+		else if(id == R.id.nav_most_visited) {
+
+			toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MostVisitedReposFragment()).commit();
 		}
 
 		drawer.closeDrawer(GravityCompat.START);

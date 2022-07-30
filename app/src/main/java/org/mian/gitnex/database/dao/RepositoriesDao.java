@@ -46,4 +46,7 @@ public interface RepositoriesDao {
 
 	@Query("UPDATE Repositories SET mostVisited = :mostVisited WHERE repositoryId = :repositoryId")
 	void updateRepositoryMostVisited(int mostVisited, int repositoryId);
+
+	@Query("SELECT * FROM Repositories WHERE mostVisited > 0  AND repoAccountId = :repoAccountId ORDER BY mostVisited DESC LIMIT 50")
+	LiveData<List<Repository>> fetchAllMostVisited(int repoAccountId);
 }

@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
-        android:text="@string/draftsListEmpty"
+        android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:gravity="center"
         android:textSize="20sp"

@@ -34,6 +34,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -454,4 +455,21 @@ public class AppUtil {
 		return typeface;
 	}
 
+	/**
+	 * Pretty number format
+	 * Example, 1200 = 1.2k
+	 */
+	public static String numberFormatter(Number number) {
+
+		char[] suffix = {' ', 'k', 'M', 'B', 'T'};
+		long numValue = number.longValue();
+		int value = (int) Math.floor(Math.log10(numValue));
+		int base = value / 3;
+		if (value >= 3 && base < suffix.length) {
+			return new DecimalFormat("#0.0").format(numValue / Math.pow(10, base * 3)) + suffix[base];
+		}
+		else {
+			return new DecimalFormat("#,##0").format(numValue);
+		}
+	}
 }
