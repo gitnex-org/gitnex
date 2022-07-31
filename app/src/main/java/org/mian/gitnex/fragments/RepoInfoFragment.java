@@ -12,12 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import org.apache.commons.io.FileUtils;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
+import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepoInfoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -33,6 +37,7 @@ import java.util.Locale;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
@@ -143,6 +148,20 @@ public class RepoInfoFragment extends Fragment {
 
 		if (isAdded()) {
 			assert repoInfo != null;
+			binding.repoMetaOwner.setText(repoInfo.getOwner().getLogin());
+			binding.repoMetaOwner.setOnClickListener((v) -> RetrofitClient.getApiInterface(ctx).orgGet(repository.getOwner()).enqueue(new Callback<>() {
+
+				@Override
+				public void onResponse(@NotNull Call<Organization> call, @NotNull Response<Organization> response) {
+					Intent intent = new Intent(ctx, response.isSuccessful() ? OrganizationDetailActivity.class : ProfileActivity.class);
+					intent.putExtra(response.isSuccessful() ? "orgName" : "username", repository.getOwner());
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+				}
+
+				@Override
+				public void onFailure(@NotNull Call<Organization> call, @NotNull Throwable t) {}
+			}));
 			binding.repoMetaName.setText(repoInfo.getName());
 
 			if(!repoInfo.getDescription().isEmpty()) {

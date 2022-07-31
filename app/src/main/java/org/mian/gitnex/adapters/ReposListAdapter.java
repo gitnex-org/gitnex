@@ -44,6 +44,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final TinyDB tinyDb;
+	public boolean isUserOrg = false;
 
 	public ReposListAdapter(List<org.gitnex.tea4j.v2.models.Repository> reposListMain, Context ctx) {
 		this.context = ctx;
@@ -109,7 +110,9 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				RepositoryContext repo = new RepositoryContext(userRepositories, context);
 				repo.saveToDB(context);
 				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
-
+				if(isUserOrg) {
+					intent.putExtra("openedFromUserOrg", true);
+				}
 				context.startActivity(intent);
 			});
 		}
