@@ -90,6 +90,7 @@ public class RepositoriesByOrgFragment extends Fragment {
 		repositoriesViewModel.getRepositories(page, resultLimit, "", "org", orgName, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
 
 			adapter = new ReposListAdapter(reposListMain, getContext());
+			adapter.isUserOrg = true;
 			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
 
 				@Override

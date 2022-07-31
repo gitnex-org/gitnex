@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.profile.StarredRepositoriesAdapter;
+import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -41,7 +41,7 @@ public class StarredRepositoriesFragment extends Fragment {
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 
 	private List<Repository> reposList;
-	private StarredRepositoriesAdapter adapter;
+	private ReposListAdapter adapter;
 
 	private int pageSize;
 	private int resultLimit;
@@ -86,13 +86,24 @@ public class StarredRepositoriesFragment extends Fragment {
 			adapter.notifyDataChanged();
 		}, 200));
 
-		adapter = new StarredRepositoriesAdapter(context, reposList);
-		adapter.setLoadMoreListener(() -> fragmentRepositoriesBinding.recyclerView.post(() -> {
-			if(reposList.size() == resultLimit || pageSize == resultLimit) {
-				int page = (reposList.size() + resultLimit) / resultLimit;
-				loadMore(username, page, resultLimit);
+		adapter = new ReposListAdapter(reposList, context);
+		adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
+
+			@Override
+			public void onLoadMore() {
+				fragmentRepositoriesBinding.recyclerView.post(() -> {
+					if(reposList.size() == resultLimit || pageSize == resultLimit) {
+						int page = (reposList.size() + resultLimit) / resultLimit;
+						loadMore(username, page, resultLimit);
+					}
+				});
 			}
-		}));
+
+			@Override
+			public void onLoadFinished() {
+
+			}
+		});
 
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
@@ -111,7 +122,8 @@ public class StarredRepositoriesFragment extends Fragment {
 			.getApiInterface(context)
 			.userListStarred(username, 1, resultLimit);
 
-		call.enqueue(new Callback<List<Repository>>() {
+		call.enqueue(new Callback<>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
@@ -169,7 +181,7 @@ public class StarredRepositoriesFragment extends Fragment {
 			.getApiInterface(context)
 			.userListStarred(username, page, resultLimit);
 
-		call.enqueue(new Callback<List<Repository>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
