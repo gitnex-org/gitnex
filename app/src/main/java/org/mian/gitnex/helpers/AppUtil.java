@@ -469,6 +469,9 @@ public class AppUtil {
 		if(value >= 3 && base < suffix.length) {
 			return new DecimalFormat("#0.0").format(numValue / Math.pow(10, base * 3)) + suffix[base];
 		}
+		if(base >= suffix.length) {
+			return new DecimalFormat("#0").format(numValue / Math.pow(10, base * 2)) + suffix[4];
+		}
 		else {
 			return new DecimalFormat("#,##0").format(numValue);
 		}
