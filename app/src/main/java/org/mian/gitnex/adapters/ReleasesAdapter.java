@@ -3,6 +3,7 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,13 +95,18 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	        downloadList.setHasFixedSize(true);
 	        downloadList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
 
-	        authorAvatar.setOnClickListener(loginId -> {
-		        Context context = loginId.getContext();
+	        new Handler().postDelayed(() -> {
+		        if(!AppUtil.checkGhostUsers(releases.getAuthor().getLogin())) {
 
-		        Intent intent = new Intent(context, ProfileActivity.class);
-		        intent.putExtra("username", releases.getAuthor().getLogin());
-		        context.startActivity(intent);
-	        });
+			        authorAvatar.setOnClickListener(loginId -> {
+				        Context context = loginId.getContext();
+
+				        Intent intent = new Intent(context, ProfileActivity.class);
+				        intent.putExtra("username", releases.getAuthor().getLogin());
+				        context.startActivity(intent);
+			        });
+		        }
+	        }, 500);
 
 	        optionsMenu.setOnClickListener(v -> {
 		        final Context context = v.getContext();

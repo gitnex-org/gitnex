@@ -158,13 +158,13 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/wiki_content"
                         android:layout_width="match_parent"
-                        android:layout_height="480dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="480dp"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
                         android:gravity="top|start"
                         android:singleLine="false"
-                        android:imeOptions="actionNext"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>

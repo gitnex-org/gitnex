@@ -53,7 +53,6 @@ public class FilesViewModel extends ViewModel {
 		        else {
 			        progressBar.setVisibility(View.GONE);
 			        noDataFiles.setVisibility(View.VISIBLE);
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
 		        }
 	        }
 
@@ -90,7 +89,6 @@ public class FilesViewModel extends ViewModel {
 		        else {
 			        progressBar.setVisibility(View.GONE);
 			        noDataFiles.setVisibility(View.VISIBLE);
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
 		        }
 	        }
 

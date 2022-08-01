@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -221,16 +222,20 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 
 			});
 
-			avatar.setOnClickListener(loginId -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", userLoginId);
-				context.startActivity(intent);
-			});
+			new Handler().postDelayed(() -> {
+				if(!AppUtil.checkGhostUsers(userLoginId)) {
+					avatar.setOnClickListener(loginId -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", userLoginId);
+						context.startActivity(intent);
+					});
 
-			avatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-				return true;
-			});
+					avatar.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+						return true;
+					});
+				}
+			}, 500);
 		}
 	}
 

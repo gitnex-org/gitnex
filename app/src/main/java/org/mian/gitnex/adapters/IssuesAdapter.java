@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,16 +113,21 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
 
-			issueAssigneeAvatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, issueObject.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issueObject.getUser().getLogin()));
-				return true;
-			});
+			new Handler().postDelayed(() -> {
+				if(!AppUtil.checkGhostUsers(issueObject.getUser().getLogin())) {
 
-			issueAssigneeAvatar.setOnClickListener(v -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", issueObject.getUser().getLogin());
-				context.startActivity(intent);
-			});
+					issueAssigneeAvatar.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(context, issueObject.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issueObject.getUser().getLogin()));
+						return true;
+					});
+
+					issueAssigneeAvatar.setOnClickListener(v -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", issueObject.getUser().getLogin());
+						context.startActivity(intent);
+					});
+				}
+			}, 500);
 		}
 
 		@SuppressLint("SetTextI18n")
