@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,16 +66,21 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 			addMemberButtonAdd.setOnClickListener(v -> AlertDialogs.addMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
 			addMemberButtonRemove.setOnClickListener(v -> AlertDialogs.removeMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
 
-			userAvatar.setOnClickListener(loginId -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", userInfo.getLogin());
-				context.startActivity(intent);
-			});
+			new Handler().postDelayed(() -> {
+				if(!AppUtil.checkGhostUsers(userInfo.getLogin())) {
 
-			userAvatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
-				return true;
-			});
+					userAvatar.setOnClickListener(loginId -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", userInfo.getLogin());
+						context.startActivity(intent);
+					});
+
+					userAvatar.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
+						return true;
+					});
+				}
+			}, 500);
 		}
 
 	}

@@ -36,6 +36,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -465,11 +466,21 @@ public class AppUtil {
 		long numValue = number.longValue();
 		int value = (int) Math.floor(Math.log10(numValue));
 		int base = value / 3;
-		if (value >= 3 && base < suffix.length) {
+		if(value >= 3 && base < suffix.length) {
 			return new DecimalFormat("#0.0").format(numValue / Math.pow(10, base * 3)) + suffix[base];
 		}
 		else {
 			return new DecimalFormat("#,##0").format(numValue);
 		}
+	}
+
+	/*
+	 * check for ghost/restricted users/profiles
+	 */
+	public static Boolean checkGhostUsers(String str) {
+
+		ArrayList<String> restrictedUsers = new ArrayList<>();
+		restrictedUsers.add("Ghost");
+		return restrictedUsers.contains(str);
 	}
 }

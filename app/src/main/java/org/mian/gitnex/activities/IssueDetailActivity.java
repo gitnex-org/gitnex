@@ -686,16 +686,19 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		viewBinding.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(issue.getIssue().getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 		String cleanIssueDescription = issue.getIssue().getBody().trim();
 
-		viewBinding.assigneeAvatar.setOnClickListener(loginId -> {
-			Intent intent = new Intent(ctx, ProfileActivity.class);
-			intent.putExtra("username", issue.getIssue().getUser().getLogin());
-			ctx.startActivity(intent);
-		});
+		if(!AppUtil.checkGhostUsers(issue.getIssue().getUser().getLogin())) {
 
-		viewBinding.assigneeAvatar.setOnLongClickListener(loginId -> {
-			AppUtil.copyToClipboard(ctx, issue.getIssue().getUser().getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, issue.getIssue().getUser().getLogin()));
-			return true;
-		});
+			viewBinding.assigneeAvatar.setOnClickListener(loginId -> {
+				Intent intent = new Intent(ctx, ProfileActivity.class);
+				intent.putExtra("username", issue.getIssue().getUser().getLogin());
+				ctx.startActivity(intent);
+			});
+
+			viewBinding.assigneeAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(ctx, issue.getIssue().getUser().getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, issue.getIssue().getUser().getLogin()));
+				return true;
+			});
+		}
 
 		Markdown.render(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription, issue.getRepository());
 
@@ -720,16 +723,20 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				assigneesView.setLayoutParams(params1);
 
 				int finalI = i;
-				assigneesView.setOnClickListener(loginId -> {
-					Intent intent = new Intent(ctx, ProfileActivity.class);
-					intent.putExtra("username", issue.getIssue().getAssignees().get(finalI).getLogin());
-					ctx.startActivity(intent);
-				});
 
-				assigneesView.setOnLongClickListener(loginId -> {
-					AppUtil.copyToClipboard(ctx, issue.getIssue().getAssignees().get(finalI).getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, issue.getIssue().getAssignees().get(finalI).getLogin()));
-					return true;
-				});
+				if(!AppUtil.checkGhostUsers(issue.getIssue().getAssignees().get(finalI).getLogin())) {
+
+					assigneesView.setOnClickListener(loginId -> {
+						Intent intent = new Intent(ctx, ProfileActivity.class);
+						intent.putExtra("username", issue.getIssue().getAssignees().get(finalI).getLogin());
+						ctx.startActivity(intent);
+					});
+
+					assigneesView.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(ctx, issue.getIssue().getAssignees().get(finalI).getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, issue.getIssue().getAssignees().get(finalI).getLogin()));
+						return true;
+					});
+				}
 
 				/*if(!issue.getIssue().getAssignees().get(i).getFull_name().equals("")) {
 

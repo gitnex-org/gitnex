@@ -117,7 +117,7 @@ public class RepoForksActivity extends BaseActivity {
 			.getApiInterface(ctx)
 			.listForks(repoOwner, repoName, pageSize, resultLimit);
 
-		call.enqueue(new Callback<List<Repository>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
@@ -131,14 +131,16 @@ public class RepoForksActivity extends BaseActivity {
 						forksList.addAll(response.body());
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.GONE);
-					} else {
+					}
+					else {
 						forksList.clear();
 						adapter.notifyDataChanged();
 						noData.setVisibility(View.VISIBLE);
 					}
 
 					progressBar.setVisibility(View.GONE);
-				} else {
+				}
+				else {
 					Log.e(TAG, String.valueOf(response.code()));
 				}
 			}
@@ -159,7 +161,7 @@ public class RepoForksActivity extends BaseActivity {
 			.getApiInterface(ctx)
 			.listForks(repoOwner, repoName, page, resultLimit);
 
-		call.enqueue(new Callback<List<Repository>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
@@ -175,13 +177,15 @@ public class RepoForksActivity extends BaseActivity {
 					if(result.size() > 0) {
 						pageSize = result.size();
 						forksList.addAll(result);
-					} else {
+					}
+					else {
 						adapter.setMoreDataAvailable(false);
 					}
 
 					adapter.notifyDataChanged();
 					progressLoadMore.setVisibility(View.GONE);
-				} else {
+				}
+				else {
 					Log.e(TAG, String.valueOf(response.code()));
 				}
 			}
@@ -226,7 +230,7 @@ public class RepoForksActivity extends BaseActivity {
 		List<Repository> userRepositories = new ArrayList<>();
 
 		for(Repository d : forksList) {
-			if(d.getName().toLowerCase().contains(text) ||
+			if(d.getOwner().getLogin().contains(text) || d.getName().toLowerCase().contains(text) ||
 				d.getDescription().toLowerCase().contains(text)) {
 
 				userRepositories.add(d);

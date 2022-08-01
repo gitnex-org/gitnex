@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,16 +114,21 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			frameLabels.setOnClickListener(openPr);
 			frameLabelsDots.setOnClickListener(openPr);
 
-			assigneeAvatar.setOnClickListener(v -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", pullRequestObject.getUser().getLogin());
-				context.startActivity(intent);
-			});
+			new Handler().postDelayed(() -> {
+				if(!AppUtil.checkGhostUsers(pullRequestObject.getUser().getLogin())) {
 
-			assigneeAvatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, pullRequestObject.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, pullRequestObject.getUser().getLogin()));
-				return true;
-			});
+					assigneeAvatar.setOnClickListener(v -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", pullRequestObject.getUser().getLogin());
+						context.startActivity(intent);
+					});
+
+					assigneeAvatar.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(context, pullRequestObject.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, pullRequestObject.getUser().getLogin()));
+						return true;
+					});
+				}
+			}, 500);
 		}
 
 		@SuppressLint("SetTextI18n")
