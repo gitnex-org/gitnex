@@ -31,6 +31,7 @@
     <string name="navLogout">Logout</string>
     <string name="navAdministration">Administration</string>
     <string name="navMyIssues">My Issues</string>
+    <string name="navMostVisited">Most Visited Repos</string>
     <!-- menu items -->
 
     <!-- page titles -->

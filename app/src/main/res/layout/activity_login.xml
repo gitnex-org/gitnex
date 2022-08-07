@@ -70,7 +70,7 @@
             android:layout_marginBottom="@dimen/dimen8dp"
             android:hint="@string/protocol"
             app:endIconTint="?attr/iconsColor"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
                 android:id="@+id/httpsSpinner"

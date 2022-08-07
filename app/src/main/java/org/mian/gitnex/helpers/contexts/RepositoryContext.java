@@ -33,7 +33,6 @@ public class RepositoryContext implements Serializable {
 		OPEN,
 		CLOSED;
 
-
 		@NonNull
 		@Override
 		public String toString() {
@@ -243,16 +242,17 @@ public class RepositoryContext implements Serializable {
 		RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
 		assert repositoryData != null;
-		Integer count = repositoryData.checkRepository(currentActiveAccountId, getOwner(), getName());
+		Repository getMostVisitedValue = repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
 
-		if(count == 0) {
-			long id = repositoryData.insertRepository(currentActiveAccountId, getOwner(), getName());
+		if(getMostVisitedValue == null) {
+			long id = repositoryData.insertRepository(currentActiveAccountId, getOwner(), getName(), 1);
 			setRepositoryId((int) id);
 			return (int) id;
 		}
 		else {
 			Repository data = repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
 			setRepositoryId(data.getRepositoryId());
+			repositoryData.updateRepositoryMostVisited(getMostVisitedValue.getMostVisited() + 1, data.getRepositoryId());
 			return data.getRepositoryId();
 		}
 	}

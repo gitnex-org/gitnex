@@ -38,6 +38,10 @@
             android:icon="@drawable/ic_search"
             android:title="@string/pageTitleExplore" />
 
+        <item android:id="@+id/nav_most_visited"
+            android:icon="@drawable/ic_trending"
+            android:title="@string/navMostVisited" />
+
         <item android:id="@+id/nav_comments_draft"
             android:icon="@drawable/ic_drafts"
             android:title="@string/titleDrafts" />
