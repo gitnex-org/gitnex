@@ -91,7 +91,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 
 		void bindData(Organization org) {
 
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 			this.userOrganizations = org;
 			orgName.setText(org.getUsername());

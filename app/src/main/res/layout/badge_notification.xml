@@ -13,9 +13,9 @@
         android:maxLength="4"
         android:ellipsize="marquee"
         android:background="@drawable/shape_badge_background"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:paddingStart="@dimen/dimen4dp"
+        android:paddingEnd="@dimen/dimen4dp"
         android:textColor="@color/colorWhite"
-        android:textSize="12sp" />
+        android:textSize="@dimen/dimen12sp" />
 
 </LinearLayout>

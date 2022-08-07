@@ -5,13 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.v2.models.InlineResponse2001;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -21,6 +17,7 @@ import org.mian.gitnex.databinding.ActivityAddCollaboratorToRepositoryBinding;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.List;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,12 +28,8 @@ import retrofit2.Response;
 
 public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
+	private ActivityAddCollaboratorToRepositoryBinding activityAddCollaboratorToRepositoryBinding;
     private View.OnClickListener onClickListener;
-    private TextView addCollaboratorSearch;
-    private TextView noData;
-    private ProgressBar mProgressBar;
-
-    private RecyclerView mRecyclerView;
     private RepositoryContext repository;
 
     @Override
@@ -44,41 +37,33 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
-	    ActivityAddCollaboratorToRepositoryBinding activityAddCollaboratorToRepositoryBinding = ActivityAddCollaboratorToRepositoryBinding.inflate(getLayoutInflater());
+	    activityAddCollaboratorToRepositoryBinding = ActivityAddCollaboratorToRepositoryBinding.inflate(getLayoutInflater());
 		setContentView(activityAddCollaboratorToRepositoryBinding.getRoot());
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        ImageView closeActivity = activityAddCollaboratorToRepositoryBinding.close;
-        addCollaboratorSearch = activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch;
-        mRecyclerView = activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch;
-        mProgressBar = activityAddCollaboratorToRepositoryBinding.progressBar;
-        noData = activityAddCollaboratorToRepositoryBinding.noData;
-
         repository = RepositoryContext.fromIntent(getIntent());
 
-        addCollaboratorSearch.requestFocus();
+	    activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.requestFocus();
         assert imm != null;
-        imm.showSoftInput(addCollaboratorSearch, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch, InputMethodManager.SHOW_IMPLICIT);
 
         initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
+	    activityAddCollaboratorToRepositoryBinding.close.setOnClickListener(onClickListener);
 
-        addCollaboratorSearch.setOnEditorActionListener((v, actionId, event) -> {
+	    activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.setOnEditorActionListener((v, actionId, event) -> {
 
             if (actionId == EditorInfo.IME_ACTION_SEND) {
 
-                if(!addCollaboratorSearch.getText().toString().equals("")) {
+                if(!Objects.requireNonNull(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.getText()).toString().equals("")) {
 
-	                mProgressBar.setVisibility(View.VISIBLE);
-                    loadUserSearchList(addCollaboratorSearch.getText().toString());
+	                activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
+                    loadUserSearchList(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.getText().toString());
                 }
             }
 
             return false;
-
         });
-
     }
 
     public void loadUserSearchList(String searchKeyword) {
@@ -92,7 +77,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
             @Override
             public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 
-		        mProgressBar.setVisibility(View.GONE);
+	            activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.GONE);
 
 		        if(response.isSuccessful()) {
 
@@ -116,25 +101,25 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
         CollaboratorSearchAdapter adapter = new CollaboratorSearchAdapter(dataList, context, repository);
 
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setHasFixedSize(true);
+	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setLayoutManager(new LinearLayoutManager(ctx));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.getContext(),
                 DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.addItemDecoration(dividerItemDecoration);
 
-        mProgressBar.setVisibility(View.VISIBLE);
+	    activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
 
         if(adapter.getItemCount() > 0) {
 
-            mRecyclerView.setAdapter(adapter);
-            noData.setVisibility(View.GONE);
+	        activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setAdapter(adapter);
+	        activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.GONE);
         }
         else {
 
-            noData.setVisibility(View.VISIBLE);
+	        activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.VISIBLE);
         }
 
-	    mProgressBar.setVisibility(View.GONE);
+	    activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.GONE);
     }
 
     private void initCloseListener() {

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Dark theme - default -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -40,12 +40,13 @@
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:listDivider">@drawable/shape_list_divider</item>
+        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">1</item>
     </style>
     <!-- Dark theme - default -->
 
     <!-- Light theme -->
-    <style name="AppThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -82,12 +83,13 @@
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">0</item>
     </style>
     <!-- Light theme -->
 
     <!-- Retro theme -->
-    <style name="AppThemeRetro" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@color/retroThemeBackground</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -124,12 +126,13 @@
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">0</item>
     </style>
     <!-- Retro theme -->
 
     <!-- Pitch black theme -->
-    <style name="AppThemePitchBlack" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="AppThemePitchBlack" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">@color/pitchBlackThemeBackground</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -166,22 +169,31 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">1</item>
     </style>
     <!-- Pitch black theme -->
 
-    <style name="inputsMaterialComponentCorner" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <!-- Material switch style -->
+    <style name="MaterialSwitch" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="switchMinWidth">@dimen/dimen32dp</item>
+        <item name="minHeight">@dimen/dimen24dp</item>
+        <item name="track">@drawable/switch_track</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
+    </style>
+
+    <style name="inputsMaterialComponentCorner" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">6dp</item>
+        <item name="cornerSize">@dimen/dimen6dp</item>
     </style>
 
     <style name="customOverflowButtonStyle">
         <item name="android:src">@drawable/ic_dotted_menu</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingStart">@dimen/dimen12dp</item>
+        <item name="android:paddingEnd">@dimen/dimen12dp</item>
     </style>
 
-    <style name="customOverflowMenuStyle" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
+    <style name="customOverflowMenuStyle" parent="@style/Widget.Material3.PopupMenu.Overflow">
         <item name="android:popupBackground">@drawable/shape_round_corners</item>
     </style>
 
@@ -192,14 +204,14 @@
         <item name="closeIcon">@drawable/ic_close</item>
     </style>
 
-    <style name="AppThemeDarkBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppThemeDarkBottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppThemeLightBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppThemeLightBottomSheetDialog" parent="Theme.Material3.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
@@ -221,7 +233,7 @@
         <item name="android:textColorHint">@color/colorWhite</item>
     </style>
 
-    <style name="AppThemeConfirmDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+    <style name="AppThemeConfirmDialog" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/colorWhite</item>
         <item name="android:textColor">@color/colorWhite</item>
@@ -233,7 +245,7 @@
         <item name="android:windowBackground">@drawable/shape_round_corners</item>
     </style>
 
-    <style name="AppThemeLightConfirmDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+    <style name="AppThemeLightConfirmDialog" parent="Theme.Material3.Light.Dialog.Alert">
         <item name="android:background">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
         <item name="android:textColor">@color/lightThemeTextColor</item>
@@ -245,39 +257,39 @@
         <item name="android:windowBackground">@drawable/shape_round_corners</item>
     </style>
 
-    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:textColor">@color/darkGreen</item>
-        <item name="android:layout_marginEnd">16dp</item>
-    </style>
-
-    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="NegativeButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/darkRed</item>
+        <item name="android:layout_marginEnd">@dimen/dimen16dp</item>
     </style>
 
-    <style name="NeutralButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="PositiveButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/darkGreen</item>
     </style>
 
-    <style name="AppThemePopupMenuStyle" parent="Widget.MaterialComponents.PopupMenu">
+    <style name="NeutralButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemePopupMenuStyle" parent="Widget.Material3.PopupMenu">
         <item name="android:popupBackground">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:layout_marginStart">3dp</item>
-        <item name="android:layout_marginEnd">3dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
     </style>
 
-    <style name="AppThemeLightPopupMenuStyle" parent="Widget.MaterialComponents.PopupMenu">
+    <style name="AppThemeLightPopupMenuStyle" parent="Widget.Material3.PopupMenu">
         <item name="android:popupBackground">@color/colorWhite</item>
         <item name="android:itemBackground">@color/lightThemeBackground</item>
         <item name="android:textColor">@color/lightThemeTextColor</item>
-        <item name="android:layout_marginStart">3dp</item>
-        <item name="android:layout_marginEnd">3dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
     </style>
 
-    <style name="AppThemeLightCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="AppThemeLightCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">@color/colorDarkGreen</item>
     </style>
 
-    <style name="AppThemeCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="AppThemeCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">?attr/iconsColor</item>
     </style>
 
@@ -287,7 +299,7 @@
     </style>
 
     <!-- Retro theme styles -->
-    <style name="AppThemeRetroCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="AppThemeRetroCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">@color/retroThemeColorPrimary</item>
     </style>
 
@@ -296,7 +308,7 @@
         <item name="android:textColorHint">@color/retroThemeColorPrimary</item>
     </style>
 
-    <style name="AppThemeRetroConfirmDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <style name="AppThemeRetroConfirmDialog" parent="ThemeOverlay.Material3.Dialog.Alert">
         <item name="android:background">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/retroThemeTextColor</item>
         <item name="android:textColor">@color/retroThemeTextColor</item>
@@ -308,30 +320,30 @@
         <item name="android:windowBackground">@drawable/shape_round_corners</item>
     </style>
 
-    <style name="RetroNegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="RetroNegativeButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/retroThemeTextColor</item>
-        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen16dp</item>
     </style>
 
-    <style name="RetroPositiveButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="RetroPositiveButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/darkRed</item>
     </style>
 
-    <style name="RetroNeutralButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="RetroNeutralButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/retroThemeColorPrimary</item>
     </style>
 
-    <style name="AppThemeRetroPopupMenuStyle" parent="Widget.MaterialComponents.PopupMenu">
+    <style name="AppThemeRetroPopupMenuStyle" parent="Widget.Material3.PopupMenu">
         <item name="android:popupBackground">@color/colorWhite</item>
         <item name="android:itemBackground">@color/retroThemeBackground</item>
         <item name="android:textColor">@color/retroThemeTextColor</item>
-        <item name="android:layout_marginStart">3dp</item>
-        <item name="android:layout_marginEnd">3dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
     </style>
     <!-- Retro theme styles -->
 
     <!-- Pitch black theme styles -->
-    <style name="AppThemePitchBlackConfirmDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+    <style name="AppThemePitchBlackConfirmDialog" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="android:background">@color/pitchBlackThemeGeneralBackgroundColor</item>
         <item name="android:textColorPrimary">@color/pitchBlackThemeTextColor</item>
         <item name="android:textColor">@color/pitchBlackThemeTextColor</item>
@@ -343,12 +355,12 @@
         <item name="android:windowBackground">@drawable/shape_round_corners</item>
     </style>
 
-    <style name="AppThemePitchBlackPopupMenuStyle" parent="Widget.MaterialComponents.PopupMenu">
+    <style name="AppThemePitchBlackPopupMenuStyle" parent="Widget.Material3.PopupMenu">
         <item name="android:popupBackground">@color/pitchBlackThemeGeneralBackgroundColor</item>
         <item name="android:itemBackground">@color/pitchBlackThemeGeneralBackgroundColor</item>
         <item name="android:textColor">@color/pitchBlackThemeTextColor</item>
-        <item name="android:layout_marginStart">3dp</item>
-        <item name="android:layout_marginEnd">3dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
     </style>
     <!-- Pitch black theme styles -->
 

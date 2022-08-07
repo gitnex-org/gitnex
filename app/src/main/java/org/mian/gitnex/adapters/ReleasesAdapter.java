@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
@@ -267,10 +267,10 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 	private void deleteRelease(final Context context, final String releaseName, final Long releaseId, final String owner, final String repo, int position) {
 
-		new AlertDialog.Builder(context)
-			.setTitle(String.format(context.getString(R.string.deleteGenericTitle), releaseName))
+		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		materialAlertDialogBuilder.setTitle(String.format(context.getString(R.string.deleteGenericTitle), releaseName))
 			.setMessage(R.string.deleteReleaseConfirmation)
-			.setIcon(R.drawable.ic_delete)
 			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
 				.getApiInterface(context).repoDeleteRelease(owner, repo, releaseId).enqueue(new Callback<>() {
 

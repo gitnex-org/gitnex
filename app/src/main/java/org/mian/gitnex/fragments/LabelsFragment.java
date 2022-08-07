@@ -27,7 +27,6 @@ import org.mian.gitnex.viewmodels.LabelsViewModel;
 
 public class LabelsFragment extends Fragment {
 
-	private LabelsViewModel labelsViewModel;
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private LabelsAdapter adapter;
@@ -56,7 +55,6 @@ public class LabelsFragment extends Fragment {
 
 	    FragmentLabelsBinding fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
-	    labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
         final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
         noData = fragmentLabelsBinding.noData;
@@ -74,7 +72,7 @@ public class LabelsFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             swipeRefresh.setRefreshing(false);
-	        labelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
+	        LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
         }, 200));
 
         fetchDataAsync(repository.getOwner(), repository.getName());
@@ -89,7 +87,7 @@ public class LabelsFragment extends Fragment {
 
 	    if(CreateLabelActivity.refreshLabels) {
 
-		    labelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
+		    LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
 	        CreateLabelActivity.refreshLabels = false;
         }
     }
@@ -109,14 +107,13 @@ public class LabelsFragment extends Fragment {
             }
             else {
 
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataChanged();
                 mRecyclerView.setAdapter(adapter);
                 noData.setVisibility(View.VISIBLE);
             }
 
             mProgressBar.setVisibility(View.GONE);
         });
-
     }
 
 }

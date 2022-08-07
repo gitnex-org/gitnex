@@ -12,15 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="@dimen/dimen16dp"
         android:fitsSystemWindows="true" >
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/dimen100dp"
+            android:layout_height="@dimen/dimen100dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="@dimen/dimen20dp"
+            android:layout_marginBottom="@dimen/dimen20dp"
             android:baselineAligned="false"
             android:contentDescription="@string/appName"
             android:src="@mipmap/app_logo" />
@@ -30,22 +30,22 @@
             android:layout_height="wrap_content"
             android:text="@string/loginMethodText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="12sp"
-            android:layout_marginBottom="10dp"
+            android:textSize="@dimen/dimen12sp"
+            android:layout_marginBottom="@dimen/dimen10dp"
             android:gravity="start" />
 
         <RadioGroup
             android:id="@+id/loginMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/loginToken"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="@dimen/dimen36dp"
                 android:text="@string/copyToken"
                 android:checked="true"
                 android:textColor="?attr/primaryTextColor"/>
@@ -53,7 +53,7 @@
             <RadioButton
                 android:id="@+id/loginUsernamePassword"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="@dimen/dimen36dp"
                 android:text="@string/loginViaPassword"
                 android:textColor="?attr/primaryTextColor"/>
 
@@ -66,8 +66,8 @@
             app:boxBackgroundColor="?attr/inputBackgroundColor"
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             android:hint="@string/protocol"
             app:endIconTint="?attr/iconsColor"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
@@ -79,7 +79,7 @@
                 android:inputType="none"
                 android:textColor="?attr/inputTextColor"
                 android:labelFor="@+id/httpsSpinner"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,8 +91,8 @@
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
             app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             app:startIconDrawable="@drawable/ic_link"
             app:startIconTint="?attr/iconsColor"
             app:endIconMode="clear_text"
@@ -108,7 +108,7 @@
                 android:textColorHint="?attr/hintColor"
                 android:inputType="textUri"
                 android:singleLine="true"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,8 +120,8 @@
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
             app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             app:startIconDrawable="@drawable/ic_person"
             app:startIconTint="?attr/iconsColor"
             app:endIconMode="clear_text"
@@ -136,7 +136,7 @@
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
                 android:singleLine="true"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,8 +148,8 @@
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
             app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             app:startIconDrawable="@drawable/ic_lock"
             app:startIconTint="?attr/iconsColor"
             app:endIconTint="?attr/iconsColor"
@@ -165,7 +165,7 @@
                 android:textColorHint="?attr/hintColor"
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,8 +177,8 @@
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
             app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             app:startIconDrawable="@drawable/ic_otp"
             app:startIconTint="?attr/iconsColor"
             app:endIconMode="clear_text"
@@ -197,7 +197,7 @@
                 android:textColorHint="?attr/hintColor"
                 android:inputType="number"
                 android:singleLine="true"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -209,8 +209,8 @@
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
             app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             app:startIconDrawable="@drawable/ic_lock"
             app:startIconTint="?attr/iconsColor"
             app:endIconMode="clear_text"
@@ -225,15 +225,15 @@
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
                 android:singleLine="true"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="@dimen/dimen60dp"
+            android:layout_marginTop="@dimen/dimen8dp"
             android:text="@string/btnLogin"
             android:textColor="@color/btnTextColor" />
 
@@ -242,22 +242,22 @@
             android:layout_height="wrap_content"
             android:text="@string/appRepoLink"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp"
+            android:textSize="@dimen/dimen14sp"
             android:gravity="center"
             android:autoLink="web"
             android:textColorLink="@color/lightBlue"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginTop="@dimen/dimen20dp"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginEnd="@dimen/dimen10dp" />
 
         <TextView
             android:id="@+id/appVersion"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dimen6dp"
             android:layout_weight="1"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:textSize="@dimen/dimen14sp"
             android:textColor="?attr/primaryTextColor"
             android:layout_gravity="center_horizontal"/>
 

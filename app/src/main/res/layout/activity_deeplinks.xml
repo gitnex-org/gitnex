@@ -28,10 +28,10 @@
                 android:id="@+id/addNewAccountFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="32dp"
-                android:paddingBottom="16dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingTop="@dimen/dimen32dp"
+                android:paddingBottom="@dimen/dimen16dp"
+                android:paddingStart="@dimen/dimen16dp"
+                android:paddingEnd="@dimen/dimen16dp"
                 android:visibility="gone"
                 android:orientation="vertical">
 
@@ -41,34 +41,34 @@
                     android:layout_height="wrap_content"
                     android:text="@string/accountDoesNotExist"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/dimen16sp" />
 
                 <Button
                     android:id="@+id/addNewAccount"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/addNewAccountText"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="24dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen24dp" />
 
                 <Button
                     android:id="@+id/openInBrowser"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/openWebRepo"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen8dp" />
 
                 <Button
                     android:id="@+id/launchApp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/launchApp"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen8dp" />
 
             </LinearLayout>
 
@@ -76,10 +76,10 @@
                 android:id="@+id/noActionFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="32dp"
-                android:paddingBottom="16dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingTop="@dimen/dimen32dp"
+                android:paddingBottom="@dimen/dimen16dp"
+                android:paddingStart="@dimen/dimen16dp"
+                android:paddingEnd="@dimen/dimen16dp"
                 android:visibility="gone"
                 android:orientation="vertical">
 
@@ -89,52 +89,52 @@
                     android:layout_height="wrap_content"
                     android:text="@string/noActionText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/dimen16sp" />
 
                 <Button
                     android:id="@+id/repository"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/navRepos"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="24dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen24dp" />
 
                 <Button
                     android:id="@+id/organization"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/navOrg"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen8dp" />
 
                 <Button
                     android:id="@+id/notification"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/pageTitleNotifications"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen8dp" />
 
                 <Button
                     android:id="@+id/explore"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/pageTitleExplore"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen8dp" />
 
                 <Button
                     android:id="@+id/launchApp2"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/dimen60dp"
                     android:text="@string/launchApp"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="@dimen/dimen16sp"
+                    android:layout_marginTop="@dimen/dimen8dp" />
 
             </LinearLayout>
 

@@ -41,13 +41,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:flexWrap="wrap"
-                app:alignItems="stretch"
-                android:padding="8dp"
-                app:alignContent="stretch" >
+                app:alignItems="flex_start"
+                app:justifyContent="center"
+                android:padding="4dp"
+                app:alignContent="center" >
 
                 <TextView
                     android:id="@+id/deleteRelease"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"

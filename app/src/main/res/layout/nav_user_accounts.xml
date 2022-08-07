@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView
     android:id="@+id/userAccountAvatar"
-    android:layout_width="32dp"
-    android:layout_height="32dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
+    android:layout_width="@dimen/dimen32dp"
+    android:layout_height="@dimen/dimen32dp"
+    android:paddingStart="@dimen/dimen4dp"
+    android:paddingEnd="@dimen/dimen4dp"
     android:contentDescription="@string/generalImgContentText"
     xmlns:android="http://schemas.android.com/apk/res/android" />

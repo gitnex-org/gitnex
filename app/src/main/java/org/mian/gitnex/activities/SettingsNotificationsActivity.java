@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsNotificationsBinding;
@@ -14,7 +14,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.notifications.Notifications;
 
 /**
- * Template Author M M Arif
+ * @author M M Arif
  * @author opyale
  */
 
@@ -91,26 +91,24 @@ public class SettingsNotificationsActivity extends BaseActivity {
 			numberPicker.setValue(tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay));
 			numberPicker.setWrapSelectorWheel(true);
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-			builder.setTitle(getString(R.string.pollingDelayDialogHeaderText));
-			builder.setMessage(getString(R.string.pollingDelayDialogDescriptionText));
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.pollingDelayDialogHeaderText)
+				.setMessage(getString(R.string.pollingDelayDialogDescriptionText))
+				.setCancelable(true)
+				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss())
+				.setPositiveButton(getString(R.string.okButton), (dialog, which) -> {
 
-			builder.setCancelable(true);
-			builder.setPositiveButton(getString(R.string.okButton), (dialog, which) -> {
+					tinyDB.putInt("pollingDelayMinutes", numberPicker.getValue());
 
-				tinyDB.putInt("pollingDelayMinutes", numberPicker.getValue());
+					Notifications.stopWorker(ctx);
+					Notifications.startWorker(ctx);
 
-				Notifications.stopWorker(ctx);
-				Notifications.startWorker(ctx);
+					viewBinding.pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), numberPicker.getValue()));
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 
-				viewBinding.pollingDelaySelected.setText(String.format(getString(R.string.pollingDelaySelectedText), numberPicker.getValue()));
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
-
-			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
-			builder.setView(numberPicker);
-			builder.create().show();
-
+			materialAlertDialogBuilder.setView(numberPicker);
+			materialAlertDialogBuilder.create().show();
 		});
 
 		// lights switcher

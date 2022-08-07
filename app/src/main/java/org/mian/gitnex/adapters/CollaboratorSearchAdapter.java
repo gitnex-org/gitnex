@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
@@ -69,22 +70,20 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
             addCollaboratorButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
 
             addCollaboratorButtonAdd.setOnClickListener(v -> {
-                AlertDialog.Builder pBuilder = new AlertDialog.Builder(context);
 
-                pBuilder.setTitle(R.string.newTeamPermission);
-                pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, null)
-                        .setCancelable(false)
-                        .setNeutralButton(R.string.cancelButton, null)
-                        .setPositiveButton(R.string.addButton, (dialog, which) -> {
+	            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
+		            .setTitle(R.string.newTeamPermission)
+		            .setSingleChoiceItems(permissionList, permissionSelectedChoice, null)
+		            .setNeutralButton(R.string.cancelButton, null)
+		            .setPositiveButton(R.string.addButton, (dialog, which) -> {
 
-                            ListView lw = ((AlertDialog)dialog).getListView();
-                            Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+			            ListView lw = ((AlertDialog)dialog).getListView();
+			            Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getLogin(), repository);
-                        });
+			            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getLogin(), repository);
+		            });
 
-                AlertDialog pDialog = pBuilder.create();
-                pDialog.show();
+	            materialAlertDialogBuilder.create().show();
             });
 
             addCollaboratorButtonRemove.setOnClickListener(v -> AlertDialogs.collaboratorRemoveDialog(context, userInfo.getLogin(), repository));
@@ -119,7 +118,7 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
     public void onBindViewHolder(@NonNull final CollaboratorSearchViewHolder holder, int position) {
 
 	    User currentItem = usersSearchList.get(position);
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 	    holder.userInfo = currentItem;
 
         if (!currentItem.getFullName().equals("")) {
@@ -170,18 +169,14 @@ public class CollaboratorSearchAdapter extends RecyclerView.Adapter<Collaborator
                         holder.addCollaboratorButtonRemove.setVisibility(View.GONE);
                         holder.addCollaboratorButtonAdd.setVisibility(View.GONE);
                     }
-
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                     Log.i("onFailure", t.toString());
                 }
-
             });
-
         }
-
     }
 
     @Override

@@ -13,17 +13,17 @@
         android:gravity="center"
         android:text="@string/tabTextReleases"
         android:textColor="@color/lightGray"
-        android:textSize="16sp"
+        android:textSize="@dimen/dimen16sp"
         app:textAllCaps="true" />
 
     <TextView
         android:id="@+id/counterBadgeRelease"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/dimen8dp"
         android:background="@drawable/shape_badge_background"
         android:text="@string/infoTabRepoZero"
         android:textColor="@color/colorWhite"
-        android:textSize="12sp" />
+        android:textSize="@dimen/dimen12sp" />
 
 </LinearLayout>

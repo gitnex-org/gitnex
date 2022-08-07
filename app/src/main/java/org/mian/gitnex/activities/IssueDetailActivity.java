@@ -1,11 +1,9 @@
 package org.mian.gitnex.activities;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,11 +18,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
@@ -33,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
@@ -53,6 +50,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityIssueDetailBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
+import org.mian.gitnex.databinding.CustomPrInfoDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
@@ -107,12 +105,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	private List<String> assigneesListData = new ArrayList<>();
 	private List<String> currentAssignees = new ArrayList<>();
 
-	private Dialog dialogLabels;
-	private Dialog dialogAssignees;
-
-	private CustomLabelsSelectionDialogBinding labelsBinding;
-	private CustomAssigneesSelectionDialogBinding assigneesBinding;
 	private ActivityIssueDetailBinding viewBinding;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
 	public static boolean singleIssueUpdate = false;
 	public boolean commentEdited = false;
@@ -153,6 +147,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		setSupportActionBar(viewBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		issueCommentsModel = new ViewModelProvider(this).get(IssueCommentsViewModel.class);
 
@@ -233,20 +229,13 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	private void showAssignees() {
 
 		assigneesAdapter.updateList(currentAssignees);
-		dialogAssignees = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-		dialogAssignees.setCancelable(true);
-
-		if (dialogAssignees.getWindow() != null) {
-
-			dialogAssignees.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
-		assigneesBinding = CustomAssigneesSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
-
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
+		CustomAssigneesSelectionDialogBinding assigneesBinding = CustomAssigneesSelectionDialogBinding.inflate(
+			LayoutInflater.from(ctx));
 		View view = assigneesBinding.getRoot();
-		dialogAssignees.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
-		assigneesBinding.save.setOnClickListener(assigneesBinding_ -> {
+		materialAlertDialogBuilder.setPositiveButton(R.string.saveButton, (dialog, whichButton) -> {
 
 			currentAssignees = new ArrayList<>(new LinkedHashSet<>(currentAssignees));
 			assigneesListData = new ArrayList<>(new LinkedHashSet<>(assigneesListData));
@@ -257,33 +246,20 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 				updateIssueAssignees();
 			}
-			else {
-
-				dialogAssignees.dismiss();
-			}
 		});
 
-		dialogAssignees.show();
-		AssigneesActions.getRepositoryAssignees(ctx, repoOwner, repoName, assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
+		AssigneesActions.getRepositoryAssignees(ctx, repoOwner, repoName, assigneesList, materialAlertDialogBuilder, assigneesAdapter, assigneesBinding, viewBinding.progressBar);
 	}
 
 	public void showLabels() {
 
 		labelsAdapter.updateList(currentLabelsIds);
-		dialogLabels = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-		dialogLabels.setCancelable(true);
-
-		if (dialogLabels.getWindow() != null) {
-
-			dialogLabels.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
-		labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
-
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
+		CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
 		View view = labelsBinding.getRoot();
-		dialogLabels.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
-		labelsBinding.save.setOnClickListener(labelsBinding_ -> {
+		materialAlertDialogBuilder.setPositiveButton(R.string.saveButton, (dialog, whichButton) -> {
 
 			currentLabelsIds = new ArrayList<>(new LinkedHashSet<>(currentLabelsIds));
 			labelsIds = new ArrayList<>(new LinkedHashSet<>(labelsIds));
@@ -294,14 +270,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 				updateIssueLabels();
 			}
-			else {
-
-				dialogLabels.dismiss();
-			}
 		});
 
-		dialogLabels.show();
-		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, materialAlertDialogBuilder, labelsAdapter, labelsBinding, viewBinding.progressBar);
 	}
 
 	private void updateIssueAssignees() {
@@ -312,7 +283,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			.getApiInterface(ctx)
 			.issueEditIssue(repoOwner, repoName, (long) issueIndex, updateAssigneeJson);
 
-		call3.enqueue(new Callback<Issue>() {
+		call3.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Issue> call, @NonNull retrofit2.Response<Issue> response2) {
@@ -320,8 +291,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				if(response2.code() == 201) {
 
 					Toasty.success(ctx, ctx.getString(R.string.assigneesUpdated));
-
-					dialogAssignees.dismiss();
 
 					viewBinding.frameAssignees.removeAllViews();
 					viewBinding.frameLabels.removeAllViews();
@@ -378,7 +347,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				if(response.code() == 200) {
 
 					Toasty.success(ctx, ctx.getString(R.string.labelsUpdated));
-					dialogLabels.dismiss();
 
 					viewBinding.frameAssignees.removeAllViews();
 					viewBinding.frameLabels.removeAllViews();
@@ -467,20 +435,18 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		else if(id == R.id.prInfo) {
 
 			if(issue.getPullRequest() != null) {
-				View view = LayoutInflater.from(ctx).inflate(R.layout.custom_pr_info_dialog, null);
 
-				TextView baseBranch = view.findViewById(R.id.baseBranch);
-				TextView headBranch = view.findViewById(R.id.headBranch);
+				MaterialAlertDialogBuilder materialAlertDialogBuilderPrInfo = new MaterialAlertDialogBuilder(ctx);
+				CustomPrInfoDialogBinding customPrInfoDialogBinding = CustomPrInfoDialogBinding.inflate(LayoutInflater.from(ctx));
+				View view = customPrInfoDialogBinding.getRoot();
+				materialAlertDialogBuilderPrInfo.setView(view);
 
-				baseBranch.setText(issue.getPullRequest().getBase().getRef());
-				headBranch.setText(issue.getPullRequest().getHead().getRef());
+				customPrInfoDialogBinding.baseBranch.setText(issue.getPullRequest().getBase().getRef());
+				customPrInfoDialogBinding.headBranch.setText(issue.getPullRequest().getHead().getRef());
 
-				AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
-
-				alertDialog.setTitle(getResources().getString(R.string.prMergeInfo));
-				alertDialog.setView(view);
-				alertDialog.setPositiveButton(getString(R.string.okButton), null);
-				alertDialog.create().show();
+				materialAlertDialogBuilderPrInfo.setTitle(getResources().getString(R.string.prMergeInfo));
+				materialAlertDialogBuilderPrInfo.setNeutralButton(getString(R.string.close), null);
+				materialAlertDialogBuilderPrInfo.create().show();
 			}
 			return true;
 		}
@@ -716,7 +682,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				ImageView assigneesView = new ImageView(ctx);
 
 				PicassoService.getInstance(ctx).get().load(issue.getIssue().getAssignees().get(i).getAvatarUrl())
-					.placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(100, 100).centerCrop()
+					.placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(48, 0)).resize(96, 96).centerCrop()
 					.into(assigneesView);
 
 				viewBinding.frameAssignees.addView(assigneesView);

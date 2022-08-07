@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.cardview.widget.CardView;
+import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 import org.gitnex.tea4j.v2.models.EditReactionOption;
@@ -82,7 +82,7 @@ public class ReactionSpinner extends HorizontalScrollView {
 					// Show all allowed reactions
 					for(String allowedReaction : allowedReactions) {
 
-						@SuppressLint("InflateParams") CardView reactionButton = (CardView) LayoutInflater.from(context)
+						@SuppressLint("InflateParams") MaterialCardView reactionButton = (MaterialCardView) LayoutInflater.from(context)
 							.inflate(R.layout.layout_reaction_button, root, false);
 
 						// Checks if current user reacted with 'allowedReaction'

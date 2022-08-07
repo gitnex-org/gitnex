@@ -1,135 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/shape_round_corners"
+    android:padding="@dimen/dimen8dp"
     android:orientation="vertical">
 
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/title"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_arrow_up"
-            android:drawablePadding="16dp"
-            android:text="@string/repoSettingsTransferOwnership"
-            android:layout_marginBottom="16dp" />
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            android:text="@string/repoSettingsTransferOwnershipDescription"
-            android:layout_marginBottom="16dp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/repoNameForTransferLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            android:textColorHint="?attr/hintColor"
-            app:hintTextColor="?attr/hintColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:hint="@string/newRepoTintCopy">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/repoNameForTransfer"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="@string/repoSettingsTransferOwnership"
+                    android:layout_marginBottom="16dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ownerNameForTransferLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            android:textColorHint="?attr/hintColor"
-            app:hintTextColor="?attr/hintColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:hint="@string/repoTransferOwnerText">
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"
+                    android:text="@string/repoSettingsTransferOwnershipDescription"
+                    android:layout_marginBottom="16dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ownerNameForTransfer"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/repoNameForTransferLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="?attr/inputBackgroundColor"
+                    android:textColorHint="?attr/hintColor"
+                    app:hintTextColor="?attr/hintColor"
+                    app:boxStrokeErrorColor="@color/darkRed"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/newRepoTintCopy">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/repoNameForTransfer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/inputTextColor"
+                        android:textColorHighlight="?attr/hintColor"
+                        android:textColorHint="?attr/hintColor"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ownerNameForTransferLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="?attr/inputBackgroundColor"
+                    android:textColorHint="?attr/hintColor"
+                    app:hintTextColor="?attr/hintColor"
+                    app:boxStrokeErrorColor="@color/darkRed"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/repoTransferOwnerText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ownerNameForTransfer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/inputTextColor"
+                        android:textColorHighlight="?attr/hintColor"
+                        android:textColorHint="?attr/hintColor"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/processingRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
+                android:visibility="gone"
+                android:indeterminate="true"
+                style="@style/Widget.Material3.LinearProgressIndicator"
+                app:indicatorColor="?attr/progressIndicatorColor" />
+
+            <Button
+                android:id="@+id/transfer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:text="@string/repoTransferText"
+                android:backgroundTint="@color/darkRed"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
                 android:textSize="16sp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:id="@+id/divider"
-        android:background="?attr/dividerColor" />
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/processingRequest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            style="?android:attr/button"
-            android:layout_alignParentStart="true"
-            android:text="@string/cancelButton"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/transfer"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            style="?android:attr/button"
-            android:layout_alignParentEnd="true"
-            android:text="@string/repoTransferText"
-            android:backgroundTint="@color/darkRed"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            tools:ignore="RelativeOverlap" />
-
-    </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
 

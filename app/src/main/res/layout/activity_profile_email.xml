@@ -11,7 +11,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
+        app:elevation="@dimen/dimen0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -23,10 +23,10 @@
 
             <ImageView
                 android:id="@+id/close"
-                android:layout_width="@dimen/close_button_size"
-                android:layout_height="@dimen/close_button_size"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
+                android:layout_width="@dimen/dimen26dp"
+                android:layout_height="@dimen/dimen26dp"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                android:layout_marginStart="@dimen/dimen16dp"
                 android:gravity="center_vertical"
                 android:contentDescription="@string/close"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -42,7 +42,7 @@
                 android:text="@string/pageTitleAddEmail"
                 android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
-                android:textSize="20sp" />
+                android:textSize="@dimen/dimen20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -51,7 +51,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="@dimen/dimen16dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -62,8 +62,8 @@
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
             app:boxStrokeErrorColor="@color/darkRed"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             app:endIconMode="clear_text"
             app:endIconTint="?attr/iconsColor"
             android:hint="@string/profileEmailTitle">
@@ -75,15 +75,16 @@
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/addEmailButton"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:textStyle="bold"
             android:text="@string/saveButton"
             android:textColor="@color/btnTextColor" />
 

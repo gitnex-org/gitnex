@@ -1,14 +1,13 @@
 package org.mian.gitnex.activities;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.EditRepoOption;
 import org.gitnex.tea4j.v2.models.InternalTracker;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -37,9 +36,15 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private CustomRepositoryEditPropertiesDialogBinding propBinding;
 	private CustomRepositoryDeleteDialogBinding deleteRepoBinding;
 	private CustomRepositoryTransferDialogBinding transferRepoBinding;
-	private Dialog dialogProp;
-	private Dialog dialogDeleteRepository;
-	private Dialog dialogTransferRepository;
+
+	private AlertDialog dialogRepo;
+	//private AlertDialog dialogRepoDelete;
+
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	//private Dialog dialogProp;
+
+	//private Dialog dialogDeleteRepository;
+	//private Dialog dialogTransferRepository;
 	private View.OnClickListener onClickListener;
 
 	private RepositoryContext repository;
@@ -59,6 +64,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
 		viewBinding.editProperties.setOnClickListener(editProperties -> showRepositoryProperties());
 
 		viewBinding.deleteRepositoryFrame.setOnClickListener(deleteRepository -> showDeleteRepository());
@@ -68,19 +75,19 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void showTransferRepository() {
 
-		dialogTransferRepository = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+		/*dialogTransferRepository = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
 
 		if (dialogTransferRepository.getWindow() != null) {
 
 			dialogTransferRepository.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
+		}*/
 
 		transferRepoBinding = CustomRepositoryTransferDialogBinding.inflate(LayoutInflater.from(ctx));
 
 		View view = transferRepoBinding.getRoot();
-		dialogTransferRepository.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
-		transferRepoBinding.cancel.setOnClickListener(editProperties -> dialogTransferRepository.dismiss());
+		//transferRepoBinding.cancel.setOnClickListener(editProperties -> dialogRepo.dismiss());
 
 		transferRepoBinding.transfer.setOnClickListener(deleteRepo -> {
 
@@ -101,8 +108,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 		});
 
-		dialogTransferRepository.setCancelable(false);
-		dialogTransferRepository.show();
+		dialogRepo = materialAlertDialogBuilder.show();
 	}
 
 	private void transferRepository(String newOwner) {
@@ -124,7 +130,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 				if (response.code() == 202) {
 
-					dialogTransferRepository.dismiss();
+					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
 
 					finish();
@@ -159,19 +165,10 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void showDeleteRepository() {
 
-		dialogDeleteRepository = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-
-		if (dialogDeleteRepository.getWindow() != null) {
-
-			dialogDeleteRepository.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
 		deleteRepoBinding = CustomRepositoryDeleteDialogBinding.inflate(LayoutInflater.from(ctx));
 
 		View view = deleteRepoBinding.getRoot();
-		dialogDeleteRepository.setContentView(view);
-
-		deleteRepoBinding.cancel.setOnClickListener(editProperties -> dialogDeleteRepository.dismiss());
+		materialAlertDialogBuilder.setView(view);
 
 		deleteRepoBinding.delete.setOnClickListener(deleteRepo -> {
 
@@ -185,8 +182,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			}
 		});
 
-		dialogDeleteRepository.setCancelable(false);
-		dialogDeleteRepository.show();
+		dialogRepo = materialAlertDialogBuilder.show();
 	}
 
 	private void deleteRepository() {
@@ -205,7 +201,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 				if (response.code() == 204) {
 
-					dialogDeleteRepository.dismiss();
+					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
 
 					finish();
@@ -234,24 +230,15 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void showRepositoryProperties() {
 
-		dialogProp = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-
-		if (dialogProp.getWindow() != null) {
-
-			dialogProp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
 		propBinding = CustomRepositoryEditPropertiesDialogBinding.inflate(LayoutInflater.from(ctx));
 
 		View view = propBinding.getRoot();
-		dialogProp.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
-		propBinding.cancel.setOnClickListener(editProperties -> dialogProp.dismiss());
 		Repository repoInfo = repository.getRepository();
 
 		propBinding.progressBar.setVisibility(View.GONE);
 		propBinding.mainView.setVisibility(View.VISIBLE);
-
 
 		assert repoInfo != null;
 		propBinding.repoName.setText(repoInfo.getName());
@@ -297,8 +284,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 			propBinding.repoEnableMerge.isChecked(), propBinding.repoEnableRebase.isChecked(),
 			propBinding.repoEnableSquash.isChecked(), propBinding.repoEnableForceMerge.isChecked()));
 
-		dialogProp.setCancelable(false);
-		dialogProp.show();
+		dialogRepo = materialAlertDialogBuilder.show();
 	}
 
 	private void saveRepositoryProperties(String repoName, String repoWebsite, String repoDescription,
@@ -335,7 +321,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 				if (response.code() == 200) {
 
-					dialogProp.dismiss();
+					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoPropertiesSaveSuccess));
 					assert response.body() != null;
 					repository.setRepository(response.body());

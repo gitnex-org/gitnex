@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/gridViewData"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
+    android:paddingStart="@dimen/dimen16dp"
+    android:paddingEnd="@dimen/dimen16dp"
+    android:paddingTop="@dimen/dimen16dp"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/collaboratorAvatar"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:contentDescription="@string/tabTextCollaborators"
-        android:src="@drawable/ic_person" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/dimen60dp"
+        android:layout_height="@dimen/dimen60dp"
+        style="?attr/materialCardViewElevatedStyle"
+        android:layout_gravity="center_horizontal|center_vertical"
+        app:cardElevation="@dimen/dimen0dp"
+        app:cardCornerRadius="@dimen/dimen32dp">
+
+        <ImageView
+            android:id="@+id/collaboratorAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/tabTextCollaborators"
+            android:src="@drawable/ic_person" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/collaboratorName"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="top|center_horizontal"
-        android:layout_marginTop="1dp"
-        android:text="@string/tabTextCollaborators"
-        android:textSize="14sp"
-        android:textColor="?attr/primaryTextColor" />
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:text="@string/collaborator"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="14sp" />
 
 </LinearLayout>

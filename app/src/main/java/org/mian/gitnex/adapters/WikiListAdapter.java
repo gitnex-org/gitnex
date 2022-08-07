@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -200,10 +200,10 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 	private void deleteWiki(final String owner, final String repo, final String pageName, int position, final Context context) {
 
-		new AlertDialog.Builder(context)
-			.setTitle(String.format(context.getString(R.string.deleteGenericTitle), pageName))
+		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		materialAlertDialogBuilder.setTitle(String.format(context.getString(R.string.deleteGenericTitle), pageName))
 			.setMessage(context.getString(R.string.deleteWikiPageMessage, pageName))
-			.setIcon(R.drawable.ic_delete)
 			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
 				.getApiInterface(context).repoDeleteWikiPage(owner, repo, pageName).enqueue(new Callback<>() {
 
