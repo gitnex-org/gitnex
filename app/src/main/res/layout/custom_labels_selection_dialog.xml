@@ -3,100 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/shape_round_corners"
     android:orientation="vertical">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="@dimen/dimen20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:layout_marginStart="@dimen/dimen24dp"
+        android:layout_marginEnd="@dimen/dimen24dp"
+        android:layout_marginBottom="@dimen/dimen8dp"
+        android:text="@string/newIssueSelectLabelsListTitle" />
 
-    <LinearLayout
-        android:id="@+id/dialogFrame"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/labelsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:id="@+id/TitleFrame"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_label"
-                android:drawablePadding="16dp"
-                android:text="@string/newIssueSelectLabelsListTitle" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:id="@+id/dividerTitle"
-            android:background="?attr/dividerColor" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="100"
-            android:layout_margin="12dp"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/labelsRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:id="@+id/divider"
-                android:background="?attr/dividerColor" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:orientation="vertical" >
-
-                <Button
-                    android:id="@+id/save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    style="?android:attr/button"
-                    android:layout_alignParentStart="true"
-                    android:text="@string/saveButton"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="16sp" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:orientation="vertical"
+        android:padding="@dimen/dimen12dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

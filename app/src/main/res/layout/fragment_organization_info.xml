@@ -17,26 +17,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="15dp"
+            android:padding="@dimen/dimen16dp"
             android:visibility="gone"
             tools:visibility="visible">
 
-            <ImageView
-                android:id="@+id/orgAvatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="@dimen/dimen72dp"
+                android:layout_height="@dimen/dimen72dp"
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"
-                android:contentDescription="@string/orgContentAvatar" />
+                app:cardElevation="@dimen/dimen0dp"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:layout_marginBottom="@dimen/dimen12dp"
+                app:cardCornerRadius="@dimen/dimen36dp">
+
+                <ImageView
+                    android:id="@+id/orgAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/orgContentAvatar" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/orgNameInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/primaryTextColor"
-                android:layout_marginBottom="5dp"
-                android:textSize="22sp"
+                android:layout_marginBottom="@dimen/dimen4dp"
+                android:textSize="@dimen/dimen22sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -48,22 +57,22 @@
                 android:maxLines="3"
                 android:textColor="?attr/primaryTextColor"
                 android:textColorLink="@color/lightBlue"
-                android:textSize="16sp" />
+                android:textSize="@dimen/dimen16sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginTop="@dimen/dimen24dp"
+                android:layout_marginBottom="@dimen/dimen24dp"
                 android:background="?attr/dividerColor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="@dimen/dimen20dp"
                 android:orientation="horizontal"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingLeft="@dimen/dimen12dp"
+                android:paddingRight="@dimen/dimen12dp">
 
                 <ImageView
                     android:layout_gravity="center"
@@ -75,7 +84,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="@dimen/dimen16dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 
@@ -84,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/websiteText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/dimen16sp" />
 
                     <TextView
                         android:id="@+id/orgWebsiteInfo"
@@ -94,7 +103,7 @@
                         android:autoLink="web"
                         android:textColor="?attr/primaryTextColor"
                         android:textColorLink="@color/lightBlue"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/dimen14sp"
                         tools:text="29" />
                 </LinearLayout>
 
@@ -105,8 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingLeft="@dimen/dimen12dp"
+                android:paddingRight="@dimen/dimen12dp">
 
                 <ImageView
                     android:layout_gravity="center"
@@ -118,7 +127,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="@dimen/dimen16dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 
@@ -127,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/locationText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/dimen16sp" />
 
                     <TextView
                         android:id="@+id/orgLocationInfo"
@@ -135,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.9"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/dimen14sp"
                         tools:text="29" />
                 </LinearLayout>
 
@@ -150,7 +159,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        style="@style/Widget.Material3.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
 </RelativeLayout>

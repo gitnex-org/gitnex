@@ -96,7 +96,7 @@ public class CollaboratorsAdapter extends BaseAdapter  {
 
     private void initData(ViewHolder viewHolder, int position) {
 
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
 
 	    User currentItem = collaboratorsList.get(position);
         PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);

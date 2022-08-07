@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 import org.gitnex.tea4j.v2.models.Reaction;
@@ -115,7 +115,7 @@ public class ReactionList extends HorizontalScrollView {
 
 						List<Reaction> issueReactions = sortedReactions.get(content);
 
-						@SuppressLint("InflateParams") CardView reactionBadge = (CardView) LayoutInflater.from(context).inflate(R.layout.layout_reaction_badge, this, false);
+						@SuppressLint("InflateParams") MaterialCardView reactionBadge = (MaterialCardView) LayoutInflater.from(context).inflate(R.layout.layout_reaction_badge, this, false);
 
 						for(Reaction issueReaction : issueReactions) {
 							if(issueReaction.getUser().getLogin().equals(loginUid)) {
@@ -142,14 +142,12 @@ public class ReactionList extends HorizontalScrollView {
 							recyclerView.setAdapter(adapter);
 
 							assert emoji != null;
-							AlertDialog alertDialog = new AlertDialog.Builder(context)
-								.setView(recyclerView)
+							MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
 								.setTitle(emoji.getUnicode())
-								.setPositiveButton(R.string.okButton, (dialog, which) -> dialog.cancel())
-								.setCancelable(true)
-								.create();
+								.setView(recyclerView)
+								.setNeutralButton(R.string.close, null);
 
-							alertDialog.show();
+							materialAlertDialogBuilder.create().show();
 
 						});
 

@@ -1,9 +1,6 @@
 package org.mian.gitnex.fragments;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.SearchResults;
 import org.mian.gitnex.R;
@@ -52,7 +50,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private List<Repository> dataList;
 	private ExploreRepositoriesAdapter adapter;
 
-	private Dialog dialogFilterOptions;
 	private CustomExploreRepositoriesDialogBinding filterBinding;
 
 	private boolean includeTopic = false;
@@ -219,16 +216,11 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 	private void showFilterOptions() {
 
-		dialogFilterOptions = new Dialog(context, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-
-		if (dialogFilterOptions.getWindow() != null) {
-			dialogFilterOptions.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
+		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 		filterBinding = CustomExploreRepositoriesDialogBinding.inflate(LayoutInflater.from(context));
 
 		View view = filterBinding.getRoot();
-		dialogFilterOptions.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
 		filterBinding.includeTopic.setOnClickListener(includeTopic -> this.includeTopic = filterBinding.includeTopic.isChecked());
 
@@ -243,9 +235,8 @@ public class ExploreRepositoriesFragment extends Fragment {
 		filterBinding.includeTemplate.setChecked(includeTemplate);
 		filterBinding.onlyArchived.setChecked(onlyArchived);
 
-		filterBinding.cancel.setOnClickListener(editProperties -> dialogFilterOptions.dismiss());
-
-		dialogFilterOptions.show();
+		materialAlertDialogBuilder.setNeutralButton(getString(R.string.close), null);
+		materialAlertDialogBuilder.show();
 	}
 
 	@Override
@@ -257,6 +248,5 @@ public class ExploreRepositoriesFragment extends Fragment {
 			loadInitial(searchQuery, resultLimit);
 			MainActivity.reloadRepos = false;
 		}
-
 	}
 }

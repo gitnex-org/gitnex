@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class OrganizationLabelsViewModel extends ViewModel {
 
-	private MutableLiveData<List<Label>> orgLabelsList;
+	private static MutableLiveData<List<Label>> orgLabelsList;
 
 	public LiveData<List<Label>> getOrgLabelsList(String owner, Context ctx, ProgressBar progressBar, TextView noData) {
 
@@ -33,7 +33,7 @@ public class OrganizationLabelsViewModel extends ViewModel {
 		return orgLabelsList;
 	}
 
-	public void loadOrgLabelsList(String owner, Context ctx, ProgressBar progressBar, TextView noData) {
+	public static void loadOrgLabelsList(String owner, Context ctx, ProgressBar progressBar, TextView noData) {
 
 		Call<List<Label>> call = RetrofitClient
 			.getApiInterface(ctx)

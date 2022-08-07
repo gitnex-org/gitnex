@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -184,10 +184,11 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 
 	private void tagDeleteDialog(final Context context, final String tagName, final String owner, final String repo, int position) {
 
-		new AlertDialog.Builder(context)
+		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
 			.setTitle(String.format(context.getString(R.string.deleteGenericTitle), tagName))
 			.setMessage(R.string.deleteTagConfirmation)
-			.setIcon(R.drawable.ic_delete)
+			.setCancelable(false)
+			.setNeutralButton(R.string.cancelButton, null)
 			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
 				.getApiInterface(context).repoDeleteTag(owner, repo, tagName).enqueue(new Callback<>() {
 
@@ -218,6 +219,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 						Toasty.error(context, context.getString(R.string.genericError));
 					}
 				}))
-			.setNeutralButton(R.string.cancelButton, null).show();
+			.setNeutralButton(R.string.cancelButton, null);
+
+		materialAlertDialogBuilder.create().show();
 	}
 }

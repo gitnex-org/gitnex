@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/dimen16dp"
     android:background="?android:attr/selectableItemBackground">
 
     <LinearLayout
@@ -11,15 +11,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginEnd="15dp">
+        android:layout_marginEnd="@dimen/dimen16dp">
 
-        <ImageView
-            android:id="@+id/userAvatar"
-            android:layout_width="@dimen/list_avatar_size"
-            android:layout_height="@dimen/list_avatar_size"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/userAccountAvatar"
+            android:layout_width="@dimen/dimen24dp"
+            android:layout_height="@dimen/dimen24dp"
+            style="?attr/materialCardViewFilledStyle"
+            app:cardElevation="@dimen/dimen0dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/generalImgContentText"
-            android:src="@drawable/ic_android" />
+            app:cardCornerRadius="@dimen/dimen12dp">
+
+            <ImageView
+                android:id="@+id/userAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/generalImgContentText"
+                android:src="@drawable/ic_android" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <ImageView
             android:id="@+id/userRole"
@@ -43,20 +53,20 @@
             android:id="@+id/userFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="@dimen/dimen4dp"
             android:text="@string/userName"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp"
+            android:textSize="@dimen/dimen14sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="@dimen/dimen4dp"
             android:text="@string/userName"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="12sp" />
+            android:textSize="@dimen/dimen12sp" />
 
         <TextView
             android:id="@+id/userEmail"
@@ -64,7 +74,7 @@
             android:layout_height="wrap_content"
             android:text="@string/userEmail"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="12sp" />
+            android:textSize="@dimen/dimen12sp" />
 
     </LinearLayout>
 

@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -232,13 +232,13 @@ public class RepoInfoFragment extends Fragment {
 				repoUrlHeader.setText(getString(R.string.infoTabRepoRepoUrl));
 				repoUrlContent.setText(repoInfo.getHtmlUrl());
 
-				AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
 
-				alertDialog.setTitle(getResources().getString(R.string.infoMoreInformation));
-				alertDialog.setView(view);
-				alertDialog.setPositiveButton(getString(R.string.okButton), null);
-				alertDialog.create().show();
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+					.setTitle(R.string.infoMoreInformation)
+					.setView(view)
+					.setNeutralButton(getString(R.string.close), null);
 
+				materialAlertDialogBuilder.create().show();
 			});
 
 			if(repoInfo.isArchived()) {

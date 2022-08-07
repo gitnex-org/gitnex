@@ -1,11 +1,8 @@
 package org.mian.gitnex.fragments;
 
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
@@ -37,7 +35,7 @@ public class SettingsFragment extends Fragment {
 	public static boolean refreshParent = false;
 
 	private Context ctx;
-	private Dialog aboutAppDialog;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
 	@Nullable
 	@Override
@@ -46,7 +44,7 @@ public class SettingsFragment extends Fragment {
 		FragmentSettingsBinding fragmentSettingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
-		aboutAppDialog = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navSettings));
 
@@ -78,19 +76,20 @@ public class SettingsFragment extends Fragment {
 
 	public void showAboutAppDialog() {
 
-		if (aboutAppDialog.getWindow() != null) {
-			aboutAppDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
 		CustomAboutDialogBinding aboutAppDialogBinding = CustomAboutDialogBinding.inflate(LayoutInflater.from(ctx));
 		View view = aboutAppDialogBinding.getRoot();
-		aboutAppDialog.setContentView(view);
+
+		materialAlertDialogBuilder.setView(view);
 
 		aboutAppDialogBinding.appVersionBuild.setText(getString(R.string.appVersionBuild, AppUtil.getAppVersion(ctx), AppUtil.getAppBuildNo(ctx)));
 		aboutAppDialogBinding.userServerVersion.setText(((BaseActivity) requireActivity()).getAccount().getServerVersion().toString());
 
 		aboutAppDialogBinding.donationLinkPatreon.setOnClickListener(v12 -> {
 			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.supportLinkPatreon));
+		});
+
+		aboutAppDialogBinding.donationLinkBuyMeaCoffee.setOnClickListener(v11 -> {
+			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.supportLinkBuyMeaCoffee));
 		});
 
 		aboutAppDialogBinding.translateLink.setOnClickListener(v13 -> {
@@ -103,12 +102,11 @@ public class SettingsFragment extends Fragment {
 
 		if(AppUtil.isPro(requireContext())) {
 			aboutAppDialogBinding.supportHeader.setVisibility(View.GONE);
-			aboutAppDialogBinding.dividerSupport.setVisibility(View.GONE);
 			aboutAppDialogBinding.donationLinkPatreon.setVisibility(View.GONE);
+			aboutAppDialogBinding.donationLinkBuyMeaCoffee.setVisibility(View.GONE);
 		}
 
-		aboutAppDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		aboutAppDialog.show();
+		materialAlertDialogBuilder.show();
 	}
 
 	public void rateThisApp() {

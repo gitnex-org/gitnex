@@ -41,13 +41,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:flexWrap="wrap"
-                app:alignItems="stretch"
-                android:padding="8dp"
-                app:alignContent="stretch" >
+                app:alignItems="flex_start"
+                app:justifyContent="center"
+                android:padding="4dp"
+                app:alignContent="center" >
 
                 <TextView
                     android:id="@+id/newFile"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -60,7 +61,7 @@
 
                 <TextView
                     android:id="@+id/createNewIssue"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -73,7 +74,7 @@
 
                 <TextView
                     android:id="@+id/createLabel"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -86,7 +87,7 @@
 
                 <TextView
                     android:id="@+id/createNewMilestone"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -99,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/createRelease"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -112,7 +113,7 @@
 
                 <TextView
                     android:id="@+id/createPullRequest"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -125,7 +126,7 @@
 
                 <TextView
                     android:id="@+id/addCollaborator"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -138,7 +139,7 @@
 
                 <TextView
                     android:id="@+id/create_wiki"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -181,13 +182,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:flexWrap="wrap"
-                app:alignItems="stretch"
-                android:padding="8dp"
-                app:alignContent="stretch" >
+                app:alignItems="flex_start"
+                app:justifyContent="center"
+                android:padding="4dp"
+                app:alignContent="center" >
 
                 <TextView
                     android:id="@+id/starRepository"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -200,7 +202,7 @@
 
                 <TextView
                     android:id="@+id/unStarRepository"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -213,7 +215,7 @@
 
                 <TextView
                     android:id="@+id/watchRepository"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -226,7 +228,7 @@
 
                 <TextView
                     android:id="@+id/unWatchRepository"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -239,7 +241,7 @@
 
                 <TextView
                     android:id="@+id/copyRepoUrl"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -252,7 +254,7 @@
 
                 <TextView
                     android:id="@+id/shareRepository"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -265,7 +267,7 @@
 
                 <TextView
                     android:id="@+id/openWebRepo"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -278,7 +280,7 @@
 
                 <TextView
                     android:id="@+id/repoSettings"
-                    android:layout_width="98dp"
+                    android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"

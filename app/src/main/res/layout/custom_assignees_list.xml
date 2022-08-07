@@ -4,25 +4,26 @@
     android:id="@+id/layoutFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
+    android:gravity="start"
     android:orientation="vertical">
 
     <CheckBox
         android:id="@+id/assigneesSelection"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/dimen36dp"
         android:checked="false"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="16sp" />
+        android:textSize="@dimen/dimen16sp" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="4dp"
-        app:cardElevation="0dp"
-        app:cardCornerRadius="4dp">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/dimen20dp"
+        android:layout_height="@dimen/dimen20dp"
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:layout_marginStart="@dimen/dimen44dp"
+        android:layout_marginEnd="@dimen/dimen4dp"
+        app:cardElevation="@dimen/dimen0dp"
+        app:cardCornerRadius="@dimen/dimen24dp">
 
         <ImageView
             android:id="@+id/assigneesAvatar"
@@ -30,17 +31,17 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/generalImgContentText" />
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/assigneesName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingStart="64dp"
-        android:paddingEnd="4dp"
+        android:paddingTop="@dimen/dimen8dp"
+        android:paddingStart="@dimen/dimen72dp"
+        android:paddingEnd="@dimen/dimen4dp"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="16sp" />
+        android:textSize="@dimen/dimen16sp" />
 
 </RelativeLayout>
 

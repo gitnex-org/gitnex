@@ -1,9 +1,10 @@
 package org.mian.gitnex.actions;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.LabelsListAdapter;
@@ -58,7 +59,7 @@ public class LabelsActions {
 		});
 	}
 
-	public static void getRepositoryLabels(Context ctx, String repoOwner, String repoName, List<Label> labelsList, Dialog dialogLabels, LabelsListAdapter labelsAdapter, CustomLabelsSelectionDialogBinding labelsBinding) {
+	public static void getRepositoryLabels(Context ctx, String repoOwner, String repoName, List<Label> labelsList, MaterialAlertDialogBuilder materialAlertDialogBuilder, LabelsListAdapter labelsAdapter, CustomLabelsSelectionDialogBinding labelsBinding, ProgressBar progressBar) {
 
 		Call<List<Label>> call = RetrofitClient
 			.getApiInterface(ctx)
@@ -83,24 +84,20 @@ public class LabelsActions {
 						.getApiInterface(ctx)
 						.orgListLabels(repoOwner, null, null);
 
-					callOrgLabels.enqueue(new Callback<List<Label>>() {
+					callOrgLabels.enqueue(new Callback<>() {
 
 						@Override
 						public void onResponse(@NonNull Call<List<Label>> call, @NonNull retrofit2.Response<List<Label>> responseOrg) {
 
-							labelsBinding.progressBar.setVisibility(View.GONE);
-							labelsBinding.dialogFrame.setVisibility(View.VISIBLE);
-
 							if(responseOrg.body() != null) {
 
 								labelsList.addAll(responseOrg.body());
+								materialAlertDialogBuilder.show();
 							}
 
 							if(labelsList.isEmpty()) {
 
-								dialogLabels.dismiss();
 								Toasty.warning(ctx, ctx.getResources().getString(R.string.noDataFound));
-
 							}
 
 							labelsBinding.labelsRecyclerView.setAdapter(labelsAdapter);
@@ -111,19 +108,23 @@ public class LabelsActions {
 
 							Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 						}
-
 					});
-
 				}
 				else {
 
 					Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
+				}
+				if(progressBar != null) {
+					progressBar.setVisibility(View.GONE);
 				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
+				if(progressBar != null) {
+					progressBar.setVisibility(View.GONE);
+				}
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});

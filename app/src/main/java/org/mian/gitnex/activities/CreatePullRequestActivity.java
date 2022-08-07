@@ -2,9 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreatePullRequestOption;
 import org.gitnex.tea4j.v2.models.Label;
@@ -45,16 +43,15 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 	private View.OnClickListener onClickListener;
 	private ActivityCreatePrBinding viewBinding;
-	private int resultLimit;
-	private Dialog dialogLabels;
 	private List<Integer> labelsIds = new ArrayList<>();
 	private final List<String> assignees = new ArrayList<>();
 	private int milestoneId;
 	private Date currentDate = null;
 
 	private RepositoryContext repository;
-
 	private LabelsListAdapter labelsAdapter;
+
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
 	LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
 	List<String> branchesList = new ArrayList<>();
@@ -69,9 +66,11 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		resultLimit = Constants.getCurrentResultLimit(ctx);
+		int resultLimit = Constants.getCurrentResultLimit(ctx);
 
 		viewBinding.prBody.setOnTouchListener((touchView, motionEvent) -> {
 
@@ -224,23 +223,14 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 	private void showLabels() {
 
-		dialogLabels = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-
-		if (dialogLabels.getWindow() != null) {
-
-			dialogLabels.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
-		org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding
-			.inflate(LayoutInflater.from(ctx));
-
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
+		CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding.inflate(
+			LayoutInflater.from(ctx));
 		View view = labelsBinding.getRoot();
-		dialogLabels.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
-		labelsBinding.save.setOnClickListener(editProperties -> dialogLabels.dismiss());
-
-		dialogLabels.show();
-		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		materialAlertDialogBuilder.setNeutralButton(R.string.close, null);
+		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, materialAlertDialogBuilder, labelsAdapter, labelsBinding, viewBinding.progressBar);
 	}
 
 	private void getBranches(String repoOwner, String repoName) {
@@ -249,7 +239,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 			.getApiInterface(ctx)
 			.repoListBranches(repoOwner, repoName, null, null);
 
-		call.enqueue(new Callback<List<Branch>>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<List<Branch>> call, @NonNull retrofit2.Response<List<Branch>> response) {
@@ -265,8 +255,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 							branchesList.add(i.getName());
 						}
 
-						ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatePullRequestActivity.this,
-							R.layout.list_spinner_items, branchesList);
+						ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatePullRequestActivity.this, R.layout.list_spinner_items, branchesList);
 
 						viewBinding.mergeIntoBranchSpinner.setAdapter(adapter);
 						viewBinding.pullFromBranchSpinner.setAdapter(adapter);

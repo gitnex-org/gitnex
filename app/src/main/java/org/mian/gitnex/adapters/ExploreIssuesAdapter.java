@@ -149,7 +149,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		void bindData(Issue issue) {
 
 			this.issue = issue;
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat", "pretty");

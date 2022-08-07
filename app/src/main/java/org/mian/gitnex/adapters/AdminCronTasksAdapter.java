@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Cron;
 import org.mian.gitnex.R;
@@ -74,13 +74,12 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 				lastRunContent.setText(lastRun);
 				execTimeContent.setText(String.valueOf(cronTasks.getExecTimes()));
 
-				AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+					.setTitle(StringUtils.capitalize(cronTasks.getName().replace("_", " ")))
+					.setView(view)
+					.setPositiveButton(ctx.getString(R.string.close), null);
 
-				alertDialog.setTitle(StringUtils.capitalize(cronTasks.getName().replace("_", " ")));
-				alertDialog.setView(view);
-				alertDialog.setPositiveButton(ctx.getString(R.string.close), null);
-				alertDialog.create().show();
-
+				materialAlertDialogBuilder.create().show();
 			});
 
 			cronTasksRun.setOnClickListener(taskInfo -> {

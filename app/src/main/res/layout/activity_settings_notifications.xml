@@ -11,8 +11,8 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:elevation="0dp"
+        android:layout_marginBottom="@dimen/dimen10dp"
+        app:elevation="@dimen/dimen0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <androidx.appcompat.widget.Toolbar
@@ -25,10 +25,10 @@
 
             <ImageView
                 android:id="@+id/close"
-                android:layout_width="@dimen/close_button_size"
-                android:layout_height="@dimen/close_button_size"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_width="@dimen/dimen26dp"
+                android:layout_height="@dimen/dimen26dp"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                android:layout_marginStart="@dimen/dimen16dp"
                 android:contentDescription="@string/close"
                 android:gravity="center_vertical"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -44,7 +44,7 @@
                 android:maxLines="1"
                 android:text="@string/pageTitleNotifications"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="20sp" />
+                android:textSize="@dimen/dimen20sp" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -56,30 +56,30 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/enableNotificationsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/enableNotificationsHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableNotificationsMode"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="@dimen/dimen24dp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
             android:layout_toEndOf="@+id/enableNotificationsHeader"
             android:gravity="end"
             android:paddingStart="0dp"
-            android:paddingEnd="25dp"
-            android:switchMinWidth="56dp" />
+            android:paddingEnd="@dimen/dimen24dp"
+            android:switchMinWidth="@dimen/dimen56dp" />
 
     </RelativeLayout>
 
@@ -89,28 +89,28 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="6dp">
 
         <TextView
             android:id="@+id/pollingDelayHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/notificationsPollingHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <TextView
             android:id="@+id/pollingDelaySelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/pollingDelaySelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimen16sp" />
 
     </LinearLayout>
 
@@ -120,30 +120,30 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="6dp">
 
         <TextView
             android:id="@+id/enableLightsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/enableLightsHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableLightsMode"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="@dimen/dimen24dp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
             android:layout_toEndOf="@+id/enableLightsHeader"
             android:gravity="end"
-            android:paddingStart="0dp"
-            android:paddingEnd="25dp"
-            android:switchMinWidth="56dp" />
+            android:paddingStart="@dimen/dimen0dp"
+            android:paddingEnd="@dimen/dimen24dp"
+            android:switchMinWidth="@dimen/dimen56dp" />
 
     </RelativeLayout>
 
@@ -153,29 +153,30 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="6dp">
 
         <TextView
             android:id="@+id/chooseColorHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/chooseColorSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/chooseColorState"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dimen28dp"
+            android:layout_height="@dimen/dimen28dp"
+            style="?attr/materialCardViewFilledStyle"
             android:layout_alignEnd="@id/chooseColorHeader"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="@dimen/dimen28dp"
             android:gravity="end"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="0dp" />
+            app:cardCornerRadius="@dimen/dimen16dp"
+            app:cardElevation="@dimen/dimen0dp" />
 
     </RelativeLayout>
 
@@ -185,30 +186,30 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/enableVibrationHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/enableVibrationHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableVibrationMode"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="@dimen/dimen24dp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
             android:layout_toEndOf="@+id/enableVibrationHeader"
             android:gravity="end"
-            android:paddingStart="0dp"
-            android:paddingEnd="25dp"
-            android:switchMinWidth="56dp" />
+            android:paddingStart="@dimen/dimen0dp"
+            android:paddingEnd="@dimen/dimen24dp"
+            android:switchMinWidth="@dimen/dimen56dp" />
 
     </RelativeLayout>
 

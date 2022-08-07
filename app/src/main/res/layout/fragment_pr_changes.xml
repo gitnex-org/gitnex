@@ -24,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/close"
-                android:layout_width="@dimen/close_button_size"
-                android:layout_height="@dimen/close_button_size"
+                android:layout_width="@dimen/dimen26dp"
+                android:layout_height="@dimen/dimen26dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
                 android:gravity="center_vertical"

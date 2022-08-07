@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
 import androidx.biometric.BiometricManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
@@ -150,91 +150,82 @@ public class SettingsSecurityActivity extends BaseActivity {
 		// clear cache
 		clearCacheFrame.setOnClickListener(v1 -> {
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(SettingsSecurityActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.clearCacheDialogHeader)
+				.setMessage(getResources().getString(R.string.clearCacheDialogMessage))
+				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss())
+				.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
-			builder.setTitle(getResources().getString(R.string.clearCacheDialogHeader));
-			builder.setMessage(getResources().getString(R.string.clearCacheDialogMessage));
-			builder.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
+					try {
 
-				try {
+						FileUtils.deleteDirectory(cacheDir);
+						FileUtils.forceMkdir(cacheDir);
+						this.recreate();
+						this.overridePendingTransition(0, 0);
+					}
+					catch (IOException e) {
 
-					FileUtils.deleteDirectory(cacheDir);
-					FileUtils.forceMkdir(cacheDir);
-					this.recreate();
-					this.overridePendingTransition(0, 0);
-				}
-				catch (IOException e) {
+						Log.e("SettingsSecurity", e.toString());
+					}
+				});
 
-					Log.e("SettingsSecurity", e.toString());
-				}
-			});
-
-			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
-			builder.create().show();
-
+			materialAlertDialogBuilder.create().show();
 		});
 
 		// cache size images selection dialog
 		cacheSizeImagesFrame.setOnClickListener(view -> {
 
-			AlertDialog.Builder tsBuilder = new AlertDialog.Builder(SettingsSecurityActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.cacheSizeImagesDialogHeader)
+				.setCancelable(cacheSizeImagesSelectedChoice != -1)
+				.setSingleChoiceItems(cacheSizeImagesList, cacheSizeImagesSelectedChoice, (dialogInterfaceTheme, i) -> {
 
-			tsBuilder.setTitle(getResources().getString(R.string.cacheSizeImagesDialogHeader));
-			tsBuilder.setCancelable(cacheSizeImagesSelectedChoice != -1);
+					cacheSizeImagesSelectedChoice = i;
+					cacheSizeImagesSelected.setText(cacheSizeImagesList[i]);
+					tinyDB.putString("cacheSizeImagesStr", cacheSizeImagesList[i]);
+					tinyDB.putInt("cacheSizeImagesId", i);
 
-			tsBuilder.setSingleChoiceItems(cacheSizeImagesList, cacheSizeImagesSelectedChoice, (dialogInterfaceTheme, i) -> {
+					dialogInterfaceTheme.dismiss();
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 
-				cacheSizeImagesSelectedChoice = i;
-				cacheSizeImagesSelected.setText(cacheSizeImagesList[i]);
-				tinyDB.putString("cacheSizeImagesStr", cacheSizeImagesList[i]);
-				tinyDB.putInt("cacheSizeImagesId", i);
-
-				dialogInterfaceTheme.dismiss();
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
-
-			AlertDialog cfDialog = tsBuilder.create();
-			cfDialog.show();
+			materialAlertDialogBuilder.create().show();
 		});
 
 		// cache size data selection dialog
 		cacheSizeDataFrame.setOnClickListener(view -> {
 
-			AlertDialog.Builder tsBuilder = new AlertDialog.Builder(SettingsSecurityActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.cacheSizeDataDialogHeader)
+				.setCancelable(cacheSizeDataSelectedChoice != -1)
+				.setSingleChoiceItems(cacheSizeDataList, cacheSizeDataSelectedChoice, (dialogInterfaceTheme, i) -> {
 
-			tsBuilder.setTitle(getResources().getString(R.string.cacheSizeDataDialogHeader));
-			tsBuilder.setCancelable(cacheSizeDataSelectedChoice != -1);
+					cacheSizeDataSelectedChoice = i;
+					cacheSizeDataSelected.setText(cacheSizeDataList[i]);
+					tinyDB.putString("cacheSizeStr", cacheSizeDataList[i]);
+					tinyDB.putInt("cacheSizeId", i);
 
-			tsBuilder.setSingleChoiceItems(cacheSizeDataList, cacheSizeDataSelectedChoice, (dialogInterfaceTheme, i) -> {
+					dialogInterfaceTheme.dismiss();
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 
-				cacheSizeDataSelectedChoice = i;
-				cacheSizeDataSelected.setText(cacheSizeDataList[i]);
-				tinyDB.putString("cacheSizeStr", cacheSizeDataList[i]);
-				tinyDB.putInt("cacheSizeId", i);
-
-				dialogInterfaceTheme.dismiss();
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
-
-			AlertDialog cfDialog = tsBuilder.create();
-			cfDialog.show();
+			materialAlertDialogBuilder.create().show();
 		});
 
 		// certs deletion
 		certsFrame.setOnClickListener(v1 -> {
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(SettingsSecurityActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.settingsCertsPopupTitle)
+				.setMessage(getResources().getString(R.string.settingsCertsPopupMessage))
+				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss())
+				.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
-			builder.setTitle(getResources().getString(R.string.settingsCertsPopupTitle));
-			builder.setMessage(getResources().getString(R.string.settingsCertsPopupMessage));
-			builder.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
+					appCtx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE).edit().remove(MemorizingTrustManager.KEYSTORE_KEY).apply();
+					AppUtil.logout(this);
+				});
 
-				appCtx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE).edit().remove(MemorizingTrustManager.KEYSTORE_KEY).apply();
-				AppUtil.logout(this);
-			});
-
-			builder.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss());
-			builder.create().show();
+			materialAlertDialogBuilder.create().show();
 		});
 	}
 

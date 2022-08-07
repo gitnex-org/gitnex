@@ -121,7 +121,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 		        commitAuthorAvatar.setVisibility(View.VISIBLE);
 
-		        int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+		        int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 		        PicassoService.getInstance(context).get()
 			        .load(commitsModel.getAuthor().getAvatarUrl())
@@ -142,7 +142,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 	            commitCommitterAvatar.setVisibility(View.VISIBLE);
 
-	            int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+	            int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 	            PicassoService.getInstance(context).get()
 		            .load(commitsModel.getCommitter().getAvatarUrl())
