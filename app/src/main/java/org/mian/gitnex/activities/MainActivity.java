@@ -15,12 +15,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.NotificationCount;
@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				TextView userFullName = hView.findViewById(R.id.userFullname);
 				ImageView userAvatar = hView.findViewById(R.id.userAvatar);
 				ImageView userAvatarBackground = hView.findViewById(R.id.userAvatarBackground);
-				CardView navRecyclerViewFrame = hView.findViewById(R.id.userAccountsFrame);
+				MaterialCardView navRecyclerViewFrame = hView.findViewById(R.id.userAccountsFrame);
 
 				List<UserAccount> userAccountsList = new ArrayList<>();
 				UserAccountsApi userAccountsApi;

@@ -17,12 +17,12 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -84,6 +84,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	public static boolean updateRepo = false;
 	private Dialog progressDialog;
 
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+
 	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 		result -> {
 			if(result.getResultCode() == 201) {
@@ -136,6 +138,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		repository = RepositoryContext.fromIntent(getIntent());
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
+
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		TextView toolbarTitle = findViewById(R.id.toolbar_title);
 		toolbarTitle.setText(repository.getFullName());
@@ -411,21 +415,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						}
 					}
 
-					AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
-					pBuilder.setTitle(R.string.selectMilestone);
+					materialAlertDialogBuilder.setTitle(R.string.selectMilestone)
+						.setSingleChoiceItems(milestonesList.toArray(new String[0]), selectedMilestone, (dialogInterface, i) -> {
 
-					pBuilder.setSingleChoiceItems(milestonesList.toArray(new String[0]), selectedMilestone, (dialogInterface, i) -> {
+							repository.setIssueMilestoneFilterName(milestonesList.get(i));
 
-						repository.setIssueMilestoneFilterName(milestonesList.get(i));
-
-						if(getFragmentRefreshListenerFilterIssuesByMilestone() != null) {
-							getFragmentRefreshListenerFilterIssuesByMilestone().onRefresh(milestonesList.get(i));
-						}
-						dialogInterface.dismiss();
-					});
-
-					pBuilder.setNeutralButton(R.string.cancelButton, null);
-					pBuilder.create().show();
+							if(getFragmentRefreshListenerFilterIssuesByMilestone() != null) {
+								getFragmentRefreshListenerFilterIssuesByMilestone().onRefresh(milestonesList.get(i));
+							}
+							dialogInterface.dismiss();
+						})
+						.setNeutralButton(R.string.cancelButton, null);
+					materialAlertDialogBuilder.create().show();
 				}
 			}
 
@@ -478,21 +479,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						}
 					}
 
-					AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
-					pBuilder.setTitle(R.string.pageTitleChooseBranch);
+					materialAlertDialogBuilder.setTitle(R.string.pageTitleChooseBranch)
+						.setSingleChoiceItems(branchesList.toArray(new String[0]), selectedBranch, (dialogInterface, i) -> {
 
-					pBuilder.setSingleChoiceItems(branchesList.toArray(new String[0]), selectedBranch, (dialogInterface, i) -> {
+							repository.setBranchRef(branchesList.get(i));
 
-						repository.setBranchRef(branchesList.get(i));
-
-						if(getFragmentRefreshListenerFiles() != null) {
-							getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
-						}
-						dialogInterface.dismiss();
-					});
-
-					pBuilder.setNeutralButton(R.string.cancelButton, null);
-					pBuilder.create().show();
+							if(getFragmentRefreshListenerFiles() != null) {
+								getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
+							}
+							dialogInterface.dismiss();
+						})
+						.setNeutralButton(R.string.cancelButton, null);
+					materialAlertDialogBuilder.create().show();
 				}
 			}
 

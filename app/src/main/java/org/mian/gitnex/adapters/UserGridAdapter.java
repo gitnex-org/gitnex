@@ -102,7 +102,7 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
     private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
 
 	    User currentItem = membersList.get(position);
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+	    int imgRadius = AppUtil.getPixelsFromDensity(context, 0);
 
         PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
 

@@ -14,7 +14,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
+        app:elevation="@dimen/dimen0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -29,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/generalImgContentText"
-                android:paddingStart="0dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="@dimen/dimen0dp"
+                android:paddingEnd="@dimen/dimen8dp"
                 android:src="@drawable/ic_lock"
                 android:visibility="gone"
                 tools:visibility="visible" />
@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:textSize="18sp"
+                android:textSize="@dimen/dimen20sp"
                 android:textColor="?attr/primaryTextColor"
                 android:id="@+id/toolbar_title" />
 

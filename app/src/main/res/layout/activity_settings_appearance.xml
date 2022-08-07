@@ -10,8 +10,8 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:elevation="0dp"
+        android:layout_marginBottom="@dimen/dimen10dp"
+        app:elevation="@dimen/dimen0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -23,10 +23,10 @@
 
             <ImageView
                 android:id="@+id/close"
-                android:layout_width="@dimen/close_button_size"
-                android:layout_height="@dimen/close_button_size"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_width="@dimen/dimen26dp"
+                android:layout_height="@dimen/dimen26dp"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                android:layout_marginStart="@dimen/dimen16dp"
                 android:contentDescription="@string/close"
                 android:gravity="center_vertical"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -42,7 +42,7 @@
                 android:maxLines="1"
                 android:text="@string/settingsAppearanceHeader"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="20sp" />
+                android:textSize="@dimen/dimen20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -56,28 +56,28 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/themeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/themeSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <TextView
             android:id="@+id/themeSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/themeSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimen16sp" />
 
     </LinearLayout>
 
@@ -89,28 +89,28 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/lightThemeTimeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsLightThemeTimeSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <TextView
             android:id="@+id/lightThemeSelectedTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsThemeTimeSelectedHint"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimen16sp" />
 
     </LinearLayout>
 
@@ -122,28 +122,28 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/darkThemeTimeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsDarkThemeTimeSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <TextView
             android:id="@+id/darkThemeSelectedTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsThemeTimeSelectedHint"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimen16sp" />
 
     </LinearLayout>
 
@@ -155,28 +155,28 @@
         android:focusable="true"
         android:clickable="true"
         android:orientation="vertical"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/customFontHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsCustomFontHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <TextView
             android:id="@+id/customFontSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsCustomFontDefault"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimen16sp" />
 
     </LinearLayout>
 
@@ -188,28 +188,28 @@
         android:focusable="true"
         android:clickable="true"
         android:orientation="vertical"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/tvDateTimeHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsDateTimeHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <TextView
             android:id="@+id/tvDateTimeSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsDateTimeHeaderDefault"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimen16sp" />
 
     </LinearLayout>
 
@@ -219,30 +219,30 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen6dp">
 
         <TextView
             android:id="@+id/tvCounterBadgeHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen48dp"
             android:text="@string/settingsCounterBadges"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchCounterBadge"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="@dimen/dimen24dp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
             android:layout_toEndOf="@+id/tvCounterBadgeHeader"
             android:gravity="end"
-            android:paddingStart="0dp"
-            android:paddingEnd="24dp"
-            android:switchMinWidth="56dp" />
+            android:paddingStart="@dimen/dimen0dp"
+            android:paddingEnd="@dimen/dimen24dp"
+            android:switchMinWidth="@dimen/dimen56dp" />
 
     </RelativeLayout>
 
@@ -252,40 +252,40 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginBottom="5dp">
+        android:padding="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen60dp">
 
         <TextView
             android:id="@+id/tvLabelsInListHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen48dp"
             android:text="@string/settingsLabelsInListHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchLabelsInListBadge"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="@dimen/dimen32dp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
             android:layout_toEndOf="@+id/tvLabelsInListHeader"
             android:gravity="end"
-            android:paddingStart="0dp"
-            android:paddingEnd="24dp"
-            android:switchMinWidth="56dp" />
+            android:paddingStart="@dimen/dimen0dp"
+            android:paddingEnd="@dimen/dimen24dp"
+            android:switchMinWidth="@dimen/dimen56dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/switchLabelsInListBadge"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/settingsLabelsInListHint"
             android:textColor="?attr/hintColor"
-            android:textSize="12sp" />
+            android:textSize="@dimen/dimen12sp" />
 
     </RelativeLayout>
 

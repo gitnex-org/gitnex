@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityAdminCronTasksBinding;
@@ -45,11 +45,14 @@ public class AdminUnadoptedReposAdapter extends RecyclerView.Adapter<AdminUnadop
 
 			itemView.setOnClickListener(taskInfo -> {
 				String[] repoSplit = repoName.split("/");
-				new AlertDialog.Builder(ctx)
+
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
 					.setTitle(repoName).setMessage(ctx.getString(R.string.unadoptedReposMessage, repoSplit[1], repoSplit[0]))
 					.setNeutralButton(R.string.close, null)
 					.setPositiveButton(R.string.menuDeleteText, ((dialog, which) -> delete(ctx, repoName)))
-					.setNegativeButton(R.string.adoptRepo, ((dialog, which) -> adopt(ctx, repoName, getBindingAdapterPosition()))).show();
+					.setNegativeButton(R.string.adoptRepo, ((dialog, which) -> adopt(ctx, repoName, getBindingAdapterPosition())));
+
+				materialAlertDialogBuilder.create().show();
 			});
 		}
 	}

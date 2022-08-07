@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsTranslationBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
@@ -58,28 +58,24 @@ public class SettingsTranslationActivity extends BaseActivity {
 		// language dialog
 		langFrame.setOnClickListener(view -> {
 
-			AlertDialog.Builder lBuilder = new AlertDialog.Builder(SettingsTranslationActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.settingsLanguageSelectorDialogTitle)
+				.setCancelable(langSelectedChoice != -1)
+				.setNeutralButton(getString(R.string.cancelButton), null)
+				.setSingleChoiceItems(langs.values().toArray(new String[0]), langSelectedChoice, (dialogInterface, i) -> {
 
-			lBuilder.setTitle(R.string.settingsLanguageSelectorDialogTitle);
-			lBuilder.setCancelable(langSelectedChoice != -1);
+					String selectedLanguage = langs.keySet().toArray(new String[0])[i];
+					tinyDB.putInt("langId", i);
+					tinyDB.putString("locale", selectedLanguage);
 
-			lBuilder.setSingleChoiceItems(langs.values().toArray(new String[0]), langSelectedChoice, (dialogInterface, i) -> {
+					SettingsFragment.refreshParent = true;
+					this.overridePendingTransition(0, 0);
+					dialogInterface.dismiss();
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					this.recreate();
+				});
 
-				String selectedLanguage = langs.keySet().toArray(new String[0])[i];
-				tinyDB.putInt("langId", i);
-				tinyDB.putString("locale", selectedLanguage);
-
-				SettingsFragment.refreshParent = true;
-				this.overridePendingTransition(0, 0);
-				dialogInterface.dismiss();
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-				this.recreate();
-			});
-
-			lBuilder.setNeutralButton(getString(R.string.cancelButton), null);
-
-			AlertDialog lDialog = lBuilder.create();
-			lDialog.show();
+			materialAlertDialogBuilder.create().show();
 		});
 	}
 

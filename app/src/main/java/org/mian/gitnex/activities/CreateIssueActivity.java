@@ -2,10 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.CreateIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.Label;
@@ -50,14 +48,7 @@ import retrofit2.Callback;
 public class CreateIssueActivity extends BaseActivity implements View.OnClickListener, LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener {
 
 	private ActivityCreateIssueBinding viewBinding;
-	private CustomLabelsSelectionDialogBinding labelsBinding;
-	private CustomAssigneesSelectionDialogBinding assigneesBinding;
-    private View.OnClickListener onClickListener;
-    private int resultLimit;
-	private Dialog dialogLabels;
-	private Dialog dialogAssignees;
-	private String labelsSetter;
-	private String assigneesSetter;
+	private View.OnClickListener onClickListener;
 	private int milestoneId;
 	private Date currentDate = null;
 
@@ -65,6 +56,8 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
+
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
 	private List<Integer> labelsIds = new ArrayList<>();
 	private final List<Label> labelsList = new ArrayList<>();
@@ -85,9 +78,11 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
+	    materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
         repository = RepositoryContext.fromIntent(getIntent());
 
-	    resultLimit = Constants.getCurrentResultLimit(ctx);
+	    int resultLimit = Constants.getCurrentResultLimit(ctx);
 
 	    viewBinding.newIssueTitle.requestFocus();
         assert imm != null;
@@ -143,7 +138,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	@Override
 	public void assigneesInterface(List<String> data) {
 
-		assigneesSetter = String.valueOf(data);
+		String assigneesSetter = String.valueOf(data);
 		viewBinding.newIssueAssigneesList.setText(assigneesSetter.replace("]", "").replace("[", ""));
 		assigneesListData = data;
 	}
@@ -151,7 +146,7 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 	@Override
 	public void labelsInterface(List<String> data) {
 
-		labelsSetter = String.valueOf(data);
+		String labelsSetter = String.valueOf(data);
 		viewBinding.newIssueLabels.setText(labelsSetter.replace("]", "").replace("[", ""));
 	}
 
@@ -163,42 +158,31 @@ public class CreateIssueActivity extends BaseActivity implements View.OnClickLis
 
 	private void showAssignees() {
 
-		dialogAssignees = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
 
-		if (dialogAssignees.getWindow() != null) {
-
-			dialogAssignees.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
-		assigneesBinding = CustomAssigneesSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
-
+		CustomAssigneesSelectionDialogBinding assigneesBinding = CustomAssigneesSelectionDialogBinding.inflate(
+			LayoutInflater.from(ctx));
 		View view = assigneesBinding.getRoot();
-		dialogAssignees.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
-		assigneesBinding.save.setOnClickListener(assigneesBinding_ -> dialogAssignees.dismiss());
+		materialAlertDialogBuilder.setNeutralButton(R.string.close, null);
 
-		dialogAssignees.show();
-		AssigneesActions.getRepositoryAssignees(ctx, repository.getOwner(), repository.getName(), assigneesList, dialogAssignees, assigneesAdapter, assigneesBinding);
+		AssigneesActions.getRepositoryAssignees(ctx, repository.getOwner(), repository.getName(), assigneesList, materialAlertDialogBuilder, assigneesAdapter,
+			assigneesBinding, viewBinding.progressBar);
 	}
 
 	private void showLabels() {
 
-		dialogLabels = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
+		viewBinding.progressBar.setVisibility(View.VISIBLE);
 
-		if (dialogLabels.getWindow() != null) {
-
-			dialogLabels.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
-
-		labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
-
+		CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding.inflate(
+			LayoutInflater.from(ctx));
 		View view = labelsBinding.getRoot();
-		dialogLabels.setContentView(view);
+		materialAlertDialogBuilder.setView(view);
 
-		labelsBinding.save.setOnClickListener(labelsBinding_ -> dialogLabels.dismiss());
+		materialAlertDialogBuilder.setNeutralButton(R.string.close, null);
 
-		dialogLabels.show();
-		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, dialogLabels, labelsAdapter, labelsBinding);
+		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, materialAlertDialogBuilder, labelsAdapter, labelsBinding, viewBinding.progressBar);
 	}
 
     private void processNewIssue() {

@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
 import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
@@ -39,7 +39,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
 
     	private Label labels;
 
-        private final CardView labelView;
+        private final MaterialCardView labelView;
         private final ImageView labelIcon;
         private final TextView labelName;
 
@@ -143,4 +143,8 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
         return labelsList.size();
     }
 
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+	}
 }

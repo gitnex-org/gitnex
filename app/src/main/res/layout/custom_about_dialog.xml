@@ -7,24 +7,42 @@
     android:scrollbars="none"
     android:layout_width="wrap_content">
 
-    <RelativeLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_round_corners"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:layout_gravity="center">
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center"
+            tools:ignore="UselessParent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                style="?attr/materialCardViewFilledStyle"
+                app:cardCornerRadius="@dimen/dimen36dp">
+
+                <ImageView
+                    android:id="@+id/appLogo"
+                    android:layout_width="@dimen/dimen72dp"
+                    android:layout_height="@dimen/dimen72dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/app_logo"
+                    android:contentDescription="@string/appName" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="@dimen/dimen8dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -69,14 +87,6 @@
                     android:textStyle="bold"
                     android:textColor="?attr/primaryTextColor" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/dividerUserServerVersion"
-                    android:background="?attr/dividerColor"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
-
                 <TextView
                     android:id="@+id/userServerVersion"
                     android:layout_width="wrap_content"
@@ -101,19 +111,23 @@
                     android:textStyle="bold"
                     android:textColor="?attr/primaryTextColor" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/dividerSupport"
-                    android:background="?attr/dividerColor"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
-
                 <TextView
                     android:id="@+id/donationLinkPatreon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/supportTextPatreon"
+                    android:textColor="@color/lightBlue"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
+                    android:textSize="14sp"
+                    android:autoLink="web"
+                    android:textColorLink="@color/lightBlue" />
+
+                <TextView
+                    android:id="@+id/donationLinkBuyMeaCoffee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/supportTextBuyMeaCoffee"
                     android:textColor="@color/lightBlue"
                     android:paddingStart="28dp"
                     android:paddingEnd="28dp"
@@ -135,14 +149,6 @@
                     android:textStyle="bold"
                     android:textColor="?attr/primaryTextColor" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/dividerTranslate"
-                    android:background="?attr/dividerColor"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
-
                 <TextView
                     android:id="@+id/translateLink"
                     android:layout_width="match_parent"
@@ -162,44 +168,16 @@
 
             <Button
                 android:id="@+id/appWebsite"
-                android:layout_width="140dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen24dp"
                 android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
                 android:text="@string/websiteText"
                 android:textColor="@color/btnTextColor"
                 android:textSize="16sp" />
 
         </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="?attr/primaryBackgroundColor"
-                app:cardCornerRadius="48dp"
-                app:cardElevation="2dp"
-                app:contentPadding="4dp"
-                android:layout_gravity="center_horizontal"
-                tools:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/appLogo"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/app_logo"
-                    android:contentDescription="@string/appName" />
-
-            </androidx.cardview.widget.CardView>
-
-        </FrameLayout>
 
     </RelativeLayout>
 

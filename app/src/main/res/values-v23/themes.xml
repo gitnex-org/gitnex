@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Light theme -->
-    <style name="AppThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
@@ -39,12 +39,13 @@
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">0</item>
     </style>
     <!-- Light theme -->
 
     <!-- Retro theme -->
-    <style name="AppThemeRetro" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@color/retroThemeBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
@@ -82,6 +83,7 @@
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">0</item>
     </style>
     <!-- Retro theme -->

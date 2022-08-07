@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:layout_marginEnd="6dp"
+    android:layout_width="@dimen/dimen40dp"
+    android:layout_height="@dimen/dimen40dp"
+    style="?attr/materialCardViewFilledStyle"
+    android:layout_marginEnd="@dimen/dimen8dp"
     app:cardBackgroundColor="?attr/inputBackgroundColor"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="0dp">
+    app:cardCornerRadius="@dimen/dimen20dp"
+    app:cardElevation="@dimen/dimen0dp">
 
     <TextView
         android:id="@+id/symbol"
@@ -15,8 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="20dp"
+        android:textSize="@dimen/dimen20sp"
         tools:ignore="SpUsage"
         tools:text="👍" />
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

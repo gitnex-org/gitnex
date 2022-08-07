@@ -41,13 +41,22 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <ImageView
-                    android:id="@+id/userAvatar"
-                    android:layout_width="54dp"
-                    android:layout_height="54dp"
-                    android:layout_marginBottom="8dp"
-                    android:contentDescription="@string/generalImgContentText"
-                    android:src="@mipmap/app_logo_round" />
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen60dp"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_marginBottom="@dimen/dimen8dp"
+                    app:cardElevation="@dimen/dimen0dp"
+                    app:cardCornerRadius="@dimen/dimen32dp">
+
+                    <ImageView
+                        android:id="@+id/userAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/generalImgContentText"
+                        android:src="@mipmap/app_logo_round" />
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/userFullName"

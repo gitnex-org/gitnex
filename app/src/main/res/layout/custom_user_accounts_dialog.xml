@@ -30,10 +30,11 @@
     <Button
         android:id="@+id/newAccount"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
+        android:textStyle="bold"
         android:text="@string/addNewAccount"
         android:textColor="@color/colorWhite"
         android:textSize="16sp" />

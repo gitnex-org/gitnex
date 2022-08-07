@@ -101,7 +101,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		void bindData(User users) {
 
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 			userLoginId = users.getLogin();
 
@@ -127,7 +127,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				userRole.setVisibility(View.VISIBLE);
 				TextDrawable drawable = TextDrawable.builder().beginConfig()
-					.textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null)).fontSize(44).width(180).height(60)
+					.textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null)).fontSize(60).width(200).height(80)
 					.endConfig().buildRoundRect(context.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null), 8);
 				userRole.setImageDrawable(drawable);
 			}

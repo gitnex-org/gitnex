@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
@@ -115,26 +115,22 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		// theme selection dialog
 		themeFrame.setOnClickListener(view -> {
 
-			AlertDialog.Builder tsBuilder = new AlertDialog.Builder(SettingsAppearanceActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.themeSelectorDialogTitle)
+				.setSingleChoiceItems(themeList, themeSelectedChoice, (dialogInterfaceTheme, i) -> {
 
-			tsBuilder.setTitle(getResources().getString(R.string.themeSelectorDialogTitle));
-			tsBuilder.setCancelable(themeSelectedChoice != -1);
+					themeSelectedChoice = i;
+					activitySettingsAppearanceBinding.themeSelected.setText(themeList[i]);
+					tinyDB.putInt("themeId", i);
 
-			tsBuilder.setSingleChoiceItems(themeList, themeSelectedChoice, (dialogInterfaceTheme, i) -> {
+					SettingsFragment.refreshParent = true;
+					this.recreate();
+					this.overridePendingTransition(0, 0);
+					dialogInterfaceTheme.dismiss();
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 
-				themeSelectedChoice = i;
-				activitySettingsAppearanceBinding.themeSelected.setText(themeList[i]);
-				tinyDB.putInt("themeId", i);
-
-				SettingsFragment.refreshParent = true;
-				this.recreate();
-				this.overridePendingTransition(0, 0);
-				dialogInterfaceTheme.dismiss();
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
-
-			AlertDialog cfDialog = tsBuilder.create();
-			cfDialog.show();
+			materialAlertDialogBuilder.create().show();
 		});
 
 		lightTimeFrame.setOnClickListener(view -> {
@@ -150,59 +146,53 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		// custom font dialog
 		customFontFrame.setOnClickListener(view -> {
 
-			AlertDialog.Builder cfBuilder = new AlertDialog.Builder(SettingsAppearanceActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.settingsCustomFontSelectorDialogTitle)
+				.setCancelable(customFontSelectedChoice != -1)
+				.setSingleChoiceItems(customFontList, customFontSelectedChoice, (dialogInterfaceCustomFont, i) -> {
 
-			cfBuilder.setTitle(R.string.settingsCustomFontSelectorDialogTitle);
-			cfBuilder.setCancelable(customFontSelectedChoice != -1);
+					customFontSelectedChoice = i;
+					activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[i]);
+					tinyDB.putInt("customFontId", i);
+					AppUtil.typeface = null; // reset typeface
+					FontsOverride.setDefaultFont(this);
 
-			cfBuilder.setSingleChoiceItems(customFontList, customFontSelectedChoice, (dialogInterfaceCustomFont, i) -> {
+					SettingsFragment.refreshParent = true;
+					this.recreate();
+					this.overridePendingTransition(0, 0);
+					dialogInterfaceCustomFont.dismiss();
+					Toasty.success(appCtx, appCtx.getResources().getString(R.string.settingsSave));
+				});
 
-				customFontSelectedChoice = i;
-				activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[i]);
-				tinyDB.putInt("customFontId", i);
-				AppUtil.typeface = null; // reset typeface
-				FontsOverride.setDefaultFont(this);
-
-				SettingsFragment.refreshParent = true;
-				this.recreate();
-				this.overridePendingTransition(0, 0);
-				dialogInterfaceCustomFont.dismiss();
-				Toasty.success(appCtx, appCtx.getResources().getString(R.string.settingsSave));
-			});
-
-			AlertDialog cfDialog = cfBuilder.create();
-			cfDialog.show();
+			materialAlertDialogBuilder.create().show();
 		});
 
 		// time and date dialog
 		timeFrame.setOnClickListener(view -> {
 
-			AlertDialog.Builder tBuilder = new AlertDialog.Builder(SettingsAppearanceActivity.this);
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+				.setTitle(R.string.settingsTimeSelectorDialogTitle)
+				.setCancelable(timeSelectedChoice != -1)
+				.setSingleChoiceItems(timeList, timeSelectedChoice, (dialogInterfaceTime, i) -> {
 
-			tBuilder.setTitle(R.string.settingsTimeSelectorDialogTitle);
-			tBuilder.setCancelable(timeSelectedChoice != -1);
+					timeSelectedChoice = i;
+					activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[i]);
+					tinyDB.putInt("timeId", i);
 
-			tBuilder.setSingleChoiceItems(timeList, timeSelectedChoice, (dialogInterfaceTime, i) -> {
+					switch(i) {
+						case 0:
+							tinyDB.putString("dateFormat", "pretty");
+							break;
+						case 1:
+							tinyDB.putString("dateFormat", "normal");
+							break;
+					}
 
-				timeSelectedChoice = i;
-				activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[i]);
-				tinyDB.putInt("timeId", i);
+					dialogInterfaceTime.dismiss();
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 
-				switch(i) {
-					case 0:
-						tinyDB.putString("dateFormat", "pretty");
-						break;
-					case 1:
-						tinyDB.putString("dateFormat", "normal");
-						break;
-				}
-
-				dialogInterfaceTime.dismiss();
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
-
-			AlertDialog tDialog = tBuilder.create();
-			tDialog.show();
+			materialAlertDialogBuilder.create().show();
 		});
 
 	}

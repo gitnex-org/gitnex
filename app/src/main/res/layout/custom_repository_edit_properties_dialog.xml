@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/shape_round_corners"
+    android:padding="@dimen/dimen8dp"
     android:orientation="vertical">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -12,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        style="@style/Widget.Material3.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
     <androidx.core.widget.NestedScrollView
@@ -24,12 +23,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -182,12 +181,6 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:id="@+id/divider"
-                android:background="?attr/dividerColor" />
-
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/processingRequest"
                 android:layout_width="match_parent"
@@ -197,37 +190,15 @@
                 style="@style/Widget.MaterialComponents.LinearProgressIndicator"
                 app:indicatorColor="?attr/progressIndicatorColor" />
 
-            <RelativeLayout
+            <Button
+                android:id="@+id/save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:orientation="horizontal" >
-
-                <Button
-                    android:id="@+id/cancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    style="?android:attr/button"
-                    android:layout_alignParentStart="true"
-                    android:text="@string/cancelButton"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:id="@+id/save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    style="?android:attr/button"
-                    android:layout_alignParentEnd="true"
-                    android:text="@string/saveButton"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="16sp"
-                    tools:ignore="RelativeOverlap" />
-
-            </RelativeLayout>
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:text="@string/saveButton"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

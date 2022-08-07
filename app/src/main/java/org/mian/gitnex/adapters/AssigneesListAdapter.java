@@ -75,7 +75,7 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 	public void onBindViewHolder(@NonNull AssigneesListAdapter.AssigneesViewHolder holder, int position) {
 
 		User currentItem = assigneesList.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
 
 		if(currentItem.getFullName().equals("")) {
 

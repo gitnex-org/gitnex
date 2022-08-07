@@ -40,16 +40,16 @@
 
                 <ImageView
                     android:id="@+id/commitAuthorAvatar"
-                    android:layout_width="@dimen/list_avatar_size"
-                    android:layout_height="@dimen/list_avatar_size"
+                    android:layout_width="@dimen/dimen24dp"
+                    android:layout_height="@dimen/dimen24dp"
                     android:contentDescription="@string/generalImgContentText"
                     android:layout_marginEnd="5dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
                     android:id="@+id/commitCommitterAvatar"
-                    android:layout_width="@dimen/list_avatar_size"
-                    android:layout_height="@dimen/list_avatar_size"
+                    android:layout_width="@dimen/dimen24dp"
+                    android:layout_height="@dimen/dimen24dp"
                     android:layout_marginEnd="5dp"
                     android:contentDescription="@string/generalImgContentText"
                     tools:srcCompat="@tools:sample/avatars" />

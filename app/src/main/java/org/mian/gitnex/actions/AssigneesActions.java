@@ -1,9 +1,10 @@
 package org.mian.gitnex.actions;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -62,7 +63,7 @@ public class AssigneesActions {
 		});
 	}
 
-	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<User> assigneesList, Dialog dialogAssignees, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding) {
+	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<User> assigneesList, MaterialAlertDialogBuilder materialAlertDialogBuilder, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding, ProgressBar progressBar) {
 
 		Call<List<User>> call = RetrofitClient
 			.getApiInterface(ctx)
@@ -76,9 +77,6 @@ public class AssigneesActions {
 				assigneesList.clear();
 				List<User> assigneesList_ = response.body();
 
-				assigneesBinding.progressBar.setVisibility(View.GONE);
-				assigneesBinding.dialogFrame.setVisibility(View.VISIBLE);
-
 				if(response.code() == 200) {
 
 					assert assigneesList_ != null;
@@ -86,10 +84,10 @@ public class AssigneesActions {
 					if(assigneesList_.size() > 0) {
 
 						assigneesList.addAll(assigneesList_);
+						materialAlertDialogBuilder.show();
 					}
 					else {
 
-						dialogAssignees.dismiss();
 						Toasty.warning(ctx, ctx.getResources().getString(R.string.noAssigneesFound));
 					}
 
@@ -100,11 +98,17 @@ public class AssigneesActions {
 
 					Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
 				}
+				if(progressBar != null) {
+					progressBar.setVisibility(View.GONE);
+				}
 			}
 
 			@Override
 			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
+				if(progressBar != null) {
+					progressBar.setVisibility(View.GONE);
+				}
 				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
 			}
 		});

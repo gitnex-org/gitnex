@@ -6,18 +6,19 @@
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="@dimen/dimen16dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/labelView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="18dp"
-        app:cardElevation="0dp"
-        app:contentPaddingBottom="3dp"
-        app:contentPaddingLeft="10dp"
-        app:contentPaddingRight="10dp"
-        app:contentPaddingTop="3dp">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardCornerRadius="@dimen/dimen16dp"
+        app:cardElevation="@dimen/dimen0dp"
+        app:contentPaddingBottom="@dimen/dimen4dp"
+        app:contentPaddingLeft="@dimen/dimen12dp"
+        app:contentPaddingRight="@dimen/dimen12dp"
+        app:contentPaddingTop="@dimen/dimen4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,10 +28,10 @@
 
             <ImageView
                 android:id="@+id/labelIcon"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_width="@dimen/dimen16dp"
+                android:layout_height="@dimen/dimen16dp"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:layout_marginBottom="@dimen/dimen4dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/generalImgContentText"
                 app:tint="@color/colorWhite"
@@ -40,14 +41,14 @@
                 android:id="@+id/labelName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/dimen8dp"
                 android:layout_weight="1"
                 android:textColor="@color/colorWhite"
-                android:textSize="14sp"
+                android:textSize="@dimen/dimen14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.legacy.widget.Space
         android:layout_width="0dp"

@@ -121,7 +121,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		void bindData(org.gitnex.tea4j.v2.models.Repository repositories) {
 
 			this.userRepositories = repositories;
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat", "pretty");
@@ -133,7 +133,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			int color = generator.getColor(repositories.getName());
 			String firstCharacter = String.valueOf(repositories.getFullName().charAt(0));
 
-			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
+			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 14);
 
 			if(repositories.getAvatarUrl() != null) {
 				if(!repositories.getAvatarUrl().equals("")) {

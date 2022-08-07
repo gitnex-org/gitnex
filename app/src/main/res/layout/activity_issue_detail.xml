@@ -12,7 +12,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
+        app:elevation="@dimen/dimen0dp"
         android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -26,8 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_issue"
-                android:paddingStart="0dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="@dimen/dimen0dp"
+                android:paddingEnd="@dimen/dimen8dp"
                 android:visibility="gone"
                 android:contentDescription="@string/generalImgContentText" />
 
@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:textSize="18sp"
+                android:textSize="@dimen/dimen20sp"
                 android:textColor="?attr/primaryTextColor"
                 android:id="@+id/toolbar_title" />
 
@@ -48,16 +48,16 @@
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="@dimen/dimen56dp"
         android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        style="@style/Widget.Material3.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addNewComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/dimen16dp"
         android:text="@string/commentButtonText"
         android:contentDescription="@string/commentButtonText"
         android:textColor="@color/colorWhite"
@@ -69,7 +69,7 @@
     <RelativeLayout
         android:id="@+id/relativeMainLayoutFrame"
         android:layout_width="match_parent"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="@dimen/dimen56dp"
         android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -93,32 +93,42 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="15dp">
+                        android:padding="@dimen/dimen16dp">
 
-                        <ImageView
-                            android:id="@+id/assigneeAvatar"
-                            android:layout_width="@dimen/list_avatar_size"
-                            android:layout_height="@dimen/list_avatar_size"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@string/generalImgContentText" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/assigneeAvatarFrame"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            style="?attr/materialCardViewFilledStyle"
+                            app:cardElevation="@dimen/dimen0dp"
+                            android:layout_marginEnd="@dimen/dimen12dp"
+                            app:cardCornerRadius="@dimen/dimen12dp">
+
+                            <ImageView
+                                android:id="@+id/assigneeAvatar"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/generalImgContentText" />
+
+                        </com.google.android.material.card.MaterialCardView>
 
                         <TextView
                             android:id="@+id/issueTitle"
-                            android:layout_toEndOf="@+id/assigneeAvatar"
+                            android:layout_toEndOf="@+id/assigneeAvatarFrame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start"
                             android:textColor="?attr/primaryTextColor"
                             android:textIsSelectable="true"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/dimen16sp" />
 
                         <LinearLayout
                             android:id="@+id/msdueFrame"
-                            android:layout_toEndOf="@+id/assigneeAvatar"
+                            android:layout_toEndOf="@+id/assigneeAvatarFrame"
                             android:layout_below="@+id/issueTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/dimen10dp"
                             android:orientation="vertical">
 
                             <LinearLayout
@@ -131,7 +141,7 @@
                                 tools:ignore="UseCompoundDrawables">
 
                                 <ImageView
-                                    android:layout_width="18dp"
+                                    android:layout_width="@dimen/dimen20dp"
                                     android:layout_height="wrap_content"
                                     app:srcCompat="@drawable/ic_calendar"
                                     android:contentDescription="@string/generalImgContentText" />
@@ -140,10 +150,10 @@
                                     android:id="@+id/issueDueDate"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="8dp"
+                                    android:layout_marginStart="@dimen/dimen8dp"
                                     android:singleLine="true"
                                     android:textColor="?attr/primaryTextColor"
-                                    android:textSize="14sp" />
+                                    android:textSize="@dimen/dimen14sp" />
 
                             </LinearLayout>
 
@@ -157,7 +167,7 @@
                                 tools:ignore="UseCompoundDrawables">
 
                                 <ImageView
-                                    android:layout_width="18dp"
+                                    android:layout_width="@dimen/dimen20dp"
                                     android:layout_height="wrap_content"
                                     app:srcCompat="@drawable/ic_milestone"
                                     android:contentDescription="@string/generalImgContentText" />
@@ -166,10 +176,10 @@
                                     android:id="@+id/issueMilestone"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="8dp"
+                                    android:layout_marginStart="@dimen/dimen8dp"
                                     android:singleLine="true"
                                     android:textColor="?attr/primaryTextColor"
-                                    android:textSize="14sp" />
+                                    android:textSize="@dimen/dimen14sp" />
 
                             </LinearLayout>
 
@@ -192,7 +202,7 @@
                                 android:orientation="horizontal"
                                 android:layout_gravity="end"
                                 android:gravity="end"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="@dimen/dimen10dp">
 
                             </LinearLayout>
                         </HorizontalScrollView>
@@ -207,7 +217,7 @@
                             android:autoLink="web"
                             android:textColorLink="@color/lightBlue"
                             android:textIsSelectable="true"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/dimen14sp" />
 
                         <HorizontalScrollView
                             android:layout_below="@+id/issueDescription"
@@ -224,7 +234,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="@dimen/dimen10dp">
 
                             </LinearLayout>
                         </HorizontalScrollView>
@@ -235,7 +245,7 @@
                             android:id="@+id/issueTimeFrame"
                             android:layout_below="@+id/labelsScrollView"
                             android:orientation="horizontal"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="@dimen/dimen10dp">
 
                             <TextView
                                 android:id="@+id/issueCreatedTime"
@@ -244,7 +254,7 @@
                                 android:gravity="start"
                                 android:visibility="gone"
                                 android:textColor="?attr/hintColor"
-                                android:textSize="12sp" />
+                                android:textSize="@dimen/dimen12sp" />
 
                             <TextView
                                 android:id="@+id/issueModified"
@@ -252,7 +262,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="?attr/hintColor"
                                 android:layout_toEndOf="@+id/issueCreatedTime"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/dimen12sp"
                                 android:visibility="gone"
                                 android:text="@string/modifiedText" />
 
@@ -264,7 +274,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/issueTimeFrame"
                             android:visibility="gone"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/dimen10dp"
                             android:orientation="horizontal" />
 
                     </RelativeLayout>
@@ -272,7 +282,7 @@
                     <View
                         android:layout_below="@id/mainIssueLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/dimen1dp"
                         android:id="@+id/divider"
                         android:visibility="gone"
                         android:background="?attr/dividerColor" />
@@ -287,7 +297,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="?attr/primaryBackgroundColor"
-                            android:paddingBottom="64dp"
+                            android:paddingBottom="@dimen/dimen64dp"
                             android:clipToPadding="false"
                             android:scrollbars="vertical" />
 

@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.CreateTeamOption;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
@@ -96,43 +96,41 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
         teamPermission.setOnClickListener(view -> {
 
-            AlertDialog.Builder pBuilder = new AlertDialog.Builder(ctx);
 
-            pBuilder.setTitle(R.string.newTeamPermission);
-	        pBuilder.setCancelable(permissionSelectedChoice != -1);
+	        MaterialAlertDialogBuilder materialAlertDialogBuilderPerm = new MaterialAlertDialogBuilder(ctx)
+		        .setTitle(R.string.newTeamPermission)
+		        .setCancelable(permissionSelectedChoice != -1)
+		        .setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
 
-            pBuilder.setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
+			        permissionSelectedChoice = i;
+			        teamPermission.setText(permissionList[i]);
 
-                permissionSelectedChoice = i;
-                teamPermission.setText(permissionList[i]);
+			        switch(permissionList[i]) {
+				        case "Read":
 
-	            switch(permissionList[i]) {
-		            case "Read":
+					        teamPermissionDetail.setVisibility(View.VISIBLE);
+					        teamPermissionDetail.setText(R.string.newTeamPermissionRead);
+					        break;
+				        case "Write":
 
-			            teamPermissionDetail.setVisibility(View.VISIBLE);
-			            teamPermissionDetail.setText(R.string.newTeamPermissionRead);
-			            break;
-		            case "Write":
+					        teamPermissionDetail.setVisibility(View.VISIBLE);
+					        teamPermissionDetail.setText(R.string.newTeamPermissionWrite);
+					        break;
+				        case "Admin":
 
-			            teamPermissionDetail.setVisibility(View.VISIBLE);
-			            teamPermissionDetail.setText(R.string.newTeamPermissionWrite);
-			            break;
-		            case "Admin":
+					        teamPermissionDetail.setVisibility(View.VISIBLE);
+					        teamPermissionDetail.setText(R.string.newTeamPermissionAdmin);
+					        break;
+				        default:
 
-			            teamPermissionDetail.setVisibility(View.VISIBLE);
-			            teamPermissionDetail.setText(R.string.newTeamPermissionAdmin);
-			            break;
-		            default:
+					        teamPermissionDetail.setVisibility(View.GONE);
+					        break;
+			        }
 
-			            teamPermissionDetail.setVisibility(View.GONE);
-			            break;
-	            }
+			        dialogInterface.dismiss();
+		        });
 
-                dialogInterface.dismiss();
-            });
-
-            AlertDialog pDialog = pBuilder.create();
-            pDialog.show();
+	        materialAlertDialogBuilderPerm.create().show();
         });
 
         teamAccessControls.setOnClickListener(v -> {
@@ -141,68 +139,63 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
             teamAccessControlsArray.setText("");
             pushAccessList = Arrays.asList(accessControlsList);
 
-            AlertDialog.Builder aDialogBuilder = new AlertDialog.Builder(ctx);
+	        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+		        .setMultiChoiceItems(accessControlsList, selectedAccessControlsTrueFalse, (dialog, which, isChecked) -> {})
+		        .setTitle(R.string.newTeamAccessControls)
+		        .setPositiveButton(R.string.okButton, (dialog, which) -> {
 
-            aDialogBuilder.setMultiChoiceItems(accessControlsList, selectedAccessControlsTrueFalse, (dialog, which, isChecked) -> {
+		        int selectedVal = 0;
+		        while(selectedVal < selectedAccessControlsTrueFalse.length)
+		        {
+			        boolean value = selectedAccessControlsTrueFalse[selectedVal];
 
-            })
-                .setCancelable(false)
-                .setTitle(R.string.newTeamAccessControls)
-                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+			        String repoCode = "";
+			        if(selectedVal == 0) {
+				        repoCode = "repo.code";
+			        }
+			        if(selectedVal == 1) {
+				        repoCode = "repo.issues";
+			        }
+			        if(selectedVal == 2) {
+				        repoCode = "repo.pulls";
+			        }
+			        if(selectedVal == 3) {
+				        repoCode = "repo.releases";
+			        }
+			        if(selectedVal == 4) {
+				        repoCode = "repo.wiki";
+			        }
+			        if(selectedVal == 5) {
+				        repoCode = "repo.ext_wiki";
+			        }
+			        if(selectedVal == 6) {
+				        repoCode = "repo.ext_issues";
+			        }
 
-                    int selectedVal = 0;
-                    while(selectedVal < selectedAccessControlsTrueFalse.length)
-                    {
-                        boolean value = selectedAccessControlsTrueFalse[selectedVal];
+			        if(value){
 
-                        String repoCode = "";
-                        if(selectedVal == 0) {
-                            repoCode = "repo.code";
-                        }
-                        if(selectedVal == 1) {
-                            repoCode = "repo.issues";
-                        }
-                        if(selectedVal == 2) {
-                            repoCode = "repo.pulls";
-                        }
-                        if(selectedVal == 3) {
-                            repoCode = "repo.releases";
-                        }
-                        if(selectedVal == 4) {
-                            repoCode = "repo.wiki";
-                        }
-                        if(selectedVal == 5) {
-                            repoCode = "repo.ext_wiki";
-                        }
-                        if(selectedVal == 6) {
-                            repoCode = "repo.ext_issues";
-                        }
+				        teamAccessControls.setText(getString(R.string.newTeamPermissionValues, teamAccessControls.getText(), pushAccessList.get(selectedVal)));
+				        teamAccessControlsArray.setText(getString(R.string.newTeamPermissionValuesFinal, teamAccessControlsArray.getText(), repoCode));
+			        }
 
-                        if(value){
+			        selectedVal++;
+		        }
 
-                            teamAccessControls.setText(getString(R.string.newTeamPermissionValues, teamAccessControls.getText(), pushAccessList.get(selectedVal)));
-                            teamAccessControlsArray.setText(getString(R.string.newTeamPermissionValuesFinal, teamAccessControlsArray.getText(), repoCode));
-                        }
+		        String data = String.valueOf(teamAccessControls.getText());
+		        if(!data.equals("")) {
 
-                        selectedVal++;
-                    }
+			        teamAccessControls.setText(data.substring(0, data.length() - 2));
+		        }
 
-                    String data = String.valueOf(teamAccessControls.getText());
-                    if(!data.equals("")) {
+		        String dataArray = String.valueOf(teamAccessControlsArray.getText());
 
-                        teamAccessControls.setText(data.substring(0, data.length() - 2));
-                    }
+		        if(!dataArray.equals("")) {
 
-                    String dataArray = String.valueOf(teamAccessControlsArray.getText());
+			        teamAccessControlsArray.setText(dataArray.substring(0, dataArray.length() - 2));
+		        }
+	        });
 
-                    if(!dataArray.equals("")) {
-
-                        teamAccessControlsArray.setText(dataArray.substring(0, dataArray.length() - 2));
-                    }
-                });
-
-            AlertDialog aDialog = aDialogBuilder.create();
-            aDialog.show();
+	        materialAlertDialogBuilder.create().show();
         });
 
         createTeamButton.setEnabled(false);
