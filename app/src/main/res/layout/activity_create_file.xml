@@ -81,7 +81,6 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:inputType="textCapSentences"
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:textSize="@dimen/dimen16sp" />
@@ -105,16 +104,27 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/newFileContent"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen140dp"
+                    android:layout_height="@dimen/dimen180dp"
                     android:gravity="top|start"
-                    android:inputType="textMultiLine|textCapSentences"
+                    android:inputType="textMultiLine"
                     android:scrollbars="vertical"
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:textSize="@dimen/dimen14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/openCodeEditor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen2dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen14sp"
+                android:layout_gravity="end"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/openInCodeEditor" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/newFileBranchesLayout"

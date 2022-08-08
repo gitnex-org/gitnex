@@ -1,10 +1,13 @@
 package org.mian.gitnex.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import com.amrdeveloper.codeview.Code;
+import org.apache.commons.lang3.EnumUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityCodeEditorBinding;
 import org.mian.gitnex.helpers.codeeditor.CustomCodeViewAdapter;
@@ -25,7 +28,7 @@ public class CodeEditorActivity extends BaseActivity {
 
 	private ActivityCodeEditorBinding binding;
 	private LanguageManager languageManager;
-	private final LanguageName currentLanguage = LanguageName.JAVA;
+	private LanguageName currentLanguage = LanguageName.UNKNOWN;
 	private final ThemeName currentTheme = ThemeName.FIVE_COLOR;
 
 	@Override
@@ -34,13 +37,36 @@ public class CodeEditorActivity extends BaseActivity {
 		binding = ActivityCodeEditorBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		binding.close.setOnClickListener(view -> finish());
+		binding.close.setOnClickListener(view -> {
+			sendResults();
+			finish();
+		});
 
-		configCodeView(currentLanguage);
+		String fileContent = getIntent().getStringExtra("fileContent");
+		String fileExtension;
+
+		if(getIntent().getStringExtra("fileExtension") != null) {
+			fileExtension = getIntent().getStringExtra("fileExtension").toUpperCase();
+
+			if(EnumUtils.isValidEnum(LanguageName.class, fileExtension)) {
+				currentLanguage = LanguageName.valueOf(fileExtension);
+			}
+			else {
+				currentLanguage = LanguageName.UNKNOWN;
+			}
+		}
+
+		configCodeView(currentLanguage, fileContent);
 		configCodeViewPlugins();
 	}
 
-	private void configCodeView(LanguageName currentLanguage) {
+	private void sendResults() {
+		Intent intent = new Intent();
+		intent.putExtra("fileContentFromActivity", binding.codeView.getText().toString());
+		setResult(Activity.RESULT_OK, intent);
+	}
+
+	private void configCodeView(LanguageName currentLanguage, String fileContent) {
 
 		binding.codeView.setTypeface(Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf"));
 
@@ -69,6 +95,7 @@ public class CodeEditorActivity extends BaseActivity {
 		binding.codeView.setPairCompleteMap(pairCompleteMap);
 		binding.codeView.enablePairComplete(true);
 		binding.codeView.enablePairCompleteCenterCursor(true);
+		binding.codeView.setText(fileContent);
 
 		// Setup the auto complete and auto indenting for the current language
 		configLanguageAutoComplete();
