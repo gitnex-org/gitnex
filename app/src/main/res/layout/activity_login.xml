@@ -232,9 +232,10 @@
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen60dp"
+            android:layout_height="@dimen/dimen54dp"
             android:layout_marginTop="@dimen/dimen8dp"
             android:text="@string/btnLogin"
+            android:textStyle="bold"
             android:textColor="@color/btnTextColor" />
 
         <TextView

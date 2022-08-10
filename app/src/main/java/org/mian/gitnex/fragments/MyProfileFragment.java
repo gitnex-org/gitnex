@@ -156,7 +156,7 @@ public class MyProfileFragment extends Fragment {
 	    userFullName.setText(Html.fromHtml(account.getFullName()));
 	    userLogin.setText(getString(R.string.usernameWithAt, account.getAccount().getUserName()));
 
-	    int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 3);
+	    int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 60);
 
 	    PicassoService.getInstance(ctx).get().load(account.getUserInfo().getAvatarUrl()).transform(new RoundedTransformation(avatarRadius, 0)).placeholder(R.drawable.loader_animated).resize(120, 120).centerCrop().into(userAvatar);
 

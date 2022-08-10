@@ -12,8 +12,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
+            android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -23,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
         style="@style/Widget.Material3.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
@@ -30,11 +31,11 @@
         android:id="@+id/noData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/dimen16dp"
         android:gravity="center"
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="20sp"
+        android:textSize="@dimen/dimen20sp"
         android:visibility="gone" />
 
 </RelativeLayout>
