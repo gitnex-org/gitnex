@@ -62,6 +62,7 @@
         <item>@string/titleDrafts</item>
         <item>@string/pageTitleNotifications</item>
         <item>@string/navMyIssues</item>
+        <item>@string/navMostVisited</item>
     </string-array>
 
     <string-array name="linkHandlerDefaultScreen">

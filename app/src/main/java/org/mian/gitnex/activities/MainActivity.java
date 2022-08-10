@@ -406,6 +406,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyIssuesFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_my_issues);
 					break;
+				case 9:
+					toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MostVisitedReposFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_most_visited);
+					break;
 
 				default:
 					toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
