@@ -178,6 +178,7 @@
     </style>
     <!-- Pitch black theme -->
 
+    <!-- Custom Material cards -->
     <style name="CustomMaterCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.card.custom.corners</item>
     </style>
@@ -188,6 +189,14 @@
         <item name="cornerSizeTopLeft">@dimen/dimen32dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="CustomMaterialCardStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.custom.card</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.custom.card" parent="">
+        <item name="cornerFamily">rounded</item>
     </style>
 
     <!-- Material switch style -->

@@ -166,10 +166,10 @@
 
             </LinearLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/appWebsite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen54dp"
                 android:layout_margin="@dimen/dimen24dp"
                 android:layout_gravity="center_horizontal"
                 android:textStyle="bold"

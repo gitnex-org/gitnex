@@ -27,10 +27,10 @@
         android:id="@+id/divider"
         android:background="?attr/dividerColor" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/newAccount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen54dp"
         android:layout_margin="16dp"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"

@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -21,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.NotificationCount;
@@ -475,9 +475,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 					if(frag != null) {
 
-						new AlertDialog.Builder(ctx)
+						new MaterialAlertDialogBuilder(ctx)
 							.setTitle(R.string.deleteAllDrafts)
-							.setIcon(R.drawable.ic_delete)
 							.setCancelable(false)
 							.setMessage(R.string.deleteAllDraftsDialogMessage)
 							.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {

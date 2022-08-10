@@ -18,7 +18,6 @@
         android:layout_marginBottom="@dimen/dimen8dp"
         android:text="@string/newIssueSelectAssigneesListTitle" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assigneesRecyclerView"
         android:layout_width="match_parent"

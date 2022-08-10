@@ -229,7 +229,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen54dp"
