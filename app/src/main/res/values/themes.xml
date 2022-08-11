@@ -203,7 +203,7 @@
     </style>
 
     <!-- Material switch style -->
-    <style name="MaterialSwitch" parent="Widget.Material3.CompoundButton.Switch">
+    <style name="MaterialSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="switchMinWidth">@dimen/dimen32dp</item>
         <item name="minHeight">@dimen/dimen24dp</item>
         <item name="track">@drawable/switch_track</item>
