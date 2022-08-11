@@ -32,6 +32,7 @@
     <string name="navAdministration">Administration</string>
     <string name="navMyIssues">My Issues</string>
     <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navNotes">Notes</string>
     <!-- menu items -->
 
     <!-- page titles -->
@@ -784,4 +785,6 @@
     <!-- code editor -->
     <string name="sourcePosition" translatable="false">%1$d:%2$d</string>
     <string name="codeEditor" translatable="false">Code Editor</string>
+
+    <!-- notes -->
 </resources>
