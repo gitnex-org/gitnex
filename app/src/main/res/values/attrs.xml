@@ -15,5 +15,6 @@
     <attr name="fabColor" format="reference" />
     <attr name="iconsColor" format="reference" />
     <attr name="pagerTabIndicatorColor" format="reference" />
+    <attr name="materialCardBackgroundColor" format="reference" />
     <attr name="isDark" format="integer" />
 </resources>

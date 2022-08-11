@@ -13,7 +13,6 @@ import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
@@ -44,9 +43,6 @@ public class MyIssuesFragment extends Fragment {
 
 		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
 		fragmentIssuesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentIssuesBinding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
-		fragmentIssuesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		((MainActivity) requireActivity()).setFragmentRefreshListenerMyIssues(myIssues -> {
 
