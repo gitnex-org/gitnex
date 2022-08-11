@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewAccountActivity;
@@ -66,18 +65,19 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 
 			deleteAccount.setOnClickListener(itemDelete -> {
 
-				new AlertDialog.Builder(context)
-					.setIcon(AppCompatResources.getDrawable(context, R.drawable.ic_delete))
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
 					.setTitle(context.getResources().getString(R.string.removeAccountPopupTitle))
 					.setMessage(context.getResources().getString(R.string.removeAccountPopupMessage))
+					.setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
 					.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, which) -> {
 
 						updateLayoutByPosition(getBindingAdapterPosition());
 						UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
 						assert userAccountsApi != null;
 						userAccountsApi.deleteAccount(Integer.parseInt(String.valueOf(accountId)));
-					}).setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
-					.show();
+					});
+
+				materialAlertDialogBuilder.create().show();
 			});
 
 			itemView.setOnClickListener(switchAccount -> {
