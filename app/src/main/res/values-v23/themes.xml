@@ -11,6 +11,7 @@
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/lightThemeTextColor</item>
         <item name="colorOnSurfaceVariant">@color/lightThemeTextColor</item>
+        <item name="colorSecondaryContainer">@color/lightThemeColorSecondaryContainer</item>
 
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>

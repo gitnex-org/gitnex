@@ -11,6 +11,7 @@
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/colorWhite</item>
         <item name="colorOnSurfaceVariant">@color/colorWhite</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
 
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
@@ -56,6 +57,7 @@
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/lightThemeTextColor</item>
         <item name="colorOnSurfaceVariant">@color/lightThemeTextColor</item>
+        <item name="colorSecondaryContainer">@color/lightThemeColorSecondaryContainer</item>
 
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
@@ -144,6 +146,7 @@
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/pitchBlackThemeTextColor</item>
         <item name="colorOnSurfaceVariant">@color/pitchBlackThemeTextColor</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
 
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
