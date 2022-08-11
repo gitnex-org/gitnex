@@ -8,7 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.v2.models.CreateWikiPageOptions;
 import org.gitnex.tea4j.v2.models.WikiPage;
@@ -269,10 +269,10 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 
 	private void deleteWiki(final String owner, final String repo, final String pageName) {
 
-		new AlertDialog.Builder(ctx)
+		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
 			.setTitle(String.format(ctx.getString(R.string.deleteGenericTitle), pageName))
 			.setMessage(ctx.getString(R.string.deleteWikiPageMessage, pageName))
-			.setIcon(R.drawable.ic_delete)
+			.setNeutralButton(R.string.cancelButton, null)
 			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient
 				.getApiInterface(ctx).repoDeleteWikiPage(owner, repo, pageName).enqueue(new Callback<>() {
 
@@ -297,8 +297,9 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 
 						Toasty.error(ctx, ctx.getString(R.string.genericError));
 					}
-				}))
-			.setNeutralButton(R.string.cancelButton, null).show();
+				}));
+
+		materialAlertDialogBuilder.create().show();
 	}
 
 	@Override

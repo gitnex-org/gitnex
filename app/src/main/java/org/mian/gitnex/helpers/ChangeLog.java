@@ -5,8 +5,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.util.Log;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.HtmlCompat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -90,15 +90,13 @@ public class ChangeLog {
 
 		String changelogMessage = getChangelog(resId, res);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(changelogActivity);
+		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(changelogActivity)
+			.setTitle(R.string.changelogTitle)
+			.setMessage(HtmlCompat.fromHtml("<small>" + changelogMessage + "</small>", HtmlCompat.FROM_HTML_MODE_LEGACY))
+			.setCancelable(false)
+			.setNeutralButton(R.string.close, null);
 
-		builder.setTitle(R.string.changelogTitle);
-		builder.setMessage(HtmlCompat.fromHtml("<small>" + changelogMessage + "</small>", HtmlCompat.FROM_HTML_MODE_LEGACY));
-		builder.setNeutralButton(R.string.close, null);
-		builder.setCancelable(false);
-
-		builder.create().show();
-
+		materialAlertDialogBuilder.create().show();
 	}
 
 }
