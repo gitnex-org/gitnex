@@ -149,7 +149,7 @@
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/pitchBlackThemeTextColor</item>
         <item name="colorOnSurfaceVariant">@color/pitchBlackThemeTextColor</item>
-        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+        <item name="colorSecondaryContainer">@color/pitchBlackThemeColorSecondary</item>
         <item name="materialCardBackgroundColor">@color/pitchBlackThemeCardBackground</item>
 
         <item name="diffAddedColor">@color/diffAddedColor</item>

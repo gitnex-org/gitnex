@@ -63,7 +63,7 @@
     <color name="pitchBlackThemeTextColor">#d2d2d2</color>
     <color name="pitchBlackThemeDividerColor">#0E0E0E</color>
     <color name="pitchBlackThemeGeneralBackgroundColor">#151515</color>
-    <color name="pitchBlackThemeColorSecondary">#050505</color>
+    <color name="pitchBlackThemeColorSecondary">#1e2221</color>
     <color name="pitchBlackThemeCardBackground">#0C0C0C</color>
 
     <!-- code editor colors -->
