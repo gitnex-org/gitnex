@@ -106,15 +106,17 @@
         android:textSize="@dimen/dimen20sp"
         android:visibility="gone" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUserSearch"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor"
-        android:layout_marginStart="@dimen/dimen0dp"
-        android:layout_marginEnd="@dimen/dimen0dp"
-        android:layout_marginTop="@dimen/dimen6dp"
-        android:layout_marginBottom="@dimen/dimen0dp"
-        android:scrollbars="vertical" />
+        android:padding="@dimen/dimen8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewUserSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
 </LinearLayout>

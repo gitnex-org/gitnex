@@ -103,9 +103,6 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
 	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setHasFixedSize(true);
 	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setLayoutManager(new LinearLayoutManager(ctx));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.getContext(),
-                DividerItemDecoration.VERTICAL);
-	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.addItemDecoration(dividerItemDecoration);
 
 	    activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
 

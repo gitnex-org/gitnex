@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
@@ -50,9 +49,6 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setHasFixedSize(true);
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setLayoutManager(new LinearLayoutManager(ctx));
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(addNewTeamRepositoryBinding.recyclerViewTeamRepos.getContext(),	DividerItemDecoration.VERTICAL);
-		addNewTeamRepositoryBinding.recyclerViewTeamRepos.addItemDecoration(dividerItemDecoration);
 
 		dataList = new ArrayList<>();
 
