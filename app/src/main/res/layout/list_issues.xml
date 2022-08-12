@@ -21,7 +21,6 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
             android:padding="@dimen/dimen12dp"
-
             android:orientation="vertical">
 
             <LinearLayout

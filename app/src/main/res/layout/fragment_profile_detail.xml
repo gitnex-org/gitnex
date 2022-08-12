@@ -93,10 +93,10 @@
             app:strokeColor="?attr/colorPrimary">
 
             <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/dimen16dp">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dimen16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -82,61 +81,53 @@ public class SettingsSecurityActivity extends BaseActivity {
 		// biometric switcher
 		switchBiometric.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if(isChecked) {
 
-				if(isChecked) {
+				BiometricManager biometricManager = BiometricManager.from(ctx);
+				KeyguardManager keyguardManager = (KeyguardManager) ctx.getSystemService(Context.KEYGUARD_SERVICE);
 
-					BiometricManager biometricManager = BiometricManager.from(ctx);
-					KeyguardManager keyguardManager = (KeyguardManager) ctx.getSystemService(Context.KEYGUARD_SERVICE);
+				if (!keyguardManager.isDeviceSecure()) {
 
-					if (!keyguardManager.isDeviceSecure()) {
+					switch(biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
 
-						switch(biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
+						case BiometricManager.BIOMETRIC_SUCCESS:
 
-							case BiometricManager.BIOMETRIC_SUCCESS:
+							tinyDB.putBoolean("biometricStatus", true);
+							Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+							break;
+						case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+						case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+						case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+						case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
 
-								tinyDB.putBoolean("biometricStatus", true);
-								Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-								break;
-							case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-							case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
-							case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
-							case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+							tinyDB.putBoolean("biometricStatus", false);
+							switchBiometric.setChecked(false);
+							Toasty.error(appCtx, getResources().getString(R.string.biometricNotSupported));
+							break;
+						case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
 
-								tinyDB.putBoolean("biometricStatus", false);
-								switchBiometric.setChecked(false);
-								Toasty.error(appCtx, getResources().getString(R.string.biometricNotSupported));
-								break;
-							case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+							tinyDB.putBoolean("biometricStatus", false);
+							switchBiometric.setChecked(false);
+							Toasty.error(appCtx, getResources().getString(R.string.biometricNotAvailable));
+							break;
+						case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
 
-								tinyDB.putBoolean("biometricStatus", false);
-								switchBiometric.setChecked(false);
-								Toasty.error(appCtx, getResources().getString(R.string.biometricNotAvailable));
-								break;
-							case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-
-								tinyDB.putBoolean("biometricStatus", false);
-								switchBiometric.setChecked(false);
-								Toasty.info(appCtx, getResources().getString(R.string.enrollBiometric));
-								break;
-						}
-					}
-					else {
-
-						tinyDB.putBoolean("biometricStatus", true);
-						Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+							tinyDB.putBoolean("biometricStatus", false);
+							switchBiometric.setChecked(false);
+							Toasty.info(appCtx, getResources().getString(R.string.enrollBiometric));
+							break;
 					}
 				}
 				else {
 
-					tinyDB.putBoolean("biometricStatus", false);
+					tinyDB.putBoolean("biometricStatus", true);
 					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 				}
 			}
 			else {
 
 				tinyDB.putBoolean("biometricStatus", false);
-				Toasty.warning(appCtx, getResources().getString(R.string.biometricNotSupported));
+				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 			}
 
 		});
