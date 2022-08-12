@@ -12,6 +12,7 @@
     <string name="navLogout">Se déconnecter</string>
     <string name="navAdministration">Administration</string>
     <string name="navMyIssues">Mes tickets</string>
+    <string name="navMostVisited">Dépôts les plus visités</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nouveau dépôt</string>
