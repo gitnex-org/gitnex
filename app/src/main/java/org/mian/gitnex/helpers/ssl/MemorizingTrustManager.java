@@ -1,6 +1,5 @@
 package org.mian.gitnex.helpers.ssl;
 
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +9,7 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.SparseArray;
 import androidx.core.app.NotificationCompat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import java.io.ByteArrayInputStream;
@@ -562,15 +562,15 @@ public class MemorizingTrustManager implements X509TrustManager {
 		final int myId = createDecisionId(choice);
 
 		((BaseActivity) context).runOnUiThread(() -> {
-			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setTitle(titleId);
-			builder.setMessage(message);
 
-			builder.setPositiveButton(R.string.mtmDecisionAlways, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ALWAYS));
-			builder.setNeutralButton(R.string.mtmDecisionAbort, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ABORT));
-			builder.setOnCancelListener(dialog -> interactResult(myId, MTMDecision.DECISION_ABORT));
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
+				.setTitle(titleId)
+				.setMessage(message)
+				.setPositiveButton(R.string.mtmDecisionAlways, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ALWAYS))
+				.setNeutralButton(R.string.mtmDecisionAbort, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ABORT))
+				.setOnCancelListener(dialog -> interactResult(myId, MTMDecision.DECISION_ABORT));
 
-			builder.create().show();
+			materialAlertDialogBuilder.create().show();
 		});
 
 		try {
