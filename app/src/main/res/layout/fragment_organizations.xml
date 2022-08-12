@@ -5,19 +5,25 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefresh"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="?attr/primaryBackgroundColor"
+        android:padding="@dimen/dimen8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
-            android:scrollbars="vertical" />
+            android:layout_height="wrap_content">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
