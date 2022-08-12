@@ -150,6 +150,7 @@
                         app:tabMode="fixed"
                         app:tabIndicatorColor="?attr/colorPrimary"
                         app:tabIndicatorFullWidth="true"
+                        android:background="?attr/primaryBackgroundColor"
                         app:tabSelectedTextColor="@android:color/white"
                         app:tabTextColor="?attr/colorPrimary">
 

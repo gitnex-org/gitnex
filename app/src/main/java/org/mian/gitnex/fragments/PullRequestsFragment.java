@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.v2.models.PullRequest;
@@ -89,9 +88,7 @@ public class PullRequestsFragment extends Fragment {
 
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentPullRequestsBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		fragmentPullRequestsBinding.recyclerView.setHasFixedSize(true);
-		fragmentPullRequestsBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 		fragmentPullRequestsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentPullRequestsBinding.recyclerView.setAdapter(adapter);
 
