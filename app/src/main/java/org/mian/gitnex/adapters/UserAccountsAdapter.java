@@ -204,7 +204,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 			holder.accountUrl.setText(context.getString(R.string.notLoggedIn, url));
 		}
 
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 		PicassoService.getInstance(context).get()
 			.load(url + "assets/img/favicon.png")

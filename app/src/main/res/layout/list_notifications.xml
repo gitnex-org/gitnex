@@ -4,100 +4,105 @@
     android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:padding="16dp"
+    android:paddingTop="@dimen/dimen4dp"
+    android:paddingBottom="@dimen/dimen4dp"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_pull_request" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/subject"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_pull_request" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="18sp" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/repository"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textColor="?attr/primaryTextColor" />
+                <TextView
+                    android:id="@+id/subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="18sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/repository"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="?attr/primaryTextColor" />
 
-        <ImageView
-            android:id="@+id/pinnedVertical"
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:layout_marginStart="10dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/generalImgContentText"
-            app:srcCompat="@drawable/ic_pin" />
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            </LinearLayout>
 
             <ImageView
-                android:id="@+id/pinned"
+                android:id="@+id/pinnedVertical"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:visibility="gone"
+                android:layout_height="match_parent"
                 android:layout_gravity="top"
                 android:layout_marginStart="10dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/generalImgContentText"
                 app:srcCompat="@drawable/ic_pin" />
 
-            <ImageView
-                android:id="@+id/more"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="10dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/pinned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_gravity="top"
+                    android:layout_marginStart="10dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_pin" />
+
+                <ImageView
+                    android:id="@+id/more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="10dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/dividerColor" />
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
