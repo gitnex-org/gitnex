@@ -43,16 +43,17 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/addNewAccount"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen54dp"
                     android:text="@string/addNewAccountText"
                     android:textColor="@color/btnTextColor"
+                    android:textStyle="bold"
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen24dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/openInBrowser"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen60dp"
@@ -61,11 +62,12 @@
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen8dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/launchApp"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen54dp"
                     android:text="@string/launchApp"
+                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen8dp" />
@@ -91,47 +93,52 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/repository"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen54dp"
                     android:text="@string/navRepos"
+                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen24dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/organization"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen54dp"
                     android:text="@string/navOrg"
+                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen8dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/notification"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen54dp"
                     android:text="@string/pageTitleNotifications"
+                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen8dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/explore"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen54dp"
                     android:text="@string/pageTitleExplore"
+                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen8dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/launchApp2"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen54dp"
                     android:text="@string/launchApp"
+                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
                     android:layout_marginTop="@dimen/dimen8dp" />

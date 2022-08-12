@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
@@ -152,22 +152,17 @@ public class AddNewAccountActivity extends BaseActivity {
 
 					if(giteaVersion.less(getString(R.string.versionLow))) {
 
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
-							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setIcon(R.drawable.ic_warning)
-							.setCancelable(true);
+						MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
+							.setTitle(getString(R.string.versionAlertDialogHeader))
+							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
+							.setNeutralButton(getString(R.string.cancelButton), null)
+							.setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
 
-						alertDialogBuilder.setNeutralButton(getString(R.string.cancelButton), (dialog, which) -> {
+								dialog.dismiss();
+								login(instanceUrl, loginToken);
+							});
 
-							dialog.dismiss();
-						});
-
-						alertDialogBuilder.setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
-
-							dialog.dismiss();
-							login(instanceUrl, loginToken);
-						});
-
-						alertDialogBuilder.create().show();
+						materialAlertDialogBuilder.create().show();
 					}
 					else if(giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
 

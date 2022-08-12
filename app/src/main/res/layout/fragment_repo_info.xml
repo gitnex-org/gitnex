@@ -118,12 +118,22 @@
                     android:textColorLink="@color/lightBlue"
                     android:textSize="16sp" />
 
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/fragmentProfileCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
+                    app:strokeWidth="@dimen/dimen0dp"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:layout_marginBottom="@dimen/dimen12dp"
+                    style="@style/CustomMaterialCardStyle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen12dp"
+                        android:layout_marginBottom="@dimen/dimen12dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/repoMetaStarsFrame"
@@ -226,12 +236,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="?attr/dividerColor" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:id="@+id/repo_fork_frame"
@@ -248,7 +253,8 @@
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_fork" />
+                        app:srcCompat="@drawable/ic_fork"
+                        android:contentDescription="@string/generalImgContentText" />
 
                     <TextView
                         android:id="@+id/repo_fork"
@@ -386,13 +392,13 @@
 
                 </LinearLayout>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/repoAdditionalButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen54dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="@dimen/dimen6dp"
+                    android:layout_marginBottom="@dimen/dimen20dp"
                     android:text="@string/infoShowMoreInformation"
                     android:textColor="@color/btnTextColor" />
 
