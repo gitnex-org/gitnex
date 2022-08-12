@@ -12,7 +12,6 @@ import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminGetUsersAdapter;
@@ -55,9 +54,6 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 
 		activityAdminGetUsersBinding.recyclerView.setHasFixedSize(true);
 		activityAdminGetUsersBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activityAdminGetUsersBinding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
-		activityAdminGetUsersBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		activityAdminGetUsersBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 

@@ -12,6 +12,7 @@ public class DraftWithRepository {
 	private int repoAccountId;
 	private String repositoryOwner;
 	private String repositoryName;
+	private int mostVisited;
 
 	private int draftRepositoryId;
 	private int draftAccountId;
@@ -141,4 +142,11 @@ public class DraftWithRepository {
 		this.issueType = issueType;
 	}
 
+	public int getMostVisited() {
+		return mostVisited;
+	}
+
+	public void setMostVisited(int mostVisited) {
+		this.mostVisited = mostVisited;
+	}
 }

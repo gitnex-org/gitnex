@@ -24,8 +24,8 @@ import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.MembersByOrgFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
-import org.mian.gitnex.fragments.RepositoriesByOrgFragment;
-import org.mian.gitnex.fragments.TeamsByOrgFragment;
+import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
+import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
@@ -237,14 +237,14 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
                     return OrganizationInfoFragment.newInstance(orgName);
                 case 1: // repos
 
-	                return RepositoriesByOrgFragment.newInstance(orgName);
+	                return OrganizationRepositoriesFragment.newInstance(orgName);
 	            case 2: // labels
 
                     return OrganizationLabelsFragment.newInstance(orgName);
                 case 3: // teams / members
 
 	                if(isMember) {
-		                return TeamsByOrgFragment.newInstance(orgName, permissions);
+		                return OrganizationTeamsFragment.newInstance(orgName, permissions);
 	                } else {
 		                return MembersByOrgFragment.newInstance(orgName);
 	                }

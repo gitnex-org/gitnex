@@ -77,7 +77,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
 					.setTitle(StringUtils.capitalize(cronTasks.getName().replace("_", " ")))
 					.setView(view)
-					.setPositiveButton(ctx.getString(R.string.close), null);
+					.setNeutralButton(ctx.getString(R.string.close), null);
 
 				materialAlertDialogBuilder.create().show();
 			});

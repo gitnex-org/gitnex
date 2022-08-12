@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
 import org.gitnex.tea4j.v2.models.Release;
@@ -93,9 +92,6 @@ public class ReleasesFragment extends Fragment {
 
 	    fragmentReleasesBinding.recyclerView.setHasFixedSize(true);
 	    fragmentReleasesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentReleasesBinding.recyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-	    fragmentReleasesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 	    fragmentReleasesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 

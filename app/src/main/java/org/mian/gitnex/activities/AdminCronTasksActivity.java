@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.adapters.AdminCronTasksAdapter;
 import org.mian.gitnex.databinding.ActivityAdminCronTasksBinding;
@@ -47,10 +46,6 @@ public class AdminCronTasksActivity extends BaseActivity {
 
 		activityAdminCronTasksBinding.recyclerView.setHasFixedSize(true);
 		activityAdminCronTasksBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activityAdminCronTasksBinding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
-		activityAdminCronTasksBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		activityAdminCronTasksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 

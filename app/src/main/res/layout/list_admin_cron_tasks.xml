@@ -1,45 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="?attr/primaryBackgroundColor" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/dimen4dp"
+    android:paddingBottom="@dimen/dimen4dp">
 
-    <LinearLayout
-        android:id="@+id/cronTasksRun"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginEnd="15dp">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardElevation="@dimen/dimen0dp">
 
-        <ImageView
-            android:id="@+id/runTask"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="fitCenter"
-            android:contentDescription="@string/adminCron"
-            android:src="@drawable/ic_play" />
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/cronTasksRun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="@dimen/dimen16dp">
 
-    <LinearLayout
-        android:id="@+id/cronTasksInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/cronTasksRun"
-        android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/runTask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/adminCron"
+                    android:src="@drawable/ic_play" />
 
-        <TextView
-            android:id="@+id/taskName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/userName"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            </LinearLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/cronTasksInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/taskName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen6dp"
+                    android:text="@string/userName"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

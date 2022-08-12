@@ -30,14 +30,14 @@ import retrofit2.Response;
  * @author M M Arif
  */
 
-public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSearchForTeamMemberAdapter.UserSearchViewHolder> {
+public class OrganizationAddUserToTeamMemberAdapter extends RecyclerView.Adapter<OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder> {
 
 	private final List<User> usersSearchList;
 	private final Context context;
 	private final int teamId;
 	private final String orgName;
 
-	public UserSearchForTeamMemberAdapter(List<User> dataList, Context ctx, int teamId, String orgName) {
+	public OrganizationAddUserToTeamMemberAdapter(List<User> dataList, Context ctx, int teamId, String orgName) {
 		this.context = ctx;
 		this.usersSearchList = dataList;
 		this.teamId = teamId;
@@ -87,13 +87,13 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 	@NonNull
 	@Override
-	public UserSearchForTeamMemberAdapter.UserSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	public OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
-		return new UserSearchForTeamMemberAdapter.UserSearchViewHolder(v);
+		return new OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull final UserSearchForTeamMemberAdapter.UserSearchViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder holder, int position) {
 
 		User currentItem = usersSearchList.get(position);
 		holder.userInfo = currentItem;

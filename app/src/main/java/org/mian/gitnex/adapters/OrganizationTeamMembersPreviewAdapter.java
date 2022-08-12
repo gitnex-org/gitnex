@@ -18,12 +18,12 @@ import java.util.List;
  * @author opyale
  */
 
-public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMembersByOrgPreviewAdapter.ViewHolder> {
+public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<OrganizationTeamMembersPreviewAdapter.ViewHolder> {
 
 	private final Context context;
 	private final List<User> userData;
 
-	public TeamMembersByOrgPreviewAdapter(Context context, List<User> userInfo) {
+	public OrganizationTeamMembersPreviewAdapter(Context context, List<User> userInfo) {
 		this.context = context;
 		this.userData = userInfo;
 	}

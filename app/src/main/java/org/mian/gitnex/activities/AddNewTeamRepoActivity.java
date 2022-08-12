@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.TeamRepositoriesAdapter;
+import org.mian.gitnex.adapters.OrganizationTeamRepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.AddNewTeamRepositoryBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -27,7 +27,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 	private AddNewTeamRepositoryBinding addNewTeamRepositoryBinding;
 	private View.OnClickListener onClickListener;
 	private List<Repository> dataList;
-	private TeamRepositoriesAdapter adapter;
+	private OrganizationTeamRepositoriesAdapter adapter;
 	private int resultLimit;
 
 	private long teamId;
@@ -78,7 +78,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 						dataList.clear();
 						dataList.addAll(response.body());
 
-						adapter = new TeamRepositoriesAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"), teamName);
+						adapter = new OrganizationTeamRepositoriesAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"), teamName);
 
 						addNewTeamRepositoryBinding.recyclerViewTeamRepos.setAdapter(adapter);
 						addNewTeamRepositoryBinding.noData.setVisibility(View.GONE);

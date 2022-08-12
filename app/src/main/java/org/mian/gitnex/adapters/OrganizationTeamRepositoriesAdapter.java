@@ -31,7 +31,7 @@ import retrofit2.Response;
  * @author M M Arif
  */
 
-public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositoriesAdapter.TeamReposViewHolder> {
+public class OrganizationTeamRepositoriesAdapter extends RecyclerView.Adapter<OrganizationTeamRepositoriesAdapter.TeamReposViewHolder> {
 
 	private final List<Repository> reposList;
 	private final Context context;
@@ -40,7 +40,7 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 	private final String teamName;
 	private final List<Repository> reposArr;
 
-	public TeamRepositoriesAdapter(List<Repository> dataList, Context ctx, int teamId, String orgName, String teamName) {
+	public OrganizationTeamRepositoriesAdapter(List<Repository> dataList, Context ctx, int teamId, String orgName, String teamName) {
 		this.context = ctx;
 		this.reposList = dataList;
 		this.teamId = teamId;
@@ -68,7 +68,7 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 			//addRepoButtonAdd.setVisibility(View.VISIBLE);
 			//addRepoButtonRemove.setVisibility(View.GONE);
 
-			new Handler(Looper.getMainLooper()).postDelayed(TeamRepositoriesAdapter.this::getTeamRepos, 200);
+			new Handler(Looper.getMainLooper()).postDelayed(OrganizationTeamRepositoriesAdapter.this::getTeamRepos, 200);
 
 			new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -97,13 +97,13 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 
 	@NonNull
 	@Override
-	public TeamRepositoriesAdapter.TeamReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	public OrganizationTeamRepositoriesAdapter.TeamReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
-		return new TeamRepositoriesAdapter.TeamReposViewHolder(v);
+		return new OrganizationTeamRepositoriesAdapter.TeamReposViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull final TeamRepositoriesAdapter.TeamReposViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final OrganizationTeamRepositoriesAdapter.TeamReposViewHolder holder, int position) {
 
 		Repository currentItem = reposList.get(position);
 		holder.repoInfo = currentItem;

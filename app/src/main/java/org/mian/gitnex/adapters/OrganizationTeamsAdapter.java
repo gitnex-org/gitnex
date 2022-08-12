@@ -29,7 +29,7 @@ import retrofit2.Response;
  * @author M M Arif
  */
 
-public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.OrgTeamsViewHolder> implements Filterable {
+public class OrganizationTeamsAdapter extends RecyclerView.Adapter<OrganizationTeamsAdapter.OrgTeamsViewHolder> implements Filterable {
 
     private final List<Team> teamList;
     private final Context context;
@@ -47,7 +47,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
         private final LinearLayout membersPreviewFrame;
 
 	    private final List<User> userInfos;
-        private final TeamMembersByOrgPreviewAdapter adapter;
+        private final OrganizationTeamMembersPreviewAdapter adapter;
         private String orgName;
 
         private OrgTeamsViewHolder(View itemView) {
@@ -60,7 +60,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
 	        RecyclerView membersPreview = itemView.findViewById(R.id.membersPreview);
 
 	        userInfos = new ArrayList<>();
-            adapter = new TeamMembersByOrgPreviewAdapter(itemView.getContext(), userInfos);
+            adapter = new OrganizationTeamMembersPreviewAdapter(itemView.getContext(), userInfos);
 
             membersPreview.setLayoutManager(new LinearLayoutManager(itemView.getContext(), RecyclerView.HORIZONTAL, false));
             membersPreview.setAdapter(adapter);
@@ -77,7 +77,7 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
         }
     }
 
-    public TeamsByOrgAdapter(Context ctx, List<Team> teamListMain, OrganizationPermissions permissions, String orgName) {
+    public OrganizationTeamsAdapter(Context ctx, List<Team> teamListMain, OrganizationPermissions permissions, String orgName) {
         this.context = ctx;
         this.teamList = teamListMain;
         this.permissions = permissions;
@@ -87,13 +87,13 @@ public class TeamsByOrgAdapter extends RecyclerView.Adapter<TeamsByOrgAdapter.Or
 
     @NonNull
     @Override
-    public TeamsByOrgAdapter.OrgTeamsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_teams_by_org, parent, false);
-        return new TeamsByOrgAdapter.OrgTeamsViewHolder(v);
+    public OrganizationTeamsAdapter.OrgTeamsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_organization_teams, parent, false);
+        return new OrganizationTeamsAdapter.OrgTeamsViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TeamsByOrgAdapter.OrgTeamsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrganizationTeamsAdapter.OrgTeamsViewHolder holder, int position) {
 
         Team currentItem = teamList.get(position);
 

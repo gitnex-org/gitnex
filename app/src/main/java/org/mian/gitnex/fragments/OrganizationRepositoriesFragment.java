@@ -26,7 +26,7 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
  * @author M M Arif
  */
 
-public class RepositoriesByOrgFragment extends Fragment {
+public class OrganizationRepositoriesFragment extends Fragment {
 
 	private RepositoriesViewModel repositoriesViewModel;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
@@ -36,10 +36,10 @@ public class RepositoriesByOrgFragment extends Fragment {
 	private static final String getOrgName = null;
 	private String orgName;
 
-    public RepositoriesByOrgFragment() { }
+    public OrganizationRepositoriesFragment() { }
 
-    public static RepositoriesByOrgFragment newInstance(String orgName) {
-        RepositoriesByOrgFragment fragment = new RepositoriesByOrgFragment();
+    public static OrganizationRepositoriesFragment newInstance(String orgName) {
+        OrganizationRepositoriesFragment fragment = new OrganizationRepositoriesFragment();
         Bundle args = new Bundle();
         args.putString(getOrgName, orgName);
         fragment.setArguments(args);
