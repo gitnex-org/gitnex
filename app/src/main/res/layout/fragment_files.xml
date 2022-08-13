@@ -15,29 +15,53 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <moe.feng.common.view.breadcrumbs.BreadcrumbsView
-            android:id="@+id/breadcrumbs_view"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:saveEnabled="false"
-            android:text="@string/filesBreadcrumbRoot"
-            app:CustomTextSize="16sp"
-            app:SelectedTextColor="?attr/primaryTextColor"
-            app:UnSelectedTextColor="@color/lightGray" />
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_margin="@dimen/dimen8dp"
+            app:cardElevation="@dimen/dimen0dp">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/pullToRefresh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/primaryBackgroundColor"
-                android:scrollbars="vertical" />
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="?attr/materialCardBackgroundColor"
+                android:orientation="horizontal">
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <moe.feng.common.view.breadcrumbs.BreadcrumbsView
+                        android:id="@+id/breadcrumbs_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:saveEnabled="false"
+                        android:text="@string/filesBreadcrumbRoot"
+                        app:CustomTextSize="@dimen/dimen16sp"
+                        app:SelectedTextColor="?attr/primaryTextColor"
+                        app:UnSelectedTextColor="@color/lightGray" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/primaryBackgroundColor"
+            android:padding="@dimen/dimen8dp">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/pullToRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
 
