@@ -500,11 +500,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 				assert issueCommentsMain != null;
 
-				if(issueCommentsMain.size() > 0) {
-
-					viewBinding.divider.setVisibility(View.VISIBLE);
-				}
-
 				Bundle bundle = new Bundle();
 				bundle.putString("repoOwner", repoOwner);
 				bundle.putString("repoName", repoName);
