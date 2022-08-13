@@ -66,12 +66,10 @@
                 android:layout_marginBottom="@dimen/dimen8dp" />
 
             <LinearLayout
-                android:id="@+id/repo_info_stars_frame"
+                android:id="@+id/repo_info_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="@dimen/dimen18dp"
@@ -90,6 +88,28 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen14sp"
                     tools:text="@string/repoStars" />
+
+                <LinearLayout
+                    android:id="@+id/repo_info_end_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:gravity="center_vertical|end"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/dimen6dp"
+                    android:paddingEnd="@dimen/dimen6dp">
+
+                    <ImageView
+                        android:id="@+id/reset_counter"
+                        android:layout_width="@dimen/dimen18dp"
+                        android:layout_height="@dimen/dimen18dp"
+                        android:layout_marginStart="@dimen/dimen16dp"
+                        android:layout_marginEnd="@dimen/dimen2dp"
+                        android:contentDescription="@string/generalImgContentText"
+                        app:srcCompat="@drawable/ic_reset"
+                        app:tint="?attr/iconsColor" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

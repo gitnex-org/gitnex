@@ -34,7 +34,7 @@
                 android:id="@+id/orgInfoFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
@@ -43,8 +43,8 @@
                     android:id="@+id/imageAvatar"
                     android:layout_width="@dimen/dimen24dp"
                     android:layout_height="@dimen/dimen24dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/dimen0dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:contentDescription="@string/repoContentAvatar"
                     android:src="@drawable/ic_android" />
 
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/dimen14sp"
                     tools:text="@string/orgName" />
 
             </LinearLayout>
@@ -64,16 +64,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/repoName"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="18sp"
+                android:textSize="@dimen/dimen18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/repoDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="15sp"
+                android:textSize="@dimen/dimen16sp"
                 android:visibility="gone"
                 android:text="@string/noDataDescription" />
 
@@ -81,7 +81,7 @@
                 android:id="@+id/spacerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="@dimen/dimen8dp" />
 
             <LinearLayout
                 android:id="@+id/repoInfoFrame"
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/hintColor"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/dimen12sp"
                     tools:text="@string/lastUpdatedAt" />
 
                 <LinearLayout
@@ -104,14 +104,14 @@
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical|end"
                     android:orientation="horizontal"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
+                    android:paddingStart="@dimen/dimen6dp"
+                    android:paddingEnd="@dimen/dimen6dp">
 
                     <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_width="@dimen/dimen18dp"
+                        android:layout_height="@dimen/dimen18dp"
+                        android:layout_marginStart="@dimen/dimen4dp"
+                        android:layout_marginEnd="@dimen/dimen6dp"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_star"
                         app:tint="?attr/iconsColor" />
@@ -122,14 +122,14 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/dimen14sp"
                         tools:text="@string/repoStars" />
 
                     <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_width="@dimen/dimen18dp"
+                        android:layout_height="@dimen/dimen18dp"
+                        android:layout_marginStart="@dimen/dimen16dp"
+                        android:layout_marginEnd="@dimen/dimen2dp"
                         android:contentDescription="@string/generalImgContentText"
                         android:visibility="gone"
                         app:srcCompat="@drawable/ic_star"
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/dimen14sp"
                         android:visibility="gone"
                         tools:text="Java" />
 
