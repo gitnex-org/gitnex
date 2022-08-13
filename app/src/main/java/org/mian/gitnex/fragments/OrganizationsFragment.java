@@ -55,7 +55,7 @@ public class OrganizationsFragment extends Fragment {
 		fragmentOrganizationsBinding.recyclerView.setHasFixedSize(true);
 		fragmentOrganizationsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-		fragmentOrganizationsBinding.recyclerView.setPadding(0, 0, 0, 240);
+		fragmentOrganizationsBinding.recyclerView.setPadding(0, 0, 0, 220);
 		fragmentOrganizationsBinding.recyclerView.setClipToPadding(false);
 
 		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {

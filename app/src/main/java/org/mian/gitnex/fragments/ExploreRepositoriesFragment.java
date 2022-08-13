@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -83,9 +82,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 			}
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		viewBinding.recyclerViewReposSearch.setHasFixedSize(true);
-		viewBinding.recyclerViewReposSearch.addItemDecoration(dividerItemDecoration);
 		viewBinding.recyclerViewReposSearch.setLayoutManager(new LinearLayoutManager(context));
 		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
 

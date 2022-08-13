@@ -21,9 +21,9 @@ import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
-import org.mian.gitnex.fragments.MembersByOrgFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
+import org.mian.gitnex.fragments.OrganizationMembersFragment;
 import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AppUtil;
@@ -246,12 +246,12 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 	                if(isMember) {
 		                return OrganizationTeamsFragment.newInstance(orgName, permissions);
 	                } else {
-		                return MembersByOrgFragment.newInstance(orgName);
+		                return OrganizationMembersFragment.newInstance(orgName);
 	                }
                 case 4: // members
 
 	                if(isMember) {
-		                return MembersByOrgFragment.newInstance(orgName);
+		                return OrganizationMembersFragment.newInstance(orgName);
 	                }
             }
             return fragment;

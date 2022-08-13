@@ -31,7 +31,7 @@ public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(context).inflate(R.layout.list_members_by_org_preview, parent, false);
+		View v = LayoutInflater.from(context).inflate(R.layout.list_organization_members_preview, parent, false);
 		return new ViewHolder(v);
 	}
 

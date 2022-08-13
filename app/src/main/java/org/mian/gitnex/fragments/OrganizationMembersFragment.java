@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
-import org.mian.gitnex.databinding.FragmentMembersByOrgBinding;
+import org.mian.gitnex.databinding.FragmentOrganizationMembersBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.viewmodels.MembersByOrgViewModel;
 
@@ -24,7 +24,7 @@ import org.mian.gitnex.viewmodels.MembersByOrgViewModel;
  * @author M M Arif
  */
 
-public class MembersByOrgFragment extends Fragment {
+public class OrganizationMembersFragment extends Fragment {
 
     private TextView noDataMembers;
     private static String orgNameF = "param2";
@@ -33,11 +33,11 @@ public class MembersByOrgFragment extends Fragment {
     private GridView mGridView;
     private ProgressBar progressBar;
 
-    public MembersByOrgFragment() {
+    public OrganizationMembersFragment() {
     }
 
-    public static MembersByOrgFragment newInstance(String param1) {
-        MembersByOrgFragment fragment = new MembersByOrgFragment();
+    public static OrganizationMembersFragment newInstance(String param1) {
+        OrganizationMembersFragment fragment = new OrganizationMembersFragment();
         Bundle args = new Bundle();
         args.putString(orgNameF, param1);
         fragment.setArguments(args);
@@ -53,10 +53,10 @@ public class MembersByOrgFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-	    FragmentMembersByOrgBinding fragmentMembersByOrgBinding = FragmentMembersByOrgBinding.inflate(inflater, container, false);
+	    FragmentOrganizationMembersBinding fragmentMembersByOrgBinding = FragmentOrganizationMembersBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
         noDataMembers = fragmentMembersByOrgBinding.noDataMembers;
