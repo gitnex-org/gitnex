@@ -15,10 +15,10 @@
         android:textColor="?attr/primaryTextColor"
         android:padding="16dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/updatePullMerge"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen54dp"
         android:layout_marginStart="@dimen/dimen16dp"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen8dp"
@@ -27,14 +27,14 @@
         android:textStyle="bold"
         android:text="@string/updateStrategyMerge" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/updatePullRebase"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen54dp"
         android:textColor="@color/colorWhite"
         android:layout_marginStart="@dimen/dimen16dp"
         android:layout_marginEnd="@dimen/dimen16dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="@dimen/dimen8dp"
         android:layout_marginBottom="@dimen/dimen8dp"
         android:textStyle="bold"
         android:text="@string/updateStrategyRebase" />

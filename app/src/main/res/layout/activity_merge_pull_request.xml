@@ -181,10 +181,10 @@
                 android:gravity="start"
                 android:layout_marginTop="@dimen/dimen16dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/mergeButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:textStyle="bold"
                 android:text="@string/mergePullRequestButtonText"

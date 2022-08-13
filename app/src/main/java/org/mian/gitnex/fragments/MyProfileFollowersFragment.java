@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -64,9 +63,7 @@ public class MyProfileFollowersFragment extends Fragment {
 		    }
 	    }));
 
-	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 	    viewBinding.recyclerView.setHasFixedSize(true);
-	    viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 	    viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 	    viewBinding.recyclerView.setAdapter(adapter);
 

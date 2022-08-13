@@ -28,6 +28,7 @@
     <color name="dividerColorDark">#1d1d1d</color>
     <color name="lightYellow">#efd34a</color>
     <color name="warningColor">#dbb109</color>
+    <color name="colorSecondaryContainer">#1f2926</color>
 
     <color name="lightThemeDiffRemovedColor">#FCEDED</color>
     <color name="lightThemeDiffAddedColor">#EAF8ED</color>
@@ -38,6 +39,7 @@
     <color name="lightThemInputSelected">#C9CCCC</color>
     <color name="lightThemeInputTextColor">#212121</color>
     <color name="lightThemeDividerColor">#dbdbdb</color>
+    <color name="lightThemeColorSecondaryContainer">#dbe3e1</color>
 
     <color name="retroThemeDiffRemovedColor">#fad6d6</color>
     <color name="retroThemeDiffAddedColor">#d0f7d9</color>
