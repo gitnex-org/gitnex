@@ -28,7 +28,7 @@
     <color name="dividerColorDark">#1d1d1d</color>
     <color name="lightYellow">#efd34a</color>
     <color name="warningColor">#dbb109</color>
-    <color name="colorSecondaryContainer">#1f2926</color>
+    <color name="colorSecondaryContainer">#2A322E</color>
     <color name="cardBackground">#1e2221</color>
 
     <color name="lightThemeDiffRemovedColor">#FCEDED</color>
@@ -40,7 +40,7 @@
     <color name="lightThemInputSelected">#C9CCCC</color>
     <color name="lightThemeInputTextColor">#212121</color>
     <color name="lightThemeDividerColor">#dbdbdb</color>
-    <color name="lightThemeColorSecondaryContainer">#dbe3e1</color>
+    <color name="lightThemeColorSecondaryContainer">#D9E1DF</color>
     <color name="lightThemeCardBackground">#ffffff</color>
 
     <color name="retroThemeDiffRemovedColor">#fad6d6</color>
@@ -63,7 +63,7 @@
     <color name="pitchBlackThemeTextColor">#d2d2d2</color>
     <color name="pitchBlackThemeDividerColor">#0E0E0E</color>
     <color name="pitchBlackThemeGeneralBackgroundColor">#151515</color>
-    <color name="pitchBlackThemeColorSecondary">#1e2221</color>
+    <color name="pitchBlackThemeColorSecondary">#161918</color>
     <color name="pitchBlackThemeCardBackground">#0C0C0C</color>
 
     <!-- code editor colors -->
