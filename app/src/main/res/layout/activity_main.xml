@@ -47,6 +47,7 @@
         android:layout_gravity="start"
         android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
+        android:background="?attr/primaryBackgroundColor"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

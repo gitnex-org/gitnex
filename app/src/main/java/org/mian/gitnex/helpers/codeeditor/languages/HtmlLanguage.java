@@ -16,15 +16,13 @@ import java.util.regex.Pattern;
  * @author M M Arif
  */
 
-public class PhpLanguage {
+public class HtmlLanguage {
 
 	//Language Keywords
-	private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(<?php|__construct|var_dump|define|echo|var|float|" +
-		"int|bool|false|true|function|private|public|protected|interface|return|copy|struct|abstract|extends|" +
-		"trait|static|namespace|implements|__set|__get|unlink|this|try|catch|Throwable|Exception|pdo|" +
-		"str_replace|form|date|abs|min|max|strtotime|mktime|" +
-		"foreach|require_once|include_once|hash|array|range|break|continue|preg_match|preg_match_all|preg_replace|" +
-		"throw|new|and|or|if|else|elseif|switch|case|default|match|require|include|goto|do|while|for|map|)\\b");
+	private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(<html|<DOCTYPE|<head|<title|<body|<style|<script|src|href" +
+		"<h1|<h2|<h3|<h4|<h5|<h6|<br|<hr|<section|<header|<footer|<select|<img|<embed|<iframe|<div|<p|code|strong|small|template|" +
+		"input|form|textarea|button|option|label|fieldset|legend|datalist|frame|map|area|canvas|picture|svg|audio|source|track|video|" +
+		"link|nav|ul|ol|li|table|caption|th|tr|td|thead|tbody|tfooter|col|span|main|article|aside|meta|base|noscript|object|param|)\\b");
 
 	//Brackets and Colons
 	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
@@ -67,7 +65,7 @@ public class PhpLanguage {
 	}
 
 	public static String[] getKeywords(Context context) {
-		return context.getResources().getStringArray(R.array.php_keywords);
+		return context.getResources().getStringArray(R.array.html_keywords);
 	}
 
 	public static List<Code> getCodeList(Context context) {

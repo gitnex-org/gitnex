@@ -1,9 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--HTML Keywords List-->
+    <string-array name="html_keywords">
+        <item><![CDATA[<html]]></item>
+        <item><![CDATA[<DOCTYPE]]></item>
+        <item><![CDATA[<head]]></item>
+        <item><![CDATA[<title]]></item>
+        <item><![CDATA[<body]]></item>
+        <item><![CDATA[<h1]]></item>
+        <item><![CDATA[<h2]]></item>
+        <item><![CDATA[<h3]]></item>
+        <item><![CDATA[<h4]]></item>
+        <item><![CDATA[<h5]]></item>
+        <item><![CDATA[<h6]]></item>
+        <item><![CDATA[<br]]></item>
+        <item><![CDATA[<hr]]></item>
+        <item><![CDATA[<section]]></item>
+        <item><![CDATA[<header]]></item>
+        <item><![CDATA[<footer]]></item>
+        <item><![CDATA[<select]]></item>
+        <item><![CDATA[<img]]></item>
+        <item><![CDATA[<embed]]></item>
+        <item><![CDATA[<iframe]]></item>
+        <item><![CDATA[<style]]></item>
+        <item><![CDATA[<script]]></item>
+        <item><![CDATA[<div]]></item>
+        <item><![CDATA[<p]]></item>
+        <item>code</item>
+        <item>strong</item>
+        <item>small</item>
+        <item>template</item>
+        <item>form</item>
+        <item>input</item>
+        <item>textarea</item>
+        <item>button</item>
+        <item>option</item>
+        <item>label</item>
+        <item>fieldset</item>
+        <item>legend</item>
+        <item>datalist</item>
+        <item>frame</item>
+        <item>map</item>
+        <item>area</item>
+        <item>canvas</item>
+        <item>picture</item>
+        <item>svg</item>
+        <item>audio</item>
+        <item>source</item>
+        <item>track</item>
+        <item>video</item>
+        <item>link</item>
+        <item>nav</item>
+        <item>ul</item>
+        <item>ol</item>
+        <item>li</item>
+        <item>table</item>
+        <item>caption</item>
+        <item>th</item>
+        <item>tr</item>
+        <item>td</item>
+        <item>thead</item>
+        <item>tbody</item>
+        <item>tfooter</item>
+        <item>col</item>
+        <item>span</item>
+        <item>main</item>
+        <item>article</item>
+        <item>aside</item>
+        <item>meta</item>
+        <item>base</item>
+        <item>noscript</item>
+        <item>object</item>
+        <item>param</item>
+        <item>src</item>
+        <item>href</item>
+    </string-array>
+
+    <!--XML Keywords List-->
+    <string-array name="xml_keywords">
+        <item><![CDATA[<xml]]></item>
+        <item>encoding</item>
+        <item>version</item>
+    </string-array>
+
     <!--PHP Keywords List-->
     <string-array name="php_keywords">
-        <item>php</item>
+        <item><![CDATA[<?php]]></item>
         <item>__construct</item>
         <item>var_dump</item>
         <item>define</item>

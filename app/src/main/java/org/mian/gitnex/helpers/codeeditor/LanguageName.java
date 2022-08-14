@@ -10,5 +10,7 @@ public enum LanguageName {
 	JAVA, // java
 	PY, // python with py extension
 	GO, // go lang
-	PHP // php
+	PHP, // php
+	XML, // xml
+	HTML // html
 }

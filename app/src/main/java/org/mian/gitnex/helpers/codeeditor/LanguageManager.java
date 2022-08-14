@@ -4,9 +4,11 @@ import android.content.Context;
 import com.amrdeveloper.codeview.Code;
 import com.amrdeveloper.codeview.CodeView;
 import org.mian.gitnex.helpers.codeeditor.languages.GoLanguage;
+import org.mian.gitnex.helpers.codeeditor.languages.HtmlLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.JavaLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.PhpLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.PythonLanguage;
+import org.mian.gitnex.helpers.codeeditor.languages.XmlLanguage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +42,8 @@ public class LanguageManager {
 			case PY: return PythonLanguage.getKeywords(context);
 			case GO: return GoLanguage.getKeywords(context);
 			case PHP: return PhpLanguage.getKeywords(context);
+			case XML: return XmlLanguage.getKeywords(context);
+			case HTML: return HtmlLanguage.getKeywords(context);
 			default: return new String[]{};
 		}
 	}
@@ -50,6 +54,8 @@ public class LanguageManager {
 			case PY: return PythonLanguage.getCodeList(context);
 			case GO: return GoLanguage.getCodeList(context);
 			case PHP: return PhpLanguage.getCodeList(context);
+			case XML: return XmlLanguage.getCodeList(context);
+			case HTML: return HtmlLanguage.getCodeList(context);
 			default: return new ArrayList<>();
 		}
 	}
@@ -60,6 +66,8 @@ public class LanguageManager {
 			case PY: return PythonLanguage.getIndentationStarts();
 			case GO: return GoLanguage.getIndentationStarts();
 			case PHP: return PhpLanguage.getIndentationStarts();
+			case XML: return XmlLanguage.getIndentationStarts();
+			case HTML: return HtmlLanguage.getIndentationStarts();
 			default: return new HashSet<>();
 		}
 	}
@@ -70,6 +78,8 @@ public class LanguageManager {
 			case PY: return PythonLanguage.getIndentationEnds();
 			case GO: return GoLanguage.getIndentationEnds();
 			case PHP: return PhpLanguage.getIndentationEnds();
+			case XML: return XmlLanguage.getIndentationEnds();
+			case HTML: return HtmlLanguage.getIndentationEnds();
 			default: return new HashSet<>();
 		}
 	}
@@ -87,6 +97,12 @@ public class LanguageManager {
 				break;
 			case PHP:
 				PhpLanguage.applyFiveColorsDarkTheme(context, codeView);
+				break;
+			case XML:
+				XmlLanguage.applyFiveColorsDarkTheme(context, codeView);
+				break;
+			case HTML:
+				HtmlLanguage.applyFiveColorsDarkTheme(context, codeView);
 				break;
 		}
 	}

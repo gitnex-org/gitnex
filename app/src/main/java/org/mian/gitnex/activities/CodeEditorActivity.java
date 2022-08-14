@@ -73,7 +73,7 @@ public class CodeEditorActivity extends BaseActivity {
 		// Setup Line number feature
 		binding.codeView.setEnableLineNumber(true);
 		binding.codeView.setLineNumberTextColor(Color.GRAY);
-		binding.codeView.setLineNumberTextSize(44f);
+		binding.codeView.setLineNumberTextSize(32f);
 
 		// Setup Auto indenting feature
 		binding.codeView.setTabLength(4);
