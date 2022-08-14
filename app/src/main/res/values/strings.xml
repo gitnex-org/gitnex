@@ -789,4 +789,5 @@
     <!-- code editor -->
     <string name="sourcePosition" translatable="false">%1$d:%2$d</string>
     <string name="codeEditor" translatable="false">Code Editor</string>
+    <string name="openInCodeEditor">Open in Code Editor</string>
 </resources>
