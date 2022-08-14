@@ -37,11 +37,13 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 
         private final ImageView memberAvatar;
         private final TextView memberName;
+		private final TextView userName;
 
         ViewHolder(View v) {
 
             memberAvatar = v.findViewById(R.id.userAvatarImageView);
             memberName = v.findViewById(R.id.userNameTv);
+	        userName = v.findViewById(R.id.userName);
 
 	        v.setOnClickListener(loginId -> {
 		        Intent intent = new Intent(context, ProfileActivity.class);
@@ -111,10 +113,12 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
         if(!currentItem.getFullName().equals("")) {
 
             viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
+	        viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
         }
         else {
 
             viewHolder.memberName.setText(currentItem.getLogin());
+	        viewHolder.userName.setVisibility(View.GONE);
         }
     }
 

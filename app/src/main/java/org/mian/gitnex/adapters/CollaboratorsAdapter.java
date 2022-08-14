@@ -33,11 +33,13 @@ public class CollaboratorsAdapter extends BaseAdapter  {
 
         private final ImageView collaboratorAvatar;
         private final TextView collaboratorName;
+	    private final TextView userName;
 
         ViewHolder(View v) {
 
             collaboratorAvatar  = v.findViewById(R.id.collaboratorAvatar);
             collaboratorName  = v.findViewById(R.id.collaboratorName);
+	        userName = v.findViewById(R.id.userName);
 
 	        collaboratorAvatar.setOnClickListener(loginId -> {
 		        Intent intent = new Intent(context, ProfileActivity.class);
@@ -106,10 +108,12 @@ public class CollaboratorsAdapter extends BaseAdapter  {
         if(!currentItem.getFullName().equals("")) {
 
             viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
+	        viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
         }
         else {
 
             viewHolder.collaboratorName.setText(currentItem.getLogin());
+	        viewHolder.userName.setVisibility(View.GONE);
         }
 
     }
