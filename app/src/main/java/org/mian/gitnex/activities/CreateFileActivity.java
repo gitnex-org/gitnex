@@ -1,6 +1,7 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +11,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import org.apache.commons.io.FilenameUtils;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreateFileOptions;
 import org.gitnex.tea4j.v2.models.DeleteFileOptions;
@@ -27,6 +31,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -97,7 +102,6 @@ public class CreateFileActivity extends BaseActivity {
 
 		    binding.newFileNameLayout.setVisibility(View.GONE);
 		    binding.newFileContentLayout.setVisibility(View.GONE);
-
 	    }
 
 	    if(getIntent().getStringExtra("filePath") != null && getIntent().getIntExtra("fileAction", FILE_ACTION_EDIT) == FILE_ACTION_EDIT) {
@@ -114,19 +118,37 @@ public class CreateFileActivity extends BaseActivity {
 		    binding.newFileName.setFocusable(false);
 
 		    binding.newFileContent.setText(getIntent().getStringExtra("fileContents"));
-
 	    }
 
         getBranches(repository.getOwner(), repository.getName());
 
         disableProcessButton();
 
+		binding.openCodeEditor.setOnClickListener(v ->
+			launchCodeEditorActivityForResult(Objects.requireNonNull(binding.newFileContent.getText()).toString(), FilenameUtils.getExtension(String.valueOf(binding.newFileName.getText())))
+		);
+
 	    NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 	    networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> runOnUiThread(() -> binding.newFileCreate.setEnabled(hasNetworkConnection)));
 
 	    binding.newFileCreate.setOnClickListener(v -> processNewFile());
-
     }
+
+	public void launchCodeEditorActivityForResult(String fileContent, String fileExtension) {
+		Intent intent = new Intent(this, CodeEditorActivity.class);
+		intent.putExtra("fileExtension", fileExtension);
+		intent.putExtra("fileContent", fileContent);
+		codeEditorActivityResultLauncher.launch(intent);
+	}
+
+	ActivityResultLauncher<Intent> codeEditorActivityResultLauncher = registerForActivityResult(
+		new ActivityResultContracts.StartActivityForResult(), result -> {
+			if(result.getResultCode() == Activity.RESULT_OK) {
+				Intent data = result.getData();
+				assert data != null;
+				binding.newFileContent.setText(data.getStringExtra("fileContentFromActivity"));
+			}
+		});
 
     private void processNewFile() {
 
@@ -170,7 +192,6 @@ public class CreateFileActivity extends BaseActivity {
             case FILE_ACTION_EDIT:
 	            editFile(repository.getOwner(), repository.getName(), filePath, AppUtil.encodeBase64(newFileContent), newFileCommitMessage, newFileBranchName, fileSha);
                 break;
-
         }
     }
 
@@ -179,9 +200,11 @@ public class CreateFileActivity extends BaseActivity {
         CreateFileOptions createNewFileJsonStr = new CreateFileOptions();
 		createNewFileJsonStr.setContent(fileContent);
 		createNewFileJsonStr.setMessage(fileCommitMessage);
+
 		if(branches.contains(branchName)) {
 			createNewFileJsonStr.setBranch(branchName);
-		} else {
+		}
+		else {
 			createNewFileJsonStr.setNewBranch(branchName);
 		}
 
@@ -189,50 +212,47 @@ public class CreateFileActivity extends BaseActivity {
                 .getApiInterface(ctx)
                 .repoCreateFile(createNewFileJsonStr, repoOwner, repoName, fileName);
 
-        call.enqueue(new Callback<FileResponse>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<FileResponse> call, @NonNull retrofit2.Response<FileResponse> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<FileResponse> call, @NonNull retrofit2.Response<FileResponse> response) {
 
-            	switch(response.code()) {
+		        switch(response.code()) {
 
-		            case 201:
-			            enableProcessButton();
-			            Toasty.success(ctx, getString(R.string.newFileSuccessMessage));
-			            Intent result = new Intent();
-			            result.putExtra("fileModified", true);
-						result.putExtra("fileAction", fileAction);
-			            setResult(200, result);
-			            finish();
-		            	break;
+			        case 201:
+				        enableProcessButton();
+				        Toasty.success(ctx, getString(R.string.newFileSuccessMessage));
+				        Intent result = new Intent();
+				        result.putExtra("fileModified", true);
+				        result.putExtra("fileAction", fileAction);
+				        setResult(200, result);
+				        finish();
+				        break;
 
-		            case 401:
-			            enableProcessButton();
-			            AlertDialogs.authorizationTokenRevokedDialog(ctx);
-		            	break;
+			        case 401:
+				        enableProcessButton();
+				        AlertDialogs.authorizationTokenRevokedDialog(ctx);
+				        break;
 
-		            case 404:
-			            enableProcessButton();
-			            Toasty.warning(ctx, getString(R.string.apiNotFound));
-		            	break;
+			        case 404:
+				        enableProcessButton();
+				        Toasty.warning(ctx, getString(R.string.apiNotFound));
+				        break;
 
-		            default:
-			            enableProcessButton();
-			            Toasty.error(ctx, getString(R.string.genericError));
-		            	break;
+			        default:
+				        enableProcessButton();
+				        Toasty.error(ctx, getString(R.string.genericError));
+				        break;
+		        }
+	        }
 
-	            }
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {
 
-            @Override
-            public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {
-
-                Log.e("onFailure", t.toString());
-                enableProcessButton();
-
-            }
+		        Log.e("onFailure", t.toString());
+		        enableProcessButton();
+	        }
         });
-
     }
 
 	private void deleteFile(String repoOwner, String repoName, String fileName, String fileCommitMessage, String branchName, String fileSha) {
@@ -240,9 +260,11 @@ public class CreateFileActivity extends BaseActivity {
     	DeleteFileOptions deleteFileJsonStr = new DeleteFileOptions();
 		deleteFileJsonStr.setMessage(fileCommitMessage);
 		deleteFileJsonStr.setSha(fileSha);
+
 		if(branches.contains(branchName)) {
 			deleteFileJsonStr.setBranch(branchName);
-		} else {
+		}
+		else {
 			deleteFileJsonStr.setNewBranch(branchName);
 		}
 
@@ -250,7 +272,7 @@ public class CreateFileActivity extends BaseActivity {
 			.getApiInterface(ctx)
 			.repoDeleteFileWithBody(repoOwner, repoName, fileName, deleteFileJsonStr);
 
-		call.enqueue(new Callback<FileDeleteResponse>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<FileDeleteResponse> call, @NonNull retrofit2.Response<FileDeleteResponse> response) {
@@ -281,7 +303,6 @@ public class CreateFileActivity extends BaseActivity {
 						enableProcessButton();
 						Toasty.info(ctx, getString(R.string.genericError));
 						break;
-
 				}
 			}
 
@@ -292,7 +313,6 @@ public class CreateFileActivity extends BaseActivity {
 				enableProcessButton();
 			}
 		});
-
 	}
 
 	private void editFile(String repoOwner, String repoName, String fileName, String fileContent, String fileCommitMessage, String branchName, String fileSha) {
@@ -301,9 +321,11 @@ public class CreateFileActivity extends BaseActivity {
 		editFileJsonStr.setContent(fileContent);
 		editFileJsonStr.setMessage(fileCommitMessage);
 		editFileJsonStr.setSha(fileSha);
+
 		if(branches.contains(branchName)) {
 			editFileJsonStr.setBranch(branchName);
-		} else {
+		}
+		else {
 			editFileJsonStr.setNewBranch(branchName);
 		}
 
@@ -311,7 +333,7 @@ public class CreateFileActivity extends BaseActivity {
 			.getApiInterface(ctx)
 			.repoUpdateFile(editFileJsonStr, repoOwner, repoName, fileName);
 
-		call.enqueue(new Callback<FileResponse>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<FileResponse> call, @NonNull retrofit2.Response<FileResponse> response) {
@@ -342,7 +364,6 @@ public class CreateFileActivity extends BaseActivity {
 						enableProcessButton();
 						Toasty.info(ctx, getString(R.string.genericError));
 						break;
-
 				}
 			}
 
@@ -351,10 +372,8 @@ public class CreateFileActivity extends BaseActivity {
 
 				Log.e("onFailure", t.toString());
 				enableProcessButton();
-
 			}
 		});
-
 	}
 
     private void getBranches(String repoOwner, String repoName) {
@@ -363,33 +382,32 @@ public class CreateFileActivity extends BaseActivity {
                 .getApiInterface(ctx)
                 .repoListBranches(repoOwner, repoName, null, null);
 
-        call.enqueue(new Callback<List<Branch>>() {
+        call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Branch>> call, @NonNull retrofit2.Response<List<Branch>> response) {
+	        @Override
+	        public void onResponse(@NonNull Call<List<Branch>> call, @NonNull retrofit2.Response<List<Branch>> response) {
 
-                if(response.code() == 200) {
+		        if(response.code() == 200) {
 
-                	assert response.body() != null;
-                    for(Branch branch : response.body()) branches.add(branch.getName());
+			        assert response.body() != null;
+			        for(Branch branch : response.body())
+				        branches.add(branch.getName());
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateFileActivity.this, R.layout.list_spinner_items, branches);
+			        ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateFileActivity.this, R.layout.list_spinner_items, branches);
 
-	                binding.newFileBranches.setAdapter(adapter);
-	                binding.newFileBranches.setText(repository.getBranchRef(), false);
+			        binding.newFileBranches.setAdapter(adapter);
+			        binding.newFileBranches.setText(repository.getBranchRef(), false);
 
-	                enableProcessButton();
+			        enableProcessButton();
+		        }
+	        }
 
-                }
-            }
+	        @Override
+	        public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
 
-            @Override
-            public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
-
-                Log.e("onFailure", t.toString());
-            }
+		        Log.e("onFailure", t.toString());
+	        }
         });
-
     }
 
     private void disableProcessButton() { binding.newFileCreate.setEnabled(false); }
@@ -400,5 +418,4 @@ public class CreateFileActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }
