@@ -4,11 +4,11 @@
     android:id="@+id/fileFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
     android:background="?android:attr/selectableItemBackground"
     android:focusable="true"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/fileTypeIs"
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:contentDescription="@string/generalImgContentText"
-        android:src="@drawable/ic_file" />
+        android:src="@drawable/ic_file"/>
 
     <LinearLayout
         android:id="@+id/infoSection"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="@string/defaultFilename"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:id="@+id/infoRow"
@@ -46,7 +46,7 @@
                 android:textColor="?attr/hintColor"
                 android:textSize="12sp"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"/>
 
         </LinearLayout>
 

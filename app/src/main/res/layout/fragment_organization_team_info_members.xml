@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,12 +23,12 @@
             android:id="@+id/members"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
+            android:columnWidth="80dp"
+            android:gravity="center"
             android:horizontalSpacing="10dp"
             android:numColumns="4"
-            android:columnWidth="80dp"
-            android:stretchMode="columnWidth"
-            android:background="?attr/primaryBackgroundColor"
-            android:gravity="center"/>
+            android:stretchMode="columnWidth"/>
 
         <TextView
             android:id="@+id/noDataMembers"
@@ -39,7 +39,7 @@
             android:text="@string/noDataFound"
             android:textColor="?attr/primaryTextColor"
             android:textSize="18sp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </LinearLayout>
 

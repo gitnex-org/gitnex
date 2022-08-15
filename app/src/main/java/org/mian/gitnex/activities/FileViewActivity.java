@@ -8,11 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.NotificationCompat;
@@ -23,12 +19,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityFileViewBinding;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
-import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.Images;
-import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -48,25 +39,82 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 	private ActivityFileViewBinding binding;
 	private ContentsResponse file;
 	private RepositoryContext repository;
+	ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+
+		if(result.getResultCode() == Activity.RESULT_OK) {
+
+			assert result.getData() != null;
+
+			try {
+
+				OutputStream outputStream = getContentResolver().openOutputStream(result.getData().getData());
+
+				NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx, ctx.getPackageName()).setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
+					.setContentText(getString(R.string.fileViewerNotificationDescriptionStarted, file.getName())).setSmallIcon(R.drawable.gitnex_transparent).setPriority(NotificationCompat.PRIORITY_LOW)
+					.setChannelId(Constants.downloadNotificationChannelId).setProgress(100, 0, false).setOngoing(true);
+
+				int notificationId = Notifications.uniqueNotificationId(ctx);
+
+				NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				notificationManager.notify(notificationId, builder.build());
+
+				Thread thread = new Thread(() -> {
+
+					try {
+
+						Call<ResponseBody> call = RetrofitClient.getWebInterface(ctx).getFileContents(repository.getOwner(), repository.getName(), repository.getBranchRef(), file.getPath());
+
+						Response<ResponseBody> response = call.execute();
+
+						assert response.body() != null;
+
+						AppUtil.copyProgress(response.body().byteStream(), outputStream, file.getSize(), progress -> {
+							builder.setProgress(100, progress, false);
+							notificationManager.notify(notificationId, builder.build());
+						});
+
+						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFinished)).setContentText(getString(R.string.fileViewerNotificationDescriptionFinished, file.getName()));
+
+					}
+					catch(IOException ignored) {
+
+						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFailed)).setContentText(getString(R.string.fileViewerNotificationDescriptionFailed, file.getName()));
+
+					}
+					finally {
+
+						builder.setProgress(0, 0, false).setOngoing(false);
+
+						notificationManager.notify(notificationId, builder.build());
+
+					}
+				});
+
+				thread.start();
+
+			}
+			catch(IOException ignored) {
+			}
+		}
+
+	});
 	private boolean renderMd = false;
 	private boolean processable = false;
-
-	public ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-		result -> {
-			if(result.getResultCode() == 200) {
-				assert result.getData() != null;
-				if(result.getData().getBooleanExtra("fileModified", false)) {
-					switch(result.getData().getIntExtra("fileAction", CreateFileActivity.FILE_ACTION_EDIT)) {
-						case CreateFileActivity.FILE_ACTION_CREATE:
-						case CreateFileActivity.FILE_ACTION_EDIT:
-							getSingleFileContents(repository.getOwner(), repository.getName(), file.getPath(), repository.getBranchRef());
-							break;
-						default:
-							finish();
-					}
+	public ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+		if(result.getResultCode() == 200) {
+			assert result.getData() != null;
+			if(result.getData().getBooleanExtra("fileModified", false)) {
+				switch(result.getData().getIntExtra("fileAction", CreateFileActivity.FILE_ACTION_EDIT)) {
+					case CreateFileActivity.FILE_ACTION_CREATE:
+					case CreateFileActivity.FILE_ACTION_EDIT:
+						getSingleFileContents(repository.getOwner(), repository.getName(), file.getPath(), repository.getBranchRef());
+						break;
+					default:
+						finish();
 				}
 			}
-		});
+		}
+	});
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,9 +141,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 		Thread thread = new Thread(() -> {
 
-			Call<ResponseBody> call = RetrofitClient
-				.getWebInterface(ctx)
-				.getFileContents(owner, repo, ref, filename);
+			Call<ResponseBody> call = RetrofitClient.getWebInterface(ctx).getFileContents(owner, repo, ref, filename);
 
 			try {
 
@@ -153,7 +199,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 										binding.contents.setVisibility(View.GONE);
 										binding.markdownFrame.setVisibility(View.VISIBLE);
-									} else {
+									}
+									else {
 										binding.markdownFrame.setVisibility(View.GONE);
 										binding.contents.setVisibility(View.VISIBLE);
 									}
@@ -178,14 +225,16 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 								binding.markdownTv.setTypeface(null, Typeface.BOLD);
 							});
 						}
-					} else {
+					}
+					else {
 
 						runOnUiThread(() -> {
 							binding.markdownTv.setText("");
 							binding.progressBar.setVisibility(View.GONE);
 						});
 					}
-				} else {
+				}
+				else {
 
 					switch(response.code()) {
 
@@ -206,7 +255,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 					}
 				}
-			} catch(IOException ignored) {}
+			}
+			catch(IOException ignored) {
+			}
 
 		});
 
@@ -221,11 +272,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 		inflater.inflate(R.menu.markdown_switcher, menu);
 
-		if(!FilenameUtils.getExtension(file.getName())
-			.equalsIgnoreCase("md")) {
+		if(!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
 
-			menu.getItem(0)
-				.setVisible(false);
+			menu.getItem(0).setVisible(false);
 		}
 
 		return true;
@@ -241,7 +290,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			finish();
 			return true;
 
-		} else if(id == R.id.genericMenu) {
+		}
+		else if(id == R.id.genericMenu) {
 
 			BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
 			Bundle opts = repository.getBundle();
@@ -250,7 +300,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
 			return true;
 
-		} else if(id == R.id.markdown) {
+		}
+		else if(id == R.id.markdown) {
 
 			if(!renderMd) {
 				if(binding.markdown.getAdapter() == null) {
@@ -261,7 +312,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 				binding.markdownFrame.setVisibility(View.VISIBLE);
 
 				renderMd = true;
-			} else {
+			}
+			else {
 				binding.markdownFrame.setVisibility(View.GONE);
 				binding.contents.setVisibility(View.VISIBLE);
 
@@ -270,7 +322,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 			return true;
 
-		} else {
+		}
+		else {
 			return super.onOptionsItemSelected(item);
 		}
 	}
@@ -293,8 +346,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 		if("editFile".equals(text)) {
 
-			if(binding.contents.getContent() != null &&
-				!binding.contents.getContent().isEmpty()) {
+			if(binding.contents.getContent() != null && !binding.contents.getContent().isEmpty()) {
 
 				Intent intent = repository.getIntent(ctx, CreateFileActivity.class);
 
@@ -305,7 +357,8 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 				editFileLauncher.launch(intent);
 
-			} else {
+			}
+			else {
 				Toasty.error(ctx, getString(R.string.fileTypeCannotBeEdited));
 			}
 		}
@@ -322,72 +375,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		activityResultLauncher.launch(intent);
 
 	}
-
-	ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-
-		if (result.getResultCode() == Activity.RESULT_OK) {
-
-			assert result.getData() != null;
-
-			try {
-
-				OutputStream outputStream = getContentResolver().openOutputStream(result.getData().getData());
-
-				NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx, ctx.getPackageName())
-					.setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
-					.setContentText(getString(R.string.fileViewerNotificationDescriptionStarted, file.getName()))
-					.setSmallIcon(R.drawable.gitnex_transparent)
-					.setPriority(NotificationCompat.PRIORITY_LOW)
-					.setChannelId(Constants.downloadNotificationChannelId)
-					.setProgress(100, 0, false)
-					.setOngoing(true);
-
-				int notificationId = Notifications.uniqueNotificationId(ctx);
-
-				NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);;
-				notificationManager.notify(notificationId, builder.build());
-
-				Thread thread = new Thread(() -> {
-
-					try {
-
-						Call<ResponseBody> call = RetrofitClient
-							.getWebInterface(ctx)
-							.getFileContents(repository.getOwner(), repository.getName(), repository.getBranchRef(), file.getPath());
-
-						Response<ResponseBody> response = call.execute();
-
-						assert response.body() != null;
-
-						AppUtil.copyProgress(response.body().byteStream(), outputStream, file.getSize(), progress -> {
-							builder.setProgress(100, progress, false);
-							notificationManager.notify(notificationId, builder.build());
-						});
-
-						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFinished))
-							.setContentText(getString(R.string.fileViewerNotificationDescriptionFinished, file.getName()));
-
-					} catch(IOException ignored) {
-
-						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFailed))
-							.setContentText(getString(R.string.fileViewerNotificationDescriptionFailed, file.getName()));
-
-					} finally {
-
-						builder.setProgress(0,0,false)
-							.setOngoing(false);
-
-						notificationManager.notify(notificationId, builder.build());
-
-					}
-				});
-
-				thread.start();
-
-			} catch(IOException ignored) {}
-		}
-
-	});
 
 	@Override
 	public void onResume() {

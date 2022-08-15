@@ -12,14 +12,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.*;
 import java.util.Locale;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 import retrofit2.Call;
@@ -31,15 +24,15 @@ import retrofit2.Callback;
 
 public class DetailFragment extends Fragment {
 
-	private Context context;
-	private FragmentProfileDetailBinding binding;
+	private static final String usernameBundle = "";
 	Locale locale;
 	TinyDB tinyDb;
-
-	private static final String usernameBundle = "";
+	private Context context;
+	private FragmentProfileDetailBinding binding;
 	private String username;
 
-	public DetailFragment() {}
+	public DetailFragment() {
+	}
 
 	public static DetailFragment newInstance(String username) {
 		DetailFragment fragment = new DetailFragment();
@@ -52,7 +45,7 @@ public class DetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
+		if(getArguments() != null) {
 			username = getArguments().getString(usernameBundle);
 		}
 	}
@@ -72,11 +65,10 @@ public class DetailFragment extends Fragment {
 
 	public void getProfileDetail(String username) {
 
-		Call<User> call = RetrofitClient
-			.getApiInterface(context)
-			.userGet(username);
+		Call<User> call = RetrofitClient.getApiInterface(context).userGet(username);
 
 		call.enqueue(new Callback<User>() {
+
 			@Override
 			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
@@ -104,17 +96,10 @@ public class DetailFragment extends Fragment {
 								binding.userLang.setText(locale.getDisplayLanguage());
 							}
 
-							PicassoService.getInstance(context).get()
-								.load(response.body().getAvatarUrl())
-								.transform(new RoundedTransformation(imgRadius, 0))
-								.placeholder(R.drawable.loader_animated)
-								.resize(120, 120)
-								.centerCrop()
-								.into(binding.userAvatar);
+							PicassoService.getInstance(context).get().load(response.body().getAvatarUrl()).transform(new RoundedTransformation(imgRadius, 0)).placeholder(R.drawable.loader_animated).resize(120, 120)
+								.centerCrop().into(binding.userAvatar);
 
-							PicassoService.getInstance(context).get()
-								.load(response.body().getAvatarUrl())
-								.transform(new BlurTransformation(context))
+							PicassoService.getInstance(context).get().load(response.body().getAvatarUrl()).transform(new BlurTransformation(context))
 								.into(binding.userAvatarBackground, new com.squareup.picasso.Callback() {
 
 									@Override
@@ -125,7 +110,9 @@ public class DetailFragment extends Fragment {
 										binding.userLogin.setTextColor(invertedColor);
 									}
 
-									@Override public void onError(Exception e) {}
+									@Override
+									public void onError(Exception e) {
+									}
 								});
 
 							binding.userJoinedOn.setText(TimeHelper.formatTime(response.body().getCreated(), locale, timeFormat, context));
@@ -135,8 +122,7 @@ public class DetailFragment extends Fragment {
 							break;
 
 						case 401:
-							AlertDialogs
-								.authorizationTokenRevokedDialog(context);
+							AlertDialogs.authorizationTokenRevokedDialog(context);
 							break;
 
 						case 403:
@@ -157,4 +143,5 @@ public class DetailFragment extends Fragment {
 			}
 		});
 	}
+
 }

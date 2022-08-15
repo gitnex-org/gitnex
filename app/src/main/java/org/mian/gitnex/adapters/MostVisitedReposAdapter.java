@@ -28,34 +28,6 @@ public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedRep
 
 	private List<Repository> mostVisitedReposList;
 
-	static class MostVisitedViewHolder extends RecyclerView.ViewHolder {
-
-		private Repository repository;
-
-		private final ImageView image;
-		private final TextView repoName;
-		private final TextView orgName;
-		private final TextView mostVisited;
-
-		private MostVisitedViewHolder(View itemView) {
-
-			super(itemView);
-
-			image = itemView.findViewById(R.id.image);
-			repoName = itemView.findViewById(R.id.repo_name);
-			orgName = itemView.findViewById(R.id.org_name);
-			mostVisited = itemView.findViewById(R.id.most_visited);
-
-			itemView.setOnClickListener(v -> {
-
-				Context context = v.getContext();
-				RepositoryContext repositoryContext = new RepositoryContext(repository.getRepositoryOwner(), repository.getRepositoryName(), context);
-				Intent intent = repositoryContext.getIntent(context, RepoDetailActivity.class);
-				context.startActivity(intent);
-			});
-		}
-	}
-
 	public MostVisitedReposAdapter(List<Repository> reposListMain) {
 		this.mostVisitedReposList = reposListMain;
 	}
@@ -100,4 +72,33 @@ public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedRep
 		mostVisitedReposList = list;
 		notifyDataChanged();
 	}
+
+	static class MostVisitedViewHolder extends RecyclerView.ViewHolder {
+
+		private final ImageView image;
+		private final TextView repoName;
+		private final TextView orgName;
+		private final TextView mostVisited;
+		private Repository repository;
+
+		private MostVisitedViewHolder(View itemView) {
+
+			super(itemView);
+
+			image = itemView.findViewById(R.id.image);
+			repoName = itemView.findViewById(R.id.repo_name);
+			orgName = itemView.findViewById(R.id.org_name);
+			mostVisited = itemView.findViewById(R.id.most_visited);
+
+			itemView.setOnClickListener(v -> {
+
+				Context context = v.getContext();
+				RepositoryContext repositoryContext = new RepositoryContext(repository.getRepositoryOwner(), repository.getRepositoryName(), context);
+				Intent intent = repositoryContext.getIntent(context, RepoDetailActivity.class);
+				context.startActivity(intent);
+			});
+		}
+
+	}
+
 }

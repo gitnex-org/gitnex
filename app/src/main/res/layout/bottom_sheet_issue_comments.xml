@@ -23,22 +23,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"/>
 
             <View
+                android:id="@+id/reactionDivider"
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:id="@+id/reactionDivider"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
-                android:background="?attr/dividerColor" />
+                android:background="?attr/dividerColor"/>
 
             <LinearLayout
                 android:id="@+id/issueComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/bottomSheetHeader"
@@ -47,7 +47,7 @@
                     android:gravity="center"
                     android:text="@string/commentButtonText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
@@ -55,63 +55,63 @@
                 android:id="@+id/issueCommentsSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:flexWrap="wrap"
-                app:alignItems="flex_start"
-                app:justifyContent="center"
                 android:padding="4dp"
-                app:alignContent="center" >
+                app:alignContent="center"
+                app:alignItems="flex_start"
+                app:flexWrap="wrap"
+                app:justifyContent="center">
 
                 <TextView
                     android:id="@+id/commentMenuEdit"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_edit"
+                    android:padding="4dp"
                     android:text="@string/menuEditText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_edit"
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/commentMenuDelete"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_delete"
+                    android:padding="4dp"
                     android:text="@string/menuDeleteText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_delete"
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/commentMenuQuote"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_comment"
+                    android:padding="4dp"
                     android:text="@string/menuQuoteText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_comment"
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/commentMenuCopy"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_copy"
+                    android:padding="4dp"
                     android:text="@string/menuCopyText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_copy"
+                    app:layout_alignSelf="flex_start"/>
 
             </com.google.android.flexbox.FlexboxLayout>
 
@@ -120,56 +120,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginBottom="16dp"
-                android:background="?attr/dividerColor" />
+                android:background="?attr/dividerColor"/>
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/issueOtherSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:flexWrap="wrap"
-                app:alignItems="flex_start"
-                app:justifyContent="center"
                 android:padding="4dp"
-                app:alignContent="center" >
+                app:alignContent="center"
+                app:alignItems="flex_start"
+                app:flexWrap="wrap"
+                app:justifyContent="center">
 
                 <TextView
                     android:id="@+id/issueCommentCopyUrl"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_link"
+                    android:padding="4dp"
                     android:text="@string/genericCopyUrl"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_link"
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/issueCommentShare"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_share"
+                    android:padding="4dp"
                     android:text="@string/share"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_share"
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/open"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_browser"
+                    android:padding="4dp"
                     android:text="@string/openInBrowser"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_browser"
+                    app:layout_alignSelf="flex_start"/>
 
             </com.google.android.flexbox.FlexboxLayout>
 

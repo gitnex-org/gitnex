@@ -39,9 +39,9 @@ import retrofit2.Response;
 
 public class RepoForksActivity extends BaseActivity {
 
+	private final String TAG = "RepositoryForks";
 	private TextView noData;
 	private ProgressBar progressBar;
-	private final String TAG = "RepositoryForks";
 	private int resultLimit;
 	private int pageSize = 1;
 
@@ -113,9 +113,7 @@ public class RepoForksActivity extends BaseActivity {
 
 	private void loadInitial(String repoOwner, String repoName, int pageSize, int resultLimit) {
 
-		Call<List<Repository>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.listForks(repoOwner, repoName, pageSize, resultLimit);
+		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).listForks(repoOwner, repoName, pageSize, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -157,9 +155,7 @@ public class RepoForksActivity extends BaseActivity {
 
 		progressLoadMore.setVisibility(View.VISIBLE);
 
-		Call<List<Repository>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.listForks(repoOwner, repoName, page, resultLimit);
+		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).listForks(repoOwner, repoName, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -230,8 +226,7 @@ public class RepoForksActivity extends BaseActivity {
 		List<Repository> userRepositories = new ArrayList<>();
 
 		for(Repository d : forksList) {
-			if(d.getOwner().getLogin().contains(text) || d.getName().toLowerCase().contains(text) ||
-				d.getDescription().toLowerCase().contains(text)) {
+			if(d.getOwner().getLogin().contains(text) || d.getName().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
 
 				userRepositories.add(d);
 			}
@@ -245,4 +240,5 @@ public class RepoForksActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
+
 }

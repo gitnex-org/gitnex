@@ -15,19 +15,10 @@ import java.io.Serializable;
 public class IssueContext implements Serializable {
 
 	public static final String INTENT_EXTRA = "issue";
-
-	public static IssueContext fromIntent(Intent intent) {
-		return (IssueContext) intent.getSerializableExtra(INTENT_EXTRA);
-	}
-
-	public static IssueContext fromBundle(Bundle bundle) {
-		return (IssueContext) bundle.getSerializable(INTENT_EXTRA);
-	}
-
+	private final RepositoryContext repository;
 	private Issue issue;
 	private PullRequest pullRequest;
 	private boolean isSubscribed;
-	private final RepositoryContext repository;
 	private int issueIndex = 0;
 	private String issueType;
 
@@ -39,8 +30,7 @@ public class IssueContext implements Serializable {
 
 	public IssueContext(Issue issue, PullRequest pullRequest, RepositoryContext repository) {
 		this.issue = issue;
-		this.issueType = issue.getPullRequest() == null ?
-			"Issue" : "Pull";
+		this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
 		this.pullRequest = pullRequest;
 		this.repository = repository;
 	}
@@ -53,16 +43,14 @@ public class IssueContext implements Serializable {
 
 	public IssueContext(Issue issue, RepositoryContext repository) {
 		this.issue = issue;
-		this.issueType = issue.getPullRequest() == null ?
-			"Issue" : "Pull";
+		this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
 
 		this.repository = repository;
 	}
 
 	public IssueContext(Issue issue, PullRequest pullRequest, Repository repository, Context context) {
 		this.issue = issue;
-		this.issueType = issue.getPullRequest() == null ?
-			"Issue" : "Pull";
+		this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
 		this.pullRequest = pullRequest;
 
 		this.repository = new RepositoryContext(repository, context);
@@ -70,9 +58,16 @@ public class IssueContext implements Serializable {
 
 	public IssueContext(Issue issue, Repository repository, Context context) {
 		this.issue = issue;
-		this.issueType = issue.getPullRequest() == null ?
-			"Issue" : "Pull";
+		this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
 		this.repository = new RepositoryContext(repository, context);
+	}
+
+	public static IssueContext fromIntent(Intent intent) {
+		return (IssueContext) intent.getSerializableExtra(INTENT_EXTRA);
+	}
+
+	public static IssueContext fromBundle(Bundle bundle) {
+		return (IssueContext) bundle.getSerializable(INTENT_EXTRA);
 	}
 
 	public PullRequest getPullRequest() {
@@ -80,14 +75,21 @@ public class IssueContext implements Serializable {
 		return pullRequest;
 	}
 
+	public void setPullRequest(PullRequest pullRequest) {
+
+		this.pullRequest = pullRequest;
+	}
+
 	public Issue getIssue() {
 
 		return issue;
 	}
 
-	public void setPullRequest(PullRequest pullRequest) {
-
-		this.pullRequest = pullRequest;
+	public void setIssue(Issue issue) {
+		this.issue = issue;
+		if(issue != null) {
+			this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
+		}
 	}
 
 	public <T extends BaseActivity> Intent getIntent(Context context, Class<T> clazz) {
@@ -125,13 +127,6 @@ public class IssueContext implements Serializable {
 	public void setSubscribed(boolean subscribed) {
 
 		isSubscribed = subscribed;
-	}
-
-	public void setIssue(Issue issue) {
-		this.issue = issue;
-		if(issue != null) {
-			this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
-		}
 	}
 
 	public String getIssueType() {

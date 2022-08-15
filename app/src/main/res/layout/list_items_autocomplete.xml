@@ -16,12 +16,12 @@
             android:layout_height="@dimen/dimen24dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:contentDescription="@string/generalImgContentText"
             android:src="@drawable/ic_keyword"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/dimen20sp"
             android:textStyle="bold"
-            tools:text="K"
-            android:contentDescription="@string/generalImgContentText" />
+            tools:text="K"/>
     </RelativeLayout>
 
     <TextView
@@ -34,5 +34,5 @@
         android:paddingEnd="@dimen/dimen4dp"
         android:textColor="@color/colorWhite"
         tools:ignore="RtlSymmetry"
-        tools:text="Keyword" />
+        tools:text="Keyword"/>
 </RelativeLayout>

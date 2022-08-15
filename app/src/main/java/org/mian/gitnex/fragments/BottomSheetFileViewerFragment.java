@@ -18,53 +18,54 @@ import org.mian.gitnex.structs.BottomSheetListener;
 
 public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
 
-    private BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-	    RepositoryContext repository = RepositoryContext.fromBundle(requireArguments());
-	    BottomSheetFileViewerBinding bottomSheetFileViewerBinding = BottomSheetFileViewerBinding.inflate(inflater, container, false);
+		RepositoryContext repository = RepositoryContext.fromBundle(requireArguments());
+		BottomSheetFileViewerBinding bottomSheetFileViewerBinding = BottomSheetFileViewerBinding.inflate(inflater, container, false);
 
-	    if(!repository.getPermissions().isPush()) {
-	    	bottomSheetFileViewerBinding.deleteFile.setVisibility(View.GONE);
-	    	bottomSheetFileViewerBinding.editFile.setVisibility(View.GONE);
-	    } else if(!requireArguments().getBoolean("editable")) {
+		if(!repository.getPermissions().isPush()) {
+			bottomSheetFileViewerBinding.deleteFile.setVisibility(View.GONE);
 			bottomSheetFileViewerBinding.editFile.setVisibility(View.GONE);
-	    }
+		}
+		else if(!requireArguments().getBoolean("editable")) {
+			bottomSheetFileViewerBinding.editFile.setVisibility(View.GONE);
+		}
 
-	    bottomSheetFileViewerBinding.downloadFile.setOnClickListener(v1 -> {
+		bottomSheetFileViewerBinding.downloadFile.setOnClickListener(v1 -> {
 
-            bmListener.onButtonClicked("downloadFile");
-            dismiss();
-        });
+			bmListener.onButtonClicked("downloadFile");
+			dismiss();
+		});
 
-	    bottomSheetFileViewerBinding.deleteFile.setOnClickListener(v1 -> {
+		bottomSheetFileViewerBinding.deleteFile.setOnClickListener(v1 -> {
 
-		    bmListener.onButtonClicked("deleteFile");
-		    dismiss();
-	    });
+			bmListener.onButtonClicked("deleteFile");
+			dismiss();
+		});
 
-	    bottomSheetFileViewerBinding.editFile.setOnClickListener(v1 -> {
+		bottomSheetFileViewerBinding.editFile.setOnClickListener(v1 -> {
 
-		    bmListener.onButtonClicked("editFile");
-		    dismiss();
-	    });
+			bmListener.onButtonClicked("editFile");
+			dismiss();
+		});
 
-        return bottomSheetFileViewerBinding.getRoot();
-    }
+		return bottomSheetFileViewerBinding.getRoot();
+	}
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
 
-        try {
-            bmListener = (BottomSheetListener) context;
-        }
-        catch (ClassCastException e) {
-            throw new ClassCastException(context + " must implement BottomSheetListener");
-        }
-    }
+		try {
+			bmListener = (BottomSheetListener) context;
+		}
+		catch(ClassCastException e) {
+			throw new ClassCastException(context + " must implement BottomSheetListener");
+		}
+	}
 
 }

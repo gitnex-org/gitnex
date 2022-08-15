@@ -20,13 +20,11 @@ import org.mian.gitnex.viewmodels.AdminCronTasksViewModel;
 
 public class AdminCronTasksActivity extends BaseActivity {
 
+	private final int PAGE = 1;
 	private AdminCronTasksViewModel adminCronTasksViewModel;
 	private View.OnClickListener onClickListener;
 	private AdminCronTasksAdapter adapter;
-
 	private ActivityAdminCronTasksBinding activityAdminCronTasksBinding;
-
-	private final int PAGE = 1;
 	private int resultLimit;
 
 	@Override
@@ -48,8 +46,7 @@ public class AdminCronTasksActivity extends BaseActivity {
 		activityAdminCronTasksBinding.recyclerView.setHasFixedSize(true);
 		activityAdminCronTasksBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activityAdminCronTasksBinding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activityAdminCronTasksBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		activityAdminCronTasksBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		activityAdminCronTasksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -83,4 +80,5 @@ public class AdminCronTasksActivity extends BaseActivity {
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
+
 }

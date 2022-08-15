@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="?attr/primaryBackgroundColor">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="@dimen/dimen0dp"
-        android:theme="@style/Widget.AppCompat.SearchView">
+        android:theme="@style/Widget.AppCompat.SearchView"
+        app:elevation="@dimen/dimen0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -23,24 +23,24 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/dimen26dp"
                 android:layout_height="@dimen/dimen26dp"
-                android:layout_marginEnd="@dimen/dimen16dp"
                 android:layout_marginStart="@dimen/dimen16dp"
-                android:gravity="center_vertical"
-                android:contentDescription="@string/close"
+                android:layout_marginEnd="@dimen/dimen16dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:focusable="true"
                 android:clickable="true"
-                android:src="@drawable/ic_close" />
+                android:contentDescription="@string/close"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@string/addRemove"
                 android:textColor="?attr/primaryTextColor"
-                android:maxLines="1"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -48,47 +48,47 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        android:visibility="gone"
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen10dp"
-        android:layout_marginEnd="@dimen/dimen10dp"
         android:layout_marginTop="@dimen/dimen10dp"
+        android:layout_marginEnd="@dimen/dimen10dp"
         android:layout_marginBottom="@dimen/dimen10dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/addNewTeamMemberLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            android:textColorHint="?attr/hintColor"
-            app:hintTextColor="?attr/hintColor"
-            app:boxStrokeErrorColor="@color/darkRed"
             android:layout_marginTop="@dimen/dimen8dp"
             android:layout_marginBottom="@dimen/dimen8dp"
-            app:startIconDrawable="@drawable/ic_search"
-            app:startIconTint="?attr/iconsColor"
+            android:hint="@string/addCollaboratorSearchHint"
+            android:textColorHint="?attr/hintColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
+            app:boxStrokeErrorColor="@color/darkRed"
             app:endIconMode="clear_text"
             app:endIconTint="?attr/iconsColor"
-            android:hint="@string/addCollaboratorSearchHint">
+            app:hintTextColor="?attr/hintColor"
+            app:startIconDrawable="@drawable/ic_search"
+            app:startIconTint="?attr/iconsColor">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/addNewTeamMember"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
+                android:singleLine="true"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
-                android:singleLine="true"
-                android:inputType="text"
-                android:textSize="@dimen/dimen16sp" />
+                android:textSize="@dimen/dimen16sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,17 +103,17 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="@dimen/dimen20sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUserSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor"
         android:layout_marginStart="@dimen/dimen0dp"
-        android:layout_marginEnd="@dimen/dimen0dp"
         android:layout_marginTop="@dimen/dimen6dp"
+        android:layout_marginEnd="@dimen/dimen0dp"
         android:layout_marginBottom="@dimen/dimen0dp"
-        android:scrollbars="vertical" />
+        android:background="?attr/primaryBackgroundColor"
+        android:scrollbars="vertical"/>
 
 </LinearLayout>

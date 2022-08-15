@@ -25,15 +25,15 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="10dp"
             android:contentDescription="@string/wiki"
-            android:src="@drawable/ic_android" />
+            android:src="@drawable/ic_android"/>
 
         <TextView
             android:id="@+id/page_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/wiki"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            android:text="@string/wiki" />
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
@@ -41,7 +41,7 @@
         android:id="@+id/spacerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"/>
 
     <LinearLayout
         android:id="@+id/wiki_detail_info_frame"
@@ -53,9 +53,9 @@
             android:id="@+id/wiki_last_updated_by"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/wikiAuthor"
             android:textColor="?attr/hintColor"
-            android:textSize="13sp"
-            android:text="@string/wikiAuthor" />
+            android:textSize="13sp"/>
 
         <LinearLayout
             android:id="@+id/wiki_menu_frame"
@@ -75,7 +75,7 @@
                 android:layout_marginEnd="0dp"
                 android:contentDescription="@string/generalImgContentText"
                 app:srcCompat="@drawable/ic_dotted_menu_horizontal"
-                app:tint="?attr/iconsColor" />
+                app:tint="?attr/iconsColor"/>
 
         </LinearLayout>
 

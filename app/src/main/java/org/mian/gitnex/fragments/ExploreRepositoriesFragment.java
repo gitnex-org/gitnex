@@ -4,12 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -39,13 +34,12 @@ import retrofit2.Response;
 
 public class ExploreRepositoriesFragment extends Fragment {
 
-	private FragmentExploreRepoBinding viewBinding;
-	private Context context;
-
-	private int pageSize;
 	private final boolean repoTypeInclude = true;
 	private final String sort = "updated";
 	private final String order = "desc";
+	private FragmentExploreRepoBinding viewBinding;
+	private Context context;
+	private int pageSize;
 	private int resultLimit;
 	private List<Repository> dataList;
 	private ExploreRepositoriesAdapter adapter;
@@ -96,9 +90,8 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 	private void loadInitial(String searchKeyword, int resultLimit) {
 
-		Call<SearchResults> call = RetrofitClient
-			.getApiInterface(context).repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null,
-				repoTypeInclude, null, includeTemplate, onlyArchived, null, null, sort, order, 1, resultLimit);
+		Call<SearchResults> call = RetrofitClient.getApiInterface(context)
+			.repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null, repoTypeInclude, null, includeTemplate, onlyArchived, null, null, sort, order, 1, resultLimit);
 		call.enqueue(new Callback<>() {
 			@Override
 			public void onResponse(@NonNull Call<SearchResults> call, @NonNull Response<SearchResults> response) {
@@ -137,8 +130,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<SearchResults> call = RetrofitClient.getApiInterface(context)
-			.repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null,
-				repoTypeInclude, null, includeTemplate, onlyArchived, null, null, sort, order, page, resultLimit);
+			.repoSearch(searchKeyword, includeTopic, includeDescription, null, null, null, null, repoTypeInclude, null, includeTemplate, onlyArchived, null, null, sort, order, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 			@Override
@@ -249,4 +241,5 @@ public class ExploreRepositoriesFragment extends Fragment {
 			MainActivity.reloadRepos = false;
 		}
 	}
+
 }

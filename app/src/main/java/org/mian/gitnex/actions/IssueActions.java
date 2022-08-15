@@ -3,11 +3,7 @@ package org.mian.gitnex.actions;
 import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
-import org.gitnex.tea4j.v2.models.Comment;
-import org.gitnex.tea4j.v2.models.CreateIssueCommentOption;
-import org.gitnex.tea4j.v2.models.EditIssueCommentOption;
-import org.gitnex.tea4j.v2.models.EditIssueOption;
-import org.gitnex.tea4j.v2.models.Issue;
+import org.gitnex.tea4j.v2.models.*;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -35,10 +31,7 @@ public class IssueActions {
 		EditIssueCommentOption commentObj = new EditIssueCommentOption();
 		commentObj.setBody(comment);
 
-		Call<Comment> call = RetrofitClient
-			.getApiInterface(context)
-			.issueEditComment(issue.getRepository().getOwner(),
-				issue.getRepository().getName(), (long) commentId, commentObj);
+		Call<Comment> call = RetrofitClient.getApiInterface(context).issueEditComment(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) commentId, commentObj);
 
 		call.enqueue(new Callback<>() {
 
@@ -77,10 +70,7 @@ public class IssueActions {
 
 		EditIssueOption issueStatJson = new EditIssueOption();
 		issueStatJson.setState(issueState);
-		Call<Issue> call = RetrofitClient
-			.getApiInterface(ctx)
-			.issueEditIssue(issue.getRepository().getOwner(),
-				issue.getRepository().getName(), (long) issue.getIssueIndex(), issueStatJson);
+		Call<Issue> call = RetrofitClient.getApiInterface(ctx).issueEditIssue(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) issue.getIssueIndex(), issueStatJson);
 
 		call.enqueue(new Callback<>() {
 
@@ -113,8 +103,7 @@ public class IssueActions {
 
 						IssueDetailActivity.singleIssueUpdate = true;
 						((IssueDetailActivity) ctx).onResume();
-						if(((Activity) ctx).getIntent().getStringExtra("openedFromLink") == null ||
-							!((Activity) ctx).getIntent().getStringExtra("openedFromLink").equals("true")) {
+						if(((Activity) ctx).getIntent().getStringExtra("openedFromLink") == null || !((Activity) ctx).getIntent().getStringExtra("openedFromLink").equals("true")) {
 							RepoDetailActivity.updateRepo = true;
 						}
 					}
@@ -150,10 +139,8 @@ public class IssueActions {
 
 		Call<Void> call;
 
-		call = RetrofitClient
-			.getApiInterface(ctx)
-			.issueAddSubscription(issue.getRepository().getOwner(),
-				issue.getRepository().getName(), (long) issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
+		call = RetrofitClient.getApiInterface(ctx)
+			.issueAddSubscription(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
 
 		call.enqueue(new Callback<>() {
 
@@ -193,8 +180,8 @@ public class IssueActions {
 
 		Call<Void> call;
 
-		call = RetrofitClient.getApiInterface(ctx).issueDeleteSubscription(issue.getRepository().getOwner(),
-			issue.getRepository().getName(), (long) issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
+		call = RetrofitClient.getApiInterface(ctx)
+			.issueDeleteSubscription(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) issue.getIssueIndex(), ((BaseActivity) ctx).getAccount().getAccount().getUserName());
 
 		call.enqueue(new Callback<>() {
 
@@ -237,10 +224,7 @@ public class IssueActions {
 		CreateIssueCommentOption issueComment = new CreateIssueCommentOption();
 		issueComment.setBody(comment);
 
-		Call<Comment> call = RetrofitClient
-			.getApiInterface(context)
-			.issueCreateComment(issue.getRepository().getOwner(),
-				issue.getRepository().getName(), (long) issue.getIssueIndex(), issueComment);
+		Call<Comment> call = RetrofitClient.getApiInterface(context).issueCreateComment(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) issue.getIssueIndex(), issueComment);
 
 		call.enqueue(new Callback<>() {
 
@@ -275,4 +259,5 @@ public class IssueActions {
 
 		return actionResult;
 	}
+
 }

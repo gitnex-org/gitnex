@@ -77,4 +77,5 @@ public class RepositoriesApi extends BaseApi {
 	public LiveData<List<Repository>> fetchAllMostVisited(int repoAccountId) {
 		return repositoriesDao.fetchAllMostVisited(repoAccountId);
 	}
+
 }

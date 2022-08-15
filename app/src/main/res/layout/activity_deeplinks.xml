@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,12 +28,12 @@
                 android:id="@+id/addNewAccountFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dimen32dp"
-                android:paddingBottom="@dimen/dimen16dp"
+                android:orientation="vertical"
                 android:paddingStart="@dimen/dimen16dp"
+                android:paddingTop="@dimen/dimen32dp"
                 android:paddingEnd="@dimen/dimen16dp"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:paddingBottom="@dimen/dimen16dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/addAccountText"
@@ -41,36 +41,36 @@
                     android:layout_height="wrap_content"
                     android:text="@string/accountDoesNotExist"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:textSize="@dimen/dimen16sp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addNewAccount"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
+                    android:layout_marginTop="@dimen/dimen24dp"
                     android:text="@string/addNewAccountText"
                     android:textColor="@color/btnTextColor"
-                    android:textStyle="bold"
                     android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen24dp" />
+                    android:textStyle="bold"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/openInBrowser"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen60dp"
+                    android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/openWebRepo"
                     android:textColor="@color/btnTextColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen8dp" />
+                    android:textSize="@dimen/dimen16sp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/launchApp"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
+                    android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/launchApp"
-                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen8dp" />
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -78,12 +78,12 @@
                 android:id="@+id/noActionFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dimen32dp"
-                android:paddingBottom="@dimen/dimen16dp"
+                android:orientation="vertical"
                 android:paddingStart="@dimen/dimen16dp"
+                android:paddingTop="@dimen/dimen32dp"
                 android:paddingEnd="@dimen/dimen16dp"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:paddingBottom="@dimen/dimen16dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/noActionText"
@@ -91,57 +91,57 @@
                     android:layout_height="wrap_content"
                     android:text="@string/noActionText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:textSize="@dimen/dimen16sp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/repository"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
+                    android:layout_marginTop="@dimen/dimen24dp"
                     android:text="@string/navRepos"
-                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen24dp" />
+                    android:textStyle="bold"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/organization"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
+                    android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/navOrg"
-                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen8dp" />
+                    android:textStyle="bold"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/notification"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
+                    android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/pageTitleNotifications"
-                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen8dp" />
+                    android:textStyle="bold"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/explore"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
+                    android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/pageTitleExplore"
-                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen8dp" />
+                    android:textStyle="bold"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/launchApp2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
+                    android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/launchApp"
-                    android:textStyle="bold"
                     android:textColor="@color/btnTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:layout_marginTop="@dimen/dimen8dp" />
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 

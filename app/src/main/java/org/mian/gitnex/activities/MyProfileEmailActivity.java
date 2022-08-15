@@ -31,145 +31,143 @@ import retrofit2.Callback;
 
 public class MyProfileEmailActivity extends BaseActivity {
 
-    private View.OnClickListener onClickListener;
-    private EditText userEmail;
-    private Button addEmailButton;
+	private View.OnClickListener onClickListener;
+	private EditText userEmail;
+	private Button addEmailButton;
+	private final View.OnClickListener addEmailListener = v -> processAddNewEmail();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    ActivityProfileEmailBinding activityProfileEmailBinding = ActivityProfileEmailBinding.inflate(getLayoutInflater());
-	    setContentView(activityProfileEmailBinding.getRoot());
+		ActivityProfileEmailBinding activityProfileEmailBinding = ActivityProfileEmailBinding.inflate(getLayoutInflater());
+		setContentView(activityProfileEmailBinding.getRoot());
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        ImageView closeActivity = activityProfileEmailBinding.close;
-        userEmail = activityProfileEmailBinding.userEmail;
-        addEmailButton = activityProfileEmailBinding.addEmailButton;
+		ImageView closeActivity = activityProfileEmailBinding.close;
+		userEmail = activityProfileEmailBinding.userEmail;
+		addEmailButton = activityProfileEmailBinding.addEmailButton;
 
-        userEmail.requestFocus();
-        assert imm != null;
-        imm.showSoftInput(userEmail, InputMethodManager.SHOW_IMPLICIT);
+		userEmail.requestFocus();
+		assert imm != null;
+		imm.showSoftInput(userEmail, InputMethodManager.SHOW_IMPLICIT);
 
-        initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
+		initCloseListener();
+		closeActivity.setOnClickListener(onClickListener);
 
-        if(!connToInternet) {
+		if(!connToInternet) {
 
-            disableProcessButton();
-        } else {
+			disableProcessButton();
+		}
+		else {
 
-            addEmailButton.setOnClickListener(addEmailListener);
-        }
+			addEmailButton.setOnClickListener(addEmailListener);
+		}
 
-    }
+	}
 
-    private final View.OnClickListener addEmailListener = v -> processAddNewEmail();
+	private void processAddNewEmail() {
 
-    private void processAddNewEmail() {
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		String newUserEmail = userEmail.getText().toString().trim();
 
-        String newUserEmail = userEmail.getText().toString().trim();
+		if(!connToInternet) {
 
-        if(!connToInternet) {
+			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+			return;
+		}
 
-            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-            return;
-        }
+		if(newUserEmail.equals("")) {
 
-        if(newUserEmail.equals("")) {
+			Toasty.error(ctx, getString(R.string.emailErrorEmpty));
+			return;
+		}
+		else if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
-            Toasty.error(ctx, getString(R.string.emailErrorEmpty));
-            return;
-        }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
+			Toasty.warning(ctx, getString(R.string.emailErrorInvalid));
+			return;
+		}
 
-            Toasty.warning(ctx, getString(R.string.emailErrorInvalid));
-            return;
-        }
+		List<String> newEmailList = new ArrayList<>(Arrays.asList(newUserEmail.split(",")));
 
-        List<String> newEmailList = new ArrayList<>(Arrays.asList(newUserEmail.split(",")));
+		disableProcessButton();
+		addNewEmail(newEmailList);
+	}
 
-        disableProcessButton();
-        addNewEmail(newEmailList);
-    }
+	private void addNewEmail(List<String> newUserEmail) {
 
-    private void addNewEmail(List<String> newUserEmail) {
-
-        CreateEmailOption addEmailFunc = new CreateEmailOption();
+		CreateEmailOption addEmailFunc = new CreateEmailOption();
 		addEmailFunc.setEmails(newUserEmail);
 
-        Call<List<Email>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .userAddEmail(addEmailFunc);
+		Call<List<Email>> call = RetrofitClient.getApiInterface(ctx).userAddEmail(addEmailFunc);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<Email>> call, @NonNull retrofit2.Response<List<Email>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<Email>> call, @NonNull retrofit2.Response<List<Email>> response) {
 
-		        if(response.code() == 201) {
+				if(response.code() == 201) {
 
-			        Toasty.success(ctx, getString(R.string.emailAddedText));
-			        MyProfileEmailsFragment.refreshEmails = true;
-			        enableProcessButton();
-			        finish();
-		        }
-		        else if(response.code() == 401) {
+					Toasty.success(ctx, getString(R.string.emailAddedText));
+					MyProfileEmailsFragment.refreshEmails = true;
+					enableProcessButton();
+					finish();
+				}
+				else if(response.code() == 401) {
 
-			        enableProcessButton();
-			        AlertDialogs.authorizationTokenRevokedDialog(ctx);
-		        }
-		        else if(response.code() == 403) {
+					enableProcessButton();
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
+				}
+				else if(response.code() == 403) {
 
-			        enableProcessButton();
-			        Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-		        }
-		        else if(response.code() == 404) {
+					enableProcessButton();
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+				}
+				else if(response.code() == 404) {
 
-			        enableProcessButton();
-			        Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-		        }
-		        else if(response.code() == 422) {
+					enableProcessButton();
+					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+				}
+				else if(response.code() == 422) {
 
-			        enableProcessButton();
-			        Toasty.warning(ctx, ctx.getString(R.string.emailErrorInUse));
-		        }
-		        else {
+					enableProcessButton();
+					Toasty.warning(ctx, ctx.getString(R.string.emailErrorInUse));
+				}
+				else {
 
-			        enableProcessButton();
-			        Toasty.error(ctx, getString(R.string.genericError));
-		        }
-	        }
+					enableProcessButton();
+					Toasty.error(ctx, getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<Email>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<Email>> call, @NonNull Throwable t) {
 
-		        Log.e("onFailure", t.toString());
-		        enableProcessButton();
-	        }
-        });
+				Log.e("onFailure", t.toString());
+				enableProcessButton();
+			}
+		});
 
-    }
+	}
 
-    private void initCloseListener() {
+	private void initCloseListener() {
 
-        onClickListener = view -> finish();
-    }
+		onClickListener = view -> finish();
+	}
 
-    private void disableProcessButton() {
+	private void disableProcessButton() {
 
-        addEmailButton.setEnabled(false);
-    }
+		addEmailButton.setEnabled(false);
+	}
 
-    private void enableProcessButton() {
+	private void enableProcessButton() {
 
-        addEmailButton.setEnabled(true);
-    }
+		addEmailButton.setEnabled(true);
+	}
 
 }

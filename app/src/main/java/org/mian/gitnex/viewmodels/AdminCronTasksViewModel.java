@@ -33,9 +33,7 @@ public class AdminCronTasksViewModel extends ViewModel {
 
 	public void loadCronTasksList(final Context ctx, int page, int limit) {
 
-		Call<List<Cron>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.adminCronList(page, limit);
+		Call<List<Cron>> call = RetrofitClient.getApiInterface(ctx).adminCronList(page, limit);
 
 		call.enqueue(new Callback<>() {
 
@@ -66,4 +64,5 @@ public class AdminCronTasksViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

@@ -42,98 +42,6 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 	private final Context context;
 	private final Dialog dialog;
 
-	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
-
-		private int accountId;
-		private String accountName;
-
-		private final TextView accountUrl;
-		private final TextView userId;
-		private final ImageView activeAccount;
-		private final ImageView deleteAccount;
-		private final ImageView repoAvatar;
-
-		private UserAccountsViewHolder(View itemView) {
-
-			super(itemView);
-
-			accountUrl = itemView.findViewById(R.id.accountUrl);
-			userId = itemView.findViewById(R.id.userId);
-			activeAccount = itemView.findViewById(R.id.activeAccount);
-			deleteAccount = itemView.findViewById(R.id.deleteAccount);
-			repoAvatar = itemView.findViewById(R.id.repoAvatar);
-
-			deleteAccount.setOnClickListener(itemDelete -> {
-
-				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
-					.setTitle(context.getResources().getString(R.string.removeAccountPopupTitle))
-					.setMessage(context.getResources().getString(R.string.removeAccountPopupMessage))
-					.setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
-					.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, which) -> {
-
-						updateLayoutByPosition(getBindingAdapterPosition());
-						UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
-						assert userAccountsApi != null;
-						userAccountsApi.deleteAccount(Integer.parseInt(String.valueOf(accountId)));
-					});
-
-				materialAlertDialogBuilder.create().show();
-			});
-
-			itemView.setOnClickListener(switchAccount -> {
-
-				UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
-				assert userAccountsApi != null;
-				UserAccount userAccount = userAccountsApi.getAccountByName(accountName);
-
-				if(!userAccount.isLoggedIn()) {
-					UrlBuilder url = UrlBuilder.fromString(userAccount.getInstanceUrl())
-						.withPath("/");
-
-					String host;
-					if(url.scheme.equals("http")) {
-						if(url.port == 80 || url.port == 0) {
-							host = url.hostName;
-						} else {
-							host = url.hostName + ":" + url.port;
-						}
-					} else {
-						if(url.port == 443 || url.port == 0) {
-							host = url.hostName;
-						} else {
-							host = url.hostName + ":" + url.port;
-						}
-					}
-
-					Toasty.warning(context, context.getString(R.string.logInAgain));
-					dialog.dismiss();
-
-					Intent i = new Intent(context, AddNewAccountActivity.class);
-					i.putExtra("instanceUrl", host);
-					i.putExtra("scheme", url.scheme);
-					i.putExtra("token", userAccount.getToken());
-					context.startActivity(i);
-					return;
-				}
-
-				if(AppUtil.switchToAccount(context, userAccount)) {
-
-					String url = UrlBuilder.fromString(userAccount.getInstanceUrl())
-						.withPath("/")
-						.toString();
-
-					Toasty.success(context,  context.getResources().getString(R.string.switchAccountSuccess, userAccount.getUserName(), url));
-					getNotificationsCount();
-					((Activity) context).recreate();
-					dialog.dismiss();
-
-				}
-			});
-
-		}
-
-	}
-
 	public UserAccountsAdapter(Context ctx, Dialog dialog) {
 		this.dialog = dialog;
 		this.context = ctx;
@@ -190,9 +98,7 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 		UserAccount currentItem = userAccountsList.get(position);
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
-		String url = UrlBuilder.fromString(currentItem.getInstanceUrl())
-			.withPath("/")
-			.toString();
+		String url = UrlBuilder.fromString(currentItem.getInstanceUrl()).withPath("/").toString();
 
 		holder.accountId = currentItem.getAccountId();
 		holder.accountName = currentItem.getAccountName();
@@ -200,18 +106,14 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 		holder.userId.setText(currentItem.getUserName());
 		if(currentItem.isLoggedIn()) {
 			holder.accountUrl.setText(url);
-		} else {
+		}
+		else {
 			holder.accountUrl.setText(context.getString(R.string.notLoggedIn, url));
 		}
 
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		PicassoService.getInstance(context).get()
-			.load(url + "assets/img/favicon.png")
-			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(imgRadius, 0))
-			.resize(120, 120)
-			.centerCrop()
+		PicassoService.getInstance(context).get().load(url + "assets/img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
 			.into(holder.repoAvatar);
 
 		if(tinyDB.getInt("currentActiveAccountId") == currentItem.getAccountId()) {
@@ -225,6 +127,95 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 	@Override
 	public int getItemCount() {
 		return userAccountsList.size();
+	}
+
+	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
+
+		private final TextView accountUrl;
+		private final TextView userId;
+		private final ImageView activeAccount;
+		private final ImageView deleteAccount;
+		private final ImageView repoAvatar;
+		private int accountId;
+		private String accountName;
+
+		private UserAccountsViewHolder(View itemView) {
+
+			super(itemView);
+
+			accountUrl = itemView.findViewById(R.id.accountUrl);
+			userId = itemView.findViewById(R.id.userId);
+			activeAccount = itemView.findViewById(R.id.activeAccount);
+			deleteAccount = itemView.findViewById(R.id.deleteAccount);
+			repoAvatar = itemView.findViewById(R.id.repoAvatar);
+
+			deleteAccount.setOnClickListener(itemDelete -> {
+
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context).setTitle(context.getResources().getString(R.string.removeAccountPopupTitle))
+					.setMessage(context.getResources().getString(R.string.removeAccountPopupMessage)).setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
+					.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, which) -> {
+
+						updateLayoutByPosition(getBindingAdapterPosition());
+						UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
+						assert userAccountsApi != null;
+						userAccountsApi.deleteAccount(Integer.parseInt(String.valueOf(accountId)));
+					});
+
+				materialAlertDialogBuilder.create().show();
+			});
+
+			itemView.setOnClickListener(switchAccount -> {
+
+				UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
+				assert userAccountsApi != null;
+				UserAccount userAccount = userAccountsApi.getAccountByName(accountName);
+
+				if(!userAccount.isLoggedIn()) {
+					UrlBuilder url = UrlBuilder.fromString(userAccount.getInstanceUrl()).withPath("/");
+
+					String host;
+					if(url.scheme.equals("http")) {
+						if(url.port == 80 || url.port == 0) {
+							host = url.hostName;
+						}
+						else {
+							host = url.hostName + ":" + url.port;
+						}
+					}
+					else {
+						if(url.port == 443 || url.port == 0) {
+							host = url.hostName;
+						}
+						else {
+							host = url.hostName + ":" + url.port;
+						}
+					}
+
+					Toasty.warning(context, context.getString(R.string.logInAgain));
+					dialog.dismiss();
+
+					Intent i = new Intent(context, AddNewAccountActivity.class);
+					i.putExtra("instanceUrl", host);
+					i.putExtra("scheme", url.scheme);
+					i.putExtra("token", userAccount.getToken());
+					context.startActivity(i);
+					return;
+				}
+
+				if(AppUtil.switchToAccount(context, userAccount)) {
+
+					String url = UrlBuilder.fromString(userAccount.getInstanceUrl()).withPath("/").toString();
+
+					Toasty.success(context, context.getResources().getString(R.string.switchAccountSuccess, userAccount.getUserName(), url));
+					getNotificationsCount();
+					((Activity) context).recreate();
+					dialog.dismiss();
+
+				}
+			});
+
+		}
+
 	}
 
 }

@@ -28,121 +28,10 @@ import java.util.List;
 public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
 	private final Context context;
-	private List<Organization> orgList;
 	private final List<Organization> orgListFull;
+	private List<Organization> orgList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
-
-	public OrganizationsListAdapter(Context ctx, List<Organization> orgListMain) {
-		this.context = ctx;
-		this.orgList = orgListMain;
-		orgListFull = new ArrayList<>(orgList);
-	}
-
-	@NonNull
-	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new OrganizationsListAdapter.OrgHolder(inflater.inflate(R.layout.list_organizations, parent, false));
-	}
-
-	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
-			isLoading = true;
-			loadMoreListener.onLoadMore();
-		}
-
-		((OrganizationsListAdapter.OrgHolder) holder).bindData(orgList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
-	}
-
-	@Override
-	public int getItemCount() {
-		return orgList.size();
-	}
-
-	class OrgHolder extends RecyclerView.ViewHolder {
-
-		private Organization userOrganizations;
-
-		private final ImageView image;
-		private final TextView orgName;
-		private final TextView orgDescription;
-
-		OrgHolder(View itemView) {
-
-			super(itemView);
-			orgName = itemView.findViewById(R.id.orgName);
-			orgDescription = itemView.findViewById(R.id.orgDescription);
-			image = itemView.findViewById(R.id.imageAvatar);
-
-			itemView.setOnClickListener(v -> {
-				Context context = v.getContext();
-				Intent intent = new Intent(context, OrganizationDetailActivity.class);
-				intent.putExtra("orgName", userOrganizations.getUsername());
-				context.startActivity(intent);
-			});
-		}
-
-		void bindData(Organization org) {
-
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
-
-			this.userOrganizations = org;
-			orgName.setText(org.getUsername());
-
-			PicassoService.getInstance(context).get().load(org.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
-
-			if(!org.getDescription().equals("")) {
-				orgDescription.setVisibility(View.VISIBLE);
-				orgDescription.setText(org.getDescription());
-			}
-			else {
-				orgDescription.setVisibility(View.GONE);
-			}
-		}
-
-	}
-
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if(!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
-	}
-
-	public abstract static class OnLoadMoreListener {
-		protected abstract void onLoadMore();
-		public void onLoadFinished() {}
-
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<Organization> list) {
-		orgList = list;
-		notifyDataChanged();
-	}
-
-	@Override
-	public Filter getFilter() {
-		return orgFilter;
-	}
-
 	private final Filter orgFilter = new Filter() {
 
 		@Override
@@ -179,4 +68,117 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 			notifyDataChanged();
 		}
 	};
+
+	public OrganizationsListAdapter(Context ctx, List<Organization> orgListMain) {
+		this.context = ctx;
+		this.orgList = orgListMain;
+		orgListFull = new ArrayList<>(orgList);
+	}
+
+	@NonNull
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		return new OrganizationsListAdapter.OrgHolder(inflater.inflate(R.layout.list_organizations, parent, false));
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
+
+		((OrganizationsListAdapter.OrgHolder) holder).bindData(orgList.get(position));
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		return position;
+	}
+
+	@Override
+	public int getItemCount() {
+		return orgList.size();
+	}
+
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<Organization> list) {
+		orgList = list;
+		notifyDataChanged();
+	}
+
+	@Override
+	public Filter getFilter() {
+		return orgFilter;
+	}
+
+	public abstract static class OnLoadMoreListener {
+
+		protected abstract void onLoadMore();
+
+		public void onLoadFinished() {
+		}
+
+	}
+
+	class OrgHolder extends RecyclerView.ViewHolder {
+
+		private final ImageView image;
+		private final TextView orgName;
+		private final TextView orgDescription;
+		private Organization userOrganizations;
+
+		OrgHolder(View itemView) {
+
+			super(itemView);
+			orgName = itemView.findViewById(R.id.orgName);
+			orgDescription = itemView.findViewById(R.id.orgDescription);
+			image = itemView.findViewById(R.id.imageAvatar);
+
+			itemView.setOnClickListener(v -> {
+				Context context = v.getContext();
+				Intent intent = new Intent(context, OrganizationDetailActivity.class);
+				intent.putExtra("orgName", userOrganizations.getUsername());
+				context.startActivity(intent);
+			});
+		}
+
+		void bindData(Organization org) {
+
+			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
+
+			this.userOrganizations = org;
+			orgName.setText(org.getUsername());
+
+			PicassoService.getInstance(context).get().load(org.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+
+			if(!org.getDescription().equals("")) {
+				orgDescription.setVisibility(View.VISIBLE);
+				orgDescription.setText(org.getDescription());
+			}
+			else {
+				orgDescription.setVisibility(View.GONE);
+			}
+		}
+
+	}
+
 }

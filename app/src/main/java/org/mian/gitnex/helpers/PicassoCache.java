@@ -6,12 +6,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.squareup.picasso.Cache;
 import org.mian.gitnex.R;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,17 +18,14 @@ import java.util.UUID;
 
 public class PicassoCache implements Cache {
 
-	private Context ctx;
-	private final String TAG = "PicassoCache";
-
 	private static final Bitmap.CompressFormat COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
 	private static final int COMPRESSION_QUALITY = 50; // 0 = high compression (low file size) | 100 = no compression
-	private final int CACHE_SIZE;
-
 	private static final String CACHE_MAP_FILE = "cacheMap";
-
+	private final String TAG = "PicassoCache";
+	private final int CACHE_SIZE;
 	private final File cachePath;
 	private final HashMap<String, String> cacheMap;
+	private final Context ctx;
 
 	public PicassoCache(File cachePath, Context ctx) throws IOException, ClassNotFoundException {
 
@@ -148,7 +140,7 @@ public class PicassoCache implements Cache {
 			int len = Math.min(keyPrefix.length(), key.length());
 			boolean match = true;
 
-			for(int i=0; i<len; i++) {
+			for(int i = 0; i < len; i++) {
 
 				if(key.charAt(i) != keyPrefix.charAt(i)) {
 

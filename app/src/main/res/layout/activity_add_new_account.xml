@@ -26,24 +26,24 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/dimen26dp"
                 android:layout_height="@dimen/dimen26dp"
-                android:layout_marginEnd="@dimen/dimen16dp"
                 android:layout_marginStart="@dimen/dimen16dp"
-                android:gravity="center_vertical"
+                android:layout_marginEnd="@dimen/dimen16dp"
                 android:contentDescription="@string/close"
-                android:src="@drawable/ic_arrow_back" />
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_arrow_back"/>
 
             <TextView
                 android:id="@+id/toolbarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/addNewAccount"
-                android:textColor="?attr/primaryTextColor"
+                android:layout_marginEnd="@dimen/dimen20dp"
                 android:ellipsize="none"
                 android:scrollbars="horizontal"
                 android:singleLine="true"
-                android:layout_marginEnd="@dimen/dimen20dp"
-                android:textSize="@dimen/dimen20sp" />
+                android:text="@string/addNewAccount"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -58,26 +58,26 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/protocolSpinnerLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            android:textColorHint="?attr/hintColor"
-            app:hintTextColor="?attr/hintColor"
             android:layout_marginTop="@dimen/dimen8dp"
             android:layout_marginBottom="@dimen/dimen8dp"
             android:hint="@string/protocol"
+            android:textColorHint="?attr/hintColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
             app:endIconTint="?attr/iconsColor"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            app:hintTextColor="?attr/hintColor">
 
             <AutoCompleteTextView
                 android:id="@+id/protocolSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                android:textColor="?attr/inputTextColor"
-                android:labelFor="@+id/protocolSpinner"
                 android:imeOptions="actionNext"
-                android:textSize="@dimen/dimen16sp" />
+                android:inputType="none"
+                android:labelFor="@+id/protocolSpinner"
+                android:textColor="?attr/inputTextColor"
+                android:textSize="@dimen/dimen16sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,28 +85,28 @@
             android:id="@+id/instanceUrlLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            android:textColorHint="?attr/hintColor"
-            app:hintTextColor="?attr/hintColor"
-            app:boxStrokeErrorColor="@color/darkRed"
             android:layout_marginTop="@dimen/dimen8dp"
             android:layout_marginBottom="@dimen/dimen8dp"
-            app:startIconDrawable="@drawable/ic_link"
-            app:startIconTint="?attr/iconsColor"
+            android:hint="@string/instanceUrl"
+            android:textColorHint="?attr/hintColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
+            app:boxStrokeErrorColor="@color/darkRed"
             app:endIconMode="clear_text"
             app:endIconTint="?attr/iconsColor"
-            android:hint="@string/instanceUrl">
+            app:hintTextColor="?attr/hintColor"
+            app:startIconDrawable="@drawable/ic_link"
+            app:startIconTint="?attr/iconsColor">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/instanceUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
-                android:singleLine="true"
-                android:imeOptions="actionNext"
-                android:textSize="@dimen/dimen16sp" />
+                android:textSize="@dimen/dimen16sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,28 +114,28 @@
             android:id="@+id/loginTokenLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            android:textColorHint="?attr/hintColor"
-            app:hintTextColor="?attr/hintColor"
-            app:boxStrokeErrorColor="@color/darkRed"
             android:layout_marginTop="@dimen/dimen8dp"
             android:layout_marginBottom="@dimen/dimen8dp"
-            app:startIconDrawable="@drawable/ic_lock"
-            app:startIconTint="?attr/iconsColor"
+            android:hint="@string/copyToken"
+            android:textColorHint="?attr/hintColor"
+            app:boxBackgroundColor="?attr/inputBackgroundColor"
+            app:boxStrokeErrorColor="@color/darkRed"
             app:endIconMode="clear_text"
             app:endIconTint="?attr/iconsColor"
-            android:hint="@string/copyToken">
+            app:hintTextColor="?attr/hintColor"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="?attr/iconsColor">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginToken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:textColor="?attr/inputTextColor"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
-                android:singleLine="true"
-                android:imeOptions="actionNext"
-                android:textSize="@dimen/dimen16sp" />
+                android:textSize="@dimen/dimen16sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,10 +144,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen54dp"
             android:layout_marginTop="@dimen/dimen8dp"
-            android:textStyle="bold"
             android:text="@string/addNewAccountText"
             android:textColor="@color/btnTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

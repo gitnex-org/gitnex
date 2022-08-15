@@ -6,10 +6,10 @@
     android:id="@+id/relativeLayoutFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical"
     android:background="?android:attr/selectableItemBackground"
-    android:focusable="true">
+    android:focusable="true"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:id="@+id/framePrNameStatus"
@@ -20,20 +20,20 @@
         tools:ignore="UseCompoundDrawables">
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="@dimen/dimen24dp"
             android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            app:cardElevation="@dimen/dimen0dp"
             android:layout_marginEnd="@dimen/dimen12dp"
-            app:cardCornerRadius="@dimen/dimen12dp">
+            android:layout_marginBottom="@dimen/dimen8dp"
+            app:cardCornerRadius="@dimen/dimen12dp"
+            app:cardElevation="@dimen/dimen0dp">
 
             <ImageView
                 android:id="@+id/assigneeAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/generalImgContentText"
-                android:src="@drawable/ic_android" />
+                android:src="@drawable/ic_android"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -48,26 +48,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="top|center_vertical"
-                android:textAlignment="gravity"
                 android:text="@string/newIssueTitle"
+                android:textAlignment="gravity"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <HorizontalScrollView
                 android:id="@+id/labelsScrollViewDots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:foregroundGravity="right"
                 android:layout_marginBottom="8dp"
-                android:scrollbarThumbHorizontal="@android:color/transparent"
-                android:fillViewport="true">
+                android:fillViewport="true"
+                android:foregroundGravity="right"
+                android:scrollbarThumbHorizontal="@android:color/transparent">
 
                 <LinearLayout
                     android:id="@+id/frameLabelsDots"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"/>
 
             </HorizontalScrollView>
 
@@ -79,17 +79,17 @@
         android:id="@+id/labelsScrollViewWithText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foregroundGravity="right"
         android:layout_marginBottom="8dp"
-        android:scrollbarThumbHorizontal="@android:color/transparent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:foregroundGravity="right"
+        android:scrollbarThumbHorizontal="@android:color/transparent">
 
         <LinearLayout
             android:id="@+id/frameLabels"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"/>
 
     </HorizontalScrollView>
 
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textColor="?attr/hintColor"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <LinearLayout
             android:id="@+id/frameCommentsCount"
@@ -129,7 +129,7 @@
                 android:layout_marginEnd="5dp"
                 android:contentDescription="@string/generalImgContentText"
                 app:srcCompat="@drawable/ic_comment"
-                app:tint="?attr/iconsColor" />
+                app:tint="?attr/iconsColor"/>
 
             <TextView
                 android:id="@+id/prCommentsCount"
@@ -138,7 +138,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/repoStars"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 

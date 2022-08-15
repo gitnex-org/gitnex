@@ -43,4 +43,5 @@ public class SnackBar {
 		textView.setTextColor(context.getColor(R.color.darkRed));
 		snackBar.show();
 	}
+
 }

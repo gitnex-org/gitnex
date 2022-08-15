@@ -29,22 +29,24 @@ public class CustomCodeViewAdapter extends CodeViewAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
+		if(convertView == null) {
 			convertView = layoutInflater.inflate(R.layout.list_items_autocomplete, parent, false);
 		}
 
 		ImageView codeType = convertView.findViewById(R.id.code_type);
 		TextView codeTitle = convertView.findViewById(R.id.code_title);
 		Code currentCode = (Code) getItem(position);
-		if (currentCode != null) {
+		if(currentCode != null) {
 			codeTitle.setText(currentCode.getCodeTitle());
-			if (currentCode instanceof Snippet) {
+			if(currentCode instanceof Snippet) {
 				codeType.setImageResource(R.drawable.ic_snippet);
-			} else {
+			}
+			else {
 				codeType.setImageResource(R.drawable.ic_keyword);
 			}
 		}
 
 		return convertView;
 	}
+
 }

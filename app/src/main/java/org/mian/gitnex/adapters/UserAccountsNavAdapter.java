@@ -41,23 +41,6 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 		this.drawer = drawerLayout;
 	}
 
-	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
-
-		private final ImageView userAccountAvatar;
-
-		private UserAccountsViewHolder(View itemView) {
-
-			super(itemView);
-
-			userAccountAvatar = itemView.findViewById(R.id.userAccountAvatar);
-
-			itemView.setOnClickListener(item -> {
-				customDialogUserAccountsList();
-				drawer.closeDrawers();
-			});
-		}
-	}
-
 	@NonNull
 	@Override
 	public UserAccountsNavAdapter.UserAccountsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -72,18 +55,11 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 
 		UserAccount currentItem = userAccountsList.get(position);
 
-		String url = UrlBuilder.fromString(currentItem.getInstanceUrl())
-			.withPath("/")
-			.toString();
+		String url = UrlBuilder.fromString(currentItem.getInstanceUrl()).withPath("/").toString();
 
 		int imageSize = AppUtil.getPixelsFromDensity(context, 35);
 
-		PicassoService.getInstance(context).get()
-			.load(url + "assets/img/favicon.png")
-			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(8, 0))
-			.resize(imageSize, imageSize)
-			.centerCrop()
+		PicassoService.getInstance(context).get().load(url + "assets/img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(imageSize, imageSize).centerCrop()
 			.into(holder.userAccountAvatar);
 	}
 
@@ -101,7 +77,7 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 		RecyclerView listView = dialog.findViewById(R.id.accountsList);
 		Button newAccount = dialog.findViewById(R.id.newAccount);
 
-		if (dialog.getWindow() != null) {
+		if(dialog.getWindow() != null) {
 			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		}
 
@@ -115,6 +91,24 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 		listView.setLayoutManager(new LinearLayoutManager(context));
 		listView.setAdapter(arrayAdapter);
 		dialog.show();
+	}
+
+	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
+
+		private final ImageView userAccountAvatar;
+
+		private UserAccountsViewHolder(View itemView) {
+
+			super(itemView);
+
+			userAccountAvatar = itemView.findViewById(R.id.userAccountAvatar);
+
+			itemView.setOnClickListener(item -> {
+				customDialogUserAccountsList();
+				drawer.closeDrawers();
+			});
+		}
+
 	}
 
 }

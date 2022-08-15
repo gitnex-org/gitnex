@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutDraftsFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:background="?android:attr/selectableItemBackground"
     android:focusable="true"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".activities.MainActivity">
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <ImageView
             android:id="@+id/editCommentStatus"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/menuDeleteText"
-            android:src="@drawable/ic_edit" />
+            android:src="@drawable/ic_edit"/>
 
         <ImageView
             android:id="@+id/deleteDraft"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/menuDeleteText"
-            android:src="@drawable/ic_delete" />
+            android:src="@drawable/ic_delete"/>
 
     </LinearLayout>
 
@@ -50,8 +50,8 @@
         android:id="@+id/frameDraftInfo1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_weight=".95"
             android:text="@string/noDataFound"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

@@ -51,7 +51,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setHasFixedSize(true);
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setLayoutManager(new LinearLayoutManager(ctx));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(addNewTeamRepositoryBinding.recyclerViewTeamRepos.getContext(),	DividerItemDecoration.VERTICAL);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(addNewTeamRepositoryBinding.recyclerViewTeamRepos.getContext(), DividerItemDecoration.VERTICAL);
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.addItemDecoration(dividerItemDecoration);
 
 		dataList = new ArrayList<>();
@@ -105,4 +105,5 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
+
 }

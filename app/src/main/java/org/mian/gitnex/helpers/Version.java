@@ -163,7 +163,8 @@ public class Version {
 
 		if(dev) {
 			return !v.dev;
-		} else if(v.dev) {
+		}
+		else if(v.dev) {
 			return false;
 		}
 

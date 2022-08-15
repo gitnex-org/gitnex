@@ -37,150 +37,145 @@ import retrofit2.Response;
 
 public class CollaboratorSearchAdapter extends RecyclerView.Adapter<CollaboratorSearchAdapter.CollaboratorSearchViewHolder> {
 
-    private final List<User> usersSearchList;
-    private final Context context;
-    private final RepositoryContext repository;
+	private final List<User> usersSearchList;
+	private final Context context;
+	private final RepositoryContext repository;
 
-    public CollaboratorSearchAdapter(List<User> dataList, Context ctx, RepositoryContext repository) {
-        this.context = ctx;
-        this.usersSearchList = dataList;
-        this.repository = repository;
-    }
+	public CollaboratorSearchAdapter(List<User> dataList, Context ctx, RepositoryContext repository) {
+		this.context = ctx;
+		this.usersSearchList = dataList;
+		this.repository = repository;
+	}
 
-    class CollaboratorSearchViewHolder extends RecyclerView.ViewHolder {
+	@NonNull
+	@Override
+	public CollaboratorSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
+		return new CollaboratorSearchAdapter.CollaboratorSearchViewHolder(v);
+	}
 
-	    private User userInfo;
+	@Override
+	public void onBindViewHolder(@NonNull final CollaboratorSearchViewHolder holder, int position) {
 
-        private final ImageView userAvatar;
-        private final TextView userFullName;
-        private final TextView userName;
-        private final ImageView addCollaboratorButtonAdd;
-        private final ImageView addCollaboratorButtonRemove;
+		User currentItem = usersSearchList.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
+		holder.userInfo = currentItem;
 
-        private final String[] permissionList = {"Read", "Write", "Admin"};
-        final private int permissionSelectedChoice = 0;
+		if(!currentItem.getFullName().equals("")) {
 
-        private CollaboratorSearchViewHolder(View itemView) {
+			holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
+		}
+		else {
 
-            super(itemView);
-            userAvatar = itemView.findViewById(R.id.userAvatar);
-            userFullName = itemView.findViewById(R.id.userFullName);
-            userName = itemView.findViewById(R.id.userName);
-            addCollaboratorButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
-            addCollaboratorButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
+			holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
+		}
 
-            addCollaboratorButtonAdd.setOnClickListener(v -> {
+		holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
-	            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
-		            .setTitle(R.string.newTeamPermission)
-		            .setSingleChoiceItems(permissionList, permissionSelectedChoice, null)
-		            .setNeutralButton(R.string.cancelButton, null)
-		            .setPositiveButton(R.string.addButton, (dialog, which) -> {
+		if(!currentItem.getAvatarUrl().equals("")) {
+			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+				.into(holder.userAvatar);
+		}
 
-			            ListView lw = ((AlertDialog)dialog).getListView();
-			            Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+		if(getItemCount() > 0) {
 
-			            CollaboratorActions.addCollaborator(context,  String.valueOf(checkedItem).toLowerCase(), userInfo.getLogin(), repository);
-		            });
+			final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 
-	            materialAlertDialogBuilder.create().show();
-            });
+			Call<Void> call = RetrofitClient.getApiInterface(context).repoCheckCollaborator(repository.getOwner(), repository.getName(), currentItem.getLogin());
 
-            addCollaboratorButtonRemove.setOnClickListener(v -> AlertDialogs.collaboratorRemoveDialog(context, userInfo.getLogin(), repository));
+			call.enqueue(new Callback<Void>() {
 
-	        new Handler().postDelayed(() -> {
-		        if(!AppUtil.checkGhostUsers(userInfo.getLogin())) {
+				@Override
+				public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 
-			        userAvatar.setOnClickListener(loginId -> {
-				        Intent intent = new Intent(context, ProfileActivity.class);
-				        intent.putExtra("username", userInfo.getLogin());
-				        context.startActivity(intent);
-			        });
+					if(response.code() == 204) {
+						if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repository.getOwner())) {
+							holder.addCollaboratorButtonRemove.setVisibility(View.VISIBLE);
+						}
+						else {
+							holder.addCollaboratorButtonRemove.setVisibility(View.GONE);
+						}
+					}
+					else if(response.code() == 404) {
+						if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repository.getOwner())) {
+							holder.addCollaboratorButtonAdd.setVisibility(View.VISIBLE);
+						}
+						else {
+							holder.addCollaboratorButtonAdd.setVisibility(View.GONE);
+						}
+					}
+					else {
+						holder.addCollaboratorButtonRemove.setVisibility(View.GONE);
+						holder.addCollaboratorButtonAdd.setVisibility(View.GONE);
+					}
+				}
 
-			        userAvatar.setOnLongClickListener(loginId -> {
-				        AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
-				        return true;
-			        });
-		        }
-	        }, 500);
-        }
+				@Override
+				public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+					Log.i("onFailure", t.toString());
+				}
+			});
+		}
+	}
 
-    }
+	@Override
+	public int getItemCount() {
+		return usersSearchList.size();
+	}
 
-    @NonNull
-    @Override
-    public CollaboratorSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
-        return new CollaboratorSearchAdapter.CollaboratorSearchViewHolder(v);
-    }
+	class CollaboratorSearchViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public void onBindViewHolder(@NonNull final CollaboratorSearchViewHolder holder, int position) {
+		private final ImageView userAvatar;
+		private final TextView userFullName;
+		private final TextView userName;
+		private final ImageView addCollaboratorButtonAdd;
+		private final ImageView addCollaboratorButtonRemove;
+		private final String[] permissionList = {"Read", "Write", "Admin"};
+		final private int permissionSelectedChoice = 0;
+		private User userInfo;
 
-	    User currentItem = usersSearchList.get(position);
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
-	    holder.userInfo = currentItem;
+		private CollaboratorSearchViewHolder(View itemView) {
 
-        if (!currentItem.getFullName().equals("")) {
+			super(itemView);
+			userAvatar = itemView.findViewById(R.id.userAvatar);
+			userFullName = itemView.findViewById(R.id.userFullName);
+			userName = itemView.findViewById(R.id.userName);
+			addCollaboratorButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
+			addCollaboratorButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
 
-            holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
-        }
-        else {
+			addCollaboratorButtonAdd.setOnClickListener(v -> {
 
-            holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
-        }
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context).setTitle(R.string.newTeamPermission).setSingleChoiceItems(permissionList, permissionSelectedChoice, null)
+					.setNeutralButton(R.string.cancelButton, null).setPositiveButton(R.string.addButton, (dialog, which) -> {
 
-	    holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
+						ListView lw = ((AlertDialog) dialog).getListView();
+						Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-	    if (!currentItem.getAvatarUrl().equals("")) {
-            PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
-        }
+						CollaboratorActions.addCollaborator(context, String.valueOf(checkedItem).toLowerCase(), userInfo.getLogin(), repository);
+					});
 
-        if(getItemCount() > 0) {
+				materialAlertDialogBuilder.create().show();
+			});
 
-            final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
+			addCollaboratorButtonRemove.setOnClickListener(v -> AlertDialogs.collaboratorRemoveDialog(context, userInfo.getLogin(), repository));
 
-            Call<Void> call = RetrofitClient
-                    .getApiInterface(context)
-                    .repoCheckCollaborator(repository.getOwner(), repository.getName(), currentItem.getLogin());
+			new Handler().postDelayed(() -> {
+				if(!AppUtil.checkGhostUsers(userInfo.getLogin())) {
 
-            call.enqueue(new Callback<Void>() {
+					userAvatar.setOnClickListener(loginId -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", userInfo.getLogin());
+						context.startActivity(intent);
+					});
 
-                @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+					userAvatar.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
+						return true;
+					});
+				}
+			}, 500);
+		}
 
-                    if(response.code() == 204) {
-                        if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repository.getOwner())) {
-                            holder.addCollaboratorButtonRemove.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            holder.addCollaboratorButtonRemove.setVisibility(View.GONE);
-                        }
-                    }
-                    else if(response.code() == 404) {
-                        if(!currentItem.getLogin().equals(loginUid) && !currentItem.getLogin().equals(repository.getOwner())) {
-                            holder.addCollaboratorButtonAdd.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            holder.addCollaboratorButtonAdd.setVisibility(View.GONE);
-                        }
-                    }
-                    else {
-                        holder.addCollaboratorButtonRemove.setVisibility(View.GONE);
-                        holder.addCollaboratorButtonAdd.setVisibility(View.GONE);
-                    }
-                }
+	}
 
-                @Override
-                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                    Log.i("onFailure", t.toString());
-                }
-            });
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return usersSearchList.size();
-    }
 }

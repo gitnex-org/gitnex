@@ -27,13 +27,7 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
-import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.views.ReactionList;
 import org.mian.gitnex.views.ReactionSpinner;
@@ -70,16 +64,131 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 		this.issue = issue;
 	}
 
-	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
+	private void updateAdapter(int position) {
 
-		private String userLoginId;
-		private Comment issueComment;
+		issuesComments.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, issuesComments.size());
+	}
+
+	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
+
+		Call<Void> call = RetrofitClient.getApiInterface(ctx).issueDeleteComment(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) commentId);
+
+		call.enqueue(new Callback<Void>() {
+
+			@Override
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+
+				switch(response.code()) {
+
+					case 204:
+						updateAdapter(position);
+						Toasty.success(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
+						IssuesFragment.resumeIssues = true;
+						break;
+
+					case 401:
+						AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						break;
+
+					case 403:
+						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						break;
+
+					case 404:
+						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+						break;
+
+					default:
+						Toasty.error(ctx, ctx.getString(R.string.genericError));
+
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
+	@NonNull
+	@Override
+	public IssueCommentsAdapter.IssueCommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_issue_comments, parent, false);
+		return new IssueCommentsAdapter.IssueCommentViewHolder(v);
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull IssueCommentsAdapter.IssueCommentViewHolder holder, int position) {
+
+		String timeFormat = tinyDB.getString("dateFormat", "pretty");
+		Comment issueComment = issuesComments.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+
+		holder.userLoginId = issueComment.getUser().getLogin();
+
+		holder.issueComment = issueComment;
+		holder.author.setText(issueComment.getUser().getLogin());
+
+		PicassoService.getInstance(context).get().load(issueComment.getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0))
+			.resize(AppUtil.getPixelsFromDensity(context, 35), AppUtil.getPixelsFromDensity(context, 35)).centerCrop().into(holder.avatar);
+
+		Markdown.render(context, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment, issue.getRepository());
+
+		StringBuilder informationBuilder = null;
+		if(issueComment.getCreatedAt() != null) {
+
+			if(timeFormat.equals("pretty")) {
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "pretty", context));
+				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreatedAt()));
+			}
+			else if(timeFormat.equals("normal")) {
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "normal", context));
+			}
+
+			if(!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
+				if(informationBuilder != null) {
+					informationBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
+				}
+			}
+		}
+
+		holder.information.setText(informationBuilder);
+
+		Bundle bundle1 = new Bundle();
+		bundle1.putAll(bundle);
+		bundle1.putInt("commentId", Math.toIntExact(issueComment.getId()));
+
+		ReactionList reactionList = new ReactionList(context, bundle1);
+
+		holder.commentReactionBadges.addView(reactionList);
+		reactionList.setOnReactionAddedListener(() -> {
+
+			if(holder.commentReactionBadges.getVisibility() != View.VISIBLE) {
+				holder.commentReactionBadges.post(() -> holder.commentReactionBadges.setVisibility(View.VISIBLE));
+			}
+		});
+
+	}
+
+	@Override
+	public int getItemCount() {
+		return issuesComments.size();
+	}
+
+	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView avatar;
 		private final TextView author;
 		private final TextView information;
 		private final RecyclerView comment;
 		private final LinearLayout commentReactionBadges;
+		private String userLoginId;
+		private Comment issueComment;
 
 		private IssueCommentViewHolder(View view) {
 
@@ -237,128 +346,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<IssueCommentsAdap
 				}
 			}, 500);
 		}
-	}
 
-	private void updateAdapter(int position) {
-
-		issuesComments.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, issuesComments.size());
-	}
-
-	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
-
-		Call<Void> call = RetrofitClient
-				.getApiInterface(ctx)
-				.issueDeleteComment(issue.getRepository().getOwner(), issue.getRepository().getName(), (long) commentId);
-
-		call.enqueue(new Callback<Void>() {
-
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
-
-				switch(response.code()) {
-
-					case 204:
-						updateAdapter(position);
-						Toasty.success(ctx, ctx.getResources().getString(R.string.deleteCommentSuccess));
-						IssuesFragment.resumeIssues = true;
-						break;
-
-					case 401:
-						AlertDialogs.authorizationTokenRevokedDialog(ctx);
-						break;
-
-					case 403:
-						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-						break;
-
-					case 404:
-						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-						break;
-
-					default:
-						Toasty.error(ctx, ctx.getString(R.string.genericError));
-
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
-			}
-		});
-	}
-
-	@NonNull
-	@Override
-	public IssueCommentsAdapter.IssueCommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_issue_comments, parent, false);
-		return new IssueCommentsAdapter.IssueCommentViewHolder(v);
-	}
-	@Override
-	public void onBindViewHolder(@NonNull IssueCommentsAdapter.IssueCommentViewHolder holder, int position) {
-
-		String timeFormat = tinyDB.getString("dateFormat", "pretty");
-		Comment issueComment = issuesComments.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
-
-		holder.userLoginId = issueComment.getUser().getLogin();
-
-		holder.issueComment = issueComment;
-		holder.author.setText(issueComment.getUser().getLogin());
-
-		PicassoService.getInstance(context).get()
-			.load(issueComment.getUser().getAvatarUrl())
-			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(imgRadius, 0))
-			.resize(AppUtil.getPixelsFromDensity(context, 35), AppUtil.getPixelsFromDensity(context, 35))
-			.centerCrop()
-			.into(holder.avatar);
-
-		Markdown.render(context, EmojiParser.parseToUnicode(issueComment.getBody()), holder.comment, issue.getRepository());
-
-		StringBuilder informationBuilder = null;
-		if(issueComment.getCreatedAt() != null) {
-
-			if(timeFormat.equals("pretty")) {
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "pretty", context));
-				holder.information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreatedAt()));
-			}
-			else if(timeFormat.equals("normal")) {
-				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "normal", context));
-			}
-
-			if(!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
-				if(informationBuilder != null) {
-					informationBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
-				}
-			}
-		}
-
-		holder.information.setText(informationBuilder);
-
-		Bundle bundle1 = new Bundle();
-		bundle1.putAll(bundle);
-		bundle1.putInt("commentId", Math.toIntExact(issueComment.getId()));
-
-		ReactionList reactionList = new ReactionList(context, bundle1);
-
-		holder.commentReactionBadges.addView(reactionList);
-		reactionList.setOnReactionAddedListener(() -> {
-
-			if(holder.commentReactionBadges.getVisibility() != View.VISIBLE) {
-				holder.commentReactionBadges.post(() -> holder.commentReactionBadges.setVisibility(View.VISIBLE));
-			}
-		});
-
-	}
-
-	@Override
-	public int getItemCount() {
-		return issuesComments.size();
 	}
 
 }

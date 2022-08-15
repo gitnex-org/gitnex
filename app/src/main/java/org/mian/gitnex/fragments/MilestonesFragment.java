@@ -4,12 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,21 +28,30 @@ import java.util.List;
 
 public class MilestonesFragment extends Fragment {
 
-	private MilestonesViewModel milestonesViewModel;
-    private FragmentMilestonesBinding viewBinding;
-    private Menu menu;
-    private List<Milestone> dataList;
-    private MilestonesAdapter adapter;
-    private RepositoryContext repository;
-    private String milestoneId;
-    private int page = 1;
 	public String state = "open";
+	private MilestonesViewModel milestonesViewModel;
+	private FragmentMilestonesBinding viewBinding;
+	private Menu menu;
+	private List<Milestone> dataList;
+	private MilestonesAdapter adapter;
+	private RepositoryContext repository;
+	private String milestoneId;
+	private int page = 1;
 
-    public static MilestonesFragment newInstance(RepositoryContext repository) {
-    	MilestonesFragment fragment = new MilestonesFragment();
-    	fragment.setArguments(repository.getBundle());
-    	return fragment;
-    }
+	public static MilestonesFragment newInstance(RepositoryContext repository) {
+		MilestonesFragment fragment = new MilestonesFragment();
+		fragment.setArguments(repository.getBundle());
+		return fragment;
+	}
+
+	private static int getMilestoneIndex(int milestoneId, List<Milestone> milestones) {
+		for(Milestone milestone : milestones) {
+			if(milestone.getId() == milestoneId) {
+				return milestones.indexOf(milestone);
+			}
+		}
+		return -1;
+	}
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,55 +60,55 @@ public class MilestonesFragment extends Fragment {
 	}
 
 	@Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        viewBinding = FragmentMilestonesBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
+		viewBinding = FragmentMilestonesBinding.inflate(inflater, container, false);
+		setHasOptionsMenu(true);
 		Context ctx = getContext();
 		milestonesViewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
 
 		milestoneId = requireActivity().getIntent().getStringExtra("milestoneId");
-        requireActivity().getIntent().removeExtra("milestoneId");
+		requireActivity().getIntent().removeExtra("milestoneId");
 
-        viewBinding.recyclerView.setHasFixedSize(true);
-        viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		viewBinding.recyclerView.setHasFixedSize(true);
+		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        dataList = new ArrayList<>();
+		dataList = new ArrayList<>();
 
-	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-	    viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
-        viewBinding.recyclerView.setHasFixedSize(true);
-        viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+		viewBinding.recyclerView.setHasFixedSize(true);
+		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-        viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-	        page = 1;
-            dataList.clear();
-            viewBinding.pullToRefresh.setRefreshing(false);
-	        fetchDataAsync(repository.getOwner(), repository.getName(), state);
-        }, 50));
+			page = 1;
+			dataList.clear();
+			viewBinding.pullToRefresh.setRefreshing(false);
+			fetchDataAsync(repository.getOwner(), repository.getName(), state);
+		}, 50));
 
-        ((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerMilestone(milestoneState -> {
+		((RepoDetailActivity) requireActivity()).setFragmentRefreshListenerMilestone(milestoneState -> {
 
-	        state = milestoneState;
-	        if(milestoneState.equals("open")) {
-		        menu.getItem(1).setIcon(R.drawable.ic_filter);
-	        }
-	        else {
-		        menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-	        }
+			state = milestoneState;
+			if(milestoneState.equals("open")) {
+				menu.getItem(1).setIcon(R.drawable.ic_filter);
+			}
+			else {
+				menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
+			}
 
-	        page = 1;
-            dataList.clear();
-            viewBinding.progressBar.setVisibility(View.VISIBLE);
-            viewBinding.noDataMilestone.setVisibility(View.GONE);
+			page = 1;
+			dataList.clear();
+			viewBinding.progressBar.setVisibility(View.VISIBLE);
+			viewBinding.noDataMilestone.setVisibility(View.GONE);
 
-	        fetchDataAsync(repository.getOwner(), repository.getName(), milestoneState);
-        });
+			fetchDataAsync(repository.getOwner(), repository.getName(), milestoneState);
+		});
 
 		fetchDataAsync(repository.getOwner(), repository.getName(), state);
-        return viewBinding.getRoot();
-    }
+		return viewBinding.getRoot();
+	}
 
 	private void fetchDataAsync(String repoOwner, String repoName, String state) {
 
@@ -146,57 +150,49 @@ public class MilestonesFragment extends Fragment {
 		});
 	}
 
-	private static int getMilestoneIndex(int milestoneId, List<Milestone> milestones) {
-		for (Milestone milestone : milestones) {
-			if(milestone.getId() == milestoneId) {
-				return milestones.indexOf(milestone);
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+		this.menu = menu;
+		inflater.inflate(R.menu.search_menu, menu);
+		inflater.inflate(R.menu.filter_menu_milestone, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+
+				return false;
 			}
-		}
-		return -1;
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+
+				filter(newText);
+				return false;
+			}
+		});
 	}
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+	private void filter(String text) {
 
-        this.menu = menu;
-        inflater.inflate(R.menu.search_menu, menu);
-        inflater.inflate(R.menu.filter_menu_milestone, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+		List<Milestone> arr = new ArrayList<>();
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		for(Milestone d : dataList) {
+			if(d == null || d.getTitle() == null || d.getDescription() == null) {
+				continue;
+			}
+			if(d.getTitle().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
+				arr.add(d);
+			}
+		}
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		adapter.updateList(arr);
+	}
 
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                filter(newText);
-                return false;
-            }
-        });
-    }
-
-    private void filter(String text) {
-
-        List<Milestone> arr = new ArrayList<>();
-
-        for(Milestone d : dataList) {
-	        if(d == null || d.getTitle() == null || d.getDescription() == null) {
-		        continue;
-	        }
-            if(d.getTitle().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
-                arr.add(d);
-            }
-        }
-
-        adapter.updateList(arr);
-    }
 }

@@ -4,12 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,19 +32,17 @@ import retrofit2.Response;
 
 public class RepositoriesFragment extends Fragment {
 
+	private static final String usernameBundle = "";
 	private Context context;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
-
 	private List<Repository> reposList;
 	private ReposListAdapter adapter;
-
 	private int pageSize;
 	private int resultLimit;
-
-	private static final String usernameBundle = "";
 	private String username;
 
-	public RepositoriesFragment() {}
+	public RepositoriesFragment() {
+	}
 
 	public static RepositoriesFragment newInstance(String username) {
 		RepositoriesFragment fragment = new RepositoriesFragment();
@@ -62,7 +55,7 @@ public class RepositoriesFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
+		if(getArguments() != null) {
 			username = getArguments().getString(usernameBundle);
 		}
 	}
@@ -119,8 +112,7 @@ public class RepositoriesFragment extends Fragment {
 
 	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<Repository>> call = RetrofitClient
-			.getApiInterface(context).userListRepos(username, 1, resultLimit);
+		Call<List<Repository>> call = RetrofitClient.getApiInterface(context).userListRepos(username, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -268,4 +260,5 @@ public class RepositoriesFragment extends Fragment {
 		}
 		adapter.updateList(arr);
 	}
+
 }

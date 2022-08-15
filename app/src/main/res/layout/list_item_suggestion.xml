@@ -12,5 +12,5 @@
         android:padding="@dimen/dimen24dp"
         android:textColor="@color/gold"
         android:textSize="@dimen/dimen16sp"
-        tools:text="Keyword" />
+        tools:text="Keyword"/>
 </LinearLayout>

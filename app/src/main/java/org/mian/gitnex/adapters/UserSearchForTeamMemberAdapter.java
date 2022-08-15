@@ -44,47 +44,6 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 		this.orgName = orgName;
 	}
 
-	class UserSearchViewHolder extends RecyclerView.ViewHolder {
-
-		private User userInfo;
-
-		private final ImageView userAvatar;
-		private final TextView userFullName;
-		private final TextView userName;
-		private final ImageView addMemberButtonAdd;
-		private final ImageView addMemberButtonRemove;
-
-		private UserSearchViewHolder(View itemView) {
-
-			super(itemView);
-			userAvatar = itemView.findViewById(R.id.userAvatar);
-			userFullName = itemView.findViewById(R.id.userFullName);
-			userName = itemView.findViewById(R.id.userName);
-			addMemberButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
-			addMemberButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
-
-			addMemberButtonAdd.setOnClickListener(v -> AlertDialogs.addMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
-			addMemberButtonRemove.setOnClickListener(v -> AlertDialogs.removeMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
-
-			new Handler().postDelayed(() -> {
-				if(!AppUtil.checkGhostUsers(userInfo.getLogin())) {
-
-					userAvatar.setOnClickListener(loginId -> {
-						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", userInfo.getLogin());
-						context.startActivity(intent);
-					});
-
-					userAvatar.setOnLongClickListener(loginId -> {
-						AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
-						return true;
-					});
-				}
-			}, 500);
-		}
-
-	}
-
 	@NonNull
 	@Override
 	public UserSearchForTeamMemberAdapter.UserSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -99,7 +58,7 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 		holder.userInfo = currentItem;
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		if (!currentItem.getFullName().equals("")) {
+		if(!currentItem.getFullName().equals("")) {
 
 			holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
 		}
@@ -110,17 +69,16 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 
 		holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
-		if (!currentItem.getAvatarUrl().equals("")) {
-			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.userAvatar);
+		if(!currentItem.getAvatarUrl().equals("")) {
+			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+				.into(holder.userAvatar);
 		}
 
 		if(getItemCount() > 0) {
 
 			final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
 
-			Call<User> call = RetrofitClient
-					.getApiInterface(context)
-					.orgListTeamMember((long) teamId, currentItem.getLogin());
+			Call<User> call = RetrofitClient.getApiInterface(context).orgListTeamMember((long) teamId, currentItem.getLogin());
 
 			call.enqueue(new Callback<>() {
 
@@ -169,6 +127,46 @@ public class UserSearchForTeamMemberAdapter extends RecyclerView.Adapter<UserSea
 	@Override
 	public int getItemCount() {
 		return usersSearchList.size();
+	}
+
+	class UserSearchViewHolder extends RecyclerView.ViewHolder {
+
+		private final ImageView userAvatar;
+		private final TextView userFullName;
+		private final TextView userName;
+		private final ImageView addMemberButtonAdd;
+		private final ImageView addMemberButtonRemove;
+		private User userInfo;
+
+		private UserSearchViewHolder(View itemView) {
+
+			super(itemView);
+			userAvatar = itemView.findViewById(R.id.userAvatar);
+			userFullName = itemView.findViewById(R.id.userFullName);
+			userName = itemView.findViewById(R.id.userName);
+			addMemberButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
+			addMemberButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
+
+			addMemberButtonAdd.setOnClickListener(v -> AlertDialogs.addMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
+			addMemberButtonRemove.setOnClickListener(v -> AlertDialogs.removeMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
+
+			new Handler().postDelayed(() -> {
+				if(!AppUtil.checkGhostUsers(userInfo.getLogin())) {
+
+					userAvatar.setOnClickListener(loginId -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", userInfo.getLogin());
+						context.startActivity(intent);
+					});
+
+					userAvatar.setOnLongClickListener(loginId -> {
+						AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
+						return true;
+					});
+				}
+			}, 500);
+		}
+
 	}
 
 }

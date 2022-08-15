@@ -20,10 +20,8 @@ import java.util.regex.Pattern;
 public class PythonLanguage {
 
 	//Language Keywords
-	private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(False|await|else|import|pass|None|break|except|in|raise" +
-		"|True|class|finally|is|return|and|continue|for|lambda" +
-		"|try|as|def|from|nonlocal|while|assert|del|global|not" +
-		"|with|async|elif|if|or|yield)\\b");
+	private static final Pattern PATTERN_KEYWORDS = Pattern.compile(
+		"\\b(False|await|else|import|pass|None|break|except|in|raise" + "|True|class|finally|is|return|and|continue|for|lambda" + "|try|as|def|from|nonlocal|while|assert|del|global|not" + "|with|async|elif|if|or|yield)\\b");
 
 	//Brackets and Colons
 	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
@@ -35,7 +33,7 @@ public class PythonLanguage {
 	private static final Pattern PATTERN_HEX = Pattern.compile("0x[0-9a-fA-F]+");
 	private static final Pattern PATTERN_TODO_COMMENT = Pattern.compile("#TODO[^\n]*");
 	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION =Pattern.compile( ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
+	private static final Pattern PATTERN_OPERATION = Pattern.compile(":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 	private static final Pattern PATTERN_HASH_COMMENT = Pattern.compile("#(?!TODO )[^\\n]*");
 
 	public static void applyFiveColorsDarkTheme(Context context, CodeView codeView) {
@@ -73,7 +71,7 @@ public class PythonLanguage {
 	public static List<Code> getCodeList(Context context) {
 		List<Code> codeList = new ArrayList<>();
 		String[] keywords = getKeywords(context);
-		for (String keyword : keywords) {
+		for(String keyword : keywords) {
 			codeList.add(new Keyword(keyword));
 		}
 		return codeList;
@@ -96,4 +94,5 @@ public class PythonLanguage {
 	public static String getCommentEnd() {
 		return "";
 	}
+
 }

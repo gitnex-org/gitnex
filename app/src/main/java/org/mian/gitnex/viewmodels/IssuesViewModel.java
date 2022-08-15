@@ -35,9 +35,7 @@ public class IssuesViewModel extends ViewModel {
 
 	public void loadIssuesList(String searchKeyword, String type, Boolean created, String state, Boolean assignedToMe, Context ctx) {
 
-		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx)
-				.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, 1,
-				resultLimit);
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx).issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -62,8 +60,7 @@ public class IssuesViewModel extends ViewModel {
 
 	public void loadMoreIssues(String searchKeyword, String type, Boolean created, String state, int page, Boolean assignedToMe, Context ctx, ExploreIssuesAdapter adapter) {
 
-		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx)
-				.issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, page, resultLimit);
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(ctx).issueSearchIssues(state, null, null, searchKeyword, null, type, null, null, assignedToMe, created, null, null, null, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -96,4 +93,5 @@ public class IssuesViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

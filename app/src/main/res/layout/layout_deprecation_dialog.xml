@@ -15,7 +15,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/screamingInFearEmoticon"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="50sp" />
+        android:textSize="50sp"/>
 
     <TextView
         android:id="@+id/customTitle"
@@ -24,7 +24,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/customMessage"
@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
-        android:textColor="?attr/primaryTextColor" />
+        android:textColor="?attr/primaryTextColor"/>
 
 </LinearLayout>

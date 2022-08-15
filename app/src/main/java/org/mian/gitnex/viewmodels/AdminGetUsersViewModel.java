@@ -21,47 +21,43 @@ import retrofit2.Response;
 
 public class AdminGetUsersViewModel extends ViewModel {
 
-    private MutableLiveData<List<User>> usersList;
+	private MutableLiveData<List<User>> usersList;
 
-    public LiveData<List<User>> getUsersList(int page, int resultLimit, Context ctx) {
+	public LiveData<List<User>> getUsersList(int page, int resultLimit, Context ctx) {
 
-        usersList = new MutableLiveData<>();
-        loadUsersList(page, resultLimit, ctx);
+		usersList = new MutableLiveData<>();
+		loadUsersList(page, resultLimit, ctx);
 
-        return usersList;
-    }
+		return usersList;
+	}
 
-    public void loadUsersList(int page, int resultLimit, Context ctx) {
+	public void loadUsersList(int page, int resultLimit, Context ctx) {
 
-        Call<List<User>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .adminGetAllUsers(page, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).adminGetAllUsers(page, resultLimit);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
-		        if(response.isSuccessful()) {
-			        usersList.postValue(response.body());
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					usersList.postValue(response.body());
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+			@Override
+			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
 
 	public void loadMoreUsersList(int page, int resultLimit, Context ctx, AdminGetUsersAdapter adapter) {
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.adminGetAllUsers(page, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).adminGetAllUsers(page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -94,4 +90,5 @@ public class AdminGetUsersViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

@@ -18,7 +18,22 @@ public class MainGrammarLocator implements GrammarLocator {
 	private static final DefaultGrammarLocator defaultGrammarLocator = new DefaultGrammarLocator();
 	private static volatile MainGrammarLocator instance;
 
-	private MainGrammarLocator() {}
+	private MainGrammarLocator() {
+	}
+
+	public static MainGrammarLocator getInstance() {
+
+		if(instance == null) {
+			synchronized(MainGrammarLocator.class) {
+				if(instance == null) {
+					instance = new MainGrammarLocator();
+				}
+			}
+		}
+
+		return instance;
+
+	}
 
 	public String fromExtension(String extension) {
 
@@ -115,20 +130,6 @@ public class MainGrammarLocator implements GrammarLocator {
 	public Set<String> languages() {
 
 		return defaultGrammarLocator.languages();
-	}
-
-	public static MainGrammarLocator getInstance() {
-
-		if(instance == null) {
-			synchronized(MainGrammarLocator.class) {
-				if(instance == null) {
-					instance = new MainGrammarLocator();
-				}
-			}
-		}
-
-		return instance;
-
 	}
 
 }

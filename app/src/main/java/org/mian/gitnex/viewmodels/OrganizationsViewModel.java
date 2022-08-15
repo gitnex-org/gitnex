@@ -21,48 +21,44 @@ import retrofit2.Response;
 
 public class OrganizationsViewModel extends ViewModel {
 
-    private MutableLiveData<List<Organization>> orgList;
+	private MutableLiveData<List<Organization>> orgList;
 
-    public LiveData<List<Organization>> getUserOrg(int page, int resultLimit, Context ctx) {
+	public LiveData<List<Organization>> getUserOrg(int page, int resultLimit, Context ctx) {
 
-	    orgList = new MutableLiveData<>();
-    	loadOrgList(page, resultLimit, ctx);
+		orgList = new MutableLiveData<>();
+		loadOrgList(page, resultLimit, ctx);
 
-        return orgList;
-    }
+		return orgList;
+	}
 
-    public void loadOrgList(int page, int resultLimit, Context ctx) {
+	public void loadOrgList(int page, int resultLimit, Context ctx) {
 
-        Call<List<Organization>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .orgListCurrentUserOrgs(page, resultLimit);
+		Call<List<Organization>> call = RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(page, resultLimit);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-	        @Override
-	        public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 
-		        if(response.isSuccessful()) {
-		        	orgList.postValue(response.body());
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					orgList.postValue(response.body());
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
 
 	public void loadMoreOrgList(int page, int resultLimit, Context ctx, OrganizationsListAdapter adapter) {
 
-		Call<List<Organization>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.orgListCurrentUserOrgs(page, resultLimit);
+		Call<List<Organization>> call = RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -94,4 +90,5 @@ public class OrganizationsViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

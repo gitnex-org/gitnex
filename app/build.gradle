@@ -39,7 +39,7 @@ android {
     lint {
         abortOnError false
     }
-    defaultConfig{
+    defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
 }

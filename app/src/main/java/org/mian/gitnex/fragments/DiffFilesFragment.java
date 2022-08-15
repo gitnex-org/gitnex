@@ -34,7 +34,8 @@ public class DiffFilesFragment extends Fragment {
 	private List<FileDiffView> fileDiffViews = new ArrayList<>();
 	private DiffFilesAdapter adapter;
 
-	public DiffFilesFragment() {}
+	public DiffFilesFragment() {
+	}
 
 	public static DiffFilesFragment newInstance() {
 		return new DiffFilesFragment();
@@ -87,8 +88,7 @@ public class DiffFilesFragment extends Fragment {
 
 						int filesCount = fileDiffViews.size();
 
-						String toolbarTitleText = (filesCount > 1) ?
-							getResources().getString(R.string.fileDiffViewHeader, Integer.toString(filesCount)) :
+						String toolbarTitleText = (filesCount > 1) ? getResources().getString(R.string.fileDiffViewHeader, Integer.toString(filesCount)) :
 							getResources().getString(R.string.fileDiffViewHeaderSingle, Integer.toString(filesCount));
 
 						requireActivity().runOnUiThread(() -> {
@@ -116,10 +116,13 @@ public class DiffFilesFragment extends Fragment {
 						requireActivity().runOnUiThread(() -> Toasty.error(ctx, getString(R.string.genericError)));
 
 				}
-			} catch(IOException ignored) {}
+			}
+			catch(IOException ignored) {
+			}
 
 		});
 
 		thread.start();
 	}
+
 }

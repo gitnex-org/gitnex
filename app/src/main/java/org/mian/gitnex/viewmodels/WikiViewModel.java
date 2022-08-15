@@ -113,4 +113,5 @@ public class WikiViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

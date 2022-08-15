@@ -28,15 +28,9 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 
 	private final Context context;
 	private final List<User> assigneesList;
+	private final AssigneesListAdapterListener assigneesListener;
 	private List<String> assigneesStrings = new ArrayList<>();
 	private List<String> currentAssignees;
-
-	private final AssigneesListAdapterListener assigneesListener;
-
-	public interface AssigneesListAdapterListener {
-
-		void assigneesInterface(List<String> data);
-	}
 
 	public AssigneesListAdapter(Context ctx, List<User> dataMain, AssigneesListAdapterListener assigneesListener, List<String> currentAssignees) {
 
@@ -44,23 +38,6 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		this.assigneesList = dataMain;
 		this.assigneesListener = assigneesListener;
 		this.currentAssignees = currentAssignees;
-	}
-
-	static class AssigneesViewHolder extends RecyclerView.ViewHolder {
-
-		private final CheckBox assigneesSelection;
-		private final TextView assigneesName;
-		private final ImageView assigneesAvatar;
-
-		private AssigneesViewHolder(View itemView) {
-
-			super(itemView);
-			this.setIsRecyclable(false);
-
-			assigneesSelection = itemView.findViewById(R.id.assigneesSelection);
-			assigneesName = itemView.findViewById(R.id.assigneesName);
-			assigneesAvatar = itemView.findViewById(R.id.assigneesAvatar);
-		}
 	}
 
 	@NonNull
@@ -85,8 +62,8 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 
 			holder.assigneesName.setText(Html.fromHtml(currentItem.getFullName()));
 		}
-		PicassoService
-			.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(holder.assigneesAvatar);
+		PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop()
+			.into(holder.assigneesAvatar);
 
 		for(int i = 0; i < assigneesList.size(); i++) {
 
@@ -138,4 +115,29 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		currentAssignees = list;
 		notifyDataSetChanged();
 	}
+
+	public interface AssigneesListAdapterListener {
+
+		void assigneesInterface(List<String> data);
+
+	}
+
+	static class AssigneesViewHolder extends RecyclerView.ViewHolder {
+
+		private final CheckBox assigneesSelection;
+		private final TextView assigneesName;
+		private final ImageView assigneesAvatar;
+
+		private AssigneesViewHolder(View itemView) {
+
+			super(itemView);
+			this.setIsRecyclable(false);
+
+			assigneesSelection = itemView.findViewById(R.id.assigneesSelection);
+			assigneesName = itemView.findViewById(R.id.assigneesName);
+			assigneesAvatar = itemView.findViewById(R.id.assigneesAvatar);
+		}
+
+	}
+
 }

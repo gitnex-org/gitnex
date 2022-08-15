@@ -18,12 +18,12 @@ public class AccountContext implements Serializable {
 	private UserAccount account;
 	private User userInfo;
 
-	public static AccountContext fromId(int id, Context context) {
-		return new AccountContext(Objects.requireNonNull(UserAccountsApi.getInstance(context, UserAccountsApi.class)).getAccountById(id));
-	}
-
 	public AccountContext(UserAccount account) {
 		this.account = account;
+	}
+
+	public static AccountContext fromId(int id, Context context) {
+		return new AccountContext(Objects.requireNonNull(UserAccountsApi.getInstance(context, UserAccountsApi.class)).getAccountById(id));
 	}
 
 	public UserAccount getAccount() {
@@ -37,7 +37,7 @@ public class AccountContext implements Serializable {
 	}
 
 	public String getAuthorization() {
-		return  "token " + account.getToken();
+		return "token " + account.getToken();
 	}
 
 	public String getWebAuthorization() {
@@ -71,8 +71,7 @@ public class AccountContext implements Serializable {
 	}
 
 	public String getFullName() {
-		return userInfo != null ? !userInfo.getFullName().equals("") ?
-			userInfo.getFullName() : userInfo.getLogin() : account.getUserName();
+		return userInfo != null ? !userInfo.getFullName().equals("") ? userInfo.getFullName() : userInfo.getLogin() : account.getUserName();
 	}
 
 	public File getCacheDir(Context context) {

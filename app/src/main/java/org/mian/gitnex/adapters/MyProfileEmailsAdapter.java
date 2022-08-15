@@ -20,62 +20,57 @@ import java.util.List;
 
 public class MyProfileEmailsAdapter extends RecyclerView.Adapter<MyProfileEmailsAdapter.EmailsViewHolder> {
 
-    private final List<Email> emailsList;
-    private final Context context;
+	private final List<Email> emailsList;
+	private final Context context;
 
-    static class EmailsViewHolder extends RecyclerView.ViewHolder {
+	public MyProfileEmailsAdapter(Context ctx, List<Email> emailsListMain) {
+		this.context = ctx;
+		this.emailsList = emailsListMain;
+	}
 
-        private final ImageView emailPrimary;
-        private final TextView userEmail;
+	@NonNull
+	@Override
+	public MyProfileEmailsAdapter.EmailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_emails, parent, false);
+		return new MyProfileEmailsAdapter.EmailsViewHolder(v);
+	}
 
-        private EmailsViewHolder(View itemView) {
-            super(itemView);
+	@Override
+	public void onBindViewHolder(@NonNull MyProfileEmailsAdapter.EmailsViewHolder holder, int position) {
 
-            emailPrimary = itemView.findViewById(R.id.emailPrimary);
-            userEmail = itemView.findViewById(R.id.userEmail);
+		Email currentItem = emailsList.get(position);
 
-        }
-    }
+		holder.userEmail.setText(currentItem.getEmail());
 
-    public MyProfileEmailsAdapter(Context ctx, List<Email> emailsListMain) {
-        this.context = ctx;
-        this.emailsList = emailsListMain;
-    }
+		if(currentItem.isPrimary()) {
+			TextDrawable drawable = TextDrawable.builder().beginConfig().textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null)).fontSize(36).width(220).height(60).endConfig()
+				.buildRoundRect(context.getResources().getString(R.string.emailTypeText), ResourcesCompat.getColor(context.getResources(), R.color.tooltipBackground, null), 8);
+			holder.emailPrimary.setImageDrawable(drawable);
+		}
+		else {
+			holder.emailPrimary.setVisibility(View.GONE);
+		}
 
-    @NonNull
-    @Override
-    public MyProfileEmailsAdapter.EmailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_profile_emails, parent, false);
-        return new MyProfileEmailsAdapter.EmailsViewHolder(v);
-    }
+	}
 
-    @Override
-    public void onBindViewHolder(@NonNull MyProfileEmailsAdapter.EmailsViewHolder holder, int position) {
+	@Override
+	public int getItemCount() {
+		return emailsList.size();
+	}
 
-        Email currentItem = emailsList.get(position);
+	static class EmailsViewHolder extends RecyclerView.ViewHolder {
 
-        holder.userEmail.setText(currentItem.getEmail());
+		private final ImageView emailPrimary;
+		private final TextView userEmail;
 
-        if(currentItem.isPrimary()) {
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null))
-                    .fontSize(36)
-                    .width(220)
-                    .height(60)
-                    .endConfig()
-                    .buildRoundRect(context.getResources().getString(R.string.emailTypeText), ResourcesCompat.getColor(context.getResources(), R.color.tooltipBackground, null), 8);
-            holder.emailPrimary.setImageDrawable(drawable);
-        }
-        else {
-            holder.emailPrimary.setVisibility(View.GONE);
-        }
+		private EmailsViewHolder(View itemView) {
+			super(itemView);
 
-    }
+			emailPrimary = itemView.findViewById(R.id.emailPrimary);
+			userEmail = itemView.findViewById(R.id.userEmail);
 
-    @Override
-    public int getItemCount() {
-        return emailsList.size();
-    }
+		}
+
+	}
 
 }

@@ -5,12 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,13 +35,11 @@ import retrofit2.Response;
 public class PullRequestsFragment extends Fragment {
 
 	public static boolean resumePullRequests = false;
-
+	private final String TAG = "PullRequestFragment";
 	private FragmentPullRequestsBinding fragmentPullRequestsBinding;
 	private Menu menu;
-
 	private List<PullRequest> prList;
 	private PullRequestsAdapter adapter;
-	private final String TAG = "PullRequestFragment";
 	private Context context;
 	private int pageSize = Constants.prPageInit;
 	private int resultLimit;
@@ -141,8 +134,7 @@ public class PullRequestsFragment extends Fragment {
 
 	private void loadInitial(String repoOwner, String repoName, int page, String prState, int resultLimit) {
 
-		Call<List<PullRequest>> call = RetrofitClient.getApiInterface(context).repoListPullRequests(repoOwner, repoName, prState, null,
-			null, null, page, resultLimit);
+		Call<List<PullRequest>> call = RetrofitClient.getApiInterface(context).repoListPullRequests(repoOwner, repoName, prState, null, null, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -186,8 +178,7 @@ public class PullRequestsFragment extends Fragment {
 
 		fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<PullRequest>> call = RetrofitClient.getApiInterface(context).repoListPullRequests(repoOwner, repoName, prState, null,
-			null, null, page, resultLimit);
+		Call<List<PullRequest>> call = RetrofitClient.getApiInterface(context).repoListPullRequests(repoOwner, repoName, prState, null, null, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -273,4 +264,5 @@ public class PullRequestsFragment extends Fragment {
 		}
 		adapter.updateList(arr);
 	}
+
 }

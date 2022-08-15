@@ -20,17 +20,6 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 	private final List<Attachment> releasesDownloadsList;
 	private final FragmentRefreshListener startDownload;
 
-	static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
-
-		private final TextView downloadName;
-
-		private ReleasesDownloadsViewHolder(View itemView) {
-
-			super(itemView);
-			downloadName = itemView.findViewById(R.id.downloadName);
-		}
-	}
-
 	ReleasesDownloadsAdapter(List<Attachment> releasesDownloadsMain, FragmentRefreshListener startDownload) {
 
 		this.releasesDownloadsList = releasesDownloadsMain;
@@ -60,6 +49,18 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 	@Override
 	public int getItemCount() {
 		return releasesDownloadsList.size();
+	}
+
+	static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
+
+		private final TextView downloadName;
+
+		private ReleasesDownloadsViewHolder(View itemView) {
+
+			super(itemView);
+			downloadName = itemView.findViewById(R.id.downloadName);
+		}
+
 	}
 
 }

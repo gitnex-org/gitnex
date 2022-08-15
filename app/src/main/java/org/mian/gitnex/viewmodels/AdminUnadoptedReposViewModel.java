@@ -35,9 +35,7 @@ public class AdminUnadoptedReposViewModel extends ViewModel {
 
 	public void loadRepos(final Context ctx, final int page, int limit, String query) {
 
-		Call<List<String>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.adminUnadoptedList(page, limit, query);
+		Call<List<String>> call = RetrofitClient.getApiInterface(ctx).adminUnadoptedList(page, limit, query);
 
 		call.enqueue(new Callback<>() {
 
@@ -47,7 +45,8 @@ public class AdminUnadoptedReposViewModel extends ViewModel {
 				if(response.isSuccessful()) {
 					if(page <= 1 || tasksList.getValue() == null) {
 						tasksList.postValue(response.body());
-					} else {
+					}
+					else {
 						List<String> repos = new ArrayList<>(Objects.requireNonNull(tasksList.getValue()));
 						assert response.body() != null;
 						repos.addAll(response.body());
@@ -75,4 +74,5 @@ public class AdminUnadoptedReposViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

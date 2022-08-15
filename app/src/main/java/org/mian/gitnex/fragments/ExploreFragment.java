@@ -45,17 +45,18 @@ public class ExploreFragment extends Fragment {
 		Typeface myTypeface = AppUtil.getTypeface(requireContext());
 		viewPager.setAdapter(new ViewPagerAdapter(this));
 
-		String[] tabTitles = {getResources().getString(R.string.navRepos), getResources().getString(R.string.pageTitleIssues), getResources().getString(R.string.navOrg), getResources().getString(R.string.pageTitleUsers)};
+		String[] tabTitles = {getResources().getString(R.string.navRepos), getResources().getString(R.string.pageTitleIssues), getResources().getString(R.string.navOrg),
+			getResources().getString(R.string.pageTitleUsers)};
 		new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
 
-		for (int j = 0; j < tabTitles.length; j++) {
+		for(int j = 0; j < tabTitles.length; j++) {
 
 			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
 
-			for (int i = 0; i < tabChildCount; i++) {
+			for(int i = 0; i < tabChildCount; i++) {
 				View tabViewChild = vgTab.getChildAt(i);
-				if (tabViewChild instanceof TextView) {
+				if(tabViewChild instanceof TextView) {
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
 			}
@@ -66,7 +67,9 @@ public class ExploreFragment extends Fragment {
 
 	public static class ViewPagerAdapter extends FragmentStateAdapter {
 
-		public ViewPagerAdapter(@NonNull ExploreFragment fa) { super(fa); }
+		public ViewPagerAdapter(@NonNull ExploreFragment fa) {
+			super(fa);
+		}
 
 		@NonNull
 		@Override
@@ -94,5 +97,7 @@ public class ExploreFragment extends Fragment {
 		public int getItemCount() {
 			return 4;
 		}
+
 	}
+
 }

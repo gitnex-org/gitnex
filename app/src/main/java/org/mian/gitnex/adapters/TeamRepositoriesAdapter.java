@@ -49,13 +49,70 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 		reposArr = new ArrayList<>();
 	}
 
-	class TeamReposViewHolder extends RecyclerView.ViewHolder {
+	@NonNull
+	@Override
+	public TeamRepositoriesAdapter.TeamReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
+		return new TeamRepositoriesAdapter.TeamReposViewHolder(v);
+	}
 
-		private Repository repoInfo;
+	@Override
+	public void onBindViewHolder(@NonNull final TeamRepositoriesAdapter.TeamReposViewHolder holder, int position) {
+
+		Repository currentItem = reposList.get(position);
+		holder.repoInfo = currentItem;
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
+
+		holder.name.setText(currentItem.getName());
+
+		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig()
+			.buildRoundRect(String.valueOf(currentItem.getFullName().charAt(0)), ColorGenerator.Companion.getMATERIAL().getColor(currentItem.getName()), 14);
+
+		if(currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().equals("")) {
+			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+				.into(holder.repoAvatar);
+		}
+		else {
+			holder.repoAvatar.setImageDrawable(drawable);
+		}
+
+	}
+
+	@Override
+	public int getItemCount() {
+		return reposList.size();
+	}
+
+	private void getTeamRepos() {
+
+		if(getItemCount() > 0) {
+			Call<List<Repository>> call = RetrofitClient.getApiInterface(context).orgListTeamRepos((long) teamId, 1, 50);
+
+			call.enqueue(new Callback<>() {
+				@Override
+				public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
+
+					if(response.code() == 200) {
+
+						for(int i = 0; i < Objects.requireNonNull(response.body()).size(); i++) {
+							reposArr.addAll(response.body());
+						}
+					}
+				}
+
+				@Override
+				public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
+				}
+			});
+		}
+	}
+
+	class TeamReposViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView repoAvatar;
 		private final TextView name;
 		private final ImageView addRepoButtonAdd;
+		private Repository repoInfo;
 
 		private TeamReposViewHolder(View itemView) {
 
@@ -89,69 +146,9 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 
 			addRepoButtonAdd.setOnClickListener(v -> AlertDialogs.addRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
 
-			addRepoButtonRemove.setOnClickListener(v ->
-				AlertDialogs.removeRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
+			addRepoButtonRemove.setOnClickListener(v -> AlertDialogs.removeRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
 		}
 
 	}
 
-	@NonNull
-	@Override
-	public TeamRepositoriesAdapter.TeamReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
-		return new TeamRepositoriesAdapter.TeamReposViewHolder(v);
-	}
-
-	@Override
-	public void onBindViewHolder(@NonNull final TeamRepositoriesAdapter.TeamReposViewHolder holder, int position) {
-
-		Repository currentItem = reposList.get(position);
-		holder.repoInfo = currentItem;
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
-
-		holder.name.setText(currentItem.getName());
-
-		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28)
-			.endConfig().buildRoundRect(String.valueOf(currentItem.getFullName().charAt(0)), ColorGenerator.Companion.getMATERIAL().getColor(currentItem.getName()), 14);
-
-		if(currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().equals("")) {
-			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.repoAvatar);
-		}
-		else {
-			holder.repoAvatar.setImageDrawable(drawable);
-		}
-
-	}
-
-	@Override
-	public int getItemCount() {
-		return reposList.size();
-	}
-
-	private void getTeamRepos() {
-
-		if(getItemCount() > 0) {
-			Call<List<Repository>> call = RetrofitClient
-				.getApiInterface(context)
-				.orgListTeamRepos((long) teamId, 1, 50);
-
-			call.enqueue(new Callback<>() {
-				@Override
-				public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
-
-					if(response.code() == 200) {
-
-						for(int i = 0; i < Objects.requireNonNull(response.body()).size(); i++) {
-							reposArr.addAll(response.body());
-						}
-					}
-				}
-
-				@Override
-				public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-				}
-			});
-		}
-	}
 }

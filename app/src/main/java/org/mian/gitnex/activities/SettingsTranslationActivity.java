@@ -20,9 +20,14 @@ import java.util.Locale;
 
 public class SettingsTranslationActivity extends BaseActivity {
 
+	private static int langSelectedChoice = 0;
 	private View.OnClickListener onClickListener;
 
-	private static int langSelectedChoice = 0;
+	private static String getLanguageDisplayName(String langCode) {
+		Locale english = new Locale("en");
+		Locale translated = new Locale(langCode);
+		return String.format("%s (%s)", translated.getDisplayName(translated), translated.getDisplayName(english));
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,11 +63,8 @@ public class SettingsTranslationActivity extends BaseActivity {
 		// language dialog
 		langFrame.setOnClickListener(view -> {
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.settingsLanguageSelectorDialogTitle)
-				.setCancelable(langSelectedChoice != -1)
-				.setNeutralButton(getString(R.string.cancelButton), null)
-				.setSingleChoiceItems(langs.values().toArray(new String[0]), langSelectedChoice, (dialogInterface, i) -> {
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.settingsLanguageSelectorDialogTitle).setCancelable(langSelectedChoice != -1)
+				.setNeutralButton(getString(R.string.cancelButton), null).setSingleChoiceItems(langs.values().toArray(new String[0]), langSelectedChoice, (dialogInterface, i) -> {
 
 					String selectedLanguage = langs.keySet().toArray(new String[0])[i];
 					tinyDB.putInt("langId", i);
@@ -82,12 +84,6 @@ public class SettingsTranslationActivity extends BaseActivity {
 	private void initCloseListener() {
 
 		onClickListener = view -> finish();
-	}
-
-	private static String getLanguageDisplayName(String langCode) {
-		Locale english = new Locale("en");
-		Locale translated = new Locale(langCode);
-		return String.format("%s (%s)", translated.getDisplayName(translated), translated.getDisplayName(english));
 	}
 
 }

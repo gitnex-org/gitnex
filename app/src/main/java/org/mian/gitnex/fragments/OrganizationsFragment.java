@@ -4,12 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -32,8 +27,8 @@ import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 public class OrganizationsFragment extends Fragment {
 
-	private OrganizationsViewModel organizationsViewModel;
 	public static boolean orgCreated = false;
+	private OrganizationsViewModel organizationsViewModel;
 	private FragmentOrganizationsBinding fragmentOrganizationsBinding;
 	private OrganizationsListAdapter adapter;
 	private int page = 1;
@@ -75,7 +70,7 @@ public class OrganizationsFragment extends Fragment {
 		fetchDataAsync();
 
 		return fragmentOrganizationsBinding.getRoot();
-	};
+	}
 
 	private void fetchDataAsync() {
 
@@ -113,39 +108,41 @@ public class OrganizationsFragment extends Fragment {
 		});
 	}
 
-    @Override
-    public void onResume(){
-        super.onResume();
+	@Override
+	public void onResume() {
+		super.onResume();
 
-	    if(orgCreated) {
-		    organizationsViewModel.loadOrgList(page, resultLimit, getContext());
-            orgCreated = false;
-        }
-    }
+		if(orgCreated) {
+			organizationsViewModel.loadOrgList(page, resultLimit, getContext());
+			orgCreated = false;
+		}
+	}
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.search_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(fragmentOrganizationsBinding.recyclerView.getAdapter() != null) {
-                    adapter.getFilter().filter(newText);
-                }
-                return false;
-            }
-        });
-    }
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				if(fragmentOrganizationsBinding.recyclerView.getAdapter() != null) {
+					adapter.getFilter().filter(newText);
+				}
+				return false;
+			}
+		});
+	}
+
 }

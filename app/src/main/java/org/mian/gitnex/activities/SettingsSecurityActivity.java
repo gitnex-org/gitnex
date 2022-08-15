@@ -28,13 +28,11 @@ import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTI
 
 public class SettingsSecurityActivity extends BaseActivity {
 
-	private View.OnClickListener onClickListener;
-
 	private static String[] cacheSizeDataList;
 	private static int cacheSizeDataSelectedChoice = 0;
-
 	private static String[] cacheSizeImagesList;
 	private static int cacheSizeImagesSelectedChoice = 0;
+	private View.OnClickListener onClickListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +84,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 				BiometricManager biometricManager = BiometricManager.from(ctx);
 				KeyguardManager keyguardManager = (KeyguardManager) ctx.getSystemService(Context.KEYGUARD_SERVICE);
 
-				if (!keyguardManager.isDeviceSecure()) {
+				if(!keyguardManager.isDeviceSecure()) {
 
 					switch(biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
 
@@ -141,11 +139,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 		// clear cache
 		clearCacheFrame.setOnClickListener(v1 -> {
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.clearCacheDialogHeader)
-				.setMessage(getResources().getString(R.string.clearCacheDialogMessage))
-				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss())
-				.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.clearCacheDialogHeader).setMessage(getResources().getString(R.string.clearCacheDialogMessage))
+				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss()).setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
 					try {
 
@@ -154,7 +149,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 						this.recreate();
 						this.overridePendingTransition(0, 0);
 					}
-					catch (IOException e) {
+					catch(IOException e) {
 
 						Log.e("SettingsSecurity", e.toString());
 					}
@@ -166,9 +161,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 		// cache size images selection dialog
 		cacheSizeImagesFrame.setOnClickListener(view -> {
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.cacheSizeImagesDialogHeader)
-				.setCancelable(cacheSizeImagesSelectedChoice != -1)
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.cacheSizeImagesDialogHeader).setCancelable(cacheSizeImagesSelectedChoice != -1)
 				.setSingleChoiceItems(cacheSizeImagesList, cacheSizeImagesSelectedChoice, (dialogInterfaceTheme, i) -> {
 
 					cacheSizeImagesSelectedChoice = i;
@@ -186,9 +179,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 		// cache size data selection dialog
 		cacheSizeDataFrame.setOnClickListener(view -> {
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.cacheSizeDataDialogHeader)
-				.setCancelable(cacheSizeDataSelectedChoice != -1)
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.cacheSizeDataDialogHeader).setCancelable(cacheSizeDataSelectedChoice != -1)
 				.setSingleChoiceItems(cacheSizeDataList, cacheSizeDataSelectedChoice, (dialogInterfaceTheme, i) -> {
 
 					cacheSizeDataSelectedChoice = i;
@@ -206,11 +197,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 		// certs deletion
 		certsFrame.setOnClickListener(v1 -> {
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.settingsCertsPopupTitle)
-				.setMessage(getResources().getString(R.string.settingsCertsPopupMessage))
-				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss())
-				.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.settingsCertsPopupTitle).setMessage(getResources().getString(R.string.settingsCertsPopupMessage))
+				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss()).setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
 					appCtx.getSharedPreferences(MemorizingTrustManager.KEYSTORE_NAME, Context.MODE_PRIVATE).edit().remove(MemorizingTrustManager.KEYSTORE_KEY).apply();
 					AppUtil.logout(this);
@@ -224,4 +212,5 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 		onClickListener = view -> finish();
 	}
+
 }

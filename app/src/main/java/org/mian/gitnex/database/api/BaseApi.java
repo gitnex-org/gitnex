@@ -15,9 +15,8 @@ import java.util.concurrent.Executors;
 
 public abstract class BaseApi {
 
-	private static final Map<Class<? extends BaseApi>, Object> instances = new HashMap<>();
-
 	protected static final ExecutorService executorService = Executors.newCachedThreadPool();
+	private static final Map<Class<? extends BaseApi>, Object> instances = new HashMap<>();
 	protected final GitnexDatabase gitnexDatabase;
 
 	protected BaseApi(Context context) {
@@ -32,9 +31,7 @@ public abstract class BaseApi {
 				synchronized(BaseApi.class) {
 					if(!instances.containsKey(clazz)) {
 
-						T instance = clazz
-							.getDeclaredConstructor(Context.class)
-							.newInstance(context);
+						T instance = clazz.getDeclaredConstructor(Context.class).newInstance(context);
 
 						instances.put(clazz, instance);
 						return instance;
@@ -44,8 +41,9 @@ public abstract class BaseApi {
 
 			return (T) instances.get(clazz);
 
-		} catch(NoSuchMethodException | IllegalAccessException |
-			InvocationTargetException | InstantiationException ignored) {}
+		}
+		catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException ignored) {
+		}
 
 		return null;
 	}

@@ -16,14 +16,12 @@ import java.util.List;
 
 public class SettingsGeneralActivity extends BaseActivity {
 
+	private static int homeScreenSelectedChoice = 0;
+	private static int defaultLinkHandlerScreenSelectedChoice = 0;
 	private ActivitySettingsGeneralBinding viewBinding;
 	private View.OnClickListener onClickListener;
-
 	private List<String> homeScreenList;
-	private static int homeScreenSelectedChoice = 0;
-
 	private List<String> linkHandlerDefaultScreen;
-	private static int defaultLinkHandlerScreenSelectedChoice = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,18 +98,16 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		viewBinding.homeScreenFrame.setOnClickListener(setDefaultHomeScreen -> {
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.settingsHomeScreenSelectorDialogTitle)
-				.setCancelable(homeScreenSelectedChoice != -1)
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.settingsHomeScreenSelectorDialogTitle).setCancelable(homeScreenSelectedChoice != -1)
 				.setSingleChoiceItems(homeScreenArray, homeScreenSelectedChoice, (dialogInterfaceHomeScreen, i) -> {
 
-				homeScreenSelectedChoice = i;
-				viewBinding.homeScreenSelected.setText(homeScreenArray[i]);
-				tinyDB.putInt("homeScreenId", i);
+					homeScreenSelectedChoice = i;
+					viewBinding.homeScreenSelected.setText(homeScreenArray[i]);
+					tinyDB.putInt("homeScreenId", i);
 
-				dialogInterfaceHomeScreen.dismiss();
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
+					dialogInterfaceHomeScreen.dismiss();
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 
 			materialAlertDialogBuilder.create().show();
 		});
@@ -129,9 +125,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		viewBinding.setDefaultLinkHandler.setOnClickListener(setDefaultLinkHandler -> {
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.linkSelectorDialogTitle)
-				.setCancelable(defaultLinkHandlerScreenSelectedChoice != -1)
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.linkSelectorDialogTitle).setCancelable(defaultLinkHandlerScreenSelectedChoice != -1)
 				.setSingleChoiceItems(linksArray, defaultLinkHandlerScreenSelectedChoice, (dialogInterfaceHomeScreen, i) -> {
 
 					defaultLinkHandlerScreenSelectedChoice = i;
@@ -156,5 +150,8 @@ public class SettingsGeneralActivity extends BaseActivity {
 		// custom tabs
 	}
 
-	private void initCloseListener() { onClickListener = view -> finish(); }
+	private void initCloseListener() {
+		onClickListener = view -> finish();
+	}
+
 }

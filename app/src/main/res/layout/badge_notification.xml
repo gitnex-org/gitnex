@@ -9,13 +9,13 @@
         android:id="@+id/counterBadgeNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:maxLength="4"
-        android:ellipsize="marquee"
         android:background="@drawable/shape_badge_background"
+        android:ellipsize="marquee"
+        android:maxLength="4"
         android:paddingStart="@dimen/dimen4dp"
         android:paddingEnd="@dimen/dimen4dp"
+        android:singleLine="true"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/dimen12sp" />
+        android:textSize="@dimen/dimen12sp"/>
 
 </LinearLayout>

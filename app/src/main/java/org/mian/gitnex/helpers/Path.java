@@ -24,6 +24,14 @@ public class Path {
 
 	}
 
+	public static Path of(String path) {
+
+		String[] parsed_segments = path.split("/");
+
+		return new Path(Arrays.stream(parsed_segments).filter(s -> !s.trim().isEmpty()).toArray(String[]::new));
+
+	}
+
 	public Path addListener(Runnable onChangedListener) {
 
 		onChangedListeners.add(onChangedListener);
@@ -45,13 +53,15 @@ public class Path {
 		}
 	}
 
-	public Path add(String segment)  {
+	public Path add(String segment) {
 
 		if(segment != null && !segment.trim().isEmpty()) {
 
 			try {
 				segments.add(URLEncoder.encode(segment, "UTF-8"));
-			} catch(UnsupportedEncodingException ignored) {}
+			}
+			catch(UnsupportedEncodingException ignored) {
+			}
 		}
 
 		pathChanged();
@@ -69,7 +79,7 @@ public class Path {
 		return this;
 	}
 
-		public int size() {
+	public int size() {
 
 		return segments.size();
 	}
@@ -85,7 +95,7 @@ public class Path {
 
 	public Path pop(int count) {
 
-		for(int i=0; i<count; i++)
+		for(int i = 0; i < count; i++)
 			segments.remove(segments.size() - 1);
 
 		pathChanged();
@@ -114,19 +124,6 @@ public class Path {
 	public String[] segments() {
 
 		return segments.toArray(new String[]{});
-	}
-
-	public static Path of(String path) {
-
-		String[] parsed_segments = path.split("/");
-
-		return new Path(
-			Arrays
-			.stream(parsed_segments)
-			.filter(s -> !s.trim().isEmpty())
-			.toArray(String[]::new)
-		);
-
 	}
 
 	@NonNull

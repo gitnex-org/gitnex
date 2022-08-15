@@ -23,7 +23,7 @@
             android:text="@string/filesBreadcrumbRoot"
             app:CustomTextSize="16sp"
             app:SelectedTextColor="?attr/primaryTextColor"
-            app:UnSelectedTextColor="@color/lightGray" />
+            app:UnSelectedTextColor="@color/lightGray"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/primaryBackgroundColor"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -50,7 +50,7 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
@@ -59,6 +59,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/filesFrame"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
 </RelativeLayout>

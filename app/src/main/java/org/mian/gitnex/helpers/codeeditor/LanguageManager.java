@@ -35,47 +35,67 @@ public class LanguageManager {
 	}
 
 	public String[] getLanguageKeywords(LanguageName language) {
-		switch (language) {
-			case JAVA: return JavaLanguage.getKeywords(context);
-			case PY: return PythonLanguage.getKeywords(context);
-			case GO: return GoLanguage.getKeywords(context);
-			case PHP: return PhpLanguage.getKeywords(context);
-			default: return new String[]{};
+		switch(language) {
+			case JAVA:
+				return JavaLanguage.getKeywords(context);
+			case PY:
+				return PythonLanguage.getKeywords(context);
+			case GO:
+				return GoLanguage.getKeywords(context);
+			case PHP:
+				return PhpLanguage.getKeywords(context);
+			default:
+				return new String[]{};
 		}
 	}
 
 	public List<Code> getLanguageCodeList(LanguageName language) {
-		switch (language) {
-			case JAVA: return JavaLanguage.getCodeList(context);
-			case PY: return PythonLanguage.getCodeList(context);
-			case GO: return GoLanguage.getCodeList(context);
-			case PHP: return PhpLanguage.getCodeList(context);
-			default: return new ArrayList<>();
+		switch(language) {
+			case JAVA:
+				return JavaLanguage.getCodeList(context);
+			case PY:
+				return PythonLanguage.getCodeList(context);
+			case GO:
+				return GoLanguage.getCodeList(context);
+			case PHP:
+				return PhpLanguage.getCodeList(context);
+			default:
+				return new ArrayList<>();
 		}
 	}
 
 	public Set<Character> getLanguageIndentationStarts(LanguageName language) {
-		switch (language) {
-			case JAVA: return JavaLanguage.getIndentationStarts();
-			case PY: return PythonLanguage.getIndentationStarts();
-			case GO: return GoLanguage.getIndentationStarts();
-			case PHP: return PhpLanguage.getIndentationStarts();
-			default: return new HashSet<>();
+		switch(language) {
+			case JAVA:
+				return JavaLanguage.getIndentationStarts();
+			case PY:
+				return PythonLanguage.getIndentationStarts();
+			case GO:
+				return GoLanguage.getIndentationStarts();
+			case PHP:
+				return PhpLanguage.getIndentationStarts();
+			default:
+				return new HashSet<>();
 		}
 	}
 
 	public Set<Character> getLanguageIndentationEnds(LanguageName language) {
-		switch (language) {
-			case JAVA: return JavaLanguage.getIndentationEnds();
-			case PY: return PythonLanguage.getIndentationEnds();
-			case GO: return GoLanguage.getIndentationEnds();
-			case PHP: return PhpLanguage.getIndentationEnds();
-			default: return new HashSet<>();
+		switch(language) {
+			case JAVA:
+				return JavaLanguage.getIndentationEnds();
+			case PY:
+				return PythonLanguage.getIndentationEnds();
+			case GO:
+				return GoLanguage.getIndentationEnds();
+			case PHP:
+				return PhpLanguage.getIndentationEnds();
+			default:
+				return new HashSet<>();
 		}
 	}
 
 	private void applyFiveColorsDarkTheme(LanguageName language) {
-		switch (language) {
+		switch(language) {
 			case JAVA:
 				JavaLanguage.applyFiveColorsDarkTheme(context, codeView);
 				break;
@@ -90,4 +110,5 @@ public class LanguageManager {
 				break;
 		}
 	}
+
 }

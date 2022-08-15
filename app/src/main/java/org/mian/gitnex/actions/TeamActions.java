@@ -20,9 +20,7 @@ public class TeamActions {
 
 	public static void removeTeamMember(final Context context, String userName, int teamId) {
 
-		Call<Void> call = RetrofitClient
-				.getApiInterface(context)
-				.orgRemoveTeamMember((long) teamId, userName);
+		Call<Void> call = RetrofitClient.getApiInterface(context).orgRemoveTeamMember((long) teamId, userName);
 
 		call.enqueue(new Callback<>() {
 
@@ -66,9 +64,7 @@ public class TeamActions {
 
 	public static void addTeamMember(final Context context, String userName, int teamId) {
 
-		Call<Void> call = RetrofitClient
-				.getApiInterface(context)
-				.orgAddTeamMember((long) teamId, userName);
+		Call<Void> call = RetrofitClient.getApiInterface(context).orgAddTeamMember((long) teamId, userName);
 
 		call.enqueue(new Callback<>() {
 
@@ -111,9 +107,7 @@ public class TeamActions {
 
 	public static void removeTeamRepo(final Context context, String orgName, int teamId, String repo) {
 
-		Call<Void> call = RetrofitClient
-			.getApiInterface(context)
-			.orgRemoveTeamRepository((long) teamId, orgName, repo);
+		Call<Void> call = RetrofitClient.getApiInterface(context).orgRemoveTeamRepository((long) teamId, orgName, repo);
 
 		call.enqueue(new Callback<>() {
 
@@ -158,9 +152,7 @@ public class TeamActions {
 
 	public static void addTeamRepo(final Context context, String orgName, int teamId, String repo) {
 
-		Call<Void> call = RetrofitClient
-			.getApiInterface(context)
-			.orgAddTeamRepository((long) teamId, orgName, repo);
+		Call<Void> call = RetrofitClient.getApiInterface(context).orgAddTeamRepository((long) teamId, orgName, repo);
 
 		call.enqueue(new Callback<>() {
 
@@ -201,4 +193,5 @@ public class TeamActions {
 			}
 		});
 	}
+
 }

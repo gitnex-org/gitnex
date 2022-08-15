@@ -20,10 +20,8 @@ import java.util.regex.Pattern;
 public class GoLanguage {
 
 	//Language Keywords
-	private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(break|default|func|interface|case|defer|" +
-		"go|map|struct|chan|else|goto|package|switch|const" +
-		"|fallthrough|if|range|type|continue|for|import|return|var|" +
-		"string|true|false|new|nil|byte|bool|int|int8|int16|int32|int64)\\b");
+	private static final Pattern PATTERN_KEYWORDS = Pattern.compile(
+		"\\b(break|default|func|interface|case|defer|" + "go|map|struct|chan|else|goto|package|switch|const" + "|fallthrough|if|range|type|continue|for|import|return|var|" + "string|true|false|new|nil|byte|bool|int|int8|int16|int32|int64)\\b");
 
 	//Brackets and Colons
 	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
@@ -36,7 +34,7 @@ public class GoLanguage {
 	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("//[^\\n]*");
 	private static final Pattern PATTERN_MULTI_LINE_COMMENT = Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
 	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION =Pattern.compile( ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
+	private static final Pattern PATTERN_OPERATION = Pattern.compile(":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 
 	public static void applyFiveColorsDarkTheme(Context context, CodeView codeView) {
 		codeView.resetSyntaxPatternList();
@@ -72,7 +70,7 @@ public class GoLanguage {
 	public static List<Code> getCodeList(Context context) {
 		List<Code> codeList = new ArrayList<>();
 		String[] keywords = getKeywords(context);
-		for (String keyword : keywords) {
+		for(String keyword : keywords) {
 			codeList.add(new Keyword(keyword));
 		}
 		return codeList;
@@ -97,4 +95,5 @@ public class GoLanguage {
 	public static String getCommentEnd() {
 		return "";
 	}
+
 }

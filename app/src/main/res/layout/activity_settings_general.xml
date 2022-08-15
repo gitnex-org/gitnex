@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dimen10dp"
-        app:elevation="@dimen/dimen0dp"
-        android:theme="@style/Widget.AppCompat.SearchView">
+        android:theme="@style/Widget.AppCompat.SearchView"
+        app:elevation="@dimen/dimen0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -25,14 +25,14 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/dimen26dp"
                 android:layout_height="@dimen/dimen26dp"
-                android:layout_marginEnd="@dimen/dimen16dp"
                 android:layout_marginStart="@dimen/dimen16dp"
-                android:contentDescription="@string/close"
-                android:gravity="center_vertical"
+                android:layout_marginEnd="@dimen/dimen16dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:focusable="true"
                 android:clickable="true"
-                android:src="@drawable/ic_close" />
+                android:contentDescription="@string/close"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbarTitle"
@@ -42,7 +42,7 @@
                 android:maxLines="1"
                 android:text="@string/settingsGeneralHeader"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -52,12 +52,12 @@
         android:id="@+id/setDefaultLinkHandler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/generalDeepLinkDefaultScreen"
@@ -67,7 +67,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/generalDeepLinkDefaultScreen"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/generalDeepLinkDefaultScreenHintText"
             android:textColor="?attr/hintColor"
-            android:textSize="@dimen/dimen12sp" />
+            android:textSize="@dimen/dimen12sp"/>
 
         <TextView
             android:id="@+id/generalDeepLinkSelected"
@@ -86,7 +86,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/generalDeepLinkSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -94,12 +94,12 @@
         android:id="@+id/homeScreenFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/homeScreenHeaderSelector"
@@ -109,7 +109,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsHomeScreenHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/homeScreenSelected"
@@ -119,7 +119,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsHomeScreenSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -127,10 +127,10 @@
         android:id="@+id/customTabsFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/customTabsHeader"
@@ -140,7 +140,7 @@
             android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/useCustomTabs"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchTabs"
@@ -152,7 +152,7 @@
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
             android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp" />
+            android:switchMinWidth="@dimen/dimen56dp"/>
 
     </RelativeLayout>
 

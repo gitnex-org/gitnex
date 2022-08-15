@@ -50,4 +50,5 @@ public class BottomSheetWikiFragment extends BottomSheetDialogFragment {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
+
 }

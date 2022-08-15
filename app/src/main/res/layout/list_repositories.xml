@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:buttonTint="#FFFFFF"
         android:checked="false"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/orgInfoFrame"
@@ -33,7 +33,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="10dp"
             android:contentDescription="@string/repoContentAvatar"
-            android:src="@drawable/ic_android" />
+            android:src="@drawable/ic_android"/>
 
         <TextView
             android:id="@+id/orgName"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/primaryTextColor"
             android:textSize="14sp"
-            tools:text="@string/orgName" />
+            tools:text="@string/orgName"/>
 
     </LinearLayout>
 
@@ -52,23 +52,23 @@
         android:text="@string/repoName"
         android:textColor="?attr/primaryTextColor"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/repoDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:text="@string/noDataDescription"
         android:textColor="?attr/primaryTextColor"
         android:textSize="15sp"
-        android:visibility="gone"
-        android:text="@string/noDataDescription" />
+        android:visibility="gone"/>
 
     <View
         android:id="@+id/spacerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"/>
 
     <LinearLayout
         android:id="@+id/repoInfoFrame"
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/hintColor"
             android:textSize="13sp"
-            tools:text="@string/lastUpdatedAt" />
+            tools:text="@string/lastUpdatedAt"/>
 
         <LinearLayout
             android:id="@+id/repoInfoStarsFrame"
@@ -101,7 +101,7 @@
                 android:layout_marginEnd="5dp"
                 android:contentDescription="@string/generalImgContentText"
                 app:srcCompat="@drawable/ic_star"
-                app:tint="?attr/iconsColor" />
+                app:tint="?attr/iconsColor"/>
 
             <TextView
                 android:id="@+id/repoStars"
@@ -110,7 +110,7 @@
                 android:gravity="center_vertical"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="14sp"
-                tools:text="@string/repoStars" />
+                tools:text="@string/repoStars"/>
 
             <ImageView
                 android:layout_width="18dp"
@@ -120,7 +120,7 @@
                 android:contentDescription="@string/generalImgContentText"
                 android:visibility="gone"
                 app:srcCompat="@drawable/ic_star"
-                app:tint="?attr/iconsColor" />
+                app:tint="?attr/iconsColor"/>
 
             <TextView
                 android:id="@+id/repoStars2"
@@ -130,7 +130,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="14sp"
                 android:visibility="gone"
-                tools:text="Java" />
+                tools:text="Java"/>
 
         </LinearLayout>
 

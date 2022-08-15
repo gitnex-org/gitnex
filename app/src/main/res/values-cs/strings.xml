@@ -51,7 +51,9 @@
     <string name="navigationDrawerClose">Zavřít navigační menu</string>
     <string name="logo">Přihlásit se do Gitea</string>
     <string name="protocol">Protokol</string>
-    <string name="urlInfoTooltip">1- Vyberte správný protokol (https nebo http). \n2- zadejte URL Gitea např.: try.gitea.io. \n3- Pokud jste pro svůj účet povolili 2FA, zadejte kód do pole OTP kód. \n4- Pro základní ověření HTTP použijte USERNAME@DOMAIN.COM v poli URL.</string>
+    <string name="urlInfoTooltip">1- Vyberte správný protokol (https nebo http). \n2- zadejte URL Gitea např.: try.gitea.io. \n3- Pokud jste pro svůj
+        účet povolili 2FA, zadejte kód do pole OTP kód. \n4- Pro základní ověření HTTP použijte USERNAME@DOMAIN.COM v poli URL.
+    </string>
     <string name="malformedUrl">Nelze se připojit k serveru. Zkontrolujte prosím URL nebo port pro případné chyby</string>
     <string name="protocolError">Není doporučeno používat HTTP protokol, pokud netestujete na místní síti</string>
     <string name="malformedJson">Byl přijat chybný JSON. Odpověď od serveru nebyla úspěšná</string>
@@ -146,7 +148,9 @@
     <string name="settingsSecurityHeader">Zabezpečení</string>
     <string name="settingsCertsSelectorHeader">Odstranit důvěryhodné certifikáty</string>
     <string name="settingsCertsPopupTitle">Smazat důvěryhodné certifikáty?</string>
-    <string name="settingsCertsPopupMessage">Opravdu chcete odstranit jakýkoli ručně důvěryhodný certifikát nebo název hostitele? \n\nBudete také odhlášeni.</string>
+    <string name="settingsCertsPopupMessage">Opravdu chcete odstranit jakýkoli ručně důvěryhodný certifikát nebo název hostitele? \n\nBudete také
+        odhlášeni.
+    </string>
     <string name="settingsDateTimeHeaderText">Datum &amp; čas</string>
     <string name="settingsSave">Nastavení uloženo</string>
     <string name="settingsLanguageSelectorHeader">Jazyk</string>
@@ -184,7 +188,9 @@
     <string name="settingsGeneralHeader">Obecné</string>
     <string name="generalHintText">Výchozí zpracovatel odkazů, domovská obrazovka</string>
     <string name="generalDeepLinkDefaultScreen">Výchozí zpracovatel odkazů</string>
-    <string name="generalDeepLinkDefaultScreenHintText">Zvolte která obrazovka bude použita pokud aplikace nebude schopna zpracovat externí odkaz. Budete zde přesměrování automaticky.</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Zvolte která obrazovka bude použita pokud aplikace nebude schopna zpracovat externí odkaz.
+        Budete zde přesměrování automaticky.
+    </string>
     <string name="generalDeepLinkSelectedText">Není k dispozici</string>
     <string name="linkSelectorDialogTitle">Zvolte výchozí obrazovku zpracování odkazů</string>
     <string name="settingsBiometricHeader">Biometrické odemknutí</string>
@@ -204,7 +210,9 @@
     <string name="labelDeleteText">Štítek byl smazán</string>
     <string name="selectBranchError">Zvolte větev k vydání</string>
     <string name="alertDialogTokenRevokedTitle">Chyba ověření</string>
-    <string name="alertDialogTokenRevokedMessage">Zdá se, že Přístupový token byl zneplatněn nebo nemáte oprávnění přístupu k těmto datům.\n\nV případě zneplatněného tokenu se prosím odhlaste a znovu přihlašte</string>
+    <string name="alertDialogTokenRevokedMessage">Zdá se, že Přístupový token byl zneplatněn nebo nemáte oprávnění přístupu k těmto datům.\n\nV
+        případě zneplatněného tokenu se prosím odhlaste a znovu přihlašte
+    </string>
     <string name="labelDeleteMessage">Opravdu chcete smazat tento štítek?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Týmy</string>
@@ -371,7 +379,9 @@
     <string name="doneButton">Done</string>
     <string name="cancelButton">Cancel</string>
     <string name="genericError">Something went wrong, please try again</string>
-    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
+    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of
+        Gitea.
+    </string>
     <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Add</string>
     <string name="removeButton">Remove</string>
@@ -422,7 +432,9 @@
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue,
+        some features may not work.
+    </string>
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
@@ -497,9 +509,14 @@
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
-    <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
+    <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and
+        fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the
+        email.\nThank you!
+    </string>
     <string name="forceLogoutDialogHeader">Please sign in again</string>
-    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
+    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login
+        again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.
+    </string>
     <string name="deleteAllDrafts">Delete All Drafts</string>
     <string name="draftsListEmpty">No drafts found</string>
     <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
@@ -516,7 +533,9 @@
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
-    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to
+        this account on the app only.
+    </string>
     <string name="addNewAccount">New Account</string>
     <string name="addNewAccountText">Add New Account</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
@@ -566,12 +585,20 @@
     <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
     <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Repository properties updated successfully</string>
-    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will
+        permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as
+        confirmation
+    </string>
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">Repository deleted successfully</string>
     <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
-    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
-    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator
+        rights
+    </string>
+    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you
+        transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter
+        the repository name as confirmation
+    </string>
     <string name="repoTransferText">Perform Transfer</string>
     <string name="repoTransferOwnerText">New Owner</string>
     <string name="repoTransferSuccess">Repository transferred successfully</string>
@@ -594,9 +621,13 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New
+        Account button.
+    </string>
     <string name="launchApp">Go to App</string>
-    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with
+        providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.
+    </string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -635,7 +666,9 @@
     <string name="tagDeleted">Tag deleted</string>
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
-    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not
+        supported by most browser
+    </string>
     <string name="logInAgain">Log in again</string>
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>

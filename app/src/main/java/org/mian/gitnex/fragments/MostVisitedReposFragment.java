@@ -41,8 +41,7 @@ public class MostVisitedReposFragment extends Fragment {
 	private SwipeRefreshLayout swipeRefresh;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		FragmentDraftsBinding fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
 
@@ -63,8 +62,7 @@ public class MostVisitedReposFragment extends Fragment {
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		mRecyclerView.addItemDecoration(dividerItemDecoration);
 
 		adapter = new MostVisitedReposAdapter(mostVisitedReposList);
@@ -100,4 +98,5 @@ public class MostVisitedReposFragment extends Fragment {
 			}
 		});
 	}
+
 }

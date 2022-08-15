@@ -37,7 +37,6 @@ import retrofit2.Response;
 @SuppressLint("ViewConstructor")
 public class ReactionList extends HorizontalScrollView {
 
-	private enum ReactionType { COMMENT, ISSUE }
 	private Runnable onReactionAddedListener;
 
 	@SuppressLint("SetTextI18n")
@@ -81,17 +80,11 @@ public class ReactionList extends HorizontalScrollView {
 				switch(reactionType) {
 
 					case ISSUE:
-						response = RetrofitClient
-							.getApiInterface(context)
-							.issueGetIssueReactions(repoOwner, repoName, (long) id, null, null)
-							.execute();
+						response = RetrofitClient.getApiInterface(context).issueGetIssueReactions(repoOwner, repoName, (long) id, null, null).execute();
 						break;
 
 					case COMMENT:
-						response = RetrofitClient
-							.getApiInterface(context)
-							.issueGetCommentReactions(repoOwner, repoName, (long) id)
-							.execute();
+						response = RetrofitClient.getApiInterface(context).issueGetCommentReactions(repoOwner, repoName, (long) id).execute();
 						break;
 				}
 
@@ -103,7 +96,8 @@ public class ReactionList extends HorizontalScrollView {
 
 						if(sortedReactions.containsKey(issueReaction.getContent())) {
 							sortedReactions.get(issueReaction.getContent()).add(issueReaction);
-						} else {
+						}
+						else {
 							List<Reaction> issueReactions = new ArrayList<>();
 							issueReactions.add(issueReaction);
 
@@ -142,10 +136,7 @@ public class ReactionList extends HorizontalScrollView {
 							recyclerView.setAdapter(adapter);
 
 							assert emoji != null;
-							MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context)
-								.setTitle(emoji.getUnicode())
-								.setView(recyclerView)
-								.setNeutralButton(R.string.close, null);
+							MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context).setTitle(emoji.getUnicode()).setView(recyclerView).setNeutralButton(R.string.close, null);
 
 							materialAlertDialogBuilder.create().show();
 
@@ -157,7 +148,9 @@ public class ReactionList extends HorizontalScrollView {
 					}
 				}
 
-			} catch (IOException ignored) {}
+			}
+			catch(IOException ignored) {
+			}
 
 		}).start();
 
@@ -166,4 +159,7 @@ public class ReactionList extends HorizontalScrollView {
 	public void setOnReactionAddedListener(Runnable onReactionAddedListener) {
 		this.onReactionAddedListener = onReactionAddedListener;
 	}
+
+	private enum ReactionType {COMMENT, ISSUE}
+
 }

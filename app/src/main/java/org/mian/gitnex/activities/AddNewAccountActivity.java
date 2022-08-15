@@ -17,11 +17,7 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityAddNewAccountBinding;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.UrlHelper;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.structs.Protocol;
 import java.net.URI;
 import java.util.Objects;
@@ -58,10 +54,11 @@ public class AddNewAccountActivity extends BaseActivity {
 		viewBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
 		viewBinding.loginToken.setText(getIntent().getStringExtra("token"));
 		String scheme = getIntent().getStringExtra("scheme");
-		if(scheme != null && scheme.equals("http"))  {
+		if(scheme != null && scheme.equals("http")) {
 			viewBinding.protocolSpinner.setText(Protocol.HTTP.toString());
 			spinnerSelectedValue = Protocol.HTTP.toString();
-		} else { // default is https
+		}
+		else { // default is https
 			viewBinding.protocolSpinner.setText(Protocol.HTTPS.toString());
 			spinnerSelectedValue = Protocol.HTTPS.toString();
 		}
@@ -114,8 +111,7 @@ public class AddNewAccountActivity extends BaseActivity {
 
 			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET, "http")).toUri();
 
-			URI instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(protocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
-				.toUri();
+			URI instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(protocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/")).toUri();
 
 			versionCheck(instanceUrl.toString(), loginToken);
 			serverPageLimitSettings();
@@ -152,10 +148,8 @@ public class AddNewAccountActivity extends BaseActivity {
 
 					if(giteaVersion.less(getString(R.string.versionLow))) {
 
-						MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-							.setTitle(getString(R.string.versionAlertDialogHeader))
-							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion()))
-							.setNeutralButton(getString(R.string.cancelButton), null)
+						MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
+							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setNeutralButton(getString(R.string.cancelButton), null)
 							.setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
 
 								dialog.dismiss();
@@ -290,4 +284,5 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		onClickListener = view -> finish();
 	}
+
 }

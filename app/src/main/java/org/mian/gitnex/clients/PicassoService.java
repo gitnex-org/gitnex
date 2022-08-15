@@ -36,9 +36,8 @@ public class PicassoService {
 			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(context);
 			sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
 
-			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
-					.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
-					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+			OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder().sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+				.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
 
 			builder.downloader(new OkHttp3Downloader(okHttpClient.build()));
 			/*builder.listener((picasso, uri, exception) -> {
@@ -57,13 +56,6 @@ public class PicassoService {
 		}
 	}
 
-	public Picasso get() {
-
-		cachePath.mkdirs();
-		return picasso;
-
-	}
-
 	public static synchronized PicassoService getInstance(Context context) {
 
 		if(picassoService == null) {
@@ -75,6 +67,13 @@ public class PicassoService {
 		}
 
 		return picassoService;
+
+	}
+
+	public Picasso get() {
+
+		cachePath.mkdirs();
+		return picasso;
 
 	}
 

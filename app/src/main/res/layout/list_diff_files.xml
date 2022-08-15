@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/generalImgContentText"
-        app:srcCompat="@drawable/ic_diff" />
+        app:srcCompat="@drawable/ic_diff"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -32,7 +32,7 @@
             android:singleLine="true"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
-            tools:text="/src/test1/test2/test3/test4/test.txt" />
+            tools:text="/src/test1/test2/test3/test4/test.txt"/>
 
         <TextView
             android:id="@+id/fileStatistics"
@@ -40,14 +40,14 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/primaryTextColor"
             android:textSize="13sp"
-            tools:text="@string/diffStatistics" />
+            tools:text="@string/diffStatistics"/>
 
     </LinearLayout>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_chevron_right"
-        android:contentDescription="@string/generalImgContentText" />
+        android:contentDescription="@string/generalImgContentText"
+        app:srcCompat="@drawable/ic_chevron_right"/>
 
 </LinearLayout>

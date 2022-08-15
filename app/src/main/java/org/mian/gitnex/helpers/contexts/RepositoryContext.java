@@ -20,45 +20,18 @@ import java.util.Objects;
 public class RepositoryContext implements Serializable {
 
 	public static final String INTENT_EXTRA = "repository";
-
-	public static RepositoryContext fromIntent(Intent intent) {
-		return (RepositoryContext) intent.getSerializableExtra(INTENT_EXTRA);
-	}
-
-	public static RepositoryContext fromBundle(Bundle bundle) {
-		return (RepositoryContext) bundle.getSerializable(INTENT_EXTRA);
-	}
-
-	public enum State {
-		OPEN,
-		CLOSED;
-
-		@NonNull
-		@Override
-		public String toString() {
-			if(this == OPEN) {
-				return "open";
-			}
-			return "closed";
-		}
-	}
-
 	private final AccountContext account;
-	private org.gitnex.tea4j.v2.models.Repository repository;
 	private final String owner;
 	private final String name;
-
+	private org.gitnex.tea4j.v2.models.Repository repository;
 	private State issueState = State.OPEN;
 	private State prState = State.OPEN;
 	private State milestoneState = State.OPEN;
 	private boolean releasesViewTypeIsTag = false;
-
 	private String branchRef;
 	private String issueMilestoneFilterName;
-
 	private boolean starred = false;
 	private boolean watched = false;
-
 	private int repositoryId = 0;
 	private Repository repositoryModel = null;
 
@@ -75,24 +48,17 @@ public class RepositoryContext implements Serializable {
 		this.name = name;
 	}
 
+	public static RepositoryContext fromIntent(Intent intent) {
+		return (RepositoryContext) intent.getSerializableExtra(INTENT_EXTRA);
+	}
+
+	public static RepositoryContext fromBundle(Bundle bundle) {
+		return (RepositoryContext) bundle.getSerializable(INTENT_EXTRA);
+	}
+
 	public State getIssueState() {
 
 		return issueState;
-	}
-
-	public State getMilestoneState() {
-
-		return milestoneState;
-	}
-
-	public State getPrState() {
-
-		return prState;
-	}
-
-	public org.gitnex.tea4j.v2.models.Repository getRepository() {
-
-		return repository;
 	}
 
 	public void setIssueState(State issueState) {
@@ -100,14 +66,36 @@ public class RepositoryContext implements Serializable {
 		this.issueState = issueState;
 	}
 
+	public State getMilestoneState() {
+
+		return milestoneState;
+	}
+
 	public void setMilestoneState(State milestoneState) {
 
 		this.milestoneState = milestoneState;
 	}
 
+	public State getPrState() {
+
+		return prState;
+	}
+
 	public void setPrState(State prState) {
 
 		this.prState = prState;
+	}
+
+	public org.gitnex.tea4j.v2.models.Repository getRepository() {
+
+		return repository;
+	}
+
+	public void setRepository(org.gitnex.tea4j.v2.models.Repository repository) {
+		this.repository = repository;
+		if(!repository.getFullName().equalsIgnoreCase(getFullName())) {
+			throw new IllegalArgumentException("repo does not match owner and name");
+		}
 	}
 
 	public String getBranchRef() {
@@ -158,13 +146,6 @@ public class RepositoryContext implements Serializable {
 		return repository != null ? repository.getPermissions() : new Permission();
 	}
 
-	public void setRepository(org.gitnex.tea4j.v2.models.Repository repository) {
-		this.repository = repository;
-		if(!repository.getFullName().equalsIgnoreCase(getFullName())) {
-			throw new IllegalArgumentException("repo does not match owner and name");
-		}
-	}
-
 	public boolean hasRepository() {
 		return repository != null;
 	}
@@ -174,14 +155,14 @@ public class RepositoryContext implements Serializable {
 		return starred;
 	}
 
-	public boolean isWatched() {
-
-		return watched;
-	}
-
 	public void setStarred(boolean starred) {
 
 		this.starred = starred;
+	}
+
+	public boolean isWatched() {
+
+		return watched;
 	}
 
 	public void setWatched(boolean watched) {
@@ -215,8 +196,8 @@ public class RepositoryContext implements Serializable {
 	}
 
 	public void checkAccountSwitch(Context context) {
-		if(((BaseActivity) context).getAccount().getAccount().getAccountId() != account.getAccount().getAccountId() &&
-			account.getAccount().getAccountId() == TinyDB.getInstance(context).getInt("currentActiveAccountId")) {
+		if(((BaseActivity) context).getAccount().getAccount().getAccountId() != account.getAccount().getAccountId() && account.getAccount().getAccountId() == TinyDB.getInstance(context)
+			.getInt("currentActiveAccountId")) {
 			// user changed account using a deep link or a submodule
 			AppUtil.switchToAccount(context, account.getAccount());
 		}
@@ -254,6 +235,19 @@ public class RepositoryContext implements Serializable {
 			setRepositoryId(data.getRepositoryId());
 			repositoryData.updateRepositoryMostVisited(getMostVisitedValue.getMostVisited() + 1, data.getRepositoryId());
 			return data.getRepositoryId();
+		}
+	}
+
+	public enum State {
+		OPEN, CLOSED;
+
+		@NonNull
+		@Override
+		public String toString() {
+			if(this == OPEN) {
+				return "open";
+			}
+			return "closed";
 		}
 	}
 

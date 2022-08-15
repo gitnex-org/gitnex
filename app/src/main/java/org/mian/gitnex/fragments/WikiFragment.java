@@ -74,7 +74,7 @@ public class WikiFragment extends Fragment {
 		fetchDataAsync(repository.getOwner(), repository.getName());
 
 		return fragmentWikiBinding.getRoot();
-	};
+	}
 
 	@Override
 	public void onResume() {
@@ -121,4 +121,5 @@ public class WikiFragment extends Fragment {
 			fragmentWikiBinding.progressBar.setVisibility(View.GONE);
 		});
 	}
+
 }

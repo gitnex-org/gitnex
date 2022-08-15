@@ -14,11 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ActionResult<R> {
 
-	public enum Status { SUCCESS, FAILED }
-
 	private final BlockingQueue<Boolean> blockingQueue;
 	private final List<OnFinishedListener<R>> onFinishedListeners;
-
 	private boolean invalidated = false;
 
 	public ActionResult() {
@@ -42,13 +39,17 @@ public class ActionResult<R> {
 					onFinishedListener.onFinished(status, result);
 			}
 
-		} catch (InterruptedException ignored) {}
+		}
+		catch(InterruptedException ignored) {
+		}
 
 	}
 
 	public void invalidate() {
 
-		if(invalidated) throw new IllegalStateException("Already invalidated");
+		if(invalidated) {
+			throw new IllegalStateException("Already invalidated");
+		}
 		this.invalidated = true;
 
 	}
@@ -70,11 +71,16 @@ public class ActionResult<R> {
 
 	}
 
-	public static class None {}
+	public enum Status {SUCCESS, FAILED}
 
 	public interface OnFinishedListener<R> {
 
 		void onFinished(Status status, R result);
+
+	}
+
+	public static class None {
+
 	}
 
 }

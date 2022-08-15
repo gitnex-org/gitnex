@@ -16,21 +16,10 @@ import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.OrganizationDetailActivity;
-import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.activities.RepoForksActivity;
-import org.mian.gitnex.activities.RepoStargazersActivity;
-import org.mian.gitnex.activities.RepoWatchersActivity;
+import org.mian.gitnex.activities.*;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepoInfoBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.io.IOException;
 import java.util.Locale;
@@ -52,7 +41,8 @@ public class RepoInfoFragment extends Fragment {
 
 	private RepositoryContext repository;
 
-	public RepoInfoFragment() {}
+	public RepoInfoFragment() {
+	}
 
 	public static RepoInfoFragment newInstance(RepositoryContext repository) {
 		RepoInfoFragment fragment = new RepoInfoFragment();
@@ -105,7 +95,7 @@ public class RepoInfoFragment extends Fragment {
 
 	private void toggleExpandView() {
 
-		if (binding.repoFileContents.getVisibility() == View.GONE) {
+		if(binding.repoFileContents.getVisibility() == View.GONE) {
 			binding.repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
 			binding.repoFileContents.setVisibility(View.VISIBLE);
 			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
@@ -125,7 +115,7 @@ public class RepoInfoFragment extends Fragment {
 
 	private void toggleExpandViewMeta() {
 
-		if (binding.repoMetaFrame.getVisibility() == View.GONE) {
+		if(binding.repoMetaFrame.getVisibility() == View.GONE) {
 			binding.repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
 			binding.repoMetaFrame.setVisibility(View.VISIBLE);
 			//Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
@@ -146,7 +136,7 @@ public class RepoInfoFragment extends Fragment {
 	private void setRepoInfo(Locale locale, final String timeFormat) {
 		Repository repoInfo = repository.getRepository();
 
-		if (isAdded()) {
+		if(isAdded()) {
 			assert repoInfo != null;
 			binding.repoMetaOwner.setText(repoInfo.getOwner().getLogin());
 			binding.repoMetaOwner.setOnClickListener((v) -> RetrofitClient.getApiInterface(ctx).orgGet(repository.getOwner()).enqueue(new Callback<>() {
@@ -160,7 +150,8 @@ public class RepoInfoFragment extends Fragment {
 				}
 
 				@Override
-				public void onFailure(@NotNull Call<Organization> call, @NotNull Throwable t) {}
+				public void onFailure(@NotNull Call<Organization> call, @NotNull Throwable t) {
+				}
 			}));
 			binding.repoMetaName.setText(repoInfo.getName());
 
@@ -195,7 +186,9 @@ public class RepoInfoFragment extends Fragment {
 			binding.repoMetaWebsite.setText(website);
 			binding.repoMetaWebsite.setLinksClickable(false);
 			binding.websiteFrame.setOnClickListener((v) -> {
-				if (!repoInfo.getWebsite().isEmpty()) AppUtil.openUrlInBrowser(requireContext(), repoInfo.getWebsite());
+				if(!repoInfo.getWebsite().isEmpty()) {
+					AppUtil.openUrlInBrowser(requireContext(), repoInfo.getWebsite());
+				}
 			});
 
 			binding.repoAdditionalButton.setOnClickListener(v -> {
@@ -233,10 +226,7 @@ public class RepoInfoFragment extends Fragment {
 				repoUrlContent.setText(repoInfo.getHtmlUrl());
 
 
-				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-					.setTitle(R.string.infoMoreInformation)
-					.setView(view)
-					.setNeutralButton(getString(R.string.close), null);
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.infoMoreInformation).setView(view).setNeutralButton(getString(R.string.close), null);
 
 				materialAlertDialogBuilder.create().show();
 			});
@@ -255,7 +245,8 @@ public class RepoInfoFragment extends Fragment {
 					startActivity(parent);
 				});
 				binding.repoFork.setText(getString(R.string.repoForkOf, repoInfo.getParent().getFullName()));
-			} else {
+			}
+			else {
 				binding.repoForkFrame.setVisibility(View.GONE);
 			}
 
@@ -268,9 +259,7 @@ public class RepoInfoFragment extends Fragment {
 
 	private void getFileContents(final String owner, String repo, final String filename, final String defBranch) {
 
-		Call<ResponseBody> call = RetrofitClient
-				.getWebInterface(getContext())
-				.getFileContents(owner, repo, defBranch, filename);
+		Call<ResponseBody> call = RetrofitClient.getWebInterface(getContext()).getFileContents(owner, repo, defBranch, filename);
 
 		call.enqueue(new Callback<>() {
 
@@ -328,4 +317,5 @@ public class RepoInfoFragment extends Fragment {
 			}
 		});
 	}
+
 }

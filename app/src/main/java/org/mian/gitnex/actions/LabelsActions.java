@@ -23,9 +23,7 @@ public class LabelsActions {
 
 	public static void getCurrentIssueLabels(Context ctx, String repoOwner, String repoName, int issueIndex, List<Integer> currentLabelsIds) {
 
-		Call<List<Label>> callSingleIssueLabels = RetrofitClient
-			.getApiInterface(ctx)
-			.issueGetLabels(repoOwner, repoName, (long) issueIndex);
+		Call<List<Label>> callSingleIssueLabels = RetrofitClient.getApiInterface(ctx).issueGetLabels(repoOwner, repoName, (long) issueIndex);
 
 		callSingleIssueLabels.enqueue(new Callback<>() {
 
@@ -59,11 +57,10 @@ public class LabelsActions {
 		});
 	}
 
-	public static void getRepositoryLabels(Context ctx, String repoOwner, String repoName, List<Label> labelsList, MaterialAlertDialogBuilder materialAlertDialogBuilder, LabelsListAdapter labelsAdapter, CustomLabelsSelectionDialogBinding labelsBinding, ProgressBar progressBar) {
+	public static void getRepositoryLabels(Context ctx, String repoOwner, String repoName, List<Label> labelsList, MaterialAlertDialogBuilder materialAlertDialogBuilder, LabelsListAdapter labelsAdapter,
+		CustomLabelsSelectionDialogBinding labelsBinding, ProgressBar progressBar) {
 
-		Call<List<Label>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.issueListLabels(repoOwner, repoName, null, null);
+		Call<List<Label>> call = RetrofitClient.getApiInterface(ctx).issueListLabels(repoOwner, repoName, null, null);
 
 		call.enqueue(new Callback<>() {
 
@@ -80,9 +77,7 @@ public class LabelsActions {
 					}
 
 					// Load organization labels
-					Call<List<Label>> callOrgLabels = RetrofitClient
-						.getApiInterface(ctx)
-						.orgListLabels(repoOwner, null, null);
+					Call<List<Label>> callOrgLabels = RetrofitClient.getApiInterface(ctx).orgListLabels(repoOwner, null, null);
 
 					callOrgLabels.enqueue(new Callback<>() {
 
@@ -129,4 +124,5 @@ public class LabelsActions {
 			}
 		});
 	}
+
 }

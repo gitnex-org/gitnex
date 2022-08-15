@@ -9,22 +9,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="@dimen/dimen16sp"
-        app:textAllCaps="true"
         android:text="@string/pageTitleIssues"
-        android:textColor="@color/lightGray" />
+        android:textColor="@color/lightGray"
+        android:textSize="@dimen/dimen16sp"
+        app:textAllCaps="true"/>
 
     <TextView
         android:id="@+id/counterBadgeIssue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="@dimen/dimen12sp"
-        android:layout_marginTop="@dimen/dimen1dp"
         android:layout_marginStart="@dimen/dimen8dp"
+        android:layout_marginTop="@dimen/dimen1dp"
         android:layout_toEndOf="@+id/counterBadgeIssueText"
         android:background="@drawable/shape_badge_background"
+        android:gravity="center"
         android:text="@string/infoTabRepoZero"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/dimen12sp"/>
 
 </RelativeLayout>

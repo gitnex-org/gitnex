@@ -7,11 +7,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
@@ -27,135 +23,135 @@ import java.util.List;
 
 public class UserGridAdapter extends BaseAdapter implements Filterable {
 
-    private final List<User> membersList;
-    private final Context context;
-    private final List<User> membersListFull;
+	private final List<User> membersList;
+	private final Context context;
+	private final List<User> membersListFull;
+	private final Filter membersFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<User> filteredList = new ArrayList<>();
 
-    private class ViewHolder {
+			if(constraint == null || constraint.length() == 0) {
 
-	    private String userLoginId;
+				filteredList.addAll(membersListFull);
+			}
+			else {
 
-        private final ImageView memberAvatar;
-        private final TextView memberName;
+				String filterPattern = constraint.toString().toLowerCase().trim();
 
-        ViewHolder(View v) {
+				for(User item : membersListFull) {
+					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
+						filteredList.add(item);
+					}
+				}
+			}
 
-            memberAvatar = v.findViewById(R.id.userAvatarImageView);
-            memberName = v.findViewById(R.id.userNameTv);
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
 
-	        v.setOnClickListener(loginId -> {
-		        Intent intent = new Intent(context, ProfileActivity.class);
-		        intent.putExtra("username", userLoginId);
-		        context.startActivity(intent);
-	        });
+			return results;
+		}
 
-	        v.setOnLongClickListener(loginId -> {
-		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-		        return true;
-	        });
-        }
-    }
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
 
-    public UserGridAdapter(Context ctx, List<User> membersListMain) {
+			membersList.clear();
+			membersList.addAll((List) results.values);
+			notifyDataSetChanged();
+		}
+	};
 
-        this.context = ctx;
-        this.membersList = membersListMain;
-        membersListFull = new ArrayList<>(membersList);
-    }
+	public UserGridAdapter(Context ctx, List<User> membersListMain) {
 
-    @Override
-    public int getCount() {
-        return membersList.size();
-    }
+		this.context = ctx;
+		this.membersList = membersListMain;
+		membersListFull = new ArrayList<>(membersList);
+	}
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+	@Override
+	public int getCount() {
+		return membersList.size();
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+	@Override
+	public Object getItem(int position) {
+		return null;
+	}
 
-    @SuppressLint("InflateParams")
-    @Override
-    public View getView(int position, View finalView, ViewGroup parent) {
+	@Override
+	public long getItemId(int position) {
+		return 0;
+	}
 
-        UserGridAdapter.ViewHolder viewHolder;
+	@SuppressLint("InflateParams")
+	@Override
+	public View getView(int position, View finalView, ViewGroup parent) {
 
-        if (finalView == null) {
+		UserGridAdapter.ViewHolder viewHolder;
 
-            finalView = LayoutInflater.from(context).inflate(R.layout.list_users_grid, null);
-            viewHolder = new ViewHolder(finalView);
-            finalView.setTag(viewHolder);
-        }
-        else {
+		if(finalView == null) {
 
-            viewHolder = (UserGridAdapter.ViewHolder) finalView.getTag();
-        }
+			finalView = LayoutInflater.from(context).inflate(R.layout.list_users_grid, null);
+			viewHolder = new ViewHolder(finalView);
+			finalView.setTag(viewHolder);
+		}
+		else {
 
-        initData(viewHolder, position);
-        return finalView;
-    }
+			viewHolder = (UserGridAdapter.ViewHolder) finalView.getTag();
+		}
 
-    private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
+		initData(viewHolder, position);
+		return finalView;
+	}
 
-	    User currentItem = membersList.get(position);
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 0);
+	private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
 
-        PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
+		User currentItem = membersList.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 0);
 
-	    viewHolder.userLoginId = currentItem.getLogin();
+		PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+			.into(viewHolder.memberAvatar);
 
-        if(!currentItem.getFullName().equals("")) {
+		viewHolder.userLoginId = currentItem.getLogin();
 
-            viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
-        }
-        else {
+		if(!currentItem.getFullName().equals("")) {
 
-            viewHolder.memberName.setText(currentItem.getLogin());
-        }
-    }
+			viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
+		}
+		else {
 
-    @Override
-    public Filter getFilter() {
-        return membersFilter;
-    }
+			viewHolder.memberName.setText(currentItem.getLogin());
+		}
+	}
 
-    private final Filter membersFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<User> filteredList = new ArrayList<>();
+	@Override
+	public Filter getFilter() {
+		return membersFilter;
+	}
 
-            if (constraint == null || constraint.length() == 0) {
+	private class ViewHolder {
 
-                filteredList.addAll(membersListFull);
-            }
-            else {
+		private final ImageView memberAvatar;
+		private final TextView memberName;
+		private String userLoginId;
 
-                String filterPattern = constraint.toString().toLowerCase().trim();
+		ViewHolder(View v) {
 
-                for (User item : membersListFull) {
-                    if (item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
+			memberAvatar = v.findViewById(R.id.userAvatarImageView);
+			memberName = v.findViewById(R.id.userNameTv);
 
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
+			v.setOnClickListener(loginId -> {
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userLoginId);
+				context.startActivity(intent);
+			});
 
-            return results;
-        }
+			v.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				return true;
+			});
+		}
 
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-
-            membersList.clear();
-            membersList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
+	}
 
 }

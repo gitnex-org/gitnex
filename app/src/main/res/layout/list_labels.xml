@@ -10,9 +10,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/labelView"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardCornerRadius="@dimen/dimen16dp"
         app:cardElevation="@dimen/dimen0dp"
         app:contentPaddingBottom="@dimen/dimen4dp"
@@ -34,8 +34,8 @@
                 android:layout_marginBottom="@dimen/dimen4dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/generalImgContentText"
-                app:tint="@color/colorWhite"
-                app:srcCompat="@drawable/ic_label" />
+                app:srcCompat="@drawable/ic_label"
+                app:tint="@color/colorWhite"/>
 
             <TextView
                 android:id="@+id/labelName"
@@ -45,7 +45,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dimen14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -53,16 +53,16 @@
     <androidx.legacy.widget.Space
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
     <ImageView
         android:id="@+id/labelsOptionsMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
-        android:contentDescription="@string/labelMenuContentDesc"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_dotted_menu_horizontal" />
+        android:contentDescription="@string/labelMenuContentDesc"
+        android:src="@drawable/ic_dotted_menu_horizontal"/>
 
 </LinearLayout>
 

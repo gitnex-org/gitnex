@@ -1,12 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -26,101 +21,102 @@ import org.mian.gitnex.viewmodels.MembersByOrgViewModel;
 
 public class MembersByOrgFragment extends Fragment {
 
-    private TextView noDataMembers;
-    private static String orgNameF = "param2";
-    private String orgName;
-    private UserGridAdapter adapter;
-    private GridView mGridView;
-    private ProgressBar progressBar;
+	private static final String orgNameF = "param2";
+	private TextView noDataMembers;
+	private String orgName;
+	private UserGridAdapter adapter;
+	private GridView mGridView;
+	private ProgressBar progressBar;
 
-    public MembersByOrgFragment() {
-    }
+	public MembersByOrgFragment() {
+	}
 
-    public static MembersByOrgFragment newInstance(String param1) {
-        MembersByOrgFragment fragment = new MembersByOrgFragment();
-        Bundle args = new Bundle();
-        args.putString(orgNameF, param1);
-        fragment.setArguments(args);
-        return fragment;
-    }
+	public static MembersByOrgFragment newInstance(String param1) {
+		MembersByOrgFragment fragment = new MembersByOrgFragment();
+		Bundle args = new Bundle();
+		args.putString(orgNameF, param1);
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            orgName = getArguments().getString(orgNameF);
-        }
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if(getArguments() != null) {
+			orgName = getArguments().getString(orgNameF);
+		}
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-	    FragmentMembersByOrgBinding fragmentMembersByOrgBinding = FragmentMembersByOrgBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
+		FragmentMembersByOrgBinding fragmentMembersByOrgBinding = FragmentMembersByOrgBinding.inflate(inflater, container, false);
+		setHasOptionsMenu(true);
 
-        noDataMembers = fragmentMembersByOrgBinding.noDataMembers;
+		noDataMembers = fragmentMembersByOrgBinding.noDataMembers;
 
-	    progressBar = fragmentMembersByOrgBinding.progressBar;
-        mGridView = fragmentMembersByOrgBinding.gridView;
+		progressBar = fragmentMembersByOrgBinding.progressBar;
+		mGridView = fragmentMembersByOrgBinding.gridView;
 
-        fetchDataAsync(orgName);
+		fetchDataAsync(orgName);
 
-        return fragmentMembersByOrgBinding.getRoot();
-    }
+		return fragmentMembersByOrgBinding.getRoot();
+	}
 
-    private void fetchDataAsync(String owner) {
+	private void fetchDataAsync(String owner) {
 
-        MembersByOrgViewModel membersModel= new ViewModelProvider(this).get(MembersByOrgViewModel.class);
+		MembersByOrgViewModel membersModel = new ViewModelProvider(this).get(MembersByOrgViewModel.class);
 
-        membersModel.getMembersList(owner, getContext()).observe(getViewLifecycleOwner(), membersListMain -> {
-            adapter = new UserGridAdapter(getContext(), membersListMain);
-            if(adapter.getCount() > 0) {
-                mGridView.setAdapter(adapter);
-                noDataMembers.setVisibility(View.GONE);
-            }
-            else {
-                adapter.notifyDataSetChanged();
-                mGridView.setAdapter(adapter);
-                noDataMembers.setVisibility(View.VISIBLE);
-            }
+		membersModel.getMembersList(owner, getContext()).observe(getViewLifecycleOwner(), membersListMain -> {
+			adapter = new UserGridAdapter(getContext(), membersListMain);
+			if(adapter.getCount() > 0) {
+				mGridView.setAdapter(adapter);
+				noDataMembers.setVisibility(View.GONE);
+			}
+			else {
+				adapter.notifyDataSetChanged();
+				mGridView.setAdapter(adapter);
+				noDataMembers.setVisibility(View.VISIBLE);
+			}
 
-	        progressBar.setVisibility(View.GONE);
-        });
+			progressBar.setVisibility(View.GONE);
+		});
 
-    }
+	}
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
+		boolean connToInternet = AppUtil.hasNetworkConnection(requireContext());
 
-        inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.search_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        //searchView.setQueryHint(getContext().getString(R.string.strFilter));
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		//searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-        if(!connToInternet) {
-            return;
-        }
+		if(!connToInternet) {
+			return;
+		}
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(mGridView.getAdapter() != null) {
-                    adapter.getFilter().filter(newText);
-                }
-                return false;
-            }
-        });
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
 
-    }
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				if(mGridView.getAdapter() != null) {
+					adapter.getFilter().filter(newText);
+				}
+				return false;
+			}
+		});
+
+	}
+
 }
