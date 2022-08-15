@@ -14,7 +14,9 @@ public class SourcePositionListener {
 
 	@FunctionalInterface
 	public interface OnPositionChanged {
+
 		void onPositionChange(int line, int column);
+
 	}
 
 	private OnPositionChanged onPositionChanged;
@@ -28,8 +30,9 @@ public class SourcePositionListener {
 				if(eventType == AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED && onPositionChanged != null) {
 					int selectionStart = editText.getSelectionStart();
 					Layout layout = editText.getLayout();
-					if(layout == null)
+					if(layout == null) {
 						return;
+					}
 					int line = editText.getLayout().getLineForOffset(selectionStart);
 					int column = selectionStart - editText.getLayout().getLineStart(line);
 					onPositionChanged.onPositionChange(line + 1, column + 1);

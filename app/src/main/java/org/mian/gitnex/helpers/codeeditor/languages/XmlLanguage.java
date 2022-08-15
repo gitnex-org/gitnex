@@ -32,7 +32,7 @@ public class XmlLanguage {
 	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("//[^\\n]*");
 	private static final Pattern PATTERN_MULTI_LINE_COMMENT = Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
 	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION =Pattern.compile( ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
+	private static final Pattern PATTERN_OPERATION = Pattern.compile(":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 
 	public static void applyFiveColorsDarkTheme(Context context, CodeView codeView) {
 		codeView.resetSyntaxPatternList();
@@ -68,7 +68,7 @@ public class XmlLanguage {
 	public static List<Code> getCodeList(Context context) {
 		List<Code> codeList = new ArrayList<>();
 		String[] keywords = getKeywords(context);
-		for (String keyword : keywords) {
+		for(String keyword : keywords) {
 			codeList.add(new Keyword(keyword));
 		}
 		return codeList;
@@ -93,4 +93,5 @@ public class XmlLanguage {
 	public static String getCommentEnd() {
 		return "";
 	}
+
 }

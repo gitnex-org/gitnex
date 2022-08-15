@@ -19,10 +19,8 @@ import java.util.regex.Pattern;
 public class HtmlLanguage {
 
 	//Language Keywords
-	private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(<html|<DOCTYPE|<head|<title|<body|<style|<script|src|href" +
-		"<h1|<h2|<h3|<h4|<h5|<h6|<br|<hr|<section|<header|<footer|<select|<img|<embed|<iframe|<div|<p|code|strong|small|template|" +
-		"input|form|textarea|button|option|label|fieldset|legend|datalist|frame|map|area|canvas|picture|svg|audio|source|track|video|" +
-		"link|nav|ul|ol|li|table|caption|th|tr|td|thead|tbody|tfooter|col|span|main|article|aside|meta|base|noscript|object|param|)\\b");
+	private static final Pattern PATTERN_KEYWORDS = Pattern.compile(
+		"\\b(<html|<DOCTYPE|<head|<title|<body|<style|<script|src|href" + "<h1|<h2|<h3|<h4|<h5|<h6|<br|<hr|<section|<header|<footer|<select|<img|<embed|<iframe|<div|<p|code|strong|small|template|" + "input|form|textarea|button|option|label|fieldset|legend|datalist|frame|map|area|canvas|picture|svg|audio|source|track|video|" + "link|nav|ul|ol|li|table|caption|th|tr|td|thead|tbody|tfooter|col|span|main|article|aside|meta|base|noscript|object|param|)\\b");
 
 	//Brackets and Colons
 	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
@@ -35,7 +33,7 @@ public class HtmlLanguage {
 	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("//[^\\n]*");
 	private static final Pattern PATTERN_MULTI_LINE_COMMENT = Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
 	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION =Pattern.compile( ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
+	private static final Pattern PATTERN_OPERATION = Pattern.compile(":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 
 	public static void applyFiveColorsDarkTheme(Context context, CodeView codeView) {
 		codeView.resetSyntaxPatternList();
@@ -71,7 +69,7 @@ public class HtmlLanguage {
 	public static List<Code> getCodeList(Context context) {
 		List<Code> codeList = new ArrayList<>();
 		String[] keywords = getKeywords(context);
-		for (String keyword : keywords) {
+		for(String keyword : keywords) {
 			codeList.add(new Keyword(keyword));
 		}
 		return codeList;
@@ -96,4 +94,5 @@ public class HtmlLanguage {
 	public static String getCommentEnd() {
 		return "";
 	}
+
 }
