@@ -12,6 +12,7 @@
     <string name="navLogout">Ausloggen</string>
     <string name="navAdministration">Administration</string>
     <string name="navMyIssues">Meine Issues</string>
+    <string name="navMostVisited">Meistbesuchte Repositories</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Repository erstellen</string>
@@ -654,4 +655,5 @@
     <string name="wikiUpdated">Wiki-Seite erfolgreich aktualisiert</string>
     <string name="wikiCreated">Wiki-Seite erfolgreich erstellt</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Im Code-Editor öffnen</string>
 </resources>

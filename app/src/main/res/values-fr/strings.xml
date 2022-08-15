@@ -655,4 +655,5 @@
     <string name="wikiUpdated">Page wiki mise à jour</string>
     <string name="wikiCreated">Page wiki créée</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Ouvrir dans l’Éditeur de code</string>
 </resources>
