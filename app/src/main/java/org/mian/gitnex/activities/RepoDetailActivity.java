@@ -86,6 +86,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
+	private Intent intentWiki;
+
 	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 		result -> {
 			if(result.getResultCode() == 201) {
@@ -140,6 +142,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		Toolbar toolbar = findViewById(R.id.toolbar);
 
 		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		intentWiki = new Intent(ctx, WikiActivity.class);
 
 		TextView toolbarTitle = findViewById(R.id.toolbar_title);
 		toolbarTitle.setText(repository.getFullName());
@@ -762,15 +766,24 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					viewPager.setCurrentItem(4);
 					createReleaseLauncher.launch(repository.getIntent(ctx, CreateReleaseActivity.class));
 					break;
-				case "milestones":
+				case "wiki":
 					viewPager.setCurrentItem(5);
 					break;
-				case "milestonesNew":
+				case "wikiNew":
 					viewPager.setCurrentItem(5);
+					intentWiki.putExtra("action", "add");
+					intentWiki.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
+					ctx.startActivity(intentWiki);
+					break;
+				case "milestones":
+					viewPager.setCurrentItem(6);
+					break;
+				case "milestonesNew":
+					viewPager.setCurrentItem(6);
 					createMilestoneLauncher.launch(repository.getIntent(ctx, CreateMilestoneActivity.class));
 					break;
 				case "labels":
-					viewPager.setCurrentItem(6);
+					viewPager.setCurrentItem(7);
 					break;
 				case "settings":
 					settingsLauncher.launch(repository.getIntent(ctx, RepositorySettingsActivity.class));

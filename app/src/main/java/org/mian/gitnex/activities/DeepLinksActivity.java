@@ -84,16 +84,25 @@ public class DeepLinksActivity extends BaseActivity {
 
 			String hostUri = userAccount.getInstanceUrl();
 
-			String host = data.getHost();
-			if (host == null) host = "";
+			String hostExternal = data.getHost();
+			int portExternal = data.getPort();
 
-			if(hostUri.toLowerCase().contains(host.toLowerCase())) {
+			String hostUrlExternal;
+			if(portExternal > 0) {
+				hostUrlExternal = hostExternal + ":" + portExternal;
+			}
+			else {
+				hostUrlExternal = hostExternal;
+			}
+
+			if (hostUrlExternal == null) hostUrlExternal = "";
+
+			if(hostUri.toLowerCase().contains(hostUrlExternal.toLowerCase())) {
 
 				accountFound = true;
 
 				AppUtil.switchToAccount(ctx, userAccount, true);
 				break;
-
 			}
 		}
 
@@ -303,6 +312,17 @@ public class DeepLinksActivity extends BaseActivity {
 						getFile(data.getPathSegments().get(0),
 							data.getPathSegments().get(1), filePath.toString(), data.getPathSegments().get(4)), 500);
 				}
+				else if(data.getPathSegments().get(2).equals("wiki")) { // wiki
+
+					if(data.getQueryParameter("action") != null && data.getQueryParameter("action").equalsIgnoreCase("_new")) {
+						new Handler(Looper.getMainLooper()).postDelayed(() ->
+							goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "wikiNew"), 500);
+					}
+					else {
+						new Handler(Looper.getMainLooper()).postDelayed(
+							() -> goToRepoSection(data.getPathSegments().get(0), data.getPathSegments().get(1), "wiki"), 500);
+					}
+				}
 				else { // no action, show options
 					showNoActionButtons();
 				}
@@ -355,14 +375,14 @@ public class DeepLinksActivity extends BaseActivity {
 			.getApiInterface(ctx)
 			.repoGetPullRequest(repoOwner, repoName, (long) index);
 
-		call.enqueue(new Callback<PullRequest>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<PullRequest> call, @NonNull retrofit2.Response<PullRequest> response) {
 
 				PullRequest prInfo = response.body();
 
-				if (response.code() == 200) {
+				if(response.code() == 200) {
 
 					assert prInfo != null;
 
@@ -401,13 +421,13 @@ public class DeepLinksActivity extends BaseActivity {
 			.getApiInterface(ctx)
 			.repoGet(repoOwner, repoName);
 
-		call.enqueue(new Callback<Repository>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
 				Repository repoInfo = response.body();
 
-				if (response.code() == 200) {
+				if(response.code() == 200) {
 					assert repoInfo != null;
 
 					RepositoryContext repo = new RepositoryContext(repoInfo, ctx);
@@ -420,10 +440,11 @@ public class DeepLinksActivity extends BaseActivity {
 
 					ctx.startActivity(repoIntent);
 					finish();
-				} else {
+				}
+				else {
 					ctx.startActivity(mainIntent);
 					finish();
-					Log.e("onFailure-goToRepo", String.valueOf(response.code()));
+					Log.e("error-goToRepo", response.message());
 				}
 
 			}
@@ -441,7 +462,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private void getUserOrOrg(String userOrgName) {
 		Call<Organization> call = RetrofitClient.getApiInterface(ctx).orgGet(userOrgName);
 
-		call.enqueue(new Callback<Organization>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Organization> call, @NonNull Response<Organization> response) {
@@ -474,7 +495,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private void getUser(String userName) {
 		Call<User> call = RetrofitClient.getApiInterface(ctx).userGet(userName);
 
-		call.enqueue(new Callback<User>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -502,7 +523,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private void getFile(String owner, String repo, String filePath, String branch) {
 		Call<ContentsResponse> call = RetrofitClient.getApiInterface(ctx).repoGetContents(owner, repo, filePath, branch);
 
-		call.enqueue(new Callback<ContentsResponse>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<ContentsResponse> call, @NonNull Response<ContentsResponse> response) {
