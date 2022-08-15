@@ -30,7 +30,7 @@
                 android:gravity="center_vertical"
                 android:textSize="@dimen/dimen20sp"
                 android:textColor="?attr/primaryTextColor"
-                android:id="@+id/toolbar_title" />
+                android:id="@+id/toolbar_title"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -48,6 +48,6 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
         android:background="?attr/primaryBackgroundColor"
-        app:menu="@menu/drawer_menu" />
+        app:menu="@menu/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

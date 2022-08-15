@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/userAvatar"
-                    android:src="@drawable/ic_person" />
+                    android:src="@drawable/ic_person"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -54,7 +54,7 @@
                     android:paddingEnd="@dimen/dimen2dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/userName"
@@ -64,7 +64,7 @@
                     android:paddingEnd="@dimen/dimen2dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp" />
+                    android:textSize="@dimen/dimen12sp"/>
 
             </LinearLayout>
 

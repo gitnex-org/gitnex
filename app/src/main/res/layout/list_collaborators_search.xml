@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/generalImgContentText"
-                    android:src="@drawable/ic_android" />
+                    android:src="@drawable/ic_android"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -44,24 +44,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/userFullName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen4dp"
-                        android:text="@string/userName"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/userFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen4dp"
+                    android:text="@string/userName"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen14sp"
+                    android:textStyle="bold"/>
 
-                    <TextView
-                        android:id="@+id/userName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen4dp"
-                        android:text="@string/addCollaboratorViewUserDesc"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen12sp" />
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen4dp"
+                    android:text="@string/addCollaboratorViewUserDesc"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen12sp"/>
 
             </LinearLayout>
 

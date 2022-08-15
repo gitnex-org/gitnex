@@ -28,103 +28,102 @@ import retrofit2.Response;
 public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
 	private ActivityAddCollaboratorToRepositoryBinding activityAddCollaboratorToRepositoryBinding;
-    private View.OnClickListener onClickListener;
-    private RepositoryContext repository;
+	private View.OnClickListener onClickListener;
+	private RepositoryContext repository;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    activityAddCollaboratorToRepositoryBinding = ActivityAddCollaboratorToRepositoryBinding.inflate(getLayoutInflater());
+		activityAddCollaboratorToRepositoryBinding = ActivityAddCollaboratorToRepositoryBinding.inflate(getLayoutInflater());
 		setContentView(activityAddCollaboratorToRepositoryBinding.getRoot());
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        repository = RepositoryContext.fromIntent(getIntent());
+		repository = RepositoryContext.fromIntent(getIntent());
 
-	    activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.requestFocus();
-        assert imm != null;
-        imm.showSoftInput(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch, InputMethodManager.SHOW_IMPLICIT);
+		activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.requestFocus();
+		assert imm != null;
+		imm.showSoftInput(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch, InputMethodManager.SHOW_IMPLICIT);
 
-        initCloseListener();
-	    activityAddCollaboratorToRepositoryBinding.close.setOnClickListener(onClickListener);
+		initCloseListener();
+		activityAddCollaboratorToRepositoryBinding.close.setOnClickListener(onClickListener);
 
-	    activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.setOnEditorActionListener((v, actionId, event) -> {
+		activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.setOnEditorActionListener((v, actionId, event) -> {
 
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
+			if(actionId == EditorInfo.IME_ACTION_SEND) {
 
-                if(!Objects.requireNonNull(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.getText()).toString().equals("")) {
+				if(!Objects.requireNonNull(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.getText()).toString().equals("")) {
 
-	                activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
-                    loadUserSearchList(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.getText().toString());
-                }
-            }
+					activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
+					loadUserSearchList(activityAddCollaboratorToRepositoryBinding.addCollaboratorSearch.getText().toString());
+				}
+			}
 
-            return false;
-        });
-    }
+			return false;
+		});
+	}
 
-    public void loadUserSearchList(String searchKeyword) {
+	public void loadUserSearchList(String searchKeyword) {
 
-        Call<InlineResponse2001> call = RetrofitClient
-                .getApiInterface(ctx)
-                .userSearch(searchKeyword, null, 1, 10);
+		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(ctx).userSearch(searchKeyword, null, 1, 10);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
+			@Override
+			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 
-	            activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.GONE);
+				activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.GONE);
 
-		        if(response.isSuccessful()) {
+				if(response.isSuccessful()) {
 
-			        assert response.body() != null;
-			        getUsersList(response.body().getData(), ctx);
-		        }
-		        else {
+					assert response.body() != null;
+					getUsersList(response.body().getData(), ctx);
+				}
+				else {
 
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-            @Override
-            public void onFailure(@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+			@Override
+			public void onFailure(@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
 
-    private void getUsersList(List<User> dataList, Context context) {
+	private void getUsersList(List<User> dataList, Context context) {
 
-        CollaboratorSearchAdapter adapter = new CollaboratorSearchAdapter(dataList, context, repository);
+		CollaboratorSearchAdapter adapter = new CollaboratorSearchAdapter(dataList, context, repository);
 
-	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setHasFixedSize(true);
-	    activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setLayoutManager(new LinearLayoutManager(ctx));
+		activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setHasFixedSize(true);
+		activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setLayoutManager(new LinearLayoutManager(ctx));
 
-	    activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
+		activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
 
-        if(adapter.getItemCount() > 0) {
+		if(adapter.getItemCount() > 0) {
 
-	        activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setAdapter(adapter);
-	        activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.GONE);
-        }
-        else {
+			activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setAdapter(adapter);
+			activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.GONE);
+		}
+		else {
 
-	        activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.VISIBLE);
-        }
+			activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.VISIBLE);
+		}
 
-	    activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.GONE);
-    }
+		activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.GONE);
+	}
 
-    private void initCloseListener() {
-        onClickListener = view -> finish();
-    }
+	private void initCloseListener() {
+		onClickListener = view -> finish();
+	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
+
 }

@@ -20,11 +20,11 @@
             app:cardElevation="@dimen/dimen0dp">
 
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="?attr/materialCardBackgroundColor">
 
                 <LinearLayout
                     android:id="@+id/orgInfoLayout"
@@ -49,7 +49,7 @@
                             android:id="@+id/orgAvatar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:contentDescription="@string/orgContentAvatar" />
+                            android:contentDescription="@string/orgContentAvatar"/>
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -60,7 +60,7 @@
                         android:textColor="?attr/primaryTextColor"
                         android:layout_marginBottom="@dimen/dimen4dp"
                         android:textSize="@dimen/dimen22sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/orgDescInfo"
@@ -71,14 +71,14 @@
                         android:maxLines="3"
                         android:textColor="?attr/primaryTextColor"
                         android:textColorLink="@color/lightBlue"
-                        android:textSize="@dimen/dimen16sp" />
+                        android:textSize="@dimen/dimen16sp"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="@dimen/dimen24dp"
                         android:layout_marginBottom="@dimen/dimen24dp"
-                        android:background="?attr/dividerColor" />
+                        android:background="?attr/dividerColor"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/websiteText"
-                            app:srcCompat="@drawable/ic_link" />
+                            app:srcCompat="@drawable/ic_link"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/websiteText"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen16sp" />
+                                android:textSize="@dimen/dimen16sp"/>
 
                             <TextView
                                 android:id="@+id/orgWebsiteInfo"
@@ -118,7 +118,7 @@
                                 android:textColor="?attr/primaryTextColor"
                                 android:textColorLink="@color/lightBlue"
                                 android:textSize="@dimen/dimen14sp"
-                                tools:text="29" />
+                                tools:text="29"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -136,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/locationText"
-                            app:srcCompat="@drawable/ic_location" />
+                            app:srcCompat="@drawable/ic_location"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -150,7 +150,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/locationText"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen16sp" />
+                                android:textSize="@dimen/dimen16sp"/>
 
                             <TextView
                                 android:id="@+id/orgLocationInfo"
@@ -159,7 +159,7 @@
                                 android:alpha="0.9"
                                 android:textColor="?attr/primaryTextColor"
                                 android:textSize="@dimen/dimen14sp"
-                                tools:text="29" />
+                                tools:text="29"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -178,6 +178,6 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.Material3.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
 </RelativeLayout>

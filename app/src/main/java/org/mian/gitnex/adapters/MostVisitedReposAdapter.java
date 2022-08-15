@@ -65,8 +65,7 @@ public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedRep
 
 				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-				materialAlertDialogBuilder.setTitle(ctx.getString(R.string.reset))
-					.setMessage(ctx.getString(R.string.resetCounterDialogMessage, repository.getRepositoryName()))
+				materialAlertDialogBuilder.setTitle(ctx.getString(R.string.reset)).setMessage(ctx.getString(R.string.resetCounterDialogMessage, repository.getRepositoryName()))
 					.setPositiveButton(R.string.reset, (dialog, whichButton) -> {
 
 						int getRepositoryId = repository.getRepositoryId();
@@ -75,10 +74,10 @@ public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedRep
 						RepositoriesApi repositoriesApi = BaseApi.getInstance(ctx, RepositoriesApi.class);
 						assert repositoriesApi != null;
 						repositoriesApi.updateRepositoryMostVisited(0, getRepositoryId);
-					})
-					.setNeutralButton(R.string.cancelButton, null).show();
+					}).setNeutralButton(R.string.cancelButton, null).show();
 			});
 		}
+
 	}
 
 	private void resetRepositoryCounter(int position) {
@@ -134,4 +133,5 @@ public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedRep
 		mostVisitedReposList = list;
 		notifyDataChanged();
 	}
+
 }

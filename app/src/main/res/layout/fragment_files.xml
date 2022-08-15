@@ -29,15 +29,15 @@
                 android:background="?attr/materialCardBackgroundColor"
                 android:orientation="horizontal">
 
-                    <moe.feng.common.view.breadcrumbs.BreadcrumbsView
-                        android:id="@+id/breadcrumbs_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:saveEnabled="false"
-                        android:text="@string/filesBreadcrumbRoot"
-                        app:CustomTextSize="@dimen/dimen16sp"
-                        app:SelectedTextColor="?attr/primaryTextColor"
-                        app:UnSelectedTextColor="@color/lightGray" />
+                <moe.feng.common.view.breadcrumbs.BreadcrumbsView
+                    android:id="@+id/breadcrumbs_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:saveEnabled="false"
+                    android:text="@string/filesBreadcrumbRoot"
+                    app:CustomTextSize="@dimen/dimen16sp"
+                    app:SelectedTextColor="?attr/primaryTextColor"
+                    app:UnSelectedTextColor="@color/lightGray"/>
 
             </LinearLayout>
 
@@ -57,7 +57,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -74,7 +74,7 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
@@ -83,6 +83,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/filesFrame"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
 </RelativeLayout>

@@ -46,8 +46,7 @@ public class MostVisitedReposFragment extends Fragment {
 	private SwipeRefreshLayout swipeRefresh;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		FragmentDraftsBinding fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
 
@@ -128,21 +127,19 @@ public class MostVisitedReposFragment extends Fragment {
 
 		if(item.getItemId() == R.id.reset_menu_item) {
 
-			if (mostVisitedReposList.size() == 0) {
+			if(mostVisitedReposList.size() == 0) {
 				Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 			}
 			else {
-				new MaterialAlertDialogBuilder(ctx)
-					.setTitle(R.string.reset)
-					.setMessage(R.string.resetCounterAllDialogMessage)
-					.setPositiveButton(R.string.reset, (dialog, which) -> {
+				new MaterialAlertDialogBuilder(ctx).setTitle(R.string.reset).setMessage(R.string.resetCounterAllDialogMessage).setPositiveButton(R.string.reset, (dialog, which) -> {
 
-						resetAllRepositoryCounter(currentActiveAccountId);
-						dialog.dismiss();
-					}).setNeutralButton(R.string.cancelButton, null).show();
+					resetAllRepositoryCounter(currentActiveAccountId);
+					dialog.dismiss();
+				}).setNeutralButton(R.string.cancelButton, null).show();
 			}
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
+
 }

@@ -107,4 +107,5 @@ public class AdminUnadoptedReposActivity extends BaseActivity {
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
+
 }

@@ -78,4 +78,5 @@ public class AdminCronTasksActivity extends BaseActivity {
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
+
 }

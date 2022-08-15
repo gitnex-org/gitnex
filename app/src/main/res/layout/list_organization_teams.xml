@@ -31,7 +31,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen18sp"
                 android:textStyle="bold"
-                tools:text="PR-Managers" />
+                tools:text="PR-Managers"/>
 
             <TextView
                 android:id="@+id/teamDescription"
@@ -42,7 +42,7 @@
                 android:textSize="@dimen/dimen16sp"
                 android:layout_marginTop="@dimen/dimen4dp"
                 android:layout_marginBottom="@dimen/dimen4dp"
-                tools:text="Managing pull requests and related issues" />
+                tools:text="Managing pull requests and related issues"/>
 
             <LinearLayout
                 android:id="@+id/membersPreviewFrame"
@@ -58,7 +58,7 @@
                     android:id="@+id/membersPreview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp"
                     app:drawableEndCompat="@drawable/ic_chevron_right"
-                    app:drawableTint="?attr/primaryTextColor" />
+                    app:drawableTint="?attr/primaryTextColor"/>
 
             </LinearLayout>
 

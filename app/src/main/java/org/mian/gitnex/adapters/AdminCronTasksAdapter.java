@@ -74,9 +74,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 				lastRunContent.setText(lastRun);
 				execTimeContent.setText(String.valueOf(cronTasks.getExecTimes()));
 
-				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-					.setTitle(StringUtils.capitalize(cronTasks.getName().replace("_", " ")))
-					.setView(view)
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(StringUtils.capitalize(cronTasks.getName().replace("_", " "))).setView(view)
 					.setNeutralButton(ctx.getString(R.string.close), null);
 
 				materialAlertDialogBuilder.create().show();
@@ -87,6 +85,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 				runCronTask(ctx, cronTasks.getName());
 			});
 		}
+
 	}
 
 	public AdminCronTasksAdapter(List<Cron> tasksListMain) {
@@ -112,9 +111,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 
 	private static void runCronTask(final Context ctx, final String taskName) {
 
-		Call<Void> call = RetrofitClient
-			.getApiInterface(ctx)
-			.adminCronRun(taskName);
+		Call<Void> call = RetrofitClient.getApiInterface(ctx).adminCronRun(taskName);
 
 		call.enqueue(new Callback<Void>() {
 
@@ -157,4 +154,5 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 	public int getItemCount() {
 		return tasksList.size();
 	}
+
 }

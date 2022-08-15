@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/generalImgContentText"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:id="@+id/layoutFrameAccount"
@@ -53,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/generalImgContentText"
-                        android:src="@mipmap/app_logo_round" />
+                        android:src="@mipmap/app_logo_round"/>
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen18sp" />
+                    android:textSize="@dimen/dimen18sp"/>
 
                 <TextView
                     android:id="@+id/userLogin"
@@ -72,14 +72,14 @@
                     android:layout_marginBottom="@dimen/dimen10dp"
                     android:textColor="@color/colorWhite"
                     android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen14sp"/>
 
                 <View
                     android:id="@+id/divider"
                     android:layout_width="@dimen/dimen50dp"
                     android:layout_height="@dimen/dimen1dp"
                     android:layout_marginBottom="@dimen/dimen10dp"
-                    android:background="@color/colorWhite" />
+                    android:background="@color/colorWhite"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
                         android:layout_marginEnd="@dimen/dimen2dp"
                         android:contentDescription="@string/generalImgContentText"
                         android:src="@drawable/ic_language"
-                        app:tint="@color/colorWhite" />
+                        app:tint="@color/colorWhite"/>
 
                     <TextView
                         android:id="@+id/userLanguage"
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorWhite"
                         android:textIsSelectable="true"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textSize="@dimen/dimen14sp"/>
 
                 </LinearLayout>
 
@@ -158,19 +158,19 @@
                             android:id="@+id/profileTabFollowers"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/profileTabFollowers" />
+                            android:text="@string/profileTabFollowers"/>
 
                         <com.google.android.material.tabs.TabItem
                             android:id="@+id/profileTabFollowing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/profileTabFollowing" />
+                            android:text="@string/profileTabFollowing"/>
 
                         <com.google.android.material.tabs.TabItem
                             android:id="@+id/profileTabEmails"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/profileTabEmails" />
+                            android:text="@string/profileTabEmails"/>
 
                     </com.google.android.material.tabs.TabLayout>
 
@@ -178,12 +178,12 @@
 
             </LinearLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen72dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen72dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         </com.google.android.material.card.MaterialCardView>
 

@@ -64,7 +64,9 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 		}, 50));
 
 		fetchDataAsync();
-	};
+	}
+
+	;
 
 	private void fetchDataAsync() {
 
@@ -105,77 +107,80 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 		});
 	}
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
 
-        final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+		final MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-            if(searchFilter) {
+			if(searchFilter) {
 
-                boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+				boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-                inflater.inflate(R.menu.search_menu, menu);
+				inflater.inflate(R.menu.search_menu, menu);
 
-                MenuItem searchItem = menu.findItem(R.id.action_search);
-                SearchView searchView = (SearchView) searchItem.getActionView();
-                searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+				MenuItem searchItem = menu.findItem(R.id.action_search);
+				SearchView searchView = (SearchView) searchItem.getActionView();
+				searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-                if(!connToInternet) {
-                    return;
-                }
+				if(!connToInternet) {
+					return;
+				}
 
-                searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+				searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-                    @Override
-                    public boolean onQueryTextSubmit(String query) { return true; }
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return true;
+					}
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
+					@Override
+					public boolean onQueryTextChange(String newText) {
 
-                        adapter.getFilter().filter(newText);
-                        return false;
-                    }
-                });
-            }
-        }, 500);
+						adapter.getFilter().filter(newText);
+						return false;
+					}
+				});
+			}
+		}, 500);
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+		int id = item.getItemId();
 
-        if(id == android.R.id.home) {
+		if(id == android.R.id.home) {
 
-	        finish();
-	        return true;
-        }
-        else if(id == R.id.genericMenu) {
+			finish();
+			return true;
+		}
+		else if(id == R.id.genericMenu) {
 
-	        BottomSheetAdminUsersFragment bottomSheet = new BottomSheetAdminUsersFragment();
-	        bottomSheet.show(getSupportFragmentManager(), "usersBottomSheet");
-	        return true;
-        }
-        else {
+			BottomSheetAdminUsersFragment bottomSheet = new BottomSheetAdminUsersFragment();
+			bottomSheet.show(getSupportFragmentManager(), "usersBottomSheet");
+			return true;
+		}
+		else {
 
-	        return super.onOptionsItemSelected(item);
-        }
-    }
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
-    @Override
-    public void onButtonClicked(String text) {
+	@Override
+	public void onButtonClicked(String text) {
 
-	    if("newUser".equals(text)) {
-		    startActivity(new Intent(AdminGetUsersActivity.this, CreateNewUserActivity.class));
-	    }
-    }
+		if("newUser".equals(text)) {
+			startActivity(new Intent(AdminGetUsersActivity.this, CreateNewUserActivity.class));
+		}
+	}
 
-    private void initCloseListener() {
-        onClickListener = view -> finish();
-    }
+	private void initCloseListener() {
+		onClickListener = view -> finish();
+	}
+
 }

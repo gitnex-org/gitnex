@@ -73,7 +73,9 @@ public class MyIssuesFragment extends Fragment {
 		fetchDataAsync(null, state, assignedToMe);
 
 		return fragmentIssuesBinding.getRoot();
-	};
+	}
+
+	;
 
 	private void fetchDataAsync(String query, String state, boolean assignedToMe) {
 
@@ -139,4 +141,5 @@ public class MyIssuesFragment extends Fragment {
 			}
 		});
 	}
+
 }

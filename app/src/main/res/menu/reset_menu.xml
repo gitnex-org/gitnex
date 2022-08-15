@@ -7,6 +7,6 @@
         android:icon="@drawable/ic_reset"
         android:title="@string/menuContentDesc"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
 </menu>

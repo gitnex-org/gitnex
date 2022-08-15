@@ -41,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/generalImgContentText"
-                        android:src="@drawable/ic_android" />
+                        android:src="@drawable/ic_android"/>
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -52,7 +52,7 @@
                     android:layout_gravity="center_horizontal"
                     android:scaleType="fitCenter"
                     android:contentDescription="@string/userRoleAdmin"
-                    android:src="@drawable/ic_android" />
+                    android:src="@drawable/ic_android"/>
 
             </LinearLayout>
 
@@ -70,7 +70,7 @@
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/userName"
@@ -79,7 +79,7 @@
                     android:layout_marginBottom="@dimen/dimen4dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp" />
+                    android:textSize="@dimen/dimen12sp"/>
 
                 <TextView
                     android:id="@+id/userEmail"
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/userEmail"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp" />
+                    android:textSize="@dimen/dimen12sp"/>
 
             </LinearLayout>
 

@@ -15,7 +15,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accountsList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:id="@+id/divider"
-        android:background="?attr/dividerColor" />
+        android:background="?attr/dividerColor"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/newAccount"
@@ -35,7 +35,7 @@
         android:textStyle="bold"
         android:text="@string/addNewAccount"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
 </LinearLayout>
 

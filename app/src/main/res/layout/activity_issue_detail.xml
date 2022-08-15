@@ -29,7 +29,7 @@
                 android:paddingStart="@dimen/dimen0dp"
                 android:paddingEnd="@dimen/dimen8dp"
                 android:visibility="gone"
-                android:contentDescription="@string/generalImgContentText" />
+                android:contentDescription="@string/generalImgContentText"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:gravity="center_vertical"
                 android:textSize="@dimen/dimen20sp"
                 android:textColor="?attr/primaryTextColor"
-                android:id="@+id/toolbar_title" />
+                android:id="@+id/toolbar_title"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -51,7 +51,7 @@
         android:layout_marginTop="@dimen/dimen56dp"
         android:indeterminate="true"
         style="@style/Widget.Material3.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addNewComment"
@@ -64,7 +64,7 @@
         android:backgroundTint="?attr/fabColor"
         android:layout_gravity="bottom|end"
         app:iconTint="@color/colorWhite"
-        app:icon="@drawable/ic_reply" />
+        app:icon="@drawable/ic_reply"/>
 
     <RelativeLayout
         android:id="@+id/relativeMainLayoutFrame"
@@ -124,7 +124,7 @@
                                         android:id="@+id/assigneeAvatar"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:contentDescription="@string/generalImgContentText" />
+                                        android:contentDescription="@string/generalImgContentText"/>
 
                                 </com.google.android.material.card.MaterialCardView>
 
@@ -136,7 +136,7 @@
                                     android:gravity="start"
                                     android:textColor="?attr/primaryTextColor"
                                     android:textIsSelectable="true"
-                                    android:textSize="@dimen/dimen16sp" />
+                                    android:textSize="@dimen/dimen16sp"/>
 
                                 <LinearLayout
                                     android:id="@+id/msdueFrame"
@@ -160,7 +160,7 @@
                                             android:layout_width="@dimen/dimen20dp"
                                             android:layout_height="wrap_content"
                                             app:srcCompat="@drawable/ic_calendar"
-                                            android:contentDescription="@string/generalImgContentText" />
+                                            android:contentDescription="@string/generalImgContentText"/>
 
                                         <TextView
                                             android:id="@+id/issueDueDate"
@@ -169,7 +169,7 @@
                                             android:layout_marginStart="@dimen/dimen8dp"
                                             android:singleLine="true"
                                             android:textColor="?attr/primaryTextColor"
-                                            android:textSize="@dimen/dimen14sp" />
+                                            android:textSize="@dimen/dimen14sp"/>
 
                                     </LinearLayout>
 
@@ -186,7 +186,7 @@
                                             android:layout_width="@dimen/dimen20dp"
                                             android:layout_height="wrap_content"
                                             app:srcCompat="@drawable/ic_milestone"
-                                            android:contentDescription="@string/generalImgContentText" />
+                                            android:contentDescription="@string/generalImgContentText"/>
 
                                         <TextView
                                             android:id="@+id/issueMilestone"
@@ -195,7 +195,7 @@
                                             android:layout_marginStart="@dimen/dimen8dp"
                                             android:singleLine="true"
                                             android:textColor="?attr/primaryTextColor"
-                                            android:textSize="@dimen/dimen14sp" />
+                                            android:textSize="@dimen/dimen14sp"/>
 
                                     </LinearLayout>
 
@@ -233,7 +233,7 @@
                                     android:autoLink="web"
                                     android:textColorLink="@color/lightBlue"
                                     android:textIsSelectable="true"
-                                    android:textSize="@dimen/dimen14sp" />
+                                    android:textSize="@dimen/dimen14sp"/>
 
                                 <HorizontalScrollView
                                     android:layout_below="@+id/issueDescription"
@@ -270,7 +270,7 @@
                                         android:gravity="start"
                                         android:visibility="gone"
                                         android:textColor="?attr/hintColor"
-                                        android:textSize="@dimen/dimen12sp" />
+                                        android:textSize="@dimen/dimen12sp"/>
 
                                     <TextView
                                         android:id="@+id/issueModified"
@@ -280,7 +280,7 @@
                                         android:layout_toEndOf="@+id/issueCreatedTime"
                                         android:textSize="@dimen/dimen12sp"
                                         android:visibility="gone"
-                                        android:text="@string/modifiedText" />
+                                        android:text="@string/modifiedText"/>
 
                                 </RelativeLayout>
 
@@ -291,7 +291,7 @@
                                     android:layout_below="@+id/issueTimeFrame"
                                     android:visibility="gone"
                                     android:layout_marginTop="@dimen/dimen10dp"
-                                    android:orientation="horizontal" />
+                                    android:orientation="horizontal"/>
 
                             </RelativeLayout>
 
@@ -310,7 +310,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingBottom="@dimen/dimen72dp"
-                            android:clipToPadding="false" />
+                            android:clipToPadding="false"/>
 
                     </FrameLayout>
 

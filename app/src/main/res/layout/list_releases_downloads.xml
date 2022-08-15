@@ -14,7 +14,7 @@
         android:layout_width="@dimen/dimen16dp"
         android:layout_height="@dimen/dimen16dp"
         app:srcCompat="@drawable/ic_download"
-        android:contentDescription="@string/generalImgContentText" />
+        android:contentDescription="@string/generalImgContentText"/>
 
     <TextView
         android:id="@+id/downloadName"
@@ -23,6 +23,6 @@
         android:layout_marginStart="@dimen/dimen8dp"
         android:textColor="?attr/primaryTextColor"
         android:textSize="@dimen/dimen12sp"
-        tools:text="Source code (ZIP)" />
+        tools:text="Source code (ZIP)"/>
 
 </LinearLayout>

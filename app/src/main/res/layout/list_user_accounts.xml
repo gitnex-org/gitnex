@@ -30,7 +30,7 @@
                 android:layout_height="@dimen/dimen24dp"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/generalImgContentText"
-                android:visibility="visible" />
+                android:visibility="visible"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                         android:layout_weight="1"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/activeAccount"
@@ -61,7 +61,7 @@
                         android:contentDescription="@string/menuContentDesc"
                         android:src="@drawable/ic_check"
                         android:visibility="gone"
-                        tools:visibility="visible" />
+                        tools:visibility="visible"/>
 
                     <ImageView
                         android:id="@+id/deleteAccount"
@@ -71,7 +71,7 @@
                         android:contentDescription="@string/menuDeleteText"
                         android:src="@drawable/ic_delete"
                         android:visibility="gone"
-                        tools:visibility="visible" />
+                        tools:visibility="visible"/>
 
                 </LinearLayout>
 
@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 

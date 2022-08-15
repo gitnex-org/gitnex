@@ -50,7 +50,7 @@
                         android:layout_weight="0"
                         android:contentDescription="@string/generalImgContentText"
                         app:tint="@color/colorWhite"
-                        app:srcCompat="@drawable/ic_label" />
+                        app:srcCompat="@drawable/ic_label"/>
 
                     <TextView
                         android:id="@+id/labelName"
@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/dimen14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -68,7 +68,7 @@
             <androidx.legacy.widget.Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/labelsOptionsMenu"
@@ -77,7 +77,7 @@
                 android:layout_gravity="center_vertical|end"
                 android:contentDescription="@string/labelMenuContentDesc"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_dotted_menu_horizontal" />
+                android:src="@drawable/ic_dotted_menu_horizontal"/>
 
         </LinearLayout>
 

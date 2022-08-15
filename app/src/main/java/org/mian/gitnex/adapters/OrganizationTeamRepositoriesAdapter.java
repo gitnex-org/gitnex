@@ -89,8 +89,7 @@ public class OrganizationTeamRepositoriesAdapter extends RecyclerView.Adapter<Or
 
 			addRepoButtonAdd.setOnClickListener(v -> AlertDialogs.addRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
 
-			addRepoButtonRemove.setOnClickListener(v ->
-				AlertDialogs.removeRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
+			addRepoButtonRemove.setOnClickListener(v -> AlertDialogs.removeRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
 		}
 
 	}
@@ -111,12 +110,12 @@ public class OrganizationTeamRepositoriesAdapter extends RecyclerView.Adapter<Or
 
 		holder.name.setText(currentItem.getName());
 
-		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28)
-			.endConfig().buildRoundRect(String.valueOf(currentItem.getFullName().charAt(0)), ColorGenerator.Companion.getMATERIAL().getColor(currentItem.getName()), 14);
+		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig()
+			.buildRoundRect(String.valueOf(currentItem.getFullName().charAt(0)), ColorGenerator.Companion.getMATERIAL().getColor(currentItem.getName()), 14);
 
 		if(currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().equals("")) {
-			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.repoAvatar);
+			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+				.into(holder.repoAvatar);
 		}
 		else {
 			holder.repoAvatar.setImageDrawable(drawable);
@@ -132,9 +131,7 @@ public class OrganizationTeamRepositoriesAdapter extends RecyclerView.Adapter<Or
 	private void getTeamRepos() {
 
 		if(getItemCount() > 0) {
-			Call<List<Repository>> call = RetrofitClient
-				.getApiInterface(context)
-				.orgListTeamRepos((long) teamId, 1, 50);
+			Call<List<Repository>> call = RetrofitClient.getApiInterface(context).orgListTeamRepos((long) teamId, 1, 50);
 
 			call.enqueue(new Callback<>() {
 				@Override
@@ -154,4 +151,5 @@ public class OrganizationTeamRepositoriesAdapter extends RecyclerView.Adapter<Or
 			});
 		}
 	}
+
 }

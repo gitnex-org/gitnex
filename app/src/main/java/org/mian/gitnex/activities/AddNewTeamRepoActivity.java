@@ -101,4 +101,5 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
+
 }

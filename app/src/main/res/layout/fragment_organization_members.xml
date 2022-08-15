@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="none"
             android:numColumns="2"
-            android:gravity="center" />
+            android:gravity="center"/>
 
     </FrameLayout>
 
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
         android:id="@+id/noDataMembers"
@@ -39,6 +39,6 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

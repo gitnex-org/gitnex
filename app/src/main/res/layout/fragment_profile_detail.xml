@@ -15,7 +15,7 @@
         android:indeterminate="true"
         android:visibility="gone"
         style="@style/Widget.Material3.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/generalImgContentText"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:id="@+id/layoutFrameAccount"
@@ -58,7 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/generalImgContentText"
-                        tools:src="@mipmap/app_logo_round" />
+                        tools:src="@mipmap/app_logo_round"/>
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -69,7 +69,7 @@
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:textColor="@color/colorWhite"
                     android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen18sp" />
+                    android:textSize="@dimen/dimen18sp"/>
 
                 <TextView
                     android:id="@+id/userLogin"
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen14sp"/>
 
             </LinearLayout>
 
@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/generalImgContentText"
-                        app:srcCompat="@drawable/ic_email" />
+                        app:srcCompat="@drawable/ic_email"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/userEmail"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen16sp" />
+                            android:textSize="@dimen/dimen16sp"/>
 
                         <TextView
                             android:id="@+id/userEmail"
@@ -134,92 +134,92 @@
                             android:layout_height="wrap_content"
                             android:alpha="0.9"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
+                            android:textSize="@dimen/dimen14sp"/>
                     </LinearLayout>
 
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen32dp"
-                android:orientation="horizontal"
-                android:paddingStart="@dimen/dimen16dp"
-                android:paddingEnd="@dimen/dimen16dp">
-
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_language" />
+                    android:layout_marginTop="@dimen/dimen32dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/dimen16dp"
+                    android:paddingEnd="@dimen/dimen16dp">
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/generalImgContentText"
+                        app:srcCompat="@drawable/ic_language"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settingsLanguageSelectorHeader"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="@dimen/dimen16sp"/>
+
+                        <TextView
+                            android:id="@+id/userLang"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.9"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="@dimen/dimen14sp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/dimen32dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/dimen16dp"
+                    android:paddingEnd="@dimen/dimen16dp">
 
-                    <TextView
+                    <ImageView
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settingsLanguageSelectorHeader"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen16sp" />
+                        android:contentDescription="@string/generalImgContentText"
+                        app:srcCompat="@drawable/ic_calendar"/>
 
-                    <TextView
-                        android:id="@+id/userLang"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:alpha="0.9"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:layout_marginStart="15dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/joined"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="@dimen/dimen16sp"/>
+
+                        <TextView
+                            android:id="@+id/userJoinedOn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.9"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="@dimen/dimen14sp"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen32dp"
-                android:orientation="horizontal"
-                android:paddingStart="@dimen/dimen16dp"
-                android:paddingEnd="@dimen/dimen16dp">
-
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_calendar" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/joined"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen16sp" />
-
-                    <TextView
-                        android:id="@+id/userJoinedOn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.9"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

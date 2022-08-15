@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:textSize="@dimen/dimen16sp"/>
 
                 <ImageView
                     android:id="@+id/editCommentStatus"
@@ -47,7 +47,7 @@
                     android:layout_marginStart="@dimen/dimen10dp"
                     android:layout_marginEnd="@dimen/dimen10dp"
                     android:contentDescription="@string/menuDeleteText"
-                    android:src="@drawable/ic_edit" />
+                    android:src="@drawable/ic_edit"/>
 
                 <ImageView
                     android:id="@+id/deleteDraft"
@@ -55,7 +55,7 @@
                     android:layout_height="@dimen/dimen20dp"
                     android:layout_marginStart="@dimen/dimen10dp"
                     android:contentDescription="@string/menuDeleteText"
-                    android:src="@drawable/ic_delete" />
+                    android:src="@drawable/ic_delete"/>
 
             </LinearLayout>
 
@@ -75,7 +75,7 @@
                     android:layout_weight=".95"
                     android:text="@string/noDataFound"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen14sp"/>
 
             </LinearLayout>
 

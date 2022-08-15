@@ -42,7 +42,7 @@
                         android:singleLine="true"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="@dimen/dimen16sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/releasesOptionsMenu"
@@ -52,7 +52,7 @@
                         android:layout_gravity="center_vertical|end"
                         android:contentDescription="@string/labelMenuContentDesc"
                         android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_dotted_menu_horizontal" />
+                        android:src="@drawable/ic_dotted_menu_horizontal"/>
 
                 </LinearLayout>
 
@@ -80,7 +80,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 tools:srcCompat="@tools:sample/avatars[7]"
-                                android:contentDescription="@string/generalImgContentText" />
+                                android:contentDescription="@string/generalImgContentText"/>
 
                         </com.google.android.material.card.MaterialCardView>
 
@@ -90,7 +90,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimen6dp"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
+                            android:textSize="@dimen/dimen14sp"/>
 
                     </LinearLayout>
 
@@ -115,7 +115,7 @@
                                 android:paddingStart="@dimen/dimen8dp"
                                 android:paddingEnd="@dimen/dimen8dp"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen14sp"/>
 
                         </LinearLayout>
 
@@ -130,7 +130,7 @@
                                 android:layout_width="@dimen/dimen18dp"
                                 android:layout_height="wrap_content"
                                 app:srcCompat="@drawable/ic_label"
-                                android:contentDescription="@string/generalImgContentText" />
+                                android:contentDescription="@string/generalImgContentText"/>
 
                             <TextView
                                 android:id="@+id/releaseTag"
@@ -139,7 +139,7 @@
                                 android:layout_marginStart="@dimen/dimen8dp"
                                 android:singleLine="true"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen14sp"/>
 
                         </LinearLayout>
 
@@ -155,7 +155,7 @@
                                 android:layout_width="@dimen/dimen18dp"
                                 android:layout_height="wrap_content"
                                 app:srcCompat="@drawable/ic_code"
-                                android:contentDescription="@string/generalImgContentText" />
+                                android:contentDescription="@string/generalImgContentText"/>
 
                             <TextView
                                 android:id="@+id/releaseCommitSha"
@@ -164,7 +164,7 @@
                                 android:layout_marginStart="@dimen/dimen8dp"
                                 android:singleLine="true"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen14sp"/>
 
                         </LinearLayout>
 
@@ -179,7 +179,7 @@
                                 android:layout_width="@dimen/dimen18dp"
                                 android:layout_height="wrap_content"
                                 app:srcCompat="@drawable/ic_calendar"
-                                android:contentDescription="@string/generalImgContentText" />
+                                android:contentDescription="@string/generalImgContentText"/>
 
                             <TextView
                                 android:id="@+id/releaseDate"
@@ -188,7 +188,7 @@
                                 android:layout_marginStart="@dimen/dimen8dp"
                                 android:singleLine="true"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen14sp"/>
 
                         </LinearLayout>
 
@@ -212,7 +212,7 @@
                     android:autoLink="web|email"
                     android:textColorLink="@color/lightBlue"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen14sp"/>
 
             </LinearLayout>
 
@@ -238,7 +238,7 @@
                         android:contentDescription="@string/generalImgContentText"
                         app:tint="?attr/primaryTextColor"
                         android:src="@drawable/ic_chevron_right"
-                        app:srcCompat="@drawable/ic_chevron_right" />
+                        app:srcCompat="@drawable/ic_chevron_right"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -246,7 +246,7 @@
                         android:layout_marginStart="@dimen/dimen4dp"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="@dimen/dimen14sp"
-                        android:text="@string/releaseDownloadText" />
+                        android:text="@string/releaseDownloadText"/>
 
                 </LinearLayout>
 
@@ -273,7 +273,7 @@
                             android:layout_width="@dimen/dimen16dp"
                             android:layout_height="@dimen/dimen16dp"
                             app:srcCompat="@drawable/ic_download"
-                            android:contentDescription="@string/generalImgContentText" />
+                            android:contentDescription="@string/generalImgContentText"/>
 
                         <TextView
                             android:id="@+id/releaseZipDownload"
@@ -282,7 +282,7 @@
                             android:layout_marginStart="@dimen/dimen8dp"
                             android:textColor="?attr/primaryTextColor"
                             android:text="@string/zipArchiveDownloadReleasesTab"
-                            android:textSize="@dimen/dimen12sp" />
+                            android:textSize="@dimen/dimen12sp"/>
 
                     </LinearLayout>
 
@@ -299,7 +299,7 @@
                             android:layout_width="@dimen/dimen16dp"
                             android:layout_height="@dimen/dimen16dp"
                             app:srcCompat="@drawable/ic_download"
-                            android:contentDescription="@string/generalImgContentText" />
+                            android:contentDescription="@string/generalImgContentText"/>
 
                         <TextView
                             android:id="@+id/releaseTarDownload"
@@ -308,7 +308,7 @@
                             android:layout_marginStart="@dimen/dimen8dp"
                             android:textColor="?attr/primaryTextColor"
                             android:text="@string/tarArchiveDownloadReleasesTab"
-                            android:textSize="@dimen/dimen12sp" />
+                            android:textSize="@dimen/dimen12sp"/>
 
                     </LinearLayout>
 
@@ -317,7 +317,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/primaryBackgroundColor"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"/>
 
                 </LinearLayout>
 

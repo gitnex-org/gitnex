@@ -14,7 +14,7 @@
         android:numColumns="2"
         android:gravity="center"
         android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen4dp" />
+        android:padding="@dimen/dimen4dp"/>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
         android:id="@+id/noDataCollaborators"
@@ -33,6 +33,6 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

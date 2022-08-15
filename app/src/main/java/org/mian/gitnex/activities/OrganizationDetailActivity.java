@@ -44,48 +44,48 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 	private String orgName;
 	private boolean isMember = false;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    setContentView(R.layout.activity_org_detail);
+		setContentView(R.layout.activity_org_detail);
 
-	    orgName = getIntent().getStringExtra("orgName");
+		orgName = getIntent().getStringExtra("orgName");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		setSupportActionBar(toolbar);
+		Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		checkIsMember();
 
-	    if(getAccount().requiresVersion("1.16.0")) {
-		    RetrofitClient.getApiInterface(this)
-			    .orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<>() {
+		if(getAccount().requiresVersion("1.16.0")) {
+			RetrofitClient.getApiInterface(this).orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<>() {
 
-				    @Override
-				    public void onResponse(@NonNull Call<OrganizationPermissions> call, @NonNull Response<OrganizationPermissions> response) {
+				@Override
+				public void onResponse(@NonNull Call<OrganizationPermissions> call, @NonNull Response<OrganizationPermissions> response) {
 
-					    if(response.isSuccessful()) {
-						    permissions = response.body();
-					    }
-					    else {
-						    permissions = null;
-					    }
-				    }
+					if(response.isSuccessful()) {
+						permissions = response.body();
+					}
+					else {
+						permissions = null;
+					}
+				}
 
-				    @Override
-				    public void onFailure(@NonNull Call<OrganizationPermissions> call, @NonNull Throwable t) {
+				@Override
+				public void onFailure(@NonNull Call<OrganizationPermissions> call, @NonNull Throwable t) {
 
-					    permissions = null;
-				    }
-			    });
-	    } else {
-	    	permissions = null;
-	    }
-    }
+					permissions = null;
+				}
+			});
+		}
+		else {
+			permissions = null;
+		}
+	}
 
 	public void checkIsMember() {
 		RetrofitClient.getApiInterface(this).orgIsMember(orgName, getAccount().getAccount().getUserName()).enqueue(new Callback<>() {
@@ -127,16 +127,16 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
 		int tabsCount = vg.getChildCount();
 
-		for (int j = 0; j < tabsCount; j++) {
+		for(int j = 0; j < tabsCount; j++) {
 
 			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
 
-			for (int i = 0; i < tabChildCount; i++) {
+			for(int i = 0; i < tabChildCount; i++) {
 
 				View tabViewChild = vgTab.getChildAt(i);
 
-				if (tabViewChild instanceof TextView) {
+				if(tabViewChild instanceof TextView) {
 
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
@@ -147,123 +147,125 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.repo_dotted_menu, menu);
-        return true;
-    }
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.repo_dotted_menu, menu);
+		return true;
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+		int id = item.getItemId();
 
-        if(id == android.R.id.home) {
+		if(id == android.R.id.home) {
 
-	        finish();
-	        return true;
-        }
-        else if(id == R.id.repoMenu) {
+			finish();
+			return true;
+		}
+		else if(id == R.id.repoMenu) {
 
-	        BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment(permissions);
-	        bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
-	        return true;
-        }
-        else {
+			BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment(permissions);
+			bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
+			return true;
+		}
+		else {
 
-	        return super.onOptionsItemSelected(item);
-        }
-    }
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
-    @Override
-    public void onButtonClicked(String text) {
+	@Override
+	public void onButtonClicked(String text) {
 
-	    String url = UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl())
-		    .withPath("/")
-		    .toString();
-	    url = url + getIntent().getStringExtra("orgName");
+		String url = UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl()).withPath("/").toString();
+		url = url + getIntent().getStringExtra("orgName");
 
-        switch (text) {
-            case "repository":
-            	Intent intentRepo = new Intent(this, CreateRepoActivity.class);
-                intentRepo.putExtra("organizationAction", true);
-                intentRepo.putExtra("orgName", getIntent().getStringExtra("orgName"));
-                intentRepo.putExtras(getIntent().getExtras());
-                startActivity(intentRepo);
-                break;
-	        case "label":
+		switch(text) {
+			case "repository":
+				Intent intentRepo = new Intent(this, CreateRepoActivity.class);
+				intentRepo.putExtra("organizationAction", true);
+				intentRepo.putExtra("orgName", getIntent().getStringExtra("orgName"));
+				intentRepo.putExtras(getIntent().getExtras());
+				startActivity(intentRepo);
+				break;
+			case "label":
 
-		        Intent intent = new Intent(ctx, CreateLabelActivity.class);
-		        intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
-		        intent.putExtra("type", "org");
-		        ctx.startActivity(intent);
-		        break;
-            case "team":
+				Intent intent = new Intent(ctx, CreateLabelActivity.class);
+				intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
+				intent.putExtra("type", "org");
+				ctx.startActivity(intent);
+				break;
+			case "team":
 				Intent intentTeam = new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class);
 				intentTeam.putExtras(getIntent().getExtras());
-                startActivity(intentTeam);
-                break;
-	        case "copyOrgUrl":
-		        AppUtil.copyToClipboard(this, url, ctx.getString(R.string.copyIssueUrlToastMsg));
-		        break;
-	        case "share":
-		        AppUtil.sharingIntent(this, url);
-		        break;
-	        case "open":
-		        AppUtil.openUrlInBrowser(this, url);
-		        break;
-        }
-    }
+				startActivity(intentTeam);
+				break;
+			case "copyOrgUrl":
+				AppUtil.copyToClipboard(this, url, ctx.getString(R.string.copyIssueUrlToastMsg));
+				break;
+			case "share":
+				AppUtil.sharingIntent(this, url);
+				break;
+			case "open":
+				AppUtil.openUrlInBrowser(this, url);
+				break;
+		}
+	}
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        SectionsPagerAdapter(FragmentManager fm) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        }
+		SectionsPagerAdapter(FragmentManager fm) {
+			super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+		}
 
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
+		@NonNull
+		@Override
+		public Fragment getItem(int position) {
 
-            String orgName = getIntent().getStringExtra("orgName");
+			String orgName = getIntent().getStringExtra("orgName");
 
-            Fragment fragment = null;
-            switch (position) {
+			Fragment fragment = null;
+			switch(position) {
 
-                case 0: // info
+				case 0: // info
 
-                    return OrganizationInfoFragment.newInstance(orgName);
-                case 1: // repos
+					return OrganizationInfoFragment.newInstance(orgName);
+				case 1: // repos
 
-	                return OrganizationRepositoriesFragment.newInstance(orgName);
-	            case 2: // labels
+					return OrganizationRepositoriesFragment.newInstance(orgName);
+				case 2: // labels
 
-                    return OrganizationLabelsFragment.newInstance(orgName);
-                case 3: // teams / members
+					return OrganizationLabelsFragment.newInstance(orgName);
+				case 3: // teams / members
 
-	                if(isMember) {
-		                return OrganizationTeamsFragment.newInstance(orgName, permissions);
-	                } else {
-		                return OrganizationMembersFragment.newInstance(orgName);
-	                }
-                case 4: // members
+					if(isMember) {
+						return OrganizationTeamsFragment.newInstance(orgName, permissions);
+					}
+					else {
+						return OrganizationMembersFragment.newInstance(orgName);
+					}
+				case 4: // members
 
-	                if(isMember) {
-		                return OrganizationMembersFragment.newInstance(orgName);
-	                }
-            }
-            return fragment;
-        }
+					if(isMember) {
+						return OrganizationMembersFragment.newInstance(orgName);
+					}
+			}
+			return fragment;
+		}
 
-        @Override
-        public int getCount() {
+		@Override
+		public int getCount() {
 			if(isMember) {
 				return 5;
-			} else {
+			}
+			else {
 				return 4;
 			}
-        }
-    }
+		}
+
+	}
+
 }

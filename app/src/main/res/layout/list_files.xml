@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dimen16dp"
                 android:contentDescription="@string/generalImgContentText"
-                android:src="@drawable/ic_file" />
+                android:src="@drawable/ic_file"/>
 
             <LinearLayout
                 android:id="@+id/infoSection"
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/defaultFilename"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:textSize="@dimen/dimen16sp"/>
 
                 <LinearLayout
                     android:id="@+id/infoRow"
@@ -60,7 +60,7 @@
                         android:textColor="?attr/hintColor"
                         android:textSize="@dimen/dimen12sp"
                         android:visibility="gone"
-                        tools:visibility="visible" />
+                        tools:visibility="visible"/>
 
                 </LinearLayout>
 

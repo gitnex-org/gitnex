@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_pull_request" />
+                    app:srcCompat="@drawable/ic_pull_request"/>
 
             </LinearLayout>
 
@@ -50,14 +50,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/repository"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textColor="?attr/primaryTextColor" />
+                    android:textColor="?attr/primaryTextColor"/>
 
             </LinearLayout>
 
@@ -70,7 +70,7 @@
                 android:layout_marginStart="10dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_pin" />
+                app:srcCompat="@drawable/ic_pin"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -86,7 +86,7 @@
                     android:layout_marginStart="10dp"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_pin" />
+                    app:srcCompat="@drawable/ic_pin"/>
 
                 <ImageView
                     android:id="@+id/more"
@@ -97,7 +97,7 @@
                     android:layout_marginStart="10dp"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
+                    app:srcCompat="@drawable/ic_dotted_menu_horizontal"/>
 
             </LinearLayout>
 

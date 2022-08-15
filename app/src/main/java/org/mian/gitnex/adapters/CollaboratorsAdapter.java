@@ -22,100 +22,102 @@ import java.util.List;
  * @author M M Arif
  */
 
-public class CollaboratorsAdapter extends BaseAdapter  {
+public class CollaboratorsAdapter extends BaseAdapter {
 
-    private final List<User> collaboratorsList;
-    private final Context context;
+	private final List<User> collaboratorsList;
+	private final Context context;
 
-    private class ViewHolder {
+	private class ViewHolder {
 
-	    private String userLoginId;
+		private String userLoginId;
 
-        private final ImageView collaboratorAvatar;
-        private final TextView collaboratorName;
-	    private final TextView userName;
+		private final ImageView collaboratorAvatar;
+		private final TextView collaboratorName;
+		private final TextView userName;
 
-        ViewHolder(View v) {
+		ViewHolder(View v) {
 
-            collaboratorAvatar  = v.findViewById(R.id.collaboratorAvatar);
-            collaboratorName  = v.findViewById(R.id.collaboratorName);
-	        userName = v.findViewById(R.id.userName);
+			collaboratorAvatar = v.findViewById(R.id.collaboratorAvatar);
+			collaboratorName = v.findViewById(R.id.collaboratorName);
+			userName = v.findViewById(R.id.userName);
 
-	        collaboratorAvatar.setOnClickListener(loginId -> {
-		        Intent intent = new Intent(context, ProfileActivity.class);
-		        intent.putExtra("username", userLoginId);
-		        context.startActivity(intent);
-	        });
+			collaboratorAvatar.setOnClickListener(loginId -> {
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userLoginId);
+				context.startActivity(intent);
+			});
 
-	        collaboratorAvatar.setOnLongClickListener(loginId -> {
-		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-		        return true;
-	        });
-        }
-    }
+			collaboratorAvatar.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				return true;
+			});
+		}
 
-    public CollaboratorsAdapter(Context ctx, List<User> collaboratorsListMain) {
+	}
 
-        this.context = ctx;
-        this.collaboratorsList = collaboratorsListMain;
-    }
+	public CollaboratorsAdapter(Context ctx, List<User> collaboratorsListMain) {
 
-    @Override
-    public int getCount() {
-        return collaboratorsList.size();
-    }
+		this.context = ctx;
+		this.collaboratorsList = collaboratorsListMain;
+	}
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+	@Override
+	public int getCount() {
+		return collaboratorsList.size();
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+	@Override
+	public Object getItem(int position) {
+		return null;
+	}
 
-    @SuppressLint("InflateParams")
-    @Override
-    public View getView(int position, View finalView, ViewGroup parent) {
+	@Override
+	public long getItemId(int position) {
+		return 0;
+	}
 
-        ViewHolder viewHolder;
+	@SuppressLint("InflateParams")
+	@Override
+	public View getView(int position, View finalView, ViewGroup parent) {
 
-        if (finalView == null) {
+		ViewHolder viewHolder;
 
-            finalView = LayoutInflater.from(context).inflate(R.layout.list_collaborators, null);
-            viewHolder = new ViewHolder(finalView);
-            finalView.setTag(viewHolder);
-        }
-        else {
+		if(finalView == null) {
 
-            viewHolder = (ViewHolder) finalView.getTag();
-        }
+			finalView = LayoutInflater.from(context).inflate(R.layout.list_collaborators, null);
+			viewHolder = new ViewHolder(finalView);
+			finalView.setTag(viewHolder);
+		}
+		else {
 
-        initData(viewHolder, position);
-        return finalView;
-    }
+			viewHolder = (ViewHolder) finalView.getTag();
+		}
 
-    private void initData(ViewHolder viewHolder, int position) {
+		initData(viewHolder, position);
+		return finalView;
+	}
 
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
+	private void initData(ViewHolder viewHolder, int position) {
 
-	    User currentItem = collaboratorsList.get(position);
-        PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop().into(viewHolder.collaboratorAvatar);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
 
-	    viewHolder.userLoginId = currentItem.getLogin();
+		User currentItem = collaboratorsList.get(position);
+		PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop()
+			.into(viewHolder.collaboratorAvatar);
 
-        if(!currentItem.getFullName().equals("")) {
+		viewHolder.userLoginId = currentItem.getLogin();
 
-            viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
-	        viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
-        }
-        else {
+		if(!currentItem.getFullName().equals("")) {
 
-            viewHolder.collaboratorName.setText(currentItem.getLogin());
-	        viewHolder.userName.setVisibility(View.GONE);
-        }
+			viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
+			viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
+		}
+		else {
 
-    }
+			viewHolder.collaboratorName.setText(currentItem.getLogin());
+			viewHolder.userName.setVisibility(View.GONE);
+		}
+
+	}
 
 }

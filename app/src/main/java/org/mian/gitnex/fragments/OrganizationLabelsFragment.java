@@ -49,7 +49,7 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		super.onCreate(savedInstanceState);
 
-		if (getArguments() != null) {
+		if(getArguments() != null) {
 
 			repoOwner = getArguments().getString(repoOwnerF);
 		}
@@ -118,4 +118,5 @@ public class OrganizationLabelsFragment extends Fragment {
 		});
 
 	}
+
 }

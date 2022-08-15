@@ -149,4 +149,5 @@ public class DraftWithRepository {
 	public void setMostVisited(int mostVisited) {
 		this.mostVisited = mostVisited;
 	}
+
 }

@@ -28,7 +28,7 @@
                 android:background="@drawable/shape_archived"
                 android:padding="@dimen/dimen6dp"
                 android:layout_marginBottom="@dimen/dimen8dp"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"/>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -76,344 +76,344 @@
                             android:contentDescription="@string/generalImgContentText"
                             app:srcCompat="@drawable/ic_chevron_down"/>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/repoMetaFrame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/repoMetaOwner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen22sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:layout_marginBottom="@dimen/dimen6dp"
-                            android:layout_marginStart="@dimen/dimen6dp"
-                            android:layout_marginEnd="@dimen/dimen6dp"
-                            android:text="/"
-                            android:textSize="@dimen/dimen22sp"
-                            android:textStyle="bold"
-                            tools:ignore="HardcodedText"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:layout_marginBottom="@dimen/dimen6dp"
-                            android:textSize="@dimen/dimen22sp"
-                            android:textStyle="bold" />
-
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/repoMetaDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:autoLink="web"
-                        android:ellipsize="end"
-                        android:maxLines="3"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textColorLink="@color/lightBlue"
-                        android:textSize="@dimen/dimen16sp" />
-
                     <LinearLayout
+                        android:id="@+id/repoMetaFrame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen20dp"
-                        android:layout_marginBottom="@dimen/dimen20dp"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/repoMetaStarsFrame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/repoStargazersInMenu"
-                                app:srcCompat="@drawable/ic_star_unfilled" />
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/repoMetaStars"
+                                android:id="@+id/repoMetaOwner"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen22sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="?attr/primaryTextColor"
+                                android:layout_marginBottom="@dimen/dimen6dp"
+                                android:layout_marginStart="@dimen/dimen6dp"
+                                android:layout_marginEnd="@dimen/dimen6dp"
+                                android:text="/"
+                                android:textSize="@dimen/dimen22sp"
+                                android:textStyle="bold"
+                                tools:ignore="HardcodedText"/>
+
+                            <TextView
+                                android:id="@+id/repoMetaName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="?attr/primaryTextColor"
+                                android:layout_marginBottom="@dimen/dimen6dp"
+                                android:textSize="@dimen/dimen22sp"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/repoMetaDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dimen16dp"
+                            android:autoLink="web"
+                            android:ellipsize="end"
+                            android:maxLines="3"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textColorLink="@color/lightBlue"
+                            android:textSize="@dimen/dimen16sp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen20dp"
+                            android:layout_marginBottom="@dimen/dimen20dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/repoMetaStarsFrame"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?android:attr/selectableItemBackgroundBorderless"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/repoStargazersInMenu"
+                                    app:srcCompat="@drawable/ic_star_unfilled"/>
+
+                                <TextView
+                                    android:id="@+id/repoMetaStars"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/repoMetaPullRequestsFrame"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?android:attr/selectableItemBackgroundBorderless"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/tabPullRequests"
+                                    app:srcCompat="@drawable/ic_pull_request"/>
+
+                                <TextView
+                                    android:id="@+id/repoMetaPullRequests"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/repoMetaForksFrame"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?android:attr/selectableItemBackgroundBorderless"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/infoTabRepoForksCount"
+                                    app:srcCompat="@drawable/ic_fork"/>
+
+                                <TextView
+                                    android:id="@+id/repoMetaForks"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/repoMetaWatchersFrame"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?android:attr/selectableItemBackgroundBorderless"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/repoWatchersInMenu"
+                                    app:srcCompat="@drawable/ic_unwatch"/>
+
+                                <TextView
+                                    android:id="@+id/repoMetaWatchers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp"/>
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/repoMetaPullRequestsFrame"
+                            android:id="@+id/repo_fork_frame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="horizontal"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:paddingTop="@dimen/dimen8dp"
+                            android:paddingBottom="@dimen/dimen8dp"
+                            android:paddingStart="@dimen/dimen16dp"
+                            android:paddingEnd="@dimen/dimen16dp">
 
                             <ImageView
+                                android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/tabPullRequests"
-                                app:srcCompat="@drawable/ic_pull_request" />
+                                app:srcCompat="@drawable/ic_fork"
+                                android:contentDescription="@string/generalImgContentText"/>
 
                             <TextView
-                                android:id="@+id/repoMetaPullRequests"
+                                android:id="@+id/repo_fork"
+                                android:layout_marginStart="15dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/repoMetaForksFrame"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/infoTabRepoForksCount"
-                                app:srcCompat="@drawable/ic_fork" />
-
-                            <TextView
-                                android:id="@+id/repoMetaForks"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen16sp"/>
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/repoMetaWatchersFrame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_marginTop="@dimen/dimen12dp"
+                            android:layout_marginBottom="@dimen/dimen20dp"
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/dimen16dp"
+                            android:paddingEnd="@dimen/dimen16dp">
 
                             <ImageView
+                                android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@string/repoWatchersInMenu"
-                                app:srcCompat="@drawable/ic_unwatch" />
+                                app:srcCompat="@drawable/ic_download"/>
 
-                            <TextView
-                                android:id="@+id/repoMetaWatchers"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:layout_marginStart="@dimen/dimen16dp"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/infoTabRepoSize"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen16sp"/>
+
+                                <TextView
+                                    android:id="@+id/repoMetaSize"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:alpha="0.9"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp"
+                                    tools:text="29"/>
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/repo_fork_frame"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:paddingTop="@dimen/dimen8dp"
-                        android:paddingBottom="@dimen/dimen8dp"
-                        android:paddingStart="@dimen/dimen16dp"
-                        android:paddingEnd="@dimen/dimen16dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_fork"
-                            android:contentDescription="@string/generalImgContentText" />
-
-                        <TextView
-                            android:id="@+id/repo_fork"
-                            android:layout_marginStart="15dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen16sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen12dp"
-                        android:layout_marginBottom="@dimen/dimen20dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/dimen16dp"
-                        android:paddingEnd="@dimen/dimen16dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/repoWatchersInMenu"
-                            app:srcCompat="@drawable/ic_download" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
+                            android:layout_marginBottom="20dp"
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/dimen16dp"
+                            android:paddingEnd="@dimen/dimen16dp">
 
-                            <TextView
+                            <ImageView
+                                android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/infoTabRepoSize"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen16sp" />
+                                android:contentDescription="@string/infoTabRepoCreatedAt"
+                                app:srcCompat="@drawable/ic_calendar"/>
 
-                            <TextView
-                                android:id="@+id/repoMetaSize"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:alpha="0.9"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp"
-                                tools:text="29" />
+                                android:layout_marginStart="@dimen/dimen16dp"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/infoTabRepoCreatedAt"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen16sp"/>
+
+                                <TextView
+                                    android:id="@+id/repoMetaCreatedAt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:alpha="0.9"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp"
+                                    tools:text="29"/>
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/dimen16dp"
-                        android:paddingEnd="@dimen/dimen16dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/infoTabRepoCreatedAt"
-                            app:srcCompat="@drawable/ic_calendar" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
+                            android:layout_marginBottom="@dimen/dimen20dp"
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/dimen16dp"
+                            android:paddingEnd="@dimen/dimen16dp">
 
-                            <TextView
+                            <ImageView
+                                android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/infoTabRepoCreatedAt"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen16sp" />
+                                android:contentDescription="@string/websiteText"
+                                app:srcCompat="@drawable/ic_link"/>
 
-                            <TextView
-                                android:id="@+id/repoMetaCreatedAt"
+                            <LinearLayout
+                                android:id="@+id/websiteFrame"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:alpha="0.9"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp"
-                                tools:text="29" />
+                                android:layout_marginStart="@dimen/dimen16dp"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/websiteText"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen16sp"/>
+
+                                <TextView
+                                    android:id="@+id/repoMetaWebsite"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:alpha="0.9"
+                                    android:autoLink="web"
+                                    android:textColorLink="@color/lightBlue"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp"
+                                    tools:text="29"/>
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen20dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/dimen16dp"
-                        android:paddingEnd="@dimen/dimen16dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/websiteText"
-                            app:srcCompat="@drawable/ic_link" />
-
-                        <LinearLayout
-                            android:id="@+id/websiteFrame"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/repoAdditionalButton"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/websiteText"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen16sp" />
-
-                            <TextView
-                                android:id="@+id/repoMetaWebsite"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:alpha="0.9"
-                                android:autoLink="web"
-                                android:textColorLink="@color/lightBlue"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp"
-                                tools:text="29" />
-
-                        </LinearLayout>
+                            android:layout_height="@dimen/dimen54dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen6dp"
+                            android:layout_marginBottom="@dimen/dimen20dp"
+                            android:text="@string/infoShowMoreInformation"
+                            android:textColor="@color/btnTextColor"/>
 
                     </LinearLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/repoAdditionalButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen54dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/dimen6dp"
-                        android:layout_marginBottom="@dimen/dimen20dp"
-                        android:text="@string/infoShowMoreInformation"
-                        android:textColor="@color/btnTextColor" />
-
-                </LinearLayout>
 
                 </LinearLayout>
 
