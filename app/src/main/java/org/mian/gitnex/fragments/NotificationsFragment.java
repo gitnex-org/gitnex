@@ -4,12 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -41,8 +36,8 @@ import java.util.Objects;
 
 public class NotificationsFragment extends Fragment implements NotificationsAdapter.OnNotificationClickedListener, NotificationsAdapter.OnMoreClickedListener {
 
-	private FragmentNotificationsBinding viewBinding;
 	private final List<NotificationThread> notificationThreads = new ArrayList<>();
+	private FragmentNotificationsBinding viewBinding;
 	private NotificationsAdapter notificationsAdapter;
 
 	private Activity activity;
@@ -105,19 +100,18 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 			}
 		});
 
-		viewBinding.markAllAsRead.setOnClickListener(v1 ->
-			RetrofitClient.getApiInterface(context)
-				.notifyReadList(null, "false", Arrays.asList("unread", "pinned"), "read")
-				.enqueue((SimpleCallback<List<NotificationThread>>) (call, voidResponse) -> {
+		viewBinding.markAllAsRead.setOnClickListener(
+			v1 -> RetrofitClient.getApiInterface(context).notifyReadList(null, "false", Arrays.asList("unread", "pinned"), "read").enqueue((SimpleCallback<List<NotificationThread>>) (call, voidResponse) -> {
 
-					if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
-						Toasty.success(context, getString(R.string.markedNotificationsAsRead));
-						pageCurrentIndex = 1;
-						loadNotifications(false);
-					} else {
-						activity.runOnUiThread(() -> Toasty.error(context, getString(R.string.genericError)));
-					}
-		}));
+				if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
+					Toasty.success(context, getString(R.string.markedNotificationsAsRead));
+					pageCurrentIndex = 1;
+					loadNotifications(false);
+				}
+				else {
+					activity.runOnUiThread(() -> Toasty.error(context, getString(R.string.genericError)));
+				}
+			}));
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> {
 			viewBinding.pullToRefresh.setRefreshing(false);
@@ -133,13 +127,9 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		viewBinding.noDataNotifications.setVisibility(View.GONE);
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		String[] filter = currentFilterMode.equals("read") ?
-			new String[]{"pinned", "read"} :
-			new String[]{"pinned", "unread"};
+		String[] filter = currentFilterMode.equals("read") ? new String[]{"pinned", "read"} : new String[]{"pinned", "unread"};
 
-		RetrofitClient
-			.getApiInterface(context)
-			.notifyGetList(false, Arrays.asList(filter), null, null, null, pageCurrentIndex, pageResultLimit)
+		RetrofitClient.getApiInterface(context).notifyGetList(false, Arrays.asList(filter), null, null, null, pageCurrentIndex, pageResultLimit)
 			.enqueue((SimpleCallback<List<NotificationThread>>) (call1, listResponse) -> {
 
 				if(listResponse.isPresent() && listResponse.get().isSuccessful() && listResponse.get().body() != null) {
@@ -182,15 +172,14 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 	private void changeFilterMode() {
 
-		int filterIcon = currentFilterMode.equalsIgnoreCase("read") ?
-			R.drawable.ic_filter_closed :
-			R.drawable.ic_filter;
+		int filterIcon = currentFilterMode.equalsIgnoreCase("read") ? R.drawable.ic_filter_closed : R.drawable.ic_filter;
 
 		menu.getItem(0).setIcon(filterIcon);
 
 		if(currentFilterMode.equalsIgnoreCase("read")) {
 			viewBinding.markAllAsRead.setVisibility(View.GONE);
-		} else {
+		}
+		else {
 			viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
 		}
 	}
@@ -240,20 +229,17 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
 
-			RepositoryContext repo = new RepositoryContext(notificationThread.getRepository().getOwner().getLogin(),
-				notificationThread.getRepository().getName(), context); // we can't use the repository object here directly because the permissions are missing
+			RepositoryContext repo = new RepositoryContext(notificationThread.getRepository().getOwner().getLogin(), notificationThread.getRepository().getName(),
+				context); // we can't use the repository object here directly because the permissions are missing
 			String issueUrl = notificationThread.getSubject().getUrl();
 
 			repo.saveToDB(context);
 
-			Intent intent = new IssueContext(
-				repo,
-				Integer.parseInt(issueUrl.substring(issueUrl.lastIndexOf("/") + 1)),
-				notificationThread.getSubject().getType()
-			).getIntent(context, IssueDetailActivity.class);
+			Intent intent = new IssueContext(repo, Integer.parseInt(issueUrl.substring(issueUrl.lastIndexOf("/") + 1)), notificationThread.getSubject().getType()).getIntent(context, IssueDetailActivity.class);
 			intent.putExtra("openedFromLink", "true");
 			startActivity(intent);
-		} else if(notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
+		}
+		else if(notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
 			startActivity(new RepositoryContext(notificationThread.getRepository(), context).getIntent(context, RepoDetailActivity.class));
 		}
 	}
@@ -267,4 +253,5 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		});
 		bottomSheetNotificationsFragment.show(getChildFragmentManager(), "notificationsBottomSheet");
 	}
+
 }

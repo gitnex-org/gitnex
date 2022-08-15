@@ -11,11 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import org.gitnex.tea4j.v2.models.Branch;
-import org.gitnex.tea4j.v2.models.CreatePullRequestOption;
-import org.gitnex.tea4j.v2.models.Label;
-import org.gitnex.tea4j.v2.models.Milestone;
-import org.gitnex.tea4j.v2.models.PullRequest;
+import org.gitnex.tea4j.v2.models.*;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.LabelsListAdapter;
@@ -26,12 +22,7 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -41,21 +32,18 @@ import retrofit2.Callback;
 
 public class CreatePullRequestActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener {
 
-	private View.OnClickListener onClickListener;
-	private ActivityCreatePrBinding viewBinding;
-	private List<Integer> labelsIds = new ArrayList<>();
 	private final List<String> assignees = new ArrayList<>();
-	private int milestoneId;
-	private Date currentDate = null;
-
-	private RepositoryContext repository;
-	private LabelsListAdapter labelsAdapter;
-
-	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
-
 	LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
 	List<String> branchesList = new ArrayList<>();
 	List<Label> labelsList = new ArrayList<>();
+	private View.OnClickListener onClickListener;
+	private ActivityCreatePrBinding viewBinding;
+	private List<Integer> labelsIds = new ArrayList<>();
+	private int milestoneId;
+	private Date currentDate = null;
+	private RepositoryContext repository;
+	private LabelsListAdapter labelsAdapter;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -76,23 +64,21 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 			touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
-			if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+			if((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
 
 				touchView.getParent().requestDisallowInterceptTouchEvent(false);
 			}
 			return false;
 		});
 
-		labelsAdapter =  new LabelsListAdapter(labelsList, CreatePullRequestActivity.this, labelsIds);
+		labelsAdapter = new LabelsListAdapter(labelsList, CreatePullRequestActivity.this, labelsIds);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		viewBinding.prDueDate.setOnClickListener(dueDate ->
-			setDueDate()
-		);
+		viewBinding.prDueDate.setOnClickListener(dueDate -> setDueDate());
 
 		disableProcessButton();
 
@@ -119,7 +105,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		assignees.add("");
 
-		if (labelsIds.size() == 0) {
+		if(labelsIds.size() == 0) {
 
 			labelsIds.add(0);
 		}
@@ -163,9 +149,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		createPullRequest.setLabels(labelIds);
 		createPullRequest.setDueDate(currentDate);
 
-		Call<PullRequest> transferCall = RetrofitClient
-			.getApiInterface(ctx)
-			.repoCreatePullRequest(repository.getOwner(), repository.getName(), createPullRequest);
+		Call<PullRequest> transferCall = RetrofitClient.getApiInterface(ctx).repoCreatePullRequest(repository.getOwner(), repository.getName(), createPullRequest);
 
 		transferCall.enqueue(new Callback<>() {
 
@@ -224,8 +208,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	private void showLabels() {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding.inflate(
-			LayoutInflater.from(ctx));
+		CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
 		View view = labelsBinding.getRoot();
 		materialAlertDialogBuilder.setView(view);
 
@@ -235,9 +218,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 	private void getBranches(String repoOwner, String repoName) {
 
-		Call<List<Branch>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.repoListBranches(repoOwner, repoName, null, null);
+		Call<List<Branch>> call = RetrofitClient.getApiInterface(ctx).repoListBranches(repoOwner, repoName, null, null);
 
 		call.enqueue(new Callback<>() {
 
@@ -277,9 +258,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	private void getMilestones(String repoOwner, String repoName, int resultLimit) {
 
 		String msState = "open";
-		Call<List<Milestone>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.issueGetMilestonesList(repoOwner, repoName, msState, null, 1, resultLimit);
+		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, msState, null, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -336,11 +315,10 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		final int mMonth = c.get(Calendar.MONTH);
 		final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-		DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-			(view, year, monthOfYear, dayOfMonth) -> {
+		DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
 			viewBinding.prDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
 			currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
-			}, mYear, mMonth, mDay);
+		}, mYear, mMonth, mDay);
 		datePickerDialog.show();
 	}
 
@@ -364,4 +342,5 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
+
 }

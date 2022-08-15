@@ -26,15 +26,14 @@ import retrofit2.Response;
 
 public class OrganizationTeamInfoMembersFragment extends Fragment {
 
+	private final List<User> teamUserInfo = new ArrayList<>();
 	private Context ctx;
-
 	private FragmentOrganizationTeamInfoMembersBinding binding;
 	private Team team;
-
 	private UserGridAdapter adapter;
-	private final List<User> teamUserInfo = new ArrayList<>();
 
-	public OrganizationTeamInfoMembersFragment() {}
+	public OrganizationTeamInfoMembersFragment() {
+	}
 
 	public static OrganizationTeamInfoMembersFragment newInstance(Team team) {
 		OrganizationTeamInfoMembersFragment fragment = new OrganizationTeamInfoMembersFragment();
@@ -62,9 +61,7 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 
 	private void fetchMembersAsync() {
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.orgListTeamMembers(team.getId(), null, null);
+		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).orgListTeamMembers(team.getId(), null, null);
 
 		binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -96,4 +93,5 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 			}
 		});
 	}
+
 }

@@ -4,12 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,19 +31,17 @@ import retrofit2.Response;
 
 public class FollowingFragment extends Fragment {
 
+	private static final String usernameBundle = "";
 	private Context context;
 	private FragmentProfileFollowersFollowingBinding fragmentProfileFollowersFollowingBinding;
-
 	private List<User> usersList;
 	private UsersAdapter adapter;
-
 	private int pageSize;
 	private int resultLimit;
-
-	private static final String usernameBundle = "";
 	private String username;
 
-	public FollowingFragment() {}
+	public FollowingFragment() {
+	}
 
 	public static FollowingFragment newInstance(String username) {
 		FollowingFragment fragment = new FollowingFragment();
@@ -61,7 +54,7 @@ public class FollowingFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
+		if(getArguments() != null) {
 			username = getArguments().getString(usernameBundle);
 		}
 	}
@@ -102,11 +95,10 @@ public class FollowingFragment extends Fragment {
 
 	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(context)
-			.userListFollowing(username, 1, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userListFollowing(username, 1, resultLimit);
 
 		call.enqueue(new Callback<List<User>>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
@@ -160,9 +152,7 @@ public class FollowingFragment extends Fragment {
 
 		fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(context)
-			.userListFollowing(username, page, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userListFollowing(username, page, resultLimit);
 
 		call.enqueue(new Callback<List<User>>() {
 
@@ -253,4 +243,5 @@ public class FollowingFragment extends Fragment {
 		}
 		adapter.updateList(arr);
 	}
+
 }

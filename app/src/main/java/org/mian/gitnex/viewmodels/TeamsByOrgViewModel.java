@@ -23,49 +23,48 @@ import retrofit2.Response;
 
 public class TeamsByOrgViewModel extends ViewModel {
 
-    private MutableLiveData<List<Team>> teamsList;
+	private MutableLiveData<List<Team>> teamsList;
 
-    public LiveData<List<Team>> getTeamsByOrg(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
+	public LiveData<List<Team>> getTeamsByOrg(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
 
-        teamsList = new MutableLiveData<>();
-        loadTeamsByOrgList(orgName, ctx, noDataTeams, mProgressBar);
+		teamsList = new MutableLiveData<>();
+		loadTeamsByOrgList(orgName, ctx, noDataTeams, mProgressBar);
 
-        return teamsList;
-    }
+		return teamsList;
+	}
 
-    public void loadTeamsByOrgList(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
+	public void loadTeamsByOrgList(String orgName, Context ctx, TextView noDataTeams, ProgressBar mProgressBar) {
 
-        Call<List<Team>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .orgListTeams(orgName, null, null);
+		Call<List<Team>> call = RetrofitClient.getApiInterface(ctx).orgListTeams(orgName, null, null);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Team>> call, @NonNull Response<List<Team>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<Team>> call, @NonNull Response<List<Team>> response) {
 
-		        if(response.isSuccessful()) {
-			        teamsList.postValue(response.body());
-		        }
-		        else if(response.code() == 403) {
-			        Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-			        mProgressBar.setVisibility(View.GONE);
-			        noDataTeams.setVisibility(View.GONE);
-		        }
-		        else {
-			        mProgressBar.setVisibility(View.GONE);
-			        noDataTeams.setVisibility(View.GONE);
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					teamsList.postValue(response.body());
+				}
+				else if(response.code() == 403) {
+					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+					mProgressBar.setVisibility(View.GONE);
+					noDataTeams.setVisibility(View.GONE);
+				}
+				else {
+					mProgressBar.setVisibility(View.GONE);
+					noDataTeams.setVisibility(View.GONE);
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<Team>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<Team>> call, @NonNull Throwable t) {
 
-		        mProgressBar.setVisibility(View.GONE);
-		        noDataTeams.setVisibility(View.GONE);
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				mProgressBar.setVisibility(View.GONE);
+				noDataTeams.setVisibility(View.GONE);
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
 }

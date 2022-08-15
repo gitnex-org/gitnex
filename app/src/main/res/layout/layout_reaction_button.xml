@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="@dimen/dimen40dp"
     android:layout_height="@dimen/dimen40dp"
-    style="?attr/materialCardViewFilledStyle"
     android:layout_marginEnd="@dimen/dimen8dp"
     app:cardBackgroundColor="?attr/inputBackgroundColor"
     app:cardCornerRadius="@dimen/dimen20dp"
@@ -19,6 +19,6 @@
         android:textColor="?attr/primaryTextColor"
         android:textSize="@dimen/dimen20sp"
         tools:ignore="SpUsage"
-        tools:text="👍" />
+        tools:text="👍"/>
 
 </com.google.android.material.card.MaterialCardView>

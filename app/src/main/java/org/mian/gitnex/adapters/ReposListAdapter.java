@@ -7,11 +7,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -19,11 +15,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
@@ -39,12 +31,46 @@ import java.util.Locale;
 public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
 	private final Context context;
-	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
 	private final List<org.gitnex.tea4j.v2.models.Repository> reposListFull;
-	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
 	private final TinyDB tinyDb;
 	public boolean isUserOrg = false;
+	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
+	private final Filter reposFilter = new Filter() {
+
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+
+			List<org.gitnex.tea4j.v2.models.Repository> filteredList = new ArrayList<>();
+
+			if(constraint == null || constraint.length() == 0) {
+				filteredList.addAll(reposListFull);
+			}
+			else {
+				String filterPattern = constraint.toString().toLowerCase().trim();
+
+				for(org.gitnex.tea4j.v2.models.Repository item : reposListFull) {
+					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
+						filteredList.add(item);
+					}
+				}
+			}
+
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+
+			reposList.clear();
+			reposList.addAll((List) results.values);
+			notifyDataChanged();
+		}
+	};
 
 	public ReposListAdapter(List<org.gitnex.tea4j.v2.models.Repository> reposListMain, Context ctx) {
 		this.context = ctx;
@@ -80,18 +106,53 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		return reposList.size();
 	}
 
-	class ReposHolder extends RecyclerView.ViewHolder {
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
 
-		private org.gitnex.tea4j.v2.models.Repository userRepositories;
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
+		reposList = list;
+		notifyDataChanged();
+	}
+
+	@Override
+	public Filter getFilter() {
+		return reposFilter;
+	}
+
+	public interface OnLoadMoreListener {
+
+		void onLoadMore();
+
+		void onLoadFinished();
+
+	}
+
+	class ReposHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView image;
 		private final TextView repoName;
 		private final TextView orgName;
 		private final TextView repoDescription;
-		private CheckBox isRepoAdmin;
 		private final TextView repoStars;
 		private final TextView repoLastUpdated;
 		private final View spacerView;
+		private org.gitnex.tea4j.v2.models.Repository userRepositories;
+		private CheckBox isRepoAdmin;
 
 		ReposHolder(View itemView) {
 
@@ -137,7 +198,8 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			if(repositories.getAvatarUrl() != null) {
 				if(!repositories.getAvatarUrl().equals("")) {
-					PicassoService.getInstance(context).get().load(repositories.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+					PicassoService.getInstance(context).get().load(repositories.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+						.into(image);
 				}
 				else {
 					image.setImageDrawable(drawable);
@@ -190,73 +252,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			}
 			isRepoAdmin.setChecked(repositories.getPermissions().isAdmin());
 		}
+
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if(!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
-	}
-
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-		void onLoadFinished();
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
-		reposList = list;
-		notifyDataChanged();
-	}
-
-	@Override
-	public Filter getFilter() {
-		return reposFilter;
-	}
-
-	private final Filter reposFilter = new Filter() {
-
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-
-			List<org.gitnex.tea4j.v2.models.Repository> filteredList = new ArrayList<>();
-
-			if(constraint == null || constraint.length() == 0) {
-				filteredList.addAll(reposListFull);
-			}
-			else {
-				String filterPattern = constraint.toString().toLowerCase().trim();
-
-				for(org.gitnex.tea4j.v2.models.Repository item : reposListFull) {
-					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
-						filteredList.add(item);
-					}
-				}
-			}
-
-			FilterResults results = new FilterResults();
-			results.values = filteredList;
-
-			return results;
-		}
-
-		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
-
-			reposList.clear();
-			reposList.addAll((List) results.values);
-			notifyDataChanged();
-		}
-	};
 }

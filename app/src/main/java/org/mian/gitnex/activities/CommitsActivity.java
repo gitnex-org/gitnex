@@ -38,17 +38,16 @@ import retrofit2.Response;
 
 public class CommitsActivity extends BaseActivity {
 
+	private final String TAG = "CommitsActivity";
+	public RepositoryContext repository;
 	private View.OnClickListener onClickListener;
 	private TextView noData;
 	private ProgressBar progressBar;
-	private final String TAG = "CommitsActivity";
 	private int resultLimit;
 	private int pageSize = 1;
-
 	private RecyclerView recyclerView;
 	private List<Commit> commitsList;
 	private CommitsAdapter adapter;
-	public RepositoryContext repository;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

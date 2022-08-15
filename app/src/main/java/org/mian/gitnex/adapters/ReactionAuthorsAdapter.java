@@ -39,16 +39,13 @@ public class ReactionAuthorsAdapter extends RecyclerView.Adapter<ReactionAuthors
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		User userInfo = userInfos.get(position);
 
-		PicassoService.getInstance(context).get()
-			.load(userInfo.getAvatarUrl())
-			.placeholder(R.drawable.loader_animated)
-			.resize(240, 240)
-			.transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 6), 0))
+		PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).resize(240, 240).transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 6), 0))
 			.centerCrop().into(holder.authorAvatar);
 
 		if(userInfo.getFullName() == null || userInfo.getFullName().isEmpty()) {
 			holder.authorFullName.setVisibility(View.GONE);
-		} else {
+		}
+		else {
 			holder.authorFullName.setText(userInfo.getFullName());
 			holder.authorFullName.setVisibility(View.VISIBLE);
 		}
@@ -75,6 +72,7 @@ public class ReactionAuthorsAdapter extends RecyclerView.Adapter<ReactionAuthors
 			authorFullName = itemView.findViewById(R.id.authorFullName);
 			authorLogin = itemView.findViewById(R.id.authorLogin);
 		}
+
 	}
 
 }

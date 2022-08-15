@@ -27,7 +27,9 @@ public class TimeHelper {
 
 		try {
 			createdTime = formatter.parse(part1);
-		} catch(ParseException ignored) {}
+		}
+		catch(ParseException ignored) {
+		}
 
 		assert createdTime != null;
 
@@ -82,7 +84,8 @@ public class TimeHelper {
 		if(to.before(from)) {
 			if(cal.after(to)) {
 				to.add(Calendar.DATE, 1);
-			} else {
+			}
+			else {
 				from.add(Calendar.DATE, -1);
 			}
 		}

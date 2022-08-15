@@ -24,9 +24,7 @@ public class AssigneesActions {
 
 	public static void getCurrentIssueAssignees(Context ctx, String repoOwner, String repoName, int issueIndex, List<String> currentAssignees) {
 
-		Call<Issue> callSingleIssueLabels = RetrofitClient
-			.getApiInterface(ctx)
-			.issueGetIssue(repoOwner, repoName, (long) issueIndex);
+		Call<Issue> callSingleIssueLabels = RetrofitClient.getApiInterface(ctx).issueGetIssue(repoOwner, repoName, (long) issueIndex);
 
 		callSingleIssueLabels.enqueue(new Callback<>() {
 
@@ -63,11 +61,10 @@ public class AssigneesActions {
 		});
 	}
 
-	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<User> assigneesList, MaterialAlertDialogBuilder materialAlertDialogBuilder, AssigneesListAdapter assigneesAdapter, CustomAssigneesSelectionDialogBinding assigneesBinding, ProgressBar progressBar) {
+	public static void getRepositoryAssignees(Context ctx, String repoOwner, String repoName, List<User> assigneesList, MaterialAlertDialogBuilder materialAlertDialogBuilder, AssigneesListAdapter assigneesAdapter,
+		CustomAssigneesSelectionDialogBinding assigneesBinding, ProgressBar progressBar) {
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.repoGetAssignees(repoOwner, repoName);
+		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).repoGetAssignees(repoOwner, repoName);
 
 		call.enqueue(new Callback<>() {
 
@@ -113,4 +110,5 @@ public class AssigneesActions {
 			}
 		});
 	}
+
 }

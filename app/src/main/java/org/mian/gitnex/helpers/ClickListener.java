@@ -13,29 +13,29 @@ import org.mian.gitnex.R;
 
 public class ClickListener implements View.OnClickListener {
 
-    private String infoText;
-    private Context mCtx;
+	private final String infoText;
+	private final Context mCtx;
 
-    public ClickListener(String infoText, Context mCtx) {
+	public ClickListener(String infoText, Context mCtx) {
 
-        this.infoText = infoText;
-        this.mCtx = mCtx;
-    }
+		this.infoText = infoText;
+		this.mCtx = mCtx;
+	}
 
-    @Override
-    public void onClick(View v) {
+	@Override
+	public void onClick(View v) {
 
-        LayoutInflater inflater1 = LayoutInflater.from(mCtx);
-        View layout = inflater1.inflate(R.layout.custom_toast_info, v.findViewById(R.id.custom_toast_container));
+		LayoutInflater inflater1 = LayoutInflater.from(mCtx);
+		View layout = inflater1.inflate(R.layout.custom_toast_info, v.findViewById(R.id.custom_toast_container));
 
-        TextView text = layout.findViewById(R.id.toastText);
-        text.setText(infoText);
+		TextView text = layout.findViewById(R.id.toastText);
+		text.setText(infoText);
 
-        Toast toast = new Toast(mCtx.getApplicationContext());
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
+		Toast toast = new Toast(mCtx.getApplicationContext());
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(layout);
+		toast.show();
 
-    }
+	}
 
 }

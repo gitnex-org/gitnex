@@ -5,8 +5,8 @@
     <item
         android:id="@+id/repoMenu"
         android:icon="@drawable/ic_dotted_menu"
-        android:title="@string/menuTitleText"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom" />
+        android:title="@string/menuTitleText"
+        app:showAsAction="ifRoom"/>
 
 </menu>

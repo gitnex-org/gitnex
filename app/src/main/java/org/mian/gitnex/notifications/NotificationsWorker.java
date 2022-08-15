@@ -22,7 +22,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -53,8 +52,7 @@ public class NotificationsWorker extends Worker {
 		for(UserAccount userAccount : userAccountsApi.loggedInUserAccounts()) {
 
 			// We do also accept empty values, since the server version was not saved properly in the beginning.
-			if(userAccount.getServerVersion() == null || userAccount.getServerVersion().isEmpty() ||
-				new Version(userAccount.getServerVersion()).higherOrEqual("1.12.3")) {
+			if(userAccount.getServerVersion() == null || userAccount.getServerVersion().isEmpty() || new Version(userAccount.getServerVersion()).higherOrEqual("1.12.3")) {
 
 				Map<String, String> userAccountParameters = new HashMap<>();
 				userAccountParameters.put("previousTimestamp", AppUtil.getTimestampFromDate(context, new Date()));
@@ -75,8 +73,7 @@ public class NotificationsWorker extends Worker {
 	 * Used to bypass the 15-minute limit of {@code WorkManager}.
 	 */
 	private void pollingLoops() {
-		int notificationLoops = tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay) < 15 ?
-			Math.min(15 - tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay), 10) : 1;
+		int notificationLoops = tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay) < 15 ? Math.min(15 - tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay), 10) : 1;
 
 		for(int i = 0; i < notificationLoops; i++) {
 			long startPollingTime = System.currentTimeMillis();
@@ -87,7 +84,9 @@ public class NotificationsWorker extends Worker {
 				if(notificationLoops > 1 && i < (notificationLoops - 1)) {
 					Thread.sleep(60000 - (System.currentTimeMillis() - startPollingTime));
 				}
-			} catch(InterruptedException ignored) {}
+			}
+			catch(InterruptedException ignored) {
+			}
 		}
 	}
 
@@ -97,10 +96,8 @@ public class NotificationsWorker extends Worker {
 
 			try {
 				assert userAccountParameters != null;
-				Call<List<NotificationThread>> call = RetrofitClient
-					.getApiInterface(context, userAccount.getInstanceUrl(), userAccount.getToken(), null)
-					.notifyGetList(false, Arrays.asList("unread"), null, new Date(userAccountParameters.get("previousTimestamp")), null,
-						null, 1);
+				Call<List<NotificationThread>> call = RetrofitClient.getApiInterface(context, userAccount.getInstanceUrl(), userAccount.getToken(), null)
+					.notifyGetList(false, List.of("unread"), null, new Date(userAccountParameters.get("previousTimestamp")), null, null, 1);
 
 				Response<List<NotificationThread>> response = call.execute();
 
@@ -111,7 +108,9 @@ public class NotificationsWorker extends Worker {
 					}
 					userAccountParameters.put("previousTimestamp", AppUtil.getTimestampFromDate(context, new Date()));
 				}
-			} catch(Exception ignored) {}
+			}
+			catch(Exception ignored) {
+			}
 		}
 	}
 
@@ -121,15 +120,9 @@ public class NotificationsWorker extends Worker {
 
 		NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 
-		Notification summaryNotification = new NotificationCompat.Builder(context, Constants.mainNotificationChannelId)
-				.setContentTitle(context.getString(R.string.newMessages, userAccount.getUserName()))
-				.setContentText(String.format(context.getString(R.string.youHaveGotNewNotifications), notificationThreads.size()))
-				.setSmallIcon(R.drawable.gitnex_transparent)
-				.setGroup(userAccount.getUserName())
-				.setGroupSummary(true)
-				.setAutoCancel(true)
-				.setContentIntent(pendingIntent)
-				.build();
+		Notification summaryNotification = new NotificationCompat.Builder(context, Constants.mainNotificationChannelId).setContentTitle(context.getString(R.string.newMessages, userAccount.getUserName()))
+			.setContentText(String.format(context.getString(R.string.youHaveGotNewNotifications), notificationThreads.size())).setSmallIcon(R.drawable.gitnex_transparent).setGroup(userAccount.getUserName())
+			.setGroupSummary(true).setAutoCancel(true).setContentIntent(pendingIntent).build();
 
 		notificationManagerCompat.notify(userAccount.getAccountId(), summaryNotification);
 
@@ -137,12 +130,10 @@ public class NotificationsWorker extends Worker {
 
 			String subjectUrl = notificationThread.getSubject().getUrl();
 			String issueId = context.getResources().getString(R.string.hash) + subjectUrl.substring(subjectUrl.lastIndexOf("/") + 1);
-			String notificationHeader = issueId + " " + notificationThread.getSubject().getTitle() + " " + String.format(context.getResources().getString(R.string.notificationExtraInfo), notificationThread.getRepository().getFullName(), notificationThread.getSubject().getType());
+			String notificationHeader = issueId + " " + notificationThread.getSubject().getTitle() + " " + String.format(context.getResources().getString(R.string.notificationExtraInfo),
+				notificationThread.getRepository().getFullName(), notificationThread.getSubject().getType());
 
-			NotificationCompat.Builder builder1 = getBaseNotificationBuilder()
-				.setContentTitle(notificationHeader)
-				.setGroup(userAccount.getUserName())
-				.setContentIntent(pendingIntent);
+			NotificationCompat.Builder builder1 = getBaseNotificationBuilder().setContentTitle(notificationHeader).setGroup(userAccount.getUserName()).setContentIntent(pendingIntent);
 
 			notificationManagerCompat.notify(Notifications.uniqueNotificationId(context), builder1.build());
 
@@ -151,12 +142,8 @@ public class NotificationsWorker extends Worker {
 
 	private NotificationCompat.Builder getBaseNotificationBuilder() {
 
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.mainNotificationChannelId)
-			.setSmallIcon(R.drawable.gitnex_transparent)
-			.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-			.setCategory(NotificationCompat.CATEGORY_MESSAGE)
-			.setPriority(NotificationCompat.PRIORITY_DEFAULT)
-			.setAutoCancel(true);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.mainNotificationChannelId).setSmallIcon(R.drawable.gitnex_transparent)
+			.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)).setCategory(NotificationCompat.CATEGORY_MESSAGE).setPriority(NotificationCompat.PRIORITY_DEFAULT).setAutoCancel(true);
 
 		if(tinyDB.getBoolean("notificationsEnableLights", true)) {
 			builder.setLights(tinyDB.getInt("notificationsLightColor", Color.GREEN), 1500, 1500);
@@ -164,7 +151,8 @@ public class NotificationsWorker extends Worker {
 
 		if(tinyDB.getBoolean("notificationsEnableVibration", true)) {
 			builder.setVibrate(Constants.defaultVibrationPattern);
-		} else {
+		}
+		else {
 			builder.setVibrate(null);
 		}
 

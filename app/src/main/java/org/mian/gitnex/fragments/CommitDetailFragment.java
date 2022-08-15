@@ -22,13 +22,7 @@ import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.FileDiffView;
-import org.mian.gitnex.helpers.ParseDiff;
-import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
@@ -62,7 +56,9 @@ public class CommitDetailFragment extends Fragment {
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		if(binding != null) return binding.getRoot();
+		if(binding != null) {
+			return binding.getRoot();
+		}
 
 		binding = FragmentCommitDetailsBinding.inflate(getLayoutInflater(), container, false);
 
@@ -88,8 +84,7 @@ public class CommitDetailFragment extends Fragment {
 	}
 
 	private void getDiff() {
-		Call<String> call = ((BaseActivity) requireActivity()).getAccount().requiresVersion("1.16.0") ?
-			RetrofitClient.getApiInterface(requireContext()).repoDownloadCommitDiffOrPatch(repoOwner, repoName, sha, "diff") :
+		Call<String> call = ((BaseActivity) requireActivity()).getAccount().requiresVersion("1.16.0") ? RetrofitClient.getApiInterface(requireContext()).repoDownloadCommitDiffOrPatch(repoOwner, repoName, sha, "diff") :
 			RetrofitClient.getWebInterface(requireContext()).repoDownloadCommitDiffOrPatch(repoOwner, repoName, sha, "diff");
 
 		call.enqueue(new Callback<>() {
@@ -131,114 +126,113 @@ public class CommitDetailFragment extends Fragment {
 			public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
 
 				checkLoading();
-				if(getContext() != null) Toasty.error(requireContext(), getString(R.string.genericError));
+				if(getContext() != null) {
+					Toasty.error(requireContext(), getString(R.string.genericError));
+				}
 			}
 		});
 	}
 
 	private void getCommit() {
 
-		RetrofitClient.getApiInterface(requireContext()).repoGetSingleCommit(repoOwner, repoName, sha)
-			.enqueue(new Callback<>() {
+		RetrofitClient.getApiInterface(requireContext()).repoGetSingleCommit(repoOwner, repoName, sha).enqueue(new Callback<>() {
 
-				@Override
-				public void onResponse(@NonNull Call<Commit> call, @NonNull Response<Commit> response) {
+			@Override
+			public void onResponse(@NonNull Call<Commit> call, @NonNull Response<Commit> response) {
 
-					checkLoading();
-					Commit commitsModel = response.body();
-					if(commitsModel == null) {
-						onFailure(call, new Throwable());
-						return;
-					}
-					String[] commitMessageParts = commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
+				checkLoading();
+				Commit commitsModel = response.body();
+				if(commitsModel == null) {
+					onFailure(call, new Throwable());
+					return;
+				}
+				String[] commitMessageParts = commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
 
-					if(commitMessageParts.length > 1 && !commitMessageParts[1].trim().isEmpty()) {
-						binding.commitBody.setVisibility(View.VISIBLE);
-						binding.commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
-						binding.commitBody.setText(EmojiParser.parseToUnicode(commitMessageParts[1].trim()));
-					}
-					else {
-						binding.commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
-						binding.commitBody.setVisibility(View.GONE);
-					}
+				if(commitMessageParts.length > 1 && !commitMessageParts[1].trim().isEmpty()) {
+					binding.commitBody.setVisibility(View.VISIBLE);
+					binding.commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
+					binding.commitBody.setText(EmojiParser.parseToUnicode(commitMessageParts[1].trim()));
+				}
+				else {
+					binding.commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
+					binding.commitBody.setVisibility(View.GONE);
+				}
 
-					if(!Objects.equals(commitsModel.getCommit().getCommitter().getEmail(), commitsModel.getCommit().getCommitter().getEmail())) {
-						binding.commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(
-							CommitDetailFragment.this.getString(R.string.commitAuthoredByAndCommittedByWhen, commitsModel.getCommit().getAuthor().getName(), commitsModel.getCommit().getCommitter().getName(),
-								TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), getResources().getConfiguration().locale, "pretty",
-									requireContext())), HtmlCompat.FROM_HTML_MODE_COMPACT));
-					}
-					else {
-						binding.commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(
-							CommitDetailFragment.this.getString(R.string.commitCommittedByWhen, commitsModel.getCommit().getCommitter().getName(),
-								TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), getResources().getConfiguration().locale, "pretty",
-									requireContext())), HtmlCompat.FROM_HTML_MODE_COMPACT));
-					}
+				if(!Objects.equals(commitsModel.getCommit().getCommitter().getEmail(), commitsModel.getCommit().getCommitter().getEmail())) {
+					binding.commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(
+						CommitDetailFragment.this.getString(R.string.commitAuthoredByAndCommittedByWhen, commitsModel.getCommit().getAuthor().getName(), commitsModel.getCommit().getCommitter().getName(),
+							TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), getResources().getConfiguration().locale, "pretty", requireContext())),
+						HtmlCompat.FROM_HTML_MODE_COMPACT));
+				}
+				else {
+					binding.commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(CommitDetailFragment.this.getString(R.string.commitCommittedByWhen, commitsModel.getCommit().getCommitter().getName(),
+							TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), getResources().getConfiguration().locale, "pretty", requireContext())),
+						HtmlCompat.FROM_HTML_MODE_COMPACT));
+				}
 
-					if(commitsModel.getAuthor() != null && commitsModel.getAuthor().getAvatarUrl() != null && !commitsModel.getAuthor().getAvatarUrl()
-						.isEmpty()) {
+				if(commitsModel.getAuthor() != null && commitsModel.getAuthor().getAvatarUrl() != null && !commitsModel.getAuthor().getAvatarUrl().isEmpty()) {
 
-						binding.commitAuthorAvatar.setVisibility(View.VISIBLE);
+					binding.commitAuthorAvatar.setVisibility(View.VISIBLE);
 
-						int imgRadius = AppUtil.getPixelsFromDensity(requireContext(), 3);
+					int imgRadius = AppUtil.getPixelsFromDensity(requireContext(), 3);
 
-						PicassoService.getInstance(requireContext()).get().load(commitsModel.getAuthor().getAvatarUrl())
-							.placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(binding.commitAuthorAvatar);
+					PicassoService.getInstance(requireContext()).get().load(commitsModel.getAuthor().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0))
+						.resize(120, 120).centerCrop().into(binding.commitAuthorAvatar);
 
-						binding.commitAuthorAvatar.setOnClickListener((v) -> {
-							Intent intent = new Intent(requireContext(), ProfileActivity.class);
-							intent.putExtra("username", commitsModel.getAuthor().getLogin());
-							startActivity(intent);
-						});
-
-					}
-					else {
-						binding.commitAuthorAvatar.setImageDrawable(null);
-						binding.commitAuthorAvatar.setVisibility(View.GONE);
-					}
-
-					if(commitsModel.getCommitter() != null && (commitsModel.getAuthor() == null || !commitsModel.getAuthor().getLogin()
-						.equals(commitsModel.getCommitter().getLogin())) && commitsModel.getCommitter().getAvatarUrl() != null && !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
-
-						binding.commitCommitterAvatar.setVisibility(View.VISIBLE);
-
-						int imgRadius = AppUtil.getPixelsFromDensity(requireContext(), 3);
-
-						PicassoService.getInstance(requireContext()).get().load(commitsModel.getCommitter().getAvatarUrl())
-							.placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(binding.commitCommitterAvatar);
-
-						binding.commitCommitterAvatar.setOnClickListener((v) -> {
-							Intent intent = new Intent(requireContext(), ProfileActivity.class);
-							intent.putExtra("username", commitsModel.getCommitter().getLogin());
-							startActivity(intent);
-						});
-
-					}
-					else {
-						binding.commitCommitterAvatar.setImageDrawable(null);
-						binding.commitCommitterAvatar.setVisibility(View.GONE);
-					}
-
-					binding.commitSha.setText(commitsModel.getSha().substring(0, Math.min(commitsModel.getSha().length(), 10)));
-					binding.commitSha.setOnClickListener((v) -> {
-						ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
-						ClipData clip = ClipData.newPlainText("commitSha", commitsModel.getSha());
-						assert clipboard != null;
-						clipboard.setPrimaryClip(clip);
-						Toasty.success(requireContext(), getString(R.string.copyShaToastMsg));
+					binding.commitAuthorAvatar.setOnClickListener((v) -> {
+						Intent intent = new Intent(requireContext(), ProfileActivity.class);
+						intent.putExtra("username", commitsModel.getAuthor().getLogin());
+						startActivity(intent);
 					});
+
+				}
+				else {
+					binding.commitAuthorAvatar.setImageDrawable(null);
+					binding.commitAuthorAvatar.setVisibility(View.GONE);
 				}
 
-				@Override
-				public void onFailure(@NonNull Call<Commit> call, @NonNull Throwable t) {
+				if(commitsModel.getCommitter() != null && (commitsModel.getAuthor() == null || !commitsModel.getAuthor().getLogin().equals(commitsModel.getCommitter().getLogin())) && commitsModel.getCommitter()
+					.getAvatarUrl() != null && !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
 
-					checkLoading();
-					if(getContext() != null) {
-						Toasty.error(requireContext(), getString(R.string.genericError));
-						requireActivity().finish();
-					}
+					binding.commitCommitterAvatar.setVisibility(View.VISIBLE);
+
+					int imgRadius = AppUtil.getPixelsFromDensity(requireContext(), 3);
+
+					PicassoService.getInstance(requireContext()).get().load(commitsModel.getCommitter().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0))
+						.resize(120, 120).centerCrop().into(binding.commitCommitterAvatar);
+
+					binding.commitCommitterAvatar.setOnClickListener((v) -> {
+						Intent intent = new Intent(requireContext(), ProfileActivity.class);
+						intent.putExtra("username", commitsModel.getCommitter().getLogin());
+						startActivity(intent);
+					});
+
 				}
-			});
+				else {
+					binding.commitCommitterAvatar.setImageDrawable(null);
+					binding.commitCommitterAvatar.setVisibility(View.GONE);
+				}
+
+				binding.commitSha.setText(commitsModel.getSha().substring(0, Math.min(commitsModel.getSha().length(), 10)));
+				binding.commitSha.setOnClickListener((v) -> {
+					ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipData clip = ClipData.newPlainText("commitSha", commitsModel.getSha());
+					assert clipboard != null;
+					clipboard.setPrimaryClip(clip);
+					Toasty.success(requireContext(), getString(R.string.copyShaToastMsg));
+				});
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Commit> call, @NonNull Throwable t) {
+
+				checkLoading();
+				if(getContext() != null) {
+					Toasty.error(requireContext(), getString(R.string.genericError));
+					requireActivity().finish();
+				}
+			}
+		});
 	}
 
 	private void checkLoading() {

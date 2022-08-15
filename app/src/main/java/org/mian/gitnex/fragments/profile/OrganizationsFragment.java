@@ -4,12 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,19 +31,17 @@ import retrofit2.Response;
 
 public class OrganizationsFragment extends Fragment {
 
+	private static final String usernameBundle = "";
 	private Context context;
 	private FragmentOrganizationsBinding fragmentOrganizationsBinding;
-
 	private List<Organization> organizationsList;
 	private OrganizationsListAdapter adapter;
-
 	private int pageSize;
 	private int resultLimit;
-
-	private static final String usernameBundle = "";
 	private String username;
 
-	public OrganizationsFragment() {}
+	public OrganizationsFragment() {
+	}
 
 	public static OrganizationsFragment newInstance(String username) {
 		OrganizationsFragment fragment = new OrganizationsFragment();
@@ -61,7 +54,7 @@ public class OrganizationsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
+		if(getArguments() != null) {
 			username = getArguments().getString(usernameBundle);
 		}
 	}
@@ -110,11 +103,10 @@ public class OrganizationsFragment extends Fragment {
 
 	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<Organization>> call = RetrofitClient
-			.getApiInterface(context)
-			.orgListUserOrgs(username, 1, resultLimit);
+		Call<List<Organization>> call = RetrofitClient.getApiInterface(context).orgListUserOrgs(username, 1, resultLimit);
 
 		call.enqueue(new Callback<List<Organization>>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 
@@ -168,9 +160,7 @@ public class OrganizationsFragment extends Fragment {
 
 		fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<Organization>> call = RetrofitClient
-			.getApiInterface(context)
-			.orgListUserOrgs(username, page, resultLimit);
+		Call<List<Organization>> call = RetrofitClient.getApiInterface(context).orgListUserOrgs(username, page, resultLimit);
 
 		call.enqueue(new Callback<List<Organization>>() {
 
@@ -261,4 +251,5 @@ public class OrganizationsFragment extends Fragment {
 		}
 		adapter.updateList(arr);
 	}
+
 }

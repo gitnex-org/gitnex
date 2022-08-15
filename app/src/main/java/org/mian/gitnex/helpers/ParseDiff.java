@@ -141,7 +141,8 @@ public class ParseDiff {
 					fileContentsArray.add(new FileDiffView(lines2[1], lines2[2].split("\\n")[0], "rename", "rename", null));
 				}
 			}
-		} else {
+		}
+		else {
 			fileContentsArray = Collections.emptyList();
 		}
 

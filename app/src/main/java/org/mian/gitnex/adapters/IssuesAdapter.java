@@ -26,13 +26,7 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
-import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
@@ -47,10 +41,10 @@ import java.util.Locale;
 public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
+	TinyDB tinyDb;
 	private List<Issue> issuesList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
-	TinyDB tinyDb;
 
 	public IssuesAdapter(Context ctx, List<Issue> issuesListMain) {
 
@@ -88,9 +82,26 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		return issuesList.size();
 	}
 
-	class IssuesHolder extends RecyclerView.ViewHolder {
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+	}
 
-		private Issue issueObject;
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+	}
+
+	public void setLoadMoreListener(Runnable loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<Issue> list) {
+		issuesList = list;
+		notifyDataChanged();
+	}
+
+	class IssuesHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView issueAssigneeAvatar;
 		private final TextView issueTitle;
@@ -100,6 +111,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		private final LinearLayout frameLabels;
 		private final HorizontalScrollView labelsScrollViewDots;
 		private final LinearLayout frameLabelsDots;
+		private Issue issueObject;
 
 		IssuesHolder(View itemView) {
 
@@ -138,12 +150,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-			PicassoService.getInstance(context).get()
-				.load(issue.getUser().getAvatarUrl())
-				.placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0))
-				.resize(120, 120)
-				.centerCrop()
+			PicassoService.getInstance(context).get().load(issue.getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
 				.into(issueAssigneeAvatar);
 
 			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + issue.getNumber() + "</font>";
@@ -158,8 +165,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			frameLabels.setOnClickListener(v -> context.startActivity(intentIssueDetail));
 			frameLabelsDots.setOnClickListener(v -> context.startActivity(intentIssueDetail));
 
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 			params.setMargins(0, 0, 15, 0);
 
 			if(issue.getLabels() != null) {
@@ -206,8 +212,9 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 						int height = AppUtil.getPixelsFromDensity(context, 20);
 						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
 
-						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize).width(LabelWidthCalculator
-							.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8))).height(height).endConfig().buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
+						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
+							.width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8))).height(height).endConfig()
+							.buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
 
 						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);
@@ -241,22 +248,4 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-	}
-
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<Issue> list) {
-		issuesList = list;
-		notifyDataChanged();
-	}
 }

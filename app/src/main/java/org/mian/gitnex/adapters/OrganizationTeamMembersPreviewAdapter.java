@@ -39,11 +39,7 @@ public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		User userInfo = userData.get(position);
 
-		PicassoService.getInstance(context).get()
-			.load(userInfo.getAvatarUrl())
-			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 3), 0))
-			.resize(120, 120)
+		PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 3), 0)).resize(120, 120)
 			.centerCrop().into(holder.avatar);
 	}
 
@@ -60,5 +56,7 @@ public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<
 			super(itemView);
 			avatar = itemView.findViewById(R.id.avatar);
 		}
+
 	}
+
 }

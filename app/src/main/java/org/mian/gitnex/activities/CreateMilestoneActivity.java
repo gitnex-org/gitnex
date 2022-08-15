@@ -33,185 +33,181 @@ import retrofit2.Callback;
 
 public class CreateMilestoneActivity extends BaseActivity implements View.OnClickListener {
 
-    private EditText milestoneDueDate;
-    private View.OnClickListener onClickListener;
-    private EditText milestoneTitle;
-    private EditText milestoneDescription;
-    private Button createNewMilestoneButton;
-    private RepositoryContext repository;
+	private EditText milestoneDueDate;
+	private View.OnClickListener onClickListener;
+	private EditText milestoneTitle;
+	private EditText milestoneDescription;
+	private Button createNewMilestoneButton;
+	private RepositoryContext repository;
 
 	private Date currentDate = null;
+	private final View.OnClickListener createMilestoneListener = v -> processNewMilestone();
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@SuppressLint("ClickableViewAccessibility")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    ActivityCreateMilestoneBinding activityCreateMilestoneBinding = ActivityCreateMilestoneBinding.inflate(getLayoutInflater());
-	    setContentView(activityCreateMilestoneBinding.getRoot());
+		ActivityCreateMilestoneBinding activityCreateMilestoneBinding = ActivityCreateMilestoneBinding.inflate(getLayoutInflater());
+		setContentView(activityCreateMilestoneBinding.getRoot());
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        milestoneDueDate = activityCreateMilestoneBinding.milestoneDueDate;
-        ImageView closeActivity = activityCreateMilestoneBinding.close;
-        createNewMilestoneButton = activityCreateMilestoneBinding.createNewMilestoneButton;
-        milestoneTitle = activityCreateMilestoneBinding.milestoneTitle;
-        milestoneDescription = activityCreateMilestoneBinding.milestoneDescription;
-        repository = RepositoryContext.fromIntent(getIntent());
+		milestoneDueDate = activityCreateMilestoneBinding.milestoneDueDate;
+		ImageView closeActivity = activityCreateMilestoneBinding.close;
+		createNewMilestoneButton = activityCreateMilestoneBinding.createNewMilestoneButton;
+		milestoneTitle = activityCreateMilestoneBinding.milestoneTitle;
+		milestoneDescription = activityCreateMilestoneBinding.milestoneDescription;
+		repository = RepositoryContext.fromIntent(getIntent());
 
-        milestoneTitle.requestFocus();
-        assert imm != null;
-        imm.showSoftInput(milestoneTitle, InputMethodManager.SHOW_IMPLICIT);
+		milestoneTitle.requestFocus();
+		assert imm != null;
+		imm.showSoftInput(milestoneTitle, InputMethodManager.SHOW_IMPLICIT);
 
-	    milestoneDescription.setOnTouchListener((touchView, motionEvent) -> {
+		milestoneDescription.setOnTouchListener((touchView, motionEvent) -> {
 
-		    touchView.getParent().requestDisallowInterceptTouchEvent(true);
+			touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
-		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+			if((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
 
-			    touchView.getParent().requestDisallowInterceptTouchEvent(false);
-		    }
-		    return false;
-	    });
+				touchView.getParent().requestDisallowInterceptTouchEvent(false);
+			}
+			return false;
+		});
 
-        initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
-        milestoneDueDate.setOnClickListener(this);
+		initCloseListener();
+		closeActivity.setOnClickListener(onClickListener);
+		milestoneDueDate.setOnClickListener(this);
 
-        if(!connToInternet) {
+		if(!connToInternet) {
 
-            createNewMilestoneButton.setEnabled(false);
-        }
-        else {
+			createNewMilestoneButton.setEnabled(false);
+		}
+		else {
 
-            createNewMilestoneButton.setOnClickListener(createMilestoneListener);
-        }
+			createNewMilestoneButton.setOnClickListener(createMilestoneListener);
+		}
 
-    }
+	}
 
-    private final View.OnClickListener createMilestoneListener = v -> processNewMilestone();
+	private void processNewMilestone() {
 
-    private void processNewMilestone() {
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		String newMilestoneTitle = milestoneTitle.getText().toString();
+		String newMilestoneDescription = milestoneDescription.getText().toString();
 
-        String newMilestoneTitle = milestoneTitle.getText().toString();
-        String newMilestoneDescription = milestoneDescription.getText().toString();
+		if(!connToInternet) {
 
-	    if(!connToInternet) {
+			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+			return;
+		}
 
-            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-            return;
-        }
+		if(newMilestoneTitle.equals("")) {
 
-        if(newMilestoneTitle.equals("")) {
+			Toasty.error(ctx, getString(R.string.milestoneNameErrorEmpty));
+			return;
+		}
 
-            Toasty.error(ctx, getString(R.string.milestoneNameErrorEmpty));
-            return;
-        }
+		if(!newMilestoneDescription.equals("")) {
 
-        if(!newMilestoneDescription.equals("")) {
+			if(newMilestoneDescription.length() > 255) {
 
-            if (newMilestoneDescription.length() > 255) {
+				Toasty.warning(ctx, getString(R.string.milestoneDescError));
+				return;
+			}
+		}
 
-                Toasty.warning(ctx, getString(R.string.milestoneDescError));
-                return;
-            }
-        }
+		disableProcessButton();
+		createNewMilestone(repository.getOwner(), repository.getName(), newMilestoneTitle, newMilestoneDescription);
+	}
 
-        disableProcessButton();
-        createNewMilestone(repository.getOwner(), repository.getName(), newMilestoneTitle, newMilestoneDescription);
-    }
+	private void createNewMilestone(String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription) {
 
-    private void createNewMilestone(String repoOwner, String repoName, String newMilestoneTitle, String newMilestoneDescription) {
-
-        CreateMilestoneOption createMilestone = new CreateMilestoneOption();
+		CreateMilestoneOption createMilestone = new CreateMilestoneOption();
 		createMilestone.setDescription(newMilestoneDescription);
 		createMilestone.setTitle(newMilestoneTitle);
 		createMilestone.setDueOn(currentDate);
 
-        Call<Milestone> call;
+		Call<Milestone> call;
 
-        call = RetrofitClient
-                .getApiInterface(ctx)
-                .issueCreateMilestone(repoOwner, repoName, createMilestone);
+		call = RetrofitClient.getApiInterface(ctx).issueCreateMilestone(repoOwner, repoName, createMilestone);
 
-        call.enqueue(new Callback<Milestone>() {
+		call.enqueue(new Callback<Milestone>() {
 
-            @Override
-            public void onResponse(@NonNull Call<Milestone> call, @NonNull retrofit2.Response<Milestone> response) {
+			@Override
+			public void onResponse(@NonNull Call<Milestone> call, @NonNull retrofit2.Response<Milestone> response) {
 
-                if(response.isSuccessful()) {
+				if(response.isSuccessful()) {
 
-                    if(response.code() == 201) {
+					if(response.code() == 201) {
 
-                        Intent result = new Intent();
-                        result.putExtra("milestoneCreated", true);
-                        setResult(201, result);
-                        Toasty.success(ctx, getString(R.string.milestoneCreated));
-                        enableProcessButton();
-                        finish();
-                    }
-                }
-                else if(response.code() == 401) {
+						Intent result = new Intent();
+						result.putExtra("milestoneCreated", true);
+						setResult(201, result);
+						Toasty.success(ctx, getString(R.string.milestoneCreated));
+						enableProcessButton();
+						finish();
+					}
+				}
+				else if(response.code() == 401) {
 
-                    enableProcessButton();
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx);
-                }
-                else {
+					enableProcessButton();
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
+				}
+				else {
 
-                    enableProcessButton();
-                    Toasty.error(ctx, getString(R.string.genericError));
-                }
-            }
+					enableProcessButton();
+					Toasty.error(ctx, getString(R.string.genericError));
+				}
+			}
 
-            @Override
-            public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
 
-                Log.e("onFailure", t.toString());
-                enableProcessButton();
-            }
-        });
+				Log.e("onFailure", t.toString());
+				enableProcessButton();
+			}
+		});
 
-    }
+	}
 
-    @Override
-    public void onClick(View v) {
+	@Override
+	public void onClick(View v) {
 
-        if (v == milestoneDueDate) {
+		if(v == milestoneDueDate) {
 
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR);
-            final int mMonth = c.get(Calendar.MONTH);
-            final int mDay = c.get(Calendar.DAY_OF_MONTH);
+			final Calendar c = Calendar.getInstance();
+			int mYear = c.get(Calendar.YEAR);
+			final int mMonth = c.get(Calendar.MONTH);
+			final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-	            (view, year, monthOfYear, dayOfMonth) -> {
+			DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
 				milestoneDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
 				currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
-	            }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-        }
+			}, mYear, mMonth, mDay);
+			datePickerDialog.show();
+		}
 
-    }
+	}
 
-    private void initCloseListener() {
+	private void initCloseListener() {
 
-        onClickListener = view -> finish();
-    }
+		onClickListener = view -> finish();
+	}
 
-    private void disableProcessButton() {
+	private void disableProcessButton() {
 
-        createNewMilestoneButton.setEnabled(false);
-    }
+		createNewMilestoneButton.setEnabled(false);
+	}
 
-    private void enableProcessButton() {
+	private void enableProcessButton() {
 
-        createNewMilestoneButton.setEnabled(true);
-    }
+		createNewMilestoneButton.setEnabled(true);
+	}
 
 	@Override
 	public void onResume() {

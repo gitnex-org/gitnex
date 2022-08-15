@@ -17,11 +17,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
@@ -74,17 +70,35 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		return forksList.size();
 	}
 
-	class ForksHolder extends RecyclerView.ViewHolder {
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+	}
 
-		private org.gitnex.tea4j.v2.models.Repository userRepositories;
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+	}
+
+	public void setLoadMoreListener(Runnable loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
+		forksList = list;
+		notifyDataChanged();
+	}
+
+	class ForksHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView image;
 		private final TextView repoName;
 		private final TextView orgName;
 		private final TextView repoDescription;
-		private CheckBox isRepoAdmin;
 		private final TextView repoStars;
 		private final TextView repoLastUpdated;
+		private org.gitnex.tea4j.v2.models.Repository userRepositories;
+		private CheckBox isRepoAdmin;
 
 		ForksHolder(View itemView) {
 
@@ -115,13 +129,12 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			int color = generator.getColor(forksModel.getName());
 			String firstCharacter = String.valueOf(forksModel.getFullName().charAt(0));
 
-			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28)
-				.endConfig().buildRoundRect(firstCharacter, color, 3);
+			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
 
 			if(forksModel.getAvatarUrl() != null) {
 				if(!forksModel.getAvatarUrl().equals("")) {
-					PicassoService.getInstance(context).get().load(forksModel.getAvatarUrl()).placeholder(R.drawable.loader_animated)
-						.transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+					PicassoService.getInstance(context).get().load(forksModel.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+						.into(image);
 				}
 				else {
 					image.setImageDrawable(drawable);
@@ -183,24 +196,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			});
 		}
+
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-	}
-
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
-		forksList = list;
-		notifyDataChanged();
-	}
 }

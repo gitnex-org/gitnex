@@ -18,21 +18,21 @@
             android:id="@+id/tagName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_weight="0.9"
             android:singleLine="true"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/tagsOptionsMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:contentDescription="@string/labelMenuContentDesc"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_dotted_menu_horizontal" />
+            android:contentDescription="@string/labelMenuContentDesc"
+            android:src="@drawable/ic_dotted_menu_horizontal"/>
 
     </LinearLayout>
 
@@ -48,9 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="web|email"
-            android:textColorLink="@color/lightBlue"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp" />
+            android:textColorLink="@color/lightBlue"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -74,17 +74,17 @@
                 android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/generalImgContentText"
-                app:tint="?attr/primaryTextColor"
                 android:src="@drawable/ic_chevron_right"
-                app:srcCompat="@drawable/ic_chevron_right" />
+                app:srcCompat="@drawable/ic_chevron_right"
+                app:tint="?attr/primaryTextColor"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
+                android:text="@string/releaseDownloadText"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp"
-                android:text="@string/releaseDownloadText" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -94,33 +94,33 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/releaseZipDownloadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    app:srcCompat="@drawable/ic_download"
-                    android:contentDescription="@string/generalImgContentText" />
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_download"/>
 
                 <TextView
                     android:id="@+id/releaseZipDownload"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:text="@string/zipArchiveDownloadReleasesTab"
-                    android:textSize="12sp" />
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
@@ -128,25 +128,25 @@
                 android:id="@+id/releaseTarDownloadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_marginStart="8dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    app:srcCompat="@drawable/ic_download"
-                    android:contentDescription="@string/generalImgContentText" />
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_download"/>
 
                 <TextView
                     android:id="@+id/releaseTarDownload"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:text="@string/tarArchiveDownloadReleasesTab"
-                    android:textSize="12sp" />
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 

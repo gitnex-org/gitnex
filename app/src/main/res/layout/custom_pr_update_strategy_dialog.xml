@@ -10,33 +10,33 @@
         android:id="@+id/selectStrategy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:padding="16dp"
         android:text="@string/selectUpdateStrategy"
         android:textColor="?attr/primaryTextColor"
-        android:padding="16dp" />
+        android:textSize="20sp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updatePullMerge"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen54dp"
         android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen8dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginBottom="@dimen/dimen8dp"
+        android:text="@string/updateStrategyMerge"
         android:textColor="@color/colorWhite"
-        android:textStyle="bold"
-        android:text="@string/updateStrategyMerge" />
+        android:textStyle="bold"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updatePullRebase"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen54dp"
-        android:textColor="@color/colorWhite"
         android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen8dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginBottom="@dimen/dimen8dp"
-        android:textStyle="bold"
-        android:text="@string/updateStrategyRebase" />
+        android:text="@string/updateStrategyRebase"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"/>
 
 </LinearLayout>

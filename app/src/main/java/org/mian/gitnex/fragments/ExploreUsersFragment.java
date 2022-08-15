@@ -4,12 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -79,9 +74,9 @@ public class ExploreUsersFragment extends Fragment {
 
 	private void loadInitial(String searchKeyword, int resultLimit) {
 
-		Call<InlineResponse2001> call = RetrofitClient
-			.getApiInterface(context).userSearch(searchKeyword, null, 1, resultLimit);
+		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(context).userSearch(searchKeyword, null, 1, resultLimit);
 		call.enqueue(new Callback<>() {
+
 			@Override
 			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 				if(response.isSuccessful()) {
@@ -120,6 +115,7 @@ public class ExploreUsersFragment extends Fragment {
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(context).userSearch(searchKeyword, null, page, resultLimit);
 		call.enqueue(new Callback<>() {
+
 			@Override
 			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
 				if(response.isSuccessful()) {
@@ -185,4 +181,5 @@ public class ExploreUsersFragment extends Fragment {
 			}
 		});
 	}
+
 }

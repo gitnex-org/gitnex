@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
     android:paddingTop="6dp"
-    android:paddingBottom="12dp"
-    android:background="?attr/primaryBackgroundColor">
+    android:paddingBottom="12dp">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -14,15 +14,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/notificationsHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/bottomSheetHeader"
@@ -31,7 +31,7 @@
                     android:gravity="center"
                     android:text="@string/pageTitleNotifications"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
@@ -39,50 +39,50 @@
                 android:id="@+id/notificationsListSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:flexWrap="wrap"
-                app:alignItems="flex_start"
-                app:justifyContent="center"
                 android:padding="4dp"
-                app:alignContent="center" >
+                app:alignContent="center"
+                app:alignItems="flex_start"
+                app:flexWrap="wrap"
+                app:justifyContent="center">
 
                 <TextView
                     android:id="@+id/markPinned"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_pin"
+                    android:padding="4dp"
                     android:text="@string/pinNotification"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_pin"
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/markRead"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_unwatch"
+                    android:padding="4dp"
                     android:text="@string/markAsRead"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_unwatch"
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/markUnread"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    app:layout_alignSelf="flex_start"
-                    app:drawableTopCompat="@drawable/ic_watchers"
+                    android:padding="4dp"
                     android:text="@string/markAsUnread"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableTopCompat="@drawable/ic_watchers"
+                    app:layout_alignSelf="flex_start"/>
 
             </com.google.android.flexbox.FlexboxLayout>
 

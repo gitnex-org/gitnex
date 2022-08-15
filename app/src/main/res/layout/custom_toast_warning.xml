@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_toast_container"
-    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="15dp"
     android:background="@drawable/shape_full_circle"
-    android:backgroundTint="@color/warningColor">
+    android:backgroundTint="@color/warningColor"
+    android:orientation="horizontal"
+    android:padding="15dp">
 
     <TextView android:id="@+id/toastText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
         android:layout_gravity="center"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"/>
 
 </LinearLayout>

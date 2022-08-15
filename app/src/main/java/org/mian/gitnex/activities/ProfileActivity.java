@@ -19,12 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.BottomSheetUserProfileFragment;
-import org.mian.gitnex.fragments.profile.DetailFragment;
-import org.mian.gitnex.fragments.profile.FollowersFragment;
-import org.mian.gitnex.fragments.profile.FollowingFragment;
-import org.mian.gitnex.fragments.profile.OrganizationsFragment;
-import org.mian.gitnex.fragments.profile.RepositoriesFragment;
-import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
+import org.mian.gitnex.fragments.profile.*;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -74,20 +69,21 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 		viewPager.setAdapter(new ViewPagerAdapter(this));
 
-		String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.navRepos), ctx.getResources().getString(R.string.navStarredRepos), ctx.getResources().getString(R.string.navOrg), ctx.getResources().getString(R.string.profileTabFollowers), ctx.getResources().getString(R.string.profileTabFollowing)};
+		String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.navRepos), ctx.getResources().getString(R.string.navStarredRepos),
+			ctx.getResources().getString(R.string.navOrg), ctx.getResources().getString(R.string.profileTabFollowers), ctx.getResources().getString(R.string.profileTabFollowing)};
 		new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
 
 		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
 		int tabsCount = vg.getChildCount();
 
-		for (int j = 0; j < tabsCount; j++) {
+		for(int j = 0; j < tabsCount; j++) {
 
 			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
 
-			for (int i = 0; i < tabChildCount; i++) {
+			for(int i = 0; i < tabChildCount; i++) {
 				View tabViewChild = vgTab.getChildAt(i);
-				if (tabViewChild instanceof TextView) {
+				if(tabViewChild instanceof TextView) {
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
 			}
@@ -130,7 +126,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 	private void followUnfollow() {
 		Call<Void> call;
-		if (following) {
+		if(following) {
 			call = RetrofitClient.getApiInterface(this).userCurrentDeleteFollow(username);
 		}
 		else {
@@ -141,16 +137,17 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 			@Override
 			public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-				if (response.isSuccessful()) {
+				if(response.isSuccessful()) {
 					following = !following;
-					if (following) {
+					if(following) {
 						Toasty.success(ProfileActivity.this, String.format(getString(R.string.nowFollowUser), username));
 					}
 					else {
 						Toasty.success(ProfileActivity.this, String.format(getString(R.string.unfollowedUser), username));
 					}
-				} else {
-					if (following) {
+				}
+				else {
+					if(following) {
 						Toasty.error(ProfileActivity.this, getString(R.string.unfollowingFailed));
 					}
 					else {
@@ -161,7 +158,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 			@Override
 			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-				if (following) {
+				if(following) {
 					Toasty.error(ProfileActivity.this, getString(R.string.unfollowingFailed));
 				}
 				else {
@@ -169,36 +166,6 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 				}
 			}
 		});
-	}
-
-	public class ViewPagerAdapter extends FragmentStateAdapter {
-
-		public ViewPagerAdapter(@NonNull FragmentActivity fa) { super(fa); }
-
-		@NonNull
-		@Override
-		public Fragment createFragment(int position) {
-			switch(position) {
-				case 0: // detail
-					return DetailFragment.newInstance(username);
-				case 1: // repos
-					return RepositoriesFragment.newInstance(username);
-				case 2: // starred repos
-					return StarredRepositoriesFragment.newInstance(username);
-				case 3: // organizations
-					return OrganizationsFragment.newInstance(username);
-				case 4: // followers
-					return FollowersFragment.newInstance(username);
-				case 5: // following
-					return FollowingFragment.newInstance(username);
-			}
-			return null;
-		}
-
-		@Override
-		public int getItemCount() {
-			return 6;
-		}
 	}
 
 	@Override
@@ -225,6 +192,39 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 			getMenuInflater().inflate(R.menu.generic_nav_dotted_menu, menu);
 		}
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	public class ViewPagerAdapter extends FragmentStateAdapter {
+
+		public ViewPagerAdapter(@NonNull FragmentActivity fa) {
+			super(fa);
+		}
+
+		@NonNull
+		@Override
+		public Fragment createFragment(int position) {
+			switch(position) {
+				case 0: // detail
+					return DetailFragment.newInstance(username);
+				case 1: // repos
+					return RepositoriesFragment.newInstance(username);
+				case 2: // starred repos
+					return StarredRepositoriesFragment.newInstance(username);
+				case 3: // organizations
+					return OrganizationsFragment.newInstance(username);
+				case 4: // followers
+					return FollowersFragment.newInstance(username);
+				case 5: // following
+					return FollowingFragment.newInstance(username);
+			}
+			return null;
+		}
+
+		@Override
+		public int getItemCount() {
+			return 6;
+		}
+
 	}
 
 }

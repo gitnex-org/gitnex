@@ -24,49 +24,46 @@ import retrofit2.Response;
 
 public class ReleasesViewModel extends ViewModel {
 
-    private MutableLiveData<List<Release>> releasesList;
+	private MutableLiveData<List<Release>> releasesList;
 	private int resultLimit;
+	private MutableLiveData<List<Tag>> tagsList;
 
-    public LiveData<List<Release>> getReleasesList(String owner, String repo, Context ctx) {
+	public LiveData<List<Release>> getReleasesList(String owner, String repo, Context ctx) {
 
-        releasesList = new MutableLiveData<>();
-	    resultLimit = Constants.getCurrentResultLimit(ctx);
-        loadReleasesList(owner, repo, ctx);
-        return releasesList;
-    }
+		releasesList = new MutableLiveData<>();
+		resultLimit = Constants.getCurrentResultLimit(ctx);
+		loadReleasesList(owner, repo, ctx);
+		return releasesList;
+	}
 
-    public void loadReleasesList(String owner, String repo, Context ctx) {
+	public void loadReleasesList(String owner, String repo, Context ctx) {
 
-        Call<List<Release>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .repoListReleases(owner, repo, null, null, null, 1, resultLimit);
+		Call<List<Release>> call = RetrofitClient.getApiInterface(ctx).repoListReleases(owner, repo, null, null, null, 1, resultLimit);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Release>> call, @NonNull Response<List<Release>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<Release>> call, @NonNull Response<List<Release>> response) {
 
-		        if(response.isSuccessful()) {
-			        releasesList.postValue(response.body());
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					releasesList.postValue(response.body());
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
 
 	public void loadMoreReleases(String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
 
-		Call<List<Release>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.repoListReleases(owner, repo, null, null, null, page, resultLimit);
+		Call<List<Release>> call = RetrofitClient.getApiInterface(ctx).repoListReleases(owner, repo, null, null, null, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -99,8 +96,6 @@ public class ReleasesViewModel extends ViewModel {
 		});
 	}
 
-	private MutableLiveData<List<Tag>> tagsList;
-
 	public LiveData<List<Tag>> getTagsList(String owner, String repo, Context ctx) {
 
 		tagsList = new MutableLiveData<>();
@@ -111,9 +106,7 @@ public class ReleasesViewModel extends ViewModel {
 
 	public void loadTagsList(String owner, String repo, Context ctx) {
 
-		Call<List<Tag>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.repoListTags(owner, repo, 1, resultLimit);
+		Call<List<Tag>> call = RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -138,9 +131,7 @@ public class ReleasesViewModel extends ViewModel {
 
 	public void loadMoreTags(String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
 
-		Call<List<Tag>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.repoListTags(owner, repo, page, resultLimit);
+		Call<List<Tag>> call = RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -173,4 +164,5 @@ public class ReleasesViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

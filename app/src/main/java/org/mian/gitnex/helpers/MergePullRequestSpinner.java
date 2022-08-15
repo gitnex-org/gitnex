@@ -43,7 +43,7 @@ public class MergePullRequestSpinner implements Serializable {
 
 		if(obj instanceof MergePullRequestSpinner) {
 
-			MergePullRequestSpinner spinner = (MergePullRequestSpinner )obj;
+			MergePullRequestSpinner spinner = (MergePullRequestSpinner) obj;
 			return spinner.getMergerMethod().equals(mergerMethod) && spinner.getId().equals(id);
 
 		}

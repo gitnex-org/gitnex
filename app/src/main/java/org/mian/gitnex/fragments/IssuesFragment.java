@@ -4,12 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,18 +33,14 @@ import retrofit2.Response;
 public class IssuesFragment extends Fragment {
 
 	public static boolean resumeIssues = false;
-
+	private final String requestType = Constants.issuesRequestType;
 	private FragmentIssuesBinding fragmentIssuesBinding;
 	private Context context;
-
 	private Menu menu;
 	private List<Issue> issuesList;
 	private IssuesAdapter adapter;
-
 	private int pageSize = Constants.issuesPageInit;
 	private int resultLimit;
-	private final String requestType = Constants.issuesRequestType;
-
 	private RepositoryContext repository;
 
 	public static IssuesFragment newInstance(RepositoryContext repository) {
@@ -153,8 +144,7 @@ public class IssuesFragment extends Fragment {
 
 	private void loadInitial(String repoOwner, String repoName, int resultLimit, String requestType, String issueState, String filterByMilestone, String query) {
 
-		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, query, requestType,
-			filterByMilestone, null, null, null, null, null, 1, resultLimit);
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, query, requestType, filterByMilestone, null, null, null, null, null, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -196,8 +186,7 @@ public class IssuesFragment extends Fragment {
 
 		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, null, requestType,
-			filterByMilestone, null, null, null, null, null, page, resultLimit);
+		Call<List<Issue>> call = RetrofitClient.getApiInterface(context).issueListIssues(repoOwner, repoName, issueState, null, null, requestType, filterByMilestone, null, null, null, null, null, page, resultLimit);
 		call.enqueue(new Callback<>() {
 
 			@Override
@@ -264,4 +253,5 @@ public class IssuesFragment extends Fragment {
 			}
 		});
 	}
+
 }

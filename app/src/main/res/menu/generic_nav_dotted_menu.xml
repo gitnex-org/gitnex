@@ -5,8 +5,8 @@
     <item
         android:id="@+id/genericMenu"
         android:icon="@drawable/ic_dotted_menu"
-        android:title="@string/menuContentDesc"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom" />
+        android:title="@string/menuContentDesc"
+        app:showAsAction="ifRoom"/>
 
 </menu>

@@ -35,10 +35,10 @@ import java.util.Locale;
 public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
+	private final RepositoryContext repository;
 	private List<Milestone> dataList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
-	private final RepositoryContext repository;
 
 	public MilestonesAdapter(Context ctx, List<Milestone> dataListMain, RepositoryContext repository) {
 		this.repository = repository;
@@ -64,9 +64,54 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		((MilestonesAdapter.DataHolder) holder).bindData(dataList.get(position));
 	}
 
-	class DataHolder extends RecyclerView.ViewHolder {
+	@Override
+	public int getItemViewType(int position) {
+		return position;
+	}
 
-		private Milestone milestones;
+	@Override
+	public int getItemCount() {
+		return dataList.size();
+	}
+
+	private void updateAdapter(int position) {
+		dataList.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, dataList.size());
+	}
+
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<Milestone> list) {
+		dataList = list;
+		notifyDataChanged();
+	}
+
+	public interface OnLoadMoreListener {
+
+		void onLoadMore();
+
+		void onLoadFinished();
+
+	}
+
+	class DataHolder extends RecyclerView.ViewHolder {
 
 		private final TextView msTitle;
 		private final TextView msDescription;
@@ -74,6 +119,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		private final TextView msClosedIssues;
 		private final TextView msDueDate;
 		private final ProgressBar msProgress;
+		private Milestone milestones;
 
 		DataHolder(View itemView) {
 
@@ -211,49 +257,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 				msDueDate.setText(context.getString(R.string.milestoneNoDueDate));
 			}
 		}
+
 	}
 
-	@Override
-	public int getItemViewType(int position) {
-		return position;
-	}
-
-	@Override
-	public int getItemCount() {
-		return dataList.size();
-	}
-
-	private void updateAdapter(int position) {
-		dataList.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, dataList.size());
-	}
-
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if(!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
-	}
-
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-		void onLoadFinished();
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<Milestone> list) {
-		dataList = list;
-		notifyDataChanged();
-	}
 }

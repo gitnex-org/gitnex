@@ -42,12 +42,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.enableVibrationMode.setChecked(tinyDB.getBoolean("notificationsEnableVibration", true));
 
 		if(!viewBinding.enableNotificationsMode.isChecked()) {
-			AppUtil.setMultiVisibility(View.GONE,
-				viewBinding.chooseColorFrame,
-				viewBinding.enableLightsFrame,
-				viewBinding.enableVibrationFrame,
-				viewBinding.pollingDelayFrame
-			);
+			AppUtil.setMultiVisibility(View.GONE, viewBinding.chooseColorFrame, viewBinding.enableLightsFrame, viewBinding.enableVibrationFrame, viewBinding.pollingDelayFrame);
 		}
 
 		if(!viewBinding.enableLightsMode.isChecked()) {
@@ -60,27 +55,17 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 			if(isChecked) {
 				Notifications.startWorker(ctx);
-				AppUtil.setMultiVisibility(View.VISIBLE,
-					viewBinding.chooseColorFrame,
-					viewBinding.enableLightsFrame,
-					viewBinding.enableVibrationFrame,
-					viewBinding.pollingDelayFrame
-				);
-			} else {
+				AppUtil.setMultiVisibility(View.VISIBLE, viewBinding.chooseColorFrame, viewBinding.enableLightsFrame, viewBinding.enableVibrationFrame, viewBinding.pollingDelayFrame);
+			}
+			else {
 				Notifications.stopWorker(ctx);
-				AppUtil.setMultiVisibility(View.GONE,
-					viewBinding.chooseColorFrame,
-					viewBinding.enableLightsFrame,
-					viewBinding.enableVibrationFrame,
-					viewBinding.pollingDelayFrame
-				);
+				AppUtil.setMultiVisibility(View.GONE, viewBinding.chooseColorFrame, viewBinding.enableLightsFrame, viewBinding.enableVibrationFrame, viewBinding.pollingDelayFrame);
 			}
 
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 		});
-		viewBinding.enableNotificationsFrame.setOnClickListener(
-			v -> viewBinding.enableNotificationsMode.setChecked(!viewBinding.enableNotificationsMode.isChecked()));
+		viewBinding.enableNotificationsFrame.setOnClickListener(v -> viewBinding.enableNotificationsMode.setChecked(!viewBinding.enableNotificationsMode.isChecked()));
 
 		// polling delay
 		viewBinding.pollingDelayFrame.setOnClickListener(v -> {
@@ -91,12 +76,8 @@ public class SettingsNotificationsActivity extends BaseActivity {
 			numberPicker.setValue(tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay));
 			numberPicker.setWrapSelectorWheel(true);
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.pollingDelayDialogHeaderText)
-				.setMessage(getString(R.string.pollingDelayDialogDescriptionText))
-				.setCancelable(true)
-				.setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss())
-				.setPositiveButton(getString(R.string.okButton), (dialog, which) -> {
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.pollingDelayDialogHeaderText).setMessage(getString(R.string.pollingDelayDialogDescriptionText))
+				.setCancelable(true).setNeutralButton(R.string.cancelButton, (dialog, which) -> dialog.dismiss()).setPositiveButton(getString(R.string.okButton), (dialog, which) -> {
 
 					tinyDB.putInt("pollingDelayMinutes", numberPicker.getValue());
 
@@ -116,7 +97,8 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 			if(!isChecked) {
 				viewBinding.chooseColorFrame.setVisibility(View.GONE);
-			} else {
+			}
+			else {
 				viewBinding.chooseColorFrame.setVisibility(View.VISIBLE);
 			}
 
@@ -150,8 +132,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 
 		});
-		viewBinding.enableVibrationFrame.setOnClickListener(
-			v -> viewBinding.enableVibrationMode.setChecked(!viewBinding.enableVibrationMode.isChecked()));
+		viewBinding.enableVibrationFrame.setOnClickListener(v -> viewBinding.enableVibrationMode.setChecked(!viewBinding.enableVibrationMode.isChecked()));
 
 	}
 

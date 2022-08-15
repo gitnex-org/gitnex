@@ -3,12 +3,7 @@ package org.mian.gitnex.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,9 +23,8 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 public class OrganizationTeamInfoReposFragment extends Fragment {
 
-	private RepositoriesViewModel repositoriesViewModel;
 	public static boolean repoAdded = false;
-
+	private RepositoriesViewModel repositoriesViewModel;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
@@ -135,6 +129,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				return false;
@@ -149,5 +144,6 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 			}
 		});
 	}
+
 }
 

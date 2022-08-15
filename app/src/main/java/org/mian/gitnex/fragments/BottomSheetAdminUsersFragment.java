@@ -17,34 +17,34 @@ import org.mian.gitnex.structs.BottomSheetListener;
 
 public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
 
-    private BottomSheetListener bmListener;
+	private BottomSheetListener bmListener;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-	    BottomSheetAdminUsersBinding bottomSheetAdminUsersBinding = BottomSheetAdminUsersBinding.inflate(inflater, container, false);
+		BottomSheetAdminUsersBinding bottomSheetAdminUsersBinding = BottomSheetAdminUsersBinding.inflate(inflater, container, false);
 
-        bottomSheetAdminUsersBinding.createNewUser.setOnClickListener(v1 -> {
+		bottomSheetAdminUsersBinding.createNewUser.setOnClickListener(v1 -> {
 
-            bmListener.onButtonClicked("newUser");
-            dismiss();
+			bmListener.onButtonClicked("newUser");
+			dismiss();
 
-        });
+		});
 
-        return bottomSheetAdminUsersBinding.getRoot();
-    }
+		return bottomSheetAdminUsersBinding.getRoot();
+	}
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
 
-        try {
-            bmListener = (BottomSheetListener) context;
-        }
-        catch (ClassCastException e) {
-            throw new ClassCastException(context + " must implement BottomSheetListener");
-        }
-    }
+		try {
+			bmListener = (BottomSheetListener) context;
+		}
+		catch(ClassCastException e) {
+			throw new ClassCastException(context + " must implement BottomSheetListener");
+		}
+	}
 
 }

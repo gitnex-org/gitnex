@@ -30,11 +30,43 @@ import java.util.List;
 
 public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-	private List<User> usersList;
 	private final List<User> usersListFull;
 	private final Context context;
+	private List<User> usersList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
+	private final Filter usersFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<User> filteredList = new ArrayList<>();
+
+			if(constraint == null || constraint.length() == 0) {
+				filteredList.addAll(usersListFull);
+			}
+			else {
+				String filterPattern = constraint.toString().toLowerCase().trim();
+
+				for(User item : usersListFull) {
+					if(item.getEmail().toLowerCase().contains(filterPattern) || item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
+						filteredList.add(item);
+					}
+				}
+			}
+
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+
+			usersList.clear();
+			usersList.addAll((List) results.values);
+			notifyDataChanged();
+		}
+	};
 
 	public AdminGetUsersAdapter(List<User> usersListMain, Context ctx) {
 		this.context = ctx;
@@ -69,14 +101,50 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 		return usersList.size();
 	}
 
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if(!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<User> list) {
+		usersList = list;
+		notifyDataChanged();
+	}
+
+	@Override
+	public Filter getFilter() {
+		return usersFilter;
+	}
+
+	public interface OnLoadMoreListener {
+
+		void onLoadMore();
+
+		void onLoadFinished();
+
+	}
+
 	class ReposHolder extends RecyclerView.ViewHolder {
 
-		private String userLoginId;
 		private final ImageView userAvatar;
 		private final TextView userFullName;
 		private final TextView userEmail;
 		private final ImageView userRole;
 		private final TextView userName;
+		private String userLoginId;
 
 		ReposHolder(View itemView) {
 
@@ -126,9 +194,8 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 			if(users.isIsAdmin()) {
 
 				userRole.setVisibility(View.VISIBLE);
-				TextDrawable drawable = TextDrawable.builder().beginConfig()
-					.textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null)).fontSize(60).width(200).height(80)
-					.endConfig().buildRoundRect(context.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null), 8);
+				TextDrawable drawable = TextDrawable.builder().beginConfig().textColor(ResourcesCompat.getColor(context.getResources(), R.color.colorWhite, null)).fontSize(60).width(200).height(80).endConfig()
+					.buildRoundRect(context.getResources().getString(R.string.userRoleAdmin).toLowerCase(), ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null), 8);
 				userRole.setImageDrawable(drawable);
 			}
 			else {
@@ -138,71 +205,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			PicassoService.getInstance(context).get().load(users.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
 		}
+
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if(!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
-	}
-
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-		void onLoadFinished();
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<User> list) {
-		usersList = list;
-		notifyDataChanged();
-	}
-
-    @Override
-    public Filter getFilter() {
-        return usersFilter;
-    }
-
-    private final Filter usersFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<User> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(usersListFull);
-            }
-            else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (User item : usersListFull) {
-                    if (item.getEmail().toLowerCase().contains(filterPattern) || item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-
-            usersList.clear();
-            usersList.addAll((List) results.values);
-            notifyDataChanged();
-        }
-    };
 }

@@ -21,61 +21,61 @@ import retrofit2.Response;
 
 public class RepositoriesViewModel extends ViewModel {
 
-    private MutableLiveData<List<Repository>> reposList;
+	private MutableLiveData<List<Repository>> reposList;
 
-    public LiveData<List<Repository>> getRepositories(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
+	public LiveData<List<Repository>> getRepositories(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
 
-    	reposList = new MutableLiveData<>();
-    	loadReposList(page, resultLimit, userLogin, type, orgName, ctx);
+		reposList = new MutableLiveData<>();
+		loadReposList(page, resultLimit, userLogin, type, orgName, ctx);
 
-        return reposList;
-    }
+		return reposList;
+	}
 
-    public void loadReposList(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
+	public void loadReposList(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
 
-	    Call<List<Repository>> call;
+		Call<List<Repository>> call;
 
-	    switch(type) {
-		    case "starredRepos":
-			    call = RetrofitClient.getApiInterface(ctx).userCurrentListStarred(page, resultLimit);
-			    break;
-		    case "myRepos":
-			    call = RetrofitClient.getApiInterface(ctx).userListRepos(userLogin, page, resultLimit);
-			    break;
-		    case "org":
-			    call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
-			    break;
-		    case "team":
+		switch(type) {
+			case "starredRepos":
+				call = RetrofitClient.getApiInterface(ctx).userCurrentListStarred(page, resultLimit);
+				break;
+			case "myRepos":
+				call = RetrofitClient.getApiInterface(ctx).userListRepos(userLogin, page, resultLimit);
+				break;
+			case "org":
+				call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
+				break;
+			case "team":
 				call = RetrofitClient.getApiInterface(ctx).orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
 				break;
-		    default:
-			    call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
-			    break;
-	    }
+			default:
+				call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
+				break;
+		}
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
 
-		        if(response.isSuccessful()) {
-			        if(response.code() == 200) {
-				        reposList.postValue(response.body());
-			        }
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					if(response.code() == 200) {
+						reposList.postValue(response.body());
+					}
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
 
-        });
-    }
+		});
+	}
 
 	public void loadMoreRepos(int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, ReposListAdapter adapter) {
 
@@ -129,4 +129,5 @@ public class RepositoriesViewModel extends ViewModel {
 			}
 		});
 	}
+
 }

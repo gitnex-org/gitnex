@@ -4,10 +4,10 @@
 
     <item
         android:id="@android:id/background"
-        android:top="2dp"
         android:bottom="2dp"
+        android:left="1dp"
         android:right="1dp"
-        android:left="1dp">
+        android:top="2dp">
         <shape>
             <corners android:radius="10dp"/>
             <solid android:color="?attr/inputBackgroundColor"/>
@@ -16,14 +16,14 @@
 
     <item
         android:id="@android:id/progress"
-        android:top="2dp"
         android:bottom="2dp"
         android:left="1dp"
-        android:right="1dp">
+        android:right="1dp"
+        android:top="2dp">
 
         <scale android:scaleWidth="100%">
             <shape>
-                <corners android:radius="10dp" />
+                <corners android:radius="10dp"/>
             </shape>
         </scale>
     </item>

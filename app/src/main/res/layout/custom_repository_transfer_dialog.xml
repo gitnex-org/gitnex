@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/dimen8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/dimen8dp">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mainView"
@@ -26,32 +26,32 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/repoSettingsTransferOwnership"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:text="@string/repoSettingsTransferOwnership"
-                    android:layout_marginBottom="16dp" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/repoSettingsTransferOwnershipDescription"
-                    android:layout_marginBottom="16dp" />
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="16sp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/repoNameForTransferLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxBackgroundColor="?attr/inputBackgroundColor"
-                    android:textColorHint="?attr/hintColor"
-                    app:hintTextColor="?attr/hintColor"
-                    app:boxStrokeErrorColor="@color/darkRed"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:hint="@string/newRepoTintCopy">
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/newRepoTintCopy"
+                    android:textColorHint="?attr/hintColor"
+                    app:boxBackgroundColor="?attr/inputBackgroundColor"
+                    app:boxStrokeErrorColor="@color/darkRed"
+                    app:hintTextColor="?attr/hintColor">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/repoNameForTransfer"
@@ -60,7 +60,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,13 +68,13 @@
                     android:id="@+id/ownerNameForTransferLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxBackgroundColor="?attr/inputBackgroundColor"
-                    android:textColorHint="?attr/hintColor"
-                    app:hintTextColor="?attr/hintColor"
-                    app:boxStrokeErrorColor="@color/darkRed"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:hint="@string/repoTransferOwnerText">
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/repoTransferOwnerText"
+                    android:textColorHint="?attr/hintColor"
+                    app:boxBackgroundColor="?attr/inputBackgroundColor"
+                    app:boxStrokeErrorColor="@color/darkRed"
+                    app:hintTextColor="?attr/hintColor">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ownerNameForTransfer"
@@ -83,7 +83,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,23 +91,23 @@
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/processingRequest"
+                style="@style/Widget.Material3.LinearProgressIndicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:indeterminate="true"
-                style="@style/Widget.Material3.LinearProgressIndicator"
-                app:indicatorColor="?attr/progressIndicatorColor" />
+                android:visibility="gone"
+                app:indicatorColor="?attr/progressIndicatorColor"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/transfer"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen16dp"
-                android:text="@string/repoTransferText"
                 android:backgroundTint="@color/darkRed"
+                android:text="@string/repoTransferText"
                 android:textColor="@color/colorWhite"
-                android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 

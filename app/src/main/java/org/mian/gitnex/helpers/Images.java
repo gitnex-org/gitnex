@@ -12,7 +12,9 @@ public class Images {
 	public static Bitmap scaleImage(byte[] imageData, int sizeLimit) {
 
 		Bitmap original = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-		if(original == null) return null; // something went wrong
+		if(original == null) {
+			return null; // something went wrong
+		}
 
 		if(original.getHeight() > sizeLimit && original.getWidth() <= original.getHeight()) {
 

@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_people" />
+                    app:srcCompat="@drawable/ic_people"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -45,23 +45,23 @@
                         android:paddingEnd="12dp"
                         android:text="@string/adminUsers"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_chevron_right"
-                    android:contentDescription="@string/generalImgContentText" />
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
             <View
+                android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:id="@+id/divider"
-                android:background="?attr/dividerColor" />
+                android:background="?attr/dividerColor"/>
 
             <LinearLayout
                 android:id="@+id/adminCronFrame"
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_tasks" />
+                    app:srcCompat="@drawable/ic_tasks"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -94,22 +94,22 @@
                         android:paddingEnd="12dp"
                         android:text="@string/adminCron"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_chevron_right"
-                    android:contentDescription="@string/generalImgContentText" />
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="?attr/dividerColor" />
+                android:background="?attr/dividerColor"/>
 
             <LinearLayout
                 android:id="@+id/unadoptedReposFrame"
@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_directory" />
+                    app:srcCompat="@drawable/ic_directory"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -142,15 +142,15 @@
                         android:paddingEnd="12dp"
                         android:text="@string/unadoptedRepos"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_chevron_right"
-                    android:contentDescription="@string/generalImgContentText" />
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 

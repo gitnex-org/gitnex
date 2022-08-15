@@ -55,4 +55,5 @@ public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
+
 }

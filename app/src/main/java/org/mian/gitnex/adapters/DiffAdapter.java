@@ -23,20 +23,18 @@ import java.util.stream.Collectors;
 
 public class DiffAdapter extends BaseAdapter {
 
-	private final Context context;
-	private final FragmentManager fragmentManager;
-	private final List<String> lines;
-	private final IssueContext issue;
-
-	private final List<Integer> selectedLines;
-	private final Typeface typeface;
-	private final String type;
-
 	private static int COLOR_ADDED;
 	private static int COLOR_REMOVED;
 	private static int COLOR_NORMAL;
 	private static int COLOR_SELECTED;
 	private static int COLOR_FONT;
+	private final Context context;
+	private final FragmentManager fragmentManager;
+	private final List<String> lines;
+	private final IssueContext issue;
+	private final List<Integer> selectedLines;
+	private final Typeface typeface;
+	private final String type;
 
 	public DiffAdapter(Context context, FragmentManager fragmentManager, List<String> lines, IssueContext issue, String type) {
 
@@ -123,8 +121,8 @@ public class DiffAdapter extends BaseAdapter {
 					bundle.putString("commentBody", stringBuilder.toString());
 					bundle.putBoolean("cursorToEnd", true);
 
-				BottomSheetReplyFragment.newInstance(bundle, issue).show(fragmentManager, "replyBottomSheet");
-			}
+					BottomSheetReplyFragment.newInstance(bundle, issue).show(fragmentManager, "replyBottomSheet");
+				}
 
 				return true;
 
@@ -149,10 +147,13 @@ public class DiffAdapter extends BaseAdapter {
 		}
 
 		switch(line.charAt(0)) {
-			case '+': return COLOR_ADDED;
-			case '-': return COLOR_REMOVED;
+			case '+':
+				return COLOR_ADDED;
+			case '-':
+				return COLOR_REMOVED;
 
-			default: return COLOR_NORMAL;
+			default:
+				return COLOR_NORMAL;
 		}
 	}
 

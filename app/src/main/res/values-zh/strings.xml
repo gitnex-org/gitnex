@@ -51,7 +51,9 @@
     <string name="navigationDrawerClose">关闭导航栏</string>
     <string name="logo">登录到 Gitea</string>
     <string name="protocol">协议</string>
-    <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。 \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。</string>
+    <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。
+        \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。
+    </string>
     <string name="malformedUrl">无法连接到主机。请检查您的 URL 或端口是否有任何错误</string>
     <string name="protocolError">除非您正在本地网络上测试，否则不建议使用 HTTP 协议</string>
     <string name="malformedJson">收到格式错误的 JSON 。服务器响应不成功</string>
@@ -497,9 +499,13 @@
     <string name="settingsEnableReportsText">启用崩溃报告</string>
     <string name="crashTitle">GitNex 已停止 :(</string>
     <string name="setCrashReports">崩溃报告</string>
-    <string name="crashMessage">鼓励在项目存储库中提出一个问题，并说明如何重现这个bug。这样更容易调试和修复问题。\n\n点击OK按钮，通过电子邮件发送崩溃报告。可以在电子邮件中添加其他内容，\n谢谢！</string>
+    <string name="crashMessage">
+        鼓励在项目存储库中提出一个问题，并说明如何重现这个bug。这样更容易调试和修复问题。\n\n点击OK按钮，通过电子邮件发送崩溃报告。可以在电子邮件中添加其他内容，\n谢谢！
+    </string>
     <string name="forceLogoutDialogHeader">请重新登录</string>
-    <string name="forceLogoutDialogDescription">由于应用内部功能发生了一些重大变化，我们要求您重新登录。这些变化使我们能够使应用程序在未来更具灵活性。\n\n感谢您的耐心，对给您带来的不便我们深表歉意</string>
+    <string name="forceLogoutDialogDescription">
+        由于应用内部功能发生了一些重大变化，我们要求您重新登录。这些变化使我们能够使应用程序在未来更具灵活性。\n\n感谢您的耐心，对给您带来的不便我们深表歉意
+    </string>
     <string name="deleteAllDrafts">删除所有草稿</string>
     <string name="draftsListEmpty">未找到草稿</string>
     <string name="draftsDeleteSuccess">已成功删除草稿</string>
@@ -563,12 +569,16 @@
     <string name="repoPropertiesEnableSquash">启用压扁和合并</string>
     <string name="repoPropertiesEnableForceMerge">用合并提交(&#8212;&#8212;no-ff)启用代码变基</string>
     <string name="repoPropertiesSaveSuccess">成功更新存储库属性</string>
-    <string name="repoSettingsDeleteDescription">删除前要知道的事:\n\n-此操作无法撤消。\n-此操作将永久删除存储库，包括代码、问题、注释、Wiki数据和协作者设置。\n\n输入存储库名称作为确认</string>
+    <string name="repoSettingsDeleteDescription">
+        删除前要知道的事:\n\n-此操作无法撤消。\n-此操作将永久删除存储库，包括代码、问题、注释、Wiki数据和协作者设置。\n\n输入存储库名称作为确认
+    </string>
     <string name="repoSettingsDeleteError">存储库名称不匹配</string>
     <string name="repoDeletionSuccess">成功删除存储库</string>
     <string name="repoSettingsTransferOwnership">转移所有权</string>
     <string name="repoSettingsTransferOwnershipHint">将此存储库传输给您具有管理员权限的用户或组织</string>
-    <string name="repoSettingsTransferOwnershipDescription">转移所有权之前需要注意的事项:\n\n- 如果将存储库移交给单个用户，您将失去对该存储库的访问权。\n- 如果您将存储库转移到您和他人(共同)拥有的组织，那么您将保留对该存储库的访问权。\n\n输入存储库名称作为确认</string>
+    <string name="repoSettingsTransferOwnershipDescription">转移所有权之前需要注意的事项:\n\n- 如果将存储库移交给单个用户，您将失去对该存储库的访问权。\n-
+        如果您将存储库转移到您和他人(共同)拥有的组织，那么您将保留对该存储库的访问权。\n\n输入存储库名称作为确认
+    </string>
     <string name="repoTransferText">执行移交</string>
     <string name="repoTransferOwnerText">新所有者</string>
     <string name="repoTransferSuccess">成功移交存储库</string>
@@ -593,7 +603,9 @@
     <string name="prMergeInfo">合并请求信息</string>
     <string name="accountDoesNotExist">似乎应用程序中并不存在URI%1$s的账户。您可以通过点击添加新帐户按钮来添加一个。</string>
     <string name="launchApp">前往应用</string>
-    <string name="noActionText">GitNex无法处理所请求的资源，您可以在项目代码库中发起一个问题，提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。</string>
+    <string name="noActionText">
+        GitNex无法处理所请求的资源，您可以在项目代码库中发起一个问题，提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。
+    </string>
     <string name="biometricAuthTitle">生物特征认证</string>
     <string name="biometricAuthSubTitle">使用你的生物特征凭证解锁</string>
     <string name="biometricNotSupported">此设备无可用的生物特征功能</string>

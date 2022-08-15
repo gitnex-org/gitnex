@@ -17,11 +17,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
@@ -36,10 +32,10 @@ import java.util.Locale;
 public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
+	private final TinyDB tinyDb;
 	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
-	private final TinyDB tinyDb;
 
 	public ExploreRepositoriesAdapter(List<org.gitnex.tea4j.v2.models.Repository> dataList, Context ctx) {
 		this.context = ctx;
@@ -73,17 +69,36 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 		return reposList.size();
 	}
 
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+	}
+
+	public void setLoadMoreListener(Runnable loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
+		reposList = list;
+		notifyDataChanged();
+	}
+
 	class RepositoriesHolder extends RecyclerView.ViewHolder {
-		private org.gitnex.tea4j.v2.models.Repository userRepositories;
 
 		private final ImageView image;
 		private final TextView repoName;
 		private final TextView orgName;
 		private final TextView repoDescription;
-		private CheckBox isRepoAdmin;
 		private final TextView repoStars;
 		private final TextView repoLastUpdated;
 		private final View spacerView;
+		private org.gitnex.tea4j.v2.models.Repository userRepositories;
+		private CheckBox isRepoAdmin;
 
 		RepositoriesHolder(View itemView) {
 			super(itemView);
@@ -126,7 +141,8 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 
 			if(userRepositories.getAvatarUrl() != null) {
 				if(!userRepositories.getAvatarUrl().equals("")) {
-					PicassoService.getInstance(context).get().load(userRepositories.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(image);
+					PicassoService.getInstance(context).get().load(userRepositories.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+						.into(image);
 				}
 				else {
 					image.setImageDrawable(drawable);
@@ -179,24 +195,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			}
 			isRepoAdmin.setChecked(userRepositories.getPermissions().isAdmin());
 		}
+
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-	}
-
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
-		reposList = list;
-		notifyDataChanged();
-	}
 }

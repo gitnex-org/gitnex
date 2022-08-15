@@ -52,7 +52,10 @@
     <string name="navigationDrawerClose">Fermer le volet de navigation</string>
     <string name="logo">Se connecter à Gitea</string>
     <string name="protocol">Protocole</string>
-    <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA</string>
+    <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3.
+        Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP,
+        utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA
+    </string>
     <string name="malformedUrl">Connexion impossible. Veuillez vérifier l’URL et le port</string>
     <string name="protocolError">Le protocole HTTP est déconseillé en dehors de tests sur un réseau local</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
@@ -147,7 +150,9 @@
     <string name="settingsSecurityHeader">Sécurité</string>
     <string name="settingsCertsSelectorHeader">Supprimer les certificats</string>
     <string name="settingsCertsPopupTitle">Supprimer les certificats ?</string>
-    <string name="settingsCertsPopupMessage">Les noms d’hôtes et les certificats ajoutés manuellement seront supprimés.\n\nIl faudra vous reconnecter.</string>
+    <string name="settingsCertsPopupMessage">Les noms d’hôtes et les certificats ajoutés manuellement seront supprimés.\n\nIl faudra vous
+        reconnecter.
+    </string>
     <string name="settingsDateTimeHeaderText">Date et heure</string>
     <string name="settingsSave">Réglages enregistrés</string>
     <string name="settingsLanguageSelectorHeader">Langue</string>
@@ -177,7 +182,8 @@
     <string name="cacheSizeImagesSelectionHeaderText">Cache des images</string>
     <string name="clearCacheSelectionHeaderText">Vider le cache</string>
     <string name="clearCacheDialogHeader">Vider le cache ?</string>
-    <string name="clearCacheDialogMessage">Toutes les données du cache seront supprimées, y compris les fichiers et les images.\n\nContinuer ?</string>
+    <string name="clearCacheDialogMessage">Toutes les données du cache seront supprimées, y compris les fichiers et les images.\n\nContinuer ?
+    </string>
     <string name="draftsHeader">Brouillons</string>
     <string name="draftsHintText">Brouillon de commentaires</string>
     <string name="settingsEnableCommentsDeletionText">Supprimer les brouillons</string>
@@ -185,7 +191,9 @@
     <string name="settingsGeneralHeader">Général</string>
     <string name="generalHintText">Ouverture des liens, écran d’accueil</string>
     <string name="generalDeepLinkDefaultScreen">Écran par défaut</string>
-    <string name="generalDeepLinkDefaultScreenHintText">L’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien externe.</string>
+    <string name="generalDeepLinkDefaultScreenHintText">L’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien
+        externe.
+    </string>
     <string name="generalDeepLinkSelectedText">S/O</string>
     <string name="linkSelectorDialogTitle">Écran par défaut</string>
     <string name="settingsBiometricHeader">Biométrie</string>
@@ -205,7 +213,9 @@
     <string name="labelDeleteText">Étiquette supprimée</string>
     <string name="selectBranchError">Branche de diffusion</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
-    <string name="alertDialogTokenRevokedMessage">Le jeton d’accès est peut-être révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nEn cas de jeton révoqué, veuillez vous reconnecter</string>
+    <string name="alertDialogTokenRevokedMessage">Le jeton d’accès est peut-être révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nEn cas de
+        jeton révoqué, veuillez vous reconnecter
+    </string>
     <string name="labelDeleteMessage">Voulez-vous vraiment supprimer cette étiquette ?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Équipes</string>
@@ -241,7 +251,8 @@
     <string name="newTeamPermissionWrite">Les membres peuvent lire et pousser dans les dépôts de l’équipe.</string>
     <string name="newTeamPermissionAdmin">Les membres peuvent tirer et pousser dans les dépôts de l’équipe ainsi qu’ajouter des participants.</string>
     <string name="teamNameEmpty">Nom d’équipe requis</string>
-    <string name="teamNameError">Le nom d’équipe peut contenir des caractères alphanumériques, des tirets (-), des soulignés (_) et des points (.).</string>
+    <string name="teamNameError">Le nom d’équipe peut contenir des caractères alphanumériques, des tirets (-), des soulignés (_) et des points (.).
+    </string>
     <string name="teamPermissionEmpty">Veuillez sélectionner une permission</string>
     <string name="teamDescError">La description contient des caractères interdits</string>
     <string name="teamDescLimit">La description de l’équipe dépasse la limite de 100 caractères</string>
@@ -393,7 +404,8 @@
     <string name="viewInBrowser">Voir dans le navigateur</string>
     <string name="isOpen">Ouvert</string>
     <string name="isClosed">Fermé</string>
-    <string name="genericServerResponseError">Impossible de se connecter au serveur pour le moment, veuillez vérifier son statut puis réessayer</string>
+    <string name="genericServerResponseError">Impossible de se connecter au serveur pour le moment, veuillez vérifier son statut puis réessayer
+    </string>
     <string name="genericCopyUrl">Copier l’URL</string>
     <string name="genericWaitFor">Attendez un instant ☕</string>
     <string name="file">Fichier</string>
@@ -423,7 +435,9 @@
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
     <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
     <string name="titleDrafts">Brouillons</string>
-    <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous continuez, l’application peut ne pas fonctionner correctement.</string>
+    <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous
+        continuez, l’application peut ne pas fonctionner correctement.
+    </string>
     <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
     <string name="versionUnknown">Aucun serveur Gitea détecté !</string>
     <string name="versionAlertDialogHeader">Version de Gitea non prise en charge</string>
@@ -460,7 +474,9 @@
     <string name="deleteBranch">Supprimer la branche</string>
     <string name="waitLoadingDownloadFile">Chargement du fichier dans la mémoire</string>
     <string name="downloadFileSaved">Fichier sauvegardé</string>
-    <string name="excludeFilesInFileViewer">Le fichier incompatible ou trop grand pour la visionneuse. Vous pouvez toutefois le télécharger depuis le menu.</string>
+    <string name="excludeFilesInFileViewer">Le fichier incompatible ou trop grand pour la visionneuse. Vous pouvez toutefois le télécharger depuis le
+        menu.
+    </string>
     <string name="deleteFile">Supprimer ce fichier</string>
     <string name="editFile">Éditer ce fichier</string>
     <string name="deleteFileMessage">Fichier supprimé par la branche %1$s</string>
@@ -498,9 +514,14 @@
     <string name="settingsEnableReportsText">Rapports de plantage</string>
     <string name="crashTitle">GitNex a planté :(</string>
     <string name="setCrashReports">Débogage</string>
-    <string name="crashMessage">Il est conseillé de créer un ticket expliquant comment reproduire ce bogue pour faciliter la correction du problème.\n\nAppuyez sur « D’accord » si vous préférez envoyer le rapport de plantage par courriel. Libre à vous d’y ajouter du contenu supplémentaire.\nMerci!</string>
+    <string name="crashMessage">Il est conseillé de créer un ticket expliquant comment reproduire ce bogue pour faciliter la correction du
+        problème.\n\nAppuyez sur « D’accord » si vous préférez envoyer le rapport de plantage par courriel. Libre à vous d’y ajouter du contenu
+        supplémentaire.\nMerci!
+    </string>
     <string name="forceLogoutDialogHeader">Veuillez vous reconnecter</string>
-    <string name="forceLogoutDialogDescription">Une reconnexion est nécessaire en raison de changements majeurs du fonctionnement interne pour améliorer la souplesse de l\'application.\n\nMerci pour votre patience et toutes nos excuses pour la gêne occasionnée.</string>
+    <string name="forceLogoutDialogDescription">Une reconnexion est nécessaire en raison de changements majeurs du fonctionnement interne pour
+        améliorer la souplesse de l\'application.\n\nMerci pour votre patience et toutes nos excuses pour la gêne occasionnée.
+    </string>
     <string name="deleteAllDrafts">Supprimer tous les brouillons</string>
     <string name="draftsListEmpty">Aucun brouillon</string>
     <string name="draftsDeleteSuccess">Brouillons supprimés</string>
@@ -517,7 +538,9 @@
     <string name="archivedRepositoryMessage">Ce dépôt est archivé. Les fichiers sont accessibles, mais aucune modification n’est possible.</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
     <string name="removeAccountPopupTitle">Supprimer le compte</string>
-    <string name="removeAccountPopupMessage">Êtes-vous sûr de vouloir supprimer ce compte de l’application ?\n\nSeules les données de l’application seront supprimées.</string>
+    <string name="removeAccountPopupMessage">Êtes-vous sûr de vouloir supprimer ce compte de l’application ?\n\nSeules les données de l’application
+        seront supprimées.
+    </string>
     <string name="addNewAccount">Nouveau compte</string>
     <string name="addNewAccountText">Ajouter un nouveau compte</string>
     <string name="accountAlreadyExistsError">Ce compte existe déjà dans l’application</string>
@@ -565,12 +588,19 @@
     <string name="repoPropertiesEnableSquash">Activer squash et fusion</string>
     <string name="repoPropertiesEnableForceMerge">Activer resbasage avec révision de fusion (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Propriétés du dépôt mises à jour</string>
-    <string name="repoSettingsDeleteDescription">Cette opération est IRRÉVERSIBLE.\nSoyez conscient que le dépôt et son contenu (code, tickets, commentaires, wiki, contributions…) seront définitivement supprimés.\n\nEntrez le nom du dépôt afin de confirmer cette opération.</string>
+    <string name="repoSettingsDeleteDescription">Cette opération est IRRÉVERSIBLE.\nSoyez conscient que le dépôt et son contenu (code, tickets,
+        commentaires, wiki, contributions…) seront définitivement supprimés.\n\nEntrez le nom du dépôt afin de confirmer cette opération.
+    </string>
     <string name="repoSettingsDeleteError">Nom du dépôt incorrect</string>
     <string name="repoDeletionSuccess">Dépôt supprimé</string>
     <string name="repoSettingsTransferOwnership">Changer de propriétaire</string>
-    <string name="repoSettingsTransferOwnershipHint">Transfère le dépôt à un autre utilisateur ou une autre organisation dont vous possédez les droits d\'administrateur</string>
-    <string name="repoSettingsTransferOwnershipDescription">Choses à savoir avant le transfert :\n\n- Vous perdez l’accès au dépôt si vous le transférez à un autre utilisateur.\n- Vous conservez l’accès au dépôt si vous le transférez à une organisation que vous (co-)gérez.\n\nEntrez le nom du dépôt pour confirmer</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfère le dépôt à un autre utilisateur ou une autre organisation dont vous possédez les droits
+        d\'administrateur
+    </string>
+    <string name="repoSettingsTransferOwnershipDescription">Choses à savoir avant le transfert :\n\n- Vous perdez l’accès au dépôt si vous le
+        transférez à un autre utilisateur.\n- Vous conservez l’accès au dépôt si vous le transférez à une organisation que vous (co-)gérez.\n\nEntrez
+        le nom du dépôt pour confirmer
+    </string>
     <string name="repoTransferText">Transférer</string>
     <string name="repoTransferOwnerText">Nouveau propriétaire</string>
     <string name="repoTransferSuccess">Dépôt transféré</string>
@@ -593,9 +623,13 @@
     <string name="prClosed">Demande d’ajout fermée</string>
     <string name="prReopened">Demande d’ajout rouverte</string>
     <string name="prMergeInfo">Infos sur la demande d’ajout</string>
-    <string name="accountDoesNotExist">Ce compte associé à l\'URI %1$s n\'existe pas dans l\'application. Vous pouvez l\'ajouter en appuyant sur Ajouter un nouveau compte.</string>
+    <string name="accountDoesNotExist">Ce compte associé à l\'URI %1$s n\'existe pas dans l\'application. Vous pouvez l\'ajouter en appuyant sur
+        Ajouter un nouveau compte.
+    </string>
     <string name="launchApp">Lancer l’app</string>
-    <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet. Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessus.</string>
+    <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet.
+        Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessus.
+    </string>
     <string name="biometricAuthTitle">Authentification biométrique</string>
     <string name="biometricAuthSubTitle">Déverrouiller à l’aide de vos identifiants biométriques</string>
     <string name="biometricNotSupported">Cet appareil ne permet pas la biométrie</string>
@@ -619,7 +653,8 @@
     <string name="nowFollowUser">Vous suivez @%s</string>
     <string name="unfollowingFailed">Impossible de ne plus suivre l’utilisateur</string>
     <string name="followingFailed">Impossible de suivre l’utilisateur</string>
-    <string name="updatePrConflict">La demande d’ajout est en conflit avec la branche principale. Veuillez résoudre ce conflit, puis réessayez.</string>
+    <string name="updatePrConflict">La demande d’ajout est en conflit avec la branche principale. Veuillez résoudre ce conflit, puis réessayez.
+    </string>
     <string name="updatePrSuccess">Demande d’ajout mise à jour</string>
     <string name="updateStrategyMerge">Fusionner</string>
     <string name="updateStrategyRebase">Rebaser</string>
@@ -634,7 +669,9 @@
     <string name="tagDeleted">Tag supprimé</string>
     <string name="tagDeleteError">Un tag attaché à une diffusion ne peut être directement supprimé.</string>
     <string name="useCustomTabs">Utiliser des onglets personnalisés</string>
-    <string name="browserOpenFailed">Aucune application présente ne peut ouvrir ce lien. Les URL SSH ou avec un préfixe autre que http:// ou https:// ne sont pas compatibles avec la plupart des navigateurs.</string>
+    <string name="browserOpenFailed">Aucune application présente ne peut ouvrir ce lien. Les URL SSH ou avec un préfixe autre que http:// ou https://
+        ne sont pas compatibles avec la plupart des navigateurs.
+    </string>
     <string name="logInAgain">Se reconnecter</string>
     <string name="notLoggedIn">%s \u25CF n’est pas connecté</string>
     <string name="followSystem">Suivant le système (clair/sombre)</string>
@@ -643,7 +680,8 @@
     <string name="adoptRepo">Adopter</string>
     <string name="repoAdopted">Dépôt %s adopté</string>
     <string name="unadoptedRepos">Dépôts abandonnés</string>
-    <string name="unadoptedReposMessage">- Adopter le dépôt %s l’ajoutera à l’organisation/utilisateur %s.\n- Le supprimer l’effacera du système.</string>
+    <string name="unadoptedReposMessage">- Adopter le dépôt %s l’ajoutera à l’organisation/utilisateur %s.\n- Le supprimer l’effacera du système.
+    </string>
     <string name="commits">Révisions</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>

@@ -13,23 +13,23 @@
         android:layout_height="@dimen/dimen36dp"
         android:checked="false"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="@dimen/dimen16sp" />
+        android:textSize="@dimen/dimen16sp"/>
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="@dimen/dimen20dp"
         android:layout_height="@dimen/dimen20dp"
-        style="?attr/materialCardViewFilledStyle"
-        android:layout_marginTop="@dimen/dimen8dp"
         android:layout_marginStart="@dimen/dimen44dp"
+        android:layout_marginTop="@dimen/dimen8dp"
         android:layout_marginEnd="@dimen/dimen4dp"
-        app:cardElevation="@dimen/dimen0dp"
-        app:cardCornerRadius="@dimen/dimen24dp">
+        app:cardCornerRadius="@dimen/dimen24dp"
+        app:cardElevation="@dimen/dimen0dp">
 
         <ImageView
             android:id="@+id/assigneesAvatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/generalImgContentText" />
+            android:contentDescription="@string/generalImgContentText"/>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -37,11 +37,11 @@
         android:id="@+id/assigneesName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dimen8dp"
         android:paddingStart="@dimen/dimen72dp"
+        android:paddingTop="@dimen/dimen8dp"
         android:paddingEnd="@dimen/dimen4dp"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="@dimen/dimen16sp" />
+        android:textSize="@dimen/dimen16sp"/>
 
 </RelativeLayout>
 

@@ -20,40 +20,39 @@ import retrofit2.Response;
 
 public class ProfileEmailsViewModel extends ViewModel {
 
-    private MutableLiveData<List<Email>> emailsList;
+	private MutableLiveData<List<Email>> emailsList;
 
-    public LiveData<List<Email>> getEmailsList(Context ctx) {
+	public LiveData<List<Email>> getEmailsList(Context ctx) {
 
-        emailsList = new MutableLiveData<>();
-        loadEmailsList(ctx);
+		emailsList = new MutableLiveData<>();
+		loadEmailsList(ctx);
 
-        return emailsList;
-    }
+		return emailsList;
+	}
 
-    public void loadEmailsList(Context ctx) {
+	public void loadEmailsList(Context ctx) {
 
-        Call<List<Email>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .userListEmails();
+		Call<List<Email>> call = RetrofitClient.getApiInterface(ctx).userListEmails();
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Email>> call, @NonNull Response<List<Email>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<Email>> call, @NonNull Response<List<Email>> response) {
 
-		        if(response.isSuccessful()) {
-			        emailsList.postValue(response.body());
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					emailsList.postValue(response.body());
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<Email>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<Email>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
 }

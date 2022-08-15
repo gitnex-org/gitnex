@@ -17,9 +17,7 @@ import retrofit2.Response;
 public class PullRequestActions {
 
 	public static void deleteHeadBranch(Context context, String repoOwner, String repoName, String headBranch, boolean showToasts) {
-		Call<Void> call = RetrofitClient
-				.getApiInterface(context)
-				.repoDeleteBranch(repoOwner, repoName, headBranch);
+		Call<Void> call = RetrofitClient.getApiInterface(context).repoDeleteBranch(repoOwner, repoName, headBranch);
 
 		call.enqueue(new Callback<>() {
 
@@ -79,8 +77,7 @@ public class PullRequestActions {
 		else {
 			strategy = "rebase";
 		}
-		RetrofitClient.getApiInterface(context).repoUpdatePullRequest(repoOwner, repoName, Long.valueOf(index), strategy)
-			.enqueue(new Callback<>() {
+		RetrofitClient.getApiInterface(context).repoUpdatePullRequest(repoOwner, repoName, Long.valueOf(index), strategy).enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call call, @NonNull Response response) {
@@ -108,4 +105,5 @@ public class PullRequestActions {
 			}
 		});
 	}
+
 }

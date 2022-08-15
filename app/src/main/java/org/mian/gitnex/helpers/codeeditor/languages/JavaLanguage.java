@@ -20,19 +20,14 @@ import java.util.regex.Pattern;
 public class JavaLanguage {
 
 	//Language Keywords
-	private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(abstract|boolean|break|byte|case|catch" +
-		"|char|class|continue|default|do|double|else" +
-		"|enum|extends|final|finally|float|for|if" +
-		"|implements|import|instanceof|int|interface" +
-		"|long|native|new|null|package|private|protected" +
-		"|public|return|short|static|strictfp|super|switch" +
-		"|synchronized|this|throw|transient|try|void|volatile|while)\\b");
+	private static final Pattern PATTERN_KEYWORDS = Pattern.compile(
+		"\\b(abstract|boolean|break|byte|case|catch" + "|char|class|continue|default|do|double|else" + "|enum|extends|final|finally|float|for|if" + "|implements|import|instanceof|int|interface" + "|long|native|new|null|package|private|protected" + "|public|return|short|static|strictfp|super|switch" + "|synchronized|this|throw|transient|try|void|volatile|while)\\b");
 
 	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
 	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("//[^\\n]*");
 	private static final Pattern PATTERN_MULTI_LINE_COMMENT = Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
 	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION =Pattern.compile( ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
+	private static final Pattern PATTERN_OPERATION = Pattern.compile(":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 	private static final Pattern PATTERN_GENERIC = Pattern.compile("<[a-zA-Z0-9,<>]+>");
 	private static final Pattern PATTERN_ANNOTATION = Pattern.compile("@.[a-zA-Z0-9]+");
 	private static final Pattern PATTERN_TODO_COMMENT = Pattern.compile("//TODO[^\n]*");
@@ -79,7 +74,7 @@ public class JavaLanguage {
 	public static List<Code> getCodeList(Context context) {
 		List<Code> codeList = new ArrayList<>();
 		String[] keywords = getKeywords(context);
-		for (String keyword : keywords) {
+		for(String keyword : keywords) {
 			codeList.add(new Keyword(keyword));
 		}
 		return codeList;
@@ -104,4 +99,5 @@ public class JavaLanguage {
 	public static String getCommentEnd() {
 		return "";
 	}
+
 }

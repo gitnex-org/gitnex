@@ -19,69 +19,69 @@ import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 
 public class RepoWatchersActivity extends BaseActivity {
 
-    private TextView noDataWatchers;
-    private View.OnClickListener onClickListener;
-    private UserGridAdapter adapter;
-    private GridView mGridView;
-    private ProgressBar mProgressBar;
+	private TextView noDataWatchers;
+	private View.OnClickListener onClickListener;
+	private UserGridAdapter adapter;
+	private GridView mGridView;
+	private ProgressBar mProgressBar;
 
-    private RepositoryContext repository;
+	private RepositoryContext repository;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    ActivityRepoWatchersBinding activityRepoWatchersBinding = ActivityRepoWatchersBinding.inflate(getLayoutInflater());
-	    setContentView(activityRepoWatchersBinding.getRoot());
+		ActivityRepoWatchersBinding activityRepoWatchersBinding = ActivityRepoWatchersBinding.inflate(getLayoutInflater());
+		setContentView(activityRepoWatchersBinding.getRoot());
 
-        ImageView closeActivity = activityRepoWatchersBinding.close;
-        TextView toolbarTitle = activityRepoWatchersBinding.toolbarTitle;
-        noDataWatchers = activityRepoWatchersBinding.noDataWatchers;
-        mGridView = activityRepoWatchersBinding.gridView;
-        mProgressBar = activityRepoWatchersBinding.progressBar;
+		ImageView closeActivity = activityRepoWatchersBinding.close;
+		TextView toolbarTitle = activityRepoWatchersBinding.toolbarTitle;
+		noDataWatchers = activityRepoWatchersBinding.noDataWatchers;
+		mGridView = activityRepoWatchersBinding.gridView;
+		mProgressBar = activityRepoWatchersBinding.progressBar;
 
-        repository = RepositoryContext.fromIntent(getIntent());
-        final String repoOwner = repository.getOwner();
-        final String repoName = repository.getName();
+		repository = RepositoryContext.fromIntent(getIntent());
+		final String repoOwner = repository.getOwner();
+		final String repoName = repository.getName();
 
-        initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
+		initCloseListener();
+		closeActivity.setOnClickListener(onClickListener);
 
-        toolbarTitle.setText(R.string.repoWatchersInMenu);
+		toolbarTitle.setText(R.string.repoWatchersInMenu);
 
-        fetchDataAsync(repoOwner, repoName);
-    }
+		fetchDataAsync(repoOwner, repoName);
+	}
 
-    private void fetchDataAsync(String repoOwner, String repoName) {
+	private void fetchDataAsync(String repoOwner, String repoName) {
 
-        RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
+		RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
-        repoWatchersModel.getRepoWatchers(repoOwner, repoName, ctx).observe(this, watchersListMain -> {
+		repoWatchersModel.getRepoWatchers(repoOwner, repoName, ctx).observe(this, watchersListMain -> {
 
-            adapter = new UserGridAdapter(ctx, watchersListMain);
+			adapter = new UserGridAdapter(ctx, watchersListMain);
 
-            if(adapter.getCount() > 0) {
+			if(adapter.getCount() > 0) {
 
-                mGridView.setAdapter(adapter);
-                noDataWatchers.setVisibility(View.GONE);
-            }
-            else {
+				mGridView.setAdapter(adapter);
+				noDataWatchers.setVisibility(View.GONE);
+			}
+			else {
 
-                adapter.notifyDataSetChanged();
-                mGridView.setAdapter(adapter);
-                noDataWatchers.setVisibility(View.VISIBLE);
-            }
+				adapter.notifyDataSetChanged();
+				mGridView.setAdapter(adapter);
+				noDataWatchers.setVisibility(View.VISIBLE);
+			}
 
-            mProgressBar.setVisibility(View.GONE);
-        });
+			mProgressBar.setVisibility(View.GONE);
+		});
 
-    }
+	}
 
-    private void initCloseListener() {
+	private void initCloseListener() {
 
-        onClickListener = view -> finish();
-    }
+		onClickListener = view -> finish();
+	}
 
 	@Override
 	public void onResume() {
