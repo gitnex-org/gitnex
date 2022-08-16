@@ -10,16 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoForksAdapter;
@@ -39,16 +33,13 @@ import retrofit2.Response;
 
 public class RepoForksActivity extends BaseActivity {
 
+	private ActivityRepoForksBinding activityRepoForksBinding;
 	private final String TAG = "RepositoryForks";
-	private TextView noData;
-	private ProgressBar progressBar;
+
 	private int resultLimit;
 	private int pageSize = 1;
-
-	private RecyclerView recyclerView;
 	private List<Repository> forksList;
 	private RepoForksAdapter adapter;
-	private ProgressBar progressLoadMore;
 
 	private RepositoryContext repository;
 
@@ -58,7 +49,7 @@ public class RepoForksActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityRepoForksBinding activityRepoForksBinding = ActivityRepoForksBinding.inflate(getLayoutInflater());
+		activityRepoForksBinding = ActivityRepoForksBinding.inflate(getLayoutInflater());
 		setContentView(activityRepoForksBinding.getRoot());
 
 		Toolbar toolbar = activityRepoForksBinding.toolbar;
@@ -70,32 +61,21 @@ public class RepoForksActivity extends BaseActivity {
 
 		activityRepoForksBinding.toolbarTitle.setText(ctx.getResources().getString(R.string.infoTabRepoForksCount));
 
-		ImageView closeActivity = activityRepoForksBinding.close;
-		noData = activityRepoForksBinding.noData;
-		progressLoadMore = activityRepoForksBinding.progressLoadMore;
-		progressBar = activityRepoForksBinding.progressBar;
-		SwipeRefreshLayout swipeRefresh = activityRepoForksBinding.pullToRefresh;
-
-		closeActivity.setOnClickListener(v -> finish());
-
+		activityRepoForksBinding.close.setOnClickListener(v -> finish());
 		resultLimit = Constants.getCurrentResultLimit(ctx);
-
-		recyclerView = activityRepoForksBinding.recyclerView;
 		forksList = new ArrayList<>();
 
-		recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		activityRepoForksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			pageSize = 1;
-			swipeRefresh.setRefreshing(false);
+			activityRepoForksBinding.pullToRefresh.setRefreshing(false);
 			loadInitial(repoOwner, repoName, pageSize, resultLimit);
 			adapter.notifyDataChanged();
 
 		}, 200));
 
 		adapter = new RepoForksAdapter(ctx, forksList);
-		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+		adapter.setLoadMoreListener(() -> activityRepoForksBinding.recyclerView.post(() -> {
 
 			if(forksList.size() == resultLimit || pageSize == resultLimit) {
 
@@ -104,9 +84,9 @@ public class RepoForksActivity extends BaseActivity {
 			}
 		}));
 
-		recyclerView.setHasFixedSize(true);
-		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-		recyclerView.setAdapter(adapter);
+		activityRepoForksBinding.recyclerView.setHasFixedSize(true);
+		activityRepoForksBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+		activityRepoForksBinding.recyclerView.setAdapter(adapter);
 
 		loadInitial(repoOwner, repoName, pageSize, resultLimit);
 	}
@@ -128,15 +108,15 @@ public class RepoForksActivity extends BaseActivity {
 						forksList.clear();
 						forksList.addAll(response.body());
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.GONE);
+						activityRepoForksBinding.noData.setVisibility(View.GONE);
 					}
 					else {
 						forksList.clear();
 						adapter.notifyDataChanged();
-						noData.setVisibility(View.VISIBLE);
+						activityRepoForksBinding.noData.setVisibility(View.VISIBLE);
 					}
 
-					progressBar.setVisibility(View.GONE);
+					activityRepoForksBinding.progressBar.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
@@ -148,12 +128,11 @@ public class RepoForksActivity extends BaseActivity {
 				Log.e(TAG, t.toString());
 			}
 		});
-
 	}
 
 	private void loadMore(String repoOwner, String repoName, int page, int resultLimit) {
 
-		progressLoadMore.setVisibility(View.VISIBLE);
+		activityRepoForksBinding.progressLoadMore.setVisibility(View.VISIBLE);
 
 		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).listForks(repoOwner, repoName, page, resultLimit);
 
@@ -179,7 +158,7 @@ public class RepoForksActivity extends BaseActivity {
 					}
 
 					adapter.notifyDataChanged();
-					progressLoadMore.setVisibility(View.GONE);
+					activityRepoForksBinding.progressLoadMore.setVisibility(View.GONE);
 				}
 				else {
 					Log.e(TAG, String.valueOf(response.code()));
