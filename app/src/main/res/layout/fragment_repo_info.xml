@@ -420,6 +420,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/fileContentsFrameHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="?attr/materialCardViewFilledStyle"
@@ -435,7 +436,6 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/fileContentsFrameHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
