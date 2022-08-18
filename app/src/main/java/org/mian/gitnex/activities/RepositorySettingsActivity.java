@@ -38,13 +38,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private CustomRepositoryTransferDialogBinding transferRepoBinding;
 
 	private AlertDialog dialogRepo;
-	//private AlertDialog dialogRepoDelete;
-
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
-	//private Dialog dialogProp;
 
-	//private Dialog dialogDeleteRepository;
-	//private Dialog dialogTransferRepository;
 	private View.OnClickListener onClickListener;
 
 	private RepositoryContext repository;
@@ -75,19 +70,10 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void showTransferRepository() {
 
-		/*dialogTransferRepository = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-
-		if (dialogTransferRepository.getWindow() != null) {
-
-			dialogTransferRepository.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}*/
-
 		transferRepoBinding = CustomRepositoryTransferDialogBinding.inflate(LayoutInflater.from(ctx));
 
 		View view = transferRepoBinding.getRoot();
 		materialAlertDialogBuilder.setView(view);
-
-		//transferRepoBinding.cancel.setOnClickListener(editProperties -> dialogRepo.dismiss());
 
 		transferRepoBinding.transfer.setOnClickListener(deleteRepo -> {
 
@@ -118,7 +104,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		Call<Repository> transferCall = RetrofitClient.getApiInterface(ctx).repoTransfer(repositoryTransfer, repository.getOwner(), repository.getName());
 
-		transferCall.enqueue(new Callback<Repository>() {
+		transferCall.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
@@ -126,15 +112,15 @@ public class RepositorySettingsActivity extends BaseActivity {
 				transferRepoBinding.transfer.setVisibility(View.GONE);
 				transferRepoBinding.processingRequest.setVisibility(View.VISIBLE);
 
-				if(response.code() == 202) {
+				if(response.code() == 202 || response.code() == 201) {
 
 					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
 
-					finish();
 					Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
+					finish();
 				}
 				else if(response.code() == 404) {
 
@@ -187,7 +173,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		Call<Void> deleteCall = RetrofitClient.getApiInterface(ctx).repoDelete(repository.getOwner(), repository.getName());
 
-		deleteCall.enqueue(new Callback<Void>() {
+		deleteCall.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
@@ -200,10 +186,10 @@ public class RepositorySettingsActivity extends BaseActivity {
 					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
 
-					finish();
 					Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
+					finish();
 				}
 				else {
 
@@ -300,7 +286,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		Call<Repository> propsCall = RetrofitClient.getApiInterface(ctx).repoEdit(repository.getOwner(), repository.getName(), repoProps);
 
-		propsCall.enqueue(new Callback<Repository>() {
+		propsCall.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
@@ -350,5 +336,4 @@ public class RepositorySettingsActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }
