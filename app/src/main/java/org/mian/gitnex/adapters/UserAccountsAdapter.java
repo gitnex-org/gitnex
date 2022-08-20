@@ -41,11 +41,13 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 	private final List<UserAccount> userAccountsList;
 	private final Context context;
 	private final Dialog dialog;
+	private final TinyDB tinyDB;
 
 	public UserAccountsAdapter(Context ctx, Dialog dialog) {
 		this.dialog = dialog;
 		this.context = ctx;
 		this.userAccountsList = Objects.requireNonNull(BaseApi.getInstance(context, UserAccountsApi.class)).usersAccounts();
+		this.tinyDB = TinyDB.getInstance(context);
 	}
 
 	private void updateLayoutByPosition(int position) {
@@ -96,7 +98,6 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 	public void onBindViewHolder(@NonNull UserAccountsAdapter.UserAccountsViewHolder holder, int position) {
 
 		UserAccount currentItem = userAccountsList.get(position);
-		TinyDB tinyDB = TinyDB.getInstance(context);
 
 		String url = UrlBuilder.fromString(currentItem.getInstanceUrl()).withPath("/").toString();
 
@@ -202,18 +203,18 @@ public class UserAccountsAdapter extends RecyclerView.Adapter<UserAccountsAdapte
 					return;
 				}
 
-				if(AppUtil.switchToAccount(context, userAccount)) {
+				if(tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
+					if(AppUtil.switchToAccount(context, userAccount)) {
 
-					String url = UrlBuilder.fromString(userAccount.getInstanceUrl()).withPath("/").toString();
+						String url = UrlBuilder.fromString(userAccount.getInstanceUrl()).withPath("/").toString();
 
-					Toasty.success(context, context.getResources().getString(R.string.switchAccountSuccess, userAccount.getUserName(), url));
-					getNotificationsCount();
-					((Activity) context).recreate();
-					dialog.dismiss();
-
+						Toasty.success(context, context.getResources().getString(R.string.switchAccountSuccess, userAccount.getUserName(), url));
+						getNotificationsCount();
+						((Activity) context).recreate();
+						dialog.dismiss();
+					}
 				}
 			});
-
 		}
 
 	}

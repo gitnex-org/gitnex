@@ -57,16 +57,16 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 
 		String url = UrlBuilder.fromString(currentItem.getInstanceUrl()).withPath("/").toString();
 
-		int imageSize = AppUtil.getPixelsFromDensity(context, 35);
+		int imageSize = AppUtil.getPixelsFromDensity(context, 36);
 
-		PicassoService.getInstance(context).get().load(url + "assets/img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(imageSize, imageSize).centerCrop()
+		PicassoService.getInstance(context).get().load(url + "assets/img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(18, 0)).resize(imageSize, imageSize).centerCrop()
 			.into(holder.userAccountAvatar);
 	}
 
 	@Override
 	public int getItemCount() {
 
-		return userAccountsList.size();
+		return Math.min(userAccountsList.size(), 3);
 	}
 
 	private void customDialogUserAccountsList() {

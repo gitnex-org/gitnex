@@ -27,34 +27,6 @@ public class CollaboratorsAdapter extends BaseAdapter {
 	private final List<User> collaboratorsList;
 	private final Context context;
 
-	private class ViewHolder {
-
-		private String userLoginId;
-
-		private final ImageView collaboratorAvatar;
-		private final TextView collaboratorName;
-		private final TextView userName;
-
-		ViewHolder(View v) {
-
-			collaboratorAvatar = v.findViewById(R.id.collaboratorAvatar);
-			collaboratorName = v.findViewById(R.id.collaboratorName);
-			userName = v.findViewById(R.id.userName);
-
-			collaboratorAvatar.setOnClickListener(loginId -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", userLoginId);
-				context.startActivity(intent);
-			});
-
-			collaboratorAvatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-				return true;
-			});
-		}
-
-	}
-
 	public CollaboratorsAdapter(Context ctx, List<User> collaboratorsListMain) {
 
 		this.context = ctx;
@@ -116,6 +88,33 @@ public class CollaboratorsAdapter extends BaseAdapter {
 
 			viewHolder.collaboratorName.setText(currentItem.getLogin());
 			viewHolder.userName.setVisibility(View.GONE);
+		}
+
+	}
+
+	private class ViewHolder {
+
+		private final ImageView collaboratorAvatar;
+		private final TextView collaboratorName;
+		private final TextView userName;
+		private String userLoginId;
+
+		ViewHolder(View v) {
+
+			collaboratorAvatar = v.findViewById(R.id.collaboratorAvatar);
+			collaboratorName = v.findViewById(R.id.collaboratorName);
+			userName = v.findViewById(R.id.userName);
+
+			v.setOnClickListener(loginId -> {
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userLoginId);
+				context.startActivity(intent);
+			});
+
+			v.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				return true;
+			});
 		}
 
 	}
