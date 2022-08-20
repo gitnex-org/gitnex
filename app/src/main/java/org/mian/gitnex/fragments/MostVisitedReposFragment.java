@@ -10,12 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
@@ -36,19 +35,17 @@ import java.util.Objects;
 
 public class MostVisitedReposFragment extends Fragment {
 
+	private FragmentDraftsBinding fragmentDraftsBinding;
 	private Context ctx;
 	private MostVisitedReposAdapter adapter;
-	private RecyclerView mRecyclerView;
 	private RepositoriesApi repositoriesApi;
-	private TextView noData;
 	private List<Repository> mostVisitedReposList;
 	private int currentActiveAccountId;
-	private SwipeRefreshLayout swipeRefresh;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentDraftsBinding fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
+		fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
 		setHasOptionsMenu(true);
@@ -60,16 +57,12 @@ public class MostVisitedReposFragment extends Fragment {
 		mostVisitedReposList = new ArrayList<>();
 		repositoriesApi = BaseApi.getInstance(ctx, RepositoriesApi.class);
 
-		noData = fragmentDraftsBinding.noData;
-		mRecyclerView = fragmentDraftsBinding.recyclerView;
-		swipeRefresh = fragmentDraftsBinding.pullToRefresh;
-
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+		fragmentDraftsBinding.recyclerView.setHasFixedSize(true);
+		fragmentDraftsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
 		adapter = new MostVisitedReposAdapter(ctx, mostVisitedReposList);
 		currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		fragmentDraftsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			mostVisitedReposList.clear();
 			fetchDataAsync(currentActiveAccountId);
@@ -84,19 +77,19 @@ public class MostVisitedReposFragment extends Fragment {
 
 		repositoriesApi.fetchAllMostVisited(accountId).observe(getViewLifecycleOwner(), mostVisitedRepos -> {
 
-			swipeRefresh.setRefreshing(false);
+			fragmentDraftsBinding.pullToRefresh.setRefreshing(false);
 			assert mostVisitedRepos != null;
 			if(mostVisitedRepos.size() > 0) {
 
 				mostVisitedReposList.clear();
-				noData.setVisibility(View.GONE);
+				fragmentDraftsBinding.noData.setVisibility(View.GONE);
 				mostVisitedReposList.addAll(mostVisitedRepos);
 				adapter.notifyDataChanged();
-				mRecyclerView.setAdapter(adapter);
+				fragmentDraftsBinding.recyclerView.setAdapter(adapter);
 			}
 			else {
 
-				noData.setVisibility(View.VISIBLE);
+				fragmentDraftsBinding.noData.setVisibility(View.VISIBLE);
 			}
 		});
 	}
@@ -119,7 +112,28 @@ public class MostVisitedReposFragment extends Fragment {
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
 		inflater.inflate(R.menu.reset_menu, menu);
+		inflater.inflate(R.menu.search_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+
+				filter(newText);
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -140,6 +154,24 @@ public class MostVisitedReposFragment extends Fragment {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void filter(String text) {
+
+		List<Repository> arr = new ArrayList<>();
+
+		for(Repository d : mostVisitedReposList) {
+
+			if(d == null || d.getRepositoryOwner() == null || d.getRepositoryName() == null) {
+				continue;
+			}
+
+			if(d.getRepositoryOwner().toLowerCase().contains(text) || d.getRepositoryName().toLowerCase().contains(text)) {
+				arr.add(d);
+			}
+		}
+
+		adapter.updateList(arr);
 	}
 
 }
