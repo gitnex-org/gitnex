@@ -336,4 +336,5 @@ public class RepositorySettingsActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
+
 }
