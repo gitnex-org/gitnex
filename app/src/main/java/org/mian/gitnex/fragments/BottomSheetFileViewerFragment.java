@@ -53,6 +53,24 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
 			dismiss();
 		});
 
+		bottomSheetFileViewerBinding.copyUrl.setOnClickListener(v1 -> {
+
+			bmListener.onButtonClicked("copyUrl");
+			dismiss();
+		});
+
+		bottomSheetFileViewerBinding.share.setOnClickListener(v1 -> {
+
+			bmListener.onButtonClicked("share");
+			dismiss();
+		});
+
+		bottomSheetFileViewerBinding.open.setOnClickListener(v1 -> {
+
+			bmListener.onButtonClicked("open");
+			dismiss();
+		});
+
 		return bottomSheetFileViewerBinding.getRoot();
 	}
 

@@ -11,6 +11,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.io.FilenameUtils;
@@ -266,7 +267,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
@@ -361,6 +362,18 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			else {
 				Toasty.error(ctx, getString(R.string.fileTypeCannotBeEdited));
 			}
+		}
+
+		if("copyUrl".equals(text)) {
+			AppUtil.copyToClipboard(this, file.getHtmlUrl(), ctx.getString(R.string.copyIssueUrlToastMsg));
+		}
+
+		if("share".equals(text)) {
+			AppUtil.sharingIntent(this, file.getHtmlUrl());
+		}
+
+		if("open".equals(text)) {
+			AppUtil.openUrlInBrowser(this, file.getHtmlUrl());
 		}
 	}
 

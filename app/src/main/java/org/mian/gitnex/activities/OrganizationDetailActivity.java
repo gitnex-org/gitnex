@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.*;
@@ -82,13 +81,13 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		RetrofitClient.getApiInterface(this).orgIsMember(orgName, getAccount().getAccount().getUserName()).enqueue(new Callback<>() {
 
 			@Override
-			public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+			public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 				isMember = response.code() != 404;
 				init();
 			}
 
 			@Override
-			public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 				isMember = false;
 				init();
 			}
@@ -139,7 +138,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.repo_dotted_menu, menu);
