@@ -8,9 +8,14 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.view.*;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.io.FilenameUtils;
@@ -19,7 +24,12 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityFileViewBinding;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
-import org.mian.gitnex.helpers.*;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.Images;
+import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -266,7 +276,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
@@ -361,6 +371,18 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			else {
 				Toasty.error(ctx, getString(R.string.fileTypeCannotBeEdited));
 			}
+		}
+
+		if("copyUrl".equals(text)) {
+			AppUtil.copyToClipboard(this, file.getHtmlUrl(), ctx.getString(R.string.copyIssueUrlToastMsg));
+		}
+
+		if("share".equals(text)) {
+			AppUtil.sharingIntent(this, file.getHtmlUrl());
+		}
+
+		if("open".equals(text)) {
+			AppUtil.openUrlInBrowser(this, file.getHtmlUrl());
 		}
 	}
 
