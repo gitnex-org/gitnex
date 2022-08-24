@@ -84,33 +84,31 @@ import retrofit2.Response;
 
 public class IssueDetailActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener, BottomSheetListener {
 
+	public static boolean singleIssueUpdate = false;
+	public static boolean commentPosted = false;
+	private final List<Label> labelsList = new ArrayList<>();
+	private final List<User> assigneesList = new ArrayList<>();
+	public boolean commentEdited = false;
 	private IssueCommentsAdapter adapter;
-
 	private String repoOwner;
 	private String repoName;
 	private int issueIndex;
 	private String issueCreator;
 	private IssueContext issue;
-
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
-
 	private List<Integer> currentLabelsIds = new ArrayList<>();
 	private List<Integer> labelsIds = new ArrayList<>();
-	private final List<Label> labelsList = new ArrayList<>();
-	private final List<User> assigneesList = new ArrayList<>();
 	private List<String> assigneesListData = new ArrayList<>();
 	private List<String> currentAssignees = new ArrayList<>();
-
 	private ActivityIssueDetailBinding viewBinding;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
-
-	public static boolean singleIssueUpdate = false;
-	public boolean commentEdited = false;
-	public static boolean commentPosted = false;
-
 	private IssueCommentsViewModel issueCommentsModel;
-
+	private Runnable showMenu = () -> {
+	};
+	private boolean loadingFinishedIssue = false;
+	private boolean loadingFinishedPr = false;
+	private boolean loadingFinishedRepo = false;
 	public ActivityResultLauncher<Intent> editIssueLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 		if(result.getResultCode() == 200) {
 			assert result.getData() != null;
@@ -370,12 +368,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		});
 	}
 
-	private Runnable showMenu = () -> {
-	};
-	private boolean loadingFinishedIssue = false;
-	private boolean loadingFinishedPr = false;
-	private boolean loadingFinishedRepo = false;
-
 	private void updateMenuState() {
 		if(loadingFinishedIssue && loadingFinishedPr && loadingFinishedRepo) {
 			showMenu.run();
@@ -383,7 +375,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		showMenu = () -> {
@@ -594,30 +586,56 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			if(issue.getIssue().getPullRequest().isMerged()) { // merged
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconPrMergedColor)));
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconPrMergedColor, null)));
 			}
 			else if(!issue.getIssue().getPullRequest().isMerged() && issue.getIssue().getState().equals("closed")) { // closed
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor)));
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
 			}
 			else { // open
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen)));
+				if(tinyDB.getInt("themeId") == 3) {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+				}
+				else if(tinyDB.getInt("themeId") == 4) {
+					if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 6), tinyDB.getInt("lightThemeTimeHour", 18), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
+						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+					}
+					else {
+						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+					}
+				}
+				else {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+				}
 			}
 		}
 		else if(issue.getIssue().getState().equals("closed")) { // issue closed
 			loadingFinishedPr = true;
 			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
-			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor)));
+			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
 		}
 		else {
 			loadingFinishedPr = true;
 			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
-			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen)));
+			if(tinyDB.getInt("themeId") == 3) {
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+			}
+			else if(tinyDB.getInt("themeId") == 4) {
+				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 6), tinyDB.getInt("lightThemeTimeHour", 18), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+				}
+				else {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+				}
+			}
+			else {
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+			}
 		}
 
 		TinyDB tinyDb = TinyDB.getInstance(appCtx);

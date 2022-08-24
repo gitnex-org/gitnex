@@ -9,18 +9,18 @@
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen12dp">
 
             <LinearLayout
                 android:id="@+id/headerFrame"
@@ -42,17 +42,17 @@
                         android:singleLine="true"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="@dimen/dimen16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/releasesOptionsMenu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
                         android:layout_gravity="center_vertical|end"
-                        android:contentDescription="@string/labelMenuContentDesc"
+                        android:layout_weight="0"
                         android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_dotted_menu_horizontal"/>
+                        android:contentDescription="@string/labelMenuContentDesc"
+                        android:src="@drawable/ic_dotted_menu_horizontal" />
 
                 </LinearLayout>
 
@@ -69,18 +69,18 @@
                         tools:ignore="UseCompoundDrawables">
 
                         <com.google.android.material.card.MaterialCardView
+                            style="?attr/materialCardViewFilledStyle"
                             android:layout_width="@dimen/dimen24dp"
                             android:layout_height="@dimen/dimen24dp"
-                            style="?attr/materialCardViewFilledStyle"
-                            app:cardElevation="@dimen/dimen0dp"
-                            app:cardCornerRadius="@dimen/dimen12dp">
+                            app:cardCornerRadius="@dimen/dimen12dp"
+                            app:cardElevation="@dimen/dimen0dp">
 
                             <ImageView
                                 android:id="@+id/authorAvatar"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                tools:srcCompat="@tools:sample/avatars[7]"
-                                android:contentDescription="@string/generalImgContentText"/>
+                                android:contentDescription="@string/generalImgContentText"
+                                tools:srcCompat="@tools:sample/avatars[7]" />
 
                         </com.google.android.material.card.MaterialCardView>
 
@@ -90,7 +90,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimen6dp"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"/>
+                            android:textSize="@dimen/dimen14sp" />
 
                     </LinearLayout>
 
@@ -103,8 +103,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="end|center_vertical"
                             android:layout_marginBottom="@dimen/dimen6dp"
+                            android:gravity="end|center_vertical"
                             android:orientation="horizontal">
 
                             <TextView
@@ -115,7 +115,7 @@
                                 android:paddingStart="@dimen/dimen8dp"
                                 android:paddingEnd="@dimen/dimen8dp"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/dimen14sp"/>
+                                android:textSize="@dimen/dimen14sp" />
 
                         </LinearLayout>
 
@@ -129,8 +129,8 @@
                             <ImageView
                                 android:layout_width="@dimen/dimen18dp"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_label"
-                                android:contentDescription="@string/generalImgContentText"/>
+                                android:contentDescription="@string/generalImgContentText"
+                                app:srcCompat="@drawable/ic_label" />
 
                             <TextView
                                 android:id="@+id/releaseTag"
@@ -139,7 +139,7 @@
                                 android:layout_marginStart="@dimen/dimen8dp"
                                 android:singleLine="true"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp"/>
+                                android:textSize="@dimen/dimen14sp" />
 
                         </LinearLayout>
 
@@ -148,14 +148,14 @@
                             android:layout_height="wrap_content"
                             android:gravity="end|center_vertical"
                             android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            tools:ignore="UseCompoundDrawables">
 
                             <ImageView
                                 android:layout_width="@dimen/dimen18dp"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_code"
-                                android:contentDescription="@string/generalImgContentText"/>
+                                android:contentDescription="@string/generalImgContentText"
+                                app:srcCompat="@drawable/ic_code" />
 
                             <TextView
                                 android:id="@+id/releaseCommitSha"
@@ -164,7 +164,7 @@
                                 android:layout_marginStart="@dimen/dimen8dp"
                                 android:singleLine="true"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp"/>
+                                android:textSize="@dimen/dimen14sp" />
 
                         </LinearLayout>
 
@@ -178,8 +178,8 @@
                             <ImageView
                                 android:layout_width="@dimen/dimen18dp"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_calendar"
-                                android:contentDescription="@string/generalImgContentText"/>
+                                android:contentDescription="@string/generalImgContentText"
+                                app:srcCompat="@drawable/ic_calendar" />
 
                             <TextView
                                 android:id="@+id/releaseDate"
@@ -188,7 +188,7 @@
                                 android:layout_marginStart="@dimen/dimen8dp"
                                 android:singleLine="true"
                                 android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp"/>
+                                android:textSize="@dimen/dimen14sp" />
 
                         </LinearLayout>
 
@@ -210,9 +210,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="web|email"
-                    android:textColorLink="@color/lightBlue"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"/>
+                    android:textColorLink="@color/lightBlue"
+                    android:textSize="@dimen/dimen14sp" />
 
             </LinearLayout>
 
@@ -236,17 +236,17 @@
                         android:layout_width="@dimen/dimen16dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/generalImgContentText"
-                        app:tint="?attr/primaryTextColor"
                         android:src="@drawable/ic_chevron_right"
-                        app:srcCompat="@drawable/ic_chevron_right"/>
+                        app:srcCompat="@drawable/ic_chevron_right"
+                        app:tint="?attr/primaryTextColor" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen4dp"
+                        android:text="@string/releaseDownloadText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp"
-                        android:text="@string/releaseDownloadText"/>
+                        android:textSize="@dimen/dimen14sp" />
 
                 </LinearLayout>
 
@@ -256,33 +256,33 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    android:paddingTop="@dimen/dimen8dp">
+                    android:paddingTop="@dimen/dimen8dp"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/releaseZipDownloadFrame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
                         android:layout_marginStart="@dimen/dimen8dp"
                         android:layout_marginBottom="@dimen/dimen8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="@dimen/dimen16dp"
                             android:layout_height="@dimen/dimen16dp"
-                            app:srcCompat="@drawable/ic_download"
-                            android:contentDescription="@string/generalImgContentText"/>
+                            android:contentDescription="@string/generalImgContentText"
+                            app:srcCompat="@drawable/ic_download" />
 
                         <TextView
                             android:id="@+id/releaseZipDownload"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimen8dp"
-                            android:textColor="?attr/primaryTextColor"
                             android:text="@string/zipArchiveDownloadReleasesTab"
-                            android:textSize="@dimen/dimen12sp"/>
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="@dimen/dimen12sp" />
 
                     </LinearLayout>
 
@@ -290,25 +290,25 @@
                         android:id="@+id/releaseTarDownloadFrame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen8dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:layout_marginStart="@dimen/dimen8dp"
                         tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="@dimen/dimen16dp"
                             android:layout_height="@dimen/dimen16dp"
-                            app:srcCompat="@drawable/ic_download"
-                            android:contentDescription="@string/generalImgContentText"/>
+                            android:contentDescription="@string/generalImgContentText"
+                            app:srcCompat="@drawable/ic_download" />
 
                         <TextView
                             android:id="@+id/releaseTarDownload"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimen8dp"
-                            android:textColor="?attr/primaryTextColor"
                             android:text="@string/tarArchiveDownloadReleasesTab"
-                            android:textSize="@dimen/dimen12sp"/>
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="@dimen/dimen12sp" />
 
                     </LinearLayout>
 
@@ -316,8 +316,8 @@
                         android:id="@+id/downloadList"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?attr/primaryBackgroundColor"
-                        android:scrollbars="vertical"/>
+                        android:background="?attr/materialCardBackgroundColor"
+                        android:scrollbars="vertical" />
 
                 </LinearLayout>
 
