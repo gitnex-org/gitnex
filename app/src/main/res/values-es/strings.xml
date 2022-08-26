@@ -51,9 +51,7 @@
     <string name="navigationDrawerClose">Cerrar cajón de navegación</string>
     <string name="logo">Iniciar sesión en Gitea</string>
     <string name="protocol">Protocolo</string>
-    <string name="urlInfoTooltip">1- Elige el protocolo correcto (https o http).\n2- Introduce Gitea URL p.e: try.gitea.io.\n3- Si has activado 2FA,
-        introduce el código OTP.\n4- Para HTTP Basic Auth usa USUARIO@DOMAIN.COM en la caja de texto URL.
-    </string>
+    <string name="urlInfoTooltip">1- Elige el protocolo correcto (https o http).\n2- Introduce Gitea URL p.e: try.gitea.io.\n3- Si has activado 2FA, introduce el código OTP.\n4- Para HTTP Basic Auth usa USUARIO@DOMAIN.COM en la caja de texto URL.</string>
     <string name="malformedUrl">No se ha podido conectar con el host. Por favor, compruebe su URL o puerto para ver si hay algún error</string>
     <string name="protocolError">No se recomienda usar el protocolo HTTP aparte de testos en la red de área local</string>
     <string name="malformedJson">JSON fue recibido invalido. La respuesta del servidor no tuvo éxito</string>
@@ -148,9 +146,7 @@
     <string name="settingsSecurityHeader">Seguridad</string>
     <string name="settingsCertsSelectorHeader">Eliminar certificados de confianza</string>
     <string name="settingsCertsPopupTitle">Eliminar certificados de confianza?</string>
-    <string name="settingsCertsPopupMessage">¿Está seguro de eliminar cualquier certificado o nombre de host de confianza manualmente? \n\nTambién se
-        cerrará la sesión.
-    </string>
+    <string name="settingsCertsPopupMessage">¿Está seguro de eliminar cualquier certificado o nombre de host de confianza manualmente? \n\nTambién se cerrará la sesión.</string>
     <string name="settingsDateTimeHeaderText">Fecha &amp; Hora</string>
     <string name="settingsSave">Ajustes guardados</string>
     <string name="settingsLanguageSelectorHeader">Idioma</string>
@@ -180,8 +176,7 @@
     <string name="cacheSizeImagesSelectionHeaderText">Tamaño de la caché de imágenes</string>
     <string name="clearCacheSelectionHeaderText">Limpiar cache</string>
     <string name="clearCacheDialogHeader">Limpiar cache?</string>
-    <string name="clearCacheDialogMessage">Esto borrará todos los datos de la caché, incluidos los archivos y las imágenes.\n\n¿Proceder al borrado?
-    </string>
+    <string name="clearCacheDialogMessage">Esto borrará todos los datos de la caché, incluidos los archivos y las imágenes.\n\n¿Proceder al borrado?</string>
     <string name="draftsHeader">Borradores</string>
     <string name="draftsHintText">Comentarios para el borrador</string>
     <string name="settingsEnableCommentsDeletionText">Activar el borrado de borradores</string>
@@ -189,15 +184,12 @@
     <string name="settingsGeneralHeader">General</string>
     <string name="generalHintText">Pantalla de inicio, gestor de enlaces por defecto</string>
     <string name="generalDeepLinkDefaultScreen">Gestor de enlaces por defecto</string>
-    <string name="generalDeepLinkDefaultScreenHintText">Elija qué pantalla debe cargarse si la aplicación no puede manejar los enlaces externos. Te
-        redirigirá automáticamente.
-    </string>
+    <string name="generalDeepLinkDefaultScreenHintText">Elija qué pantalla debe cargarse si la aplicación no puede manejar los enlaces externos. Te redirigirá automáticamente.</string>
     <string name="generalDeepLinkSelectedText">N/D</string>
     <string name="linkSelectorDialogTitle">Seleccione la pantalla del gestor de enlaces por defecto</string>
     <string name="settingsBiometricHeader">Desbloqueo biométrico</string>
     <string name="settingsLabelsInListHeader">Etiquetas con soporte de texto</string>
-    <string name="settingsLabelsInListHint">Activar esto mostrará etiquetas con texto en las incidencias y PR. Por defecto son puntos de colores
-    </string>
+    <string name="settingsLabelsInListHint">Activar esto mostrará etiquetas con texto en las incidencias y PR. Por defecto son puntos de colores</string>
     <!-- settings -->
     <string name="noMoreData">No hay más datos disponibles</string>
     <string name="createLabel">Nueva etiqueta</string>
@@ -212,9 +204,7 @@
     <string name="labelDeleteText">Etiqueta borrada</string>
     <string name="selectBranchError">Seleccione una rama para el lanzamiento</string>
     <string name="alertDialogTokenRevokedTitle">Error de autorización</string>
-    <string name="alertDialogTokenRevokedMessage">Parece que el Token de acceso está revocado o no tiene permiso para ver estos contenidos. \n\nEn
-        caso de que el Token esté revocado, por favor, cierre la sesión y vuelva a iniciarla
-    </string>
+    <string name="alertDialogTokenRevokedMessage">Parece que el Token de acceso está revocado o no tiene permiso para ver estos contenidos. \n\nEn caso de que el Token esté revocado, por favor, cierre la sesión y vuelva a iniciarla</string>
     <string name="labelDeleteMessage">¿Estás seguro de borrar esta etiqueta?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Equipos</string>
@@ -225,8 +215,7 @@
     <string name="teamPermissionNone">Los miembros de este equipo no tienen permisos.</string>
     <string name="teamPermissionRead">Los miembros de este equipo pueden ver los repositorios del equipo.</string>
     <string name="teamPermissionWrite">Los miembros de este equipo pueden ver y aportar a los repositorios del equipo.</string>
-    <string name="teamPermissionAdmin">Los miembros de este equipo pueden aportar a y desde los repositorios del equipo y añadir colaboradores.
-    </string>
+    <string name="teamPermissionAdmin">Los miembros de este equipo pueden aportar a y desde los repositorios del equipo y añadir colaboradores.</string>
     <string name="teamPermissionOwner">Los miembros de este equipo tienen permisos completos.</string>
     <string name="teamShowAll">ver todo</string>
     <string name="orgMember">Miembros de la organización</string>
@@ -251,8 +240,7 @@
     <string name="newTeamPermissionWrite">Miembros pueden leer y push a los repositorios del equipo</string>
     <string name="newTeamPermissionAdmin">Miembros pueden pull y push a los repositorios del equipo y pueden añadir colaboradores</string>
     <string name="teamNameEmpty">Por favor, introduce el nombre del equipo</string>
-    <string name="teamNameError">El nombre del equipo tiene que consistir sólo en caracteres alfanuméricos, minus (-), barra baja (_) y punto (.)
-    </string>
+    <string name="teamNameError">El nombre del equipo tiene que consistir sólo en caracteres alfanuméricos, minus (-), barra baja (_) y punto (.)</string>
     <string name="teamPermissionEmpty">Por favor, selecciona un permiso</string>
     <string name="teamDescError">La descripción del equipo incluye caracteres ilegales</string>
     <string name="teamDescLimit">La descripción del equipo tiene más de 100 caracteres</string>
@@ -383,9 +371,7 @@
     <string name="doneButton">Hecho</string>
     <string name="cancelButton">Cancelar</string>
     <string name="genericError">Algo salió mal, por favor, inténtalo de nuevo</string>
-    <string name="apiNotFound">Este pedido necesita una Gitea versión más alta de la que está instalada. Por favor, actualiza tu instancia de Gitea a
-        la versión más actual.
-    </string>
+    <string name="apiNotFound">Este pedido necesita una Gitea versión más alta de la que está instalada. Por favor, actualiza tu instancia de Gitea a la versión más actual.</string>
     <string name="noDataFound">🌟 Aquí no hay nada 🌟</string>
     <string name="addButton">Añadir</string>
     <string name="removeButton">Eliminar</string>
@@ -406,9 +392,7 @@
     <string name="viewInBrowser">Ver en el navegador</string>
     <string name="isOpen">Abierto</string>
     <string name="isClosed">Cerrado</string>
-    <string name="genericServerResponseError">Por el momento no se puede contactar con el servidor. Por favor, compruebe el statús del servidor y
-        intentalo de nuevo
-    </string>
+    <string name="genericServerResponseError">Por el momento no se puede contactar con el servidor. Por favor, compruebe el statús del servidor y intentalo de nuevo</string>
     <string name="genericCopyUrl">Copiar URL</string>
     <string name="genericWaitFor">Espera ☕</string>
     <string name="file">Archivo</string>
@@ -438,16 +422,13 @@
     <string name="watchRepositorySuccess">Añadido a la lista de los repositorios seguidos</string>
     <string name="unWatchRepositorySuccess">Eliminado de la lista de los repositorios seguidos</string>
     <string name="titleDrafts">Borradores</string>
-    <string name="versionUnsupportedOld">Versión no soportada de Gitea (%1$s) detectada. Por favor actualiza a la última versión estable. Si
-        continúas, algunas funciones pueden no funcionar.
-    </string>
+    <string name="versionUnsupportedOld">Versión no soportada de Gitea (%1$s) detectada. Por favor actualiza a la última versión estable. Si continúas, algunas funciones pueden no funcionar.</string>
     <string name="versionUnsupportedNew">Se ha reconocido una nueva version de Gitea! Por favor, ACTUALICE GitNex!</string>
     <string name="versionUnknown">Gitea no reconocida!</string>
     <string name="versionAlertDialogHeader">Versión de Gitea no compatible</string>
     <string name="loginViaPassword">Usuario / contraseña</string>
     <string name="loginMethodText">Elige su método de login preferido para accesar su cuenta. Token es más seguro!</string>
-    <string name="unauthorizedApiError">La instancia ha respondido con un error - No autorizado. Verifique sus credenciales y trátalo de nuevo
-    </string>
+    <string name="unauthorizedApiError">La instancia ha respondido con un error - No autorizado. Verifique sus credenciales y trátalo de nuevo</string>
     <string name="loginTokenError">Token es necesario</string>
     <string name="prDeletedFork">Fork eliminado</string>
     <string name="editPrNavHeader">Editar pull request #%1$s</string>
@@ -463,9 +444,7 @@
     <string name="mergePullRequestButtonText">Fusionar</string>
     <string name="deleteBranchAfterMerge">Eliminar rama después de la fusión</string>
     <string name="mergeNoteText">Fusión puede fallar si no tienes el permiso de fusionar este pull request.</string>
-    <string name="mergeInfoDisabledMessage">Cuando el botón \"fusionar\" está desactivado indica que existen conflictos O otras cosas que tienen que
-        estar resolvadas antes de la fusión
-    </string>
+    <string name="mergeInfoDisabledMessage">Cuando el botón \"fusionar\" está desactivado indica que existen conflictos O otras cosas que tienen que estar resolvadas antes de la fusión</string>
     <string name="deleteBranchForkInfo">Esta rama pertenece a un repositorio forked</string>
     <string name="mergeCommentText">Comentario de la fusión</string>
     <string name="mergePRSuccessMsg">Pull Request fue fusionado con éxito</string>
@@ -480,9 +459,7 @@
     <string name="deleteBranch">Eliminar rama</string>
     <string name="waitLoadingDownloadFile">Por favor espere que el dispositivo está cargando a la memoria</string>
     <string name="downloadFileSaved">Archivo guardado con éxito</string>
-    <string name="excludeFilesInFileViewer">Este tipo o tamaño de archivo no está soportado en el visor de archivos. Puedes descargar el archivo via
-        el menú.
-    </string>
+    <string name="excludeFilesInFileViewer">Este tipo o tamaño de archivo no está soportado en el visor de archivos. Puedes descargar el archivo via el menú.</string>
     <string name="deleteFile">Eliminar este archivo</string>
     <string name="editFile">Editar este archivo</string>
     <string name="deleteFileMessage">El archivo fue definido para ser eliminado por la rama %1$s</string>
@@ -520,15 +497,9 @@
     <string name="settingsEnableReportsText">Activar reporte de errores</string>
     <string name="crashTitle">GitNex fue parado :(</string>
     <string name="setCrashReports">Reportes de errores</string>
-    <string name="crashMessage">Se recomienda abrir una incidencia en el repositorio del proyecto, sobre cómo se puede reproducir este error. Por este
-        camino es más fácil resolver este problema.\n\nPulsa el botón \"OK\" en lugar de eso para enviar el reporte de errores via correo electrónico.
-        Entonces más descripciones se pueden añadir al mensaje.\nMuchas gracias!
-    </string>
+    <string name="crashMessage">Se recomienda abrir una incidencia en el repositorio del proyecto, sobre cómo se puede reproducir este error. Por este camino es más fácil resolver este problema.\n\nPulsa el botón \"OK\" en lugar de eso para enviar el reporte de errores via correo electrónico. Entonces más descripciones se pueden añadir al mensaje.\nMuchas gracias!</string>
     <string name="forceLogoutDialogHeader">Inicie sesión de nuevo</string>
-    <string name="forceLogoutDialogDescription">A causa de importantes modificaciones en el interior de la aplicación es necesario que tu inicias
-        sesión de nuevo. Estos cambios nos permiten programar en el futuro la aplicación más flexible.\n\nMuchas gracias por tu paciencia y disculpa
-        las inconveniencias.
-    </string>
+    <string name="forceLogoutDialogDescription">A causa de importantes modificaciones en el interior de la aplicación es necesario que tu inicias sesión de nuevo. Estos cambios nos permiten programar en el futuro la aplicación más flexible.\n\nMuchas gracias por tu paciencia y disculpa las inconveniencias.</string>
     <string name="deleteAllDrafts">Eliminar todos los borradores</string>
     <string name="draftsListEmpty">Ningunos borradores encontrados</string>
     <string name="draftsDeleteSuccess">Borradores eliminados con éxito</string>
@@ -542,14 +513,10 @@
     <string name="rateAppHintText">Si te gusta GitNex, ¡deja una evaluación positiva!</string>
     <string name="aboutAppHintText">Versión de la aplicación, build, versión de Gitea</string>
     <string name="archivedRepository">Archivado</string>
-    <string name="archivedRepositoryMessage">Este repositorio está archivado. Puedes ver los archivos, pero no puedes hacer push o abrir incidencias o
-        pull requests.
-    </string>
+    <string name="archivedRepositoryMessage">Este repositorio está archivado. Puedes ver los archivos, pero no puedes hacer push o abrir incidencias o pull requests.</string>
     <string name="accountDeletedMessage">Cuenta eliminada con éxito</string>
     <string name="removeAccountPopupTitle">Eliminar cuenta</string>
-    <string name="removeAccountPopupMessage">¿Estás seguro que quieres eliminar esta cuenta de la aplicación?\n\nEsta acción va a eliminar todos los
-        datos de la cuenta, pero sólo en esta aplicación.
-    </string>
+    <string name="removeAccountPopupMessage">¿Estás seguro que quieres eliminar esta cuenta de la aplicación?\n\nEsta acción va a eliminar todos los datos de la cuenta, pero sólo en esta aplicación.</string>
     <string name="addNewAccount">Nueva cuenta</string>
     <string name="addNewAccountText">Añadir nueva cuenta</string>
     <string name="accountAlreadyExistsError">La cuenta ya existe en la aplicación</string>
@@ -561,9 +528,7 @@
     <string name="notificationsPollingHeaderText">Retraso de notificaciones</string>
     <string name="pollingDelaySelectedText">%d minutos</string>
     <string name="pollingDelayDialogHeaderText">Seleccionar cantidad del retraso</string>
-    <string name="pollingDelayDialogDescriptionText">Selecciona un retraso en minutos, después de que GitNex intenta de consultar nuevas
-        notificaciones
-    </string>
+    <string name="pollingDelayDialogDescriptionText">Selecciona un retraso en minutos, después de que GitNex intenta de consultar nuevas notificaciones</string>
     <string name="markAsRead">Mark Read</string>
     <string name="markAsUnread">Mark Unread</string>
     <string name="pinNotification">Pin</string>
@@ -599,20 +564,12 @@
     <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
     <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Repository properties updated successfully</string>
-    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will
-        permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as
-        confirmation
-    </string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">El repositorio se ha eliminado correctamente</string>
     <string name="repoSettingsTransferOwnership">Transferir propiedad</string>
-    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator
-        rights
-    </string>
-    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you
-        transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter
-        the repository name as confirmation
-    </string>
+    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
+    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
     <string name="repoTransferText">Perform Transfer</string>
     <string name="repoTransferOwnerText">Nuevo Propietario</string>
     <string name="repoTransferSuccess">Repository transferred successfully</string>
@@ -635,14 +592,9 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New
-        Account button.
-    </string>
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Ir a la aplicación</string>
-    <string name="noActionText">GitNex no puede gestionar el recurso solicitado, puede abrir una incidencia en el repositorio del proyecto como mejora
-        aportando detalles del trabajo. Por el momento, lanza una pantalla por defecto desde los botones de abajo, se puede cambiar desde la
-        configuración.
-    </string>
+    <string name="noActionText">GitNex no puede gestionar el recurso solicitado, puede abrir una incidencia en el repositorio del proyecto como mejora aportando detalles del trabajo. Por el momento, lanza una pantalla por defecto desde los botones de abajo, se puede cambiar desde la configuración.</string>
     <string name="biometricAuthTitle">Autenticación biométrica</string>
     <string name="biometricAuthSubTitle">Desbloquear usando tus credenciales biométricas</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -681,9 +633,7 @@
     <string name="tagDeleted">Etiqueta eliminada</string>
     <string name="tagDeleteError">No se puede eliminar una etiqueta que está en uso</string>
     <string name="useCustomTabs">Usar pestañas personalizadas</string>
-    <string name="browserOpenFailed">No se ha encontrado una aplicación para abrir este enlace. Las direcciones SSH y cualquiera diferente a http:// o
-        https:// no están soportadas
-    </string>
+    <string name="browserOpenFailed">No se ha encontrado una aplicación para abrir este enlace. Las direcciones SSH y cualquiera diferente a http:// o https:// no están soportadas</string>
     <string name="logInAgain">Inicia sesión de nuevo</string>
     <string name="notLoggedIn">%s \u25CF no ha iniciado sesión</string>
     <string name="followSystem">Sistema (Claro / Oscuro)</string>
@@ -692,8 +642,7 @@
     <string name="adoptRepo">Adoptar</string>
     <string name="repoAdopted">Repositorio adoptado %s</string>
     <string name="unadoptedRepos">Repositorios no adoptados</string>
-    <string name="unadoptedReposMessage">- Adoptar el repositorio %s lo añadirá a la organización o usuario %s.\n - Eliminar lo borrará del sistema.
-    </string>
+    <string name="unadoptedReposMessage">- Adoptar el repositorio %s lo añadirá a la organización o usuario %s.\n - Eliminar lo borrará del sistema.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
