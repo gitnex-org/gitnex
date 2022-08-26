@@ -5,49 +5,67 @@
     android:id="@+id/main_frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingTop="@dimen/dimen4dp"
+    android:paddingBottom="@dimen/dimen4dp">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/generalImgContentText"
-        app:srcCompat="@drawable/ic_diff"/>
+        style="?attr/materialCardViewFilledStyle"
+        app:cardElevation="@dimen/dimen0dp">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/fileName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="start"
-            android:singleLine="true"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"
-            tools:text="/src/test1/test2/test3/test4/test.txt"/>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/fileStatistics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="13sp"
-            tools:text="@string/diffStatistics"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/generalImgContentText"
+                app:srcCompat="@drawable/ic_diff"/>
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen10dp"
+                android:layout_marginEnd="@dimen/dimen10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/generalImgContentText"
-        app:srcCompat="@drawable/ic_chevron_right"/>
+                <TextView
+                    android:id="@+id/fileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="start"
+                    android:singleLine="true"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen16sp"
+                    tools:text="/src/test1/test2/test3/test4/test.txt"/>
+
+                <TextView
+                    android:id="@+id/fileStatistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen12sp"
+                    tools:text="@string/diffStatistics"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_chevron_right"
+                android:contentDescription="@string/generalImgContentText"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

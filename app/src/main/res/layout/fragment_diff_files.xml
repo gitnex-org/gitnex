@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
@@ -18,22 +18,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:text="@string/fileDiffViewHeader"
+        android:textColor="?attr/primaryTextColor"
         android:ellipsize="none"
         android:scrollbars="horizontal"
         android:singleLine="true"
-        android:text="@string/fileDiffViewHeader"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="15sp"
+        android:layout_marginStart="@dimen/dimen20dp"
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:layout_marginBottom="@dimen/dimen8dp"
+        android:textSize="@dimen/dimen16sp"
         android:visibility="gone"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/diff_files"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor"
-        android:scrollbars="vertical"/>
+        android:padding="@dimen/dimen8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/diff_files"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 
 </LinearLayout>

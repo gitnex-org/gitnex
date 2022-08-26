@@ -18,12 +18,12 @@ import java.util.List;
  * @author opyale
  */
 
-public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMembersByOrgPreviewAdapter.ViewHolder> {
+public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<OrganizationTeamMembersPreviewAdapter.ViewHolder> {
 
 	private final Context context;
 	private final List<User> userData;
 
-	public TeamMembersByOrgPreviewAdapter(Context context, List<User> userInfo) {
+	public OrganizationTeamMembersPreviewAdapter(Context context, List<User> userInfo) {
 		this.context = context;
 		this.userData = userInfo;
 	}
@@ -31,7 +31,7 @@ public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMem
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(context).inflate(R.layout.list_members_by_org_preview, parent, false);
+		View v = LayoutInflater.from(context).inflate(R.layout.list_organization_members_preview, parent, false);
 		return new ViewHolder(v);
 	}
 

@@ -3,12 +3,16 @@ package org.mian.gitnex.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
@@ -22,13 +26,13 @@ import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 public class MyIssuesFragment extends Fragment {
 
-	public String state = "open";
-	public boolean assignedToMe = false;
 	private IssuesViewModel issuesViewModel;
 	private FragmentIssuesBinding fragmentIssuesBinding;
 	private ExploreIssuesAdapter adapter;
 	private int page = 1;
 	private Menu menu;
+	public String state = "open";
+	public boolean assignedToMe = false;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,8 +43,6 @@ public class MyIssuesFragment extends Fragment {
 
 		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
 		fragmentIssuesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentIssuesBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		fragmentIssuesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		((MainActivity) requireActivity()).setFragmentRefreshListenerMyIssues(myIssues -> {
 
@@ -72,6 +74,8 @@ public class MyIssuesFragment extends Fragment {
 
 		return fragmentIssuesBinding.getRoot();
 	}
+
+	;
 
 	private void fetchDataAsync(String query, String state, boolean assignedToMe) {
 

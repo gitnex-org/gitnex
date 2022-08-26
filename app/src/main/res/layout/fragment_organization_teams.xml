@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.OrganizationDetailActivity">
 
-    <GridView
-        android:id="@+id/gridView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor"
-        android:columnWidth="80dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="4"
-        android:stretchMode="columnWidth"/>
+        android:padding="@dimen/dimen8dp">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
-        android:id="@+id/noDataMembers"
+        android:id="@+id/noDataTeams"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp"

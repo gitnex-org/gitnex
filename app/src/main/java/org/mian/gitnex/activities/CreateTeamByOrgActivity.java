@@ -17,7 +17,7 @@ import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateTeamByOrgBinding;
-import org.mian.gitnex.fragments.TeamsByOrgFragment;
+import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
@@ -33,10 +33,6 @@ import retrofit2.Callback;
 
 public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClickListener {
 
-	private final String[] permissionList = {"Read", "Write", "Admin"};
-	private final String[] accessControlsList = new String[]{"Code", "Issues", "Pull Request", "Releases", "Wiki", "External Wiki", "External Issues"};
-	private final boolean[] selectedAccessControlsTrueFalse = new boolean[]{false, false, false, false, false, false, false};
-	public int permissionSelectedChoice = -1;
 	private View.OnClickListener onClickListener;
 	private TextView teamName;
 	private TextView teamDesc;
@@ -45,7 +41,14 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 	private TextView teamAccessControls;
 	private TextView teamAccessControlsArray;
 	private Button createTeamButton;
+	private final String[] permissionList = {"Read", "Write", "Admin"};
+	public int permissionSelectedChoice = -1;
+
+	private final String[] accessControlsList = new String[]{"Code", "Issues", "Pull Request", "Releases", "Wiki", "External Wiki", "External Issues"};
+
 	private List<String> pushAccessList;
+
+	private final boolean[] selectedAccessControlsTrueFalse = new boolean[]{false, false, false, false, false, false, false};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -279,7 +282,7 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 
 					if(response2.code() == 201) {
 
-						TeamsByOrgFragment.resumeTeams = true;
+						OrganizationTeamsFragment.resumeTeams = true;
 
 						Toasty.success(ctx, getString(R.string.teamCreated));
 						finish();

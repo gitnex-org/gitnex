@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.InlineResponse2001;
 import org.gitnex.tea4j.v2.models.User;
@@ -101,8 +100,6 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 
 		activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setHasFixedSize(true);
 		activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setLayoutManager(new LinearLayoutManager(ctx));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.getContext(), DividerItemDecoration.VERTICAL);
-		activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.addItemDecoration(dividerItemDecoration);
 
 		activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
 

@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingStart="@dimen/dimen12dp"
     android:paddingTop="@dimen/dimen4dp"
-    android:paddingEnd="@dimen/dimen12dp"
     android:paddingBottom="@dimen/dimen4dp"
     tools:ignore="UseCompoundDrawables">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?attr/primaryBackgroundColor">
+        app:cardBackgroundColor="?attr/primaryBackgroundColor"
+        style="?attr/materialCardViewFilledStyle">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/userEmail"

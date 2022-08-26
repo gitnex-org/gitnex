@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,13 +25,14 @@ import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
 
 public class OrganizationLabelsFragment extends Fragment {
 
-	private static final String repoOwnerF = "param1";
-	private final String type = "org";
 	private OrganizationLabelsViewModel organizationLabelsViewModel;
 	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
 	private LabelsAdapter adapter;
 	private TextView noData;
+	private static final String repoOwnerF = "param1";
+	private final String type = "org";
+
 	private String repoOwner;
 
 	public static OrganizationLabelsFragment newInstance(String param1) {
@@ -68,9 +68,6 @@ public class OrganizationLabelsFragment extends Fragment {
 		mRecyclerView = fragmentLabelsBinding.recyclerView;
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		mRecyclerView.addItemDecoration(dividerItemDecoration);
 
 		mProgressBar = fragmentLabelsBinding.progressBar;
 

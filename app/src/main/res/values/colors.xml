@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorPrimary">#1f2926</color>
+    <color name="colorPrimaryDark">#1f2926</color>
     <color name="colorAccent">#7f7e7b</color>
     <color name="hintColor">#7f7e7b</color>
     <color name="colorWhite">#ffffff</color>
@@ -28,30 +28,33 @@
     <color name="dividerColorDark">#1d1d1d</color>
     <color name="lightYellow">#efd34a</color>
     <color name="warningColor">#dbb109</color>
-    <color name="colorSecondaryContainer">#1f2926</color>
+    <color name="colorSecondaryContainer">#2A322E</color>
+    <color name="cardBackground">#1e2221</color>
 
     <color name="lightThemeDiffRemovedColor">#FCEDED</color>
     <color name="lightThemeDiffAddedColor">#EAF8ED</color>
     <color name="lightThemeDiffSelectedColor">#e0e0e0</color>
     <color name="lightThemeTextColor">#646565</color>
-    <color name="lightThemeBackground">#f9f9f9</color>
+    <color name="lightThemeBackground">#e5eae8</color>
     <color name="lightThemeInputBackground">#EFEFEF</color>
     <color name="lightThemInputSelected">#C9CCCC</color>
     <color name="lightThemeInputTextColor">#212121</color>
     <color name="lightThemeDividerColor">#dbdbdb</color>
-    <color name="lightThemeColorSecondaryContainer">#dbe3e1</color>
+    <color name="lightThemeColorSecondaryContainer">#D9E1DF</color>
+    <color name="lightThemeCardBackground">#ffffff</color>
 
     <color name="retroThemeDiffRemovedColor">#fad6d6</color>
     <color name="retroThemeDiffAddedColor">#d0f7d9</color>
     <color name="retroThemeDiffSelectedColor">#d8d8d8</color>
     <color name="retroThemeTextColor">#212f3c</color>
-    <color name="retroThemeBackground">#fcfcfc</color>
+    <color name="retroThemeBackground">#eae5f1</color>
     <color name="retroThemeInputBackground">#f2f2f2</color>
     <color name="retroThemeInputSelected">#D3D3D3</color>
     <color name="retroThemeInputTextColor">#6200EE</color>
     <color name="retroThemeDividerColor">#dbdbdb</color>
     <color name="retroThemeColorPrimary">#6200EE</color>
     <color name="retroThemeColorSecondary">#03DAC6</color>
+    <color name="retroThemeCardBackground">#ffffff</color>
 
     <color name="iconPrMergedColor">#a333c8</color>
     <color name="iconIssuePrClosedColor">#db2828</color>
@@ -60,6 +63,8 @@
     <color name="pitchBlackThemeTextColor">#d2d2d2</color>
     <color name="pitchBlackThemeDividerColor">#0E0E0E</color>
     <color name="pitchBlackThemeGeneralBackgroundColor">#151515</color>
+    <color name="pitchBlackThemeColorSecondary">#161918</color>
+    <color name="pitchBlackThemeCardBackground">#0C0C0C</color>
 
     <!-- code editor colors -->
     <color name="five_dark_black">#252526</color>
@@ -69,5 +74,4 @@
     <color name="five_dark_grey">#a9b1ae</color>
     <color name="five_dark_white">#ffffff</color>
     <color name="gold">#e6b121</color>
-    <color name="autocomplete_background">#0c0c0c</color>
 </resources>

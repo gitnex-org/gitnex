@@ -9,7 +9,6 @@ import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
@@ -99,9 +98,7 @@ public class RepositoriesFragment extends Fragment {
 			}
 		});
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
 

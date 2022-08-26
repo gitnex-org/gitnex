@@ -8,7 +8,6 @@ import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.InlineResponse2001;
 import org.gitnex.tea4j.v2.models.User;
@@ -64,9 +63,7 @@ public class ExploreUsersFragment extends Fragment {
 			}
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		viewBinding.recyclerViewExploreUsers.setHasFixedSize(true);
-		viewBinding.recyclerViewExploreUsers.addItemDecoration(dividerItemDecoration);
 		viewBinding.recyclerViewExploreUsers.setLayoutManager(new LinearLayoutManager(context));
 		viewBinding.recyclerViewExploreUsers.setAdapter(adapter);
 

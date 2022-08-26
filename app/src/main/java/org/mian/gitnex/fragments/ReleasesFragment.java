@@ -8,14 +8,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
 import org.gitnex.tea4j.v2.models.Release;
@@ -41,7 +44,11 @@ import java.util.Objects;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * @author M M Arif
@@ -49,65 +56,6 @@ import okhttp3.*;
 
 public class ReleasesFragment extends Fragment {
 
-	public static String currentDownloadUrl = null;
-	ActivityResultLauncher<Intent> downloadLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-
-		if(result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-
-			try {
-
-				NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), requireContext().getPackageName()).setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
-					.setContentText(getString(R.string.fileViewerNotificationDescriptionStarted, Uri.parse(currentDownloadUrl).getLastPathSegment())).setSmallIcon(R.drawable.gitnex_transparent)
-					.setPriority(NotificationCompat.PRIORITY_LOW).setChannelId(Constants.downloadNotificationChannelId).setOngoing(true);
-
-				int notificationId = Notifications.uniqueNotificationId(requireContext());
-
-				NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-				notificationManager.notify(notificationId, builder.build());
-
-				SSLContext sslContext = SSLContext.getInstance("TLS");
-				MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(requireContext());
-				sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
-
-				ApiKeyAuth auth = new ApiKeyAuth("header", "Authorization");
-				auth.setApiKey(((BaseActivity) requireActivity()).getAccount().getWebAuthorization());
-				OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(auth).sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
-					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).build();
-
-				okHttpClient.newCall(new Request.Builder().url(currentDownloadUrl).build()).enqueue(new Callback() {
-
-					@Override
-					public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
-						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFailed))
-							.setContentText(getString(R.string.fileViewerNotificationDescriptionFailed, Uri.parse(currentDownloadUrl).getLastPathSegment())).setOngoing(false);
-						notificationManager.notify(notificationId, builder.build());
-					}
-
-					@Override
-					public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
-						if(!response.isSuccessful() || response.body() == null) {
-							onFailure(call, new IOException());
-							return;
-						}
-
-						OutputStream outputStream = requireContext().getContentResolver().openOutputStream(result.getData().getData());
-
-						AppUtil.copyProgress(Objects.requireNonNull(response.body()).byteStream(), outputStream, 0, p -> {
-						});
-						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFinished))
-							.setContentText(getString(R.string.fileViewerNotificationDescriptionFinished, Uri.parse(currentDownloadUrl).getLastPathSegment())).setOngoing(false);
-						notificationManager.notify(notificationId, builder.build());
-					}
-				});
-			}
-			catch(NoSuchAlgorithmException | KeyManagementException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
-	});
 	private ReleasesViewModel releasesViewModel;
 	private ReleasesAdapter adapter;
 	private TagsAdapter tagsAdapter;
@@ -117,6 +65,8 @@ public class ReleasesFragment extends Fragment {
 	private int page = 1;
 	private int pageReleases = 1;
 
+	public static String currentDownloadUrl = null;
+
 	public ReleasesFragment() {
 	}
 
@@ -124,15 +74,6 @@ public class ReleasesFragment extends Fragment {
 		ReleasesFragment fragment = new ReleasesFragment();
 		fragment.setArguments(repository.getBundle());
 		return fragment;
-	}
-
-	private static int getReleaseIndex(String tag, List<Release> releases) {
-		for(Release release : releases) {
-			if(release.getTagName().equals(tag)) {
-				return releases.indexOf(release);
-			}
-		}
-		return -1;
 	}
 
 	@Override
@@ -150,8 +91,6 @@ public class ReleasesFragment extends Fragment {
 
 		fragmentReleasesBinding.recyclerView.setHasFixedSize(true);
 		fragmentReleasesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentReleasesBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		fragmentReleasesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		fragmentReleasesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -260,6 +199,15 @@ public class ReleasesFragment extends Fragment {
 
 	}
 
+	private static int getReleaseIndex(String tag, List<Release> releases) {
+		for(Release release : releases) {
+			if(release.getTagName().equals(tag)) {
+				return releases.indexOf(release);
+			}
+		}
+		return -1;
+	}
+
 	@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 		if(!((BaseActivity) requireActivity()).getAccount().requiresVersion("1.15.0")) {
@@ -278,5 +226,64 @@ public class ReleasesFragment extends Fragment {
 		intent.setType("*/*");
 		downloadLauncher.launch(intent);
 	}
+
+	ActivityResultLauncher<Intent> downloadLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+
+		if(result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+
+			try {
+
+				NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), requireContext().getPackageName()).setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
+					.setContentText(getString(R.string.fileViewerNotificationDescriptionStarted, Uri.parse(currentDownloadUrl).getLastPathSegment())).setSmallIcon(R.drawable.gitnex_transparent)
+					.setPriority(NotificationCompat.PRIORITY_LOW).setChannelId(Constants.downloadNotificationChannelId).setOngoing(true);
+
+				int notificationId = Notifications.uniqueNotificationId(requireContext());
+
+				NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+				notificationManager.notify(notificationId, builder.build());
+
+				SSLContext sslContext = SSLContext.getInstance("TLS");
+				MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(requireContext());
+				sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new SecureRandom());
+
+				ApiKeyAuth auth = new ApiKeyAuth("header", "Authorization");
+				auth.setApiKey(((BaseActivity) requireActivity()).getAccount().getWebAuthorization());
+				OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(auth).sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+					.hostnameVerifier(memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())).build();
+
+				okHttpClient.newCall(new Request.Builder().url(currentDownloadUrl).build()).enqueue(new Callback() {
+
+					@Override
+					public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFailed))
+							.setContentText(getString(R.string.fileViewerNotificationDescriptionFailed, Uri.parse(currentDownloadUrl).getLastPathSegment())).setOngoing(false);
+						notificationManager.notify(notificationId, builder.build());
+					}
+
+					@Override
+					public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+						if(!response.isSuccessful() || response.body() == null) {
+							onFailure(call, new IOException());
+							return;
+						}
+
+						OutputStream outputStream = requireContext().getContentResolver().openOutputStream(result.getData().getData());
+
+						AppUtil.copyProgress(Objects.requireNonNull(response.body()).byteStream(), outputStream, 0, p -> {
+						});
+						builder.setContentTitle(getString(R.string.fileViewerNotificationTitleFinished))
+							.setContentText(getString(R.string.fileViewerNotificationDescriptionFinished, Uri.parse(currentDownloadUrl).getLastPathSegment())).setOngoing(false);
+						notificationManager.notify(notificationId, builder.build());
+					}
+				});
+			}
+			catch(NoSuchAlgorithmException | KeyManagementException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+	});
 
 }

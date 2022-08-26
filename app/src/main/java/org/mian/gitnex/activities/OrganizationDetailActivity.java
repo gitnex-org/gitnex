@@ -3,7 +3,11 @@ package org.mian.gitnex.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +19,12 @@ import com.google.android.material.tabs.TabLayout;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.fragments.*;
+import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
+import org.mian.gitnex.fragments.OrganizationInfoFragment;
+import org.mian.gitnex.fragments.OrganizationLabelsFragment;
+import org.mian.gitnex.fragments.OrganizationMembersFragment;
+import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
+import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.structs.BottomSheetListener;
 import java.util.Objects;
@@ -225,22 +234,22 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 					return OrganizationInfoFragment.newInstance(orgName);
 				case 1: // repos
 
-					return RepositoriesByOrgFragment.newInstance(orgName);
+					return OrganizationRepositoriesFragment.newInstance(orgName);
 				case 2: // labels
 
 					return OrganizationLabelsFragment.newInstance(orgName);
 				case 3: // teams / members
 
 					if(isMember) {
-						return TeamsByOrgFragment.newInstance(orgName, permissions);
+						return OrganizationTeamsFragment.newInstance(orgName, permissions);
 					}
 					else {
-						return MembersByOrgFragment.newInstance(orgName);
+						return OrganizationMembersFragment.newInstance(orgName);
 					}
 				case 4: // members
 
 					if(isMember) {
-						return MembersByOrgFragment.newInstance(orgName);
+						return OrganizationMembersFragment.newInstance(orgName);
 					}
 			}
 			return fragment;

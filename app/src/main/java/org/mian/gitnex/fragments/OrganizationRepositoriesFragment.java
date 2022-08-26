@@ -3,12 +3,16 @@ package org.mian.gitnex.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
@@ -21,21 +25,21 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
  * @author M M Arif
  */
 
-public class RepositoriesByOrgFragment extends Fragment {
+public class OrganizationRepositoriesFragment extends Fragment {
 
-	private static final String getOrgName = null;
 	private RepositoriesViewModel repositoriesViewModel;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
 	private int page = 1;
 	private int resultLimit;
+	private static final String getOrgName = null;
 	private String orgName;
 
-	public RepositoriesByOrgFragment() {
+	public OrganizationRepositoriesFragment() {
 	}
 
-	public static RepositoriesByOrgFragment newInstance(String orgName) {
-		RepositoriesByOrgFragment fragment = new RepositoriesByOrgFragment();
+	public static OrganizationRepositoriesFragment newInstance(String orgName) {
+		OrganizationRepositoriesFragment fragment = new OrganizationRepositoriesFragment();
 		Bundle args = new Bundle();
 		args.putString(getOrgName, orgName);
 		fragment.setArguments(args);
@@ -63,8 +67,6 @@ public class RepositoriesByOrgFragment extends Fragment {
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentRepositoriesBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -79,6 +81,8 @@ public class RepositoriesByOrgFragment extends Fragment {
 
 		return fragmentRepositoriesBinding.getRoot();
 	}
+
+	;
 
 	private void fetchDataAsync() {
 
@@ -140,7 +144,6 @@ public class RepositoriesByOrgFragment extends Fragment {
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				return false;

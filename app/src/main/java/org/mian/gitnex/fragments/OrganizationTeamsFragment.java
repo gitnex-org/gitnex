@@ -3,44 +3,49 @@ package org.mian.gitnex.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.TeamsByOrgAdapter;
-import org.mian.gitnex.databinding.FragmentTeamsByOrgBinding;
+import org.mian.gitnex.adapters.OrganizationTeamsAdapter;
+import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
 import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
 
 /**
  * @author M M Arif
  */
 
-public class TeamsByOrgFragment extends Fragment {
+public class OrganizationTeamsFragment extends Fragment {
 
-	private static final String orgNameF = "param2";
-	public static boolean resumeTeams = false;
 	private TeamsByOrgViewModel teamsByOrgViewModel;
+	public static boolean resumeTeams = false;
+
 	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
 	private TextView noDataTeams;
+	private static final String orgNameF = "param2";
 	private String orgName;
 	private OrganizationPermissions permissions;
-	private TeamsByOrgAdapter adapter;
+	private OrganizationTeamsAdapter adapter;
 
-	public TeamsByOrgFragment() {
+	public OrganizationTeamsFragment() {
 	}
 
-	public static TeamsByOrgFragment newInstance(String param1, OrganizationPermissions permissions) {
-		TeamsByOrgFragment fragment = new TeamsByOrgFragment();
+	public static OrganizationTeamsFragment newInstance(String param1, OrganizationPermissions permissions) {
+		OrganizationTeamsFragment fragment = new OrganizationTeamsFragment();
 		Bundle args = new Bundle();
 		args.putString(orgNameF, param1);
 		args.putSerializable("permissions", permissions);
@@ -60,7 +65,7 @@ public class TeamsByOrgFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentTeamsByOrgBinding fragmentTeamsByOrgBinding = FragmentTeamsByOrgBinding.inflate(inflater, container, false);
+		FragmentOrganizationTeamsBinding fragmentTeamsByOrgBinding = FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 		teamsByOrgViewModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
 
@@ -71,9 +76,6 @@ public class TeamsByOrgFragment extends Fragment {
 		mRecyclerView = fragmentTeamsByOrgBinding.recyclerView;
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-		mRecyclerView.addItemDecoration(dividerItemDecoration);
 
 		mProgressBar = fragmentTeamsByOrgBinding.progressBar;
 
@@ -101,7 +103,7 @@ public class TeamsByOrgFragment extends Fragment {
 	private void fetchDataAsync(String owner) {
 
 		teamsByOrgViewModel.getTeamsByOrg(owner, getContext(), noDataTeams, mProgressBar).observe(getViewLifecycleOwner(), orgTeamsListMain -> {
-			adapter = new TeamsByOrgAdapter(getContext(), orgTeamsListMain, permissions, orgName);
+			adapter = new OrganizationTeamsAdapter(getContext(), orgTeamsListMain, permissions, orgName);
 			if(adapter.getItemCount() > 0) {
 				mRecyclerView.setAdapter(adapter);
 				noDataTeams.setVisibility(View.GONE);
@@ -127,7 +129,6 @@ public class TeamsByOrgFragment extends Fragment {
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				return false;

@@ -7,7 +7,11 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.TextView;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
@@ -26,40 +30,34 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 	private final List<User> membersList;
 	private final Context context;
 	private final List<User> membersListFull;
-	private final Filter membersFilter = new Filter() {
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-			List<User> filteredList = new ArrayList<>();
 
-			if(constraint == null || constraint.length() == 0) {
+	private class ViewHolder {
 
-				filteredList.addAll(membersListFull);
-			}
-			else {
+		private String userLoginId;
 
-				String filterPattern = constraint.toString().toLowerCase().trim();
+		private final ImageView memberAvatar;
+		private final TextView memberName;
+		private final TextView userName;
 
-				for(User item : membersListFull) {
-					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
-						filteredList.add(item);
-					}
-				}
-			}
+		ViewHolder(View v) {
 
-			FilterResults results = new FilterResults();
-			results.values = filteredList;
+			memberAvatar = v.findViewById(R.id.userAvatarImageView);
+			memberName = v.findViewById(R.id.userNameTv);
+			userName = v.findViewById(R.id.userName);
 
-			return results;
+			v.setOnClickListener(loginId -> {
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userLoginId);
+				context.startActivity(intent);
+			});
+
+			v.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				return true;
+			});
 		}
 
-		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
-
-			membersList.clear();
-			membersList.addAll((List) results.values);
-			notifyDataSetChanged();
-		}
-	};
+	}
 
 	public UserGridAdapter(Context ctx, List<User> membersListMain) {
 
@@ -117,10 +115,12 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 		if(!currentItem.getFullName().equals("")) {
 
 			viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
+			viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 		}
 		else {
 
 			viewHolder.memberName.setText(currentItem.getLogin());
+			viewHolder.userName.setVisibility(View.GONE);
 		}
 	}
 
@@ -129,29 +129,39 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 		return membersFilter;
 	}
 
-	private class ViewHolder {
+	private final Filter membersFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<User> filteredList = new ArrayList<>();
 
-		private final ImageView memberAvatar;
-		private final TextView memberName;
-		private String userLoginId;
+			if(constraint == null || constraint.length() == 0) {
 
-		ViewHolder(View v) {
+				filteredList.addAll(membersListFull);
+			}
+			else {
 
-			memberAvatar = v.findViewById(R.id.userAvatarImageView);
-			memberName = v.findViewById(R.id.userNameTv);
+				String filterPattern = constraint.toString().toLowerCase().trim();
 
-			v.setOnClickListener(loginId -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", userLoginId);
-				context.startActivity(intent);
-			});
+				for(User item : membersListFull) {
+					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
+						filteredList.add(item);
+					}
+				}
+			}
 
-			v.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-				return true;
-			});
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+
+			return results;
 		}
 
-	}
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+
+			membersList.clear();
+			membersList.addAll((List) results.values);
+			notifyDataSetChanged();
+		}
+	};
 
 }

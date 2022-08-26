@@ -82,10 +82,12 @@ public class CollaboratorsAdapter extends BaseAdapter {
 		if(!currentItem.getFullName().equals("")) {
 
 			viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
+			viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 		}
 		else {
 
 			viewHolder.collaboratorName.setText(currentItem.getLogin());
+			viewHolder.userName.setVisibility(View.GONE);
 		}
 
 	}
@@ -94,20 +96,22 @@ public class CollaboratorsAdapter extends BaseAdapter {
 
 		private final ImageView collaboratorAvatar;
 		private final TextView collaboratorName;
+		private final TextView userName;
 		private String userLoginId;
 
 		ViewHolder(View v) {
 
 			collaboratorAvatar = v.findViewById(R.id.collaboratorAvatar);
 			collaboratorName = v.findViewById(R.id.collaboratorName);
+			userName = v.findViewById(R.id.userName);
 
-			collaboratorAvatar.setOnClickListener(loginId -> {
+			v.setOnClickListener(loginId -> {
 				Intent intent = new Intent(context, ProfileActivity.class);
 				intent.putExtra("username", userLoginId);
 				context.startActivity(intent);
 			});
 
-			collaboratorAvatar.setOnLongClickListener(loginId -> {
+			v.setOnLongClickListener(loginId -> {
 				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 				return true;
 			});

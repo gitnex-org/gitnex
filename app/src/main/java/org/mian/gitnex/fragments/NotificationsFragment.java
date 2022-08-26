@@ -8,7 +8,6 @@ import android.view.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
@@ -71,12 +70,9 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(viewBinding.notifications.getContext(), DividerItemDecoration.VERTICAL);
-
 		viewBinding.notifications.setHasFixedSize(true);
 		viewBinding.notifications.setLayoutManager(linearLayoutManager);
 		viewBinding.notifications.setAdapter(notificationsAdapter);
-		viewBinding.notifications.addItemDecoration(dividerItemDecoration);
 
 		viewBinding.notifications.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 					if(!userAvatarNav.equals("")) {
 
-						int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 3);
+						int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 60);
 
 						PicassoService.getInstance(ctx).get().load(userAvatarNav).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(avatarRadius, 0)).resize(160, 160).centerCrop()
 							.into(userAvatar);

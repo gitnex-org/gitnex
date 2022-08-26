@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Widget.AppCompat.SearchView"
-        app:elevation="@dimen/dimen0dp">
+        app:elevation="@dimen/dimen0dp"
+        android:theme="@style/Widget.AppCompat.SearchView">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -25,20 +25,20 @@
                 android:id="@+id/issuePrState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/generalImgContentText"
+                android:src="@drawable/ic_issue"
                 android:paddingStart="@dimen/dimen0dp"
                 android:paddingEnd="@dimen/dimen8dp"
-                android:src="@drawable/ic_issue"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:contentDescription="@string/generalImgContentText"/>
 
             <TextView
-                android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
+                android:textSize="@dimen/dimen20sp"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:id="@+id/toolbar_title"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -46,31 +46,31 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
-        style="@style/Widget.Material3.LinearProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen56dp"
         android:indeterminate="true"
+        style="@style/Widget.Material3.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addNewComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/dimen16dp"
-        android:backgroundTint="?attr/fabColor"
-        android:contentDescription="@string/commentButtonText"
         android:text="@string/commentButtonText"
+        android:contentDescription="@string/commentButtonText"
         android:textColor="@color/colorWhite"
-        app:icon="@drawable/ic_reply"
-        app:iconTint="@color/colorWhite"/>
+        android:backgroundTint="?attr/fabColor"
+        android:layout_gravity="bottom|end"
+        app:iconTint="@color/colorWhite"
+        app:icon="@drawable/ic_reply"/>
 
     <RelativeLayout
         android:id="@+id/relativeMainLayoutFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dimen56dp">
+        android:layout_marginTop="@dimen/dimen56dp"
+        android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
@@ -78,230 +78,241 @@
             android:layout_height="wrap_content">
 
             <androidx.core.widget.NestedScrollView
-                android:id="@+id/scrollViewComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/scrollViewComments"
                 android:fillViewport="true">
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutFrame"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen8dp">
 
-                    <RelativeLayout
-                        android:id="@+id/mainIssueLayout"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/mainThreadCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/dimen16dp">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/assigneeAvatarFrame"
-                            style="?attr/materialCardViewFilledStyle"
-                            android:layout_width="@dimen/dimen24dp"
-                            android:layout_height="@dimen/dimen24dp"
-                            android:layout_marginEnd="@dimen/dimen12dp"
-                            app:cardCornerRadius="@dimen/dimen12dp"
-                            app:cardElevation="@dimen/dimen0dp">
-
-                            <ImageView
-                                android:id="@+id/assigneeAvatar"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/generalImgContentText"/>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:id="@+id/issueTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@+id/assigneeAvatarFrame"
-                            android:gravity="start"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textIsSelectable="true"
-                            android:textSize="@dimen/dimen16sp"/>
+                        style="?attr/materialCardViewFilledStyle"
+                        android:layout_marginBottom="@dimen/dimen4dp"
+                        app:cardElevation="@dimen/dimen0dp">
 
                         <LinearLayout
-                            android:id="@+id/msdueFrame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/issueTitle"
-                            android:layout_marginTop="@dimen/dimen10dp"
-                            android:layout_toEndOf="@+id/assigneeAvatarFrame"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:background="?attr/materialCardBackgroundColor"
                             android:orientation="vertical">
 
-                            <LinearLayout
-                                android:id="@+id/dueDateFrame"
+                            <RelativeLayout
+                                android:id="@+id/mainIssueLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="end|center_vertical"
-                                android:orientation="horizontal"
-                                android:visibility="gone"
-                                tools:ignore="UseCompoundDrawables">
+                                android:orientation="vertical"
+                                android:padding="@dimen/dimen16dp">
 
-                                <ImageView
-                                    android:layout_width="@dimen/dimen20dp"
-                                    android:layout_height="wrap_content"
-                                    android:contentDescription="@string/generalImgContentText"
-                                    app:srcCompat="@drawable/ic_calendar"/>
+                                <com.google.android.material.card.MaterialCardView
+                                    android:id="@+id/assigneeAvatarFrame"
+                                    android:layout_width="@dimen/dimen24dp"
+                                    android:layout_height="@dimen/dimen24dp"
+                                    style="?attr/materialCardViewFilledStyle"
+                                    app:cardElevation="@dimen/dimen0dp"
+                                    android:layout_marginEnd="@dimen/dimen12dp"
+                                    app:cardCornerRadius="@dimen/dimen12dp">
 
-                                <TextView
-                                    android:id="@+id/issueDueDate"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/dimen8dp"
-                                    android:singleLine="true"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen14sp"/>
+                                    <ImageView
+                                        android:id="@+id/assigneeAvatar"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:contentDescription="@string/generalImgContentText"/>
 
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/milestoneFrame"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="end|center_vertical"
-                                android:orientation="horizontal"
-                                android:visibility="gone"
-                                tools:ignore="UseCompoundDrawables">
-
-                                <ImageView
-                                    android:layout_width="@dimen/dimen20dp"
-                                    android:layout_height="wrap_content"
-                                    android:contentDescription="@string/generalImgContentText"
-                                    app:srcCompat="@drawable/ic_milestone"/>
+                                </com.google.android.material.card.MaterialCardView>
 
                                 <TextView
-                                    android:id="@+id/issueMilestone"
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/issueTitle"
+                                    android:layout_toEndOf="@+id/assigneeAvatarFrame"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/dimen8dp"
-                                    android:singleLine="true"
+                                    android:gravity="start"
                                     android:textColor="?attr/primaryTextColor"
+                                    android:textIsSelectable="true"
+                                    android:textSize="@dimen/dimen16sp"/>
+
+                                <LinearLayout
+                                    android:id="@+id/msdueFrame"
+                                    android:layout_toEndOf="@+id/assigneeAvatarFrame"
+                                    android:layout_below="@+id/issueTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dimen10dp"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:id="@+id/dueDateFrame"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="end|center_vertical"
+                                        android:orientation="horizontal"
+                                        android:visibility="gone"
+                                        tools:ignore="UseCompoundDrawables">
+
+                                        <ImageView
+                                            android:layout_width="@dimen/dimen20dp"
+                                            android:layout_height="wrap_content"
+                                            app:srcCompat="@drawable/ic_calendar"
+                                            android:contentDescription="@string/generalImgContentText"/>
+
+                                        <TextView
+                                            android:id="@+id/issueDueDate"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="@dimen/dimen8dp"
+                                            android:singleLine="true"
+                                            android:textColor="?attr/primaryTextColor"
+                                            android:textSize="@dimen/dimen14sp"/>
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/milestoneFrame"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="end|center_vertical"
+                                        android:orientation="horizontal"
+                                        android:visibility="gone"
+                                        tools:ignore="UseCompoundDrawables">
+
+                                        <ImageView
+                                            android:layout_width="@dimen/dimen20dp"
+                                            android:layout_height="wrap_content"
+                                            app:srcCompat="@drawable/ic_milestone"
+                                            android:contentDescription="@string/generalImgContentText"/>
+
+                                        <TextView
+                                            android:id="@+id/issueMilestone"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="@dimen/dimen8dp"
+                                            android:singleLine="true"
+                                            android:textColor="?attr/primaryTextColor"
+                                            android:textSize="@dimen/dimen14sp"/>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <HorizontalScrollView
+                                    android:layout_below="@+id/msdueFrame"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/assigneesScrollView"
+                                    android:layout_alignParentEnd="false"
+                                    android:foregroundGravity="right"
+                                    android:scrollbarThumbHorizontal="@android:color/transparent"
+                                    android:fillViewport="true">
+
+                                    <LinearLayout
+                                        android:id="@+id/frameAssignees"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:layout_gravity="end"
+                                        android:gravity="end"
+                                        android:layout_marginTop="@dimen/dimen10dp">
+
+                                    </LinearLayout>
+                                </HorizontalScrollView>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/issueDescription"
+                                    android:layout_below="@+id/assigneesScrollView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:autoLink="web"
+                                    android:textColorLink="@color/lightBlue"
+                                    android:textIsSelectable="true"
                                     android:textSize="@dimen/dimen14sp"/>
 
-                            </LinearLayout>
+                                <HorizontalScrollView
+                                    android:layout_below="@+id/issueDescription"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/labelsScrollView"
+                                    android:layout_alignParentEnd="false"
+                                    android:foregroundGravity="right"
+                                    android:scrollbarThumbHorizontal="@android:color/transparent"
+                                    android:fillViewport="true">
+
+                                    <LinearLayout
+                                        android:id="@+id/frameLabels"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:layout_marginTop="@dimen/dimen10dp">
+
+                                    </LinearLayout>
+                                </HorizontalScrollView>
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/issueTimeFrame"
+                                    android:layout_below="@+id/labelsScrollView"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="@dimen/dimen10dp">
+
+                                    <TextView
+                                        android:id="@+id/issueCreatedTime"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="start"
+                                        android:visibility="gone"
+                                        android:textColor="?attr/hintColor"
+                                        android:textSize="@dimen/dimen12sp"/>
+
+                                    <TextView
+                                        android:id="@+id/issueModified"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="?attr/hintColor"
+                                        android:layout_toEndOf="@+id/issueCreatedTime"
+                                        android:textSize="@dimen/dimen12sp"
+                                        android:visibility="gone"
+                                        android:text="@string/modifiedText"/>
+
+                                </RelativeLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/commentReactionBadges"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/issueTimeFrame"
+                                    android:visibility="gone"
+                                    android:layout_marginTop="@dimen/dimen10dp"
+                                    android:orientation="horizontal"/>
+
+                            </RelativeLayout>
 
                         </LinearLayout>
 
-                        <HorizontalScrollView
-                            android:id="@+id/assigneesScrollView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/msdueFrame"
-                            android:layout_alignParentEnd="false"
-                            android:fillViewport="true"
-                            android:foregroundGravity="right"
-                            android:scrollbarThumbHorizontal="@android:color/transparent">
+                    </com.google.android.material.card.MaterialCardView>
 
-                            <LinearLayout
-                                android:id="@+id/frameAssignees"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_marginTop="@dimen/dimen10dp"
-                                android:gravity="end"
-                                android:orientation="horizontal">
-
-                            </LinearLayout>
-                        </HorizontalScrollView>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/issueDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/assigneesScrollView"
-                            android:autoLink="web"
-                            android:gravity="start"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textColorLink="@color/lightBlue"
-                            android:textIsSelectable="true"
-                            android:textSize="@dimen/dimen14sp"/>
-
-                        <HorizontalScrollView
-                            android:id="@+id/labelsScrollView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/issueDescription"
-                            android:layout_alignParentEnd="false"
-                            android:fillViewport="true"
-                            android:foregroundGravity="right"
-                            android:scrollbarThumbHorizontal="@android:color/transparent">
-
-                            <LinearLayout
-                                android:id="@+id/frameLabels"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dimen10dp"
-                                android:orientation="horizontal">
-
-                            </LinearLayout>
-                        </HorizontalScrollView>
-
-                        <RelativeLayout
-                            android:id="@+id/issueTimeFrame"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/labelsScrollView"
-                            android:layout_marginTop="@dimen/dimen10dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/issueCreatedTime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="start"
-                                android:textColor="?attr/hintColor"
-                                android:textSize="@dimen/dimen12sp"
-                                android:visibility="gone"/>
-
-                            <TextView
-                                android:id="@+id/issueModified"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/issueCreatedTime"
-                                android:text="@string/modifiedText"
-                                android:textColor="?attr/hintColor"
-                                android:textSize="@dimen/dimen12sp"
-                                android:visibility="gone"/>
-
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:id="@+id/commentReactionBadges"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/issueTimeFrame"
-                            android:layout_marginTop="@dimen/dimen10dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone"/>
-
-                    </RelativeLayout>
-
-                    <View
-                        android:id="@+id/divider"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen1dp"
-                        android:layout_below="@id/mainIssueLayout"
-                        android:background="?attr/dividerColor"
-                        android:visibility="gone"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider">
+                        android:layout_height="match_parent"
+                        android:background="?attr/primaryBackgroundColor"
+                        android:layout_below="@+id/mainThreadCard">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="?attr/primaryBackgroundColor"
-                            android:clipToPadding="false"
-                            android:paddingBottom="@dimen/dimen64dp"
-                            android:scrollbars="vertical"/>
+                            android:paddingBottom="@dimen/dimen72dp"
+                            android:clipToPadding="false"/>
 
-                    </LinearLayout>
+                    </FrameLayout>
 
                 </RelativeLayout>
 

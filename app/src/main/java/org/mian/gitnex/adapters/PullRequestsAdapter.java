@@ -212,10 +212,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					}
 				}
 			}
-			else {
-				labelsScrollViewDots.setVisibility(View.GONE);
-				labelsScrollViewWithText.setVisibility(View.GONE);
-			}
 
 			String prNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + pullRequest.getNumber() + "</font>";
 

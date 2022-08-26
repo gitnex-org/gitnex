@@ -8,7 +8,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,17 +21,22 @@ import android.widget.ScrollView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
-import org.gitnex.tea4j.v2.models.*;
+import org.gitnex.tea4j.v2.models.EditIssueOption;
+import org.gitnex.tea4j.v2.models.Issue;
+import org.gitnex.tea4j.v2.models.IssueLabelsOption;
+import org.gitnex.tea4j.v2.models.Label;
+import org.gitnex.tea4j.v2.models.PullRequest;
+import org.gitnex.tea4j.v2.models.Repository;
+import org.gitnex.tea4j.v2.models.User;
+import org.gitnex.tea4j.v2.models.WatchInfo;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.AssigneesActions;
 import org.mian.gitnex.actions.LabelsActions;
@@ -42,14 +52,28 @@ import org.mian.gitnex.databinding.CustomPrInfoDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
-import org.mian.gitnex.helpers.*;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
 import org.mian.gitnex.views.ReactionList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,9 +149,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		viewBinding.recyclerView.setHasFixedSize(true);
 		viewBinding.recyclerView.setNestedScrollingEnabled(false);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
-		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.shape_list_divider));
-		viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		viewBinding.addNewComment.setOnClickListener(v -> {
 
@@ -354,7 +375,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		showMenu = () -> {
@@ -463,11 +484,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 			assert issueCommentsMain != null;
 
-			if(issueCommentsMain.size() > 0) {
-
-				viewBinding.divider.setVisibility(View.VISIBLE);
-			}
-
 			Bundle bundle = new Bundle();
 			bundle.putString("repoOwner", repoOwner);
 			bundle.putString("repoName", repoName);
@@ -570,30 +586,56 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			if(issue.getIssue().getPullRequest().isMerged()) { // merged
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconPrMergedColor)));
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconPrMergedColor, null)));
 			}
 			else if(!issue.getIssue().getPullRequest().isMerged() && issue.getIssue().getState().equals("closed")) { // closed
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor)));
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
 			}
 			else { // open
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen)));
+				if(tinyDB.getInt("themeId") == 3) {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+				}
+				else if(tinyDB.getInt("themeId") == 4) {
+					if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
+						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+					}
+					else {
+						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+					}
+				}
+				else {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+				}
 			}
 		}
 		else if(issue.getIssue().getState().equals("closed")) { // issue closed
 			loadingFinishedPr = true;
 			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
-			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor)));
+			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
 		}
 		else {
 			loadingFinishedPr = true;
 			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
-			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen)));
+			if(tinyDB.getInt("themeId") == 3) {
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+			}
+			else if(tinyDB.getInt("themeId") == 4) {
+				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+				}
+				else {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+				}
+			}
+			else {
+				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+			}
 		}
 
 		TinyDB tinyDb = TinyDB.getInstance(appCtx);

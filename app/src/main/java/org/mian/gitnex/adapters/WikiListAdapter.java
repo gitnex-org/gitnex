@@ -222,7 +222,7 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 			int color = generator.getColor(wikiPageMetaData.getTitle());
 			String firstCharacter = String.valueOf(wikiPageMetaData.getTitle().charAt(0));
 
-			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
+			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 14);
 			avatar.setImageDrawable(drawable);
 
 			if(!((RepoDetailActivity) ctx).repository.getPermissions().isPush()) {

@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
+    android:id="@+id/drawer_layout"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -15,22 +15,22 @@
         android:orientation="vertical">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/primaryBackgroundColor"
-            android:elevation="@dimen/dimen0dp"
+            android:id="@+id/toolbar"
+            app:titleTextColor="?attr/primaryTextColor"
             android:theme="@style/Widget.AppCompat.SearchView"
-            app:titleTextColor="?attr/primaryTextColor">
+            android:elevation="@dimen/dimen0dp">
 
             <TextView
-                android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
+                android:textSize="@dimen/dimen20sp"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:id="@+id/toolbar_title"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -42,11 +42,12 @@
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
+        android:background="?attr/primaryBackgroundColor"
         app:menu="@menu/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

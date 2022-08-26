@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
@@ -72,9 +71,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 			}
 		});
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentPublicOrgBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		fragmentPublicOrgBinding.recyclerView.setHasFixedSize(true);
-		fragmentPublicOrgBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 		fragmentPublicOrgBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentPublicOrgBinding.recyclerView.setAdapter(adapter);
 

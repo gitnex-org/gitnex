@@ -12,6 +12,7 @@
         <item name="colorSecondary">@color/lightThemeTextColor</item>
         <item name="colorOnSurfaceVariant">@color/lightThemeTextColor</item>
         <item name="colorSecondaryContainer">@color/lightThemeColorSecondaryContainer</item>
+        <item name="materialCardBackgroundColor">@color/lightThemeCardBackground</item>
 
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
@@ -57,6 +58,7 @@
         <item name="colorPrimary">@color/retroThemeColorPrimary</item>
         <item name="colorSecondary">@color/retroThemeColorSecondary</item>
         <item name="colorOnSurfaceVariant">@color/retroThemeTextColor</item>
+        <item name="materialCardBackgroundColor">@color/retroThemeCardBackground</item>
 
         <item name="diffAddedColor">@color/retroThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/retroThemeDiffRemovedColor</item>

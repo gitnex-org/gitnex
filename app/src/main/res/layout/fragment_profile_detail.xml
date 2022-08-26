@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/userInfoLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,11 +10,11 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
-        style="@style/Widget.Material3.LinearProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="gone"
+        style="@style/Widget.Material3.LinearProgressIndicator"
         app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <FrameLayout
@@ -45,13 +45,13 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewFilledStyle"
                     android:layout_width="@dimen/dimen60dp"
                     android:layout_height="@dimen/dimen60dp"
-                    android:layout_marginTop="@dimen/dimen16dp"
+                    style="?attr/materialCardViewFilledStyle"
                     android:layout_marginBottom="@dimen/dimen8dp"
-                    app:cardCornerRadius="@dimen/dimen32dp"
-                    app:cardElevation="@dimen/dimen0dp">
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    app:cardElevation="@dimen/dimen0dp"
+                    app:cardCornerRadius="@dimen/dimen32dp">
 
                     <ImageView
                         android:id="@+id/userAvatar"
@@ -84,18 +84,19 @@
         </RelativeLayout>
 
         <com.google.android.material.card.MaterialCardView
-            style="@style/CustomMaterCardViewStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dimen200dp"
+            style="@style/CustomMaterCardViewStyle"
+            app:cardBackgroundColor="?attr/primaryBackgroundColor"
+            app:strokeWidth="@dimen/dimen0dp"
             android:elevation="@dimen/dimen0dp"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="@dimen/dimen0dp">
+            app:strokeColor="?attr/colorPrimary">
 
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:padding="@dimen/dimen16dp">
 
                 <LinearLayout
@@ -107,9 +108,9 @@
                     android:paddingEnd="@dimen/dimen16dp">
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_email"/>
 
@@ -147,9 +148,9 @@
                     android:paddingEnd="@dimen/dimen16dp">
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_language"/>
 
@@ -187,9 +188,9 @@
                     android:paddingEnd="@dimen/dimen16dp">
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_calendar"/>
 
