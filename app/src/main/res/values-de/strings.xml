@@ -52,9 +52,7 @@
     <string name="navigationDrawerClose">Navigationsleiste schließen</string>
     <string name="logo">In Gitea anmelden</string>
     <string name="protocol">Protokoll</string>
-    <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA
-        aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld
-    </string>
+    <string name="urlInfoTooltip">1- Wähle das richtige Protokoll (https oder http) \ N2- Gebe die Gitea-URL ein, z.B. try.gitea.io \n3- Falls du 2FA aktiviert hast, gib den Code in das OTP-Code Feld ein. \n4- Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL Feld</string>
     <string name="malformedUrl">Konnte keine Verbindung zum Host herstellen. Bitte überprüfe die URL oder Port auf irgendwelche Fehler</string>
     <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, du testest in einem lokalen Netzwerk</string>
     <string name="malformedJson">Fehlerhaftes JSON erhalten. Serveranfrage war nicht erfolgreich</string>
@@ -149,9 +147,7 @@
     <string name="settingsSecurityHeader">Sicherheit</string>
     <string name="settingsCertsSelectorHeader">Vertrauenswürdige Zertifikate löschen</string>
     <string name="settingsCertsPopupTitle">Vertrauenswürdige Zertifikate löschen?</string>
-    <string name="settingsCertsPopupMessage">Bist du sicher, dass du jedes manuell vertrauenswürdige Zertifikat oder Hostname löschen möchtest?\n\nDu
-        wirst ebenfalls abgemeldet werden.
-    </string>
+    <string name="settingsCertsPopupMessage">Bist du sicher, dass du jedes manuell vertrauenswürdige Zertifikat oder Hostname löschen möchtest?\n\nDu wirst ebenfalls abgemeldet werden.</string>
     <string name="settingsDateTimeHeaderText">Datum &amp; Uhrzeit</string>
     <string name="settingsSave">Einstellungen gespeichert</string>
     <string name="settingsLanguageSelectorHeader">Sprache</string>
@@ -181,9 +177,7 @@
     <string name="cacheSizeImagesSelectionHeaderText">Größe des Bilder-Caches</string>
     <string name="clearCacheSelectionHeaderText">Cache löschen</string>
     <string name="clearCacheDialogHeader">Cache löschen?</string>
-    <string name="clearCacheDialogMessage">Dadurch werden alle Cache-Daten einschließlich Dateien und Bilder gelöscht.\n\nMit dem Löschen
-        fortfahren?
-    </string>
+    <string name="clearCacheDialogMessage">Dadurch werden alle Cache-Daten einschließlich Dateien und Bilder gelöscht.\n\nMit dem Löschen fortfahren?</string>
     <string name="draftsHeader">Entwürfe</string>
     <string name="draftsHintText">Kommentarentwürfe</string>
     <string name="settingsEnableCommentsDeletionText">Entwürfe löschen aktivieren</string>
@@ -191,15 +185,12 @@
     <string name="settingsGeneralHeader">Allgemein</string>
     <string name="generalHintText">Startseite, Standard-Link-Handhaber</string>
     <string name="generalDeepLinkDefaultScreen">Standard-Link-Handhaber</string>
-    <string name="generalDeepLinkDefaultScreenHintText">Wähle die Ansicht, welche geladen werden soll, wenn ein externer Link nicht handhabbar ist. Du
-        wirst dann automatisch zu jener weitergeleitet.
-    </string>
+    <string name="generalDeepLinkDefaultScreenHintText">Wähle die Ansicht, welche geladen werden soll, wenn ein externer Link nicht handhabbar ist. Du wirst dann automatisch zu jener weitergeleitet.</string>
     <string name="generalDeepLinkSelectedText">N/V</string>
     <string name="linkSelectorDialogTitle">Wähle Standard-Link-Handhaber</string>
     <string name="settingsBiometricHeader">Biometrisches Entsperren</string>
     <string name="settingsLabelsInListHeader">Labels mit Text</string>
-    <string name="settingsLabelsInListHint">Dies wird Labels mit Text in Issue- und Pull-Request-Lister anzeigen, Standard sind farbige Punkte
-    </string>
+    <string name="settingsLabelsInListHint">Dies wird Labels mit Text in Issue- und Pull-Request-Lister anzeigen, Standard sind farbige Punkte</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -214,9 +205,7 @@
     <string name="labelDeleteText">Label gelöscht!</string>
     <string name="selectBranchError">Wähle einen Branch für das Release</string>
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
-    <string name="alertDialogTokenRevokedMessage">Es scheint, dass der Access Token widerrufen wurde ODER du diese Inhalte nicht sehen
-        darfst.\n\nFalls der Token wiederrufen wurde, melde dich bitte ab und wieder an
-    </string>
+    <string name="alertDialogTokenRevokedMessage">Es scheint, dass der Access Token widerrufen wurde ODER du diese Inhalte nicht sehen darfst.\n\nFalls der Token wiederrufen wurde, melde dich bitte ab und wieder an</string>
     <string name="labelDeleteMessage">Möchtest du dieses Label wirklich löschen?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Teams</string>
@@ -383,9 +372,7 @@
     <string name="doneButton">Fertig</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="genericError">Etwas ist schief gelaufen. Bitte versuche es noch ein Mal</string>
-    <string name="apiNotFound">Diese Anfrage erfordert eine neuere Gitea-Version als die, die aktuell installiert ist. Bitte aktualisiere deine
-        Instanz auf die neuste Version.
-    </string>
+    <string name="apiNotFound">Diese Anfrage erfordert eine neuere Gitea-Version als die, die aktuell installiert ist. Bitte aktualisiere deine Instanz auf die neuste Version.</string>
     <string name="noDataFound">🌟 Hier ist nichts 🌟</string>
     <string name="addButton">Hinzufügen</string>
     <string name="removeButton">Entfernen</string>
@@ -406,9 +393,7 @@
     <string name="viewInBrowser">In Browser betrachten</string>
     <string name="isOpen">Offen</string>
     <string name="isClosed">Geschlossen</string>
-    <string name="genericServerResponseError">Wir können den Server im Moment nicht erreichen. Bitte überprüfe den Serverstatus und versuche es
-        erneut
-    </string>
+    <string name="genericServerResponseError">Wir können den Server im Moment nicht erreichen. Bitte überprüfe den Serverstatus und versuche es erneut</string>
     <string name="genericCopyUrl">Link kopieren</string>
     <string name="genericWaitFor">Laden ... ☕</string>
     <string name="file">Datei</string>
@@ -438,17 +423,13 @@
     <string name="watchRepositorySuccess">Repository zur Merkliste hinzugefügt</string>
     <string name="unWatchRepositorySuccess">Repository von der Merkliste entfernt</string>
     <string name="titleDrafts">Entwürfe</string>
-    <string name="versionUnsupportedOld">Nicht unterstützte alte Version(%1$s) von Gitea erkannt. Bitte aktualisiere die Instanz auf die neueste
-        stabile Version. Wenn du fortfährst, funktioniert die App möglicherweise nicht ordnungsgemäß.
-    </string>
+    <string name="versionUnsupportedOld">Nicht unterstützte alte Version(%1$s) von Gitea erkannt. Bitte aktualisiere die Instanz auf die neueste stabile Version. Wenn du fortfährst, funktioniert die App möglicherweise nicht ordnungsgemäß.</string>
     <string name="versionUnsupportedNew">Neue Gitea-Version erkannt! Bitte UPDATE GitNex!</string>
     <string name="versionUnknown">Keine Gitea-Instanz erkannt!</string>
     <string name="versionAlertDialogHeader">Nicht unterstützte Version von Gitea</string>
     <string name="loginViaPassword">Benutzername/Passwort</string>
     <string name="loginMethodText">Wähle deine bevorzugte Login-Methode, um auf deinen Account zuzugreifen. Token ist sicherer!</string>
-    <string name="unauthorizedApiError">Gitea hat einen Fehler zurückgegeben - Nicht autorisiert. Überprüfe deine Anmeldeinformationen und versuche es
-        erneut
-    </string>
+    <string name="unauthorizedApiError">Gitea hat einen Fehler zurückgegeben - Nicht autorisiert. Überprüfe deine Anmeldeinformationen und versuche es erneut</string>
     <string name="loginTokenError">Token ist erforderlich</string>
     <string name="prDeletedFork">Gelöschter Fork</string>
     <string name="editPrNavHeader">Bearbeite Pull-Request #%1$s</string>
@@ -464,9 +445,7 @@
     <string name="mergePullRequestButtonText">Zusammenführen</string>
     <string name="deleteBranchAfterMerge">Branch nach dem Zusammenführen löschen</string>
     <string name="mergeNoteText">Zusammenführen kann fehlschlagen, wenn du dafür nicht die Berechtigungen besitzt.</string>
-    <string name="mergeInfoDisabledMessage">Deaktivierte Merge-Schaltfläche bedeutet, dass es Konflikte oder andere Dinge gibt, die vor dem
-        Zusammenführen behoben werden müssen
-    </string>
+    <string name="mergeInfoDisabledMessage">Deaktivierte Merge-Schaltfläche bedeutet, dass es Konflikte oder andere Dinge gibt, die vor dem Zusammenführen behoben werden müssen</string>
     <string name="deleteBranchForkInfo">Dieser Branch gehört zu einem geforkten Repository</string>
     <string name="mergeCommentText">Zusammenführ-Kommentar</string>
     <string name="mergePRSuccessMsg">Dieser Pull-Request wurde erfolgreich zusammengeführt</string>
@@ -481,9 +460,7 @@
     <string name="deleteBranch">Branch löschen</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
-    <string name="excludeFilesInFileViewer">Diese(r) Dateityp / Dateigröße wird vom Dateibetrachter nicht unterstützt. Du kannst es über das Menü
-        herunterladen.
-    </string>
+    <string name="excludeFilesInFileViewer">Diese(r) Dateityp / Dateigröße wird vom Dateibetrachter nicht unterstützt. Du kannst es über das Menü herunterladen.</string>
     <string name="deleteFile">Diese Datei löschen</string>
     <string name="editFile">Diese Datei bearbeiten</string>
     <string name="deleteFileMessage">Datei zum Löschen durch Branch %1$s gesetzt</string>
@@ -521,15 +498,9 @@
     <string name="settingsEnableReportsText">Absturzberichte aktivieren</string>
     <string name="crashTitle">GitNex ist abgestürzt :(</string>
     <string name="setCrashReports">Absturzberichte</string>
-    <string name="crashMessage">Es wird empfohlen, ein Issue im Projekt zu öffnen, wie man diesen Fehler reproduzieren kann. Es ist einfacher, das
-        Problem so zu debuggen und zu beheben.\n\nTippe auf OK, um stattdessen den Absturzbericht per E-Mail zu senden. Zusätzliche Inhalte konnten in
-        der E-Mail hinzugefügt werden.\nVielen Dank!
-    </string>
+    <string name="crashMessage">Es wird empfohlen, ein Issue im Projekt zu öffnen, wie man diesen Fehler reproduzieren kann. Es ist einfacher, das Problem so zu debuggen und zu beheben.\n\nTippe auf OK, um stattdessen den Absturzbericht per E-Mail zu senden. Zusätzliche Inhalte konnten in der E-Mail hinzugefügt werden.\nVielen Dank!</string>
     <string name="forceLogoutDialogHeader">Bitte melde dich erneut an</string>
-    <string name="forceLogoutDialogDescription">Aufgrund einiger wichtiger Änderungen in Bezug auf das interne Funktionieren der App musst du dich
-        erneut anmelden. Diese Änderungen ermöglichen es uns, die App in Zukunft flexibler zu gestalten.\n\nVielen Dank für Ihre Geduld und
-        Entschuldigung für die Unannehmlichkeiten.
-    </string>
+    <string name="forceLogoutDialogDescription">Aufgrund einiger wichtiger Änderungen in Bezug auf das interne Funktionieren der App musst du dich erneut anmelden. Diese Änderungen ermöglichen es uns, die App in Zukunft flexibler zu gestalten.\n\nVielen Dank für Ihre Geduld und Entschuldigung für die Unannehmlichkeiten.</string>
     <string name="deleteAllDrafts">Alle Entwürfe löschen</string>
     <string name="draftsListEmpty">Keine Entwürfe gefunden</string>
     <string name="draftsDeleteSuccess">Entwürfe erfolgreich gelöscht</string>
@@ -546,9 +517,7 @@
     <string name="archivedRepositoryMessage">Dieses Repo ist archiviert. Du kannst Dateien anschauen, aber nichts verändern oder erstellen.</string>
     <string name="accountDeletedMessage">Konto erfolgreich gelöscht</string>
     <string name="removeAccountPopupTitle">Konto entfernen</string>
-    <string name="removeAccountPopupMessage">Bist du sicher, dieses Konto aus der App zu entfernen?\n\nDadurch werden nur alle mit diesem Konto in
-        Verbindung stehenden Daten mit entfernt.
-    </string>
+    <string name="removeAccountPopupMessage">Bist du sicher, dieses Konto aus der App zu entfernen?\n\nDadurch werden nur alle mit diesem Konto in Verbindung stehenden Daten mit entfernt.</string>
     <string name="addNewAccount">Neues Konto</string>
     <string name="addNewAccountText">Neues Konto hinzufügen</string>
     <string name="accountAlreadyExistsError">Konto existiert bereits in der App</string>
@@ -560,9 +529,7 @@
     <string name="notificationsPollingHeaderText">Benachrichtigungsverzögerung</string>
     <string name="pollingDelaySelectedText">%d Minuten</string>
     <string name="pollingDelayDialogHeaderText">Abfrageverzögerung auswählen</string>
-    <string name="pollingDelayDialogDescriptionText">Wähle eine minütige Verzögerung, die GitNex wartet, bevor erneut nach neuen Benachrichtigungen
-        abgefragt wird
-    </string>
+    <string name="pollingDelayDialogDescriptionText">Wähle eine minütige Verzögerung, die GitNex wartet, bevor erneut nach neuen Benachrichtigungen abgefragt wird</string>
     <string name="markAsRead">Als gelesen markieren</string>
     <string name="markAsUnread">Als ungelesen markieren</string>
     <string name="pinNotification">Anheften</string>
@@ -598,20 +565,12 @@
     <string name="repoPropertiesEnableSquash">Squash und Merge aktivieren</string>
     <string name="repoPropertiesEnableForceMerge">Rebase mit Merge Commits aktivieren (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Repository-Eigenschaften erfolgreich aktualisiert</string>
-    <string name="repoSettingsDeleteDescription">Vor dem Löschen zu erfahrende Dinge:\n\n- Dieser Vorgang kann NICHT rückgängig gemacht werden.\n-
-        Dieser Vorgang wird das Projektarchiv dauerhaft löschen, einschließlich Code, Issues, Kommentare, Wiki-Daten und Einstellungen.\n\nGib den
-        Repository-Namen als Bestätigung ein
-    </string>
+    <string name="repoSettingsDeleteDescription">Vor dem Löschen zu erfahrende Dinge:\n\n- Dieser Vorgang kann NICHT rückgängig gemacht werden.\n- Dieser Vorgang wird das Projektarchiv dauerhaft löschen, einschließlich Code, Issues, Kommentare, Wiki-Daten und Einstellungen.\n\nGib den Repository-Namen als Bestätigung ein</string>
     <string name="repoSettingsDeleteError">Repository-Name stimmt nicht überein</string>
     <string name="repoDeletionSuccess">Repository erfolgreich gelöscht</string>
     <string name="repoSettingsTransferOwnership">Besitz übertragen</string>
-    <string name="repoSettingsTransferOwnershipHint">Dieses Repository an einen Benutzer oder eine Organisation übertragen, in der du Adminrechte
-        hast
-    </string>
-    <string name="repoSettingsTransferOwnershipDescription">Dinge, die vor der Übertragung bekannt sein sollten:\n\n- Du verlierst den Zugriff auf das
-        Projekt, wenn es an einen Benutzer übertragen wird.\n- Du behälst den Zugriff auf das Projekt, wenn es an eine Organisation übertragen wird,
-        die du (mit-)besitzt.\n\nGib den Repository-Namen als Bestätigung ein
-    </string>
+    <string name="repoSettingsTransferOwnershipHint">Dieses Repository an einen Benutzer oder eine Organisation übertragen, in der du Adminrechte hast</string>
+    <string name="repoSettingsTransferOwnershipDescription">Dinge, die vor der Übertragung bekannt sein sollten:\n\n- Du verlierst den Zugriff auf das Projekt, wenn es an einen Benutzer übertragen wird.\n- Du behälst den Zugriff auf das Projekt, wenn es an eine Organisation übertragen wird, die du (mit-)besitzt.\n\nGib den Repository-Namen als Bestätigung ein</string>
     <string name="repoTransferText">Übertragen</string>
     <string name="repoTransferOwnerText">Neuer Besitzer</string>
     <string name="repoTransferSuccess">Repository erfolgreich übertragen</string>
@@ -634,13 +593,9 @@
     <string name="prClosed">Pull-Request geschlossen</string>
     <string name="prReopened">Pull-Request wieder geöffnet</string>
     <string name="prMergeInfo">Pull-Request-Info</string>
-    <string name="accountDoesNotExist">Es sieht so aus als würde das Konto für den Link %1$s nicht existieren. Du kannst es hinzufügen, indem du auf
-        \"Neues Konto hinzufügen\" klickst.
-    </string>
+    <string name="accountDoesNotExist">Es sieht so aus als würde das Konto für den Link %1$s nicht existieren. Du kannst es hinzufügen, indem du auf \"Neues Konto hinzufügen\" klickst.</string>
     <string name="launchApp">App aufrufen</string>
-    <string name="noActionText">GitNex kann den Link nicht handhaben, du kannst ein Issue im Projekt-Repository öffnen, so dass es ausgebessert werden
-        kann. Bitte gebe alle nötigen Details an. Um die Standard-Ansicht zu öffnen, einfach den Button unten anklicken.
-    </string>
+    <string name="noActionText">GitNex kann den Link nicht handhaben, du kannst ein Issue im Projekt-Repository öffnen, so dass es ausgebessert werden kann. Bitte gebe alle nötigen Details an. Um die Standard-Ansicht zu öffnen, einfach den Button unten anklicken.</string>
     <string name="biometricAuthTitle">Biometrische Authentifizierung</string>
     <string name="biometricAuthSubTitle">Entsperre mittels Biometrie</string>
     <string name="biometricNotSupported">Keine biometrischen Funktionen verfügbar</string>
@@ -679,9 +634,7 @@
     <string name="tagDeleted">Tag gelöscht</string>
     <string name="tagDeleteError">Ein Tag, der zu einem Release zugewiesen ist, kann nicht gelöscht werden</string>
     <string name="useCustomTabs">Custom Tabs verwenden</string>
-    <string name="browserOpenFailed">Keine Anwendung zum Öffnen des Links gefunden. SSH-URLs und URLs mit anderen Präfixen als http:// und https://
-        werden von den meisten Browsern nicht unterstützt
-    </string>
+    <string name="browserOpenFailed">Keine Anwendung zum Öffnen des Links gefunden. SSH-URLs und URLs mit anderen Präfixen als http:// und https:// werden von den meisten Browsern nicht unterstützt</string>
     <string name="logInAgain">Erneut anmelden</string>
     <string name="notLoggedIn">%s \u25CF nicht angemeldet</string>
     <string name="followSystem">System folgen (Light/Dark)</string>
@@ -690,9 +643,7 @@
     <string name="adoptRepo">Übernehmen</string>
     <string name="repoAdopted">Repository %s wurde übernommen</string>
     <string name="unadoptedRepos">Nicht übernommene Repositories</string>
-    <string name="unadoptedReposMessage">- Übernehmen wird das Repository %s zur Organisation / zum Benutzer %s hinzufügen.\n - Löschen entfernt es
-        aus dem System.
-    </string>
+    <string name="unadoptedReposMessage">- Übernehmen wird das Repository %s zur Organisation / zum Benutzer %s hinzufügen.\n - Löschen entfernt es aus dem System.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
