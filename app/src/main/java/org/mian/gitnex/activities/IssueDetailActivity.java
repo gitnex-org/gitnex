@@ -600,11 +600,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
 				}
 				else if(tinyDB.getInt("themeId") == 4) {
-					if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 6), tinyDB.getInt("lightThemeTimeHour", 18), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
-						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+					if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
+						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
 					}
 					else {
-						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
 					}
 				}
 				else {
@@ -626,11 +626,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
 			}
 			else if(tinyDB.getInt("themeId") == 4) {
-				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 6), tinyDB.getInt("lightThemeTimeHour", 18), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
-					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
 				}
 				else {
-					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
 				}
 			}
 			else {
