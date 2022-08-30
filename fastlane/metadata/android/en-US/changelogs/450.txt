@@ -1,0 +1,18 @@
+4.5.0
+
+🎉 Features 🎉
+- Material You design
+- Most visited repositories
+- Code editor
+
+🚀 Improvements 🚀
+- Show repository owner in the info screen and title bar
+- Search forks by owner name too
+- Open wiki links from emails and third party apps
+- Copy/share/open in browser options for a file
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Video: https://youtu.be/v0JiHfJQb-o
+
+Release Blog: https://gitnex.codeberg.page/posts/450.html
