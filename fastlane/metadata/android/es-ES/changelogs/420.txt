@@ -2,7 +2,7 @@
 
 Nuevo: Crear/eliminar/listar etiquetas
 Nuevo: Ocultar las acciones del repositorio para los usuarios
-Nuevo: Nuevo visualizador de archivos diferencial
+Nuevo: Nuevo visor de archivos diferencial
 Nuevo: Mostrar usuarios que reaccionaron a la incidencia/PR/comentario
 Nuevo: Rediseñada la organización de equipos
 Mejora: Mejora del administrador de cuentas de usuario
