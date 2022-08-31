@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.5.0-dev" versioncode="445">
-        <change>Under development</change>
+    <release version="4.5.0" versioncode="450">
+        <change>[NEW] Material You design</change>
+        <change>[NEW] Most visited repositories</change>
+        <change>[NEW] Code editor</change>
+        <change>[IMPROVEMENT] Show repository owner in the info screen and title bar</change>
+        <change>[IMPROVEMENT] Search forks by owner name too</change>
+        <change>[IMPROVEMENT] Open wiki links from emails and third party apps</change>
+        <change>[IMPROVEMENT] Copy/share/open in browser options for a file</change>
     </release>
 
 </changelog>

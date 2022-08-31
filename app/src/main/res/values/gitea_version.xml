@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="versionLow" translatable="false">1.15</string>
-    <string name="versionHigh" translatable="false">1.17</string>
+    <string name="versionLow" translatable="false">1.16</string>
+    <string name="versionHigh" translatable="false">1.18</string>
 
 </resources>
