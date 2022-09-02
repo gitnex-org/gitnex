@@ -482,8 +482,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		issueCommentsModel.getIssueCommentList(owner, repo, index, ctx).observe(this, issueCommentsMain -> {
 
-			assert issueCommentsMain != null;
-
 			Bundle bundle = new Bundle();
 			bundle.putString("repoOwner", repoOwner);
 			bundle.putString("repoName", repoName);
