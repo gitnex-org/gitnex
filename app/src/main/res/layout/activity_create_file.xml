@@ -30,7 +30,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbarTitle"
@@ -40,7 +40,7 @@
                 android:maxLines="1"
                 android:text="@string/pageTitleNewFile"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:textSize="@dimen/dimen20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -83,7 +83,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,7 +111,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen14sp"/>
+                    android:textSize="@dimen/dimen14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,7 +124,7 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:text="@string/openInCodeEditor"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen14sp"/>
+                android:textSize="@dimen/dimen14sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/newFileBranchesLayout"
@@ -152,7 +152,7 @@
                     android:labelFor="@id/new_file_branches"
                     android:singleLine="true"
                     android:textColor="?attr/inputTextColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,7 +182,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -193,7 +193,7 @@
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:text="@string/newFileButtonCopy"
                 android:textColor="@color/btnTextColor"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

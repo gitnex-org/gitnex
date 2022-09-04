@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/orgTeamsFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/orgTeamsFrame"
     android:orientation="vertical"
     android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen12dp">
 
             <TextView
                 android:id="@+id/teamTitle"
@@ -31,18 +31,18 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen18sp"
                 android:textStyle="bold"
-                tools:text="PR-Managers"/>
+                tools:text="PR-Managers" />
 
             <TextView
                 android:id="@+id/teamDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:layout_marginBottom="@dimen/dimen4dp"
                 android:text="@string/teamDescription"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen16sp"
-                android:layout_marginTop="@dimen/dimen4dp"
-                android:layout_marginBottom="@dimen/dimen4dp"
-                tools:text="Managing pull requests and related issues"/>
+                tools:text="Managing pull requests and related issues" />
 
             <LinearLayout
                 android:id="@+id/membersPreviewFrame"
@@ -58,7 +58,7 @@
                     android:id="@+id/membersPreview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp"
                     app:drawableEndCompat="@drawable/ic_chevron_right"
-                    app:drawableTint="?attr/primaryTextColor"/>
+                    app:drawableTint="?attr/primaryTextColor" />
 
             </LinearLayout>
 

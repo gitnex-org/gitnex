@@ -33,9 +33,8 @@ import retrofit2.Response;
 
 public class RepoForksActivity extends BaseActivity {
 
-	private ActivityRepoForksBinding activityRepoForksBinding;
 	private final String TAG = "RepositoryForks";
-
+	private ActivityRepoForksBinding activityRepoForksBinding;
 	private int resultLimit;
 	private int pageSize = 1;
 	private List<Repository> forksList;

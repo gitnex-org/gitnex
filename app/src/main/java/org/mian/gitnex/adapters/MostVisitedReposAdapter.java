@@ -30,54 +30,12 @@ import java.util.List;
 
 public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedReposAdapter.MostVisitedViewHolder> {
 
-	private List<Repository> mostVisitedReposList;
 	private final Context ctx;
+	private List<Repository> mostVisitedReposList;
 
-	class MostVisitedViewHolder extends RecyclerView.ViewHolder {
-
-		private Repository repository;
-
-		private final ImageView image;
-		private final TextView repoName;
-		private final TextView orgName;
-		private final TextView mostVisited;
-		private final ImageView resetCounter;
-
-		private MostVisitedViewHolder(View itemView) {
-
-			super(itemView);
-
-			image = itemView.findViewById(R.id.image);
-			repoName = itemView.findViewById(R.id.repo_name);
-			orgName = itemView.findViewById(R.id.org_name);
-			mostVisited = itemView.findViewById(R.id.most_visited);
-			resetCounter = itemView.findViewById(R.id.reset_counter);
-
-			itemView.setOnClickListener(v -> {
-
-				Context context = v.getContext();
-				RepositoryContext repositoryContext = new RepositoryContext(repository.getRepositoryOwner(), repository.getRepositoryName(), context);
-				Intent intent = repositoryContext.getIntent(context, RepoDetailActivity.class);
-				context.startActivity(intent);
-			});
-
-			resetCounter.setOnClickListener(itemDelete -> {
-
-				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-				materialAlertDialogBuilder.setTitle(ctx.getString(R.string.reset)).setMessage(ctx.getString(R.string.resetCounterDialogMessage, repository.getRepositoryName()))
-					.setPositiveButton(R.string.reset, (dialog, whichButton) -> {
-
-						int getRepositoryId = repository.getRepositoryId();
-						resetRepositoryCounter(getBindingAdapterPosition());
-
-						RepositoriesApi repositoriesApi = BaseApi.getInstance(ctx, RepositoriesApi.class);
-						assert repositoriesApi != null;
-						repositoriesApi.updateRepositoryMostVisited(0, getRepositoryId);
-					}).setNeutralButton(R.string.cancelButton, null).show();
-			});
-		}
-
+	public MostVisitedReposAdapter(Context ctx, List<Repository> reposListMain) {
+		this.ctx = ctx;
+		this.mostVisitedReposList = reposListMain;
 	}
 
 	private void resetRepositoryCounter(int position) {
@@ -86,11 +44,6 @@ public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedRep
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, mostVisitedReposList.size());
 		Toasty.success(ctx, ctx.getResources().getString(R.string.resetMostReposCounter));
-	}
-
-	public MostVisitedReposAdapter(Context ctx, List<Repository> reposListMain) {
-		this.ctx = ctx;
-		this.mostVisitedReposList = reposListMain;
 	}
 
 	@NonNull
@@ -132,6 +85,52 @@ public class MostVisitedReposAdapter extends RecyclerView.Adapter<MostVisitedRep
 
 		mostVisitedReposList = list;
 		notifyDataChanged();
+	}
+
+	class MostVisitedViewHolder extends RecyclerView.ViewHolder {
+
+		private final ImageView image;
+		private final TextView repoName;
+		private final TextView orgName;
+		private final TextView mostVisited;
+		private final ImageView resetCounter;
+		private Repository repository;
+
+		private MostVisitedViewHolder(View itemView) {
+
+			super(itemView);
+
+			image = itemView.findViewById(R.id.image);
+			repoName = itemView.findViewById(R.id.repo_name);
+			orgName = itemView.findViewById(R.id.org_name);
+			mostVisited = itemView.findViewById(R.id.most_visited);
+			resetCounter = itemView.findViewById(R.id.reset_counter);
+
+			itemView.setOnClickListener(v -> {
+
+				Context context = v.getContext();
+				RepositoryContext repositoryContext = new RepositoryContext(repository.getRepositoryOwner(), repository.getRepositoryName(), context);
+				Intent intent = repositoryContext.getIntent(context, RepoDetailActivity.class);
+				context.startActivity(intent);
+			});
+
+			resetCounter.setOnClickListener(itemDelete -> {
+
+				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+				materialAlertDialogBuilder.setTitle(ctx.getString(R.string.reset)).setMessage(ctx.getString(R.string.resetCounterDialogMessage, repository.getRepositoryName()))
+					.setPositiveButton(R.string.reset, (dialog, whichButton) -> {
+
+						int getRepositoryId = repository.getRepositoryId();
+						resetRepositoryCounter(getBindingAdapterPosition());
+
+						RepositoriesApi repositoriesApi = BaseApi.getInstance(ctx, RepositoriesApi.class);
+						assert repositoriesApi != null;
+						repositoriesApi.updateRepositoryMostVisited(0, getRepositoryId);
+					}).setNeutralButton(R.string.cancelButton, null).show();
+			});
+		}
+
 	}
 
 }

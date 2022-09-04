@@ -30,7 +30,7 @@
                     android:text="@string/repoSettingsTransferOwnership"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="20sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/description"
@@ -39,7 +39,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="@string/repoSettingsTransferOwnershipDescription"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/repoNameForTransferLayout"
@@ -60,7 +60,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +83,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:visibility="gone"
-                app:indicatorColor="?attr/progressIndicatorColor"/>
+                app:indicatorColor="?attr/progressIndicatorColor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/transfer"
@@ -107,7 +107,7 @@
                 android:text="@string/repoTransferText"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

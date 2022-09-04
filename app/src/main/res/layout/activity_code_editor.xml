@@ -30,7 +30,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -40,7 +40,7 @@
                 android:maxLines="1"
                 android:text="@string/codeEditor"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:textSize="@dimen/dimen20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -57,7 +57,7 @@
         android:dropDownHorizontalOffset="@dimen/dimen0dp"
         android:dropDownSelector="@color/colorPrimary"
         android:gravity="top|start"
-        android:textSize="@dimen/dimen14sp"/>
+        android:textSize="@dimen/dimen14sp" />
 
     <RelativeLayout
         android:id="@+id/source_info_layout"
@@ -75,7 +75,7 @@
             android:gravity="center"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/dimen14sp"
-            tools:text="Java"/>
+            tools:text="Java" />
 
         <TextView
             android:id="@+id/source_position"
@@ -87,7 +87,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/dimen14sp"
             tools:ignore="RelativeOverlap"
-            tools:text="0:0"/>
+            tools:text="0:0" />
     </RelativeLayout>
 
 </RelativeLayout>

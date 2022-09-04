@@ -31,7 +31,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -44,7 +44,7 @@
                 android:singleLine="true"
                 android:text="@string/defaultFilename"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen18sp"/>
+                android:textSize="@dimen/dimen18sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="?attr/primaryTextColor"
                         android:textIsSelectable="true"
-                        android:textSize="@dimen/dimen14sp"/>
+                        android:textSize="@dimen/dimen14sp" />
 
                 </LinearLayout>
 
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -140,7 +140,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="@dimen/dimen16sp"/>
+                        android:textSize="@dimen/dimen16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,7 +165,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="@dimen/dimen14sp"/>
+                        android:textSize="@dimen/dimen14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,7 +177,7 @@
                     android:layout_marginBottom="@dimen/dimen8dp"
                     android:textColor="?attr/primaryTextColor"
                     android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen14sp"/>
+                    android:textSize="@dimen/dimen14sp" />
 
             </LinearLayout>
 

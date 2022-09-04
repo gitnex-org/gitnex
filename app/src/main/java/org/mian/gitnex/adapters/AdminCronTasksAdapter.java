@@ -31,11 +31,77 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 
 	private final List<Cron> tasksList;
 
+	public AdminCronTasksAdapter(List<Cron> tasksListMain) {
+		this.tasksList = tasksListMain;
+	}
+
+	private static void runCronTask(final Context ctx, final String taskName) {
+
+		Call<Void> call = RetrofitClient.getApiInterface(ctx).adminCronRun(taskName);
+
+		call.enqueue(new Callback<>() {
+
+			@Override
+			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+
+				switch(response.code()) {
+
+					case 204:
+						Toasty.success(ctx, ctx.getString(R.string.adminCronTaskSuccessMsg, taskName));
+						break;
+
+					case 401:
+						AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						break;
+
+					case 403:
+						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						break;
+
+					case 404:
+						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+						break;
+
+					default:
+						Toasty.error(ctx, ctx.getString(R.string.genericError));
+
+				}
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
+	@NonNull
+	@Override
+	public AdminCronTasksAdapter.CronTasksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_admin_cron_tasks, parent, false);
+		return new AdminCronTasksAdapter.CronTasksViewHolder(v);
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull AdminCronTasksAdapter.CronTasksViewHolder holder, int position) {
+
+		Cron currentItem = tasksList.get(position);
+
+		holder.cronTasks = currentItem;
+		holder.taskName.setText(StringUtils.capitalize(currentItem.getName().replace("_", " ")));
+	}
+
+	@Override
+	public int getItemCount() {
+		return tasksList.size();
+	}
+
 	static class CronTasksViewHolder extends RecyclerView.ViewHolder {
 
-		private Cron cronTasks;
-
 		private final TextView taskName;
+		private Cron cronTasks;
 
 		private CronTasksViewHolder(View itemView) {
 
@@ -86,73 +152,6 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			});
 		}
 
-	}
-
-	public AdminCronTasksAdapter(List<Cron> tasksListMain) {
-		this.tasksList = tasksListMain;
-	}
-
-	@NonNull
-	@Override
-	public AdminCronTasksAdapter.CronTasksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_admin_cron_tasks, parent, false);
-		return new AdminCronTasksAdapter.CronTasksViewHolder(v);
-	}
-
-	@Override
-	public void onBindViewHolder(@NonNull AdminCronTasksAdapter.CronTasksViewHolder holder, int position) {
-
-		Cron currentItem = tasksList.get(position);
-
-		holder.cronTasks = currentItem;
-		holder.taskName.setText(StringUtils.capitalize(currentItem.getName().replace("_", " ")));
-	}
-
-	private static void runCronTask(final Context ctx, final String taskName) {
-
-		Call<Void> call = RetrofitClient.getApiInterface(ctx).adminCronRun(taskName);
-
-		call.enqueue(new Callback<Void>() {
-
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
-
-				switch(response.code()) {
-
-					case 204:
-						Toasty.success(ctx, ctx.getString(R.string.adminCronTaskSuccessMsg, taskName));
-						break;
-
-					case 401:
-						AlertDialogs.authorizationTokenRevokedDialog(ctx);
-						break;
-
-					case 403:
-						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-						break;
-
-					case 404:
-						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-						break;
-
-					default:
-						Toasty.error(ctx, ctx.getString(R.string.genericError));
-
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
-	}
-
-	@Override
-	public int getItemCount() {
-		return tasksList.size();
 	}
 
 }

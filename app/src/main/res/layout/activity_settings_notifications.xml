@@ -34,7 +34,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -44,7 +44,7 @@
                 android:maxLines="1"
                 android:text="@string/pageTitleNotifications"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:textSize="@dimen/dimen20sp" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -57,18 +57,18 @@
         android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:weightSum="100"
-        android:padding="@dimen/dimen16dp">
+        android:padding="@dimen/dimen16dp"
+        android:weightSum="100">
 
         <TextView
             android:id="@+id/enableNotificationsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="90"
             android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_weight="90"
             android:text="@string/enableNotificationsHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
+            android:textSize="@dimen/dimen18sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
                 android:layout_height="@dimen/dimen32dp"
                 android:paddingStart="@dimen/dimen24dp"
                 android:paddingEnd="@dimen/dimen24dp"
-                android:switchMinWidth="@dimen/dimen56dp"/>
+                android:switchMinWidth="@dimen/dimen56dp" />
 
         </LinearLayout>
 
@@ -106,7 +106,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/notificationsPollingHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
+            android:textSize="@dimen/dimen18sp" />
 
         <TextView
             android:id="@+id/pollingDelaySelected"
@@ -116,7 +116,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/pollingDelaySelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp"/>
+            android:textSize="@dimen/dimen16sp" />
 
     </LinearLayout>
 
@@ -137,7 +137,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/enableLightsHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableLightsMode"
@@ -149,7 +149,7 @@
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
             android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp"/>
+            android:switchMinWidth="@dimen/dimen56dp" />
 
     </RelativeLayout>
 
@@ -170,7 +170,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/chooseColorSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/chooseColorState"
@@ -182,7 +182,7 @@
             android:layout_marginEnd="@dimen/dimen28dp"
             android:gravity="end"
             app:cardCornerRadius="@dimen/dimen16dp"
-            app:cardElevation="@dimen/dimen0dp"/>
+            app:cardElevation="@dimen/dimen0dp" />
 
     </RelativeLayout>
 
@@ -203,7 +203,7 @@
             android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/enableVibrationHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
+            android:textSize="@dimen/dimen18sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/enableVibrationMode"
@@ -215,7 +215,7 @@
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
             android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp"/>
+            android:switchMinWidth="@dimen/dimen56dp" />
 
     </RelativeLayout>
 

@@ -4,37 +4,37 @@
     android:id="@+id/gridViewData"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dimen4dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen12dp">
 
             <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="@dimen/dimen60dp"
                 android:layout_height="@dimen/dimen60dp"
-                style="?attr/materialCardViewElevatedStyle"
                 android:layout_gravity="center"
-                app:cardElevation="@dimen/dimen0dp"
-                app:cardCornerRadius="@dimen/dimen32dp">
+                app:cardCornerRadius="@dimen/dimen32dp"
+                app:cardElevation="@dimen/dimen0dp">
 
                 <ImageView
                     android:id="@+id/userAvatarImageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/userAvatar"
-                    android:src="@drawable/ic_person"/>
+                    android:src="@drawable/ic_person" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -42,8 +42,8 @@
                 android:id="@+id/userInfoSection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="start"
                 android:layout_gravity="center_vertical"
+                android:gravity="start"
                 android:orientation="vertical">
 
                 <TextView
@@ -54,7 +54,7 @@
                     android:paddingEnd="@dimen/dimen2dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/userName"
@@ -64,7 +64,7 @@
                     android:paddingEnd="@dimen/dimen2dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp"/>
+                    android:textSize="@dimen/dimen12sp" />
 
             </LinearLayout>
 

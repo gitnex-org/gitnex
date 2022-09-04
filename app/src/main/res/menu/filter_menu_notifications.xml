@@ -7,6 +7,6 @@
         android:icon="@drawable/ic_filter"
         android:orderInCategory="0"
         android:title="@string/strFilter"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
 </menu>

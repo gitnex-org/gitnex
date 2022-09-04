@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fileFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/dimen4dp"
+    android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen12dp">
 
             <ImageView
                 android:id="@+id/fileTypeIs"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dimen16dp"
                 android:contentDescription="@string/generalImgContentText"
-                android:src="@drawable/ic_file"/>
+                android:src="@drawable/ic_file" />
 
             <LinearLayout
                 android:id="@+id/infoSection"
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/defaultFilename"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
                 <LinearLayout
                     android:id="@+id/infoRow"
@@ -60,7 +60,7 @@
                         android:textColor="?attr/hintColor"
                         android:textSize="@dimen/dimen12sp"
                         android:visibility="gone"
-                        tools:visibility="visible"/>
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 

@@ -30,7 +30,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -43,7 +43,7 @@
                 android:singleLine="true"
                 android:text="@string/commitTitle"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:textSize="@dimen/dimen20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -52,8 +52,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/dimen56dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen56dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen56dp"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
     <TextView
         android:id="@+id/noDataCommits"
@@ -88,6 +88,6 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="@dimen/dimen20sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -30,7 +30,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -41,7 +41,7 @@
                 android:ellipsize="start"
                 android:singleLine="true"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -50,6 +50,6 @@
     <ListView
         android:id="@+id/diff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

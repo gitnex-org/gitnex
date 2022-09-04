@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/generalImgContentText"
         android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/backgrounds/scenic"/>
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/generalImgContentText"
-                    tools:srcCompat="@tools:sample/avatars"/>
+                    tools:srcCompat="@tools:sample/avatars" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -69,7 +69,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </com.google.android.material.card.MaterialCardView>
             </FrameLayout>
@@ -89,7 +89,7 @@
                 android:textColor="@color/colorWhite"
                 android:textIsSelectable="true"
                 android:textSize="18sp"
-                tools:text="Test user"/>
+                tools:text="Test user" />
 
             <TextView
                 android:id="@+id/userEmail"
@@ -100,7 +100,7 @@
                 android:textColor="@color/colorWhite"
                 android:textIsSelectable="true"
                 android:textSize="14sp"
-                tools:text="example@example.com"/>
+                tools:text="example@example.com" />
 
         </LinearLayout>
 

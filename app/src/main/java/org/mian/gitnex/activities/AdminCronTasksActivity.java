@@ -19,13 +19,11 @@ import org.mian.gitnex.viewmodels.AdminCronTasksViewModel;
 
 public class AdminCronTasksActivity extends BaseActivity {
 
+	private final int PAGE = 1;
 	private AdminCronTasksViewModel adminCronTasksViewModel;
 	private View.OnClickListener onClickListener;
 	private AdminCronTasksAdapter adapter;
-
 	private ActivityAdminCronTasksBinding activityAdminCronTasksBinding;
-
-	private final int PAGE = 1;
 	private int resultLimit;
 
 	@Override

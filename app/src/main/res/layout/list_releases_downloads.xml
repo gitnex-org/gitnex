@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
     android:layout_marginStart="@dimen/dimen8dp"
     android:layout_marginTop="@dimen/dimen8dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:layout_width="@dimen/dimen16dp"
         android:layout_height="@dimen/dimen16dp"
-        app:srcCompat="@drawable/ic_download"
-        android:contentDescription="@string/generalImgContentText"/>
+        android:contentDescription="@string/generalImgContentText"
+        app:srcCompat="@drawable/ic_download" />
 
     <TextView
         android:id="@+id/downloadName"
@@ -23,6 +23,6 @@
         android:layout_marginStart="@dimen/dimen8dp"
         android:textColor="?attr/primaryTextColor"
         android:textSize="@dimen/dimen12sp"
-        tools:text="Source code (ZIP)"/>
+        tools:text="Source code (ZIP)" />
 
 </LinearLayout>

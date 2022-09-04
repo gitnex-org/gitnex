@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mainView"
@@ -49,7 +49,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,7 +95,7 @@
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +105,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/newRepoPrivateCopy"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoAsTemplate"
@@ -113,7 +113,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesTemplate"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnableIssues"
@@ -121,7 +121,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnableIssues"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnableWiki"
@@ -129,7 +129,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnableWiki"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnablePr"
@@ -137,7 +137,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnablePr"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnableTimer"
@@ -145,7 +145,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnableTimeTracker"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnableMerge"
@@ -153,7 +153,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnableMergeCommits"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnableRebase"
@@ -161,7 +161,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnableRebase"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnableSquash"
@@ -169,7 +169,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnableSquash"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/repoEnableForceMerge"
@@ -177,7 +177,7 @@
                     android:layout_height="match_parent"
                     android:checked="true"
                     android:text="@string/repoPropertiesEnableForceMerge"
-                    android:textColor="?attr/primaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor" />
 
             </LinearLayout>
 
@@ -188,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:visibility="gone"
-                app:indicatorColor="?attr/progressIndicatorColor"/>
+                app:indicatorColor="?attr/progressIndicatorColor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save"
@@ -198,7 +198,7 @@
                 android:text="@string/saveButton"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

@@ -16,13 +16,13 @@
             android:layout_height="wrap_content"
             android:text="@string/adminCronScheduleHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/taskScheduleContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"/>
+            android:textColor="?attr/primaryTextColor" />
 
     </LinearLayout>
 
@@ -38,13 +38,13 @@
             android:layout_height="wrap_content"
             android:text="@string/adminCronNextRunHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/nextRunContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"/>
+            android:textColor="?attr/primaryTextColor" />
 
     </LinearLayout>
 
@@ -60,13 +60,13 @@
             android:layout_height="wrap_content"
             android:text="@string/adminCronLastRunHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/lastRunContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"/>
+            android:textColor="?attr/primaryTextColor" />
 
     </LinearLayout>
 
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="@string/adminCronExecutionHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/execTimeContent"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:textColor="?attr/primaryTextColor"
-            android:textColorLink="@color/lightBlue"/>
+            android:textColorLink="@color/lightBlue" />
 
     </LinearLayout>
 

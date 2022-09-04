@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="@dimen/dimen4dp"
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen12dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/avatarFrame"
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="@dimen/dimen24dp"
                 android:layout_height="@dimen/dimen24dp"
-                style="?attr/materialCardViewFilledStyle"
-                app:cardElevation="@dimen/dimen0dp"
                 android:layout_marginEnd="@dimen/dimen12dp"
-                app:cardCornerRadius="@dimen/dimen12dp">
+                app:cardCornerRadius="@dimen/dimen12dp"
+                app:cardElevation="@dimen/dimen0dp">
 
                 <ImageView
                     android:id="@+id/userAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/generalImgContentText"
-                    android:src="@drawable/ic_android"/>
+                    android:src="@drawable/ic_android" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -52,7 +52,7 @@
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen14sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/userName"
@@ -61,7 +61,7 @@
                     android:layout_marginBottom="@dimen/dimen4dp"
                     android:text="@string/addCollaboratorViewUserDesc"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp"/>
+                    android:textSize="@dimen/dimen12sp" />
 
             </LinearLayout>
 
@@ -69,34 +69,34 @@
                 android:id="@+id/frameAddCollaborator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 android:layout_marginStart="@dimen/dimen16dp"
                 android:layout_marginEnd="0dp"
+                android:gravity="end"
+                android:orientation="vertical"
                 android:paddingTop="@dimen/dimen4dp"
-                android:paddingBottom="@dimen/dimen4dp"
-                android:orientation="vertical">
+                android:paddingBottom="@dimen/dimen4dp">
 
                 <ImageView
                     android:id="@+id/addCollaboratorButtonAdd"
                     android:layout_width="@dimen/dimen28dp"
                     android:layout_height="@dimen/dimen28dp"
                     android:layout_gravity="end"
-                    android:contentDescription="@string/addNewContent"
                     android:background="@drawable/shape_circle"
-                    android:src="@drawable/ic_add"
+                    android:contentDescription="@string/addNewContent"
                     android:padding="@dimen/dimen8dp"
-                    android:visibility="gone"/>
+                    android:src="@drawable/ic_add"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/addCollaboratorButtonRemove"
                     android:layout_width="@dimen/dimen28dp"
                     android:layout_height="@dimen/dimen28dp"
                     android:layout_gravity="end"
-                    android:contentDescription="@string/removeContent"
                     android:background="@drawable/shape_circle_red"
-                    android:src="@drawable/ic_remove"
+                    android:contentDescription="@string/removeContent"
                     android:padding="@dimen/dimen8dp"
-                    android:visibility="gone"/>
+                    android:src="@drawable/ic_remove"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

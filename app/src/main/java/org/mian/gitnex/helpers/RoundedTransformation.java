@@ -1,6 +1,11 @@
 package org.mian.gitnex.helpers;
 
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
 
 /**
  * @author M M Arif

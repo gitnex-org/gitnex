@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -35,7 +34,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:contentDescription="@string/appName"
-                    android:src="@mipmap/app_logo"/>
+                    android:src="@mipmap/app_logo" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -53,7 +52,7 @@
                     android:text="@string/appName"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="24sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/appVersionBuild"
@@ -64,7 +63,7 @@
                     android:text="@string/appVersionBuild"
                     android:textColor="?attr/primaryTextColor"
                     android:textIsSelectable="true"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -85,7 +84,7 @@
                     android:text="@string/commitPage"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/userServerVersion"
@@ -95,7 +94,7 @@
                     android:paddingEnd="28dp"
                     android:textColor="?attr/primaryTextColor"
                     android:textIsSelectable="true"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
                 <!-- user server version -->
 
                 <!-- support -->
@@ -109,7 +108,7 @@
                     android:text="@string/supportText"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/donationLinkPatreon"
@@ -121,7 +120,7 @@
                     android:text="@string/supportTextPatreon"
                     android:textColor="@color/lightBlue"
                     android:textColorLink="@color/lightBlue"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/donationLinkBuyMeaCoffee"
@@ -133,7 +132,7 @@
                     android:text="@string/supportTextBuyMeaCoffee"
                     android:textColor="@color/lightBlue"
                     android:textColorLink="@color/lightBlue"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
                 <!-- support -->
 
                 <!-- translate -->
@@ -147,7 +146,7 @@
                     android:text="@string/translateText"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/translateLink"
@@ -161,7 +160,7 @@
                     android:textColor="@color/lightBlue"
                     android:textColorLink="@color/lightBlue"
                     android:textSize="14sp"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
                 <!-- translate -->
 
             </LinearLayout>
@@ -175,7 +174,7 @@
                 android:text="@string/websiteText"
                 android:textColor="@color/btnTextColor"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

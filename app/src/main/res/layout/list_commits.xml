@@ -4,24 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    android:orientation="vertical">
+    android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:id="@+id/linearLayoutFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen12dp">
 
             <TextView
                 android:id="@+id/commitSubject"
@@ -30,7 +30,7 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen18sp"
-                tools:text="This is a test"/>
+                tools:text="This is a test" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,19 +48,19 @@
                     tools:ignore="UseCompoundDrawables">
 
                     <com.google.android.material.card.MaterialCardView
+                        style="?attr/materialCardViewFilledStyle"
                         android:layout_width="@dimen/dimen24dp"
                         android:layout_height="@dimen/dimen24dp"
-                        style="?attr/materialCardViewFilledStyle"
-                        app:cardElevation="@dimen/dimen0dp"
                         android:layout_marginEnd="@dimen/dimen6dp"
-                        app:cardCornerRadius="@dimen/dimen12dp">
+                        app:cardCornerRadius="@dimen/dimen12dp"
+                        app:cardElevation="@dimen/dimen0dp">
 
                         <ImageView
                             android:id="@+id/commitAuthorAvatar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/generalImgContentText"
-                            tools:srcCompat="@tools:sample/avatars"/>
+                            tools:srcCompat="@tools:sample/avatars" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -70,16 +70,16 @@
                         android:layout_height="@dimen/dimen24dp"
                         android:layout_marginEnd="5dp"
                         android:contentDescription="@string/generalImgContentText"
-                        tools:srcCompat="@tools:sample/avatars"/>
+                        tools:srcCompat="@tools:sample/avatars" />
 
                     <TextView
                         android:id="@+id/commitAuthorAndCommitter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dimen10dp"
-                        android:textSize="@dimen/dimen12sp"
                         android:textColor="?attr/primaryTextColor"
-                        tools:text="opyale authored and opyale committed"/>
+                        android:textSize="@dimen/dimen12sp"
+                        tools:text="opyale authored and opyale committed" />
 
                 </LinearLayout>
 
@@ -87,15 +87,15 @@
                     android:id="@+id/commitSha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0"
                     android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_weight="0"
                     android:alpha=".8"
                     android:drawablePadding="@dimen/dimen10dp"
                     android:gravity="center_vertical"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen12sp"
                     app:drawableLeftCompat="@drawable/ic_commit"
-                    tools:text="357f3qd5s"/>
+                    tools:text="357f3qd5s" />
 
             </LinearLayout>
 
