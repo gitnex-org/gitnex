@@ -10,18 +10,18 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/comment_view"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,11 +30,11 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
                     android:layout_width="@dimen/dimen24dp"
                     android:layout_height="@dimen/dimen24dp"
-                    style="?attr/materialCardViewFilledStyle"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:cardCornerRadius="@dimen/dimen12dp">
+                    app:cardCornerRadius="@dimen/dimen12dp"
+                    app:cardElevation="@dimen/dimen0dp">
 
                     <ImageView
                         android:id="@+id/avatar"
@@ -42,7 +42,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0"
                         android:contentDescription="@string/generalImgContentText"
-                        tools:srcCompat="@tools:sample/avatars"/>
+                        tools:srcCompat="@tools:sample/avatars" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -63,7 +63,7 @@
                         android:singleLine="true"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/information"
@@ -72,7 +72,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:textColor="?attr/hintColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <ImageView
@@ -81,9 +81,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:layout_weight="0"
-                    android:contentDescription="@string/menuContentDesc"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:srcCompat="@drawable/ic_dotted_menu_horizontal"/>
+                    android:contentDescription="@string/menuContentDesc"
+                    app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
 
             </LinearLayout>
 
@@ -92,333 +92,59 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textIsSelectable="true"
                 android:autoLink="web"
+                android:textColor="?attr/primaryTextColor"
                 android:textColorLink="@color/lightBlue"
-                android:textSize="14sp"/>
+                android:textIsSelectable="true"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:id="@+id/commentReactionBadges"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal"
+                android:visibility="gone" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
-        android:id="@+id/label_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
-
-            <ImageView
-                android:id="@+id/label"
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_tag"
-                tools:srcCompat="@drawable/ic_tag"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/label_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/commit_view"
+        android:id="@+id/timeline_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
+        android:layout_marginBottom="@dimen/dimen4dp"
+        android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="@dimen/dimen24dp"
             android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
+            android:backgroundTint="?attr/materialCardBackgroundColor"
             app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
+            app:cardElevation="@dimen/dimen0dp">
 
             <ImageView
-                android:id="@+id/commit_icon"
+                android:id="@+id/timeline_icon"
                 android:layout_width="@dimen/dimen16dp"
                 android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_commit"
-                tools:srcCompat="@drawable/ic_commit"/>
+                android:contentDescription="@string/generalImgContentText"
+                android:src="@drawable/ic_history"
+                tools:srcCompat="@drawable/ic_history" />
 
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            android:id="@+id/commit_data"
+            android:id="@+id/timeline_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
             android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/assignees_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
-
-            <ImageView
-                android:id="@+id/assignees_icon"
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_person"
-                tools:srcCompat="@drawable/ic_person"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/assignees_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/milestone_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
-
-            <ImageView
-                android:id="@+id/milestone_icon"
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_milestone"
-                tools:srcCompat="@drawable/ic_milestone"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/milestone_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/status_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
-
-            <ImageView
-                android:id="@+id/status_icon"
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_issue"
-                tools:srcCompat="@drawable/ic_issue"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/status_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/review_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
-
-            <ImageView
-                android:id="@+id/review_icon"
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_issue_closed"
-                tools:srcCompat="@drawable/ic_issue_closed"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/review_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/change_title_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
-
-            <ImageView
-                android:id="@+id/change_title_icon"
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_edit"
-                tools:srcCompat="@drawable/ic_edit"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/change_title_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lock_unlock_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dimen4dp"
-        android:layout_marginBottom="@dimen/dimen4dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            app:cardCornerRadius="@dimen/dimen12dp"
-            android:backgroundTint="?attr/materialCardBackgroundColor">
-
-            <ImageView
-                android:id="@+id/lock_unlock_icon"
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
-                android:contentDescription="@string/generalImgContentText"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_lock"
-                tools:srcCompat="@drawable/ic_lock"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/lock_unlock_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/dimen4dp"
-            android:layout_marginEnd="@dimen/dimen4dp" />
+            android:layout_marginEnd="@dimen/dimen4dp"
+            android:gravity="center"
+            android:orientation="horizontal" />
 
     </LinearLayout>
 

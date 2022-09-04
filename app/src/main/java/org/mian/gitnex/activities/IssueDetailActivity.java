@@ -124,6 +124,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			}
 		}
 	});
+	private int page = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -164,10 +165,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
+			page = 1;
 			viewBinding.pullToRefresh.setRefreshing(false);
-			issueCommentsModel.loadIssueComments(repoOwner, repoName, issueIndex, ctx);
+			issueCommentsModel.loadIssueComments(repoOwner, repoName, issueIndex, ctx, null);
 
-		}, 500));
+		}, 50));
 
 		Typeface myTypeface = AppUtil.getTypeface(this);
 		viewBinding.toolbarTitle.setTypeface(myTypeface);
@@ -459,7 +461,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 			viewBinding.scrollViewComments.post(() -> {
 
-				issueCommentsModel.loadIssueComments(repoOwner, repoName, issueIndex, ctx);
+				issueCommentsModel.loadIssueComments(repoOwner, repoName, issueIndex, ctx, null);
 				commentEdited = false;
 			});
 		}
@@ -488,9 +490,26 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			bundle.putInt("issueNumber", issueIndex);
 
 			adapter = new IssueCommentsAdapter(ctx, bundle, issueCommentsMain, getSupportFragmentManager(), this::onResume, issue);
+			adapter.setLoadMoreListener(new IssueCommentsAdapter.OnLoadMoreListener() {
 
+				@Override
+				public void onLoadMore() {
+
+					page += 1;
+					issueCommentsModel.loadMoreIssueComments(owner, repo, index, ctx, page, adapter);
+					viewBinding.progressBar.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onLoadFinished() {
+
+					viewBinding.progressBar.setVisibility(View.GONE);
+				}
+			});
+
+			adapter.notifyDataChanged();
 			viewBinding.recyclerView.setAdapter(adapter);
-
+			viewBinding.progressBar.setVisibility(View.GONE);
 		});
 	}
 
