@@ -109,6 +109,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private Dialog progressDialog;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private Intent intentWiki;
+	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+		if(result.getResultCode() == 201) {
+			assert result.getData() != null;
+			if(result.getData().getBooleanExtra("updateReleases", false)) {
+				if(fragmentRefreshListenerReleases != null) {
+					fragmentRefreshListenerReleases.onRefresh(null);
+				}
+				repository.removeRepository();
+				getRepoInfo(repository.getOwner(), repository.getName());
+			}
+		}
+	});
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -150,18 +162,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			repository.removeRepository();
 			getRepoInfo(repository.getOwner(), repository.getName());
 		}
-	}	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-		if(result.getResultCode() == 201) {
-			assert result.getData() != null;
-			if(result.getData().getBooleanExtra("updateReleases", false)) {
-				if(fragmentRefreshListenerReleases != null) {
-					fragmentRefreshListenerReleases.onRefresh(null);
-				}
-				repository.removeRepository();
-				getRepoInfo(repository.getOwner(), repository.getName());
-			}
-		}
-	});
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
