@@ -107,18 +107,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
 	private Dialog progressDialog;
-	private MaterialAlertDialogBuilder materialAlertDialogBuilder;	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-		if(result.getResultCode() == 201) {
-			assert result.getData() != null;
-			if(result.getData().getBooleanExtra("updateReleases", false)) {
-				if(fragmentRefreshListenerReleases != null) {
-					fragmentRefreshListenerReleases.onRefresh(null);
-				}
-				repository.removeRepository();
-				getRepoInfo(repository.getOwner(), repository.getName());
-			}
-		}
-	});
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private Intent intentWiki;
 
 	@Override
@@ -150,7 +139,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 		checkRepositoryStarStatus(repository.getOwner(), repository.getName());
 		checkRepositoryWatchStatus(repository.getOwner(), repository.getName());
-	}
+	}	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+		if(result.getResultCode() == 201) {
+			assert result.getData() != null;
+			if(result.getData().getBooleanExtra("updateReleases", false)) {
+				if(fragmentRefreshListenerReleases != null) {
+					fragmentRefreshListenerReleases.onRefresh(null);
+				}
+				repository.removeRepository();
+				getRepoInfo(repository.getOwner(), repository.getName());
+			}
+		}
+	});
 
 	@Override
 	public void onResume() {
@@ -164,7 +164,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.repo_dotted_menu, menu);
@@ -878,7 +878,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		}
 
 	}
-
 
 
 
