@@ -187,9 +187,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	public interface OnLoadMoreListener {
 
 		void onLoadMore();
-
 		void onLoadFinished();
-
 	}
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
@@ -205,6 +203,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private final ImageView timelineIcon;
 		private String userLoginId;
 		private TimelineComment issueComment;
+		private final LinearLayout timelineDividerView;
 
 		private IssueCommentViewHolder(View view) {
 
@@ -222,6 +221,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			timelineView = view.findViewById(R.id.timeline_view);
 			timelineData = view.findViewById(R.id.timeline_data);
 			timelineIcon = view.findViewById(R.id.timeline_icon);
+			timelineDividerView = view.findViewById(R.id.timeline_divider_view);
 
 			menu.setOnClickListener(v -> {
 
@@ -536,9 +536,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				if(issueComment.getType().equalsIgnoreCase("review")) {
 					timelineView.setVisibility(View.GONE);
+					timelineDividerView.setVisibility(View.GONE);
 				}
 				else if(issueComment.getType().equalsIgnoreCase("dismiss_review")) {
 					timelineView.setVisibility(View.GONE);
+					timelineDividerView.setVisibility(View.GONE);
 				}
 				else if(issueComment.getType().equalsIgnoreCase("review_request")) {
 					start.setText(context.getString(R.string.timelineReviewRequest, issueComment.getUser().getLogin(), issueComment.getAssignee().getLogin(), informationBuilder));
@@ -695,10 +697,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			// code data view in timeline
 			else if(issueComment.getType().equalsIgnoreCase("code")) {
 				timelineView.setVisibility(View.GONE);
+				timelineDividerView.setVisibility(View.GONE);
 			}
 			// schedule pr view in timeline
 			else if(issueComment.getType().equalsIgnoreCase("pull_scheduled_merge") || issueComment.getType().equalsIgnoreCase("pull_cancel_scheduled_merge")) {
 				timelineView.setVisibility(View.GONE);
+				timelineDividerView.setVisibility(View.GONE);
 			}
 			else {
 				timelineView.setVisibility(View.GONE);

@@ -96,7 +96,7 @@
                         style="?attr/materialCardViewFilledStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen4dp"
+                        android:layout_marginBottom="@dimen/dimen0dp"
                         app:cardElevation="@dimen/dimen0dp">
 
                         <LinearLayout
