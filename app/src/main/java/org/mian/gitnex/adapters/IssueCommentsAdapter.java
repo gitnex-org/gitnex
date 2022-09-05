@@ -437,7 +437,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				start.setText(context.getString(R.string.timelineAddedCommit, issueComment.getUser().getLogin(), informationBuilder));
 				start.setTextSize(12);
 
-				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_person));
+				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_commit));
 				timelineData.addView(start);
 			}
 			// assignees data view in timeline
