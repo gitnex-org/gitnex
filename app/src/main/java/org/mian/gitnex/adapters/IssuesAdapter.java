@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -117,6 +118,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		private final LinearLayout frameLabels;
 		private final HorizontalScrollView labelsScrollViewDots;
 		private final LinearLayout frameLabelsDots;
+		private final ImageView commentIcon;
 		private Issue issueObject;
 
 		IssuesHolder(View itemView) {
@@ -130,6 +132,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			frameLabels = itemView.findViewById(R.id.frameLabels);
 			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
+			commentIcon = itemView.findViewById(R.id.comment_icon);
 
 			new Handler().postDelayed(() -> {
 				if(!AppUtil.checkGhostUsers(issueObject.getUser().getLogin())) {
@@ -226,6 +229,11 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 						frameLabels.addView(labelsView);
 					}
 				}
+			}
+
+			if(issue.getComments() > 15) {
+				commentIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_flame));
+				commentIcon.setColorFilter(context.getResources().getColor(R.color.releasePre, null));
 			}
 
 			switch(timeFormat) {

@@ -347,7 +347,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				});
 
 				commentMenuDelete.setOnClickListener(v1 -> {
-					deleteIssueComment(context, Math.toIntExact(issueComment.getId()), getAdapterPosition());
+					deleteIssueComment(context, Math.toIntExact(issueComment.getId()), getBindingAdapterPosition());
 					dialog.dismiss();
 				});
 
@@ -414,13 +414,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView end = new TextView(context);
 
 				if(issueComment.getBody().equals("")) {
-					start.setText(issueComment.getUser().getLogin() + " removed the ");
+					start.setText(context.getString(R.string.timelineRemovedLabelStart, issueComment.getUser().getLogin()));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				else {
-					start.setText(issueComment.getUser().getLogin() + " added the ");
+					start.setText(context.getString(R.string.timelineAddedLabelStart, issueComment.getUser().getLogin()));
 				}
-				end.setText(" label " + informationBuilder);
+				end.setText(context.getString(R.string.timelineLabelEnd, informationBuilder));
 				end.setTextSize(12);
 				start.setTextSize(12);
 
@@ -434,7 +434,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				start.setText(issueComment.getUser().getLogin() + " added commit " + informationBuilder);
+				start.setText(context.getString(R.string.timelineAddedCommit, issueComment.getUser().getLogin(), informationBuilder));
 				start.setTextSize(12);
 
 				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_person));
@@ -448,19 +448,19 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				if(issueComment.isRemovedAssignee()) {
 
 					if(issueComment.getUser().getLogin().equalsIgnoreCase(issueComment.getAssignee().getLogin())) {
-						start.setText(issueComment.getUser().getLogin() + " removed their assignment " + informationBuilder);
+						start.setText(context.getString(R.string.timelineAssigneesRemoved, issueComment.getUser().getLogin(), informationBuilder));
 					}
 					else {
-						start.setText(issueComment.getAssignee().getLogin() + " was unassigned by " + issueComment.getUser().getLogin() + " " + informationBuilder);
+						start.setText(context.getString(R.string.timelineAssigneesUnassigned, issueComment.getAssignee().getLogin(), issueComment.getUser().getLogin(), informationBuilder));
 					}
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				else {
 					if(issueComment.getUser().getLogin().equalsIgnoreCase(issueComment.getAssignee().getLogin())) {
-						start.setText(issueComment.getUser().getLogin() + " self-assigned this " + informationBuilder);
+						start.setText(context.getString(R.string.timelineAssigneesSelfAssigned, issueComment.getUser().getLogin(), informationBuilder));
 					}
 					else {
-						start.setText(issueComment.getAssignee().getLogin() + " was assigned by " + issueComment.getUser().getLogin() + " " + informationBuilder);
+						start.setText(context.getString(R.string.timelineAssigneesAssigned, issueComment.getAssignee().getLogin(), issueComment.getUser().getLogin(), informationBuilder));
 					}
 				}
 				start.setTextSize(12);
@@ -474,10 +474,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getMilestone() != null) {
-					start.setText(issueComment.getUser().getLogin() + " added this to the " + issueComment.getMilestone().getTitle() + " milestone " + informationBuilder);
+					start.setText(context.getString(R.string.timelineMilestoneAdded, issueComment.getUser().getLogin(), issueComment.getMilestone().getTitle(), informationBuilder));
 				}
 				else {
-					start.setText(issueComment.getUser().getLogin() + " removed this from the " + issueComment.getOldMilestone().getTitle() + " milestone " + informationBuilder);
+					start.setText(context.getString(R.string.timelineMilestoneRemoved, issueComment.getUser().getLogin(), issueComment.getOldMilestone().getTitle(), informationBuilder));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(12);
@@ -493,35 +493,35 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				if(issue.getIssueType().equalsIgnoreCase("Issue")) {
 					if(issueComment.getType().equals("close")) {
-						start.setText(issueComment.getUser().getLogin() + " closed this issue " + informationBuilder);
+						start.setText(context.getString(R.string.timelineStatusClosedIssue, issueComment.getUser().getLogin(), informationBuilder));
 						timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("reopen")) {
-						start.setText(issueComment.getUser().getLogin() + " reopened this issue " + informationBuilder);
+						start.setText(context.getString(R.string.timelineStatusReopenedIssue, issueComment.getUser().getLogin(), informationBuilder));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("commit_ref")) {
-						start.setText(issueComment.getUser().getLogin() + " referenced this issue from a commit " + issueComment.getRefCommitSha() + " " + informationBuilder);
+						start.setText(context.getString(R.string.timelineStatusRefIssue, issueComment.getUser().getLogin(), issueComment.getRefCommitSha(), informationBuilder));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
 					}
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_issue));
 				}
 				else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 					if(issueComment.getType().equalsIgnoreCase("close")) {
-						start.setText(issueComment.getUser().getLogin() + " closed this pull request " + informationBuilder);
+						start.setText(context.getString(R.string.timelineStatusClosedPr, issueComment.getUser().getLogin(), informationBuilder));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
 						timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("merge_pull")) {
-						start.setText(issueComment.getUser().getLogin() + " merged this pull request " + informationBuilder);
+						start.setText(context.getString(R.string.timelineStatusMergedPr, issueComment.getUser().getLogin(), informationBuilder));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
 						timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconPrMergedColor, null));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("commit_ref")) {
-						start.setText(issueComment.getUser().getLogin() + " referenced this issue from a commit " + issueComment.getRefCommitSha() + " " + informationBuilder);
+						start.setText(context.getString(R.string.timelineStatusRefPr, issueComment.getUser().getLogin(), issueComment.getRefCommitSha(), informationBuilder));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
 					}
 					else {
-						start.setText(issue.getIssueType() + " reopened this pull request " + informationBuilder);
+						start.setText(context.getString(R.string.timelineStatusReopenedPr, issueComment.getUser().getLogin(), informationBuilder));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
 					}
 				}
@@ -541,7 +541,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					timelineView.setVisibility(View.GONE);
 				}
 				else if(issueComment.getType().equalsIgnoreCase("review_request")) {
-					start.setText(issueComment.getUser().getLogin() + " requested review from " + issueComment.getAssignee().getLogin() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineReviewRequest, issueComment.getUser().getLogin(), issueComment.getAssignee().getLogin(), informationBuilder));
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_unwatch));
 				}
 				start.setTextSize(12);
@@ -552,7 +552,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			else if(issueComment.getType().equalsIgnoreCase("change_title")) {
 
 				TextView start = new TextView(context);
-				start.setText(issueComment.getUser().getLogin() + " changed title from " + issueComment.getOldTitle() + " to " + issueComment.getNewTitle() + " " + informationBuilder);
+				start.setText(context.getString(R.string.timelineChangeTitle, issueComment.getUser().getLogin(), issueComment.getOldTitle(), issueComment.getNewTitle(), informationBuilder));
 				start.setTextSize(12);
 
 				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_edit));
@@ -564,11 +564,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("lock")) {
-					start.setText(issueComment.getUser().getLogin() + " locked as " + issueComment.getBody() + " and limited conversation to collaborators " + informationBuilder);
+					start.setText(context.getString(R.string.timelineLocked, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_lock));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("unlock")) {
-					start.setText(issueComment.getUser().getLogin() + " unlocked this conversation " + informationBuilder);
+					start.setText(context.getString(R.string.timelineUnlocked, issueComment.getUser().getLogin(), informationBuilder));
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_key));
 				}
 				start.setTextSize(12);
@@ -581,11 +581,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("add_dependency")) {
-					start.setText(
-						issueComment.getUser().getLogin() + " added a new dependency " + context.getResources().getString(R.string.hash) + issueComment.getDependentIssue().getNumber() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineDependencyAdded, issueComment.getUser().getLogin(), issueComment.getDependentIssue().getNumber(), informationBuilder));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("remove_dependency")) {
-					start.setText(issueComment.getUser().getLogin() + " removed a dependency " + context.getResources().getString(R.string.hash) + issueComment.getDependentIssue().getNumber() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineDependencyRemoved, issueComment.getUser().getLogin(), issueComment.getDependentIssue().getNumber(), informationBuilder));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(12);
@@ -599,10 +598,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getProjectId() > 0) {
-					start.setText(issueComment.getUser().getLogin() + " added this to a project " + informationBuilder);
+					start.setText(context.getString(R.string.timelineProjectAdded, issueComment.getUser().getLogin(), informationBuilder));
 				}
 				else {
-					start.setText(issueComment.getUser().getLogin() + " removed this from a project " + informationBuilder);
+					start.setText(context.getString(R.string.timelineProjectRemoved, issueComment.getUser().getLogin(), informationBuilder));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(12);
@@ -616,13 +615,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("added_deadline")) {
-					start.setText(issueComment.getUser().getLogin() + " added the due date " + issueComment.getBody() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineDueDateAdded, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("modified_deadline")) {
-					start.setText(issueComment.getUser().getLogin() + " modified the due date to " + issueComment.getBody().split("\\|")[0] + " from " + issueComment.getBody().split("\\|")[1] + " " + informationBuilder);
+					start.setText(
+						context.getString(R.string.timelineDueDateModified, issueComment.getUser().getLogin(), issueComment.getBody().split("\\|")[0], issueComment.getBody().split("\\|")[1], informationBuilder));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("removed_deadline")) {
-					start.setText(issueComment.getUser().getLogin() + " removed the due date " + issueComment.getBody() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineDueDateRemoved, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(12);
@@ -636,10 +636,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("change_target_branch")) {
-					start.setText(issueComment.getUser().getLogin() + " changed target branch from " + issueComment.getOldRef() + " to " + issueComment.getNewRef() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineBranchChanged, issueComment.getUser().getLogin(), issueComment.getOldRef(), issueComment.getNewRef(), informationBuilder));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("delete_branch")) {
-					start.setText(issueComment.getUser().getLogin() + " deleted branch " + issueComment.getOldRef() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineBranchDeleted, issueComment.getUser().getLogin(), issueComment.getOldRef(), informationBuilder));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(12);
@@ -654,13 +654,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("start_tracking")) {
-					start.setText(issueComment.getUser().getLogin() + " started working " + informationBuilder);
+					start.setText(context.getString(R.string.timelineTimeTrackingStart, issueComment.getUser().getLogin(), informationBuilder));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("stop_tracking")) {
-					start.setText(issueComment.getUser().getLogin() + " stopped time tracking " + informationBuilder);
+					start.setText(context.getString(R.string.timelineTimeTrackingStop, issueComment.getUser().getLogin(), informationBuilder));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("cancel_tracking")) {
-					start.setText(issueComment.getUser().getLogin() + " cancelled time tracking " + informationBuilder);
+					start.setText(context.getString(R.string.timelineTimeTrackingCancel, issueComment.getUser().getLogin(), informationBuilder));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(12);
@@ -675,18 +675,16 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("change_issue_ref")) {
-					start.setText(issueComment.getUser().getLogin() + " added reference " + issueComment.getNewRef() + " " + informationBuilder);
+					start.setText(context.getString(R.string.timelineChangeIssueRef, issueComment.getUser().getLogin(), issueComment.getNewRef(), informationBuilder));
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_branch));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("comment_ref") || issueComment.getType().equalsIgnoreCase("issue_ref") || issueComment.getType().equalsIgnoreCase("pull_ref")) {
 
 					if(issue.getIssueType().equalsIgnoreCase("Issue")) {
-						start.setText(
-							issueComment.getUser().getLogin() + " referenced this issue in " + context.getResources().getString(R.string.hash) + issueComment.getRefIssue().getNumber() + " " + informationBuilder);
+						start.setText(context.getString(R.string.timelineRefIssue, issueComment.getUser().getLogin(), issueComment.getRefIssue().getNumber(), informationBuilder));
 					}
 					else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
-						start.setText(
-							issueComment.getUser().getLogin() + " referenced this pull request in " + context.getResources().getString(R.string.hash) + issueComment.getRefIssue().getNumber() + " " + informationBuilder);
+						start.setText(context.getString(R.string.timelineRefPr, issueComment.getUser().getLogin(), issueComment.getRefIssue().getNumber(), informationBuilder));
 					}
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
 				}
