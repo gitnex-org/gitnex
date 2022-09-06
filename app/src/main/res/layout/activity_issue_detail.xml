@@ -92,10 +92,40 @@
                     android:paddingBottom="@dimen/dimen8dp">
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/titleCard"
+                        style="?attr/materialCardViewFilledStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimen12dp"
+                        app:cardElevation="@dimen/dimen0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/materialCardBackgroundColor"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/dimen12dp">
+
+                            <TextView
+                                android:id="@+id/issueTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textIsSelectable="true"
+                                android:textSize="@dimen/dimen16sp" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/mainThreadCard"
                         style="?attr/materialCardViewFilledStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/titleCard"
                         android:layout_marginBottom="@dimen/dimen0dp"
                         app:cardElevation="@dimen/dimen0dp">
 
@@ -104,21 +134,19 @@
                             android:layout_height="wrap_content"
                             android:background="?attr/materialCardBackgroundColor"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:padding="@dimen/dimen12dp">
 
-                            <RelativeLayout
-                                android:id="@+id/mainIssueLayout"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="@dimen/dimen16dp">
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <com.google.android.material.card.MaterialCardView
-                                    android:id="@+id/assigneeAvatarFrame"
                                     style="?attr/materialCardViewFilledStyle"
                                     android:layout_width="@dimen/dimen24dp"
                                     android:layout_height="@dimen/dimen24dp"
-                                    android:layout_marginEnd="@dimen/dimen12dp"
                                     app:cardCornerRadius="@dimen/dimen12dp"
                                     app:cardElevation="@dimen/dimen0dp">
 
@@ -126,176 +154,175 @@
                                         android:id="@+id/assigneeAvatar"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:contentDescription="@string/generalImgContentText" />
+                                        android:layout_weight="0"
+                                        android:contentDescription="@string/generalImgContentText"
+                                        tools:srcCompat="@tools:sample/avatars"
+                                        tools:ignore="TooDeepLayout" />
 
                                 </com.google.android.material.card.MaterialCardView>
 
-                                <TextView
-                                    android:id="@+id/issueTitle"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toEndOf="@+id/assigneeAvatarFrame"
-                                    android:gravity="start"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textIsSelectable="true"
-                                    android:textSize="@dimen/dimen16sp" />
-
                                 <LinearLayout
-                                    android:id="@+id/msdueFrame"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/issueTitle"
-                                    android:layout_marginTop="@dimen/dimen10dp"
-                                    android:layout_toEndOf="@+id/assigneeAvatarFrame"
+                                    android:layout_marginLeft="@dimen/dimen16dp"
+                                    android:layout_marginRight="@dimen/dimen16dp"
+                                    android:layout_weight="1"
                                     android:orientation="vertical">
 
-                                    <LinearLayout
-                                        android:id="@+id/dueDateFrame"
-                                        android:layout_width="match_parent"
+                                    <TextView
+                                        android:id="@+id/author"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:gravity="end|center_vertical"
-                                        android:orientation="horizontal"
-                                        android:visibility="gone"
-                                        tools:ignore="UseCompoundDrawables">
-
-                                        <ImageView
-                                            android:layout_width="@dimen/dimen20dp"
-                                            android:layout_height="wrap_content"
-                                            android:contentDescription="@string/generalImgContentText"
-                                            app:srcCompat="@drawable/ic_calendar" />
-
-                                        <TextView
-                                            android:id="@+id/issueDueDate"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="@dimen/dimen8dp"
-                                            android:singleLine="true"
-                                            android:textColor="?attr/primaryTextColor"
-                                            android:textSize="@dimen/dimen14sp" />
-
-                                    </LinearLayout>
+                                        android:ellipsize="middle"
+                                        android:singleLine="true"
+                                        android:textColor="?attr/primaryTextColor"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                     <LinearLayout
-                                        android:id="@+id/milestoneFrame"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:gravity="end|center_vertical"
-                                        android:orientation="horizontal"
-                                        android:visibility="gone"
-                                        tools:ignore="UseCompoundDrawables">
-
-                                        <ImageView
-                                            android:layout_width="@dimen/dimen20dp"
-                                            android:layout_height="wrap_content"
-                                            android:contentDescription="@string/generalImgContentText"
-                                            app:srcCompat="@drawable/ic_milestone" />
+                                        android:orientation="horizontal">
 
                                         <TextView
-                                            android:id="@+id/issueMilestone"
+                                            android:id="@+id/issueCreatedTime"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginStart="@dimen/dimen8dp"
-                                            android:singleLine="true"
-                                            android:textColor="?attr/primaryTextColor"
-                                            android:textSize="@dimen/dimen14sp" />
+                                            android:gravity="start"
+                                            android:textColor="?attr/hintColor"
+                                            android:textSize="12sp"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/issueModified"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="start"
+                                            android:text="@string/modifiedText"
+                                            android:textColor="?attr/hintColor"
+                                            android:textSize="12sp"
+                                            android:visibility="gone" />
 
                                     </LinearLayout>
 
                                 </LinearLayout>
 
-                                <HorizontalScrollView
-                                    android:id="@+id/assigneesScrollView"
-                                    android:layout_width="match_parent"
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/dueDateFrame"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end|center_vertical"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen20dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/msdueFrame"
-                                    android:layout_alignParentEnd="false"
-                                    android:fillViewport="true"
-                                    android:foregroundGravity="right"
-                                    android:scrollbarThumbHorizontal="@android:color/transparent">
+                                    android:contentDescription="@string/generalImgContentText"
+                                    app:srcCompat="@drawable/ic_calendar" />
 
-                                    <LinearLayout
-                                        android:id="@+id/frameAssignees"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="end"
-                                        android:layout_marginTop="@dimen/dimen10dp"
-                                        android:gravity="end"
-                                        android:orientation="horizontal">
-
-                                    </LinearLayout>
-                                </HorizontalScrollView>
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/issueDescription"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/assigneesScrollView"
-                                    android:autoLink="web"
-                                    android:gravity="start"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textColorLink="@color/lightBlue"
-                                    android:textIsSelectable="true"
-                                    android:textSize="@dimen/dimen14sp" />
-
-                                <HorizontalScrollView
-                                    android:id="@+id/labelsScrollView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/issueDescription"
-                                    android:layout_alignParentEnd="false"
-                                    android:fillViewport="true"
-                                    android:foregroundGravity="right"
-                                    android:scrollbarThumbHorizontal="@android:color/transparent">
-
-                                    <LinearLayout
-                                        android:id="@+id/frameLabels"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/dimen10dp"
-                                        android:orientation="horizontal">
-
-                                    </LinearLayout>
-                                </HorizontalScrollView>
-
-                                <RelativeLayout
-                                    android:id="@+id/issueTimeFrame"
+                                <TextView
+                                    android:id="@+id/issueDueDate"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/labelsScrollView"
+                                    android:layout_marginStart="@dimen/dimen8dp"
+                                    android:singleLine="true"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/milestoneFrame"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end|center_vertical"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen20dp"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/generalImgContentText"
+                                    app:srcCompat="@drawable/ic_milestone" />
+
+                                <TextView
+                                    android:id="@+id/issueMilestone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen8dp"
+                                    android:singleLine="true"
+                                    android:textColor="?attr/primaryTextColor"
+                                    android:textSize="@dimen/dimen14sp" />
+
+                            </LinearLayout>
+
+                            <HorizontalScrollView
+                                android:id="@+id/assigneesScrollView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fillViewport="true"
+                                android:foregroundGravity="right"
+                                android:visibility="gone"
+                                android:scrollbarThumbHorizontal="@android:color/transparent">
+
+                                <LinearLayout
+                                    android:id="@+id/frameAssignees"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginTop="@dimen/dimen10dp"
+                                    android:gravity="end"
+                                    android:orientation="horizontal">
+
+                                </LinearLayout>
+
+                            </HorizontalScrollView>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/issueDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/dimen8dp"
+                                android:autoLink="web"
+                                android:gravity="start"
+                                android:visibility="gone"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textColorLink="@color/lightBlue"
+                                android:textIsSelectable="true"
+                                android:textSize="@dimen/dimen14sp" />
+
+                            <HorizontalScrollView
+                                android:id="@+id/labelsScrollView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fillViewport="true"
+                                android:foregroundGravity="right"
+                                android:visibility="gone"
+                                android:scrollbarThumbHorizontal="@android:color/transparent">
+
+                                <LinearLayout
+                                    android:id="@+id/frameLabels"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/dimen10dp"
                                     android:orientation="horizontal">
 
-                                    <TextView
-                                        android:id="@+id/issueCreatedTime"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="start"
-                                        android:textColor="?attr/hintColor"
-                                        android:textSize="@dimen/dimen12sp"
-                                        android:visibility="gone" />
+                                </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/issueModified"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_toEndOf="@+id/issueCreatedTime"
-                                        android:text="@string/modifiedText"
-                                        android:textColor="?attr/hintColor"
-                                        android:textSize="@dimen/dimen12sp"
-                                        android:visibility="gone" />
+                            </HorizontalScrollView>
 
-                                </RelativeLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/commentReactionBadges"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/issueTimeFrame"
-                                    android:layout_marginTop="@dimen/dimen10dp"
-                                    android:orientation="horizontal"
-                                    android:visibility="gone" />
-
-                            </RelativeLayout>
+                            <LinearLayout
+                                android:id="@+id/commentReactionBadges"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimen10dp"
+                                android:orientation="horizontal"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 

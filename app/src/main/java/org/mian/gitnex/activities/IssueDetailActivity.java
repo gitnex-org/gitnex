@@ -514,6 +514,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	}
 
 	private void getSingleIssue(String repoOwner, String repoName, int issueIndex) {
+
 		if(issue.hasIssue()) {
 			viewBinding.progressBar.setVisibility(View.GONE);
 			getSubscribed();
@@ -587,6 +588,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	}
 
 	private void initWithIssue() {
+
 		if(!issue.getRepository().hasRepository()) {
 			getRepoInfo();
 		}
@@ -680,12 +682,18 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			});
 		}
 
-		Markdown.render(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription, issue.getRepository());
+		viewBinding.author.setText(issue.getIssue().getUser().getLogin());
 
-		RelativeLayout.LayoutParams paramsDesc = (RelativeLayout.LayoutParams) viewBinding.issueDescription.getLayoutParams();
+		if(!cleanIssueDescription.equals("")) {
+			viewBinding.issueDescription.setVisibility(View.VISIBLE);
+			Markdown.render(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription, issue.getRepository());
+		}
+		else {
+			viewBinding.issueDescription.setVisibility(View.GONE);
+		}
 
-		LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(80, 80);
-		params1.setMargins(15, 0, 0, 0);
+		LinearLayout.LayoutParams paramsAssignees = new LinearLayout.LayoutParams(64, 64);
+		paramsAssignees.setMargins(15, 0, 0, 0);
 
 		if(issue.getIssue().getAssignees() != null) {
 
@@ -695,11 +703,11 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 				ImageView assigneesView = new ImageView(ctx);
 
-				PicassoService.getInstance(ctx).get().load(issue.getIssue().getAssignees().get(i).getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(48, 0)).resize(96, 96)
+				PicassoService.getInstance(ctx).get().load(issue.getIssue().getAssignees().get(i).getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(36, 0)).resize(72, 72)
 					.centerCrop().into(assigneesView);
 
 				viewBinding.frameAssignees.addView(assigneesView);
-				assigneesView.setLayoutParams(params1);
+				assigneesView.setLayoutParams(paramsAssignees);
 
 				int finalI = i;
 
@@ -716,17 +724,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 						return true;
 					});
 				}
-
-				/*if(!issue.getIssue().getAssignees().get(i).getFull_name().equals("")) {
-
-					assigneesView.setOnClickListener(
-						new ClickListener(getString(R.string.assignedTo, issue.getIssue().getAssignees().get(i).getFull_name()), ctx));
-				}
-				else {
-
-					assigneesView.setOnClickListener(
-						new ClickListener(getString(R.string.assignedTo, issue.getIssue().getAssignees().get(i).getLogin()), ctx));
-				}*/
 			}
 		}
 		else {
@@ -734,10 +731,10 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			viewBinding.assigneesScrollView.setVisibility(View.GONE);
 		}
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		params.setMargins(0, 0, 15, 0);
+		LinearLayout.LayoutParams paramsLabels = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		paramsLabels.setMargins(0, 0, 15, 0);
 
-		if(issue.getIssue().getLabels() != null) {
+		if(issue.getIssue().getLabels().size() > 0) {
 
 			viewBinding.labelsScrollView.setVisibility(View.VISIBLE);
 
@@ -750,7 +747,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				ImageView labelsView = new ImageView(ctx);
 				viewBinding.frameLabels.setOrientation(LinearLayout.HORIZONTAL);
 				viewBinding.frameLabels.setGravity(Gravity.START | Gravity.TOP);
-				labelsView.setLayoutParams(params);
+				labelsView.setLayoutParams(paramsLabels);
 
 				int height = AppUtil.getPixelsFromDensity(ctx, 20);
 				int textSize = AppUtil.getPixelsFromScaledDensity(ctx, 12);
@@ -804,27 +801,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			viewBinding.issueModified.setVisibility(View.INVISIBLE);
 		}
 
-		if((issue.getIssue().getDueDate() == null && issue.getIssue().getMilestone() == null) && issue.getIssue().getAssignees() != null) {
-
-			paramsDesc.setMargins(0, 35, 0, 0);
-			viewBinding.issueDescription.setLayoutParams(paramsDesc);
-		}
-		else if(issue.getIssue().getDueDate() == null && issue.getIssue().getMilestone() == null) {
-
-			paramsDesc.setMargins(0, 55, 0, 0);
-			viewBinding.issueDescription.setLayoutParams(paramsDesc);
-		}
-		else if(issue.getIssue().getAssignees() == null) {
-
-			paramsDesc.setMargins(0, 35, 0, 0);
-			viewBinding.issueDescription.setLayoutParams(paramsDesc);
-		}
-		else {
-
-			paramsDesc.setMargins(0, 15, 0, 0);
-			viewBinding.issueDescription.setLayoutParams(paramsDesc);
-		}
-
 		viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale, timeFormat, ctx));
 		viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
 
@@ -859,17 +835,6 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 			viewBinding.milestoneFrame.setVisibility(View.GONE);
 		}
-
-		/*if(!issue.getIssue().getUser().getFull_name().equals("")) {
-
-			viewBinding.assigneeAvatar.setOnClickListener(
-				new ClickListener(ctx.getResources().getString(R.string.issueCreator) + issue.getIssue().getUser().getFull_name(), ctx));
-		}
-		else {
-
-			viewBinding.assigneeAvatar.setOnClickListener(
-				new ClickListener(ctx.getResources().getString(R.string.issueCreator) + issue.getIssue().getUser().getLogin(), ctx));
-		}*/
 	}
 
 	private void getPullRequest() {
