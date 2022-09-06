@@ -18,7 +18,7 @@
             android:id="@+id/timeline_line"
             android:layout_width="@dimen/dimen2dp"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dimen6dp"
+            android:padding="@dimen/dimen8dp"
             android:background="?attr/colorPrimary" />
 
     </LinearLayout>
@@ -143,7 +143,7 @@
                 android:layout_height="@dimen/dimen24dp"
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="?attr/materialCardBackgroundColor"
-                app:cardCornerRadius="@dimen/dimen12dp"
+                app:cardCornerRadius="@dimen/dimen6dp"
                 app:cardElevation="@dimen/dimen0dp">
 
                 <ImageView
