@@ -795,7 +795,7 @@
     <string name="timelineAddedLabelStart">%s added the\u0020</string>
     <string name="timelineRemovedLabelStart">%s removed the\u0020</string>
     <string name="timelineLabelEnd">\u0020label %s</string>
-    <string name="timelineAddedCommit">%s added commit %s</string>
+    <string name="timelineAddedCommit">%s added\u0020</string>
     <string name="timelineAssigneesRemoved">%s removed their assignment %s</string>
     <string name="timelineAssigneesUnassigned">%s was unassigned by %s %s</string>
     <string name="timelineAssigneesSelfAssigned">%s self-assigned this %s</string>

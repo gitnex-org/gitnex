@@ -10,7 +10,7 @@
         android:id="@+id/timeline_divider_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="11dp"
+        android:paddingStart="@dimen/dimen12dp"
         android:paddingEnd="@dimen/dimen0dp"
         android:orientation="vertical">
 
@@ -139,8 +139,8 @@
 
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
-                android:layout_width="@dimen/dimen24dp"
-                android:layout_height="@dimen/dimen24dp"
+                android:layout_width="@dimen/dimen28dp"
+                android:layout_height="@dimen/dimen28dp"
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="?attr/materialCardBackgroundColor"
                 app:cardCornerRadius="@dimen/dimen6dp"
