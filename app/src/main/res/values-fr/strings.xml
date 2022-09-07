@@ -52,7 +52,7 @@
     <string name="navigationDrawerClose">Fermer le volet de navigation</string>
     <string name="logo">Se connecter à Gitea</string>
     <string name="protocol">Protocole</string>
-    <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL GITEA</string>
+    <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL Gitea.</string>
     <string name="malformedUrl">Connexion impossible. Veuillez vérifier l’URL et le port</string>
     <string name="protocolError">Le protocole HTTP est déconseillé en dehors de tests sur un réseau local</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
@@ -147,7 +147,7 @@
     <string name="settingsSecurityHeader">Sécurité</string>
     <string name="settingsCertsSelectorHeader">Supprimer les certificats</string>
     <string name="settingsCertsPopupTitle">Supprimer les certificats ?</string>
-    <string name="settingsCertsPopupMessage">Les noms d’hôtes et les certificats ajoutés manuellement seront supprimés.\n\nIl faudra vous reconnecter.</string>
+    <string name="settingsCertsPopupMessage">Souhaitez-vous vraiment supprimer tout certificat et nom de domaine ajouté manuellement ?\n\nVous devrez vous reconnecter.</string>
     <string name="settingsDateTimeHeaderText">Date et heure</string>
     <string name="settingsSave">Réglages enregistrés</string>
     <string name="settingsLanguageSelectorHeader">Langue</string>
@@ -185,7 +185,7 @@
     <string name="settingsGeneralHeader">Général</string>
     <string name="generalHintText">Ouverture des liens, écran d’accueil</string>
     <string name="generalDeepLinkDefaultScreen">Écran par défaut</string>
-    <string name="generalDeepLinkDefaultScreenHintText">L’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien externe.</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Sélectionnez l’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien externe.</string>
     <string name="generalDeepLinkSelectedText">S/O</string>
     <string name="linkSelectorDialogTitle">Écran par défaut</string>
     <string name="settingsBiometricHeader">Biométrie</string>
@@ -205,7 +205,7 @@
     <string name="labelDeleteText">Étiquette supprimée</string>
     <string name="selectBranchError">Branche de diffusion</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
-    <string name="alertDialogTokenRevokedMessage">Le jeton d’accès est peut-être révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nEn cas de jeton révoqué, veuillez vous reconnecter</string>
+    <string name="alertDialogTokenRevokedMessage">Le jeton d’accès a peut-être été révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nSi le jeton a été révoqué, veuillez vous reconnecter.</string>
     <string name="labelDeleteMessage">Voulez-vous vraiment supprimer cette étiquette ?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Équipes</string>
@@ -372,7 +372,7 @@
     <string name="doneButton">Terminé</string>
     <string name="cancelButton">Annuler</string>
     <string name="genericError">Une erreur s’est produite, veuillez réessayer</string>
-    <string name="apiNotFound">Cette requête nécessite une version de Gitea plus récente. Veuillez mettre à jour votre instance.</string>
+    <string name="apiNotFound">Cette requête nécessite une version plus récente de Gitea. Veuillez mettre à jour votre instance.</string>
     <string name="noDataFound">🌟 Rien ici 🌟</string>
     <string name="addButton">Ajouter</string>
     <string name="removeButton">Supprimer</string>
@@ -398,7 +398,7 @@
     <string name="genericWaitFor">Attendez un instant ☕</string>
     <string name="file">Fichier</string>
     <string name="issue">Ticket</string>
-    <string name="label">Étiquette</string>
+    <string name="labelTxt">Étiquette</string>
     <string name="release">Version</string>
     <string name="pr">Demande d’ajout</string>
     <string name="collaborator">Participant</string>
@@ -414,6 +414,7 @@
     <string name="reopen">Rouvrir</string>
     <string name="openInBrowser">Ouvrir dans le navigateur</string>
     <string name="deleteGenericTitle">Supprimer %s</string>
+    <string name="reset">Remettre à zéro</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -423,7 +424,7 @@
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
     <string name="unWatchRepositorySuccess">Vous ne suivez plus ce dépôt</string>
     <string name="titleDrafts">Brouillons</string>
-    <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Si vous continuez, l’application peut ne pas fonctionner correctement.</string>
+    <string name="versionUnsupportedOld">Version périmée de Gitea (%1$s) détectée. Veuillez mettre à jour vers la dernière version stable. Dans le cas contraire, l’application pourrait ne pas fonctionner correctement.</string>
     <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
     <string name="versionUnknown">Aucun serveur Gitea détecté !</string>
     <string name="versionAlertDialogHeader">Version de Gitea non prise en charge</string>
@@ -498,15 +499,18 @@
     <string name="settingsEnableReportsText">Rapports de plantage</string>
     <string name="crashTitle">GitNex a planté :(</string>
     <string name="setCrashReports">Débogage</string>
-    <string name="crashMessage">Il est conseillé de créer un ticket expliquant comment reproduire ce bogue pour faciliter la correction du problème.\n\nAppuyez sur « D’accord » si vous préférez envoyer le rapport de plantage par courriel. Libre à vous d’y ajouter du contenu supplémentaire.\nMerci!</string>
+    <string name="crashMessage">Il est conseillé de créer un ticket expliquant comment reproduire ce bogue pour faciliter la correction du problème.\n\nAppuyez sur « D’accord » si vous préférez envoyer le rapport de plantage par courriel. Libre à vous d’y ajouter du contenu supplémentaire.\nMerci !</string>
     <string name="forceLogoutDialogHeader">Veuillez vous reconnecter</string>
-    <string name="forceLogoutDialogDescription">Une reconnexion est nécessaire en raison de changements majeurs du fonctionnement interne pour améliorer la souplesse de l\'application.\n\nMerci pour votre patience et toutes nos excuses pour la gêne occasionnée.</string>
+    <string name="forceLogoutDialogDescription">Une reconnexion est nécessaire en raison de changements majeurs du fonctionnement interne qui améliore l’architecture de l’application.\n\nMerci pour votre patience et toutes nos excuses pour la gêne occasionnée.</string>
     <string name="deleteAllDrafts">Supprimer tous les brouillons</string>
     <string name="draftsListEmpty">Aucun brouillon</string>
     <string name="draftsDeleteSuccess">Brouillons supprimés</string>
     <string name="draftsSingleDeleteSuccess">Brouillon supprimé</string>
     <string name="deleteAllDraftsDialogMessage">Tous les brouillons du compte seront supprimés.\n\nContinuer ?</string>
     <string name="draftSaved">Brouillon sauvegardé automatiquement</string>
+    <string name="resetMostReposCounter">Compteur remis à zéro</string>
+    <string name="resetCounterDialogMessage">Souhaitez-vous remettre à zéro le compteur du dépôt %s ?</string>
+    <string name="resetCounterAllDialogMessage">Tous les compteurs des dépôt de ce compte seront remis à zéro.</string>
     <string name="appearanceHintText">Thèmes, polices, pastilles de comptage</string>
     <string name="securityHintText">Biométrie, certificats SSL, cache</string>
     <string name="languagesHintText">Langues</string>
@@ -517,7 +521,7 @@
     <string name="archivedRepositoryMessage">Ce dépôt est archivé. Les fichiers sont accessibles, mais aucune modification n’est possible.</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
     <string name="removeAccountPopupTitle">Supprimer le compte</string>
-    <string name="removeAccountPopupMessage">Êtes-vous sûr de vouloir supprimer ce compte de l’application ?\n\nSeules les données de l’application seront supprimées.</string>
+    <string name="removeAccountPopupMessage">Êtes-vous certain de vouloir supprimer ce compte de l’application ?\n\nSeules les données de l’application seront supprimées.</string>
     <string name="addNewAccount">Nouveau compte</string>
     <string name="addNewAccountText">Ajouter un nouveau compte</string>
     <string name="accountAlreadyExistsError">Ce compte existe déjà dans l’application</string>
@@ -569,8 +573,8 @@
     <string name="repoSettingsDeleteError">Nom du dépôt incorrect</string>
     <string name="repoDeletionSuccess">Dépôt supprimé</string>
     <string name="repoSettingsTransferOwnership">Changer de propriétaire</string>
-    <string name="repoSettingsTransferOwnershipHint">Transfère le dépôt à un autre utilisateur ou une autre organisation dont vous possédez les droits d\'administrateur</string>
-    <string name="repoSettingsTransferOwnershipDescription">Choses à savoir avant le transfert :\n\n- Vous perdez l’accès au dépôt si vous le transférez à un autre utilisateur.\n- Vous conservez l’accès au dépôt si vous le transférez à une organisation que vous (co-)gérez.\n\nEntrez le nom du dépôt pour confirmer</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfère ce dépôt à un utilisateur ou une organisation dont vous êtes administrateur</string>
+    <string name="repoSettingsTransferOwnershipDescription">Choses à savoir avant le transfert :\n\n- Vous perdez l’accès au dépôt si vous le transférez à un autre utilisateur.\n- Vous conservez l’accès au dépôt si vous le transférez à une organisation que vous (co-)gérez.\n\nEntrez le nom du dépôt pour confirmer.</string>
     <string name="repoTransferText">Transférer</string>
     <string name="repoTransferOwnerText">Nouveau propriétaire</string>
     <string name="repoTransferSuccess">Dépôt transféré</string>
@@ -593,7 +597,7 @@
     <string name="prClosed">Demande d’ajout fermée</string>
     <string name="prReopened">Demande d’ajout rouverte</string>
     <string name="prMergeInfo">Infos sur la demande d’ajout</string>
-    <string name="accountDoesNotExist">Ce compte associé à l\'URI %1$s n\'existe pas dans l\'application. Vous pouvez l\'ajouter en appuyant sur Ajouter un nouveau compte.</string>
+    <string name="accountDoesNotExist">Aucun compte associé à l’URI %1$s ne semble exister dans l’application. Vous pouvez l’ajouter en appuyant sur Ajouter un nouveau compte.</string>
     <string name="launchApp">Lancer l’app</string>
     <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet. Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessus.</string>
     <string name="biometricAuthTitle">Authentification biométrique</string>
@@ -634,7 +638,7 @@
     <string name="tagDeleted">Tag supprimé</string>
     <string name="tagDeleteError">Un tag attaché à une diffusion ne peut être directement supprimé.</string>
     <string name="useCustomTabs">Utiliser des onglets personnalisés</string>
-    <string name="browserOpenFailed">Aucune application présente ne peut ouvrir ce lien. Les URL SSH ou avec un préfixe autre que http:// ou https:// ne sont pas compatibles avec la plupart des navigateurs.</string>
+    <string name="browserOpenFailed">Aucune application présente ne peut ouvrir ce lien. La plupart des navigateurs ne sont pas compatibles avec les URL SSH ou des préfixes autres que http:// ou https://</string>
     <string name="logInAgain">Se reconnecter</string>
     <string name="notLoggedIn">%s \u25CF n’est pas connecté</string>
     <string name="followSystem">Suivant le système (clair/sombre)</string>

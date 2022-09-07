@@ -1,0 +1,18 @@
+4.5.0
+
+🎉 Características 🎉
+- Diseño Material You
+- Repositorios más visitados
+- Editor de código
+
+🚀 Mejoras 🚀
+- Ver el dueño del repositorio en la pantalla de información y barra de título
+- Buscar bifurcaciones por el nombre del dueño
+- Abrir enlaces de la wiki en aplicaciones de terceros
+- Copiar/compartir/abrir un archivo en el navegador
+
+Notas de lanzamiento: https://codeberg.org/gitnex/GitNex/releases
+
+Vídeo de lanzamiento: https://youtu.be/v0JiHfJQb-o
+
+Blog de lanzamiento: https://gitnex.codeberg.page/posts/450.html

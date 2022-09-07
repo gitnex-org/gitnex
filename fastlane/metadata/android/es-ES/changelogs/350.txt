@@ -1,13 +1,13 @@
 3.5.0
 
-New: Render emoji in issue/pr titles, commit message and markdown files
-New: Cron tasks (Admin only)
-New: Biometric support to unlock the app
-New: Switch to saved instance when coming from email/links
-New: Copy user login id to clipboard
-New: Progress notification for downloading files
-New: Rewrite file viewer in native code to move away from traditional js to load files faster
+Nuevo: Visualizar emoticonos en los títulos de incidencias/PR, mensajes de commit y archivos Markdown
+Nuevo: Tareas cron (Solo administradores)
+Nuevo: Soporte biométrico para desbloquear la aplicación
+Nuevo: Cambiar de instancia desde correo o enlaces
+Nuevo: Copiar usuario de inicio de sesión al portapapeles
+Nuevo: Notificación de progreso para los archivos descargados
+Nuevo: Reescrito el visor de archivos en código nativo para una carga más rápida
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+Notas de lanzamiento: https://codeberg.org/gitnex/GitNex/releases
 
-Release Blog: https://gitnex.codeberg.page/posts/350.html
+Blog de lanzamiento: https://gitnex.codeberg.page/posts/350.html

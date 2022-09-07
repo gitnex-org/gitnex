@@ -1,13 +1,13 @@
 4.0.0
 
-New: Revamped UI across the whole app
-New: Explore public organizations
-New: Users profile view with details, repositories, starred repositories, organizations, followers, following
-New: Notifications for all accounts
-New: New dialog popup for About App
-New: Delete head branch after PR is merged
-New: Time selection for changing dark theme
+Nuevo: UI renovada en toda la aplicación
+Nuevo: Explorar las organizaciones públicas
+Nuevo: Vista de perfiles de usuarios con detalles, repositorios, repositorios favoritos, organizaciones, seguidores y seguidos
+Nuevo: Notificaciones para todas las cuentas
+Nuevo: Nueva pantalla para "Sobre la aplicación"
+Nuevo: Eliminar la rama después de fusionar un PR
+Nuevo: Cambio de tema por hora
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+Notas de lanzamiento: https://codeberg.org/gitnex/GitNex/releases
 
-Release Blog: https://gitnex.codeberg.page/posts/400.html
+Blog de lanzamiento: https://gitnex.codeberg.page/posts/400.html

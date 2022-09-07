@@ -19,9 +19,12 @@ public class ParseDiffTest {
 		List<FileDiffView> parsed = ParseDiff.getFileDiffViewArray(commitDiff);
 		assertEquals(4, parsed.size());
 		assertTrue(parsed.get(0).isFileBinary());
+		assertEquals("binary ", parsed.get(0).getFileInfo());
 		assertFalse(parsed.get(1).isFileBinary());
 
 		assertEquals(1, parsed.get(1).getFileContents().size());
+		assertEquals("newOne.txt", parsed.get(1).getFileName());
+		assertEquals("+2, -0", parsed.get(1).getFileInfo());
 		assertEquals(2, parsed.get(1).getFileContents().get(0).getLineAdded());
 		assertEquals(0, parsed.get(1).getFileContents().get(0).getLineRemoved());
 

@@ -6,8 +6,10 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -38,8 +40,10 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -115,7 +119,6 @@ public class AppUtil {
 		}
 
 		return FileType.UNKNOWN;
-
 	}
 
 	public static boolean hasNetworkConnection(Context context) {
@@ -199,7 +202,6 @@ public class AppUtil {
 	}
 
 	public static Boolean checkIntegers(String str) {
-
 		return str.matches("\\d+");
 	}
 
@@ -209,7 +211,6 @@ public class AppUtil {
 		Configuration config = resource.getConfiguration();
 		config.setLocale(new Locale(locCode.toLowerCase()));
 		resource.updateConfiguration(config, dm);
-
 	}
 
 	public static String getTimestampFromDate(Context context, Date date) {
@@ -223,7 +224,6 @@ public class AppUtil {
 		else {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale).format(date);
 		}
-
 	}
 
 	@ColorInt
@@ -233,7 +233,6 @@ public class AppUtil {
 		context.getTheme().resolveAttribute(resid, typedValue, true);
 
 		return typedValue.data;
-
 	}
 
 	public static String customDateFormat(String customDate) {
@@ -260,7 +259,6 @@ public class AppUtil {
 		}
 
 		return year + "-" + sMonth + "-" + sDay;
-
 	}
 
 	public static String customDateCombine(String customDate) {
@@ -287,7 +285,6 @@ public class AppUtil {
 		}
 
 		return (customDate + "T" + mHour + ":" + sMin + ":" + sSec + "Z");
-
 	}
 
 	public static String encodeBase64(String str) {
@@ -299,7 +296,6 @@ public class AppUtil {
 		}
 
 		return base64Str;
-
 	}
 
 	public static String decodeBase64(String str) {
@@ -311,7 +307,6 @@ public class AppUtil {
 		}
 
 		return base64Str;
-
 	}
 
 	public static String getLastCharactersOfWord(String str, int count) {
@@ -348,7 +343,6 @@ public class AppUtil {
 			lines++;
 
 		return lines;
-
 	}
 
 	public static void copyToClipboard(Context ctx, CharSequence data, String message) {
@@ -379,19 +373,66 @@ public class AppUtil {
 		ctx.startActivity(Intent.createChooser(sharingIntent, url));
 	}
 
+	private static Intent wrapBrowserIntent(Context context, Intent intent) {
+
+		final PackageManager pm = context.getPackageManager();
+		final List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(intent).setData(intent.getData().buildUpon().authority("example.com").scheme("https").build()), PackageManager.MATCH_ALL);
+		final ArrayList<Intent> chooserIntents = new ArrayList<>();
+		final String ourPackageName = context.getPackageName();
+
+		Collections.sort(activities, new ResolveInfo.DisplayNameComparator(pm));
+
+		for(ResolveInfo resInfo : activities) {
+			ActivityInfo info = resInfo.activityInfo;
+			if(!info.enabled || !info.exported) {
+				continue;
+			}
+			if(info.packageName.equals(ourPackageName)) {
+				continue;
+			}
+
+			Intent targetIntent = new Intent(intent);
+			targetIntent.setPackage(info.packageName);
+			targetIntent.setDataAndType(intent.getData(), intent.getType());
+			chooserIntents.add(targetIntent);
+		}
+
+		if(chooserIntents.isEmpty()) {
+			return null;
+		}
+
+		final Intent lastIntent = chooserIntents.remove(chooserIntents.size() - 1);
+		if(chooserIntents.isEmpty()) {
+			return lastIntent;
+		}
+
+		Intent chooserIntent = Intent.createChooser(lastIntent, null);
+		String extraName = Intent.EXTRA_ALTERNATE_INTENTS;
+		chooserIntent.putExtra(extraName, chooserIntents.toArray(new Intent[0]));
+		return chooserIntent;
+	}
+
 	public static void openUrlInBrowser(Context context, String url) {
+
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
+		Intent i;
+		if(tinyDB.getBoolean("useCustomTabs")) {
+			i = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(
+				new CustomTabColorSchemeParams.Builder().setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor)).setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
+					.setSecondaryToolbarColor(R.attr.primaryTextColor).build()).build().intent;
+			i.setData(Uri.parse(url));
+		}
+		else {
+			i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			i.addCategory(Intent.CATEGORY_BROWSABLE);
+		}
 		try {
-			if(tinyDB.getBoolean("useCustomTabs")) {
-				new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder().setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
-					.setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor)).setSecondaryToolbarColor(R.attr.primaryTextColor).build()).build().launchUrl(context, Uri.parse(url));
+			Intent browserIntent = wrapBrowserIntent(context, i);
+			if(browserIntent == null) {
+				Toasty.error(context, context.getString(R.string.genericError));
 			}
-			else {
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-				i.addCategory(Intent.CATEGORY_BROWSABLE);
-				context.startActivity(i);
-			}
+			context.startActivity(browserIntent);
 		}
 		catch(ActivityNotFoundException e) {
 			Toasty.error(context, context.getString(R.string.browserOpenFailed));
@@ -481,7 +522,6 @@ public class AppUtil {
 		URL url = new URL(u);
 		HttpURLConnection http = (HttpURLConnection) url.openConnection();
 		return (http.getResponseCode());
-
 	}
 
 	public enum FileType {IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, FONT, UNKNOWN}
@@ -495,7 +535,5 @@ public class AppUtil {
 		}
 
 		void onProgressChanged(short progress);
-
 	}
-
 }
