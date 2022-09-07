@@ -2,8 +2,10 @@ package org.mian.gitnex.helpers;
 
 import android.app.Activity;
 import android.content.*;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.ColorInt;
@@ -370,19 +373,66 @@ public class AppUtil {
 		ctx.startActivity(Intent.createChooser(sharingIntent, url));
 	}
 
+	private static Intent wrapBrowserIntent(Context context, Intent intent) {
+
+		final PackageManager pm = context.getPackageManager();
+		final List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(intent).setData(intent.getData().buildUpon().authority("example.com").scheme("https").build()), PackageManager.MATCH_ALL);
+		final ArrayList<Intent> chooserIntents = new ArrayList<>();
+		final String ourPackageName = context.getPackageName();
+
+		Collections.sort(activities, new ResolveInfo.DisplayNameComparator(pm));
+
+		for(ResolveInfo resInfo : activities) {
+			ActivityInfo info = resInfo.activityInfo;
+			if(!info.enabled || !info.exported) {
+				continue;
+			}
+			if(info.packageName.equals(ourPackageName)) {
+				continue;
+			}
+
+			Intent targetIntent = new Intent(intent);
+			targetIntent.setPackage(info.packageName);
+			targetIntent.setDataAndType(intent.getData(), intent.getType());
+			chooserIntents.add(targetIntent);
+		}
+
+		if(chooserIntents.isEmpty()) {
+			return null;
+		}
+
+		final Intent lastIntent = chooserIntents.remove(chooserIntents.size() - 1);
+		if(chooserIntents.isEmpty()) {
+			return lastIntent;
+		}
+
+		Intent chooserIntent = Intent.createChooser(lastIntent, null);
+		String extraName = Intent.EXTRA_ALTERNATE_INTENTS;
+		chooserIntent.putExtra(extraName, chooserIntents.toArray(new Intent[0]));
+		return chooserIntent;
+	}
+
 	public static void openUrlInBrowser(Context context, String url) {
+
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
+		Intent i;
+		if(tinyDB.getBoolean("useCustomTabs")) {
+			i = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(
+				new CustomTabColorSchemeParams.Builder().setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor)).setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
+					.setSecondaryToolbarColor(R.attr.primaryTextColor).build()).build().intent;
+			i.setData(Uri.parse(url));
+		}
+		else {
+			i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			i.addCategory(Intent.CATEGORY_BROWSABLE);
+		}
 		try {
-			if(tinyDB.getBoolean("useCustomTabs")) {
-				new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder().setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
-					.setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor)).setSecondaryToolbarColor(R.attr.primaryTextColor).build()).build().launchUrl(context, Uri.parse(url));
+			Intent browserIntent = wrapBrowserIntent(context, i);
+			if(browserIntent == null) {
+				Toasty.error(context, context.getString(R.string.genericError));
 			}
-			else {
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-				i.addCategory(Intent.CATEGORY_BROWSABLE);
-				context.startActivity(i);
-			}
+			context.startActivity(browserIntent);
 		}
 		catch(ActivityNotFoundException e) {
 			Toasty.error(context, context.getString(R.string.browserOpenFailed));

@@ -1,14 +1,19 @@
 package org.mian.gitnex.helpers;
 
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.function.ThrowingRunnable;
+import static org.junit.Assert.*;
 
 /**
  * @author 6543
  */
 
 public class VersionTest {
+
+	@Test
+	public void invalid() {
+		assertThrows(IllegalArgumentException.class, () -> new Version("abcd"));
+	}
 
 	@Test
 	public void equal() {
@@ -21,6 +26,7 @@ public class VersionTest {
 		assertTrue(new Version("v1.12.0").equal("1.12.0"));
 		assertTrue(new Version("0").equal("0"));
 		assertTrue(new Version("").equal("0"));
+		assertTrue(new Version("main").equal("main"));
 
 		assertFalse(new Version("1.12.1").equal("1.12.0+dev-211-g316db0fe7"));
 		assertFalse(new Version("v1.12.0").equal("1.10.0"));
@@ -30,6 +36,7 @@ public class VersionTest {
 		assertFalse(new Version("1.2").equal("2.1"));
 		assertFalse(new Version("2.2").equal("2.1.120"));
 		assertFalse(new Version("1.12.3").equal("1.13.0+dev-307-g633f52c22"));
+		assertFalse(new Version("main").equal("1.17.1"));
 
 	}
 
@@ -89,6 +96,7 @@ public class VersionTest {
 		assertTrue(new Version("1.13.0+dev-30-gb02d2c377").higher("1.11.4"));
 		assertTrue(new Version("2.1").higher("1.2"));
 		assertTrue(new Version("1.13.0+dev-307-g633f52c22").higher("1.12.3"));
+		assertTrue(new Version("main").higher("1.18.0"));
 
 		assertFalse(new Version("1").higher("1.1.10"));
 		assertFalse(new Version("1.12.0+dev-211-g316db0fe7").higher("1.12.1"));
@@ -97,6 +105,8 @@ public class VersionTest {
 		assertFalse(new Version("v1.12").higher("2.12.0"));
 		assertFalse(new Version("1").higher("2"));
 		assertFalse(new Version("2.1.120").higher("2.2"));
+		assertFalse(new Version("main").higher("main"));
+		assertFalse(new Version("1.17.0").higher("main"));
 
 	}
 
