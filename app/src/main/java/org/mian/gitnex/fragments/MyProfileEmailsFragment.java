@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,66 +24,61 @@ import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
 
 public class MyProfileEmailsFragment extends Fragment {
 
-	private ProfileEmailsViewModel profileEmailsViewModel;
 	public static boolean refreshEmails = false;
+	private ProfileEmailsViewModel profileEmailsViewModel;
+	private ProgressBar mProgressBar;
+	private MyProfileEmailsAdapter adapter;
+	private RecyclerView mRecyclerView;
+	private TextView noDataEmails;
 
-    private ProgressBar mProgressBar;
-    private MyProfileEmailsAdapter adapter;
-    private RecyclerView mRecyclerView;
-    private TextView noDataEmails;
+	public MyProfileEmailsFragment() {
+	}
 
-    public MyProfileEmailsFragment() {
-    }
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+		FragmentProfileEmailsBinding fragmentProfileEmailsBinding = FragmentProfileEmailsBinding.inflate(inflater, container, false);
+		profileEmailsViewModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
 
-	    FragmentProfileEmailsBinding fragmentProfileEmailsBinding = FragmentProfileEmailsBinding.inflate(inflater, container, false);
-	    profileEmailsViewModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
+		final SwipeRefreshLayout swipeRefresh = fragmentProfileEmailsBinding.pullToRefresh;
 
-        final SwipeRefreshLayout swipeRefresh = fragmentProfileEmailsBinding.pullToRefresh;
+		noDataEmails = fragmentProfileEmailsBinding.noDataEmails;
+		mRecyclerView = fragmentProfileEmailsBinding.recyclerView;
 
-        noDataEmails = fragmentProfileEmailsBinding.noDataEmails;
-        mRecyclerView = fragmentProfileEmailsBinding.recyclerView;
+		mRecyclerView.setHasFixedSize(true);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		mProgressBar = fragmentProfileEmailsBinding.progressBar;
 
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-        mProgressBar = fragmentProfileEmailsBinding.progressBar;
+			swipeRefresh.setRefreshing(false);
+			profileEmailsViewModel.loadEmailsList(getContext());
 
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		}, 200));
 
-            swipeRefresh.setRefreshing(false);
-	        profileEmailsViewModel.loadEmailsList(getContext());
+		fetchDataAsync();
 
-        }, 200));
+		return fragmentProfileEmailsBinding.getRoot();
+	}
 
-        fetchDataAsync();
+	private void fetchDataAsync() {
 
-        return fragmentProfileEmailsBinding.getRoot();
-    }
+		profileEmailsViewModel.getEmailsList(getContext()).observe(getViewLifecycleOwner(), emailsListMain -> {
+			adapter = new MyProfileEmailsAdapter(getContext(), emailsListMain);
+			if(adapter.getItemCount() > 0) {
+				mRecyclerView.setAdapter(adapter);
+				noDataEmails.setVisibility(View.GONE);
+			}
+			else {
+				adapter.notifyDataSetChanged();
+				mRecyclerView.setAdapter(adapter);
+				noDataEmails.setVisibility(View.VISIBLE);
+			}
+			mProgressBar.setVisibility(View.GONE);
+		});
 
-    private void fetchDataAsync() {
-
-	    profileEmailsViewModel.getEmailsList(getContext()).observe(getViewLifecycleOwner(), emailsListMain -> {
-            adapter = new MyProfileEmailsAdapter(getContext(), emailsListMain);
-            if(adapter.getItemCount() > 0) {
-                mRecyclerView.setAdapter(adapter);
-                noDataEmails.setVisibility(View.GONE);
-            }
-            else {
-                adapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(adapter);
-                noDataEmails.setVisibility(View.VISIBLE);
-            }
-            mProgressBar.setVisibility(View.GONE);
-        });
-
-    }
+	}
 
 	@Override
 	public void onResume() {
@@ -95,4 +89,5 @@ public class MyProfileEmailsFragment extends Fragment {
 			refreshEmails = false;
 		}
 	}
+
 }

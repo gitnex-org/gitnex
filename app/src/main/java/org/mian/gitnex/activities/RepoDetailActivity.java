@@ -6,12 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,27 +21,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import org.gitnex.tea4j.v2.models.Branch;
-import org.gitnex.tea4j.v2.models.Milestone;
-import org.gitnex.tea4j.v2.models.Organization;
-import org.gitnex.tea4j.v2.models.Repository;
-import org.gitnex.tea4j.v2.models.WatchInfo;
+import org.gitnex.tea4j.v2.models.*;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.fragments.BottomSheetIssuesFilterFragment;
-import org.mian.gitnex.fragments.BottomSheetMilestonesFilterFragment;
-import org.mian.gitnex.fragments.BottomSheetPullRequestFilterFragment;
-import org.mian.gitnex.fragments.BottomSheetReleasesTagsFragment;
-import org.mian.gitnex.fragments.BottomSheetRepoFragment;
-import org.mian.gitnex.fragments.CollaboratorsFragment;
-import org.mian.gitnex.fragments.FilesFragment;
-import org.mian.gitnex.fragments.IssuesFragment;
-import org.mian.gitnex.fragments.LabelsFragment;
-import org.mian.gitnex.fragments.MilestonesFragment;
-import org.mian.gitnex.fragments.PullRequestsFragment;
-import org.mian.gitnex.fragments.ReleasesFragment;
-import org.mian.gitnex.fragments.RepoInfoFragment;
-import org.mian.gitnex.fragments.WikiFragment;
+import org.mian.gitnex.fragments.*;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -65,68 +43,62 @@ import retrofit2.Response;
 
 public class RepoDetailActivity extends BaseActivity implements BottomSheetListener {
 
+	public static boolean updateRepo = false;
+	private final ActivityResultLauncher<Intent> settingsLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+		if(result.getResultCode() == 200) {
+			assert result.getData() != null;
+			if(result.getData().getBooleanExtra("nameChanged", false)) {
+				recreate();
+			}
+		}
+	});
+	public ViewPager2 viewPager;
+	public RepositoryContext repository;
 	private TextView textViewBadgeIssue;
 	private TextView textViewBadgePull;
 	private TextView textViewBadgeRelease;
 	private Typeface myTypeface;
-
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListener fragmentRefreshListenerPr;
 	private FragmentRefreshListener fragmentRefreshListenerMilestone;
+	private final ActivityResultLauncher<Intent> createMilestoneLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+		if(result.getResultCode() == 201) {
+			assert result.getData() != null;
+			if(result.getData().getBooleanExtra("milestoneCreated", false)) {
+				if(fragmentRefreshListenerMilestone != null) {
+					fragmentRefreshListenerMilestone.onRefresh(repository.getMilestoneState().toString());
+				}
+			}
+		}
+	});
 	private FragmentRefreshListener fragmentRefreshListenerFiles;
+	private final ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+		if(result.getResultCode() == 200) {
+			assert result.getData() != null;
+			if(result.getData().getBooleanExtra("fileModified", false)) {
+				if(fragmentRefreshListenerFiles != null) {
+					fragmentRefreshListenerFiles.onRefresh(repository.getBranchRef());
+				}
+			}
+		}
+	});
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
-
-	public ViewPager2 viewPager;
-
-	public RepositoryContext repository;
-
-	public static boolean updateRepo = false;
 	private Dialog progressDialog;
-
+	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+		if(result.getResultCode() == 201) {
+			assert result.getData() != null;
+			if(result.getData().getBooleanExtra("updateReleases", false)) {
+				if(fragmentRefreshListenerReleases != null) {
+					fragmentRefreshListenerReleases.onRefresh(null);
+				}
+				repository.removeRepository();
+				getRepoInfo(repository.getOwner(), repository.getName());
+			}
+		}
+	});
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
-
-	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-		result -> {
-			if(result.getResultCode() == 201) {
-				assert result.getData() != null;
-				if(result.getData().getBooleanExtra("updateReleases", false)) {
-					if(fragmentRefreshListenerReleases != null) fragmentRefreshListenerReleases.onRefresh(null);
-					repository.removeRepository();
-					getRepoInfo(repository.getOwner(), repository.getName());
-				}
-			}
-		});
-
-	private final ActivityResultLauncher<Intent> createMilestoneLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-		result -> {
-			if(result.getResultCode() == 201) {
-				assert result.getData() != null;
-				if(result.getData().getBooleanExtra("milestoneCreated", false)) {
-					if(fragmentRefreshListenerMilestone != null) fragmentRefreshListenerMilestone.onRefresh(repository.getMilestoneState().toString());
-				}
-			}
-		});
-
-	private final ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-		result -> {
-			if(result.getResultCode() == 200) {
-				assert result.getData() != null;
-				if(result.getData().getBooleanExtra("fileModified", false)) {
-					if(fragmentRefreshListenerFiles != null) fragmentRefreshListenerFiles.onRefresh(repository.getBranchRef());
-				}
-			}
-		});
-
-	private final ActivityResultLauncher<Intent> settingsLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-		result -> {
-			if(result.getResultCode() == 200) {
-				assert result.getData() != null;
-				if(result.getData().getBooleanExtra("nameChanged", false)) {
-					recreate();
-				}
-			}
-		});
+	private Intent intentWiki;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -140,6 +112,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		Toolbar toolbar = findViewById(R.id.toolbar);
 
 		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		intentWiki = new Intent(ctx, WikiActivity.class);
 
 		TextView toolbarTitle = findViewById(R.id.toolbar_title);
 		toolbarTitle.setText(repository.getFullName());
@@ -200,7 +174,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						finish();
 					}
 				});
-			} else {
+			}
+			else {
 				finish();
 			}
 			return true;
@@ -385,9 +360,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		progressDialog.setContentView(R.layout.custom_progress_loader);
 		progressDialog.show();
 
-		Call<List<Milestone>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.issueGetMilestonesList(repository.getOwner(), repository.getName(), "open", null, 1, 50);
+		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repository.getOwner(), repository.getName(), "open", null, 1, 50);
 
 		call.enqueue(new Callback<>() {
 
@@ -415,17 +388,15 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						}
 					}
 
-					materialAlertDialogBuilder.setTitle(R.string.selectMilestone)
-						.setSingleChoiceItems(milestonesList.toArray(new String[0]), selectedMilestone, (dialogInterface, i) -> {
+					materialAlertDialogBuilder.setTitle(R.string.selectMilestone).setSingleChoiceItems(milestonesList.toArray(new String[0]), selectedMilestone, (dialogInterface, i) -> {
 
-							repository.setIssueMilestoneFilterName(milestonesList.get(i));
+						repository.setIssueMilestoneFilterName(milestonesList.get(i));
 
-							if(getFragmentRefreshListenerFilterIssuesByMilestone() != null) {
-								getFragmentRefreshListenerFilterIssuesByMilestone().onRefresh(milestonesList.get(i));
-							}
-							dialogInterface.dismiss();
-						})
-						.setNeutralButton(R.string.cancelButton, null);
+						if(getFragmentRefreshListenerFilterIssuesByMilestone() != null) {
+							getFragmentRefreshListenerFilterIssuesByMilestone().onRefresh(milestonesList.get(i));
+						}
+						dialogInterface.dismiss();
+					}).setNeutralButton(R.string.cancelButton, null);
 					materialAlertDialogBuilder.create().show();
 				}
 			}
@@ -453,9 +424,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		progressDialog.setContentView(R.layout.custom_progress_loader);
 		progressDialog.show();
 
-		Call<List<Branch>> call = RetrofitClient
-			.getApiInterface(ctx)
-			.repoListBranches(repository.getOwner(), repository.getName(), null, null);
+		Call<List<Branch>> call = RetrofitClient.getApiInterface(ctx).repoListBranches(repository.getOwner(), repository.getName(), null, null);
 
 		call.enqueue(new Callback<>() {
 
@@ -479,17 +448,15 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						}
 					}
 
-					materialAlertDialogBuilder.setTitle(R.string.pageTitleChooseBranch)
-						.setSingleChoiceItems(branchesList.toArray(new String[0]), selectedBranch, (dialogInterface, i) -> {
+					materialAlertDialogBuilder.setTitle(R.string.pageTitleChooseBranch).setSingleChoiceItems(branchesList.toArray(new String[0]), selectedBranch, (dialogInterface, i) -> {
 
-							repository.setBranchRef(branchesList.get(i));
+						repository.setBranchRef(branchesList.get(i));
 
-							if(getFragmentRefreshListenerFiles() != null) {
-								getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
-							}
-							dialogInterface.dismiss();
-						})
-						.setNeutralButton(R.string.cancelButton, null);
+						if(getFragmentRefreshListenerFiles() != null) {
+							getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
+						}
+						dialogInterface.dismiss();
+					}).setNeutralButton(R.string.cancelButton, null);
 					materialAlertDialogBuilder.create().show();
 				}
 			}
@@ -499,49 +466,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				progressDialog.hide();
 			}
 		});
-	}
-
-	public class ViewPagerAdapter extends FragmentStateAdapter {
-
-		public ViewPagerAdapter(@NonNull FragmentActivity fa) { super(fa); }
-
-		@NonNull
-		@Override
-		public Fragment createFragment(int position) {
-
-			Fragment fragment = null;
-
-			switch(position) {
-				case 0: // Repository details
-					return RepoInfoFragment.newInstance(repository);
-				case 1: // Files
-					return FilesFragment.newInstance(repository);
-				case 2: // Issues
-					fragment = IssuesFragment.newInstance(repository);
-					break;
-				case 3: // Pull requests
-					fragment = PullRequestsFragment.newInstance(repository);
-					break;
-				case 4: // Releases
-					return ReleasesFragment.newInstance(repository);
-				case 5: // Wiki
-					return WikiFragment.newInstance(repository);
-				case 6: // Milestones
-					fragment = MilestonesFragment.newInstance(repository);
-					break;
-				case 7: // Labels
-					return LabelsFragment.newInstance(repository);
-				case 8: // Collaborators
-					return CollaboratorsFragment.newInstance(repository);
-			}
-			assert fragment != null;
-			return fragment;
-		}
-
-		@Override
-		public int getItemCount() {
-			return 9;
-		}
 	}
 
 	private void getRepoInfo(final String owner, String repo) {
@@ -588,7 +512,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		ImageView repoTypeToolbar = findViewById(R.id.repoTypeToolbar);
 		if(repository.getRepository().isPrivate()) {
 			repoTypeToolbar.setVisibility(View.VISIBLE);
-		} else {
+		}
+		else {
 			repoTypeToolbar.setVisibility(View.GONE);
 		}
 
@@ -601,7 +526,9 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 			viewPager.setAdapter(new ViewPagerAdapter(this));
 
-			String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.tabTextFiles), ctx.getResources().getString(R.string.pageTitleIssues), ctx.getResources().getString(R.string.tabPullRequests), ctx.getResources().getString(R.string.tabTextReleases), ctx.getResources().getString(R.string.wiki), ctx.getResources().getString(R.string.tabTextMl), ctx.getResources().getString(R.string.newIssueLabelsTitle), ctx.getResources().getString(R.string.tabTextCollaborators)};
+			String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.tabTextFiles), ctx.getResources().getString(R.string.pageTitleIssues),
+				ctx.getResources().getString(R.string.tabPullRequests), ctx.getResources().getString(R.string.tabTextReleases), ctx.getResources().getString(R.string.wiki),
+				ctx.getResources().getString(R.string.tabTextMl), ctx.getResources().getString(R.string.newIssueLabelsTitle), ctx.getResources().getString(R.string.tabTextCollaborators)};
 			new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
 
 			ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
@@ -654,7 +581,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				}
 				TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeIssueText);
 				openIssueTabView.setTextColor(textColor);
-			} else {
+			}
+			else {
 				textViewBadgeIssue.setVisibility(View.GONE);
 			}
 
@@ -670,7 +598,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				}
 				TextView openPullTabView = Objects.requireNonNull(tabOpenPulls.getCustomView()).findViewById(R.id.counterBadgePullText);
 				openPullTabView.setTextColor(textColor);
-			} else {
+			}
+			else {
 				textViewBadgePull.setVisibility(View.GONE);
 			}
 
@@ -686,7 +615,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				}
 				TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
 				openReleaseTabView.setTextColor(textColor);
-			} else {
+			}
+			else {
 				textViewBadgeRelease.setVisibility(View.GONE);
 			}
 		}
@@ -762,15 +692,24 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					viewPager.setCurrentItem(4);
 					createReleaseLauncher.launch(repository.getIntent(ctx, CreateReleaseActivity.class));
 					break;
-				case "milestones":
+				case "wiki":
 					viewPager.setCurrentItem(5);
 					break;
-				case "milestonesNew":
+				case "wikiNew":
 					viewPager.setCurrentItem(5);
+					intentWiki.putExtra("action", "add");
+					intentWiki.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
+					ctx.startActivity(intentWiki);
+					break;
+				case "milestones":
+					viewPager.setCurrentItem(6);
+					break;
+				case "milestonesNew":
+					viewPager.setCurrentItem(6);
 					createMilestoneLauncher.launch(repository.getIntent(ctx, CreateMilestoneActivity.class));
 					break;
 				case "labels":
-					viewPager.setCurrentItem(6);
+					viewPager.setCurrentItem(7);
 					break;
 				case "settings":
 					settingsLauncher.launch(repository.getIntent(ctx, RepositorySettingsActivity.class));
@@ -820,33 +759,104 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	}
 
 	// Issues milestone filter interface
-	public FragmentRefreshListener getFragmentRefreshListenerFilterIssuesByMilestone() { return fragmentRefreshListenerFilterIssuesByMilestone; }
+	public FragmentRefreshListener getFragmentRefreshListenerFilterIssuesByMilestone() {
+		return fragmentRefreshListenerFilterIssuesByMilestone;
+	}
 
-	public void setFragmentRefreshListenerFilterIssuesByMilestone(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListenerFilterIssuesByMilestone = fragmentRefreshListener; }
+	public void setFragmentRefreshListenerFilterIssuesByMilestone(FragmentRefreshListener fragmentRefreshListener) {
+		this.fragmentRefreshListenerFilterIssuesByMilestone = fragmentRefreshListener;
+	}
 
 	// Issues interface
-	public FragmentRefreshListener getFragmentRefreshListener() { return fragmentRefreshListener; }
+	public FragmentRefreshListener getFragmentRefreshListener() {
+		return fragmentRefreshListener;
+	}
 
-	public void setFragmentRefreshListener(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListener = fragmentRefreshListener; }
+	public void setFragmentRefreshListener(FragmentRefreshListener fragmentRefreshListener) {
+		this.fragmentRefreshListener = fragmentRefreshListener;
+	}
 
 	// Pull request interface
-	public FragmentRefreshListener getFragmentRefreshListenerPr() { return fragmentRefreshListenerPr; }
+	public FragmentRefreshListener getFragmentRefreshListenerPr() {
+		return fragmentRefreshListenerPr;
+	}
 
-	public void setFragmentRefreshListenerPr(FragmentRefreshListener fragmentRefreshListenerPr) { this.fragmentRefreshListenerPr = fragmentRefreshListenerPr; }
+	public void setFragmentRefreshListenerPr(FragmentRefreshListener fragmentRefreshListenerPr) {
+		this.fragmentRefreshListenerPr = fragmentRefreshListenerPr;
+	}
 
 	// Milestones interface
-	public FragmentRefreshListener getFragmentRefreshListenerMilestone() { return fragmentRefreshListenerMilestone; }
+	public FragmentRefreshListener getFragmentRefreshListenerMilestone() {
+		return fragmentRefreshListenerMilestone;
+	}
 
-	public void setFragmentRefreshListenerMilestone(FragmentRefreshListener fragmentRefreshListenerMilestone) { this.fragmentRefreshListenerMilestone = fragmentRefreshListenerMilestone; }
+	public void setFragmentRefreshListenerMilestone(FragmentRefreshListener fragmentRefreshListenerMilestone) {
+		this.fragmentRefreshListenerMilestone = fragmentRefreshListenerMilestone;
+	}
 
 	// Files interface
-	public FragmentRefreshListener getFragmentRefreshListenerFiles() { return fragmentRefreshListenerFiles; }
+	public FragmentRefreshListener getFragmentRefreshListenerFiles() {
+		return fragmentRefreshListenerFiles;
+	}
 
-	public void setFragmentRefreshListenerFiles(FragmentRefreshListener fragmentRefreshListenerFiles) { this.fragmentRefreshListenerFiles = fragmentRefreshListenerFiles; }
+	public void setFragmentRefreshListenerFiles(FragmentRefreshListener fragmentRefreshListenerFiles) {
+		this.fragmentRefreshListenerFiles = fragmentRefreshListenerFiles;
+	}
 
 	//Releases interface
-	public FragmentRefreshListener getFragmentRefreshListenerReleases() { return fragmentRefreshListenerReleases; }
+	public FragmentRefreshListener getFragmentRefreshListenerReleases() {
+		return fragmentRefreshListenerReleases;
+	}
 
-	public void setFragmentRefreshListenerReleases(FragmentRefreshListener fragmentRefreshListener) { this.fragmentRefreshListenerReleases = fragmentRefreshListener; }
+	public void setFragmentRefreshListenerReleases(FragmentRefreshListener fragmentRefreshListener) {
+		this.fragmentRefreshListenerReleases = fragmentRefreshListener;
+	}
+
+	public class ViewPagerAdapter extends FragmentStateAdapter {
+
+		public ViewPagerAdapter(@NonNull FragmentActivity fa) {
+			super(fa);
+		}
+
+		@NonNull
+		@Override
+		public Fragment createFragment(int position) {
+
+			Fragment fragment = null;
+
+			switch(position) {
+				case 0: // Repository details
+					return RepoInfoFragment.newInstance(repository);
+				case 1: // Files
+					return FilesFragment.newInstance(repository);
+				case 2: // Issues
+					fragment = IssuesFragment.newInstance(repository);
+					break;
+				case 3: // Pull requests
+					fragment = PullRequestsFragment.newInstance(repository);
+					break;
+				case 4: // Releases
+					return ReleasesFragment.newInstance(repository);
+				case 5: // Wiki
+					return WikiFragment.newInstance(repository);
+				case 6: // Milestones
+					fragment = MilestonesFragment.newInstance(repository);
+					break;
+				case 7: // Labels
+					return LabelsFragment.newInstance(repository);
+				case 8: // Collaborators
+					return CollaboratorsFragment.newInstance(repository);
+			}
+			assert fragment != null;
+			return fragment;
+		}
+
+		@Override
+		public int getItemCount() {
+			return 9;
+		}
+
+	}
+
 
 }

@@ -41,6 +41,8 @@ public class SettingsDraftsActivity extends BaseActivity {
 
 	}
 
-	private void initCloseListener() { onClickListener = view -> finish(); }
+	private void initCloseListener() {
+		onClickListener = view -> finish();
+	}
 
 }

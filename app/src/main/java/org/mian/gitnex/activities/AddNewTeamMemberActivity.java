@@ -11,12 +11,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.v2.models.InlineResponse2001;
 import org.gitnex.tea4j.v2.models.User;
-import org.mian.gitnex.adapters.UserSearchForTeamMemberAdapter;
+import org.mian.gitnex.adapters.OrganizationAddUserToTeamMemberAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityAddNewTeamMemberBinding;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 	private RecyclerView mRecyclerView;
 	private List<User> dataList;
-	private UserSearchForTeamMemberAdapter adapter;
+	private OrganizationAddUserToTeamMemberAdapter adapter;
 
 	private long teamId;
 
@@ -70,9 +69,6 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),	DividerItemDecoration.VERTICAL);
-		mRecyclerView.addItemDecoration(dividerItemDecoration);
-
 		dataList = new ArrayList<>();
 
 		addNewTeamMember.addTextChangedListener(new TextWatcher() {
@@ -82,7 +78,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 				if(!addNewTeamMember.getText().toString().equals("") && addNewTeamMember.getText().toString().length() > 1) {
 
-					adapter = new UserSearchForTeamMemberAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"));
+					adapter = new OrganizationAddUserToTeamMemberAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"));
 					loadUserSearchList(addNewTeamMember.getText().toString());
 				}
 			}

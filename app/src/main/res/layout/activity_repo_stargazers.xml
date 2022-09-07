@@ -31,7 +31,7 @@
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:focusable="true"
                 android:clickable="true"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -40,7 +40,7 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -48,14 +48,13 @@
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:horizontalSpacing="@dimen/dimen10dp"
-        android:numColumns="4"
-        android:columnWidth="@dimen/dimen80dp"
-        android:stretchMode="columnWidth"
+        android:scrollbars="none"
+        android:numColumns="2"
+        android:gravity="center"
         android:background="?attr/primaryBackgroundColor"
-        android:gravity="center"/>
+        android:padding="@dimen/dimen4dp"/>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
@@ -63,7 +62,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
         android:id="@+id/noDataStargazers"
@@ -73,6 +72,6 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="@dimen/dimen20sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -31,22 +31,22 @@
                     android:layout_height="26dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="0"
-                    android:contentDescription="@string/close"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:focusable="true"
                     android:clickable="true"
-                    android:src="@drawable/ic_close" />
+                    android:contentDescription="@string/close"
+                    android:focusable="true"
+                    android:src="@drawable/ic_close"/>
 
                 <TextView
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:maxLines="2"
                     android:ellipsize="end"
+                    android:maxLines="2"
                     android:text="@string/commentButtonText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
                 <ImageButton
                     android:id="@+id/drafts"
@@ -55,10 +55,10 @@
                     android:layout_marginStart="15dp"
                     android:layout_weight="0"
                     android:background="?android:attr/selectableItemBackground"
-                    android:focusable="true"
                     android:clickable="true"
                     android:contentDescription="@string/close"
-                    android:src="@drawable/ic_drafts" />
+                    android:focusable="true"
+                    android:src="@drawable/ic_drafts"/>
 
                 <ImageButton
                     android:id="@+id/send"
@@ -68,11 +68,11 @@
                     android:layout_weight="0"
                     android:alpha=".5"
                     android:background="?android:attr/selectableItemBackground"
-                    android:focusable="true"
                     android:clickable="true"
                     android:contentDescription="@string/close"
                     android:enabled="false"
-                    android:src="@drawable/ic_send" />
+                    android:focusable="true"
+                    android:src="@drawable/ic_send"/>
 
             </LinearLayout>
 
@@ -83,24 +83,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <EditText
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="@string/commentButtonText"
             android:background="@drawable/shape_inputs"
             android:inputType="textMultiLine|textImeMultiLine|textCapSentences"
+            android:labelFor="@+id/comment"
             android:maxLines="5"
             android:padding="10dp"
             android:scrollbars="vertical"
             android:textColor="?attr/inputTextColor"
             android:textColorHighlight="?attr/primaryTextColor"
             android:textColorHint="?attr/primaryBackgroundColor"
-            android:textSize="16sp"
-            android:labelFor="@+id/comment"
-            android:autofillHints="@string/commentButtonText" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/drafts_hint"
@@ -111,7 +111,7 @@
             android:textColor="?attr/hintColor"
             android:textSize="12sp"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible"/>
 
     </LinearLayout>
 

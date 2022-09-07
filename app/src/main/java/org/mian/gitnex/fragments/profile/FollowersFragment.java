@@ -4,17 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -37,19 +31,17 @@ import retrofit2.Response;
 
 public class FollowersFragment extends Fragment {
 
+	private static final String usernameBundle = "";
 	private Context context;
 	private FragmentProfileFollowersFollowingBinding fragmentProfileFollowersFollowingBinding;
-
 	private List<User> usersList;
 	private UsersAdapter adapter;
-
 	private int pageSize;
 	private int resultLimit;
-
-	private static final String usernameBundle = "";
 	private String username;
 
-	public FollowersFragment() {}
+	public FollowersFragment() {
+	}
 
 	public static FollowersFragment newInstance(String username) {
 		FollowersFragment fragment = new FollowersFragment();
@@ -62,7 +54,7 @@ public class FollowersFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
+		if(getArguments() != null) {
 			username = getArguments().getString(usernameBundle);
 		}
 	}
@@ -92,9 +84,7 @@ public class FollowersFragment extends Fragment {
 			}
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		fragmentProfileFollowersFollowingBinding.recyclerView.setHasFixedSize(true);
-		fragmentProfileFollowersFollowingBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 		fragmentProfileFollowersFollowingBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentProfileFollowersFollowingBinding.recyclerView.setAdapter(adapter);
 
@@ -105,11 +95,10 @@ public class FollowersFragment extends Fragment {
 
 	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(context)
-			.userListFollowers(username, 1, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userListFollowers(username, 1, resultLimit);
 
 		call.enqueue(new Callback<List<User>>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
@@ -163,9 +152,7 @@ public class FollowersFragment extends Fragment {
 
 		fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(context)
-			.userListFollowers(username, page, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userListFollowers(username, page, resultLimit);
 
 		call.enqueue(new Callback<List<User>>() {
 
@@ -256,4 +243,5 @@ public class FollowersFragment extends Fragment {
 		}
 		adapter.updateList(arr);
 	}
+
 }

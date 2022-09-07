@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminUnadoptedReposAdapter;
@@ -54,10 +53,6 @@ public class AdminUnadoptedReposActivity extends BaseActivity {
 
 		binding.recyclerView.setHasFixedSize(true);
 		binding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(),
-			DividerItemDecoration.VERTICAL);
-		binding.recyclerView.addItemDecoration(dividerItemDecoration);
 
 		binding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -112,4 +107,5 @@ public class AdminUnadoptedReposActivity extends BaseActivity {
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
+
 }

@@ -34,6 +34,8 @@
     <dimen name="dimen140dp">140dp</dimen>
     <dimen name="dimen150dp">150dp</dimen>
     <dimen name="dimen180dp">180dp</dimen>
+    <dimen name="dimen200dp">200dp</dimen>
+    <dimen name="dimen320dp">320dp</dimen>
     <dimen name="dimen480dp">480dp</dimen>
 
     <!--SP-->

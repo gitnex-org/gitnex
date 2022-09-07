@@ -493,7 +493,7 @@
     <string name="genericWaitFor">Hold on ☕</string>
     <string name="file">File</string>
     <string name="issue">Issue</string>
-    <string name="label">Label</string>
+    <string name="labelTxt">Label</string>
     <string name="release">Release</string>
     <string name="pr">Pull Request</string>
     <string name="collaborator">Collaborator</string>
@@ -509,6 +509,7 @@
     <string name="reopen">Reopen</string>
     <string name="openInBrowser">Open in Browser</string>
     <string name="deleteGenericTitle">Delete %s</string>
+    <string name="reset">Reset</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -616,6 +617,10 @@
     <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
     <string name="draftSaved">Draft was saved automatically.</string>
+
+    <string name="resetMostReposCounter">Counter is reset successfully</string>
+    <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
+    <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
 
     <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
@@ -785,6 +790,8 @@
     <!-- code editor -->
     <string name="sourcePosition" translatable="false">%1$d:%2$d</string>
     <string name="codeEditor" translatable="false">Code Editor</string>
+    <string name="openInCodeEditor">Open in Code Editor</string>
 
     <!-- notes -->
+    <string name="newNote">New Note</string>
 </resources>

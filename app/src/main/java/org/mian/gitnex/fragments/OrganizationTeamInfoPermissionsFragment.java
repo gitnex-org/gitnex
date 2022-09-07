@@ -20,7 +20,8 @@ public class OrganizationTeamInfoPermissionsFragment extends Fragment {
 	private FragmentOrganizationTeamInfoPermissionsBinding binding;
 	private Team team;
 
-	public OrganizationTeamInfoPermissionsFragment() {}
+	public OrganizationTeamInfoPermissionsFragment() {
+	}
 
 	public static OrganizationTeamInfoPermissionsFragment newInstance(Team team) {
 		OrganizationTeamInfoPermissionsFragment fragment = new OrganizationTeamInfoPermissionsFragment();

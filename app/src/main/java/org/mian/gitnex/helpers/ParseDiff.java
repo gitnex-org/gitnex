@@ -43,6 +43,12 @@ public class ParseDiff {
 		Matcher rmMatcher = rmPattern.matcher(raw);
 		Matcher addMatcher = addPattern.matcher(raw);
 
+		if(raw.startsWith("+")) {
+			add++;
+		}
+		else if(raw.startsWith("-")) {
+			rm++;
+		}
 		while(rmMatcher.find())
 			rm++;
 		while(addMatcher.find())
@@ -141,7 +147,8 @@ public class ParseDiff {
 					fileContentsArray.add(new FileDiffView(lines2[1], lines2[2].split("\\n")[0], "rename", "rename", null));
 				}
 			}
-		} else {
+		}
+		else {
 			fileContentsArray = Collections.emptyList();
 		}
 

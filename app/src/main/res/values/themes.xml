@@ -10,6 +10,9 @@
         <item name="android:textColorPrimary">@color/colorWhite</item>
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/colorWhite</item>
+        <item name="colorOnSurfaceVariant">@color/colorWhite</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+        <item name="materialCardBackgroundColor">@color/cardBackground</item>
 
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
@@ -39,7 +42,6 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-        <item name="android:listDivider">@drawable/shape_list_divider</item>
         <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">1</item>
     </style>
@@ -54,6 +56,9 @@
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/lightThemeTextColor</item>
+        <item name="colorOnSurfaceVariant">@color/lightThemeTextColor</item>
+        <item name="colorSecondaryContainer">@color/lightThemeColorSecondaryContainer</item>
+        <item name="materialCardBackgroundColor">@color/lightThemeCardBackground</item>
 
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
@@ -97,6 +102,8 @@
         <item name="android:textColorPrimary">@color/retroThemeTextColor</item>
         <item name="colorPrimary">@color/retroThemeColorPrimary</item>
         <item name="colorSecondary">@color/retroThemeColorSecondary</item>
+        <item name="colorOnSurfaceVariant">@color/retroThemeTextColor</item>
+        <item name="materialCardBackgroundColor">@color/retroThemeCardBackground</item>
 
         <item name="diffAddedColor">@color/retroThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/retroThemeDiffRemovedColor</item>
@@ -140,6 +147,9 @@
         <item name="android:textColorPrimary">@color/pitchBlackThemeTextColor</item>
         <item name="colorPrimary">@color/darkGreen</item>
         <item name="colorSecondary">@color/pitchBlackThemeTextColor</item>
+        <item name="colorOnSurfaceVariant">@color/pitchBlackThemeTextColor</item>
+        <item name="colorSecondaryContainer">@color/pitchBlackThemeColorSecondary</item>
+        <item name="materialCardBackgroundColor">@color/pitchBlackThemeCardBackground</item>
 
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
@@ -174,8 +184,29 @@
     </style>
     <!-- Pitch black theme -->
 
+    <!-- Custom Material cards -->
+    <style name="CustomMaterCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.card.custom.corners</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.card.custom.corners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/dimen32dp</item>
+        <item name="cornerSizeTopLeft">@dimen/dimen32dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="CustomMaterialCardStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.custom.card</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.custom.card" parent="">
+        <item name="cornerFamily">rounded</item>
+    </style>
+
     <!-- Material switch style -->
-    <style name="MaterialSwitch" parent="Widget.Material3.CompoundButton.Switch">
+    <style name="MaterialSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="switchMinWidth">@dimen/dimen32dp</item>
         <item name="minHeight">@dimen/dimen24dp</item>
         <item name="track">@drawable/switch_track</item>

@@ -4,17 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
@@ -37,19 +31,17 @@ import retrofit2.Response;
 
 public class StarredRepositoriesFragment extends Fragment {
 
+	private static final String usernameBundle = "";
 	private Context context;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
-
 	private List<Repository> reposList;
 	private ReposListAdapter adapter;
-
 	private int pageSize;
 	private int resultLimit;
-
-	private static final String usernameBundle = "";
 	private String username;
 
-	public StarredRepositoriesFragment() {}
+	public StarredRepositoriesFragment() {
+	}
 
 	public static StarredRepositoriesFragment newInstance(String username) {
 		StarredRepositoriesFragment fragment = new StarredRepositoriesFragment();
@@ -62,7 +54,7 @@ public class StarredRepositoriesFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
+		if(getArguments() != null) {
 			username = getArguments().getString(usernameBundle);
 		}
 	}
@@ -105,9 +97,7 @@ public class StarredRepositoriesFragment extends Fragment {
 			}
 		});
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
 
@@ -118,9 +108,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
 	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<Repository>> call = RetrofitClient
-			.getApiInterface(context)
-			.userListStarred(username, 1, resultLimit);
+		Call<List<Repository>> call = RetrofitClient.getApiInterface(context).userListStarred(username, 1, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -177,9 +165,7 @@ public class StarredRepositoriesFragment extends Fragment {
 
 		fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<Repository>> call = RetrofitClient
-			.getApiInterface(context)
-			.userListStarred(username, page, resultLimit);
+		Call<List<Repository>> call = RetrofitClient.getApiInterface(context).userListStarred(username, page, resultLimit);
 
 		call.enqueue(new Callback<>() {
 
@@ -270,4 +256,5 @@ public class StarredRepositoriesFragment extends Fragment {
 		}
 		adapter.updateList(arr);
 	}
+
 }

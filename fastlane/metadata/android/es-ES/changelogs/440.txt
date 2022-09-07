@@ -6,7 +6,7 @@
 - Añadido soporte para los commits de las Pull Request
 
 🐛 Arreglos 🐛
-- Arreglado crasheo cuando el inicio de sesión contiene espacios, nuevas líneas y carácteres raros
+- Arreglado cierre cuando el inicio de sesión contiene espacios, nuevas líneas y carácteres raros
 - Arreglado cierre cuando se ve la información del repositorio
 - Arreglado cierre cuando se comenta un PR desde una notificación
 

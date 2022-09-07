@@ -9,6 +9,7 @@ labels:
 ---
 
 ## # Describe your matter briefly
+
 <br><br>
 
 ##### What did you expect?
@@ -18,13 +19,13 @@ labels:
 ##### Some additional details
 ---
 
-* The version of **Gitea** you are using: 
-* The version of **GitNex** you are using: 
-* Source of installation (Play Store, F-Droid, APK): 
-* Current android version and phone model/manufacturer: 
-* The type of certificate your instance is using (self-signed, signed): 
-* How you used to log in (via password or token): 
-<br>
+* The version of **Gitea** you are using:
+* The version of **GitNex** you are using:
+* Source of installation (Play Store, F-Droid, APK):
+* Current android version and phone model/manufacturer:
+* The type of certificate your instance is using (self-signed, signed):
+* How you used to log in (via password or token):
+  <br>
 
 ##### We would appreciate some screenshots or stacktrace's, but this is also not required.
 ---
@@ -32,6 +33,6 @@ labels:
 <br><br>
 
 - [ ] I carefully read the [contribution guidelines](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
-<br>
+  <br>
 
 <!-- Thank you for your time. --> 

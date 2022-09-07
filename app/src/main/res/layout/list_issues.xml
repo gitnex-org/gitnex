@@ -5,54 +5,90 @@
     android:id="@+id/relativeLayoutFrameIssuesList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical"
-    android:background="?android:attr/selectableItemBackground"
-    android:focusable="true">
+    android:paddingTop="@dimen/dimen4dp"
+    android:paddingBottom="@dimen/dimen4dp"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/infoSection"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/dimen24dp"
-            android:layout_height="@dimen/dimen24dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardElevation="@dimen/dimen0dp"
-            android:layout_marginEnd="@dimen/dimen12dp"
-            app:cardCornerRadius="@dimen/dimen12dp">
-
-            <ImageView
-                android:id="@+id/assigneeAvatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/generalImgContentText"
-                tools:src="@tools:sample/avatars" />
-
-        </com.google.android.material.card.MaterialCardView>
+        style="?attr/materialCardViewFilledStyle"
+        app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
-            android:id="@+id/titleLabelsSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/issueTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/infoSection"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top|center_vertical"
-                android:text="@string/newIssueTitle"
-                android:textAlignment="gravity"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="16sp"
-                tools:text="Id illum odio repellat omnis fuga deserunt aut. Ut est aut similique qui incidunt quia et." />
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="@dimen/dimen24dp"
+                    android:layout_height="@dimen/dimen24dp"
+                    style="?attr/materialCardViewFilledStyle"
+                    app:cardElevation="@dimen/dimen0dp"
+                    android:layout_marginEnd="@dimen/dimen12dp"
+                    app:cardCornerRadius="@dimen/dimen12dp">
+
+                    <ImageView
+                        android:id="@+id/assigneeAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/generalImgContentText"
+                        tools:src="@tools:sample/avatars"/>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:id="@+id/titleLabelsSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/issueTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|center_vertical"
+                        android:text="@string/newIssueTitle"
+                        android:textAlignment="gravity"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="16sp"
+                        tools:text="Id illum odio repellat omnis fuga deserunt aut. Ut est aut similique qui incidunt quia et."/>
+
+                    <HorizontalScrollView
+                        android:id="@+id/labelsScrollViewDots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foregroundGravity="right"
+                        android:layout_marginBottom="8dp"
+                        android:scrollbarThumbHorizontal="@android:color/transparent"
+                        android:visibility="gone"
+                        android:fillViewport="true">
+
+                        <LinearLayout
+                            android:id="@+id/frameLabelsDots"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp"/>
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <HorizontalScrollView
-                android:id="@+id/labelsScrollViewDots"
+                android:id="@+id/labelsScrollViewWithText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:foregroundGravity="right"
@@ -62,88 +98,69 @@
                 android:fillViewport="true">
 
                 <LinearLayout
-                    android:id="@+id/frameLabelsDots"
+                    android:id="@+id/frameLabels"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"/>
 
             </HorizontalScrollView>
 
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <HorizontalScrollView
-        android:id="@+id/labelsScrollViewWithText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="right"
-        android:layout_marginBottom="8dp"
-        android:scrollbarThumbHorizontal="@android:color/transparent"
-        android:visibility="gone"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:id="@+id/frameLabels"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp" />
-
-    </HorizontalScrollView>
-
-    <LinearLayout
-        android:id="@+id/issueInfoFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/issueCreatedTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:textColor="?attr/hintColor"
-            android:textSize="12sp"
-            tools:text="10.01.2020" />
-
-        <LinearLayout
-            android:id="@+id/frameCommentsCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="6dp"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="5dp"
-                android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_comment"
-                app:tint="?attr/iconsColor" />
-
-            <TextView
-                android:id="@+id/issueCommentsCount"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/issueInfoFrame"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@string/repoStars"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="14sp"
-                tools:text="50" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/issueCreatedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="?attr/hintColor"
+                    android:textSize="12sp"
+                    tools:text="10.01.2020"/>
+
+                <LinearLayout
+                    android:id="@+id/frameCommentsCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="5dp"
+                        android:contentDescription="@string/generalImgContentText"
+                        app:srcCompat="@drawable/ic_comment"
+                        app:tint="?attr/iconsColor"/>
+
+                    <TextView
+                        android:id="@+id/issueCommentsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/repoStars"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="14sp"
+                        tools:text="50"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

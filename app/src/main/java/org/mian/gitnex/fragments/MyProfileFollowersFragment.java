@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -31,55 +30,49 @@ import retrofit2.Response;
 
 public class MyProfileFollowersFragment extends Fragment {
 
+	private final String TAG = "MyProfileFollowersFragment";
 	private FragmentProfileFollowersFollowingBinding viewBinding;
 	private Context context;
-
 	private List<User> dataList;
 	private UsersAdapter adapter;
 	private int pageSize;
-	private final String TAG = "MyProfileFollowersFragment";
 	private int resultLimit;
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-	    viewBinding = FragmentProfileFollowersFollowingBinding.inflate(inflater, container, false);
-	    context = getContext();
+		viewBinding = FragmentProfileFollowersFollowingBinding.inflate(inflater, container, false);
+		context = getContext();
 
-	    dataList = new ArrayList<>();
-	    adapter = new UsersAdapter(dataList, context);
-	    resultLimit = Constants.getCurrentResultLimit(context);
+		dataList = new ArrayList<>();
+		adapter = new UsersAdapter(dataList, context);
+		resultLimit = Constants.getCurrentResultLimit(context);
 
-	    viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-		    viewBinding.pullToRefresh.setRefreshing(false);
-		    loadInitial(resultLimit);
-		    adapter.notifyDataChanged();
-	    }, 200));
+		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+			viewBinding.pullToRefresh.setRefreshing(false);
+			loadInitial(resultLimit);
+			adapter.notifyDataChanged();
+		}, 200));
 
-	    adapter.setLoadMoreListener(() -> viewBinding.recyclerView.post(() -> {
-		    if(dataList.size() == resultLimit || pageSize == resultLimit) {
-			    int page = (dataList.size() + resultLimit) / resultLimit;
-			    loadMore(resultLimit, page);
-		    }
-	    }));
+		adapter.setLoadMoreListener(() -> viewBinding.recyclerView.post(() -> {
+			if(dataList.size() == resultLimit || pageSize == resultLimit) {
+				int page = (dataList.size() + resultLimit) / resultLimit;
+				loadMore(resultLimit, page);
+			}
+		}));
 
-	    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-	    viewBinding.recyclerView.setHasFixedSize(true);
-	    viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
-	    viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-	    viewBinding.recyclerView.setAdapter(adapter);
+		viewBinding.recyclerView.setHasFixedSize(true);
+		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+		viewBinding.recyclerView.setAdapter(adapter);
 
-	    loadInitial(resultLimit);
+		loadInitial(resultLimit);
 
-	    return viewBinding.getRoot();
-    }
+		return viewBinding.getRoot();
+	}
 
 	private void loadInitial(int resultLimit) {
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(context)
-			.userCurrentListFollowers(1, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userCurrentListFollowers(1, resultLimit);
 		call.enqueue(new Callback<List<User>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
@@ -116,8 +109,7 @@ public class MyProfileFollowersFragment extends Fragment {
 	private void loadMore(int resultLimit, int page) {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<List<User>> call = RetrofitClient.getApiInterface(context)
-			.userCurrentListFollowers(page, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userCurrentListFollowers(page, resultLimit);
 		call.enqueue(new Callback<List<User>>() {
 			@Override
 			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
@@ -146,4 +138,5 @@ public class MyProfileFollowersFragment extends Fragment {
 			}
 		});
 	}
+
 }

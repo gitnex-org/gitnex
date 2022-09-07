@@ -20,40 +20,39 @@ import retrofit2.Response;
 
 public class RepoStargazersViewModel extends ViewModel {
 
-    private MutableLiveData<List<User>> stargazersList;
+	private MutableLiveData<List<User>> stargazersList;
 
-    public LiveData<List<User>> getRepoStargazers(String repoOwner, String repoName, Context ctx) {
+	public LiveData<List<User>> getRepoStargazers(String repoOwner, String repoName, Context ctx) {
 
-        stargazersList = new MutableLiveData<>();
-        loadRepoStargazers(repoOwner, repoName, ctx);
+		stargazersList = new MutableLiveData<>();
+		loadRepoStargazers(repoOwner, repoName, ctx);
 
-        return stargazersList;
-    }
+		return stargazersList;
+	}
 
-    private void loadRepoStargazers(String repoOwner, String repoName, Context ctx) {
+	private void loadRepoStargazers(String repoOwner, String repoName, Context ctx) {
 
-        Call<List<User>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .repoListStargazers(repoOwner, repoName, null, null);
+		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).repoListStargazers(repoOwner, repoName, null, null);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
-		        if(response.isSuccessful()) {
-			        stargazersList.postValue(response.body());
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					stargazersList.postValue(response.body());
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
 }

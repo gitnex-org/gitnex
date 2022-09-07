@@ -3,30 +3,17 @@ package org.mian.gitnex.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
+import android.widget.*;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import org.gitnex.tea4j.v2.models.AccessToken;
-import org.gitnex.tea4j.v2.models.CreateAccessTokenOption;
-import org.gitnex.tea4j.v2.models.GeneralAPISettings;
-import org.gitnex.tea4j.v2.models.ServerVersion;
-import org.gitnex.tea4j.v2.models.User;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.gitnex.tea4j.v2.models.*;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityLoginBinding;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.NetworkStatusObserver;
-import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.UrlHelper;
-import org.mian.gitnex.helpers.Version;
+import org.mian.gitnex.helpers.*;
 import org.mian.gitnex.structs.Protocol;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -43,15 +30,12 @@ import retrofit2.Callback;
 
 public class LoginActivity extends BaseActivity {
 
-	private enum LoginType {BASIC, TOKEN}
-
 	private Button loginButton;
 	private EditText instanceUrlET, loginUidET, loginPassword, otpCode, loginTokenCode;
 	private AutoCompleteTextView protocolSpinner;
 	private RadioGroup loginMethod;
 	private String device_id = "token";
 	private String selectedProtocol;
-
 	private URI instanceUrl;
 	private Version giteaVersion;
 	private int maxResponseItems = 50;
@@ -96,7 +80,8 @@ public class LoginActivity extends BaseActivity {
 		if(R.id.loginToken == loginMethod.getCheckedRadioButtonId()) {
 			AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
-		} else {
+		}
+		else {
 			AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
 		}
@@ -105,7 +90,8 @@ public class LoginActivity extends BaseActivity {
 			if(checkedId == R.id.loginToken) {
 				AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
-			} else {
+			}
+			else {
 				AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
 				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
 			}
@@ -114,7 +100,8 @@ public class LoginActivity extends BaseActivity {
 		networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> runOnUiThread(() -> {
 			if(hasNetworkConnection) {
 				enableProcessButton();
-			} else {
+			}
+			else {
 				disableProcessButton();
 				loginButton.setText(getResources().getString(R.string.btnLogin));
 				Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
@@ -148,8 +135,7 @@ public class LoginActivity extends BaseActivity {
 
 			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET.getText().toString().replaceAll("[\\uFEFF|#]", "").trim(), "http")).toUri();
 
-			instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(selectedProtocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
-				.toUri();
+			instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(selectedProtocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/")).toUri();
 
 			// cache values to make them available the next time the user wants to log in
 			tinyDB.putString("loginType", loginType.name().toLowerCase());
@@ -234,8 +220,7 @@ public class LoginActivity extends BaseActivity {
 		});
 	}
 
-	private void versionCheck(final String loginUid, final String loginPass, final int loginOTP, final String loginToken,
-		final LoginType loginType) {
+	private void versionCheck(final String loginUid, final String loginPass, final int loginOTP, final String loginToken, final LoginType loginType) {
 
 		Call<ServerVersion> callVersion;
 
@@ -247,10 +232,11 @@ public class LoginActivity extends BaseActivity {
 
 			String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
-			if (loginOTP != 0) {
+			if(loginOTP != 0) {
 
 				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).getVersion(loginOTP);
-			} else {
+			}
+			else {
 
 				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).getVersion();
 			}
@@ -277,24 +263,18 @@ public class LoginActivity extends BaseActivity {
 
 					if(giteaVersion.less(getString(R.string.versionLow))) {
 
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
-							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setIcon(R.drawable.ic_warning)
-							.setCancelable(true);
+						MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
+							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setNeutralButton(getString(R.string.cancelButton), (dialog, which) -> {
 
-						alertDialogBuilder.setNeutralButton(getString(R.string.cancelButton), (dialog, which) -> {
+								dialog.dismiss();
+								enableProcessButton();
+							}).setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
 
-							dialog.dismiss();
-							enableProcessButton();
-						});
+								dialog.dismiss();
+								login(loginType, loginUid, loginPass, loginOTP, loginToken);
+							});
 
-						alertDialogBuilder.setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
-
-							dialog.dismiss();
-							login(loginType, loginUid, loginPass, loginOTP, loginToken);
-						});
-
-						alertDialogBuilder.create().show();
-
+						materialAlertDialogBuilder.create().show();
 					}
 					else if(giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
 
@@ -435,8 +415,7 @@ public class LoginActivity extends BaseActivity {
 							Call<Void> delToken;
 							if(loginOTP != 0) {
 
-								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
-									.userDeleteAccessToken(loginOTP, loginUid, String.valueOf(t.getId()));
+								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userDeleteAccessToken(loginOTP, loginUid, String.valueOf(t.getId()));
 							}
 							else {
 
@@ -498,13 +477,11 @@ public class LoginActivity extends BaseActivity {
 
 		if(loginOTP != 0) {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
-				.userCreateToken(loginOTP, loginUid, createUserToken);
+			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userCreateToken(loginOTP, loginUid, createUserToken);
 		}
 		else {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
-				.userCreateToken(loginUid, createUserToken);
+			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userCreateToken(loginUid, createUserToken);
 		}
 
 		callCreateToken.enqueue(new Callback<>() {
@@ -542,9 +519,8 @@ public class LoginActivity extends BaseActivity {
 
 										UserAccount account;
 										if(!userAccountExists) {
-											long accountId = userAccountsApi
-												.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), newToken.getSha1(),
-													giteaVersion.toString(), maxResponseItems, defaultPagingNumber);
+											long accountId = userAccountsApi.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), newToken.getSha1(), giteaVersion.toString(), maxResponseItems,
+												defaultPagingNumber);
 											account = userAccountsApi.getAccountById((int) accountId);
 										}
 										else {
@@ -593,7 +569,6 @@ public class LoginActivity extends BaseActivity {
 		});
 	}
 
-
 	private void loadDefaults() {
 
 		if(tinyDB.getString("loginType").equals(LoginType.BASIC.name().toLowerCase())) {
@@ -636,5 +611,7 @@ public class LoginActivity extends BaseActivity {
 		loginButton.setText(R.string.btnLogin);
 		loginButton.setEnabled(true);
 	}
+
+	private enum LoginType {BASIC, TOKEN}
 
 }

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -31,13 +30,12 @@ import retrofit2.Response;
 
 public class MyProfileFollowingFragment extends Fragment {
 
+	private final String TAG = "MyProfileFollowingFragment";
 	private FragmentProfileFollowersFollowingBinding viewBinding;
 	private Context context;
-
 	private List<User> dataList;
 	private UsersAdapter adapter;
 	private int pageSize;
-	private final String TAG = "MyProfileFollowingFragment";
 	private int resultLimit;
 
 	@Override
@@ -63,9 +61,7 @@ public class MyProfileFollowingFragment extends Fragment {
 			}
 		}));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 		viewBinding.recyclerView.setHasFixedSize(true);
-		viewBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		viewBinding.recyclerView.setAdapter(adapter);
 
@@ -76,10 +72,9 @@ public class MyProfileFollowingFragment extends Fragment {
 
 	private void loadInitial(int resultLimit) {
 
-		Call<List<User>> call = RetrofitClient
-			.getApiInterface(context)
-			.userCurrentListFollowing(1, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userCurrentListFollowing(1, resultLimit);
 		call.enqueue(new Callback<List<User>>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 				if(response.isSuccessful()) {
@@ -115,9 +110,9 @@ public class MyProfileFollowingFragment extends Fragment {
 	private void loadMore(int resultLimit, int page) {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<List<User>> call = RetrofitClient.getApiInterface(context)
-			.userCurrentListFollowing(page, resultLimit);
+		Call<List<User>> call = RetrofitClient.getApiInterface(context).userCurrentListFollowing(page, resultLimit);
 		call.enqueue(new Callback<List<User>>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 				if(response.isSuccessful()) {
@@ -145,4 +140,5 @@ public class MyProfileFollowingFragment extends Fragment {
 			}
 		});
 	}
+
 }

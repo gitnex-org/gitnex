@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.OrganizationDetailActivity">
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefresh"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="?attr/primaryBackgroundColor"
+        android:padding="@dimen/dimen4dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
-            android:scrollbars="vertical" />
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:numColumns="2"
+            android:gravity="center"/>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </FrameLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
@@ -26,10 +28,10 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
-        android:id="@+id/noDataTeams"
+        android:id="@+id/noDataMembers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp"
@@ -37,6 +39,6 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

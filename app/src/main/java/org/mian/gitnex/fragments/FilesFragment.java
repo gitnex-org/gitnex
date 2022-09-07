@@ -4,19 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
@@ -43,15 +37,13 @@ import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 
 public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapterListener {
 
-	private FragmentFilesBinding binding;
-
-	private RepositoryContext repository;
-
 	private final Path path = new Path();
-
+	private FragmentFilesBinding binding;
+	private RepositoryContext repository;
 	private FilesAdapter filesAdapter;
 
-	public FilesFragment() {}
+	public FilesFragment() {
+	}
 
 	public static FilesFragment newInstance(RepositoryContext repository) {
 
@@ -78,9 +70,9 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding.recyclerView.setHasFixedSize(true);
 		binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		binding.recyclerView.setAdapter(filesAdapter);
-		binding.recyclerView.addItemDecoration(new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-		binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + repository.getBranchRef()))));
+		binding.breadcrumbsView.setItems(new ArrayList<>(
+			Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + repository.getBranchRef()))));
 		// noinspection unchecked
 		binding.breadcrumbsView.setCallback(new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
 
@@ -90,13 +82,16 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 				if(position == 0) {
 					path.clear();
-				} else {
+				}
+				else {
 					path.pop(path.size() - position);
 				}
 				refresh();
 			}
 
-			@Override public void onNavigateNewLocation(BreadcrumbItem newItem, int changedPosition) {}
+			@Override
+			public void onNavigateNewLocation(BreadcrumbItem newItem, int changedPosition) {
+			}
 
 		});
 
@@ -112,7 +107,8 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 				binding.breadcrumbsView.removeLastItem();
 				if(path.size() == 0) {
 					fetchDataAsync(repository.getOwner(), repository.getName(), repository.getBranchRef());
-				} else {
+				}
+				else {
 					fetchDataAsyncSub(repository.getOwner(), repository.getName(), path.toString(), repository.getBranchRef());
 				}
 			}
@@ -127,14 +123,15 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 			repository.setBranchRef(repoBranch);
 			path.clear();
-			binding.breadcrumbsView.setItems(new ArrayList<>(Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + repository.getBranchRef()))));
+			binding.breadcrumbsView.setItems(new ArrayList<>(
+				Collections.singletonList(BreadcrumbItem.createSimpleItem(getResources().getString(R.string.filesBreadcrumbRoot) + getResources().getString(R.string.colonDivider) + repository.getBranchRef()))));
 			refresh();
 		});
 
 
 		String dir = requireActivity().getIntent().getStringExtra("dir");
 		if(dir != null) {
-			for(String segment: dir.split("/")) {
+			for(String segment : dir.split("/")) {
 				binding.breadcrumbsView.addItem(new BreadcrumbItem(Collections.singletonList(segment)));
 				path.add(segment);
 			}
@@ -182,7 +179,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 					if(instanceUri.getHost().toLowerCase().equals(host)) {
 						account = userAccount;
 						// if scheme is wrong fix it
-						if (!url.getScheme().equals(instanceUri.getScheme())) {
+						if(!url.getScheme().equals(instanceUri.getScheme())) {
 							url = AppUtil.changeScheme(url, instanceUri.getScheme());
 						}
 						break;
@@ -197,12 +194,13 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 					}
 					String owner = splittedUrl.get(splittedUrl.size() - 2);
 					String repo = splittedUrl.get(splittedUrl.size() - 1);
-					if (repo.endsWith(".git")) { // Git clone URL
+					if(repo.endsWith(".git")) { // Git clone URL
 						repo = repo.substring(0, repo.length() - 4);
 					}
 
 					startActivity(new RepositoryContext(owner, repo, requireContext()).getIntent(requireContext(), RepoDetailActivity.class));
-				} else {
+				}
+				else {
 					AppUtil.openUrlInBrowser(requireContext(), url.toString());
 				}
 				break;
@@ -212,7 +210,8 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 	public void refresh() {
 		if(path.size() > 0) {
 			fetchDataAsyncSub(repository.getOwner(), repository.getName(), path.toString(), repository.getBranchRef());
-		} else {
+		}
+		else {
 			fetchDataAsync(repository.getOwner(), repository.getName(), repository.getBranchRef());
 		}
 	}
@@ -302,7 +301,9 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 			}
 
 			@Override
-			public boolean onQueryTextSubmit(String query) { return false; }
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
 
 		});
 

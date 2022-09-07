@@ -27,9 +27,9 @@ import java.util.List;
 public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private List<NotificationThread> notificationThreads;
 	private final OnMoreClickedListener onMoreClickedListener;
 	private final OnNotificationClickedListener onNotificationClickedListener;
+	private List<NotificationThread> notificationThreads;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
 	public NotificationsAdapter(Context context, List<NotificationThread> notificationThreads, OnMoreClickedListener onMoreClickedListener, OnNotificationClickedListener onNotificationClickedListener) {
@@ -65,14 +65,41 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		return notificationThreads.size();
 	}
 
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+	}
+
+	public void updateList(List<NotificationThread> list) {
+		notificationThreads = list;
+		notifyDataChanged();
+	}
+
+	public interface OnNotificationClickedListener {
+
+		void onNotificationClicked(NotificationThread notificationThread);
+
+	}
+
+	public interface OnMoreClickedListener {
+
+		void onMoreClicked(NotificationThread notificationThread);
+
+	}
+
 	class NotificationsHolder extends RecyclerView.ViewHolder {
 
 		private final LinearLayout frame;
 		private final TextView subject;
 		private final TextView repository;
 		private final ImageView type;
-		private ImageView pinned;
 		private final ImageView more;
+		private ImageView pinned;
 
 		NotificationsHolder(View itemView) {
 
@@ -92,13 +119,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			String subjectId = "";
 
 			if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
-				subjectId = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + url.substring(url.lastIndexOf("/") + 1) + "</font>";
+				subjectId = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + url.substring(
+					url.lastIndexOf("/") + 1) + "</font>";
 			}
 
 			subject.setText(HtmlCompat.fromHtml(subjectId + " " + notificationThread.getSubject().getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 			if(!notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
 				repository.setText(notificationThread.getRepository().getFullName());
-			} else {
+			}
+			else {
 				repository.setVisibility(View.GONE);
 				pinned.setVisibility(View.GONE);
 				pinned = itemView.findViewById(R.id.pinnedVertical);
@@ -151,28 +180,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			more.setOnClickListener(v -> onMoreClickedListener.onMoreClicked(notificationThread));
 		}
+
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-	}
-
-	public void updateList(List<NotificationThread> list) {
-		notificationThreads = list;
-		notifyDataChanged();
-	}
-
-	public interface OnNotificationClickedListener {
-		void onNotificationClicked(NotificationThread notificationThread);
-	}
-
-	public interface OnMoreClickedListener {
-		void onMoreClicked(NotificationThread notificationThread);
-	}
 }

@@ -27,135 +27,141 @@ import java.util.List;
 
 public class UserGridAdapter extends BaseAdapter implements Filterable {
 
-    private final List<User> membersList;
-    private final Context context;
-    private final List<User> membersListFull;
+	private final List<User> membersList;
+	private final Context context;
+	private final List<User> membersListFull;
 
-    private class ViewHolder {
+	private class ViewHolder {
 
-	    private String userLoginId;
+		private String userLoginId;
 
-        private final ImageView memberAvatar;
-        private final TextView memberName;
+		private final ImageView memberAvatar;
+		private final TextView memberName;
+		private final TextView userName;
 
-        ViewHolder(View v) {
+		ViewHolder(View v) {
 
-            memberAvatar = v.findViewById(R.id.userAvatarImageView);
-            memberName = v.findViewById(R.id.userNameTv);
+			memberAvatar = v.findViewById(R.id.userAvatarImageView);
+			memberName = v.findViewById(R.id.userNameTv);
+			userName = v.findViewById(R.id.userName);
 
-	        v.setOnClickListener(loginId -> {
-		        Intent intent = new Intent(context, ProfileActivity.class);
-		        intent.putExtra("username", userLoginId);
-		        context.startActivity(intent);
-	        });
+			v.setOnClickListener(loginId -> {
+				Intent intent = new Intent(context, ProfileActivity.class);
+				intent.putExtra("username", userLoginId);
+				context.startActivity(intent);
+			});
 
-	        v.setOnLongClickListener(loginId -> {
-		        AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-		        return true;
-	        });
-        }
-    }
+			v.setOnLongClickListener(loginId -> {
+				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+				return true;
+			});
+		}
 
-    public UserGridAdapter(Context ctx, List<User> membersListMain) {
+	}
 
-        this.context = ctx;
-        this.membersList = membersListMain;
-        membersListFull = new ArrayList<>(membersList);
-    }
+	public UserGridAdapter(Context ctx, List<User> membersListMain) {
 
-    @Override
-    public int getCount() {
-        return membersList.size();
-    }
+		this.context = ctx;
+		this.membersList = membersListMain;
+		membersListFull = new ArrayList<>(membersList);
+	}
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+	@Override
+	public int getCount() {
+		return membersList.size();
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+	@Override
+	public Object getItem(int position) {
+		return null;
+	}
 
-    @SuppressLint("InflateParams")
-    @Override
-    public View getView(int position, View finalView, ViewGroup parent) {
+	@Override
+	public long getItemId(int position) {
+		return 0;
+	}
 
-        UserGridAdapter.ViewHolder viewHolder;
+	@SuppressLint("InflateParams")
+	@Override
+	public View getView(int position, View finalView, ViewGroup parent) {
 
-        if (finalView == null) {
+		UserGridAdapter.ViewHolder viewHolder;
 
-            finalView = LayoutInflater.from(context).inflate(R.layout.list_users_grid, null);
-            viewHolder = new ViewHolder(finalView);
-            finalView.setTag(viewHolder);
-        }
-        else {
+		if(finalView == null) {
 
-            viewHolder = (UserGridAdapter.ViewHolder) finalView.getTag();
-        }
+			finalView = LayoutInflater.from(context).inflate(R.layout.list_users_grid, null);
+			viewHolder = new ViewHolder(finalView);
+			finalView.setTag(viewHolder);
+		}
+		else {
 
-        initData(viewHolder, position);
-        return finalView;
-    }
+			viewHolder = (UserGridAdapter.ViewHolder) finalView.getTag();
+		}
 
-    private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
+		initData(viewHolder, position);
+		return finalView;
+	}
 
-	    User currentItem = membersList.get(position);
-	    int imgRadius = AppUtil.getPixelsFromDensity(context, 0);
+	private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
 
-        PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(viewHolder.memberAvatar);
+		User currentItem = membersList.get(position);
+		int imgRadius = AppUtil.getPixelsFromDensity(context, 0);
 
-	    viewHolder.userLoginId = currentItem.getLogin();
+		PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+			.into(viewHolder.memberAvatar);
 
-        if(!currentItem.getFullName().equals("")) {
+		viewHolder.userLoginId = currentItem.getLogin();
 
-            viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
-        }
-        else {
+		if(!currentItem.getFullName().equals("")) {
 
-            viewHolder.memberName.setText(currentItem.getLogin());
-        }
-    }
+			viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
+			viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
+		}
+		else {
 
-    @Override
-    public Filter getFilter() {
-        return membersFilter;
-    }
+			viewHolder.memberName.setText(currentItem.getLogin());
+			viewHolder.userName.setVisibility(View.GONE);
+		}
+	}
 
-    private final Filter membersFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<User> filteredList = new ArrayList<>();
+	@Override
+	public Filter getFilter() {
+		return membersFilter;
+	}
 
-            if (constraint == null || constraint.length() == 0) {
+	private final Filter membersFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<User> filteredList = new ArrayList<>();
 
-                filteredList.addAll(membersListFull);
-            }
-            else {
+			if(constraint == null || constraint.length() == 0) {
 
-                String filterPattern = constraint.toString().toLowerCase().trim();
+				filteredList.addAll(membersListFull);
+			}
+			else {
 
-                for (User item : membersListFull) {
-                    if (item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
+				String filterPattern = constraint.toString().toLowerCase().trim();
 
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
+				for(User item : membersListFull) {
+					if(item.getFullName().toLowerCase().contains(filterPattern) || item.getLogin().toLowerCase().contains(filterPattern)) {
+						filteredList.add(item);
+					}
+				}
+			}
 
-            return results;
-        }
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
 
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+			return results;
+		}
 
-            membersList.clear();
-            membersList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+
+			membersList.clear();
+			membersList.addAll((List) results.values);
+			notifyDataSetChanged();
+		}
+	};
 
 }

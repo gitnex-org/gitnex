@@ -5,41 +5,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/loadingIndicator"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="gone"
-        android:layout_height="wrap_content"/>
+        android:visibility="gone"/>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
+        app:elevation="@dimen/dimen0dp">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_height="@dimen/dimen320dp">
 
             <ImageView
                 android:id="@+id/userAvatarBackground"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/generalImgContentText"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:id="@+id/layoutFrameAccount"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:padding="@dimen/dimen16dp">
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="@dimen/dimen60dp"
@@ -54,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/generalImgContentText"
-                        android:src="@mipmap/app_logo_round" />
+                        android:src="@mipmap/app_logo_round"/>
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -64,23 +63,23 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:textIsSelectable="true"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/dimen18sp"/>
 
                 <TextView
                     android:id="@+id/userLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="@dimen/dimen10dp"
                     android:textColor="@color/colorWhite"
                     android:textIsSelectable="true"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/dimen14sp"/>
 
                 <View
                     android:id="@+id/divider"
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/colorWhite" />
+                    android:layout_width="@dimen/dimen50dp"
+                    android:layout_height="@dimen/dimen1dp"
+                    android:layout_marginBottom="@dimen/dimen10dp"
+                    android:background="@color/colorWhite"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -91,11 +90,11 @@
                     <ImageView
                         android:id="@+id/userLanguageIcon"
                         android:layout_width="wrap_content"
-                        android:layout_height="18dp"
-                        android:layout_marginEnd="2dp"
+                        android:layout_height="@dimen/dimen18dp"
+                        android:layout_marginEnd="@dimen/dimen2dp"
                         android:contentDescription="@string/generalImgContentText"
                         android:src="@drawable/ic_language"
-                        app:tint="@color/colorWhite" />
+                        app:tint="@color/colorWhite"/>
 
                     <TextView
                         android:id="@+id/userLanguage"
@@ -103,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorWhite"
                         android:textIsSelectable="true"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/dimen14sp"/>
 
                 </LinearLayout>
 
@@ -111,42 +110,83 @@
 
         </FrameLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/primaryBackgroundColor"
-            app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
-            app:tabMode="auto"
-            app:tabTextAppearance="@style/customTabLayout"
-            app:tabTextColor="?attr/primaryTextColor">
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/profileTabFollowers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/profileTabFollowers" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/profileTabFollowing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/profileTabFollowing" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/profileTabEmails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/profileTabEmails" />
-
-        </com.google.android.material.tabs.TabLayout>
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/container"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_marginTop="@dimen/dimen200dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CustomMaterCardViewStyle"
+            app:cardBackgroundColor="?attr/primaryBackgroundColor"
+            app:strokeWidth="@dimen/dimen0dp"
+            app:strokeColor="?attr/colorPrimary">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/primaryBackgroundColor"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/fragmentProfileCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen12dp"
+                    app:strokeWidth="@dimen/dimen2dp"
+                    app:cardCornerRadius="@dimen/dimen32dp"
+                    app:strokeColor="?attr/colorPrimary"
+                    style="?attr/materialCardViewFilledStyle">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:tabTextAppearance="@android:style/TextAppearance.Material.Widget.TabWidget"
+                        app:tabIndicatorGravity="stretch"
+                        app:tabMode="fixed"
+                        app:tabIndicatorColor="?attr/colorPrimary"
+                        app:tabIndicatorFullWidth="true"
+                        android:background="?attr/primaryBackgroundColor"
+                        app:tabSelectedTextColor="@android:color/white"
+                        app:tabTextColor="?attr/colorPrimary">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/profileTabFollowers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/profileTabFollowers"/>
+
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/profileTabFollowing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/profileTabFollowing"/>
+
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/profileTabEmails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/profileTabEmails"/>
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen72dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

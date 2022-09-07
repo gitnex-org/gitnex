@@ -6,8 +6,8 @@
     <item
         android:id="@+id/edit"
         android:icon="@drawable/ic_edit"
-        android:title="@string/menuEditText"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom" />
+        android:title="@string/menuEditText"
+        app:showAsAction="ifRoom"/>
 
 </menu>

@@ -3,11 +3,10 @@ package org.mian.gitnex.activities;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.TeamRepositoriesAdapter;
+import org.mian.gitnex.adapters.OrganizationTeamRepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.AddNewTeamRepositoryBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -27,7 +26,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 	private AddNewTeamRepositoryBinding addNewTeamRepositoryBinding;
 	private View.OnClickListener onClickListener;
 	private List<Repository> dataList;
-	private TeamRepositoriesAdapter adapter;
+	private OrganizationTeamRepositoriesAdapter adapter;
 	private int resultLimit;
 
 	private long teamId;
@@ -50,9 +49,6 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setHasFixedSize(true);
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setLayoutManager(new LinearLayoutManager(ctx));
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(addNewTeamRepositoryBinding.recyclerViewTeamRepos.getContext(),	DividerItemDecoration.VERTICAL);
-		addNewTeamRepositoryBinding.recyclerViewTeamRepos.addItemDecoration(dividerItemDecoration);
 
 		dataList = new ArrayList<>();
 
@@ -78,7 +74,7 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 						dataList.clear();
 						dataList.addAll(response.body());
 
-						adapter = new TeamRepositoriesAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"), teamName);
+						adapter = new OrganizationTeamRepositoriesAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"), teamName);
 
 						addNewTeamRepositoryBinding.recyclerViewTeamRepos.setAdapter(adapter);
 						addNewTeamRepositoryBinding.noData.setVisibility(View.GONE);
@@ -105,4 +101,5 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
+
 }

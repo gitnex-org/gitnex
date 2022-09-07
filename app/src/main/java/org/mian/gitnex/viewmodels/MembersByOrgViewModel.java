@@ -20,40 +20,39 @@ import retrofit2.Response;
 
 public class MembersByOrgViewModel extends ViewModel {
 
-    private MutableLiveData<List<User>> membersList;
+	private MutableLiveData<List<User>> membersList;
 
-    public LiveData<List<User>> getMembersList(String owner, Context ctx) {
+	public LiveData<List<User>> getMembersList(String owner, Context ctx) {
 
-        membersList = new MutableLiveData<>();
-        loadMembersList(owner, ctx);
+		membersList = new MutableLiveData<>();
+		loadMembersList(owner, ctx);
 
-        return membersList;
-    }
+		return membersList;
+	}
 
-    private void loadMembersList(String owner, Context ctx) {
+	private void loadMembersList(String owner, Context ctx) {
 
-        Call<List<User>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .orgListMembers(owner, null, null);
+		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).orgListMembers(owner, null, null);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
-		        if(response.isSuccessful()) {
-			        membersList.postValue(response.body());
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					membersList.postValue(response.body());
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<User>> call, Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<User>> call, Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
 }

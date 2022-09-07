@@ -3,8 +3,8 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-  <path
-      android:fillColor="?attr/iconsColor"
-      android:pathData="M6,12a2,2 0,1 1,-4 0,2 2,0 0,1 4,0zM14,12a2,2 0,1 1,-4 0,2 2,0 0,1 4,0zM20,14a2,2 0,1 0,0 -4,2 2,0 0,0 0,4z"
-      android:fillType="evenOdd"/>
+    <path
+        android:fillColor="?attr/iconsColor"
+        android:fillType="evenOdd"
+        android:pathData="M6,12a2,2 0,1 1,-4 0,2 2,0 0,1 4,0zM14,12a2,2 0,1 1,-4 0,2 2,0 0,1 4,0zM20,14a2,2 0,1 0,0 -4,2 2,0 0,0 0,4z"/>
 </vector>

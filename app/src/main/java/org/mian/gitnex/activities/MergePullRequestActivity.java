@@ -34,6 +34,7 @@ public class MergePullRequestActivity extends BaseActivity {
 	private IssueContext issue;
 	private ActivityMergePullRequestBinding viewBinding;
 	private String Do;
+	private final View.OnClickListener mergePullRequest = v -> processMergePullRequest();
 
 	@SuppressLint("SetTextI18n")
 	@Override
@@ -121,7 +122,7 @@ public class MergePullRequestActivity extends BaseActivity {
 		ArrayAdapter<MergePullRequestSpinner> adapter = new ArrayAdapter<>(MergePullRequestActivity.this, R.layout.list_spinner_items, mergeList);
 		viewBinding.mergeSpinner.setAdapter(adapter);
 
-		viewBinding.mergeSpinner.setOnItemClickListener ((parent, view, position, id) -> {
+		viewBinding.mergeSpinner.setOnItemClickListener((parent, view, position, id) -> {
 
 			Do = mergeList.get(position).getId();
 		});
@@ -131,8 +132,6 @@ public class MergePullRequestActivity extends BaseActivity {
 
 		onClickListener = view -> finish();
 	}
-
-	private final View.OnClickListener mergePullRequest = v -> processMergePullRequest();
 
 	private void processMergePullRequest() {
 
@@ -200,8 +199,7 @@ public class MergePullRequestActivity extends BaseActivity {
 							PullRequestActions.deleteHeadBranch(ctx, repoOwner, repoName, issue.getPullRequest().getHead().getRef(), false);
 						}
 						else {
-							PullRequestActions.deleteHeadBranch(ctx, issue.getRepository().getOwner(), issue.getRepository().getName(),
-								issue.getPullRequest().getHead().getRef(), false);
+							PullRequestActions.deleteHeadBranch(ctx, issue.getRepository().getOwner(), issue.getRepository().getName(), issue.getPullRequest().getHead().getRef(), false);
 						}
 
 					}
@@ -259,4 +257,5 @@ public class MergePullRequestActivity extends BaseActivity {
 		super.onResume();
 		issue.getRepository().checkAccountSwitch(this);
 	}
+
 }

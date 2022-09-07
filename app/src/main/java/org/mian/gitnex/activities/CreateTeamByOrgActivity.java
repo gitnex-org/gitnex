@@ -17,7 +17,7 @@ import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateTeamByOrgBinding;
-import org.mian.gitnex.fragments.TeamsByOrgFragment;
+import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
@@ -33,250 +33,229 @@ import retrofit2.Callback;
 
 public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClickListener {
 
-    private View.OnClickListener onClickListener;
-    private TextView teamName;
-    private TextView teamDesc;
-    private TextView teamPermission;
-    private TextView teamPermissionDetail;
-    private TextView teamAccessControls;
-    private TextView teamAccessControlsArray;
-    private Button createTeamButton;
-    private final String[] permissionList = {"Read", "Write", "Admin"};
-    public int permissionSelectedChoice = -1;
+	private View.OnClickListener onClickListener;
+	private TextView teamName;
+	private TextView teamDesc;
+	private TextView teamPermission;
+	private TextView teamPermissionDetail;
+	private TextView teamAccessControls;
+	private TextView teamAccessControlsArray;
+	private Button createTeamButton;
+	private final String[] permissionList = {"Read", "Write", "Admin"};
+	public int permissionSelectedChoice = -1;
 
-    private final String[] accessControlsList = new String[] {
-            "Code",
-            "Issues",
-            "Pull Request",
-            "Releases",
-            "Wiki",
-            "External Wiki",
-            "External Issues"
-    };
+	private final String[] accessControlsList = new String[]{"Code", "Issues", "Pull Request", "Releases", "Wiki", "External Wiki", "External Issues"};
 
-    private List<String> pushAccessList;
+	private List<String> pushAccessList;
 
-    private final boolean[] selectedAccessControlsTrueFalse = new boolean[]{
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-    };
+	private final boolean[] selectedAccessControlsTrueFalse = new boolean[]{false, false, false, false, false, false, false};
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    ActivityCreateTeamByOrgBinding activityCreateTeamByOrgBinding = ActivityCreateTeamByOrgBinding.inflate(getLayoutInflater());
-	    setContentView(activityCreateTeamByOrgBinding.getRoot());
+		ActivityCreateTeamByOrgBinding activityCreateTeamByOrgBinding = ActivityCreateTeamByOrgBinding.inflate(getLayoutInflater());
+		setContentView(activityCreateTeamByOrgBinding.getRoot());
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        ImageView closeActivity = activityCreateTeamByOrgBinding.close;
-        teamName = activityCreateTeamByOrgBinding.teamName;
-        teamDesc = activityCreateTeamByOrgBinding.teamDesc;
-        teamPermission = activityCreateTeamByOrgBinding.teamPermission;
-        teamPermissionDetail = activityCreateTeamByOrgBinding.teamPermissionDetail;
-        teamAccessControls = activityCreateTeamByOrgBinding.teamAccessControls;
-        teamAccessControlsArray = activityCreateTeamByOrgBinding.teamAccessControlsArray;
-        createTeamButton = activityCreateTeamByOrgBinding.createTeamButton;
+		ImageView closeActivity = activityCreateTeamByOrgBinding.close;
+		teamName = activityCreateTeamByOrgBinding.teamName;
+		teamDesc = activityCreateTeamByOrgBinding.teamDesc;
+		teamPermission = activityCreateTeamByOrgBinding.teamPermission;
+		teamPermissionDetail = activityCreateTeamByOrgBinding.teamPermissionDetail;
+		teamAccessControls = activityCreateTeamByOrgBinding.teamAccessControls;
+		teamAccessControlsArray = activityCreateTeamByOrgBinding.teamAccessControlsArray;
+		createTeamButton = activityCreateTeamByOrgBinding.createTeamButton;
 
-        teamName.requestFocus();
-        assert imm != null;
-        imm.showSoftInput(teamName, InputMethodManager.SHOW_IMPLICIT);
+		teamName.requestFocus();
+		assert imm != null;
+		imm.showSoftInput(teamName, InputMethodManager.SHOW_IMPLICIT);
 
-        initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
+		initCloseListener();
+		closeActivity.setOnClickListener(onClickListener);
 
-        teamPermission.setOnClickListener(view -> {
+		teamPermission.setOnClickListener(view -> {
 
 
-	        MaterialAlertDialogBuilder materialAlertDialogBuilderPerm = new MaterialAlertDialogBuilder(ctx)
-		        .setTitle(R.string.newTeamPermission)
-		        .setCancelable(permissionSelectedChoice != -1)
-		        .setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
+			MaterialAlertDialogBuilder materialAlertDialogBuilderPerm = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.newTeamPermission).setCancelable(permissionSelectedChoice != -1)
+				.setSingleChoiceItems(permissionList, permissionSelectedChoice, (dialogInterface, i) -> {
 
-			        permissionSelectedChoice = i;
-			        teamPermission.setText(permissionList[i]);
+					permissionSelectedChoice = i;
+					teamPermission.setText(permissionList[i]);
 
-			        switch(permissionList[i]) {
-				        case "Read":
+					switch(permissionList[i]) {
+						case "Read":
 
-					        teamPermissionDetail.setVisibility(View.VISIBLE);
-					        teamPermissionDetail.setText(R.string.newTeamPermissionRead);
-					        break;
-				        case "Write":
+							teamPermissionDetail.setVisibility(View.VISIBLE);
+							teamPermissionDetail.setText(R.string.newTeamPermissionRead);
+							break;
+						case "Write":
 
-					        teamPermissionDetail.setVisibility(View.VISIBLE);
-					        teamPermissionDetail.setText(R.string.newTeamPermissionWrite);
-					        break;
-				        case "Admin":
+							teamPermissionDetail.setVisibility(View.VISIBLE);
+							teamPermissionDetail.setText(R.string.newTeamPermissionWrite);
+							break;
+						case "Admin":
 
-					        teamPermissionDetail.setVisibility(View.VISIBLE);
-					        teamPermissionDetail.setText(R.string.newTeamPermissionAdmin);
-					        break;
-				        default:
+							teamPermissionDetail.setVisibility(View.VISIBLE);
+							teamPermissionDetail.setText(R.string.newTeamPermissionAdmin);
+							break;
+						default:
 
-					        teamPermissionDetail.setVisibility(View.GONE);
-					        break;
-			        }
+							teamPermissionDetail.setVisibility(View.GONE);
+							break;
+					}
 
-			        dialogInterface.dismiss();
-		        });
+					dialogInterface.dismiss();
+				});
 
-	        materialAlertDialogBuilderPerm.create().show();
-        });
+			materialAlertDialogBuilderPerm.create().show();
+		});
 
-        teamAccessControls.setOnClickListener(v -> {
+		teamAccessControls.setOnClickListener(v -> {
 
-            teamAccessControls.setText("");
-            teamAccessControlsArray.setText("");
-            pushAccessList = Arrays.asList(accessControlsList);
+			teamAccessControls.setText("");
+			teamAccessControlsArray.setText("");
+			pushAccessList = Arrays.asList(accessControlsList);
 
-	        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx)
-		        .setMultiChoiceItems(accessControlsList, selectedAccessControlsTrueFalse, (dialog, which, isChecked) -> {})
-		        .setTitle(R.string.newTeamAccessControls)
-		        .setPositiveButton(R.string.okButton, (dialog, which) -> {
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setMultiChoiceItems(accessControlsList, selectedAccessControlsTrueFalse, (dialog, which, isChecked) -> {
+			}).setTitle(R.string.newTeamAccessControls).setPositiveButton(R.string.okButton, (dialog, which) -> {
 
-		        int selectedVal = 0;
-		        while(selectedVal < selectedAccessControlsTrueFalse.length)
-		        {
-			        boolean value = selectedAccessControlsTrueFalse[selectedVal];
+				int selectedVal = 0;
+				while(selectedVal < selectedAccessControlsTrueFalse.length) {
+					boolean value = selectedAccessControlsTrueFalse[selectedVal];
 
-			        String repoCode = "";
-			        if(selectedVal == 0) {
-				        repoCode = "repo.code";
-			        }
-			        if(selectedVal == 1) {
-				        repoCode = "repo.issues";
-			        }
-			        if(selectedVal == 2) {
-				        repoCode = "repo.pulls";
-			        }
-			        if(selectedVal == 3) {
-				        repoCode = "repo.releases";
-			        }
-			        if(selectedVal == 4) {
-				        repoCode = "repo.wiki";
-			        }
-			        if(selectedVal == 5) {
-				        repoCode = "repo.ext_wiki";
-			        }
-			        if(selectedVal == 6) {
-				        repoCode = "repo.ext_issues";
-			        }
+					String repoCode = "";
+					if(selectedVal == 0) {
+						repoCode = "repo.code";
+					}
+					if(selectedVal == 1) {
+						repoCode = "repo.issues";
+					}
+					if(selectedVal == 2) {
+						repoCode = "repo.pulls";
+					}
+					if(selectedVal == 3) {
+						repoCode = "repo.releases";
+					}
+					if(selectedVal == 4) {
+						repoCode = "repo.wiki";
+					}
+					if(selectedVal == 5) {
+						repoCode = "repo.ext_wiki";
+					}
+					if(selectedVal == 6) {
+						repoCode = "repo.ext_issues";
+					}
 
-			        if(value){
+					if(value) {
 
-				        teamAccessControls.setText(getString(R.string.newTeamPermissionValues, teamAccessControls.getText(), pushAccessList.get(selectedVal)));
-				        teamAccessControlsArray.setText(getString(R.string.newTeamPermissionValuesFinal, teamAccessControlsArray.getText(), repoCode));
-			        }
+						teamAccessControls.setText(getString(R.string.newTeamPermissionValues, teamAccessControls.getText(), pushAccessList.get(selectedVal)));
+						teamAccessControlsArray.setText(getString(R.string.newTeamPermissionValuesFinal, teamAccessControlsArray.getText(), repoCode));
+					}
 
-			        selectedVal++;
-		        }
+					selectedVal++;
+				}
 
-		        String data = String.valueOf(teamAccessControls.getText());
-		        if(!data.equals("")) {
+				String data = String.valueOf(teamAccessControls.getText());
+				if(!data.equals("")) {
 
-			        teamAccessControls.setText(data.substring(0, data.length() - 2));
-		        }
+					teamAccessControls.setText(data.substring(0, data.length() - 2));
+				}
 
-		        String dataArray = String.valueOf(teamAccessControlsArray.getText());
+				String dataArray = String.valueOf(teamAccessControlsArray.getText());
 
-		        if(!dataArray.equals("")) {
+				if(!dataArray.equals("")) {
 
-			        teamAccessControlsArray.setText(dataArray.substring(0, dataArray.length() - 2));
-		        }
-	        });
+					teamAccessControlsArray.setText(dataArray.substring(0, dataArray.length() - 2));
+				}
+			});
 
-	        materialAlertDialogBuilder.create().show();
-        });
+			materialAlertDialogBuilder.create().show();
+		});
 
-        createTeamButton.setEnabled(false);
+		createTeamButton.setEnabled(false);
 
-        if(!connToInternet) {
+		if(!connToInternet) {
 
-            createTeamButton.setEnabled(false);
-            GradientDrawable shape = new GradientDrawable();
-            shape.setCornerRadius(8);
-            shape.setColor(ResourcesCompat.getColor(getResources(), R.color.hintColor, null));
-            createTeamButton.setBackground(shape);
-        }
-        else {
+			createTeamButton.setEnabled(false);
+			GradientDrawable shape = new GradientDrawable();
+			shape.setCornerRadius(8);
+			shape.setColor(ResourcesCompat.getColor(getResources(), R.color.hintColor, null));
+			createTeamButton.setBackground(shape);
+		}
+		else {
 
-            createTeamButton.setEnabled(true);
-            createTeamButton.setOnClickListener(this);
-        }
-    }
+			createTeamButton.setEnabled(true);
+			createTeamButton.setOnClickListener(this);
+		}
+	}
 
-    private void processCreateTeam() {
+	private void processCreateTeam() {
 
-        final String orgName = getIntent().getStringExtra("orgName");
+		final String orgName = getIntent().getStringExtra("orgName");
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-        String newTeamName = teamName.getText().toString();
-        String newTeamDesc = teamDesc.getText().toString();
-        String newTeamPermission = teamPermission.getText().toString().toLowerCase();
-        String newTeamAccessControls = teamAccessControlsArray.getText().toString();
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		String newTeamName = teamName.getText().toString();
+		String newTeamDesc = teamDesc.getText().toString();
+		String newTeamPermission = teamPermission.getText().toString().toLowerCase();
+		String newTeamAccessControls = teamAccessControlsArray.getText().toString();
 
-        if(!connToInternet) {
+		if(!connToInternet) {
 
-            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-            return;
-        }
+			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+			return;
+		}
 
-        if (newTeamName.equals("")) {
+		if(newTeamName.equals("")) {
 
-            Toasty.error(ctx, getString(R.string.teamNameEmpty));
-            return;
-        }
+			Toasty.error(ctx, getString(R.string.teamNameEmpty));
+			return;
+		}
 
-        if(!AppUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
+		if(!AppUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
 
-            Toasty.warning(ctx, getString(R.string.teamNameError));
-            return;
-        }
+			Toasty.warning(ctx, getString(R.string.teamNameError));
+			return;
+		}
 
-        if(!newTeamDesc.equals("")) {
+		if(!newTeamDesc.equals("")) {
 
-            if(!AppUtil.checkStrings(newTeamDesc)) {
+			if(!AppUtil.checkStrings(newTeamDesc)) {
 
-                Toasty.warning(ctx, getString(R.string.teamDescError));
-                return;
-            }
+				Toasty.warning(ctx, getString(R.string.teamDescError));
+				return;
+			}
 
-            if(newTeamDesc.length() > 100) {
+			if(newTeamDesc.length() > 100) {
 
-                Toasty.warning(ctx, getString(R.string.teamDescLimit));
-                return;
-            }
-        }
+				Toasty.warning(ctx, getString(R.string.teamDescLimit));
+				return;
+			}
+		}
 
-        if (newTeamPermission.equals("")) {
+		if(newTeamPermission.equals("")) {
 
-            Toasty.error(ctx, getString(R.string.teamPermissionEmpty));
-            return;
-        }
+			Toasty.error(ctx, getString(R.string.teamPermissionEmpty));
+			return;
+		}
 
-        List<String> newTeamAccessControls_ = new ArrayList<>(Arrays.asList(newTeamAccessControls.split(",")));
+		List<String> newTeamAccessControls_ = new ArrayList<>(Arrays.asList(newTeamAccessControls.split(",")));
 
-        for (int i = 0; i < newTeamAccessControls_.size(); i++) {
+		for(int i = 0; i < newTeamAccessControls_.size(); i++) {
 
-            newTeamAccessControls_.set(i, newTeamAccessControls_.get(i).trim());
-        }
+			newTeamAccessControls_.set(i, newTeamAccessControls_.get(i).trim());
+		}
 
-        createNewTeamCall(orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_);
-    }
+		createNewTeamCall(orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_);
+	}
 
-    private void createNewTeamCall(String orgName, String newTeamName, String newTeamDesc, String newTeamPermission, List<String> newTeamAccessControls) {
+	private void createNewTeamCall(String orgName, String newTeamName, String newTeamDesc, String newTeamPermission, List<String> newTeamAccessControls) {
 
-        CreateTeamOption createNewTeamJson = new CreateTeamOption();
+		CreateTeamOption createNewTeamJson = new CreateTeamOption();
 		createNewTeamJson.setName(newTeamName);
 		createNewTeamJson.setDescription(newTeamDesc);
 		switch(newTeamPermission) {
@@ -292,59 +271,57 @@ public class CreateTeamByOrgActivity extends BaseActivity implements View.OnClic
 		}
 		createNewTeamJson.setUnits(newTeamAccessControls);
 
-        Call<Team> call3 = RetrofitClient
-                .getApiInterface(ctx)
-                .orgCreateTeam(orgName, createNewTeamJson);
+		Call<Team> call3 = RetrofitClient.getApiInterface(ctx).orgCreateTeam(orgName, createNewTeamJson);
 
-        call3.enqueue(new Callback<Team>() {
+		call3.enqueue(new Callback<Team>() {
 
-            @Override
-            public void onResponse(@NonNull Call<Team> call, @NonNull retrofit2.Response<Team> response2) {
+			@Override
+			public void onResponse(@NonNull Call<Team> call, @NonNull retrofit2.Response<Team> response2) {
 
-                if(response2.isSuccessful()) {
+				if(response2.isSuccessful()) {
 
-                    if(response2.code() == 201) {
+					if(response2.code() == 201) {
 
-	                    TeamsByOrgFragment.resumeTeams = true;
+						OrganizationTeamsFragment.resumeTeams = true;
 
-                        Toasty.success(ctx, getString(R.string.teamCreated));
-                        finish();
-                    }
-                }
-                else if(response2.code() == 404) {
+						Toasty.success(ctx, getString(R.string.teamCreated));
+						finish();
+					}
+				}
+				else if(response2.code() == 404) {
 
-                    Toasty.warning(ctx, getString(R.string.apiNotFound));
-                }
-                else if(response2.code() == 401) {
+					Toasty.warning(ctx, getString(R.string.apiNotFound));
+				}
+				else if(response2.code() == 401) {
 
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx);
-                }
-                else {
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
+				}
+				else {
 
-                    Toasty.error(ctx, getString(R.string.genericError));
-                }
-            }
+					Toasty.error(ctx, getString(R.string.genericError));
+				}
+			}
 
-            @Override
-            public void onFailure(@NonNull Call<Team> call, @NonNull Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
-        });
+			@Override
+			public void onFailure(@NonNull Call<Team> call, @NonNull Throwable t) {
+				Log.e("onFailure", t.toString());
+			}
+		});
 
-    }
+	}
 
-    @Override
-    public void onClick(View v) {
+	@Override
+	public void onClick(View v) {
 
-        if(v == createTeamButton) {
+		if(v == createTeamButton) {
 
-            processCreateTeam();
-        }
-    }
+			processCreateTeam();
+		}
+	}
 
-    private void initCloseListener() {
+	private void initCloseListener() {
 
-        onClickListener = view -> finish();
-    }
+		onClickListener = view -> finish();
+	}
 
 }

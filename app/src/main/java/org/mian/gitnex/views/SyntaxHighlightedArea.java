@@ -53,9 +53,7 @@ public class SyntaxHighlightedArea extends LinearLayout {
 
 	public void setup() {
 
-		prism4jTheme = AppUtil.getColorFromAttribute(getContext(), R.attr.isDark) == 1 ?
-			Prism4jThemeDarkula.create() :
-			Prism4jThemeDefault.create();
+		prism4jTheme = AppUtil.getColorFromAttribute(getContext(), R.attr.isDark) == 1 ? Prism4jThemeDarkula.create() : Prism4jThemeDefault.create();
 
 		sourceView = new TextView(getContext());
 
@@ -75,9 +73,7 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		linesView = new LinesView(getContext());
 
 		linesView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-		linesView.setPadding(
-			AppUtil.getPixelsFromDensity(getContext(), 3), 0,
-			AppUtil.getPixelsFromDensity(getContext(), 6), 0);
+		linesView.setPadding(AppUtil.getPixelsFromDensity(getContext(), 3), 0, AppUtil.getPixelsFromDensity(getContext(), 6), 0);
 
 		linesView.getPaint().setTypeface(sourceView.getTypeface());
 		linesView.getPaint().setTextSize(sourceView.getTextSize());
@@ -103,13 +99,13 @@ public class SyntaxHighlightedArea extends LinearLayout {
 
 					MainGrammarLocator mainGrammarLocator = MainGrammarLocator.getInstance();
 
-					CharSequence highlightedSource = Prism4jSyntaxHighlight
-						.create(new Prism4j(mainGrammarLocator), prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE)
+					CharSequence highlightedSource = Prism4jSyntaxHighlight.create(new Prism4j(mainGrammarLocator), prism4jTheme, MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE)
 						.highlight(mainGrammarLocator.fromExtension(extension), source);
 
 					getActivity().runOnUiThread(() -> sourceView.setText(highlightedSource));
 
-				} catch(Throwable ignored) {
+				}
+				catch(Throwable ignored) {
 					// Fall back to plaintext if something fails
 					getActivity().runOnUiThread(() -> sourceView.setText(source));
 				}
@@ -122,7 +118,9 @@ public class SyntaxHighlightedArea extends LinearLayout {
 
 				try {
 					highlightingThread.join();
-				} catch(InterruptedException ignored) {}
+				}
+				catch(InterruptedException ignored) {
+				}
 
 				getActivity().runOnUiThread(() -> linesView.setLineCount(lineCount));
 
@@ -138,24 +136,27 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		return (Activity) getContext();
 	}
 
-    public String getContent() {
+	public String getContent() {
 		return sourceView.getText().toString();
-    }
+	}
 
 	private static class LinesView extends View {
 
 		private final Paint paint = new Paint();
 		private final Rect textBounds = new Rect();
 
-		@ColorInt private int backgroundColor;
-		@ColorInt private int textColor;
-		@ColorInt private int lineColor;
+		@ColorInt
+		private int backgroundColor;
+		@ColorInt
+		private int textColor;
+		@ColorInt
+		private int lineColor;
 
 		private long lineCount;
 
-	    public LinesView(Context context) {
-	    	super(context);
-	    }
+		public LinesView(Context context) {
+			super(context);
+		}
 
 		public void setLineCount(long lineCount) {
 			this.lineCount = lineCount;
@@ -182,48 +183,48 @@ public class SyntaxHighlightedArea extends LinearLayout {
 			return paint;
 		}
 
-	    @Override
-	    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		@Override
+		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-		    String highestLineNumber = String.valueOf(lineCount);
+			String highestLineNumber = String.valueOf(lineCount);
 
-		    paint.getTextBounds(highestLineNumber, 0, highestLineNumber.length(), textBounds);
+			paint.getTextBounds(highestLineNumber, 0, highestLineNumber.length(), textBounds);
 
-	    	setMeasuredDimension(getPaddingLeft() + textBounds.width() + getPaddingRight(), MeasureSpec.getSize(heightMeasureSpec));
+			setMeasuredDimension(getPaddingLeft() + textBounds.width() + getPaddingRight(), MeasureSpec.getSize(heightMeasureSpec));
 
-	    }
+		}
 
-	    @Override
-	    protected void onDraw(Canvas canvas) {
+		@Override
+		protected void onDraw(Canvas canvas) {
 
-	    	paint.setColor(backgroundColor);
+			paint.setColor(backgroundColor);
 
-	    	canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
+			canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
 
-		    float marginTopBottom = (float) (getHeight() - (textBounds.height() / 2)) / lineCount;
+			float marginTopBottom = (float) (getHeight() - (textBounds.height() / 2)) / lineCount;
 
-		    paint.setColor(textColor);
+			paint.setColor(textColor);
 
-		    canvas.save();
-		    canvas.translate(getPaddingLeft(), marginTopBottom);
+			canvas.save();
+			canvas.translate(getPaddingLeft(), marginTopBottom);
 
-		    for(int currentLine = 1; currentLine <= lineCount; currentLine++) {
+			for(int currentLine = 1; currentLine <= lineCount; currentLine++) {
 
-			    canvas.drawText(String.valueOf(currentLine), 0, 0, paint);
-			    canvas.translate(0, marginTopBottom);
+				canvas.drawText(String.valueOf(currentLine), 0, 0, paint);
+				canvas.translate(0, marginTopBottom);
 
-		    }
+			}
 
-		    paint.setColor(lineColor);
+			paint.setColor(lineColor);
 
-		    int dividerX = getWidth() - 1;
-		    int dividerY = getHeight();
+			int dividerX = getWidth() - 1;
+			int dividerY = getHeight();
 
-		    canvas.restore();
-		    canvas.drawLine(dividerX,0, dividerX, dividerY, paint);
+			canvas.restore();
+			canvas.drawLine(dividerX, 0, dividerX, dividerY, paint);
 
-	    }
+		}
 
-    }
+	}
 
 }

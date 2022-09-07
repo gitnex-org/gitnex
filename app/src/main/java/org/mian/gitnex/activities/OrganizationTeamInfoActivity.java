@@ -30,111 +30,114 @@ public class OrganizationTeamInfoActivity extends BaseActivity implements Bottom
 
 	private Team team;
 
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@SuppressLint("SetTextI18n")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding binding = ActivityOrgTeamInfoBinding.inflate(getLayoutInflater());
+		org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding binding = ActivityOrgTeamInfoBinding.inflate(getLayoutInflater());
 
-	    setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
+		setContentView(binding.getRoot());
+		setSupportActionBar(binding.toolbar);
 
-	    team = (Team) getIntent().getSerializableExtra("team");
+		team = (Team) getIntent().getSerializableExtra("team");
 
-	    if(team.getName() != null && !team.getName().isEmpty()) {
-		    binding.toolbarTitle.setText(team.getName());
-	    }
-	    else {
-		    binding.toolbarTitle.setText(R.string.orgTeamMembers);
-	    }
+		if(team.getName() != null && !team.getName().isEmpty()) {
+			binding.toolbarTitle.setText(team.getName());
+		}
+		else {
+			binding.toolbarTitle.setText(R.string.orgTeamMembers);
+		}
 
-	    binding.close.setOnClickListener(view -> finish());
-	    binding.pager.setOffscreenPageLimit(1);
-	    binding.pager.setAdapter(new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
-		    @NonNull
-		    @Override
-		    public Fragment createFragment(int position) {
-			    switch(position) {
-				    case 0:
-					    return OrganizationTeamInfoReposFragment.newInstance(team);
-				    case 1:
-					    return OrganizationTeamInfoMembersFragment.newInstance(team);
-				    case 2:
-					    return OrganizationTeamInfoPermissionsFragment.newInstance(team);
-			    }
-			    return null;
-		    }
+		binding.close.setOnClickListener(view -> finish());
+		binding.pager.setOffscreenPageLimit(1);
+		binding.pager.setAdapter(new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
 
-		    @Override
-		    public int getItemCount() {
-			    return 3;
-		    }
-	    });
+			@NonNull
+			@Override
+			public Fragment createFragment(int position) {
+				switch(position) {
+					case 0:
+						return OrganizationTeamInfoReposFragment.newInstance(team);
+					case 1:
+						return OrganizationTeamInfoMembersFragment.newInstance(team);
+					case 2:
+						return OrganizationTeamInfoPermissionsFragment.newInstance(team);
+				}
+				return null;
+			}
 
-	    new TabLayoutMediator(binding.tabs, binding.pager, (tab, position) -> {
-		    TextView textView = (TextView) LayoutInflater.from(ctx).inflate(R.layout.layout_tab_text, findViewById(android.R.id.content), false);
+			@Override
+			public int getItemCount() {
+				return 3;
+			}
+		});
 
-		    switch(position) {
-			    case 0:
-				    textView.setText(R.string.navRepos);
-				    break;
-			    case 1:
-				    textView.setText(R.string.orgTabMembers);
-				    break;
-			    case 2:
-				    textView.setText(R.string.teamPermissions);
+		new TabLayoutMediator(binding.tabs, binding.pager, (tab, position) -> {
+			TextView textView = (TextView) LayoutInflater.from(ctx).inflate(R.layout.layout_tab_text, findViewById(android.R.id.content), false);
+
+			switch(position) {
+				case 0:
+					textView.setText(R.string.navRepos);
 					break;
-		    }
+				case 1:
+					textView.setText(R.string.orgTabMembers);
+					break;
+				case 2:
+					textView.setText(R.string.teamPermissions);
+					break;
+			}
 
-		    tab.setCustomView(textView);
-	    }).attach();
-    }
+			tab.setCustomView(textView);
+		}).attach();
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	OrganizationPermissions permissions = (OrganizationPermissions) getIntent().getSerializableExtra("permissions");
-    	if(permissions == null || permissions.isIsOwner()) {
-		    MenuInflater inflater = getMenuInflater();
-		    inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-	    }
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		OrganizationPermissions permissions = (OrganizationPermissions) getIntent().getSerializableExtra("permissions");
+		if(permissions == null || permissions.isIsOwner()) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+		}
+		return true;
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
 
-	    if(id == android.R.id.home) {
-		    finish();
-		    return true;
-	    }
-	    else if(id == R.id.genericMenu) {
-		    BottomSheetOrganizationTeamsFragment bottomSheet = new BottomSheetOrganizationTeamsFragment();
+		if(id == android.R.id.home) {
+			finish();
+			return true;
+		}
+		else if(id == R.id.genericMenu) {
+			BottomSheetOrganizationTeamsFragment bottomSheet = new BottomSheetOrganizationTeamsFragment();
 			Bundle args = new Bundle();
 			args.putBoolean("showRepo", !team.isIncludesAllRepositories());
 			bottomSheet.setArguments(args);
-		    bottomSheet.show(getSupportFragmentManager(), "orgTeamsBottomSheet");
-		    return true;
-	    }
-	    else {
-		    return super.onOptionsItemSelected(item);
-	    }
-    }
+			bottomSheet.show(getSupportFragmentManager(), "orgTeamsBottomSheet");
+			return true;
+		}
+		else {
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
-    @Override
-    public void onButtonClicked(String text) {
-        if("newMember".equals(text)) {
-            Intent intent = new Intent(OrganizationTeamInfoActivity.this, AddNewTeamMemberActivity.class);
-            intent.putExtra("teamId", team.getId());
-            startActivity(intent);
-        } else if("newRepo".equals(text)) {
-	        Intent intent = new Intent(OrganizationTeamInfoActivity.this, AddNewTeamRepoActivity.class);
-	        intent.putExtra("teamId", team.getId());
-	        intent.putExtra("teamName", team.getName());
+	@Override
+	public void onButtonClicked(String text) {
+		if("newMember".equals(text)) {
+			Intent intent = new Intent(OrganizationTeamInfoActivity.this, AddNewTeamMemberActivity.class);
+			intent.putExtra("teamId", team.getId());
+			startActivity(intent);
+		}
+		else if("newRepo".equals(text)) {
+			Intent intent = new Intent(OrganizationTeamInfoActivity.this, AddNewTeamRepoActivity.class);
+			intent.putExtra("teamId", team.getId());
+			intent.putExtra("teamName", team.getName());
 			intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
-	        startActivity(intent);
-        }
-    }
+			startActivity(intent);
+		}
+	}
+
 }

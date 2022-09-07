@@ -17,19 +17,19 @@ import org.mian.gitnex.databinding.BottomSheetProfileBinding;
 
 public class BottomSheetMyProfileFragment extends BottomSheetDialogFragment {
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-	    BottomSheetProfileBinding bottomSheetProfileBinding = BottomSheetProfileBinding.inflate(inflater, container, false);
+		BottomSheetProfileBinding bottomSheetProfileBinding = BottomSheetProfileBinding.inflate(inflater, container, false);
 
-	    bottomSheetProfileBinding.addNewEmailAddress.setOnClickListener(v1 -> {
+		bottomSheetProfileBinding.addNewEmailAddress.setOnClickListener(v1 -> {
 
-            startActivity(new Intent(getContext(), MyProfileEmailActivity.class));
-            dismiss();
-        });
+			startActivity(new Intent(getContext(), MyProfileEmailActivity.class));
+			dismiss();
+		});
 
-        return bottomSheetProfileBinding.getRoot();
-    }
+		return bottomSheetProfileBinding.getRoot();
+	}
 
 }

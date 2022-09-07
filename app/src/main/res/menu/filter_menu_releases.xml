@@ -5,8 +5,8 @@
     <item
         android:id="@+id/filterReleases"
         android:icon="@drawable/ic_filter"
-        android:title="@string/releasesTags"
         android:orderInCategory="0"
-        app:showAsAction="ifRoom" />
+        android:title="@string/releasesTags"
+        app:showAsAction="ifRoom"/>
 
 </menu>

@@ -17,11 +17,12 @@ import org.mian.gitnex.databinding.FragmentPrChangesBinding;
 
 public class PullRequestChangesFragment extends Fragment {
 
-	private FragmentPrChangesBinding binding;
 	private final DiffFilesFragment diffFilesFragment = DiffFilesFragment.newInstance();
 	private final PullRequestCommitsFragment pullRequestCommitsFragment = PullRequestCommitsFragment.newInstance();
+	private FragmentPrChangesBinding binding;
 
-	public PullRequestChangesFragment() {}
+	public PullRequestChangesFragment() {
+	}
 
 	public static PullRequestChangesFragment newInstance() {
 		return new PullRequestChangesFragment();
@@ -42,7 +43,8 @@ public class PullRequestChangesFragment extends Fragment {
 
 				if(position == 0) {
 					return diffFilesFragment;
-				} else {
+				}
+				else {
 					return pullRequestCommitsFragment;
 				}
 			}
@@ -58,4 +60,5 @@ public class PullRequestChangesFragment extends Fragment {
 
 		return binding.getRoot();
 	}
+
 }

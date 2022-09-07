@@ -29,122 +29,122 @@ import java.util.List;
  * @author M M Arif
  */
 
-public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder>  {
+public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder> {
 
-    private final List<Label> labelsList;
-    private final String type;
+	private final List<Label> labelsList;
+	private final String type;
 	private final String orgName;
 
-    class LabelsViewHolder extends RecyclerView.ViewHolder {
+	public LabelsAdapter(Context ctx, List<Label> labelsMain, String type, String orgName) {
 
-    	private Label labels;
+		this.labelsList = labelsMain;
+		this.type = type;
+		this.orgName = orgName;
+	}
 
-        private final MaterialCardView labelView;
-        private final ImageView labelIcon;
-        private final TextView labelName;
+	@NonNull
+	@Override
+	public LabelsAdapter.LabelsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_labels, parent, false);
+		return new LabelsAdapter.LabelsViewHolder(v);
+	}
 
-        private LabelsViewHolder(View itemView) {
-            super(itemView);
+	@Override
+	public void onBindViewHolder(@NonNull LabelsAdapter.LabelsViewHolder holder, int position) {
 
-            labelView = itemView.findViewById(R.id.labelView);
-            labelIcon = itemView.findViewById(R.id.labelIcon);
-            labelName = itemView.findViewById(R.id.labelName);
-            ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
+		Label currentItem = labelsList.get(position);
+		holder.labels = currentItem;
 
-            if((type.equals("repo") && !((RepoDetailActivity) itemView.getContext()).repository.getPermissions().isPush()) ||
-	            (type.equals("org") && (((OrganizationDetailActivity) itemView.getContext()).permissions == null || !((OrganizationDetailActivity) itemView.getContext()).permissions.isIsOwner()))) {
-	            labelsOptionsMenu.setVisibility(View.GONE);
-            }
-            labelsOptionsMenu.setOnClickListener(v -> {
+		String labelColor = currentItem.getColor();
+		String labelName = currentItem.getName();
 
-                final Context context = v.getContext();
+		int color = Color.parseColor("#" + labelColor);
+		int contrastColor = new ColorInverter().getContrastColor(color);
 
-                @SuppressLint("InflateParams")
-                View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_labels_in_list, null);
+		ImageViewCompat.setImageTintList(holder.labelIcon, ColorStateList.valueOf(contrastColor));
 
-                TextView labelMenuEdit = view.findViewById(R.id.labelMenuEdit);
-                TextView labelMenuDelete = view.findViewById(R.id.labelMenuDelete);
-                TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
+		holder.labelName.setTextColor(contrastColor);
+		holder.labelName.setText(labelName);
+		holder.labelView.setCardBackgroundColor(color);
+	}
 
-                bottomSheetHeader.setText(labels.getName());
-                BottomSheetDialog dialog = new BottomSheetDialog(context);
-                dialog.setContentView(view);
-                dialog.show();
-
-                labelMenuEdit.setOnClickListener(editLabel -> {
-
-                    Intent intent = new Intent(context, CreateLabelActivity.class);
-                    intent.putExtra("labelId", String.valueOf(labels.getId()));
-                    intent.putExtra("labelTitle", labels.getName());
-                    intent.putExtra("labelColor", labels.getColor());
-                    intent.putExtra("labelAction", "edit");
-	                intent.putExtra("type", type);
-	                intent.putExtra("orgName", orgName);
-					if(type.equals("repo")) {
-						intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
-					}
-                    context.startActivity(intent);
-                    dialog.dismiss();
-                });
-
-                labelMenuDelete.setOnClickListener(deleteLabel -> {
-	                RepositoryContext repo;
-                	if(type.equals("repo")) {
-                        repo = ((RepoDetailActivity) itemView.getContext()).repository;
-	                } else {
-                		repo = null;
-	                }
-
-                    AlertDialogs.labelDeleteDialog(context, labels.getName(), String.valueOf(labels.getId()),
-	                        type, orgName, repo);
-                    dialog.dismiss();
-                });
-
-            });
-
-        }
-    }
-
-    public LabelsAdapter(Context ctx, List<Label> labelsMain, String type, String orgName) {
-
-	    this.labelsList = labelsMain;
-        this.type = type;
-        this.orgName = orgName;
-    }
-
-    @NonNull
-    @Override
-    public LabelsAdapter.LabelsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_labels, parent, false);
-        return new LabelsAdapter.LabelsViewHolder(v);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull LabelsAdapter.LabelsViewHolder holder, int position) {
-
-        Label currentItem = labelsList.get(position);
-	    holder.labels = currentItem;
-
-        String labelColor = currentItem.getColor();
-        String labelName = currentItem.getName();
-
-        int color = Color.parseColor("#" + labelColor);
-        int contrastColor = new ColorInverter().getContrastColor(color);
-
-	    ImageViewCompat.setImageTintList(holder.labelIcon, ColorStateList.valueOf(contrastColor));
-
-        holder.labelName.setTextColor(contrastColor);
-        holder.labelName.setText(labelName);
-        holder.labelView.setCardBackgroundColor(color);
-    }
-
-    @Override
-    public int getItemCount() {
-        return labelsList.size();
-    }
+	@Override
+	public int getItemCount() {
+		return labelsList.size();
+	}
 
 	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 	}
+
+	class LabelsViewHolder extends RecyclerView.ViewHolder {
+
+		private final MaterialCardView labelView;
+		private final ImageView labelIcon;
+		private final TextView labelName;
+		private Label labels;
+
+		private LabelsViewHolder(View itemView) {
+			super(itemView);
+
+			labelView = itemView.findViewById(R.id.labelView);
+			labelIcon = itemView.findViewById(R.id.labelIcon);
+			labelName = itemView.findViewById(R.id.labelName);
+			ImageView labelsOptionsMenu = itemView.findViewById(R.id.labelsOptionsMenu);
+
+			if((type.equals("repo") && !((RepoDetailActivity) itemView.getContext()).repository.getPermissions().isPush()) || (type.equals(
+				"org") && (((OrganizationDetailActivity) itemView.getContext()).permissions == null || !((OrganizationDetailActivity) itemView.getContext()).permissions.isIsOwner()))) {
+				labelsOptionsMenu.setVisibility(View.GONE);
+			}
+			labelsOptionsMenu.setOnClickListener(v -> {
+
+				final Context context = v.getContext();
+
+				@SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_labels_in_list, null);
+
+				TextView labelMenuEdit = view.findViewById(R.id.labelMenuEdit);
+				TextView labelMenuDelete = view.findViewById(R.id.labelMenuDelete);
+				TextView bottomSheetHeader = view.findViewById(R.id.bottomSheetHeader);
+
+				bottomSheetHeader.setText(labels.getName());
+				BottomSheetDialog dialog = new BottomSheetDialog(context);
+				dialog.setContentView(view);
+				dialog.show();
+
+				labelMenuEdit.setOnClickListener(editLabel -> {
+
+					Intent intent = new Intent(context, CreateLabelActivity.class);
+					intent.putExtra("labelId", String.valueOf(labels.getId()));
+					intent.putExtra("labelTitle", labels.getName());
+					intent.putExtra("labelColor", labels.getColor());
+					intent.putExtra("labelAction", "edit");
+					intent.putExtra("type", type);
+					intent.putExtra("orgName", orgName);
+					if(type.equals("repo")) {
+						intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) itemView.getContext()).repository);
+					}
+					context.startActivity(intent);
+					dialog.dismiss();
+				});
+
+				labelMenuDelete.setOnClickListener(deleteLabel -> {
+					RepositoryContext repo;
+					if(type.equals("repo")) {
+						repo = ((RepoDetailActivity) itemView.getContext()).repository;
+					}
+					else {
+						repo = null;
+					}
+
+					AlertDialogs.labelDeleteDialog(context, labels.getName(), String.valueOf(labels.getId()), type, orgName, repo);
+					dialog.dismiss();
+				});
+
+			});
+
+		}
+
+	}
+
 }

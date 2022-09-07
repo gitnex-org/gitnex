@@ -6,23 +6,23 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginStart="@dimen/dimen8dp"
+    android:layout_marginTop="@dimen/dimen8dp"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="@dimen/dimen16dp"
+        android:layout_height="@dimen/dimen16dp"
         app:srcCompat="@drawable/ic_download"
-        android:contentDescription="@string/generalImgContentText" />
+        android:contentDescription="@string/generalImgContentText"/>
 
     <TextView
         android:id="@+id/downloadName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/dimen8dp"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="12sp"
-        tools:text="Source code (ZIP)" />
+        android:textSize="@dimen/dimen12sp"
+        tools:text="Source code (ZIP)"/>
 
 </LinearLayout>

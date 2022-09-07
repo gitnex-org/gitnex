@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -27,93 +26,89 @@ import org.mian.gitnex.viewmodels.LabelsViewModel;
 
 public class LabelsFragment extends Fragment {
 
-    private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
-    private LabelsAdapter adapter;
-    private TextView noData;
+	private ProgressBar mProgressBar;
+	private RecyclerView mRecyclerView;
+	private LabelsAdapter adapter;
+	private TextView noData;
 
-    private RepositoryContext repository;
+	private RepositoryContext repository;
 
-    public LabelsFragment() {
-    }
+	public LabelsFragment() {
+	}
 
-    public static LabelsFragment newInstance(RepositoryContext repository) {
+	public static LabelsFragment newInstance(RepositoryContext repository) {
 
-        LabelsFragment fragment = new LabelsFragment();
-        fragment.setArguments(repository.getBundle());
-        return fragment;
-    }
+		LabelsFragment fragment = new LabelsFragment();
+		fragment.setArguments(repository.getBundle());
+		return fragment;
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        repository = RepositoryContext.fromBundle(requireArguments());
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		repository = RepositoryContext.fromBundle(requireArguments());
+	}
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-	    FragmentLabelsBinding fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
+		FragmentLabelsBinding fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
+		setHasOptionsMenu(true);
 
-        final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
-        noData = fragmentLabelsBinding.noData;
+		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
+		noData = fragmentLabelsBinding.noData;
 
-        mRecyclerView = fragmentLabelsBinding.recyclerView;
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		mRecyclerView = fragmentLabelsBinding.recyclerView;
+		mRecyclerView.setHasFixedSize(true);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+		mProgressBar = fragmentLabelsBinding.progressBar;
 
-        mProgressBar = fragmentLabelsBinding.progressBar;
+		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+			swipeRefresh.setRefreshing(false);
+			LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
+		}, 200));
 
-            swipeRefresh.setRefreshing(false);
-	        LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
-        }, 200));
+		fetchDataAsync(repository.getOwner(), repository.getName());
 
-        fetchDataAsync(repository.getOwner(), repository.getName());
+		return fragmentLabelsBinding.getRoot();
+	}
 
-        return fragmentLabelsBinding.getRoot();
-    }
+	@Override
+	public void onResume() {
 
-    @Override
-    public void onResume() {
+		super.onResume();
 
-        super.onResume();
+		if(CreateLabelActivity.refreshLabels) {
 
-	    if(CreateLabelActivity.refreshLabels) {
+			LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
+			CreateLabelActivity.refreshLabels = false;
+		}
+	}
 
-		    LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), getContext());
-	        CreateLabelActivity.refreshLabels = false;
-        }
-    }
+	private void fetchDataAsync(String owner, String repo) {
 
-    private void fetchDataAsync(String owner, String repo) {
+		LabelsViewModel labelsModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
-        LabelsViewModel labelsModel = new ViewModelProvider(this).get(LabelsViewModel.class);
+		labelsModel.getLabelsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), labelsListMain -> {
 
-        labelsModel.getLabelsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), labelsListMain -> {
+			adapter = new LabelsAdapter(getContext(), labelsListMain, "repo", owner);
 
-            adapter = new LabelsAdapter(getContext(), labelsListMain, "repo", owner);
+			if(adapter.getItemCount() > 0) {
 
-            if(adapter.getItemCount() > 0) {
+				mRecyclerView.setAdapter(adapter);
+				noData.setVisibility(View.GONE);
+			}
+			else {
 
-                mRecyclerView.setAdapter(adapter);
-                noData.setVisibility(View.GONE);
-            }
-            else {
+				adapter.notifyDataChanged();
+				mRecyclerView.setAdapter(adapter);
+				noData.setVisibility(View.VISIBLE);
+			}
 
-                adapter.notifyDataChanged();
-                mRecyclerView.setAdapter(adapter);
-                noData.setVisibility(View.VISIBLE);
-            }
-
-            mProgressBar.setVisibility(View.GONE);
-        });
-    }
+			mProgressBar.setVisibility(View.GONE);
+		});
+	}
 
 }

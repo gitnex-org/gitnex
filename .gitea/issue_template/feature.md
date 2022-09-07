@@ -9,9 +9,10 @@ labels:
 ---
 
 ## # Describe your matter briefly
+
 <br><br>
 
 - [ ] I carefully read the [contribution guidelines](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
-<br>
+  <br>
 
 <!-- Thank you for your time. -->

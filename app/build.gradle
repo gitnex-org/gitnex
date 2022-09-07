@@ -6,8 +6,8 @@ android {
         applicationId "org.mian.gitnex"
         minSdkVersion 23
         targetSdkVersion 32
-        versionCode 445
-        versionName "4.5.0-dev"
+        versionCode 495
+        versionName "5.0.0-dev"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,7 +39,7 @@ android {
     lint {
         abortOnError false
     }
-    defaultConfig{
+    defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
 }
@@ -56,7 +56,7 @@ dependencies {
     def acra = '5.8.4'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.compose.material3:material3:1.0.0-alpha15'
     implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-alpha15'

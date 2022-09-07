@@ -29,175 +29,172 @@ import retrofit2.Callback;
 
 public class CreateOrganizationActivity extends BaseActivity {
 
-    public ImageView closeActivity;
-    private View.OnClickListener onClickListener;
-    private Button createOrganizationButton;
+	public ImageView closeActivity;
+	private View.OnClickListener onClickListener;
+	private Button createOrganizationButton;
 
-    private EditText orgName;
-    private EditText orgDesc;
+	private EditText orgName;
+	private EditText orgDesc;
+	private final View.OnClickListener createOrgListener = v -> processNewOrganization();
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@SuppressLint("ClickableViewAccessibility")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
-	    ActivityCreateOrganizationBinding activityCreateOrganizationBinding = ActivityCreateOrganizationBinding.inflate(getLayoutInflater());
-	    setContentView(activityCreateOrganizationBinding.getRoot());
+		ActivityCreateOrganizationBinding activityCreateOrganizationBinding = ActivityCreateOrganizationBinding.inflate(getLayoutInflater());
+		setContentView(activityCreateOrganizationBinding.getRoot());
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        closeActivity = activityCreateOrganizationBinding.close;
-        orgName = activityCreateOrganizationBinding.newOrganizationName;
-        orgDesc = activityCreateOrganizationBinding.newOrganizationDescription;
+		closeActivity = activityCreateOrganizationBinding.close;
+		orgName = activityCreateOrganizationBinding.newOrganizationName;
+		orgDesc = activityCreateOrganizationBinding.newOrganizationDescription;
 
-        orgName.requestFocus();
-        assert imm != null;
-        imm.showSoftInput(orgName, InputMethodManager.SHOW_IMPLICIT);
+		orgName.requestFocus();
+		assert imm != null;
+		imm.showSoftInput(orgName, InputMethodManager.SHOW_IMPLICIT);
 
-	    orgDesc.setOnTouchListener((touchView, motionEvent) -> {
+		orgDesc.setOnTouchListener((touchView, motionEvent) -> {
 
-		    touchView.getParent().requestDisallowInterceptTouchEvent(true);
+			touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
-		    if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+			if((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
 
-			    touchView.getParent().requestDisallowInterceptTouchEvent(false);
-		    }
-		    return false;
-	    });
+				touchView.getParent().requestDisallowInterceptTouchEvent(false);
+			}
+			return false;
+		});
 
-        initCloseListener();
-        closeActivity.setOnClickListener(onClickListener);
+		initCloseListener();
+		closeActivity.setOnClickListener(onClickListener);
 
-        createOrganizationButton = activityCreateOrganizationBinding.createNewOrganizationButton;
+		createOrganizationButton = activityCreateOrganizationBinding.createNewOrganizationButton;
 
-        if(!connToInternet) {
+		if(!connToInternet) {
 
-            createOrganizationButton.setEnabled(false);
-        }
-        else {
+			createOrganizationButton.setEnabled(false);
+		}
+		else {
 
-            createOrganizationButton.setOnClickListener(createOrgListener);
-        }
+			createOrganizationButton.setOnClickListener(createOrgListener);
+		}
 
-    }
+	}
 
-    private void initCloseListener() {
+	private void initCloseListener() {
 
-        onClickListener = view -> finish();
-    }
+		onClickListener = view -> finish();
+	}
 
-    private final View.OnClickListener createOrgListener = v -> processNewOrganization();
+	private void processNewOrganization() {
 
-    private void processNewOrganization() {
+		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-        boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		String newOrgName = orgName.getText().toString();
+		String newOrgDesc = orgDesc.getText().toString();
 
-        String newOrgName = orgName.getText().toString();
-        String newOrgDesc = orgDesc.getText().toString();
+		if(!connToInternet) {
 
-        if(!connToInternet) {
+			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+			return;
+		}
 
-            Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-            return;
-        }
+		if(!newOrgDesc.equals("")) {
 
-        if(!newOrgDesc.equals("")) {
+			if(newOrgDesc.length() > 255) {
 
-            if (newOrgDesc.length() > 255) {
+				Toasty.warning(ctx, getString(R.string.orgDescError));
+				return;
+			}
+		}
 
-                Toasty.warning(ctx, getString(R.string.orgDescError));
-                return;
-            }
-        }
+		if(newOrgName.equals("")) {
 
-        if(newOrgName.equals("")) {
+			Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
+		}
+		else if(!AppUtil.checkStrings(newOrgName)) {
 
-            Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
-        }
-        else if(!AppUtil.checkStrings(newOrgName)) {
+			Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
+		}
+		else {
 
-            Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
-        }
-        else {
+			disableProcessButton();
+			createNewOrganization(newOrgName, newOrgDesc);
+		}
 
-            disableProcessButton();
-            createNewOrganization(newOrgName, newOrgDesc);
-        }
+	}
 
-    }
+	private void createNewOrganization(String orgName, String orgDesc) {
 
-    private void createNewOrganization(String orgName, String orgDesc) {
-
-        CreateOrgOption createOrganization = new CreateOrgOption();
+		CreateOrgOption createOrganization = new CreateOrgOption();
 		createOrganization.setDescription(orgDesc);
 		createOrganization.setUsername(orgName);
 
-        Call<Organization> call = RetrofitClient
-            .getApiInterface(ctx)
-            .orgCreate(createOrganization);
+		Call<Organization> call = RetrofitClient.getApiInterface(ctx).orgCreate(createOrganization);
 
-        call.enqueue(new Callback<Organization>() {
+		call.enqueue(new Callback<Organization>() {
 
-            @Override
-            public void onResponse(@NonNull Call<Organization> call, @NonNull retrofit2.Response<Organization> response) {
+			@Override
+			public void onResponse(@NonNull Call<Organization> call, @NonNull retrofit2.Response<Organization> response) {
 
-                if(response.code() == 201) {
-                	OrganizationsFragment.orgCreated = true;
-                    enableProcessButton();
-                    Toasty.success(ctx, getString(R.string.orgCreated));
-                    finish();
-                }
-                else if(response.code() == 401) {
+				if(response.code() == 201) {
+					OrganizationsFragment.orgCreated = true;
+					enableProcessButton();
+					Toasty.success(ctx, getString(R.string.orgCreated));
+					finish();
+				}
+				else if(response.code() == 401) {
 
-                    enableProcessButton();
-                    AlertDialogs.authorizationTokenRevokedDialog(ctx);
-                }
-                else if(response.code() == 409) {
+					enableProcessButton();
+					AlertDialogs.authorizationTokenRevokedDialog(ctx);
+				}
+				else if(response.code() == 409) {
 
-                    enableProcessButton();
-                    Toasty.warning(ctx, getString(R.string.orgExistsError));
-                }
-                else if(response.code() == 422) {
+					enableProcessButton();
+					Toasty.warning(ctx, getString(R.string.orgExistsError));
+				}
+				else if(response.code() == 422) {
 
-                    enableProcessButton();
-                    Toasty.warning(ctx, getString(R.string.orgExistsError));
-                }
-                else {
+					enableProcessButton();
+					Toasty.warning(ctx, getString(R.string.orgExistsError));
+				}
+				else {
 
-                    if(response.code() == 404) {
+					if(response.code() == 404) {
 
-                        enableProcessButton();
-                        Toasty.warning(ctx, getString(R.string.apiNotFound));
-                    }
-                    else {
+						enableProcessButton();
+						Toasty.warning(ctx, getString(R.string.apiNotFound));
+					}
+					else {
 
-                        enableProcessButton();
-                        Toasty.error(ctx, getString(R.string.genericError));
-                    }
-                }
-            }
+						enableProcessButton();
+						Toasty.error(ctx, getString(R.string.genericError));
+					}
+				}
+			}
 
-            @Override
-            public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
 
-                Log.e("onFailure", t.toString());
-                enableProcessButton();
-            }
-        });
+				Log.e("onFailure", t.toString());
+				enableProcessButton();
+			}
+		});
 
-    }
+	}
 
-    private void disableProcessButton() {
+	private void disableProcessButton() {
 
-        createOrganizationButton.setEnabled(false);
-    }
+		createOrganizationButton.setEnabled(false);
+	}
 
-    private void enableProcessButton() {
+	private void enableProcessButton() {
 
-        createOrganizationButton.setEnabled(true);
-    }
+		createOrganizationButton.setEnabled(true);
+	}
 
 }

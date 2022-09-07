@@ -3,8 +3,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="?attr/primaryBackgroundColor">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -30,7 +29,7 @@
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:focusable="true"
                 android:clickable="true"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbarTitle"
@@ -40,7 +39,7 @@
                 android:text="@string/addButton"
                 android:textColor="?attr/primaryTextColor"
                 android:maxLines="1"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -53,7 +52,7 @@
         android:visibility="gone"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
         android:id="@+id/noData"
@@ -64,17 +63,25 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="@dimen/dimen20sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTeamRepos"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor"
-        android:layout_marginStart="@dimen/dimen0dp"
-        android:layout_marginEnd="@dimen/dimen0dp"
-        android:layout_marginTop="@dimen/dimen6dp"
-        android:layout_marginBottom="@dimen/dimen0dp"
-        android:scrollbars="vertical" />
+        android:padding="@dimen/dimen8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTeamRepos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/primaryBackgroundColor"
+            android:layout_marginStart="@dimen/dimen0dp"
+            android:layout_marginEnd="@dimen/dimen0dp"
+            android:layout_marginTop="@dimen/dimen6dp"
+            android:layout_marginBottom="@dimen/dimen0dp"
+            android:scrollbars="vertical"/>
+
+    </FrameLayout>
 
 </LinearLayout>

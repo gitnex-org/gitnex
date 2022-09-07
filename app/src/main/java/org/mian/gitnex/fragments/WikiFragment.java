@@ -7,16 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.DividerItemDecorator;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.WikiViewModel;
 
@@ -60,9 +56,6 @@ public class WikiFragment extends Fragment {
 		fragmentWikiBinding.recyclerView.setHasFixedSize(true);
 		fragmentWikiBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-		RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(requireContext(), R.drawable.shape_list_divider));
-		fragmentWikiBinding.recyclerView.addItemDecoration(dividerItemDecoration);
-
 		fragmentWikiBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			page = 1;
@@ -74,7 +67,7 @@ public class WikiFragment extends Fragment {
 		fetchDataAsync(repository.getOwner(), repository.getName());
 
 		return fragmentWikiBinding.getRoot();
-	};
+	}
 
 	@Override
 	public void onResume() {
@@ -121,4 +114,5 @@ public class WikiFragment extends Fragment {
 			fragmentWikiBinding.progressBar.setVisibility(View.GONE);
 		});
 	}
+
 }

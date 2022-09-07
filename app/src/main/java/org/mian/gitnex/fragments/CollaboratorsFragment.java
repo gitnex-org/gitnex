@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,63 +19,54 @@ import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 public class CollaboratorsFragment extends Fragment {
 
 	public static boolean refreshCollaborators = false;
+	private FragmentCollaboratorsBinding fragmentCollaboratorsBinding;
+	private CollaboratorsAdapter adapter;
+	private RepositoryContext repository;
 
-    private ProgressBar mProgressBar;
-    private CollaboratorsAdapter adapter;
-    private GridView mGridView;
-    private TextView noDataCollaborators;
+	public CollaboratorsFragment() {
+	}
 
-    private RepositoryContext repository;
+	public static CollaboratorsFragment newInstance(RepositoryContext repository) {
+		CollaboratorsFragment fragment = new CollaboratorsFragment();
+		fragment.setArguments(repository.getBundle());
+		return fragment;
+	}
 
-    public CollaboratorsFragment() {
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		repository = RepositoryContext.fromBundle(requireArguments());
+	}
 
-    public static CollaboratorsFragment newInstance(RepositoryContext repository) {
-        CollaboratorsFragment fragment = new CollaboratorsFragment();
-        fragment.setArguments(repository.getBundle());
-        return fragment;
-    }
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        repository = RepositoryContext.fromBundle(requireArguments());
-    }
+		fragmentCollaboratorsBinding = FragmentCollaboratorsBinding.inflate(inflater, container, false);
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+		fetchDataAsync(repository.getOwner(), repository.getName());
+		return fragmentCollaboratorsBinding.getRoot();
 
-	    FragmentCollaboratorsBinding fragmentCollaboratorsBinding = FragmentCollaboratorsBinding.inflate(inflater, container, false);
+	}
 
-        noDataCollaborators = fragmentCollaboratorsBinding.noDataCollaborators;
-        mProgressBar = fragmentCollaboratorsBinding.progressBar;
-        mGridView = fragmentCollaboratorsBinding.gridView;
+	private void fetchDataAsync(String owner, String repo) {
 
-        fetchDataAsync(repository.getOwner(), repository.getName());
-        return fragmentCollaboratorsBinding.getRoot();
+		CollaboratorsViewModel collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 
-    }
+		collaboratorsModel.getCollaboratorsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), collaboratorsListMain -> {
+			adapter = new CollaboratorsAdapter(getContext(), collaboratorsListMain);
+			if(adapter.getCount() > 0) {
+				fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
+				fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(View.GONE);
+			}
+			else {
+				adapter.notifyDataSetChanged();
+				fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
+				fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(View.VISIBLE);
+			}
+			fragmentCollaboratorsBinding.progressBar.setVisibility(View.GONE);
+		});
 
-    private void fetchDataAsync(String owner, String repo) {
-
-        CollaboratorsViewModel collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
-
-        collaboratorsModel.getCollaboratorsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), collaboratorsListMain -> {
-            adapter = new CollaboratorsAdapter(getContext(), collaboratorsListMain);
-            if(adapter.getCount() > 0) {
-                mGridView.setAdapter(adapter);
-                noDataCollaborators.setVisibility(View.GONE);
-            }
-            else {
-                adapter.notifyDataSetChanged();
-                mGridView.setAdapter(adapter);
-                noDataCollaborators.setVisibility(View.VISIBLE);
-            }
-            mProgressBar.setVisibility(View.GONE);
-        });
-
-    }
+	}
 
 	@Override
 	public void onResume() {

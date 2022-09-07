@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
         android:id="@+id/noData"
@@ -23,20 +23,26 @@
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefresh"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/primaryBackgroundColor"
+        android:padding="@dimen/dimen8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewReposSearch"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
-            android:scrollbars="vertical" />
+            android:layout_height="match_parent">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewReposSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

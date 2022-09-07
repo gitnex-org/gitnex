@@ -1,13 +1,11 @@
 package org.mian.gitnex.helpers;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -15,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.ColorInt;
@@ -36,12 +35,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,38 +45,8 @@ import java.util.regex.Pattern;
 
 public class AppUtil {
 
-	public static void logout(Context ctx) {
-		TinyDB tinyDB = TinyDB.getInstance(ctx);
-
-		UserAccountsApi api = BaseApi.getInstance(ctx, UserAccountsApi.class);
-		assert api != null;
-
-		api.logout(tinyDB.getInt("currentActiveAccountId"));
-		if (api.getCount() >= 1) {
-			switchToAccount(ctx, api.loggedInUserAccounts().get(0));
-			if(ctx instanceof MainActivity) {
-				((Activity) ctx).recreate();
-			} else { // if it's not a MainActivity, open MainActivity instead of current one
-				((Activity) ctx).finish();
-				Intent intent = new Intent(ctx, MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				ctx.startActivity(intent);
-			}
-		} else {
-			tinyDB.putInt("currentActiveAccountId", -2);
-			((Activity) ctx).finish();
-			Intent intent = new Intent(ctx, LoginActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			ctx.startActivity(intent);
-		}
-	}
-
-	public enum FileType { IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, FONT, UNKNOWN }
-
 	private static final HashMap<String[], FileType> extensions = new HashMap<>();
-
-	// AppUtil should not be instantiated.
-	private AppUtil() {}
+	public static Typeface typeface;
 
 	static {
 
@@ -91,8 +55,44 @@ public class AppUtil {
 		extensions.put(new String[]{"mp4", "mkv", "avi", "mov", "wmv", "qt", "mts", "m2ts", "webm", "flv", "ogv", "amv", "mpg", "mpeg", "mpv", "m4v", "3gp", "wmv"}, FileType.VIDEO);
 		extensions.put(new String[]{"doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt", "ott", "odf", "ods", "ots", "odg", "otg", "odp", "otp", "bin", "psd", "xcf", "pdf"}, FileType.DOCUMENT);
 		extensions.put(new String[]{"exe", "msi", "jar", "dmg", "deb", "apk"}, FileType.EXECUTABLE);
-		extensions.put(new String[]{"txt", "md", "json", "java", "go", "php", "c", "cc", "cpp", "h", "cxx", "cyc", "m", "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript", "coffee", "rc", "rs", "rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt", "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs", "vhd", "tcl", "wiki.meta", "yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js", "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat", "twig", "cvs", "cmake", "in", "info", "spec", "m4", "am", "dist", "pam", "hx", "ts", "kt", "kts"}, FileType.TEXT);
+		extensions.put(
+			new String[]{"txt", "md", "json", "java", "go", "php", "c", "cc", "cpp", "h", "cxx", "cyc", "m", "cs", "bash", "sh", "bsh", "cv", "python", "perl", "pm", "rb", "ruby", "javascript", "coffee", "rc", "rs",
+				"rust", "basic", "clj", "css", "dart", "lisp", "erl", "hs", "lsp", "rkt", "ss", "llvm", "ll", "lua", "matlab", "pascal", "r", "scala", "sql", "latex", "tex", "vb", "vbs", "vhd", "tcl", "wiki.meta",
+				"yaml", "yml", "markdown", "xml", "proto", "regex", "py", "pl", "js", "html", "htm", "volt", "ini", "htaccess", "conf", "gitignore", "gradle", "txt", "properties", "bat", "twig", "cvs", "cmake", "in",
+				"info", "spec", "m4", "am", "dist", "pam", "hx", "ts", "kt", "kts"}, FileType.TEXT);
 		extensions.put(new String[]{"ttf", "otf", "woff", "woff2", "ttc", "eot"}, FileType.FONT);
+	}
+
+	// AppUtil should not be instantiated.
+	private AppUtil() {
+	}
+
+	public static void logout(Context ctx) {
+		TinyDB tinyDB = TinyDB.getInstance(ctx);
+
+		UserAccountsApi api = BaseApi.getInstance(ctx, UserAccountsApi.class);
+		assert api != null;
+
+		api.logout(tinyDB.getInt("currentActiveAccountId"));
+		if(api.getCount() >= 1) {
+			switchToAccount(ctx, api.loggedInUserAccounts().get(0));
+			if(ctx instanceof MainActivity) {
+				((Activity) ctx).recreate();
+			}
+			else { // if it's not a MainActivity, open MainActivity instead of current one
+				((Activity) ctx).finish();
+				Intent intent = new Intent(ctx, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				ctx.startActivity(intent);
+			}
+		}
+		else {
+			tinyDB.putInt("currentActiveAccountId", -2);
+			((Activity) ctx).finish();
+			Intent intent = new Intent(ctx, LoginActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			ctx.startActivity(intent);
+		}
 	}
 
 	public static FileType getFileType(String extension) {
@@ -101,8 +101,9 @@ public class AppUtil {
 			for(String[] testExtensions : extensions.keySet()) {
 				for(String testExtension : testExtensions) {
 
-					if(testExtension.equalsIgnoreCase(extension))
+					if(testExtension.equalsIgnoreCase(extension)) {
 						return extensions.get(testExtensions);
+					}
 				}
 			}
 		}
@@ -135,7 +136,9 @@ public class AppUtil {
 
 			if(stepCount == stepsPerPercent) {
 				percent++;
-				if(percent <= 100) progressListener.onProgressChanged(percent);
+				if(percent <= 100) {
+					progressListener.onProgressChanged(percent);
+				}
 				stepCount = 0;
 			}
 		}
@@ -145,13 +148,6 @@ public class AppUtil {
 		}
 
 		progressListener.onActionFinished();
-	}
-
-	public interface ProgressListener {
-		default void onActionStarted() {}
-		default void onActionFinished() {}
-
-		void onProgressChanged(short progress);
 	}
 
 	public static int getAppBuildNo(Context context) {
@@ -201,14 +197,6 @@ public class AppUtil {
 		return str.matches("\\d+");
 	}
 
-	public int getResponseStatusCode(String u) throws Exception {
-
-		URL url = new URL(u);
-		HttpURLConnection http = (HttpURLConnection) url.openConnection();
-		return (http.getResponseCode());
-
-	}
-
 	public static void setAppLocale(Resources resource, String locCode) {
 
 		DisplayMetrics dm = resource.getDisplayMetrics();
@@ -225,7 +213,8 @@ public class AppUtil {
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
-		} else {
+		}
+		else {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale).format(date);
 		}
 
@@ -340,7 +329,9 @@ public class AppUtil {
 
 	public static long getLineCount(String s) {
 
-		if(s.length() < 1) return 0;
+		if(s.length() < 1) {
+			return 0;
+		}
 
 		long lines = 1; // we start counting at 1 because there is always at least one line
 
@@ -382,30 +373,71 @@ public class AppUtil {
 		ctx.startActivity(Intent.createChooser(sharingIntent, url));
 	}
 
+	private static Intent wrapBrowserIntent(Context context, Intent intent) {
+
+		final PackageManager pm = context.getPackageManager();
+		final List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(intent).setData(intent.getData().buildUpon().authority("example.com").scheme("https").build()), PackageManager.MATCH_ALL);
+		final ArrayList<Intent> chooserIntents = new ArrayList<>();
+		final String ourPackageName = context.getPackageName();
+
+		Collections.sort(activities, new ResolveInfo.DisplayNameComparator(pm));
+
+		for(ResolveInfo resInfo : activities) {
+			ActivityInfo info = resInfo.activityInfo;
+			if(!info.enabled || !info.exported) {
+				continue;
+			}
+			if(info.packageName.equals(ourPackageName)) {
+				continue;
+			}
+
+			Intent targetIntent = new Intent(intent);
+			targetIntent.setPackage(info.packageName);
+			targetIntent.setDataAndType(intent.getData(), intent.getType());
+			chooserIntents.add(targetIntent);
+		}
+
+		if(chooserIntents.isEmpty()) {
+			return null;
+		}
+
+		final Intent lastIntent = chooserIntents.remove(chooserIntents.size() - 1);
+		if(chooserIntents.isEmpty()) {
+			return lastIntent;
+		}
+
+		Intent chooserIntent = Intent.createChooser(lastIntent, null);
+		String extraName = Intent.EXTRA_ALTERNATE_INTENTS;
+		chooserIntent.putExtra(extraName, chooserIntents.toArray(new Intent[0]));
+		return chooserIntent;
+	}
+
 	public static void openUrlInBrowser(Context context, String url) {
+
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
+		Intent i;
+		if(tinyDB.getBoolean("useCustomTabs")) {
+			i = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(
+				new CustomTabColorSchemeParams.Builder().setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor)).setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
+					.setSecondaryToolbarColor(R.attr.primaryTextColor).build()).build().intent;
+			i.setData(Uri.parse(url));
+		}
+		else {
+			i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			i.addCategory(Intent.CATEGORY_BROWSABLE);
+		}
 		try {
-			if(tinyDB.getBoolean("useCustomTabs")) {
-				new CustomTabsIntent
-					.Builder()
-					.setDefaultColorSchemeParams(
-						new CustomTabColorSchemeParams.Builder()
-							.setToolbarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
-							.setNavigationBarColor(getColorFromAttribute(context, R.attr.primaryBackgroundColor))
-							.setSecondaryToolbarColor(R.attr.primaryTextColor)
-							.build()
-					)
-					.build()
-					.launchUrl(context, Uri.parse(url));
-			} else {
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-				i.addCategory(Intent.CATEGORY_BROWSABLE);
-				context.startActivity(i);
+			Intent browserIntent = wrapBrowserIntent(context, i);
+			if(browserIntent == null) {
+				Toasty.error(context, context.getString(R.string.genericError));
 			}
-		} catch(ActivityNotFoundException e) {
+			context.startActivity(browserIntent);
+		}
+		catch(ActivityNotFoundException e) {
 			Toasty.error(context, context.getString(R.string.browserOpenFailed));
-		} catch (Exception e) {
+		}
+		catch(Exception e) {
 			Toasty.error(context, context.getString(R.string.genericError));
 		}
 	}
@@ -422,7 +454,7 @@ public class AppUtil {
 
 	public static String getUriFromSSHUrl(String url) {
 		String[] urlParts = url.split("://");
-		if (urlParts.length > 1) {
+		if(urlParts.length > 1) {
 			url = urlParts[1];
 		}
 		return "https://" + url.replace(":", "/");
@@ -431,13 +463,11 @@ public class AppUtil {
 	public static Uri changeScheme(Uri origin, String scheme) {
 		String raw = origin.toString();
 		int schemeIndex = raw.indexOf("://");
-		if (schemeIndex >= 0) {
+		if(schemeIndex >= 0) {
 			raw = raw.substring(schemeIndex);
 		}
-		return Uri.parse(scheme+raw);
+		return Uri.parse(scheme + raw);
 	}
-
-	public static Typeface typeface;
 
 	public static Typeface getTypeface(Context context) {
 		if(typeface == null) {
@@ -486,4 +516,27 @@ public class AppUtil {
 		restrictedUsers.add("Ghost");
 		return restrictedUsers.contains(str);
 	}
+
+	public int getResponseStatusCode(String u) throws Exception {
+
+		URL url = new URL(u);
+		HttpURLConnection http = (HttpURLConnection) url.openConnection();
+		return (http.getResponseCode());
+
+	}
+
+	public enum FileType {IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, FONT, UNKNOWN}
+
+	public interface ProgressListener {
+
+		default void onActionStarted() {
+		}
+
+		default void onActionFinished() {
+		}
+
+		void onProgressChanged(short progress);
+
+	}
+
 }

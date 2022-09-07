@@ -5,8 +5,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.util.Log;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.HtmlCompat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -19,23 +19,23 @@ import java.util.Objects;
 
 public class ChangeLog {
 
-    static final private String TAG = "ChangeLog";
-    static final private String CHANGELOG_XML_NODE = "changelog";
+	static final private String TAG = "ChangeLog";
+	static final private String CHANGELOG_XML_NODE = "changelog";
 
-    private final Activity changelogActivity;
+	private final Activity changelogActivity;
 
 	public ChangeLog(Activity context) {
 		changelogActivity = context;
-    }
+	}
 
 	private String ParseReleaseTag(XmlResourceParser aXml) throws XmlPullParserException, IOException {
 
 		StringBuilder strBuilder = new StringBuilder(aXml.getAttributeValue(null, "version") + "<br>");
 		int eventType = aXml.getEventType();
 
-		while ((eventType != XmlPullParser.END_TAG) || (aXml.getName().equals("change"))) {
+		while((eventType != XmlPullParser.END_TAG) || (aXml.getName().equals("change"))) {
 
-			if ((eventType == XmlPullParser.START_TAG) && (aXml.getName().equals("change"))) {
+			if((eventType == XmlPullParser.START_TAG) && (aXml.getName().equals("change"))) {
 				eventType = aXml.next();
 				strBuilder.append(aXml.getText()).append("<br>");
 			}
@@ -51,12 +51,12 @@ public class ChangeLog {
 	private String getChangelog(int resId, Resources res) {
 
 		StringBuilder strBuilder = new StringBuilder();
-		try (XmlResourceParser xml = res.getXml(resId)) {
+		try(XmlResourceParser xml = res.getXml(resId)) {
 
 			int eventType = xml.getEventType();
-			while (eventType != XmlPullParser.END_DOCUMENT) {
+			while(eventType != XmlPullParser.END_DOCUMENT) {
 
-				if ((eventType == XmlPullParser.START_TAG) && (xml.getName().equals("release"))) {
+				if((eventType == XmlPullParser.START_TAG) && (xml.getName().equals("release"))) {
 					strBuilder.append(ParseReleaseTag(xml));
 
 				}
@@ -65,7 +65,7 @@ public class ChangeLog {
 			}
 
 		}
-		catch (XmlPullParserException | IOException e) {
+		catch(XmlPullParserException | IOException e) {
 			Log.e(TAG, Objects.requireNonNull(e.getMessage()));
 		}
 
@@ -81,7 +81,7 @@ public class ChangeLog {
 		try {
 			res = changelogActivity.getPackageManager().getResourcesForApplication(packageName);
 		}
-		catch (PackageManager.NameNotFoundException e) {
+		catch(PackageManager.NameNotFoundException e) {
 			Log.e(TAG, Objects.requireNonNull(e.getMessage()));
 		}
 
@@ -90,15 +90,10 @@ public class ChangeLog {
 
 		String changelogMessage = getChangelog(resId, res);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(changelogActivity);
+		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(changelogActivity).setTitle(R.string.changelogTitle)
+			.setMessage(HtmlCompat.fromHtml("<small>" + changelogMessage + "</small>", HtmlCompat.FROM_HTML_MODE_LEGACY)).setCancelable(false).setNeutralButton(R.string.close, null);
 
-		builder.setTitle(R.string.changelogTitle);
-		builder.setMessage(HtmlCompat.fromHtml("<small>" + changelogMessage + "</small>", HtmlCompat.FROM_HTML_MODE_LEGACY));
-		builder.setNeutralButton(R.string.close, null);
-		builder.setCancelable(false);
-
-		builder.create().show();
-
+		materialAlertDialogBuilder.create().show();
 	}
 
 }

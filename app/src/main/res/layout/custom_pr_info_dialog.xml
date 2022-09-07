@@ -14,17 +14,17 @@
             android:id="@+id/headBranchHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"
-            android:text="@string/pullFromBranch"
             android:layout_marginBottom="4dp"
-            android:textSize="16sp" />
+            android:text="@string/pullFromBranch"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/headBranch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="?attr/primaryTextColor" />
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -38,17 +38,17 @@
             android:id="@+id/baseBranchHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"
-            android:text="@string/mergeIntoBranch"
             android:layout_marginBottom="4dp"
-            android:textSize="16sp" />
+            android:text="@string/mergeIntoBranch"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/baseBranch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="?attr/primaryTextColor" />
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

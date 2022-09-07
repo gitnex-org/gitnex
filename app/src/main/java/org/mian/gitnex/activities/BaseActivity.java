@@ -45,12 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 				break;
 			case 2:
 
-				if(TimeHelper.timeBetweenHours(
-					tinyDB.getInt("darkThemeTimeHour", 18),
-					tinyDB.getInt("lightThemeTimeHour", 6),
-					tinyDB.getInt("darkThemeTimeMinute", 0),
-					tinyDB.getInt("lightThemeTimeMinute", 0))
-				) {
+				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
 
 					setTheme(R.style.AppTheme);
 				}
@@ -64,12 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 				setTheme(R.style.AppThemeRetro);
 				break;
 			case 4:
-				if(TimeHelper.timeBetweenHours(
-					tinyDB.getInt("darkThemeTimeHour", 18),
-					tinyDB.getInt("lightThemeTimeHour", 6),
-					tinyDB.getInt("darkThemeTimeMinute", 0),
-					tinyDB.getInt("lightThemeTimeMinute", 0))
-				) {
+				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
 
 					setTheme(R.style.AppTheme);
 				}
@@ -91,7 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 		}
 
 		String locale = tinyDB.getString("locale");
-		if (locale.isEmpty()) {
+		if(locale.isEmpty()) {
 			AppUtil.setAppLocale(getResources(), Locale.getDefault().getLanguage());
 		}
 		else {
@@ -127,15 +117,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 				}
 
 				// Authentication failed, close the app
-				@Override public void onAuthenticationFailed() {
+				@Override
+				public void onAuthenticationFailed() {
 					super.onAuthenticationFailed();
 				}
 
 			});
 
-			BiometricPrompt.PromptInfo biometricPromptBuilder = new BiometricPrompt.PromptInfo.Builder()
-				.setTitle(getString(R.string.biometricAuthTitle))
-				.setSubtitle(getString(R.string.biometricAuthSubTitle))
+			BiometricPrompt.PromptInfo biometricPromptBuilder = new BiometricPrompt.PromptInfo.Builder().setTitle(getString(R.string.biometricAuthTitle)).setSubtitle(getString(R.string.biometricAuthSubTitle))
 				.setNegativeButtonText(getString(R.string.cancelButton)).build();
 
 			biometricPrompt.authenticate(biometricPromptBuilder);
@@ -146,6 +135,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public AccountContext getAccount() {
 		return ((MainApplication) getApplication()).currentAccount;
 	}
+
 }
 
 

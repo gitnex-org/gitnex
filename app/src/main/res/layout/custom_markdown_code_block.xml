@@ -5,9 +5,9 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:fillViewport="true"
-    android:scrollbarStyle="outsideInset"
     android:paddingTop="8dip"
-    android:paddingBottom="8dip" >
+    android:paddingBottom="8dip"
+    android:scrollbarStyle="outsideInset">
 
     <TextView
         android:id="@+id/textCodeBlock"

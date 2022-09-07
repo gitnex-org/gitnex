@@ -29,20 +29,15 @@ public class DiffActivity extends BaseActivity {
 			@Override
 			public void handleOnBackPressed() {
 				if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof DiffFragment) {
-					getSupportFragmentManager()
-						.beginTransaction()
-						.replace(R.id.fragment_container, fragment)
-						.commit();
-				} else {
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+				}
+				else {
 					finish();
 				}
 			}
 		});
 
-		getSupportFragmentManager()
-			.beginTransaction()
-			.replace(R.id.fragment_container, fragment)
-			.commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
 
 	}
 

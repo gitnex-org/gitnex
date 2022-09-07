@@ -31,7 +31,7 @@ import retrofit2.Response;
  * @author M M Arif
  */
 
-public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositoriesAdapter.TeamReposViewHolder> {
+public class OrganizationTeamRepositoriesAdapter extends RecyclerView.Adapter<OrganizationTeamRepositoriesAdapter.TeamReposViewHolder> {
 
 	private final List<Repository> reposList;
 	private final Context context;
@@ -40,7 +40,7 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 	private final String teamName;
 	private final List<Repository> reposArr;
 
-	public TeamRepositoriesAdapter(List<Repository> dataList, Context ctx, int teamId, String orgName, String teamName) {
+	public OrganizationTeamRepositoriesAdapter(List<Repository> dataList, Context ctx, int teamId, String orgName, String teamName) {
 		this.context = ctx;
 		this.reposList = dataList;
 		this.teamId = teamId;
@@ -68,7 +68,7 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 			//addRepoButtonAdd.setVisibility(View.VISIBLE);
 			//addRepoButtonRemove.setVisibility(View.GONE);
 
-			new Handler(Looper.getMainLooper()).postDelayed(TeamRepositoriesAdapter.this::getTeamRepos, 200);
+			new Handler(Looper.getMainLooper()).postDelayed(OrganizationTeamRepositoriesAdapter.this::getTeamRepos, 200);
 
 			new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
@@ -89,21 +89,20 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 
 			addRepoButtonAdd.setOnClickListener(v -> AlertDialogs.addRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
 
-			addRepoButtonRemove.setOnClickListener(v ->
-				AlertDialogs.removeRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
+			addRepoButtonRemove.setOnClickListener(v -> AlertDialogs.removeRepoDialog(context, orgName, repoInfo.getName(), Integer.parseInt(String.valueOf(teamId)), teamName));
 		}
 
 	}
 
 	@NonNull
 	@Override
-	public TeamRepositoriesAdapter.TeamReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	public OrganizationTeamRepositoriesAdapter.TeamReposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
-		return new TeamRepositoriesAdapter.TeamReposViewHolder(v);
+		return new OrganizationTeamRepositoriesAdapter.TeamReposViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull final TeamRepositoriesAdapter.TeamReposViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final OrganizationTeamRepositoriesAdapter.TeamReposViewHolder holder, int position) {
 
 		Repository currentItem = reposList.get(position);
 		holder.repoInfo = currentItem;
@@ -111,12 +110,12 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 
 		holder.name.setText(currentItem.getName());
 
-		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28)
-			.endConfig().buildRoundRect(String.valueOf(currentItem.getFullName().charAt(0)), ColorGenerator.Companion.getMATERIAL().getColor(currentItem.getName()), 14);
+		TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig()
+			.buildRoundRect(String.valueOf(currentItem.getFullName().charAt(0)), ColorGenerator.Companion.getMATERIAL().getColor(currentItem.getName()), 14);
 
 		if(currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().equals("")) {
-			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(holder.repoAvatar);
+			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+				.into(holder.repoAvatar);
 		}
 		else {
 			holder.repoAvatar.setImageDrawable(drawable);
@@ -132,9 +131,7 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 	private void getTeamRepos() {
 
 		if(getItemCount() > 0) {
-			Call<List<Repository>> call = RetrofitClient
-				.getApiInterface(context)
-				.orgListTeamRepos((long) teamId, 1, 50);
+			Call<List<Repository>> call = RetrofitClient.getApiInterface(context).orgListTeamRepos((long) teamId, 1, 50);
 
 			call.enqueue(new Callback<>() {
 				@Override
@@ -154,4 +151,5 @@ public class TeamRepositoriesAdapter extends RecyclerView.Adapter<TeamRepositori
 			});
 		}
 	}
+
 }

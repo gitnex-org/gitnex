@@ -3,17 +3,11 @@ package org.mian.gitnex.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
@@ -45,9 +39,7 @@ public class ExploreIssuesFragment extends Fragment {
 			viewBinding.progressBar.setVisibility(View.VISIBLE);
 		}, 50));
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
 		viewBinding.recyclerViewSearchIssues.setHasFixedSize(true);
-		viewBinding.recyclerViewSearchIssues.addItemDecoration(dividerItemDecoration);
 		viewBinding.recyclerViewSearchIssues.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
 		fetchDataAsync("");
@@ -119,4 +111,5 @@ public class ExploreIssuesFragment extends Fragment {
 			}
 		});
 	}
+
 }

@@ -1,6 +1,5 @@
 package org.mian.gitnex.helpers.ssl;
 
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +9,7 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.SparseArray;
 import androidx.core.app.NotificationCompat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import java.io.ByteArrayInputStream;
@@ -44,19 +44,17 @@ import javax.net.ssl.X509TrustManager;
  */
 
 public class MemorizingTrustManager implements X509TrustManager {
-	private final static int NOTIFICATION_ID = 100509;
 
 	public final static String KEYSTORE_NAME = "keystore";
 	public final static String KEYSTORE_KEY = "keystore";
-
+	private final static int NOTIFICATION_ID = 100509;
+	private final SparseArray<MTMDecision> openDecisions = new SparseArray<>();
+	private final X509TrustManager defaultTrustManager;
 	private Context context;
 	private NotificationManager notificationManager;
 	private int decisionId = 0;
-	private final SparseArray<MTMDecision> openDecisions = new SparseArray<>();
-
 	private SharedPreferences keyStoreStorage;
 	private KeyStore appKeyStore;
-	private final X509TrustManager defaultTrustManager;
 	private X509TrustManager appTrustManager;
 
 	/**
@@ -100,16 +98,6 @@ public class MemorizingTrustManager implements X509TrustManager {
 		this.defaultTrustManager = getTrustManager(null);
 	}
 
-	private void init(Context m) {
-
-		context = m;
-		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-		keyStoreStorage = m.getSharedPreferences(KEYSTORE_NAME, Context.MODE_PRIVATE);
-		appKeyStore = loadAppKeyStore();
-	}
-
-
 	/**
 	 * Returns a X509TrustManager list containing a new instance of
 	 * TrustManagerFactory.
@@ -129,6 +117,90 @@ public class MemorizingTrustManager implements X509TrustManager {
 	public static X509TrustManager[] getInstanceList(Context c) {
 
 		return new X509TrustManager[]{new MemorizingTrustManager(c)};
+	}
+
+	private static boolean isExpiredException(Throwable e) {
+
+		do {
+			if(e instanceof CertificateExpiredException) {
+				return true;
+			}
+			e = e.getCause();
+		} while(e != null);
+
+		return false;
+	}
+
+	private static boolean isPathException(Throwable e) {
+
+		do {
+			if(e instanceof CertPathValidatorException) {
+				return true;
+			}
+
+			e = e.getCause();
+		} while(e != null);
+
+		return false;
+	}
+
+	private static String hexString(byte[] data) {
+
+		StringBuilder si = new StringBuilder();
+
+		for(int i = 0; i < data.length; i++) {
+			si.append(String.format("%02x", data[i]));
+			if(i < data.length - 1) {
+				si.append(":");
+			}
+		}
+
+		return si.toString();
+	}
+
+	private static String certHash(final X509Certificate cert, String digest) {
+
+		try {
+			MessageDigest md = MessageDigest.getInstance(digest);
+			md.update(cert.getEncoded());
+			return hexString(md.digest());
+		}
+		catch(CertificateEncodingException | NoSuchAlgorithmException e) {
+			return e.getMessage();
+		}
+	}
+
+	/**
+	 * Reflectively call
+	 * {@code Notification.setLatestEventInfo(Context, CharSequence, CharSequence, PendingIntent)}
+	 * since it was remove in Android API level 23.
+	 */
+	private static void setLatestEventInfoReflective(Notification notification, Context context, CharSequence mtmNotification, CharSequence certName, PendingIntent call) {
+
+		Method setLatestEventInfo;
+
+		try {
+			setLatestEventInfo = notification.getClass().getMethod("setLatestEventInfo", Context.class, CharSequence.class, CharSequence.class, PendingIntent.class);
+		}
+		catch(NoSuchMethodException e) {
+			throw new IllegalStateException(e);
+		}
+
+		try {
+			setLatestEventInfo.invoke(notification, context, mtmNotification, certName, call);
+		}
+		catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	private void init(Context m) {
+
+		context = m;
+		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		keyStoreStorage = m.getSharedPreferences(KEYSTORE_NAME, Context.MODE_PRIVATE);
+		appKeyStore = loadAppKeyStore();
 	}
 
 	/**
@@ -313,31 +385,6 @@ public class MemorizingTrustManager implements X509TrustManager {
 		}
 	}
 
-	private static boolean isExpiredException(Throwable e) {
-
-		do {
-			if(e instanceof CertificateExpiredException) {
-				return true;
-			}
-			e = e.getCause();
-		} while(e != null);
-
-		return false;
-	}
-
-	private static boolean isPathException(Throwable e) {
-
-		do {
-			if(e instanceof CertPathValidatorException) {
-				return true;
-			}
-
-			e = e.getCause();
-		} while(e != null);
-
-		return false;
-	}
-
 	private void checkCertTrusted(X509Certificate[] chain, String authType, boolean isServer) throws CertificateException {
 		try {
 
@@ -397,49 +444,12 @@ public class MemorizingTrustManager implements X509TrustManager {
 		return myId;
 	}
 
-	private static String hexString(byte[] data) {
-
-		StringBuilder si = new StringBuilder();
-
-		for(int i = 0; i < data.length; i++) {
-			si.append(String.format("%02x", data[i]));
-			if(i < data.length - 1) {
-				si.append(":");
-			}
-		}
-
-		return si.toString();
-	}
-
-	private static String certHash(final X509Certificate cert, String digest) {
-
-		try {
-			MessageDigest md = MessageDigest.getInstance(digest);
-			md.update(cert.getEncoded());
-			return hexString(md.digest());
-		}
-		catch(CertificateEncodingException | NoSuchAlgorithmException e) {
-			return e.getMessage();
-		}
-	}
-
 	private void certDetails(StringBuilder stringBuilder, X509Certificate c) {
 
 		SimpleDateFormat validityDateFormatter = new SimpleDateFormat("yyyy-MM-dd", context.getResources().getConfiguration().locale);
 
-		stringBuilder.append("\n")
-				.append(c.getSubjectDN().toString())
-				.append("\n")
-				.append(validityDateFormatter.format(c.getNotBefore()))
-				.append(" - ")
-				.append(validityDateFormatter.format(c.getNotAfter()))
-				.append("\nSHA-256: ")
-				.append(certHash(c, "SHA-256"))
-				.append("\nSHA-1: ")
-				.append(certHash(c, "SHA-1"))
-				.append("\nSigned by: ")
-				.append(c.getIssuerDN().toString())
-				.append("\n");
+		stringBuilder.append("\n").append(c.getSubjectDN().toString()).append("\n").append(validityDateFormatter.format(c.getNotBefore())).append(" - ").append(validityDateFormatter.format(c.getNotAfter()))
+			.append("\nSHA-256: ").append(certHash(c, "SHA-256")).append("\nSHA-1: ").append(certHash(c, "SHA-1")).append("\nSigned by: ").append(c.getIssuerDN().toString()).append("\n");
 	}
 
 	private String certChainMessage(final X509Certificate[] chain, CertificateException cause) {
@@ -516,43 +526,13 @@ public class MemorizingTrustManager implements X509TrustManager {
 		return stringBuilder.toString();
 	}
 
-	/**
-	 * Reflectively call
-	 * <code>Notification.setLatestEventInfo(Context, CharSequence, CharSequence, PendingIntent)</code>
-	 * since it was remove in Android API level 23.
-	 */
-	private static void setLatestEventInfoReflective(Notification notification, Context context, CharSequence mtmNotification, CharSequence certName, PendingIntent call) {
-
-		Method setLatestEventInfo;
-
-		try {
-			setLatestEventInfo = notification.getClass().getMethod("setLatestEventInfo", Context.class, CharSequence.class, CharSequence.class, PendingIntent.class);
-		}
-		catch(NoSuchMethodException e) {
-			throw new IllegalStateException(e);
-		}
-
-		try {
-			setLatestEventInfo.invoke(notification, context, mtmNotification, certName, call);
-		}
-		catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
 	private void startActivityNotification(Intent intent, int decisionId, String certName) {
 
 		final PendingIntent call = PendingIntent.getActivity(context, 0, intent, 0);
 		final String mtmNotification = context.getString(R.string.mtmNotification);
 
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ssl")
-				.setSmallIcon(android.R.drawable.ic_lock_lock)
-				.setContentTitle(mtmNotification)
-				.setContentText(certName)
-				.setTicker(certName)
-				.setContentIntent(call)
-				.setAutoCancel(true)
-				.setPriority(NotificationCompat.PRIORITY_HIGH);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ssl").setSmallIcon(android.R.drawable.ic_lock_lock).setContentTitle(mtmNotification).setContentText(certName).setTicker(certName)
+			.setContentIntent(call).setAutoCancel(true).setPriority(NotificationCompat.PRIORITY_HIGH);
 
 		notificationManager.notify(NOTIFICATION_ID + decisionId, builder.build());
 	}
@@ -562,15 +542,12 @@ public class MemorizingTrustManager implements X509TrustManager {
 		final int myId = createDecisionId(choice);
 
 		((BaseActivity) context).runOnUiThread(() -> {
-			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setTitle(titleId);
-			builder.setMessage(message);
 
-			builder.setPositiveButton(R.string.mtmDecisionAlways, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ALWAYS));
-			builder.setNeutralButton(R.string.mtmDecisionAbort, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ABORT));
-			builder.setOnCancelListener(dialog -> interactResult(myId, MTMDecision.DECISION_ABORT));
+			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context).setTitle(titleId).setMessage(message)
+				.setPositiveButton(R.string.mtmDecisionAlways, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ALWAYS))
+				.setNeutralButton(R.string.mtmDecisionAbort, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ABORT)).setOnCancelListener(dialog -> interactResult(myId, MTMDecision.DECISION_ABORT));
 
-			builder.create().show();
+			materialAlertDialogBuilder.create().show();
 		});
 
 		try {
@@ -589,7 +566,8 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		if(interact(certChainMessage(chain, cause), R.string.mtmAcceptCert) == MTMDecision.DECISION_ALWAYS) {
 			storeCert(chain[0]); // only store the server cert, not the whole chain
-		} else {
+		}
+		else {
 			throw (cause);
 		}
 	}

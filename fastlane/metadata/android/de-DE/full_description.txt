@@ -5,41 +5,28 @@ GitNex ist eine freie/bezahlte Open Source Android-App für das Git-Management-T
 - Unterstützung mehrerer Konten & Instanzen
 - Datei- und Verzeichnis-Browser
 - Dateibetrachter
-- Erstelle Dateien
-- Anmelden via Token
-- Pull-Request zusammenführen
-- Offline-Modus (Cache)
-- Entdecke Repositories
-- Diff-Ansicht für Pull-Requests für öffentliche Repositories
+- Datei/Issue/PR/Wiki/Meilenstein/Release/Label erstellen
+- Pull-Request-Liste
 - Repository-Liste
 - Organisations-Liste
-- Erstelle neue Repositories / Organisationen
-- Suche/Filtere Repositories / Organisationen / Issues etc.
-- Profilansicht
 - Issue-Liste
-- Issue-Kommentare
-- Kommentiere auf Issues
-- Erstelle neue Issues und weise Nutzer, Labels, Zeitlimits und Meilensteine zu
-- Erstelle Labels
-- Editiere / Lösche Labels
+- Label-Liste
 - Meilensteinliste
-- Erstelle neue Meilensteine
-- Branch-Liste
-- Release-Liste mit Download-Option
-- Zeige Mitarbeiter für Repos
+- Releases-Liste
+- Wiki-Seiten
+- Offlinemodus
+- Repositories/Issues/Organisationen/Benutzer erkunden
+- Profilansicht
 - Markdown-Unterstützung
 - Emoji-Unterstützung
 - Umfassend personalisierbar
-- Optionen um lokale HTTP-Instanzen zu benutzen
 - Unterstützung für Zwei-Faktor-Authentifikation (TOTP)
 - Unterstützung von Benachrichtigungen
 - Verwalte Entwürfe für Kommentare
-- Unterstützung für Branches im Datei-Browser
 - Liste Repository-Commits
 - Unterstützung für selbst signierte Zertifikate
-- Automatischer Design-Wechsler
-- Lösche Kommentare
-- Konfiguriere Cache-Einstellungen
+- Themes
+- und mehr...
 
 Mehr Funktionen - https://codeberg.org/gitnex/GitNex/wiki/Features
 

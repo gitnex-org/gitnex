@@ -20,40 +20,39 @@ import retrofit2.Response;
 
 public class RepoWatchersViewModel extends ViewModel {
 
-    private MutableLiveData<List<User>> watchersList;
+	private MutableLiveData<List<User>> watchersList;
 
-    public LiveData<List<User>> getRepoWatchers(String repoOwner, String repoName, Context ctx) {
+	public LiveData<List<User>> getRepoWatchers(String repoOwner, String repoName, Context ctx) {
 
-        watchersList = new MutableLiveData<>();
-        loadRepoWatchers(repoOwner, repoName, ctx);
+		watchersList = new MutableLiveData<>();
+		loadRepoWatchers(repoOwner, repoName, ctx);
 
-        return watchersList;
-    }
+		return watchersList;
+	}
 
-    private void loadRepoWatchers(String repoOwner, String repoName, Context ctx) {
+	private void loadRepoWatchers(String repoOwner, String repoName, Context ctx) {
 
-        Call<List<User>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .repoListSubscribers(repoOwner, repoName, null, null);
+		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).repoListSubscribers(repoOwner, repoName, null, null);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
-		        if(response.isSuccessful()) {
-			        watchersList.postValue(response.body());
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					watchersList.postValue(response.body());
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<User>> call, Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<User>> call, Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
 }

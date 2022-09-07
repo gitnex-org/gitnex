@@ -62,11 +62,31 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 		return followersList.size();
 	}
 
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+	}
+
+	public void setLoadMoreListener(Runnable loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<User> list) {
+		followersList = list;
+		notifyDataChanged();
+	}
+
 	class UsersHolder extends RecyclerView.ViewHolder {
-		private User userInfo;
+
 		private final ImageView userAvatar;
 		private final TextView userFullName;
 		private final TextView userName;
+		private User userInfo;
 
 		UsersHolder(View itemView) {
 			super(itemView);
@@ -106,28 +126,12 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 				userName.setVisibility(View.GONE);
 			}
 
-			PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop().into(userAvatar);
+			PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
+				.into(userAvatar);
 		}
+
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-	}
-
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<User> list) {
-		followersList = list;
-		notifyDataChanged();
-	}
 }
 
 

@@ -6,4 +6,4 @@
     android:maxLines="1"
     android:textAllCaps="true"
     android:textColor="?attr/primaryTextColor"
-    android:textSize="16sp" />
+    android:textSize="16sp"/>

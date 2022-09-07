@@ -11,14 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.DraftsAdapter;
@@ -30,6 +26,7 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author M M Arif
@@ -37,76 +34,65 @@ import java.util.List;
 
 public class DraftsFragment extends Fragment {
 
+	private FragmentDraftsBinding fragmentDraftsBinding;
 	private Context ctx;
-    private DraftsAdapter adapter;
-    private RecyclerView mRecyclerView;
-    private DraftsApi draftsApi;
-    private TextView noData;
+	private DraftsAdapter adapter;
+	private DraftsApi draftsApi;
 	private List<DraftWithRepository> draftsList_;
 	private int currentActiveAccountId;
-	private SwipeRefreshLayout swipeRefresh;
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    	FragmentDraftsBinding fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
+		fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
 
-	    ctx = getContext();
-        setHasOptionsMenu(true);
+		ctx = getContext();
+		setHasOptionsMenu(true);
 
-	    ((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.titleDrafts));
+		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.titleDrafts));
 
-        TinyDB tinyDb = TinyDB.getInstance(ctx);
+		TinyDB tinyDb = TinyDB.getInstance(ctx);
 
-	    draftsList_ = new ArrayList<>();
-        draftsApi = BaseApi.getInstance(ctx, DraftsApi.class);
+		draftsList_ = new ArrayList<>();
+		draftsApi = BaseApi.getInstance(ctx, DraftsApi.class);
 
-        noData = fragmentDraftsBinding.noData;
-        mRecyclerView = fragmentDraftsBinding.recyclerView;
-        swipeRefresh = fragmentDraftsBinding.pullToRefresh;
+		fragmentDraftsBinding.recyclerView.setHasFixedSize(true);
+		fragmentDraftsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+		adapter = new DraftsAdapter(getContext(), getChildFragmentManager(), draftsList_);
+		currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+		fragmentDraftsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+			draftsList_.clear();
+			fetchDataAsync(currentActiveAccountId);
 
-	    adapter = new DraftsAdapter(getContext(), getChildFragmentManager(), draftsList_);
-	    currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-        swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		}, 250));
 
-	        draftsList_.clear();
-            fetchDataAsync(currentActiveAccountId);
+		fetchDataAsync(currentActiveAccountId);
 
-        }, 250));
+		return fragmentDraftsBinding.getRoot();
+	}
 
-        fetchDataAsync(currentActiveAccountId);
+	private void fetchDataAsync(int accountId) {
 
-        return fragmentDraftsBinding.getRoot();
-    }
+		draftsApi.getDrafts(accountId).observe(getViewLifecycleOwner(), drafts -> {
 
-    private void fetchDataAsync(int accountId) {
+			fragmentDraftsBinding.pullToRefresh.setRefreshing(false);
+			assert drafts != null;
+			if(drafts.size() > 0) {
 
-        draftsApi.getDrafts(accountId).observe(getViewLifecycleOwner(), drafts -> {
+				draftsList_.clear();
+				fragmentDraftsBinding.noData.setVisibility(View.GONE);
+				draftsList_.addAll(drafts);
+				adapter.notifyDataChanged();
+				fragmentDraftsBinding.recyclerView.setAdapter(adapter);
+			}
+			else {
 
-	        swipeRefresh.setRefreshing(false);
-            assert drafts != null;
-            if(drafts.size() > 0) {
-
-	            draftsList_.clear();
-                noData.setVisibility(View.GONE);
-	            draftsList_.addAll(drafts);
-	            adapter.notifyDataChanged();
-                mRecyclerView.setAdapter(adapter);
-            }
-            else {
-
-                noData.setVisibility(View.VISIBLE);
-            }
-        });
-    }
+				fragmentDraftsBinding.noData.setVisibility(View.VISIBLE);
+			}
+		});
+	}
 
 	@Override
 	public void onResume() {
@@ -117,16 +103,16 @@ public class DraftsFragment extends Fragment {
 
 	public void deleteAllDrafts(int accountId) {
 
-    	if(draftsList_.size() > 0) {
+		if(draftsList_.size() > 0) {
 
-		    BaseApi.getInstance(ctx, DraftsApi.class).deleteAllDrafts(accountId);
-		    draftsList_.clear();
-		    adapter.notifyDataChanged();
-		    Toasty.success(ctx, getResources().getString(R.string.draftsDeleteSuccess));
-	    }
-    	else {
-		    Toasty.warning(ctx, getResources().getString(R.string.draftsListEmpty));
-	    }
+			Objects.requireNonNull(BaseApi.getInstance(ctx, DraftsApi.class)).deleteAllDrafts(accountId);
+			draftsList_.clear();
+			adapter.notifyDataChanged();
+			Toasty.success(ctx, getResources().getString(R.string.draftsDeleteSuccess));
+		}
+		else {
+			Toasty.warning(ctx, getResources().getString(R.string.draftsListEmpty));
+		}
 
 	}
 
@@ -168,12 +154,13 @@ public class DraftsFragment extends Fragment {
 				continue;
 			}
 
-			if(d.getRepositoryOwner().toLowerCase().contains(text) || d.getRepositoryName().toLowerCase().contains(text)
-				|| d.getDraftText().toLowerCase().contains(text) || String.valueOf(d.getIssueId()).contains(text)) {
+			if(d.getRepositoryOwner().toLowerCase().contains(text) || d.getRepositoryName().toLowerCase().contains(text) || d.getDraftText().toLowerCase().contains(text) || String.valueOf(d.getIssueId())
+				.contains(text)) {
 				arr.add(d);
 			}
 		}
 
 		adapter.updateList(arr);
 	}
+
 }

@@ -53,7 +53,7 @@ public class BottomSheetOrganizationTeamsFragment extends BottomSheetDialogFragm
 		try {
 			bmListener = (BottomSheetListener) context;
 		}
-		catch (ClassCastException e) {
+		catch(ClassCastException e) {
 			Log.e("BsOrganizationTeams", e.toString());
 		}
 	}

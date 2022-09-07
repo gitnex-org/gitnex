@@ -8,19 +8,25 @@
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefresh"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/primaryBackgroundColor"
+        android:padding="@dimen/dimen8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notifications"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
-            android:scrollbars="vertical" />
+            android:layout_height="match_parent">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notifications"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
@@ -28,7 +34,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
         android:id="@+id/noDataNotifications"
@@ -39,7 +45,7 @@
         android:text="@string/noDataNotifications"
         android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/markAllAsRead"
@@ -53,6 +59,6 @@
         android:backgroundTint="?attr/fabColor"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:iconTint="@color/colorWhite"
-        app:icon="@drawable/ic_done" />
+        app:icon="@drawable/ic_done"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

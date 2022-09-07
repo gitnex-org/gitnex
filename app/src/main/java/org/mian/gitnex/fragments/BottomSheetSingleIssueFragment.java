@@ -13,11 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.PullRequestActions;
-import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.DiffActivity;
-import org.mian.gitnex.activities.EditIssueActivity;
-import org.mian.gitnex.activities.IssueDetailActivity;
-import org.mian.gitnex.activities.MergePullRequestActivity;
+import org.mian.gitnex.activities.*;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -32,9 +28,9 @@ import java.util.Objects;
 
 public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetListener bmListener;
 	private final IssueContext issue;
 	private final String issueCreator;
+	private BottomSheetListener bmListener;
 
 	public BottomSheetSingleIssueFragment(IssueContext issue, String username) {
 		this.issue = issue;
@@ -83,8 +79,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 			binding.editIssue.setText(R.string.menuEditText);
 
-			boolean canPushPullSource = issue.getPullRequest().getHead().getRepo() != null ?
-				issue.getPullRequest().getHead().getRepo().getPermissions().isPush() : false;
+			boolean canPushPullSource = issue.getPullRequest().getHead().getRepo() != null ? issue.getPullRequest().getHead().getRepo().getPermissions().isPush() : false;
 			if(issue.getPullRequest().isMerged() || issue.getIssue().getState().equals("closed")) {
 				binding.updatePullRequest.setVisibility(View.GONE);
 				binding.mergePullRequest.setVisibility(View.GONE);
@@ -118,7 +113,8 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			}
 
 			binding.openFilesDiff.setVisibility(View.VISIBLE);
-		} else {
+		}
+		else {
 			if(!userIsCreator && !canPush) {
 				binding.editIssue.setVisibility(View.GONE);
 			}
@@ -129,11 +125,10 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		binding.updatePullRequest.setOnClickListener(v -> {
 			if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.16.0")) {
-				AlertDialogs.selectPullUpdateStrategy(requireContext(), issue.getRepository().getOwner(), issue.getRepository().getName(),
-					String.valueOf(issue.getIssueIndex()));
-			} else {
-				PullRequestActions.updatePr(requireContext(), issue.getRepository().getOwner(), issue.getRepository().getName(),
-					String.valueOf(issue.getIssueIndex()), null);
+				AlertDialogs.selectPullUpdateStrategy(requireContext(), issue.getRepository().getOwner(), issue.getRepository().getName(), String.valueOf(issue.getIssueIndex()));
+			}
+			else {
+				PullRequestActions.updatePr(requireContext(), issue.getRepository().getOwner(), issue.getRepository().getName(), String.valueOf(issue.getIssueIndex()), null);
 			}
 			dismiss();
 		});
@@ -278,4 +273,5 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
+
 }

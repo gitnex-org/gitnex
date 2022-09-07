@@ -20,47 +20,46 @@ import retrofit2.Response;
 
 public class IssueCommentsViewModel extends ViewModel {
 
-    private MutableLiveData<List<Comment>> issueComments;
+	private MutableLiveData<List<Comment>> issueComments;
 
-    public LiveData<List<Comment>> getIssueCommentList(String owner, String repo, int index, Context ctx) {
+	public LiveData<List<Comment>> getIssueCommentList(String owner, String repo, int index, Context ctx) {
 
-        issueComments = new MutableLiveData<>();
-        loadIssueComments(owner, repo, index, ctx);
+		issueComments = new MutableLiveData<>();
+		loadIssueComments(owner, repo, index, ctx);
 
-        return issueComments;
-    }
+		return issueComments;
+	}
 
 	public void loadIssueComments(String owner, String repo, int index, Context ctx) {
 		loadIssueComments(owner, repo, index, ctx, null);
 	}
 
-    public void loadIssueComments(String owner, String repo, int index, Context ctx, Runnable onLoadingFinished) {
+	public void loadIssueComments(String owner, String repo, int index, Context ctx, Runnable onLoadingFinished) {
 
-        Call<List<Comment>> call = RetrofitClient
-                .getApiInterface(ctx)
-                .issueGetComments(owner, repo, (long) index, null, null);
+		Call<List<Comment>> call = RetrofitClient.getApiInterface(ctx).issueGetComments(owner, repo, (long) index, null, null);
 
-        call.enqueue(new Callback<>() {
+		call.enqueue(new Callback<>() {
 
-            @Override
-            public void onResponse(@NonNull Call<List<Comment>> call, @NonNull Response<List<Comment>> response) {
+			@Override
+			public void onResponse(@NonNull Call<List<Comment>> call, @NonNull Response<List<Comment>> response) {
 
-		        if(response.isSuccessful()) {
-			        issueComments.postValue(response.body());
-			        if(onLoadingFinished != null) {
-				        onLoadingFinished.run();
-			        }
-		        }
-		        else {
-			        Toasty.error(ctx, ctx.getString(R.string.genericError));
-		        }
-	        }
+				if(response.isSuccessful()) {
+					issueComments.postValue(response.body());
+					if(onLoadingFinished != null) {
+						onLoadingFinished.run();
+					}
+				}
+				else {
+					Toasty.error(ctx, ctx.getString(R.string.genericError));
+				}
+			}
 
-	        @Override
-	        public void onFailure(@NonNull Call<List<Comment>> call, @NonNull Throwable t) {
+			@Override
+			public void onFailure(@NonNull Call<List<Comment>> call, @NonNull Throwable t) {
 
-		        Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-	        }
-        });
-    }
+				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+			}
+		});
+	}
+
 }

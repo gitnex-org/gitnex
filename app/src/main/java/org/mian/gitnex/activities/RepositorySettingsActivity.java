@@ -38,13 +38,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private CustomRepositoryTransferDialogBinding transferRepoBinding;
 
 	private AlertDialog dialogRepo;
-	//private AlertDialog dialogRepoDelete;
-
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
-	//private Dialog dialogProp;
 
-	//private Dialog dialogDeleteRepository;
-	//private Dialog dialogTransferRepository;
 	private View.OnClickListener onClickListener;
 
 	private RepositoryContext repository;
@@ -75,19 +70,10 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void showTransferRepository() {
 
-		/*dialogTransferRepository = new Dialog(ctx, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert);
-
-		if (dialogTransferRepository.getWindow() != null) {
-
-			dialogTransferRepository.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}*/
-
 		transferRepoBinding = CustomRepositoryTransferDialogBinding.inflate(LayoutInflater.from(ctx));
 
 		View view = transferRepoBinding.getRoot();
 		materialAlertDialogBuilder.setView(view);
-
-		//transferRepoBinding.cancel.setOnClickListener(editProperties -> dialogRepo.dismiss());
 
 		transferRepoBinding.transfer.setOnClickListener(deleteRepo -> {
 
@@ -116,11 +102,9 @@ public class RepositorySettingsActivity extends BaseActivity {
 		TransferRepoOption repositoryTransfer = new TransferRepoOption();
 		repositoryTransfer.setNewOwner(newOwner);
 
-		Call<Repository> transferCall = RetrofitClient
-			.getApiInterface(ctx)
-			.repoTransfer(repositoryTransfer, repository.getOwner(), repository.getName());
+		Call<Repository> transferCall = RetrofitClient.getApiInterface(ctx).repoTransfer(repositoryTransfer, repository.getOwner(), repository.getName());
 
-		transferCall.enqueue(new Callback<Repository>() {
+		transferCall.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
@@ -128,17 +112,17 @@ public class RepositorySettingsActivity extends BaseActivity {
 				transferRepoBinding.transfer.setVisibility(View.GONE);
 				transferRepoBinding.processingRequest.setVisibility(View.VISIBLE);
 
-				if (response.code() == 202) {
+				if(response.code() == 202 || response.code() == 201) {
 
 					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoTransferSuccess));
 
-					finish();
 					Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
+					finish();
 				}
-				else if (response.code() == 404) {
+				else if(response.code() == 404) {
 
 					transferRepoBinding.transfer.setVisibility(View.VISIBLE);
 					transferRepoBinding.processingRequest.setVisibility(View.GONE);
@@ -187,11 +171,9 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 	private void deleteRepository() {
 
-		Call<Void> deleteCall = RetrofitClient
-			.getApiInterface(ctx)
-			.repoDelete(repository.getOwner(), repository.getName());
+		Call<Void> deleteCall = RetrofitClient.getApiInterface(ctx).repoDelete(repository.getOwner(), repository.getName());
 
-		deleteCall.enqueue(new Callback<Void>() {
+		deleteCall.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
@@ -199,15 +181,15 @@ public class RepositorySettingsActivity extends BaseActivity {
 				deleteRepoBinding.delete.setVisibility(View.GONE);
 				deleteRepoBinding.processingRequest.setVisibility(View.VISIBLE);
 
-				if (response.code() == 204) {
+				if(response.code() == 204) {
 
 					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
 
-					finish();
 					Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).deleteRepository(repository.getRepositoryId());
 					Intent intent = new Intent(RepositorySettingsActivity.this, MainActivity.class);
 					RepositorySettingsActivity.this.startActivity(intent);
+					finish();
 				}
 				else {
 
@@ -251,7 +233,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		propBinding.repoEnableIssues.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-			if (isChecked) {
+			if(isChecked) {
 				propBinding.repoEnableTimer.setVisibility(View.VISIBLE);
 			}
 			else {
@@ -275,22 +257,17 @@ public class RepositorySettingsActivity extends BaseActivity {
 		propBinding.repoEnableSquash.setChecked(repoInfo.isAllowSquashMerge());
 		propBinding.repoEnableForceMerge.setChecked(repoInfo.isAllowRebaseExplicit());
 
-		propBinding.save.setOnClickListener(saveProperties -> saveRepositoryProperties(String.valueOf(propBinding.repoName.getText()),
-			String.valueOf(propBinding.repoWebsite.getText()),
-			String.valueOf(propBinding.repoDescription.getText()),
-			propBinding.repoPrivate.isChecked(), propBinding.repoAsTemplate.isChecked(),
-			propBinding.repoEnableIssues.isChecked(), propBinding.repoEnableWiki.isChecked(),
-			propBinding.repoEnablePr.isChecked(), propBinding.repoEnableTimer.isChecked(),
-			propBinding.repoEnableMerge.isChecked(), propBinding.repoEnableRebase.isChecked(),
-			propBinding.repoEnableSquash.isChecked(), propBinding.repoEnableForceMerge.isChecked()));
+		propBinding.save.setOnClickListener(
+			saveProperties -> saveRepositoryProperties(String.valueOf(propBinding.repoName.getText()), String.valueOf(propBinding.repoWebsite.getText()), String.valueOf(propBinding.repoDescription.getText()),
+				propBinding.repoPrivate.isChecked(), propBinding.repoAsTemplate.isChecked(), propBinding.repoEnableIssues.isChecked(), propBinding.repoEnableWiki.isChecked(), propBinding.repoEnablePr.isChecked(),
+				propBinding.repoEnableTimer.isChecked(), propBinding.repoEnableMerge.isChecked(), propBinding.repoEnableRebase.isChecked(), propBinding.repoEnableSquash.isChecked(),
+				propBinding.repoEnableForceMerge.isChecked()));
 
 		dialogRepo = materialAlertDialogBuilder.show();
 	}
 
-	private void saveRepositoryProperties(String repoName, String repoWebsite, String repoDescription,
-		boolean repoPrivate, boolean repoAsTemplate, boolean repoEnableIssues, boolean repoEnableWiki,
-		boolean repoEnablePr, boolean repoEnableTimer, boolean repoEnableMerge, boolean repoEnableRebase,
-		boolean repoEnableSquash, boolean repoEnableForceMerge) {
+	private void saveRepositoryProperties(String repoName, String repoWebsite, String repoDescription, boolean repoPrivate, boolean repoAsTemplate, boolean repoEnableIssues, boolean repoEnableWiki, boolean repoEnablePr,
+		boolean repoEnableTimer, boolean repoEnableMerge, boolean repoEnableRebase, boolean repoEnableSquash, boolean repoEnableForceMerge) {
 
 		EditRepoOption repoProps = new EditRepoOption();
 		repoProps.setName(repoName);
@@ -307,11 +284,9 @@ public class RepositorySettingsActivity extends BaseActivity {
 		repoProps.setAllowSquashMerge(repoEnableSquash);
 		repoProps.setAllowRebaseExplicit(repoEnableForceMerge);
 
-		Call<Repository> propsCall = RetrofitClient
-			.getApiInterface(ctx)
-			.repoEdit(repository.getOwner(), repository.getName(), repoProps);
+		Call<Repository> propsCall = RetrofitClient.getApiInterface(ctx).repoEdit(repository.getOwner(), repository.getName(), repoProps);
 
-		propsCall.enqueue(new Callback<Repository>() {
+		propsCall.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
@@ -319,7 +294,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 				propBinding.save.setVisibility(View.GONE);
 				propBinding.processingRequest.setVisibility(View.VISIBLE);
 
-				if (response.code() == 200) {
+				if(response.code() == 200) {
 
 					dialogRepo.dismiss();
 					Toasty.success(ctx, getString(R.string.repoPropertiesSaveSuccess));
@@ -327,8 +302,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 					repository.setRepository(response.body());
 
 					if(!repository.getName().equals(repoName)) {
-						Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class))
-							.updateRepositoryOwnerAndName(repository.getOwner(), repoName, repository.getRepositoryId());
+						Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).updateRepositoryOwnerAndName(repository.getOwner(), repoName, repository.getRepositoryId());
 						Intent result = new Intent();
 						result.putExtra("nameChanged", true);
 						setResult(200, result);

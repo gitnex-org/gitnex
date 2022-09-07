@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dimen48dp"
+    android:layout_marginBottom="@dimen/dimen48dp"
     android:background="@drawable/shape_round_corners"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/dimen16dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accountsList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
-            android:scrollbars="vertical" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:id="@+id/divider"
         android:background="?attr/dividerColor" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/newAccount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen54dp"
         android:layout_margin="16dp"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
-        android:textStyle="bold"
         android:text="@string/addNewAccount"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
-

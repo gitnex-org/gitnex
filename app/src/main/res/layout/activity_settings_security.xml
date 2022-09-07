@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dimen10dp"
-        app:elevation="@dimen/dimen0dp"
-        android:theme="@style/Widget.AppCompat.SearchView">
+        android:theme="@style/Widget.AppCompat.SearchView"
+        app:elevation="@dimen/dimen0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -24,14 +24,14 @@
                 android:id="@+id/close"
                 android:layout_width="@dimen/dimen26dp"
                 android:layout_height="@dimen/dimen26dp"
-                android:layout_marginEnd="@dimen/dimen16dp"
                 android:layout_marginStart="@dimen/dimen16dp"
-                android:contentDescription="@string/close"
-                android:gravity="center_vertical"
+                android:layout_marginEnd="@dimen/dimen16dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:focusable="true"
                 android:clickable="true"
-                android:src="@drawable/ic_close" />
+                android:contentDescription="@string/close"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -41,7 +41,7 @@
                 android:maxLines="1"
                 android:text="@string/settingsSecurityHeader"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -51,10 +51,10 @@
         android:id="@+id/biometricFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/biometricHeader"
@@ -64,7 +64,7 @@
             android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/settingsBiometricHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchBiometric"
@@ -76,7 +76,7 @@
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
             android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp" />
+            android:switchMinWidth="@dimen/dimen56dp"/>
 
     </RelativeLayout>
 
@@ -84,10 +84,10 @@
         android:id="@+id/certsFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/tvCertHeader"
@@ -97,7 +97,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsCertsSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
@@ -105,10 +105,10 @@
         android:id="@+id/cacheSizeDataSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/cacheSizeDataHeaderSelector"
@@ -118,7 +118,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeDataSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/cacheSizeDataSelected"
@@ -128,7 +128,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeDataSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -136,10 +136,10 @@
         android:id="@+id/cacheSizeImagesSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/cacheSizeImagesHeaderSelector"
@@ -149,7 +149,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeImagesSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/cacheSizeImagesSelected"
@@ -159,7 +159,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeImagesSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -167,10 +167,10 @@
         android:id="@+id/clearCacheSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
-        android:padding="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/dimen6dp">
+        android:padding="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/clearCacheHeaderSelector"
@@ -180,7 +180,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/clearCacheSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/clearCacheSelected"
@@ -190,7 +190,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/clearCacheSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 

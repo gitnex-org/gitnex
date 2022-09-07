@@ -22,74 +22,59 @@ public class AlertDialogs {
 
 	private static MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
-    public static void authorizationTokenRevokedDialog(final Context context) {
-
-	    materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-	    materialAlertDialogBuilder.setTitle(R.string.alertDialogTokenRevokedTitle)
-		    .setMessage(R.string.alertDialogTokenRevokedMessage)
-		    .setCancelable(true)
-		    .setNeutralButton(R.string.cancelButton, null)
-		    .setPositiveButton(R.string.navLogout, (dialog, which) -> AppUtil.logout(context))
-		    .show();
-    }
-
-	public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String type, String orgName,
-	    RepositoryContext repository) {
+	public static void authorizationTokenRevokedDialog(final Context context) {
 
 		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-		materialAlertDialogBuilder.setTitle(context.getString(R.string.deleteGenericTitle, labelTitle))
-			.setMessage(R.string.labelDeleteMessage)
-			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> {
+		materialAlertDialogBuilder.setTitle(R.string.alertDialogTokenRevokedTitle).setMessage(R.string.alertDialogTokenRevokedMessage).setCancelable(true).setNeutralButton(R.string.cancelButton, null)
+			.setPositiveButton(R.string.navLogout, (dialog, which) -> AppUtil.logout(context)).show();
+	}
 
-				Intent intent = new Intent(context, CreateLabelActivity.class);
-				intent.putExtra("labelId", labelId);
-				intent.putExtra("labelAction", "delete");
-				intent.putExtra("type", type);
-				intent.putExtra("orgName", orgName);
-				intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-				context.startActivity(intent);
-			})
-			.setNeutralButton(R.string.cancelButton, null).show();
-    }
+	public static void labelDeleteDialog(final Context context, final String labelTitle, final String labelId, String type, String orgName, RepositoryContext repository) {
 
-    public static void collaboratorRemoveDialog(final Context context, final String userNameMain, RepositoryContext repository) {
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-	    materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder.setTitle(context.getString(R.string.deleteGenericTitle, labelTitle)).setMessage(R.string.labelDeleteMessage).setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> {
 
-	    materialAlertDialogBuilder.setTitle(context.getString(R.string.removeCollaboratorDialogTitle, userNameMain))
-		    .setMessage(R.string.removeCollaboratorMessage)
-		    .setPositiveButton(R.string.removeButton, (dialog, whichButton) -> CollaboratorActions.deleteCollaborator(context, userNameMain, repository))
-		    .setNeutralButton(R.string.cancelButton, null).show();
-    }
+			Intent intent = new Intent(context, CreateLabelActivity.class);
+			intent.putExtra("labelId", labelId);
+			intent.putExtra("labelAction", "delete");
+			intent.putExtra("type", type);
+			intent.putExtra("orgName", orgName);
+			intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
+			context.startActivity(intent);
+		}).setNeutralButton(R.string.cancelButton, null).show();
+	}
 
-    public static void addMemberDialog(final Context context, final String userNameMain, int teamId) {
+	public static void collaboratorRemoveDialog(final Context context, final String userNameMain, RepositoryContext repository) {
 
-	    materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-	    materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.addTeamMember, userNameMain))
-		    .setMessage(R.string.addTeamMemberMessage)
-		    .setPositiveButton(R.string.addButton, (dialog, whichButton) -> TeamActions.addTeamMember(context, userNameMain, teamId))
-		    .setNeutralButton(R.string.cancelButton, null).show();
-    }
+		materialAlertDialogBuilder.setTitle(context.getString(R.string.removeCollaboratorDialogTitle, userNameMain)).setMessage(R.string.removeCollaboratorMessage)
+			.setPositiveButton(R.string.removeButton, (dialog, whichButton) -> CollaboratorActions.deleteCollaborator(context, userNameMain, repository)).setNeutralButton(R.string.cancelButton, null).show();
+	}
 
-    public static void removeMemberDialog(final Context context, final String userNameMain, int teamId) {
+	public static void addMemberDialog(final Context context, final String userNameMain, int teamId) {
 
-	    materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-	    materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.removeTeamMember, userNameMain))
-		    .setMessage(R.string.removeTeamMemberMessage)
-		    .setPositiveButton(R.string.removeButton, (dialog, whichButton) -> TeamActions.removeTeamMember(context, userNameMain, teamId))
-		    .setNeutralButton(R.string.cancelButton, null).show();
-    }
+		materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.addTeamMember, userNameMain)).setMessage(R.string.addTeamMemberMessage)
+			.setPositiveButton(R.string.addButton, (dialog, whichButton) -> TeamActions.addTeamMember(context, userNameMain, teamId)).setNeutralButton(R.string.cancelButton, null).show();
+	}
+
+	public static void removeMemberDialog(final Context context, final String userNameMain, int teamId) {
+
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.removeTeamMember, userNameMain)).setMessage(R.string.removeTeamMemberMessage)
+			.setPositiveButton(R.string.removeButton, (dialog, whichButton) -> TeamActions.removeTeamMember(context, userNameMain, teamId)).setNeutralButton(R.string.cancelButton, null).show();
+	}
 
 	public static void addRepoDialog(final Context context, final String orgName, String repo, int teamId, String teamName) {
 
 		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-		materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.addTeamMember, repo))
-			.setMessage(context.getResources().getString(R.string.repoAddToTeamMessage, repo, orgName, teamName))
+		materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.addTeamMember, repo)).setMessage(context.getResources().getString(R.string.repoAddToTeamMessage, repo, orgName, teamName))
 			.setPositiveButton(context.getResources().getString(R.string.addButton), (dialog, whichButton) -> TeamActions.addTeamRepo(context, orgName, teamId, repo))
 			.setNeutralButton(context.getResources().getString(R.string.cancelButton), null).show();
 	}
@@ -98,30 +83,30 @@ public class AlertDialogs {
 
 		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-		materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.removeTeamMember, repo))
-			.setMessage(context.getResources().getString(R.string.repoRemoveTeamMessage, repo, teamName))
+		materialAlertDialogBuilder.setTitle(context.getResources().getString(R.string.removeTeamMember, repo)).setMessage(context.getResources().getString(R.string.repoRemoveTeamMessage, repo, teamName))
 			.setPositiveButton(context.getResources().getString(R.string.removeButton), (dialog, whichButton) -> TeamActions.removeTeamRepo(context, orgName, teamId, repo))
 			.setNeutralButton(context.getResources().getString(R.string.cancelButton), null).show();
 	}
 
-    public static void selectPullUpdateStrategy(Context context, String repoOwner, String repo, String issueNumber) {
+	public static void selectPullUpdateStrategy(Context context, String repoOwner, String repo, String issueNumber) {
 
-	    materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-	    CustomPrUpdateStrategyDialogBinding binding = CustomPrUpdateStrategyDialogBinding.inflate(LayoutInflater.from(context));
+		CustomPrUpdateStrategyDialogBinding binding = CustomPrUpdateStrategyDialogBinding.inflate(LayoutInflater.from(context));
 
-	    View view = binding.getRoot();
-	    materialAlertDialogBuilder.setView(view);
+		View view = binding.getRoot();
+		materialAlertDialogBuilder.setView(view);
 
-	    AlertDialog dialog = materialAlertDialogBuilder.show();
+		AlertDialog dialog = materialAlertDialogBuilder.show();
 
-	    binding.updatePullMerge.setOnClickListener((v) -> {
-		    PullRequestActions.updatePr(context, repoOwner, repo, issueNumber, false);
-		    dialog.dismiss();
-	    });
-	    binding.updatePullRebase.setOnClickListener((v) -> {
-		    PullRequestActions.updatePr(context, repoOwner, repo, issueNumber, true);
-		    dialog.dismiss();
-	    });
-    }
+		binding.updatePullMerge.setOnClickListener((v) -> {
+			PullRequestActions.updatePr(context, repoOwner, repo, issueNumber, false);
+			dialog.dismiss();
+		});
+		binding.updatePullRebase.setOnClickListener((v) -> {
+			PullRequestActions.updatePr(context, repoOwner, repo, issueNumber, true);
+			dialog.dismiss();
+		});
+	}
+
 }

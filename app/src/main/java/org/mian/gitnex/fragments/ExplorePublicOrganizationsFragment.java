@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
@@ -32,12 +31,12 @@ import retrofit2.Response;
 
 public class ExplorePublicOrganizationsFragment extends Fragment {
 
+	private final String TAG = "PublicOrganizations";
 	private FragmentOrganizationsBinding fragmentPublicOrgBinding;
 	private List<Organization> organizationsList;
 	private OrganizationsListAdapter adapter;
 	private Context context;
 	private int pageSize;
-	private final String TAG = "PublicOrganizations";
 	private int resultLimit;
 
 	@Nullable
@@ -60,6 +59,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 
 		adapter = new OrganizationsListAdapter(requireContext(), organizationsList);
 		adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
+
 			@Override
 			public void onLoadMore() {
 				fragmentPublicOrgBinding.recyclerView.post(() -> {
@@ -71,9 +71,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 			}
 		});
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(fragmentPublicOrgBinding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		fragmentPublicOrgBinding.recyclerView.setHasFixedSize(true);
-		fragmentPublicOrgBinding.recyclerView.addItemDecoration(dividerItemDecoration);
 		fragmentPublicOrgBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		fragmentPublicOrgBinding.recyclerView.setAdapter(adapter);
 
@@ -84,9 +82,9 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 
 	private void loadInitial(int resultLimit) {
 
-		Call<List<Organization>> call = RetrofitClient
-			.getApiInterface(context).orgGetAll(Constants.publicOrganizationsPageInit, resultLimit);
+		Call<List<Organization>> call = RetrofitClient.getApiInterface(context).orgGetAll(Constants.publicOrganizationsPageInit, resultLimit);
 		call.enqueue(new Callback<List<Organization>>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 				if(response.isSuccessful()) {
@@ -124,6 +122,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 		fragmentPublicOrgBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<List<Organization>> call = RetrofitClient.getApiInterface(context).orgGetAll(page, resultLimit);
 		call.enqueue(new Callback<List<Organization>>() {
+
 			@Override
 			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
 				if(response.isSuccessful()) {
@@ -152,4 +151,5 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 			}
 		});
 	}
+
 }

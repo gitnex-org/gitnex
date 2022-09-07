@@ -18,12 +18,12 @@ import java.util.List;
  * @author opyale
  */
 
-public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMembersByOrgPreviewAdapter.ViewHolder> {
+public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<OrganizationTeamMembersPreviewAdapter.ViewHolder> {
 
 	private final Context context;
 	private final List<User> userData;
 
-	public TeamMembersByOrgPreviewAdapter(Context context, List<User> userInfo) {
+	public OrganizationTeamMembersPreviewAdapter(Context context, List<User> userInfo) {
 		this.context = context;
 		this.userData = userInfo;
 	}
@@ -31,7 +31,7 @@ public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMem
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(context).inflate(R.layout.list_members_by_org_preview, parent, false);
+		View v = LayoutInflater.from(context).inflate(R.layout.list_organization_members_preview, parent, false);
 		return new ViewHolder(v);
 	}
 
@@ -39,11 +39,7 @@ public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMem
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		User userInfo = userData.get(position);
 
-		PicassoService.getInstance(context).get()
-			.load(userInfo.getAvatarUrl())
-			.placeholder(R.drawable.loader_animated)
-			.transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 3), 0))
-			.resize(120, 120)
+		PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 3), 0)).resize(120, 120)
 			.centerCrop().into(holder.avatar);
 	}
 
@@ -60,5 +56,7 @@ public class TeamMembersByOrgPreviewAdapter extends RecyclerView.Adapter<TeamMem
 			super(itemView);
 			avatar = itemView.findViewById(R.id.avatar);
 		}
+
 	}
+
 }

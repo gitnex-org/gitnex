@@ -8,9 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mian.gitnex.helpers.AppUtil;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author qwerty287
@@ -109,5 +107,6 @@ public class AppUtilTest {
 		assertEquals("https://gitnex.com", AppUtil.changeScheme(Uri.parse("http://gitnex.com"), "https").toString());
 		assertEquals("ssh://codeberg.org/gitnex/GitNex", AppUtil.changeScheme(Uri.parse("http://codeberg.org/gitnex/GitNex"), "ssh").toString());
 	}
+
 }
 

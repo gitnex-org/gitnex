@@ -6,7 +6,7 @@
         <animated-rotate
             android:drawable="@drawable/ic_loader"
             android:pivotX="50%"
-            android:pivotY="50%" />
+            android:pivotY="50%"/>
     </item>
 
 </layer-list>

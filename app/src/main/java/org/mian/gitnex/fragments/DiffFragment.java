@@ -29,15 +29,7 @@ public class DiffFragment extends Fragment {
 	private IssueContext issue;
 	private String type;
 
-	public DiffFragment() {}
-
-	public void setFileDiffView(FileDiffView fileDiffView) {
-		this.fileDiffView = fileDiffView;
-	}
-
-	public void setIssue(IssueContext issue) {
-
-		this.issue = issue;
+	public DiffFragment() {
 	}
 
 	public static DiffFragment newInstance(FileDiffView fileDiffView, IssueContext issue) {
@@ -59,6 +51,15 @@ public class DiffFragment extends Fragment {
 
 	}
 
+	public void setFileDiffView(FileDiffView fileDiffView) {
+		this.fileDiffView = fileDiffView;
+	}
+
+	public void setIssue(IssueContext issue) {
+
+		this.issue = issue;
+	}
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -67,7 +68,8 @@ public class DiffFragment extends Fragment {
 
 		if(Objects.equals(type, "pull")) {
 			binding.close.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, ((DiffActivity) requireActivity()).fragment).commit());
-		} else {
+		}
+		else {
 			binding.close.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, CommitDetailFragment.newInstance()).commit());
 		}
 
@@ -78,4 +80,5 @@ public class DiffFragment extends Fragment {
 		return binding.getRoot();
 
 	}
+
 }

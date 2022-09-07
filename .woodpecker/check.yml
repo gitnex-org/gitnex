@@ -1,6 +1,7 @@
 pipeline:
   author-header:
     image: qwerty287/woodpecker-regex-check
+    group: check
     settings:
       pattern: "*.java"
       regex: " \\\\* \\\\@author [\\\\S\\\\s]+"
@@ -8,3 +9,12 @@ pipeline:
 
   style:
     image: qwerty287/woodpecker-intellij-formatter
+    group: check
+    settings:
+      file_pattern: "*.java"
+      path: "app/"
+
+  test:
+    image: alvrme/alpine-android:android-31-jdk11
+    commands:
+      - ./gradlew test
