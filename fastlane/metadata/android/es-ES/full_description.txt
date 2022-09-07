@@ -1,45 +1,32 @@
-GitNex es un cliente para Android de código abierto para repositorios Git en GItea. Gitea es una rama de Gogs administrador por la comunidad, de código ligero escrito en Go.
+GitNex es un cliente para Android de código abierto para repositorios Git en Gitea. Gitea es una rama de Gogs administrado por la comunidad, es una solución de alojamiento de código escrito en Go.
 
 # Características
 
 - Soporte para varias cuentas
 - Buscador de archivos y directorios
 - Visor de archivos
-- Crear archivos
-- Inicio de sesión por Token
-- Fusionar Pull Request
-- Código sin conexión (caché)
-- Explorar repositorios
-- Vista diferencial de los archivos de PR para los repositorios públicos
+- Crear archivos/incidencias/PRs/wikis/hitos/lanzamientos/etiquetas
+- Lista de Pull Requests
 - Lista de repositorios
 - Lista de organizaciones
-- Crear nuevo repositorio u organización
-- Busca y filtra entre repositorios, organizaciones o incidencias
-- Vista de perfil
 - Lista de incidencias
-- Comentarios de las incidencias
-- Comentarios en incidencias
-- Crear nueva incidencia, con múltiples asignaciones, etiquetas e hitos
-- Crear etiquetas
-- Editar y eliminar etiquetas
+- Lista de etiquetas
 - Lista de hitos
-- Crear nuevo hito
-- Lista de ramas
-- Lanzamientos con descarga de código fuente
-- Vista de colaboradores en el repositorio
+- Listas de lanzamientos
+- Páginas Wiki
+- Modo sin conexión
+- Explorar repositorios/incidencias/organizaciones/usuarios
+- Vista de perfil
 - Soporte para Markdown
 - Soporte para emoticonos
 - Muy configurable
-- Compatiblidad con instalaciones locales http
 - Soporte 2FA OTP
 - Notificaciones
 - Borradores
-- Cambio de ramas en el explorador de archivos
 - Commits del repositorio
 - Soporte para certificados autofirmados
-- Gestor de temas
-- Eliminar comentarios
-- Configuración del caché en los ajustes
+- Temas
+- y mucho más...
 
 Más detalles en - https://codeberg.org/gitnex/GitNex/wiki/Features
 
