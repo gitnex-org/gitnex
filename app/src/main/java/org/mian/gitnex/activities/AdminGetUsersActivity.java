@@ -66,6 +66,8 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 		fetchDataAsync();
 	}
 
+	;
+
 	private void fetchDataAsync() {
 
 		AdminGetUsersViewModel adminUsersModel = new ViewModelProvider(this).get(AdminGetUsersViewModel.class);

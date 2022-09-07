@@ -14,7 +14,7 @@
         android:text="@string/tabPullRequests"
         android:textColor="@color/lightGray"
         android:textSize="@dimen/dimen16sp"
-        app:textAllCaps="true" />
+        app:textAllCaps="true"/>
 
     <TextView
         android:id="@+id/counterBadgePull"
@@ -24,6 +24,6 @@
         android:background="@drawable/shape_badge_background"
         android:text="@string/infoTabRepoZero"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/dimen12sp" />
+        android:textSize="@dimen/dimen12sp"/>
 
 </LinearLayout>

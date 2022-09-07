@@ -31,7 +31,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -41,7 +41,7 @@
                 android:maxLines="1"
                 android:text="@string/settingsLanguageHeaderText"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -65,7 +65,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsLanguageSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/tvLanguageSelected"
@@ -75,7 +75,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsLanguageSelectedHeaderDefault"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -91,6 +91,6 @@
         android:paddingBottom="@dimen/dimen16dp"
         android:text="@string/settingsHelpTranslateText"
         android:textColor="@color/lightBlue"
-        android:textSize="@dimen/dimen16sp" />
+        android:textSize="@dimen/dimen16sp"/>
 
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,9 +29,9 @@
                 android:id="@+id/members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:scrollbars="none"
                 android:numColumns="2"
-                android:scrollbars="none" />
+                android:gravity="center"/>
 
         </FrameLayout>
 
@@ -44,7 +44,7 @@
             android:text="@string/noDataFound"
             android:textColor="?attr/primaryTextColor"
             android:textSize="18sp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </LinearLayout>
 

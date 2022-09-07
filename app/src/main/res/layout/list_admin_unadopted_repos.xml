@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="@dimen/dimen4dp"
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/repo_name"
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen6dp"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp" />
+                android:textSize="@dimen/dimen16sp"/>
 
         </LinearLayout>
 

@@ -5,23 +5,23 @@
     android:id="@+id/relativeLayoutFrameIssuesList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:paddingBottom="@dimen/dimen4dp"
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/infoSection"
@@ -31,19 +31,19 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewFilledStyle"
                     android:layout_width="@dimen/dimen24dp"
                     android:layout_height="@dimen/dimen24dp"
+                    style="?attr/materialCardViewFilledStyle"
+                    app:cardElevation="@dimen/dimen0dp"
                     android:layout_marginEnd="@dimen/dimen12dp"
-                    app:cardCornerRadius="@dimen/dimen12dp"
-                    app:cardElevation="@dimen/dimen0dp">
+                    app:cardCornerRadius="@dimen/dimen12dp">
 
                     <ImageView
                         android:id="@+id/assigneeAvatar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/generalImgContentText"
-                        tools:src="@tools:sample/avatars" />
+                        tools:src="@tools:sample/avatars"/>
 
                 </com.google.android.material.card.MaterialCardView>
 

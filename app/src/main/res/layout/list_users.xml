@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical"
     android:paddingTop="@dimen/dimen4dp"
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen12dp">
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="@dimen/dimen24dp"
                 android:layout_height="@dimen/dimen24dp"
+                style="?attr/materialCardViewFilledStyle"
+                app:cardElevation="@dimen/dimen0dp"
                 android:layout_marginEnd="@dimen/dimen12dp"
-                app:cardCornerRadius="@dimen/dimen12dp"
-                app:cardElevation="@dimen/dimen0dp">
+                app:cardCornerRadius="@dimen/dimen12dp">
 
                 <ImageView
                     android:id="@+id/userAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/generalImgContentText"
-                    android:src="@drawable/ic_android" />
+                    android:src="@drawable/ic_android"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -51,7 +51,7 @@
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/userName"
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen14sp"/>
 
             </LinearLayout>
 

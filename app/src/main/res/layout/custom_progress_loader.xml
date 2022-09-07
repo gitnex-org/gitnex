@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:minWidth="360dp"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
 </LinearLayout>

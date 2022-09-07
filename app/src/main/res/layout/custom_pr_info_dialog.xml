@@ -17,14 +17,14 @@
             android:layout_marginBottom="4dp"
             android:text="@string/pullFromBranch"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/headBranch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -41,14 +41,14 @@
             android:layout_marginBottom="4dp"
             android:text="@string/mergeIntoBranch"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/baseBranch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

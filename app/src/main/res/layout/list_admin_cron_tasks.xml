@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="@dimen/dimen4dp"
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/cronTasksRun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dimen16dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginEnd="@dimen/dimen16dp">
 
                 <ImageView
                     android:id="@+id/runTask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:contentDescription="@string/adminCron"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_play" />
+                    android:contentDescription="@string/adminCron"
+                    android:src="@drawable/ic_play"/>
 
             </LinearLayout>
 
@@ -51,7 +51,7 @@
                     android:layout_marginBottom="@dimen/dimen6dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:textSize="@dimen/dimen16sp"/>
 
             </LinearLayout>
 

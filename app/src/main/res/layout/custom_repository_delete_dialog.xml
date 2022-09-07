@@ -14,7 +14,7 @@
         android:text="@string/repoSettingsDelete"
         android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/description"
@@ -23,7 +23,7 @@
         android:layout_marginBottom="16dp"
         android:text="@string/repoSettingsDeleteDescription"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/repoNameForDeletionLayout"
@@ -44,7 +44,7 @@
             android:textColor="?attr/inputTextColor"
             android:textColorHighlight="?attr/hintColor"
             android:textColorHint="?attr/hintColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="gone"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/delete"
@@ -66,7 +66,7 @@
         android:text="@string/menuDeleteText"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 </LinearLayout>
 

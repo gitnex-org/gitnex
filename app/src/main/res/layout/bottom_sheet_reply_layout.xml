@@ -35,7 +35,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/close"
                     android:focusable="true"
-                    android:src="@drawable/ic_close" />
+                    android:src="@drawable/ic_close"/>
 
                 <TextView
                     android:id="@+id/toolbar_title"
@@ -46,7 +46,7 @@
                     android:maxLines="2"
                     android:text="@string/commentButtonText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
                 <ImageButton
                     android:id="@+id/drafts"
@@ -58,7 +58,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/close"
                     android:focusable="true"
-                    android:src="@drawable/ic_drafts" />
+                    android:src="@drawable/ic_drafts"/>
 
                 <ImageButton
                     android:id="@+id/send"
@@ -72,7 +72,7 @@
                     android:contentDescription="@string/close"
                     android:enabled="false"
                     android:focusable="true"
-                    android:src="@drawable/ic_send" />
+                    android:src="@drawable/ic_send"/>
 
             </LinearLayout>
 
@@ -100,7 +100,7 @@
             android:textColor="?attr/inputTextColor"
             android:textColorHighlight="?attr/primaryTextColor"
             android:textColorHint="?attr/primaryBackgroundColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/drafts_hint"
@@ -111,7 +111,7 @@
             android:textColor="?attr/hintColor"
             android:textSize="12sp"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible"/>
 
     </LinearLayout>
 

@@ -7,6 +7,6 @@
         android:icon="@drawable/ic_markdown"
         android:orderInCategory="0"
         android:title="@string/strMarkdown"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
 </menu>

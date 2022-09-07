@@ -32,7 +32,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -42,7 +42,7 @@
                 android:maxLines="1"
                 android:text="@string/settingsAppearanceHeader"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -67,7 +67,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/themeSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/themeSelected"
@@ -77,7 +77,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/themeSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -100,7 +100,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsLightThemeTimeSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/lightThemeSelectedTime"
@@ -110,7 +110,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsThemeTimeSelectedHint"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -133,7 +133,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsDarkThemeTimeSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/darkThemeSelectedTime"
@@ -143,7 +143,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsThemeTimeSelectedHint"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -166,7 +166,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsCustomFontHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/customFontSelected"
@@ -176,7 +176,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsCustomFontDefault"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -199,7 +199,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsDateTimeHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/tvDateTimeSelected"
@@ -209,7 +209,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsDateTimeHeaderDefault"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -230,7 +230,7 @@
             android:layout_marginEnd="@dimen/dimen48dp"
             android:text="@string/settingsCounterBadges"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchCounterBadge"
@@ -242,7 +242,7 @@
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
             android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp" />
+            android:switchMinWidth="@dimen/dimen56dp"/>
 
     </RelativeLayout>
 
@@ -259,15 +259,15 @@
             android:id="@+id/label_title_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
+            android:weightSum="100"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvLabelsInListHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen24dp"
                 android:layout_weight="90"
+                android:layout_marginStart="@dimen/dimen24dp"
                 android:text="@string/settingsLabelsInListHeader"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen18sp" />

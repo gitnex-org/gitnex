@@ -879,8 +879,4 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		}
 
 	}
-
-
-
-
 }

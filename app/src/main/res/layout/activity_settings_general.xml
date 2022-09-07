@@ -32,7 +32,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbarTitle"
@@ -42,7 +42,7 @@
                 android:maxLines="1"
                 android:text="@string/settingsGeneralHeader"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -67,7 +67,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/generalDeepLinkDefaultScreen"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/generalDeepLinkDefaultScreenHintText"
             android:textColor="?attr/hintColor"
-            android:textSize="@dimen/dimen12sp" />
+            android:textSize="@dimen/dimen12sp"/>
 
         <TextView
             android:id="@+id/generalDeepLinkSelected"
@@ -86,7 +86,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/generalDeepLinkSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -109,7 +109,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsHomeScreenHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/homeScreenSelected"
@@ -119,7 +119,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsHomeScreenSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -140,7 +140,7 @@
             android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/useCustomTabs"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchTabs"
@@ -152,7 +152,7 @@
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
             android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp" />
+            android:switchMinWidth="@dimen/dimen56dp"/>
 
     </RelativeLayout>
 

@@ -10,24 +10,24 @@
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/labelView"
-                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="?attr/materialCardViewFilledStyle"
                 app:cardCornerRadius="@dimen/dimen16dp"
                 app:cardElevation="@dimen/dimen0dp"
                 app:contentPaddingBottom="@dimen/dimen4dp"
@@ -49,8 +49,8 @@
                         android:layout_marginBottom="@dimen/dimen4dp"
                         android:layout_weight="0"
                         android:contentDescription="@string/generalImgContentText"
-                        app:srcCompat="@drawable/ic_tag"
-                        app:tint="@color/colorWhite" />
+                        app:tint="@color/colorWhite"
+                        app:srcCompat="@drawable/ic_tag"/>
 
                     <TextView
                         android:id="@+id/labelName"
@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/dimen14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -68,16 +68,16 @@
             <androidx.legacy.widget.Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/labelsOptionsMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/labelMenuContentDesc"
-                android:src="@drawable/ic_dotted_menu_horizontal" />
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_dotted_menu_horizontal"/>
 
         </LinearLayout>
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -26,22 +27,22 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        app:indicatorColor="?attr/progressIndicatorColor"/>
 
     <TextView
         android:id="@+id/noDataOrg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp"
-        android:gravity="center"
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
+        android:gravity="center"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addNewOrganization"
@@ -49,11 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:backgroundTint="?attr/fabColor"
-        android:contentDescription="@string/pageTitleCreateOrganization"
         android:text="@string/pageTitleCreateOrganization"
+        android:contentDescription="@string/pageTitleCreateOrganization"
         android:textColor="@color/colorWhite"
-        app:icon="@drawable/ic_add"
-        app:iconTint="@color/colorWhite" />
+        android:backgroundTint="?attr/fabColor"
+        app:iconTint="@color/colorWhite"
+        app:icon="@drawable/ic_add"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

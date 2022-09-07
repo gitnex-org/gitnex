@@ -32,7 +32,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbarTitle"
@@ -42,14 +42,13 @@
                 android:maxLines="1"
                 android:text="@string/repoSettingsTitle"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <ScrollView android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor">
 
@@ -71,12 +70,12 @@
                 android:text="@string/repoSettingsEditProperties"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen16sp"
-                app:drawableStartCompat="@drawable/ic_edit" />
+                app:drawableStartCompat="@drawable/ic_edit"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen1dp"
-                android:background="?attr/dividerColor" />
+                android:background="?attr/dividerColor"/>
 
             <LinearLayout
                 android:id="@+id/transferOwnerFrame"
@@ -100,7 +99,7 @@
                     android:text="@string/repoSettingsTransferOwnership"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    app:drawableStartCompat="@drawable/ic_arrow_up" />
+                    app:drawableStartCompat="@drawable/ic_arrow_up"/>
 
                 <TextView
                     android:id="@+id/transferRepositoryOwnershipHint"
@@ -112,12 +111,12 @@
                     android:paddingBottom="@dimen/dimen16dp"
                     android:text="@string/repoSettingsTransferOwnershipHint"
                     android:textColor="?attr/hintColor"
-                    android:textSize="@dimen/dimen12sp" />
+                    android:textSize="@dimen/dimen12sp"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen1dp"
-                    android:background="?attr/dividerColor" />
+                    android:background="?attr/dividerColor"/>
 
             </LinearLayout>
 
@@ -143,7 +142,7 @@
                     android:text="@string/repoSettingsDelete"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    app:drawableStartCompat="@drawable/ic_delete" />
+                    app:drawableStartCompat="@drawable/ic_delete"/>
 
                 <TextView
                     android:id="@+id/deleteRepositoryHint"
@@ -154,7 +153,7 @@
                     android:paddingEnd="@dimen/dimen16dp"
                     android:text="@string/repoSettingsDeleteHint"
                     android:textColor="?attr/hintColor"
-                    android:textSize="@dimen/dimen12sp" />
+                    android:textSize="@dimen/dimen12sp"/>
 
             </LinearLayout>
 

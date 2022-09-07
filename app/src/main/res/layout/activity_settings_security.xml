@@ -31,7 +31,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -41,7 +41,7 @@
                 android:maxLines="1"
                 android:text="@string/settingsSecurityHeader"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -64,7 +64,7 @@
             android:layout_marginEnd="@dimen/dimen72dp"
             android:text="@string/settingsBiometricHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchBiometric"
@@ -76,7 +76,7 @@
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
             android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp" />
+            android:switchMinWidth="@dimen/dimen56dp"/>
 
     </RelativeLayout>
 
@@ -97,7 +97,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/settingsCertsSelectorHeader"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
@@ -118,7 +118,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeDataSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/cacheSizeDataSelected"
@@ -128,7 +128,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeDataSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -149,7 +149,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeImagesSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/cacheSizeImagesSelected"
@@ -159,7 +159,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/cacheSizeImagesSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
@@ -180,7 +180,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/clearCacheSelectionHeaderText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp" />
+            android:textSize="@dimen/dimen18sp"/>
 
         <TextView
             android:id="@+id/clearCacheSelected"
@@ -190,7 +190,7 @@
             android:layout_marginEnd="@dimen/dimen24dp"
             android:text="@string/clearCacheSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 

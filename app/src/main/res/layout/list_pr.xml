@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayoutFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:paddingBottom="@dimen/dimen4dp"
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/framePrNameStatus"
@@ -31,12 +32,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewFilledStyle"
                     android:layout_width="@dimen/dimen24dp"
                     android:layout_height="@dimen/dimen24dp"
+                    style="?attr/materialCardViewFilledStyle"
+                    app:cardElevation="@dimen/dimen0dp"
                     android:layout_marginEnd="@dimen/dimen12dp"
-                    app:cardCornerRadius="@dimen/dimen12dp"
-                    app:cardElevation="@dimen/dimen0dp">
+                    app:cardCornerRadius="@dimen/dimen12dp">
 
                     <ImageView
                         android:id="@+id/assigneeAvatar"
@@ -58,8 +59,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="top|center_vertical"
-                        android:text="@string/newIssueTitle"
                         android:textAlignment="gravity"
+                        android:text="@string/newIssueTitle"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="@dimen/dimen16sp" />
 
@@ -141,7 +142,7 @@
                         android:layout_marginEnd="@dimen/dimen4dp"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_comment"
-                        app:tint="?attr/iconsColor" />
+                        app:tint="?attr/iconsColor"/>
 
                     <TextView
                         android:id="@+id/prCommentsCount"

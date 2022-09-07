@@ -13,7 +13,7 @@
         android:layout_height="@dimen/dimen36dp"
         android:checked="false"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="@dimen/dimen16sp" />
+        android:textSize="@dimen/dimen16sp"/>
 
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewFilledStyle"
@@ -29,7 +29,7 @@
             android:id="@+id/labelColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/generalImgContentText" />
+            android:contentDescription="@string/generalImgContentText"/>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -41,7 +41,7 @@
         android:paddingTop="@dimen/dimen8dp"
         android:paddingEnd="@dimen/dimen4dp"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="@dimen/dimen16sp" />
+        android:textSize="@dimen/dimen16sp"/>
 
 </RelativeLayout>
 

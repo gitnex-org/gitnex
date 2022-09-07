@@ -11,25 +11,25 @@
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_diff" />
+                app:srcCompat="@drawable/ic_diff"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -47,7 +47,7 @@
                     android:singleLine="true"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen16sp"
-                    tools:text="/src/test1/test2/test3/test4/test.txt" />
+                    tools:text="/src/test1/test2/test3/test4/test.txt"/>
 
                 <TextView
                     android:id="@+id/fileStatistics"
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen12sp"
-                    tools:text="@string/diffStatistics" />
+                    tools:text="@string/diffStatistics"/>
 
             </LinearLayout>
 

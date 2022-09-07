@@ -30,7 +30,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -39,7 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:maxLines="1"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -52,7 +52,7 @@
             app:tabIndicatorFullWidth="true"
             app:tabMode="auto"
             app:tabTextAppearance="@style/customTabLayout"
-            app:tabTextColor="?attr/primaryTextColor" />
+            app:tabTextColor="?attr/primaryTextColor"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -60,6 +60,6 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </LinearLayout>

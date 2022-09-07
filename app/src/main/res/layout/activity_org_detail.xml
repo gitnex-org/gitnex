@@ -31,7 +31,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp" />
+                android:textSize="@dimen/dimen20sp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -50,31 +50,31 @@
                 android:id="@+id/tabItemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tabTextInfo" />
+                android:text="@string/tabTextInfo"/>
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem_repos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/navRepos" />
+                android:text="@string/navRepos"/>
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem_labels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/newIssueLabelsTitle" />
+                android:text="@string/newIssueLabelsTitle"/>
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem_teams"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/orgTabTeams" />
+                android:text="@string/orgTabTeams"/>
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem_members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/orgTabMembers" />
+                android:text="@string/orgTabMembers"/>
 
         </com.google.android.material.tabs.TabLayout>
 
@@ -85,6 +85,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

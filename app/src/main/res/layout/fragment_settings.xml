@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_otp" />
+                    app:srcCompat="@drawable/ic_otp"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -49,7 +50,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/settingsGeneralHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/generalHintText"
@@ -60,7 +61,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/generalHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -68,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -86,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_appearance" />
+                    app:srcCompat="@drawable/ic_appearance"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -104,7 +105,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/settingsAppearanceHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/appearanceHintText"
@@ -115,7 +116,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/appearanceHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -123,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -141,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_drafts" />
+                    app:srcCompat="@drawable/ic_drafts"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -159,7 +160,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/draftsHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/draftsHintText"
@@ -170,7 +171,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/draftsHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -178,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -196,7 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_security" />
+                    app:srcCompat="@drawable/ic_security"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -214,7 +215,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/settingsSecurityHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/securityHintText"
@@ -225,7 +226,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/securityHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -233,7 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -251,7 +252,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_notifications" />
+                    app:srcCompat="@drawable/ic_notifications"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -269,7 +270,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/pageTitleNotifications"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/notificationsHintText"
@@ -280,7 +281,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/notificationsHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -288,7 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -306,7 +307,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_flag" />
+                    app:srcCompat="@drawable/ic_flag"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -324,7 +325,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/settingsLanguageHeaderText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/languagesHintText"
@@ -335,7 +336,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/languagesHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -343,7 +344,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -361,7 +362,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_bug_report" />
+                    app:srcCompat="@drawable/ic_bug_report"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -379,7 +380,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/reportViewerHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/reportsHintText"
@@ -390,7 +391,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/reportsHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -398,7 +399,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -416,7 +417,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_like" />
+                    app:srcCompat="@drawable/ic_like"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -434,7 +435,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/navRate"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/rateAppHintText"
@@ -445,7 +446,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/rateAppHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -465,7 +466,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_info" />
+                    app:srcCompat="@drawable/ic_info"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -483,7 +484,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/navAbout"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/aboutAppHintText"
@@ -494,7 +495,7 @@
                         android:paddingEnd="12dp"
                         android:text="@string/aboutAppHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 

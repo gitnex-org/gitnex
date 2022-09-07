@@ -4,23 +4,23 @@
     android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:paddingBottom="@dimen/dimen4dp"
+    android:orientation="horizontal">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen12dp">
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_pull_request" />
+                    app:srcCompat="@drawable/ic_pull_request"/>
 
             </LinearLayout>
 
@@ -50,54 +50,54 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/repository"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textColor="?attr/primaryTextColor" />
+                    android:textColor="?attr/primaryTextColor"/>
 
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/pinnedVertical"
                 android:layout_width="wrap_content"
+                android:visibility="gone"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
                 android:layout_marginStart="10dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/generalImgContentText"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_pin" />
+                app:srcCompat="@drawable/ic_pin"/>
 
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/pinned"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_weight="0.5"
                     android:layout_gravity="top"
                     android:layout_marginStart="10dp"
-                    android:layout_weight="0.5"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_pin" />
+                    app:srcCompat="@drawable/ic_pin"/>
 
                 <ImageView
                     android:id="@+id/more"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_weight="0.5"
                     android:layout_gravity="bottom"
                     android:layout_marginStart="10dp"
-                    android:layout_weight="0.5"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
+                    app:srcCompat="@drawable/ic_dotted_menu_horizontal"/>
 
             </LinearLayout>
 

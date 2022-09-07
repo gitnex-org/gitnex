@@ -31,7 +31,7 @@
                     android:gravity="center"
                     android:text="@string/pageTitleNotifications"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
@@ -56,7 +56,7 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:drawableTopCompat="@drawable/ic_pin"
-                    app:layout_alignSelf="flex_start" />
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/markRead"
@@ -69,7 +69,7 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:drawableTopCompat="@drawable/ic_unwatch"
-                    app:layout_alignSelf="flex_start" />
+                    app:layout_alignSelf="flex_start"/>
 
                 <TextView
                     android:id="@+id/markUnread"
@@ -82,7 +82,7 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:drawableTopCompat="@drawable/ic_watchers"
-                    app:layout_alignSelf="flex_start" />
+                    app:layout_alignSelf="flex_start"/>
 
             </com.google.android.flexbox.FlexboxLayout>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical">
@@ -15,6 +16,6 @@
         android:paddingEnd="@dimen/dimen4dp"
         android:singleLine="true"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/dimen12sp" />
+        android:textSize="@dimen/dimen12sp"/>
 
 </LinearLayout>

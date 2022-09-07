@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,7 +13,7 @@
         android:padding="16dp"
         android:text="@string/selectUpdateStrategy"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updatePullMerge"
@@ -24,7 +25,7 @@
         android:layout_marginBottom="@dimen/dimen8dp"
         android:text="@string/updateStrategyMerge"
         android:textColor="@color/colorWhite"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updatePullRebase"
@@ -36,6 +37,6 @@
         android:layout_marginBottom="@dimen/dimen8dp"
         android:text="@string/updateStrategyRebase"
         android:textColor="@color/colorWhite"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 </LinearLayout>
