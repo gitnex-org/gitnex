@@ -129,6 +129,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 		else if(fragmentById instanceof MostVisitedReposFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
 		}
+		else if(fragmentById instanceof NotesFragment) {
+			toolbarTitle.setText(getResources().getString(R.string.navNotes));
+		}
 		else if(fragmentById instanceof DraftsFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 		}
@@ -394,6 +397,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MostVisitedReposFragment()).commit();
 					navigationView.setCheckedItem(R.id.nav_most_visited);
 					break;
+				case 10:
+					toolbarTitle.setText(getResources().getString(R.string.navNotes));
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotesFragment()).commit();
+					navigationView.setCheckedItem(R.id.nav_notes);
+					break;
 
 				default:
 					toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
@@ -499,7 +507,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 				}
 				break;
 		}
-
 	}
 
 	@Override
@@ -583,6 +590,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 			toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
 			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MostVisitedReposFragment()).commit();
+		}
+		else if(id == R.id.nav_notes) {
+
+			toolbarTitle.setText(getResources().getString(R.string.navNotes));
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotesFragment()).commit();
 		}
 
 		drawer.closeDrawer(GravityCompat.START);
@@ -706,7 +718,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 			}
 		});
-
 	}
 
 	private void getNotificationsCount() {
@@ -747,5 +758,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 	public void setFragmentRefreshListenerMyIssues(FragmentRefreshListener fragmentRefreshListener) {
 		this.fragmentRefreshListenerMyIssues = fragmentRefreshListener;
 	}
-
 }

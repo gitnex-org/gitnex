@@ -63,6 +63,7 @@
         <item>@string/pageTitleNotifications</item>
         <item>@string/navMyIssues</item>
         <item>@string/navMostVisited</item>
+        <item>@string/navNotes</item>
     </string-array>
 
     <string-array name="linkHandlerDefaultScreen">
