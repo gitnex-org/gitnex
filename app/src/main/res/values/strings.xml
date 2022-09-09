@@ -825,6 +825,8 @@
     <string name="timelineTimeTrackingStart">%s started working %s</string>
     <string name="timelineTimeTrackingStop">%s stopped time tracking %s</string>
     <string name="timelineTimeTrackingCancel">%s cancelled time tracking %s</string>
+    <string name="timelineTimeTrackingAddManualTime">%s added spent time %s %s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%s deleted spent time %s %s</string>
     <string name="timelineChangeIssueRef">%s added reference %s %s</string>
     <string name="timelineRefIssue">%s referenced this issue in #%d %s</string>
     <string name="timelineRefPr">%s referenced this pull request in #%d %s</string>

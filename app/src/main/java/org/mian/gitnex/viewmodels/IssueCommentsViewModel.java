@@ -43,9 +43,13 @@ public class IssueCommentsViewModel extends ViewModel {
 			public void onResponse(@NonNull Call<List<TimelineComment>> call, @NonNull Response<List<TimelineComment>> response) {
 
 				if(response.isSuccessful()) {
-					issueComments.postValue(response.body());
-					if(onLoadingFinished != null) {
-						onLoadingFinished.run();
+
+					if(response.body() != null) {
+
+						issueComments.postValue(response.body());
+						if(onLoadingFinished != null) {
+							onLoadingFinished.run();
+						}
 					}
 				}
 				else {
@@ -78,7 +82,13 @@ public class IssueCommentsViewModel extends ViewModel {
 						assert list != null;
 						assert response.body() != null;
 
-						list.addAll(response.body());
+						if(response.body().size() != 0) {
+							list.addAll(response.body());
+							adapter.updateList(list);
+						}
+						else {
+							adapter.setMoreDataAvailable(false);
+						}
 					}
 					else {
 						adapter.setMoreDataAvailable(false);

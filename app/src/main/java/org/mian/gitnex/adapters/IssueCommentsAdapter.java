@@ -13,8 +13,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -68,7 +70,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private final IssueContext issue;
 	private List<TimelineComment> issuesComments;
 	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
+	private boolean isLoading = false, isMoreDataAvailable = true, timelineLastView = false;
 
 	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<TimelineComment> issuesCommentsMain, FragmentManager fragmentManager, Runnable onInteractedListener, IssueContext issue) {
 
@@ -144,6 +146,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.onLoadMore();
+			timelineLastView = true;
 		}
 
 		((IssueCommentsAdapter.IssueCommentViewHolder) holder).bindData(issuesComments.get(position));
@@ -169,7 +172,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	public void updateList(List<TimelineComment> list) {
 		issuesComments = list;
-		notifyDataChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
 	}
 
 	@Override
@@ -179,12 +183,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	@Override
 	public int getItemCount() {
-		if(issuesComments != null) {
-			return issuesComments.size();
-		}
-		else {
-			return 0;
-		}
+		return issuesComments.size();
 	}
 
 	public interface OnLoadMoreListener {
@@ -201,12 +200,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private final RecyclerView comment;
 		private final LinearLayout commentReactionBadges;
 		private final MaterialCardView commentView;
-		private final LinearLayout timelineView;
+		private final RelativeLayout timelineView;
 		private final LinearLayout timelineData;
 		private final ImageView timelineIcon;
 		private String userLoginId;
 		private TimelineComment issueComment;
 		private final LinearLayout timelineDividerView;
+		private final FrameLayout timelineLine2;
 
 		private IssueCommentViewHolder(View view) {
 
@@ -225,6 +225,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			timelineData = view.findViewById(R.id.timeline_data);
 			timelineIcon = view.findViewById(R.id.timeline_icon);
 			timelineDividerView = view.findViewById(R.id.timeline_divider_view);
+			timelineLine2 = view.findViewById(R.id.timeline_line_2);
 
 			menu.setOnClickListener(v -> {
 
@@ -381,6 +382,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			userLoginId = timelineComment.getUser().getLogin();
 
 			this.issueComment = timelineComment;
+
+			if(timelineLastView) {
+				timelineLine2.setVisibility(View.GONE);
+			}
 
 			StringBuilder informationBuilder = null;
 			if(issueComment.getCreatedAt() != null) {
@@ -669,6 +674,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				}
 				else if(issueComment.getType().equalsIgnoreCase("cancel_tracking")) {
 					start.setText(context.getString(R.string.timelineTimeTrackingCancel, issueComment.getUser().getLogin(), informationBuilder));
+					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
+				}
+				else if(issueComment.getType().equalsIgnoreCase("add_time_manual")) {
+					start.setText(context.getString(R.string.timelineTimeTrackingAddManualTime, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
+				}
+				else if(issueComment.getType().equalsIgnoreCase("delete_time_manual")) {
+					start.setText(context.getString(R.string.timelineTimeTrackingDeleteManualTime, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);

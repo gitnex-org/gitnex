@@ -125,11 +125,38 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/timeline_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/timeline_divider_view_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dimen12dp"
+            android:paddingEnd="@dimen/dimen0dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/timeline_line_2"
+                android:layout_width="@dimen/dimen2dp"
+                android:layout_height="match_parent"
+                android:background="?attr/colorPrimary" />
+
+            <LinearLayout
+                android:id="@+id/timeline_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="@dimen/dimen16dp"
+                android:paddingEnd="@dimen/dimen0dp"
+                android:layout_marginStart="@dimen/dimen6dp"
+                android:layout_marginEnd="@dimen/dimen4dp"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -159,15 +186,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/timeline_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dimen6dp"
-            android:layout_marginEnd="@dimen/dimen4dp"
-            android:orientation="horizontal" />
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
