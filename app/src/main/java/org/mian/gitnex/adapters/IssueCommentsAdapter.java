@@ -9,6 +9,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -408,7 +411,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			// label view in timeline
 			if(issueComment.getType().equalsIgnoreCase("label")) {
 
-				ImageView labelsView = new ImageView(context);
 				int color = Color.parseColor("#" + issueComment.getLabel().getColor());
 				int height = AppUtil.getPixelsFromDensity(context, 20);
 				int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
@@ -417,26 +419,31 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					.width(LabelWidthCalculator.calculateLabelWidth(issueComment.getLabel().getName(), Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 10))).height(height).endConfig()
 					.buildRoundRect(issueComment.getLabel().getName(), color, AppUtil.getPixelsFromDensity(context, 18));
 
-				labelsView.setImageDrawable(drawable);
-
-				TextView start = new TextView(context);
-				TextView end = new TextView(context);
+				TextView textView = new TextView(context);
+				String startText;
+				String endText = context.getString(R.string.timelineLabelEnd, informationBuilder);
 
 				if(issueComment.getBody().equals("")) {
-					start.setText(context.getString(R.string.timelineRemovedLabelStart, issueComment.getUser().getLogin()));
+					startText = context.getString(R.string.timelineRemovedLabelStart, issueComment.getUser().getLogin());
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				else {
-					start.setText(context.getString(R.string.timelineAddedLabelStart, issueComment.getUser().getLogin()));
+					startText = context.getString(R.string.timelineAddedLabelStart, issueComment.getUser().getLogin());
 				}
-				end.setText(context.getString(R.string.timelineLabelEnd, informationBuilder));
-				end.setTextSize(fontSize);
-				start.setTextSize(fontSize);
 
 				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_tag));
-				timelineData.addView(start);
-				timelineData.addView(labelsView);
-				timelineData.addView(end);
+
+				SpannableString spannableString = new SpannableString(startText + " " + endText);
+
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), 60);
+				ImageSpan image = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+
+				new Handler().postDelayed(() -> {
+
+					spannableString.setSpan(image, startText.length(), startText.length() + 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+					textView.setText(spannableString);
+					timelineData.addView(textView);
+				}, 250);
 			}
 			// pull/push/commit data view in timeline
 			else if(issueComment.getType().equalsIgnoreCase("pull_push")) {
