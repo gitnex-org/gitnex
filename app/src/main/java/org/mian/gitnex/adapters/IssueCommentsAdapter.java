@@ -435,8 +435,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				SpannableString spannableString = new SpannableString(startText + " " + endText);
 
-				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), 60);
-				ImageSpan image = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+				ImageSpan image = new ImageSpan(drawable);
 
 				new Handler().postDelayed(() -> {
 
