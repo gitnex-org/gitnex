@@ -1,5 +1,5 @@
 3.2.0-rc1
 
-3.2.0 RC1 release brings create pr, repository settings for admins and many more new features.
+El lanzamiento 3.2.0 RC1 nos trae creaciones de PR, ajustes de repositorio para administradores y varias características más.
 
-Detailed release notes will be published with stable release.
+Las notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.
