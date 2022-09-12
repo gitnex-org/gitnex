@@ -529,7 +529,7 @@
     <string name="switchAccountSuccess">Auf Konto umgeschaltet: %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Benachrichtigungen</string>
-    <string name="noDataNotifications">Keine Nachrichten 🚀</string>
+    <string name="noDataNotifications">Keine Benachrichtigungen 🚀</string>
     <string name="notificationsPollingHeaderText">Benachrichtigungsverzögerung</string>
     <string name="pollingDelaySelectedText">%d Minuten</string>
     <string name="pollingDelayDialogHeaderText">Abfrageverzögerung auswählen</string>
