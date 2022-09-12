@@ -391,7 +391,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			this.issueComment = timelineComment;
 
 			if(timelineLastView) {
-				timelineLine2.setVisibility(View.GONE);
+				//timelineLine2.setVisibility(View.GONE);
 			}
 
 			StringBuilder informationBuilder = null;
