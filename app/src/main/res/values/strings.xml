@@ -804,10 +804,11 @@
     <string name="timelineMilestoneRemoved">%s removed this from the %s milestone %s</string>
     <string name="timelineStatusClosedIssue">%s closed this issue %s</string>
     <string name="timelineStatusReopenedIssue">%s reopened this issue %s</string>
-    <string name="timelineStatusRefIssue">%s referenced this issue from a commit %s %s</string>
+    <string name="timelineStatusRefIssue">%s referenced this issue from a \u0020</string>
     <string name="timelineStatusClosedPr">%s closed this pull request %s</string>
     <string name="timelineStatusMergedPr">%s merged this pull request %s</string>
-    <string name="timelineStatusRefPr">%s referenced this issue from a commit %s %s</string>
+    <string name="timelineStatusRefPr">%s referenced this pull request from a\u0020</string>
+    <string name="commitText">commit</string>
     <string name="timelineStatusReopenedPr">%s reopened this pull request %s</string>
     <string name="timelineReviewRequest">%s requested review from %s %s</string>
     <string name="timelineChangeTitle">%s changed title from %s to %s %s</string>

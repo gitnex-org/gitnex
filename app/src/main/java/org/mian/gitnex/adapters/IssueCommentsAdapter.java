@@ -31,10 +31,15 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
+import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.TimelineComment;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.DiffActivity;
+import org.mian.gitnex.activities.CommitDetailActivity;
+import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -74,6 +79,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private List<TimelineComment> issuesComments;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true, timelineLastView = false;
+	private Intent intent;
 
 	public IssueCommentsAdapter(Context ctx, Bundle bundle, List<TimelineComment> issuesCommentsMain, FragmentManager fragmentManager, Runnable onInteractedListener, IssueContext issue) {
 
@@ -155,9 +161,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		((IssueCommentsAdapter.IssueCommentViewHolder) holder).bindData(issuesComments.get(position));
 	}
 
-	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
-		notifyDataSetChanged();
+		notifyItemInserted(issuesComments.size());
 		isLoading = false;
 		loadMoreListener.onLoadFinished();
 	}
@@ -175,8 +180,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	public void updateList(List<TimelineComment> list) {
 		issuesComments = list;
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
+		notifyDataChanged();
 	}
 
 	@Override
@@ -450,13 +454,59 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				String commitString = context.getString(R.string.timelineAddedCommit, issueComment.getUser().getLogin()) + "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null) + "'>" + context.getResources().getString(R.string.commits).toLowerCase() + "</font> " + informationBuilder;
+				JSONObject commitsObj = null;
+				try {
+					commitsObj = new JSONObject(issueComment.getBody());
+				}
+				catch(JSONException ignored) {}
+
+				JSONArray commitsShaArray = null;
+				try {
+					commitsShaArray = Objects.requireNonNull(commitsObj).getJSONArray("commit_ids");
+				}
+				catch(JSONException ignored) {}
+
+				String commitText = context.getResources().getString(R.string.commits).toLowerCase();
+				if(Objects.requireNonNull(commitsShaArray).length() == 1) {
+					commitText = context.getResources().getString(R.string.commitText).toLowerCase();
+				}
+
+				String commitString = context.getString(R.string.timelineAddedCommit, issueComment.getUser().getLogin()) + commitText + " " + informationBuilder;
 				start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 				start.setTextSize(fontSize);
 
+				timelineData.setOrientation(LinearLayout.VERTICAL);
 				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_commit));
 				timelineData.addView(start);
-				timelineData.setOnClickListener(diffView -> context.startActivity(issue.getIntent(context, DiffActivity.class)));
+
+				for(int i = 0; i < Objects.requireNonNull(commitsShaArray).length(); i++) {
+
+					try {
+
+						String timelineCommits = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null) + "'>" + StringUtils.substring(String.valueOf(commitsShaArray.get(i)), 0, 10) + "</font>";
+
+						TextView dynamicCommitTv = new TextView(context);
+						dynamicCommitTv.setId(View.generateViewId());
+
+						dynamicCommitTv.setText(HtmlCompat.fromHtml(timelineCommits, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+						JSONArray finalCommitsArray = commitsShaArray;
+						int finalI = i;
+
+						dynamicCommitTv.setOnClickListener(v14 -> {
+							intent = IssueContext.fromIntent(((IssueDetailActivity) context).getIntent()).getRepository().getIntent(context, CommitDetailActivity.class);
+							try {
+								intent.putExtra("sha", (String) finalCommitsArray.get(finalI));
+							}
+							catch(JSONException ignored) {}
+							context.startActivity(intent);
+						});
+
+						timelineData.setOrientation(LinearLayout.VERTICAL);
+						timelineData.addView(dynamicCommitTv);
+					}
+					catch(JSONException ignored) {}
+				}
 			}
 			// assignees data view in timeline
 			else if(issueComment.getType().equalsIgnoreCase("assignees")) {
@@ -518,8 +568,15 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						start.setText(context.getString(R.string.timelineStatusReopenedIssue, issueComment.getUser().getLogin(), informationBuilder));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("commit_ref")) {
-						start.setText(context.getString(R.string.timelineStatusRefIssue, issueComment.getUser().getLogin(), issueComment.getRefCommitSha(), informationBuilder));
+						String commitString = context.getString(R.string.timelineStatusRefIssue, issueComment.getUser().getLogin()) + "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null) + "'>" + context.getResources().getString(R.string.commitText).toLowerCase() + "</font> " + informationBuilder;
+						start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
+
+						start.setOnClickListener(v14 -> {
+							intent = IssueContext.fromIntent(((IssueDetailActivity) context).getIntent()).getRepository().getIntent(context, CommitDetailActivity.class);
+							intent.putExtra("sha", issueComment.getRefCommitSha());
+							context.startActivity(intent);
+						});
 					}
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_issue));
 				}
@@ -535,8 +592,15 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconPrMergedColor, null));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("commit_ref")) {
-						start.setText(context.getString(R.string.timelineStatusRefPr, issueComment.getUser().getLogin(), issueComment.getRefCommitSha(), informationBuilder));
+						String commitString = context.getString(R.string.timelineStatusRefPr, issueComment.getUser().getLogin()) + "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null) + "'>" + context.getResources().getString(R.string.commitText).toLowerCase() + "</font> " + informationBuilder;
+						start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
+
+						start.setOnClickListener(v14 -> {
+							intent = IssueContext.fromIntent(((IssueDetailActivity) context).getIntent()).getRepository().getIntent(context, CommitDetailActivity.class);
+							intent.putExtra("sha", issueComment.getRefCommitSha());
+							context.startActivity(intent);
+						});
 					}
 					else {
 						start.setText(context.getString(R.string.timelineStatusReopenedPr, issueComment.getUser().getLogin(), informationBuilder));

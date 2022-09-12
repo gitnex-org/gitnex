@@ -93,7 +93,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	private String repoName;
 	private int issueIndex;
 	private String issueCreator;
-	private IssueContext issue;
+	public IssueContext issue;
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
 	private List<Integer> currentLabelsIds = new ArrayList<>();
