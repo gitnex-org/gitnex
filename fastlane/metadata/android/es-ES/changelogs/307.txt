@@ -1,5 +1,5 @@
 3.1.0-rc1
 
-1st RC of 3.1.0 which brings features like Multi Account support, forks list etc.
+El lanzamiento 3.1.0-RC1 nos trae soporte a la multicuenta y listas de bifurcaciones.
 
-Detailed release notes will be published with stable release.
+Las notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.

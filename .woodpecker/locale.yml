@@ -6,7 +6,7 @@ pipeline:
       - sed -i 's/-removed-/'"$CROWDIN_TOKEN"'/' crowdin.yml
     secrets: [ CROWDIN_TOKEN ]
     when:
-      event: [ push, tag ]
+      event: [ push, tag, cron ]
       branch: main
 
   push:
@@ -24,7 +24,7 @@ pipeline:
     commands:
       - crowdin pull
     when:
-      event: [ push, tag ]
+      event: [ push, cron ]
       branch: main
 
   push-git:
@@ -56,4 +56,4 @@ pipeline:
         fi
     when:
       branch: main
-      event: [ push, tag ]
+      event: [ push, cron ]
