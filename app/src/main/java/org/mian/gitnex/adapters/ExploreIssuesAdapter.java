@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,13 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.*;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -119,6 +126,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private final LinearLayout frameLabels;
 		private final HorizontalScrollView labelsScrollViewDots;
 		private final LinearLayout frameLabelsDots;
+		private final ImageView commentIcon;
 		private Issue issue;
 
 		IssuesHolder(View itemView) {
@@ -132,6 +140,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			frameLabels = itemView.findViewById(R.id.frameLabels);
 			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
+			commentIcon = itemView.findViewById(R.id.comment_icon);
 
 			new Handler().postDelayed(() -> {
 
@@ -246,6 +255,11 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			else {
 				labelsScrollViewDots.setVisibility(View.GONE);
 				labelsScrollViewWithText.setVisibility(View.GONE);
+			}
+
+			if(issue.getComments() > 15) {
+				commentIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_flame));
+				commentIcon.setColorFilter(context.getResources().getColor(R.color.releasePre, null));
 			}
 
 			switch(timeFormat) {

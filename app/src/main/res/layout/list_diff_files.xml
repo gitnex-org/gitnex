@@ -27,6 +27,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:contentDescription="@string/generalImgContentText"
                 app:srcCompat="@drawable/ic_diff"/>
 
@@ -61,8 +62,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_chevron_right"
-                android:contentDescription="@string/generalImgContentText"/>
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/generalImgContentText"
+                app:srcCompat="@drawable/ic_chevron_right" />
 
         </LinearLayout>
 

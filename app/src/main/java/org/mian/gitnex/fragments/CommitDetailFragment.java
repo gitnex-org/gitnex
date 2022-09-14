@@ -22,7 +22,13 @@ import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
-import org.mian.gitnex.helpers.*;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.FileDiffView;
+import org.mian.gitnex.helpers.ParseDiff;
+import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import java.util.ArrayList;
@@ -172,7 +178,7 @@ public class CommitDetailFragment extends Fragment {
 
 				if(commitsModel.getAuthor() != null && commitsModel.getAuthor().getAvatarUrl() != null && !commitsModel.getAuthor().getAvatarUrl().isEmpty()) {
 
-					binding.commitAuthorAvatar.setVisibility(View.VISIBLE);
+					binding.commitAuthorAvatarFrame.setVisibility(View.VISIBLE);
 
 					int imgRadius = AppUtil.getPixelsFromDensity(requireContext(), 3);
 
@@ -188,13 +194,13 @@ public class CommitDetailFragment extends Fragment {
 				}
 				else {
 					binding.commitAuthorAvatar.setImageDrawable(null);
-					binding.commitAuthorAvatar.setVisibility(View.GONE);
+					binding.commitAuthorAvatarFrame.setVisibility(View.GONE);
 				}
 
 				if(commitsModel.getCommitter() != null && (commitsModel.getAuthor() == null || !commitsModel.getAuthor().getLogin().equals(commitsModel.getCommitter().getLogin())) && commitsModel.getCommitter()
 					.getAvatarUrl() != null && !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
 
-					binding.commitCommitterAvatar.setVisibility(View.VISIBLE);
+					binding.commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
 
 					int imgRadius = AppUtil.getPixelsFromDensity(requireContext(), 3);
 
@@ -210,7 +216,7 @@ public class CommitDetailFragment extends Fragment {
 				}
 				else {
 					binding.commitCommitterAvatar.setImageDrawable(null);
-					binding.commitCommitterAvatar.setVisibility(View.GONE);
+					binding.commitCommitterAvatarFrame.setVisibility(View.GONE);
 				}
 
 				binding.commitSha.setText(commitsModel.getSha().substring(0, Math.min(commitsModel.getSha().length(), 10)));
@@ -241,5 +247,4 @@ public class CommitDetailFragment extends Fragment {
 			binding.progressBar.setVisibility(View.GONE);
 		}
 	}
-
 }

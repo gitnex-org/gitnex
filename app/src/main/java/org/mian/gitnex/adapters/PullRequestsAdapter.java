@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +27,13 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.*;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import java.util.List;
 import java.util.Locale;
@@ -103,6 +110,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		private final LinearLayout frameLabels;
 		private final HorizontalScrollView labelsScrollViewDots;
 		private final LinearLayout frameLabelsDots;
+		private final ImageView commentIcon;
 		private PullRequest pullRequestObject;
 
 		PullRequestsHolder(View itemView) {
@@ -116,6 +124,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			frameLabels = itemView.findViewById(R.id.frameLabels);
 			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
+			commentIcon = itemView.findViewById(R.id.comment_icon);
 
 			View.OnClickListener openPr = v -> {
 				Intent intentPrDetail = new IssueContext(pullRequestObject, ((RepoDetailActivity) context).repository).getIntent(context, IssueDetailActivity.class);
@@ -218,6 +227,11 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			this.prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + EmojiParser.parseToUnicode(pullRequest.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 			this.prCommentsCount.setText(String.valueOf(pullRequest.getComments()));
 			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreatedAt(), locale, timeFormat, context));
+
+			if(pullRequest.getComments() > 15) {
+				commentIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_flame));
+				commentIcon.setColorFilter(context.getResources().getColor(R.color.releasePre, null));
+			}
 
 			if(timeFormat.equals("pretty")) {
 				this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreatedAt()), context));

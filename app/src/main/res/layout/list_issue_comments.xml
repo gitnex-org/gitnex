@@ -4,23 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/timeline_divider_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dimen12dp"
+        android:paddingEnd="@dimen/dimen0dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/timeline_line"
+            android:layout_width="@dimen/dimen2dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen8dp"
+            android:background="?attr/colorPrimary" />
+
+    </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/comment_view"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -29,11 +45,11 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
                     android:layout_width="@dimen/dimen24dp"
                     android:layout_height="@dimen/dimen24dp"
-                    style="?attr/materialCardViewFilledStyle"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:cardCornerRadius="@dimen/dimen12dp">
+                    app:cardCornerRadius="@dimen/dimen12dp"
+                    app:cardElevation="@dimen/dimen0dp">
 
                     <ImageView
                         android:id="@+id/avatar"
@@ -41,7 +57,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0"
                         android:contentDescription="@string/generalImgContentText"
-                        tools:srcCompat="@tools:sample/avatars"/>
+                        tools:srcCompat="@tools:sample/avatars" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -62,7 +78,7 @@
                         android:singleLine="true"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/information"
@@ -71,7 +87,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:textColor="?attr/hintColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <ImageView
@@ -80,9 +96,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:layout_weight="0"
-                    android:contentDescription="@string/menuContentDesc"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:srcCompat="@drawable/ic_dotted_menu_horizontal"/>
+                    android:contentDescription="@string/menuContentDesc"
+                    app:srcCompat="@drawable/ic_dotted_menu_horizontal" />
 
             </LinearLayout>
 
@@ -91,22 +107,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textIsSelectable="true"
                 android:autoLink="web"
+                android:textColor="?attr/primaryTextColor"
                 android:textColorLink="@color/lightBlue"
-                android:textSize="14sp"/>
+                android:textIsSelectable="true"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:id="@+id/commentReactionBadges"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal"
+                android:visibility="gone" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <RelativeLayout
+        android:id="@+id/timeline_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/timeline_divider_view_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dimen12dp"
+            android:paddingEnd="@dimen/dimen0dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/timeline_line_2"
+                android:layout_width="@dimen/dimen2dp"
+                android:layout_height="match_parent"
+                android:background="?attr/colorPrimary" />
+
+            <LinearLayout
+                android:id="@+id/timeline_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="@dimen/dimen16dp"
+                android:paddingEnd="@dimen/dimen0dp"
+                android:layout_marginStart="@dimen/dimen6dp"
+                android:layout_marginEnd="@dimen/dimen4dp"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="@dimen/dimen28dp"
+                android:layout_height="@dimen/dimen28dp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="?attr/materialCardBackgroundColor"
+                app:cardCornerRadius="@dimen/dimen6dp"
+                app:cardElevation="@dimen/dimen0dp">
+
+                <ImageView
+                    android:id="@+id/timeline_icon"
+                    android:layout_width="@dimen/dimen16dp"
+                    android:layout_height="@dimen/dimen16dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:src="@drawable/ic_history"
+                    tools:srcCompat="@drawable/ic_history" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

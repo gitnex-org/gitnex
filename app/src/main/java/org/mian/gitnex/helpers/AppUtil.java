@@ -1,7 +1,11 @@
 package org.mian.gitnex.helpers;
 
 import android.app.Activity;
-import android.content.*;
+import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,7 +17,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.ColorInt;
@@ -35,7 +38,14 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,7 +119,6 @@ public class AppUtil {
 		}
 
 		return FileType.UNKNOWN;
-
 	}
 
 	public static boolean hasNetworkConnection(Context context) {
@@ -193,7 +202,6 @@ public class AppUtil {
 	}
 
 	public static Boolean checkIntegers(String str) {
-
 		return str.matches("\\d+");
 	}
 
@@ -203,7 +211,6 @@ public class AppUtil {
 		Configuration config = resource.getConfiguration();
 		config.setLocale(new Locale(locCode.toLowerCase()));
 		resource.updateConfiguration(config, dm);
-
 	}
 
 	public static String getTimestampFromDate(Context context, Date date) {
@@ -217,7 +224,6 @@ public class AppUtil {
 		else {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale).format(date);
 		}
-
 	}
 
 	@ColorInt
@@ -227,7 +233,6 @@ public class AppUtil {
 		context.getTheme().resolveAttribute(resid, typedValue, true);
 
 		return typedValue.data;
-
 	}
 
 	public static String customDateFormat(String customDate) {
@@ -254,7 +259,6 @@ public class AppUtil {
 		}
 
 		return year + "-" + sMonth + "-" + sDay;
-
 	}
 
 	public static String customDateCombine(String customDate) {
@@ -281,7 +285,6 @@ public class AppUtil {
 		}
 
 		return (customDate + "T" + mHour + ":" + sMin + ":" + sSec + "Z");
-
 	}
 
 	public static String encodeBase64(String str) {
@@ -293,7 +296,6 @@ public class AppUtil {
 		}
 
 		return base64Str;
-
 	}
 
 	public static String decodeBase64(String str) {
@@ -305,7 +307,6 @@ public class AppUtil {
 		}
 
 		return base64Str;
-
 	}
 
 	public static String getLastCharactersOfWord(String str, int count) {
@@ -342,7 +343,6 @@ public class AppUtil {
 			lines++;
 
 		return lines;
-
 	}
 
 	public static void copyToClipboard(Context ctx, CharSequence data, String message) {
@@ -522,7 +522,6 @@ public class AppUtil {
 		URL url = new URL(u);
 		HttpURLConnection http = (HttpURLConnection) url.openConnection();
 		return (http.getResponseCode());
-
 	}
 
 	public enum FileType {IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, FONT, UNKNOWN}
@@ -536,7 +535,5 @@ public class AppUtil {
 		}
 
 		void onProgressChanged(short progress);
-
 	}
-
 }
