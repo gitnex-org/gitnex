@@ -57,35 +57,28 @@
             android:orientation="vertical"
             android:padding="@dimen/dimen16dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/note_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:background="?attr/primaryBackgroundColor"
-                android:hint="@string/newMilestoneTitle"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:textSize="@dimen/dimen14sp" />
-
             <EditText
                 android:id="@+id/note_content"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen480dp"
+                android:layout_height="wrap_content"
                 android:gravity="top|start"
-                android:layout_marginTop="@dimen/dimen32dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:scrollbars="vertical"
                 android:background="?attr/primaryBackgroundColor"
                 android:textColor="?attr/inputTextColor"
-                android:hint="Start taking notes here ..."
+                android:hint="@string/newNoteContentHint"
                 android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
-                android:textSize="@dimen/dimen14sp"
-                android:autofillHints="Start taking notes here ..." />
+                android:textSize="@dimen/dimen16sp"
+                android:autofillHints="@string/newNoteContentHint" />
 
+            <TextView
+                android:id="@+id/markdown_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/primaryTextColor"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/dimen16sp" />
 
         </LinearLayout>
 

@@ -6,21 +6,26 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateNoteActivity;
-import org.mian.gitnex.activities.CreateOrganizationActivity;
 import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.MostVisitedReposAdapter;
+import org.mian.gitnex.adapters.NotesAdapter;
 import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
-import org.mian.gitnex.database.models.Repository;
+import org.mian.gitnex.database.api.NotesApi;
+import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.FragmentNotesBinding;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +37,10 @@ public class NotesFragment extends Fragment {
 
 	private FragmentNotesBinding fragmentNotesBinding;
 	private Context ctx;
-	private MostVisitedReposAdapter adapter;
-	private RepositoriesApi repositoriesApi;
-	private List<Repository> notesList;
-	private int currentActiveAccountId;
+	private NotesAdapter adapter;
+	private NotesApi notesApi;
+	private List<Notes> notesList;
+	private Intent noteIntent;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,15 +52,15 @@ public class NotesFragment extends Fragment {
 
 		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navNotes));
 
-		TinyDB tinyDb = TinyDB.getInstance(ctx);
+		noteIntent = new Intent(ctx, CreateNoteActivity.class);
 
 		fragmentNotesBinding.newNote.setOnClickListener(view -> {
-			Intent intent = new Intent(view.getContext(), CreateNoteActivity.class);
-			startActivity(intent);
+			noteIntent.putExtra("action", "add");
+			ctx.startActivity(noteIntent);
 		});
 
 		notesList = new ArrayList<>();
-		repositoriesApi = BaseApi.getInstance(ctx, RepositoriesApi.class);
+		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
 
 		fragmentNotesBinding.recyclerView.setHasFixedSize(true);
 		fragmentNotesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -63,32 +68,39 @@ public class NotesFragment extends Fragment {
 		fragmentNotesBinding.recyclerView.setPadding(0, 0, 0, 220);
 		fragmentNotesBinding.recyclerView.setClipToPadding(false);
 
-		adapter = new MostVisitedReposAdapter(ctx, notesList);
-		currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
+		adapter = new NotesAdapter(ctx, notesList);
+
 		fragmentNotesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			notesList.clear();
 			fragmentNotesBinding.pullToRefresh.setRefreshing(false);
 			fragmentNotesBinding.progressBar.setVisibility(View.VISIBLE);
-			fetchDataAsync(currentActiveAccountId);
+			fetchDataAsync();
 		}, 250));
 
-		fetchDataAsync(currentActiveAccountId);
+		fetchDataAsync();
 
 		return fragmentNotesBinding.getRoot();
 	}
 
-	private void fetchDataAsync(int accountId) {
+	@Override
+	public void onResume() {
+		super.onResume();
+		notesList.clear();
+		fetchDataAsync();
+	}
 
-		repositoriesApi.fetchAllMostVisited(accountId).observe(getViewLifecycleOwner(), mostVisitedRepos -> {
+	private void fetchDataAsync() {
+
+		notesApi.fetchAllNotes().observe(getViewLifecycleOwner(), allNotes -> {
 
 			fragmentNotesBinding.pullToRefresh.setRefreshing(false);
-			assert mostVisitedRepos != null;
-			if(mostVisitedRepos.size() > 0) {
+			assert allNotes != null;
+			if(allNotes.size() > 0) {
 
 				notesList.clear();
 				fragmentNotesBinding.noData.setVisibility(View.GONE);
-				notesList.addAll(mostVisitedRepos);
+				notesList.addAll(allNotes);
 				adapter.notifyDataChanged();
 				fragmentNotesBinding.recyclerView.setAdapter(adapter);
 			}
@@ -100,21 +112,39 @@ public class NotesFragment extends Fragment {
 		});
 	}
 
-	/*public void resetAllRepositoryCounter(int accountId) {
+	private void filter(String text) {
 
-		if(mostVisitedReposList.size() > 0) {
+		List<Notes> arr = new ArrayList<>();
 
-			Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).resetAllRepositoryMostVisited(accountId);
-			mostVisitedReposList.clear();
+		for(Notes d : notesList) {
+
+			if(d == null || d.getContent() == null) {
+				continue;
+			}
+
+			if(d.getContent().toLowerCase().contains(text)) {
+				arr.add(d);
+			}
+		}
+
+		adapter.updateList(arr);
+	}
+
+	public void deleteAllNotes() {
+
+		if(notesList.size() > 0) {
+
+			notesApi.deleteAllNotes();
+			notesList.clear();
 			adapter.notifyDataChanged();
-			Toasty.success(ctx, getResources().getString(R.string.resetMostReposCounter));
+			Toasty.success(ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 2));
 		}
 		else {
 			Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 		}
-	}*/
+	}
 
-	/*@Override
+	@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
 		inflater.inflate(R.menu.reset_menu, menu);
@@ -140,20 +170,22 @@ public class NotesFragment extends Fragment {
 				return false;
 			}
 		});
-	}*/
+	}
 
-	/*@Override
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		if(item.getItemId() == R.id.reset_menu_item) {
 
-			if(mostVisitedReposList.size() == 0) {
+			if(notesList.size() == 0) {
 				Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 			}
 			else {
-				new MaterialAlertDialogBuilder(ctx).setTitle(R.string.reset).setMessage(R.string.resetCounterAllDialogMessage).setPositiveButton(R.string.reset, (dialog, which) -> {
+				new MaterialAlertDialogBuilder(ctx).setTitle(R.string.menuDeleteText)
+					.setMessage(R.string.notesAllDeletionMessage)
+					.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
 
-					resetAllRepositoryCounter(currentActiveAccountId);
+					deleteAllNotes();
 					dialog.dismiss();
 				}).setNeutralButton(R.string.cancelButton, null).show();
 			}
@@ -161,22 +193,4 @@ public class NotesFragment extends Fragment {
 
 		return super.onOptionsItemSelected(item);
 	}
-
-	private void filter(String text) {
-
-		List<Repository> arr = new ArrayList<>();
-
-		for(Repository d : mostVisitedReposList) {
-
-			if(d == null || d.getRepositoryOwner() == null || d.getRepositoryName() == null) {
-				continue;
-			}
-
-			if(d.getRepositoryOwner().toLowerCase().contains(text) || d.getRepositoryName().toLowerCase().contains(text)) {
-				arr.add(d);
-			}
-		}
-
-		adapter.updateList(arr);
-	}*/
 }

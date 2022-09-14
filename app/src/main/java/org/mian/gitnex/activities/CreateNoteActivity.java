@@ -1,27 +1,25 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Spanned;
-import android.text.style.ClickableSpan;
-import android.text.style.ReplacementSpan;
-import android.text.style.StrikethroughSpan;
-import android.util.Log;
+import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.vdurmont.emoji.EmojiParser;
+import org.mian.gitnex.R;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.NotesApi;
+import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.ActivityCreateNoteBinding;
-import io.noties.markwon.Markwon;
-import io.noties.markwon.SoftBreakAddsNewLinePlugin;
-import io.noties.markwon.core.MarkwonTheme;
-import io.noties.markwon.core.spans.BlockQuoteSpan;
-import io.noties.markwon.core.spans.CodeSpan;
-import io.noties.markwon.core.spans.HeadingSpan;
-import io.noties.markwon.core.spans.LinkSpan;
+import org.mian.gitnex.helpers.Markdown;
+import java.time.Instant;
+import java.util.Objects;
 
 /**
  * @author M M Arif
@@ -30,8 +28,11 @@ import io.noties.markwon.core.spans.LinkSpan;
 public class CreateNoteActivity extends BaseActivity {
 
 	private ActivityCreateNoteBinding activityCreateNoteBinding;
-	private View.OnClickListener onClickListener;
-	private final View.OnClickListener createNoteListener = v -> processNewNote();
+	private boolean renderMd = false;
+	private String action;
+	private Notes notes;
+	private NotesApi notesApi;
+	private int noteId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,58 +40,139 @@ public class CreateNoteActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		activityCreateNoteBinding = ActivityCreateNoteBinding.inflate(getLayoutInflater());
-		setContentView(activityCreateNoteBinding.getRoot());
+		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
 
-		//boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		setContentView(activityCreateNoteBinding.getRoot());
+		setSupportActionBar(activityCreateNoteBinding.toolbar);
 
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		activityCreateNoteBinding.noteTitle.requestFocus();
 		assert imm != null;
-		imm.showSoftInput(activityCreateNoteBinding.noteTitle, InputMethodManager.SHOW_IMPLICIT);
+		imm.showSoftInput(activityCreateNoteBinding.noteContent, InputMethodManager.SHOW_IMPLICIT);
+		activityCreateNoteBinding.noteContent.requestFocus();
 
-		/*activityCreateNoteBinding.setOnTouchListener((touchView, motionEvent) -> {
+		activityCreateNoteBinding.close.setOnClickListener(view -> finish());
 
-			touchView.getParent().requestDisallowInterceptTouchEvent(true);
-
-			if((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
-
-				touchView.getParent().requestDisallowInterceptTouchEvent(false);
-			}
-			return false;
-		});*/
-
-		initCloseListener();
-		activityCreateNoteBinding.close.setOnClickListener(onClickListener);
-
-		//createOrganizationButton = activityCreateOrganizationBinding.createNewOrganizationButton;
-
-		/*if(!connToInternet) {
-
-			activityCreateNoteBinding.createNote.setEnabled(false);
+		if(getIntent().getStringExtra("action") != null) {
+			action = getIntent().getStringExtra("action");
 		}
 		else {
+			action = "";
+		}
 
-			activityCreateNoteBinding.createNote.setOnClickListener(createNoteListener);
-		}*/
+		activityCreateNoteBinding.close.setOnClickListener(close -> finish());
+		activityCreateNoteBinding.toolbarTitle.setMovementMethod(new ScrollingMovementMethod());
+
+		if(action.equalsIgnoreCase("edit")) {
+
+			noteId = getIntent().getIntExtra( "noteId", 0);
+			notes = notesApi.fetchNoteById(noteId);
+			activityCreateNoteBinding.noteContent.setText(notes.getContent());
+
+			activityCreateNoteBinding.markdownPreview.setVisibility(View.GONE);
+			activityCreateNoteBinding.toolbarTitle.setText(R.string.editNote);
+
+			activityCreateNoteBinding.noteContent.addTextChangedListener(new TextWatcher() {
+
+				@Override
+				public void afterTextChanged(Editable s) {
+
+					String text = activityCreateNoteBinding.noteContent.getText().toString();
+
+					if(!text.isEmpty()) {
+
+						updateNote(text);
+					}
+				}
+
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				}
+
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+				}
+			});
+		}
+		else if(action.equalsIgnoreCase("add")) {
+
+			activityCreateNoteBinding.markdownPreview.setVisibility(View.GONE);
+
+			activityCreateNoteBinding.noteContent.addTextChangedListener(new TextWatcher() {
+
+				@Override
+				public void afterTextChanged(Editable s) {
+
+					String text = activityCreateNoteBinding.noteContent.getText().toString();
+
+					if(!text.isEmpty() && text.length() > 4) {
+
+						if(noteId > 0) {
+							updateNote(text);
+						}
+						else {
+							noteId = (int) notesApi.insertNote(text, (int) Instant.now().getEpochSecond());
+						}
+					}
+				}
+
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				}
+
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+				}
+			});
+		}
+		else {
+			activityCreateNoteBinding.markdownPreview.setVisibility(View.VISIBLE);
+		}
 	}
 
-	private void processNewNote() {
-
+	private void updateNote(String content) {
+		notesApi.updateNote(content, Instant.now().getEpochSecond(), noteId);
 	}
 
-	private void initCloseListener() {
+	@Override
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
-		onClickListener = view -> finish();
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.markdown_switcher, menu);
+
+		return true;
 	}
 
-	private void disableProcessButton() {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-		//activityCreateNoteBinding.createNote.setEnabled(false);
-	}
+		int id = item.getItemId();
 
-	private void enableProcessButton() {
+		if(id == android.R.id.home) {
 
-		//activityCreateNoteBinding.createNote.setEnabled(true);
+			finish();
+			return true;
+		}
+		else if(id == R.id.markdown) {
+
+			if(action.equalsIgnoreCase("edit") || action.equalsIgnoreCase("add")) {
+				if(!renderMd) {
+					Markdown.render(ctx, EmojiParser.parseToUnicode(Objects.requireNonNull(activityCreateNoteBinding.noteContent.getText().toString())), activityCreateNoteBinding.markdownPreview);
+
+					activityCreateNoteBinding.markdownPreview.setVisibility(View.VISIBLE);
+					activityCreateNoteBinding.noteContent.setVisibility(View.GONE);
+					renderMd = true;
+				}
+				else {
+					activityCreateNoteBinding.markdownPreview.setVisibility(View.GONE);
+					activityCreateNoteBinding.noteContent.setVisibility(View.VISIBLE);
+					renderMd = false;
+				}
+			}
+
+			return true;
+		}
+		else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }
