@@ -107,6 +107,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
 	private Dialog progressDialog;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	private Intent intentWiki;
 	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 		if(result.getResultCode() == 201) {
 			assert result.getData() != null;
@@ -119,8 +121,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			}
 		}
 	});
-	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
-	private Intent intentWiki;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +165,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.repo_dotted_menu, menu);
@@ -879,6 +879,4 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		}
 
 	}
-
-
 }

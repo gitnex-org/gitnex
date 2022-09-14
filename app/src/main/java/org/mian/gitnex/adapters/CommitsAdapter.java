@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import org.gitnex.tea4j.v2.models.Commit;
 import org.mian.gitnex.R;
@@ -99,6 +100,8 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 		ImageView commitAuthorAvatar;
 		ImageView commitCommitterAvatar;
 		TextView commitSha;
+		MaterialCardView commitCommitterAvatarFrame;
+		MaterialCardView commitAuthorAvatarFrame;
 
 		CommitsHolder(View itemView) {
 
@@ -111,7 +114,8 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 			commitAuthorAvatar = itemView.findViewById(R.id.commitAuthorAvatar);
 			commitCommitterAvatar = itemView.findViewById(R.id.commitCommitterAvatar);
 			commitSha = itemView.findViewById(R.id.commitSha);
-
+			commitCommitterAvatarFrame = itemView.findViewById(R.id.commitCommitterAvatarFrame);
+			commitAuthorAvatarFrame = itemView.findViewById(R.id.commitAuthorAvatarFrame);
 		}
 
 		void bindData(Commit commitsModel) {
@@ -135,7 +139,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 			if(commitsModel.getAuthor() != null && commitsModel.getAuthor().getAvatarUrl() != null && !commitsModel.getAuthor().getAvatarUrl().isEmpty()) {
 
-				commitAuthorAvatar.setVisibility(View.VISIBLE);
+				commitAuthorAvatarFrame.setVisibility(View.VISIBLE);
 
 				int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
@@ -145,13 +149,13 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 			}
 			else {
 				commitAuthorAvatar.setImageDrawable(null);
-				commitAuthorAvatar.setVisibility(View.GONE);
+				commitAuthorAvatarFrame.setVisibility(View.GONE);
 			}
 
 			if(commitsModel.getCommitter() != null && (commitsModel.getAuthor() == null || !commitsModel.getAuthor().getLogin().equals(commitsModel.getCommitter().getLogin())) && commitsModel.getCommitter()
 				.getAvatarUrl() != null && !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
 
-				commitCommitterAvatar.setVisibility(View.VISIBLE);
+				commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
 
 				int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
@@ -161,7 +165,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 			}
 			else {
 				commitCommitterAvatar.setImageDrawable(null);
-				commitCommitterAvatar.setVisibility(View.GONE);
+				commitCommitterAvatarFrame.setVisibility(View.GONE);
 			}
 
 			commitSha.setText(commitsModel.getSha().substring(0, Math.min(commitsModel.getSha().length(), 10)));

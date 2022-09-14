@@ -1,15 +1,15 @@
-- New: Notifications
-- New: Delete comments
-- New: New file downloader (no permission required)
-- New: Drafts for comments
-- New: New icons set
-- New: Switch branches in File Browser
-- New: Close/open filter Milestones
-- New: New settings screen
-- New: New diff view for PR files
-- New: Cite code in PR diff and comment on it by long press
-- New: Clear cache, configure cache size (settings)
-- New: Delete branch after merge
+- Nuevo: Notificaciones
+- Nuevo: Eliminar comentarios
+- Nuevo: Nuevo descargador de archivos (no requiere permisos)
+- Nuevo: Borradores para comentarios
+- Nuevo: Nueva gama de iconos
+- Nuevo: Cambiar ramas en el Explorador de Archivos
+- Nuevo: Cerrar/abrir filtros de hitos
+- Nuevo: Sección de ajustes nuevo
+- Nuevo: Nueva vista diferencial para los archivos PR
+- Nuevo: Citar el código en PR diferencial y comentarlo con una pulsación larga
+- Nuevo: Borrar la caché, configurar el tamaño de la caché (ajustes)
+- Nuevo: Eliminar la rama después de la fusión
 
-Many more...
+Mucho más…
 https://codeberg.org/gitnex/GitNex/releases

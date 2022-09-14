@@ -4,17 +4,17 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
   <path
-      android:pathData="M4,19.5A2.5,2.5 0,0 1,6.5 17H20"
-      android:strokeLineJoin="round"
-      android:strokeWidth="2"
       android:fillColor="#00000000"
+      android:pathData="M12,8l0,4l2,2"
+      android:strokeWidth="2"
       android:strokeColor="?attr/iconsColor"
-      android:strokeLineCap="round"/>
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
   <path
-      android:pathData="M6.5,2H20v20H6.5A2.5,2.5 0,0 1,4 19.5v-15A2.5,2.5 0,0 1,6.5 2z"
-      android:strokeLineJoin="round"
-      android:strokeWidth="2"
       android:fillColor="#00000000"
+      android:pathData="M3.05,11a9,9 0,1 1,0.5 4m-0.5,5v-5h5"
+      android:strokeWidth="2"
       android:strokeColor="?attr/iconsColor"
-      android:strokeLineCap="round"/>
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
 </vector>

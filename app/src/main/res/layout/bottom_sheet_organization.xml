@@ -82,7 +82,7 @@
                     android:text="@string/label"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
-                    app:drawableTopCompat="@drawable/ic_label"
+                    app:drawableTopCompat="@drawable/ic_tag"
                     app:layout_alignSelf="flex_start"/>
 
             </com.google.android.flexbox.FlexboxLayout>

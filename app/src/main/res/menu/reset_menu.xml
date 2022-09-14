@@ -4,9 +4,9 @@
 
     <item
         android:id="@+id/reset_menu_item"
-        android:icon="@drawable/ic_reset"
-        android:title="@string/menuContentDesc"
+        android:icon="@drawable/ic_delete"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/menuContentDesc"
+        app:showAsAction="ifRoom" />
 
 </menu>

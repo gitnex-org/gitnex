@@ -119,7 +119,6 @@ public class AppUtil {
 		}
 
 		return FileType.UNKNOWN;
-
 	}
 
 	public static boolean hasNetworkConnection(Context context) {
@@ -203,7 +202,6 @@ public class AppUtil {
 	}
 
 	public static Boolean checkIntegers(String str) {
-
 		return str.matches("\\d+");
 	}
 
@@ -213,7 +211,6 @@ public class AppUtil {
 		Configuration config = resource.getConfiguration();
 		config.setLocale(new Locale(locCode.toLowerCase()));
 		resource.updateConfiguration(config, dm);
-
 	}
 
 	public static String getTimestampFromDate(Context context, Date date) {
@@ -227,7 +224,6 @@ public class AppUtil {
 		else {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale).format(date);
 		}
-
 	}
 
 	@ColorInt
@@ -237,7 +233,6 @@ public class AppUtil {
 		context.getTheme().resolveAttribute(resid, typedValue, true);
 
 		return typedValue.data;
-
 	}
 
 	public static String customDateFormat(String customDate) {
@@ -264,7 +259,6 @@ public class AppUtil {
 		}
 
 		return year + "-" + sMonth + "-" + sDay;
-
 	}
 
 	public static String customDateCombine(String customDate) {
@@ -291,7 +285,6 @@ public class AppUtil {
 		}
 
 		return (customDate + "T" + mHour + ":" + sMin + ":" + sSec + "Z");
-
 	}
 
 	public static String encodeBase64(String str) {
@@ -303,7 +296,6 @@ public class AppUtil {
 		}
 
 		return base64Str;
-
 	}
 
 	public static String decodeBase64(String str) {
@@ -315,7 +307,6 @@ public class AppUtil {
 		}
 
 		return base64Str;
-
 	}
 
 	public static String getLastCharactersOfWord(String str, int count) {
@@ -352,7 +343,6 @@ public class AppUtil {
 			lines++;
 
 		return lines;
-
 	}
 
 	public static void copyToClipboard(Context ctx, CharSequence data, String message) {
@@ -532,7 +522,6 @@ public class AppUtil {
 		URL url = new URL(u);
 		HttpURLConnection http = (HttpURLConnection) url.openConnection();
 		return (http.getResponseCode());
-
 	}
 
 	public enum FileType {IMAGE, AUDIO, VIDEO, DOCUMENT, TEXT, EXECUTABLE, FONT, UNKNOWN}
@@ -546,7 +535,5 @@ public class AppUtil {
 		}
 
 		void onProgressChanged(short progress);
-
 	}
-
 }

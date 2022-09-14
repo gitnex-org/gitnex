@@ -130,7 +130,7 @@
                                 android:layout_width="@dimen/dimen18dp"
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@string/generalImgContentText"
-                                app:srcCompat="@drawable/ic_label" />
+                                app:srcCompat="@drawable/ic_tag" />
 
                             <TextView
                                 android:id="@+id/releaseTag"
