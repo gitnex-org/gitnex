@@ -215,7 +215,7 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 			pageName.setText(wikiPageMetaData.getTitle());
 			wikiLastUpdatedBy.setText(HtmlCompat.fromHtml(ctx.getResources().getString(R.string.wikiAuthor, wikiPageMetaData.getLastCommit().getAuthor().getName(),
-				TimeHelper.formatTime(TimeHelper.parseIso8601(wikiPageMetaData.getLastCommit().getAuthor().getDate()), ctx.getResources().getConfiguration().locale, "pretty", ctx)), HtmlCompat.FROM_HTML_MODE_COMPACT));
+				TimeHelper.formatTime(TimeHelper.parseIso8601(wikiPageMetaData.getLastCommit().getAuthor().getDate()), ctx.getResources().getConfiguration().locale)), HtmlCompat.FROM_HTML_MODE_COMPACT));
 			this.wikiLastUpdatedBy.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(TimeHelper.parseIso8601(wikiPageMetaData.getLastCommit().getAuthor().getDate())), ctx));
 
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();

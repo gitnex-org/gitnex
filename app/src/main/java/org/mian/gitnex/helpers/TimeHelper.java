@@ -1,7 +1,5 @@
 package org.mian.gitnex.helpers;
 
-import android.content.Context;
-import org.mian.gitnex.R;
 import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,39 +32,22 @@ public class TimeHelper {
 		assert createdTime != null;
 
 		return customDateFormatForToastDateFormat(createdTime);
-
 	}
 
-	public static String formatTime(Date date, Locale locale, String timeFormat, Context context) {
+	public static String formatTime(Date date, Locale locale) {
 
 		if(date != null) {
-			switch(timeFormat) {
-
-				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(locale);
-					return prettyTime.format(date);
-				}
-				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					return formatter.format(date);
-				}
-				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					return formatter.format(date);
-				}
-
-			}
+			PrettyTime prettyTime = new PrettyTime(locale);
+			return prettyTime.format(date);
 		}
 
 		return "";
-
 	}
 
 	public static String customDateFormatForToastDateFormat(Date customDate) {
 
 		DateFormat format = DateFormat.getDateTimeInstance();
 		return format.format(customDate);
-
 	}
 
 	public static boolean timeBetweenHours(int fromHour, int toHour, int fromMinute, int toMinute) {
@@ -91,7 +72,6 @@ public class TimeHelper {
 		}
 
 		return cal.after(from) && cal.before(to);
-
 	}
 
 	public static Date parseIso8601(String iso8601) {

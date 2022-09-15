@@ -152,12 +152,10 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}, 500);
 		}
 
-		@SuppressLint("SetTextI18n")
 		void bindData(PullRequest pullRequest) {
 
 			TinyDB tinyDb = TinyDB.getInstance(context);
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			PicassoService.getInstance(context).get().load(pullRequest.getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
@@ -226,16 +224,14 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			this.prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + EmojiParser.parseToUnicode(pullRequest.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
 			this.prCommentsCount.setText(String.valueOf(pullRequest.getComments()));
-			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreatedAt(), locale, timeFormat, context));
+			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreatedAt(), locale));
 
 			if(pullRequest.getComments() > 15) {
 				commentIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_flame));
 				commentIcon.setColorFilter(context.getResources().getColor(R.color.releasePre, null));
 			}
 
-			if(timeFormat.equals("pretty")) {
-				this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreatedAt()), context));
-			}
+			this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreatedAt()), context));
 		}
 
 	}

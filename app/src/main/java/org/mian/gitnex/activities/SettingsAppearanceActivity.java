@@ -25,8 +25,6 @@ import org.mian.gitnex.helpers.Toasty;
 
 public class SettingsAppearanceActivity extends BaseActivity {
 
-	private static String[] timeList;
-	private static int timeSelectedChoice = 0;
 	private static String[] customFontList;
 	private static int customFontSelectedChoice = 0;
 	private static String[] themeList;
@@ -43,7 +41,6 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		ImageView closeActivity = activitySettingsAppearanceBinding.close;
 
-		LinearLayout timeFrame = activitySettingsAppearanceBinding.timeFrame;
 		LinearLayout customFontFrame = activitySettingsAppearanceBinding.customFontFrame;
 		LinearLayout themeFrame = activitySettingsAppearanceBinding.themeSelectionFrame;
 		LinearLayout lightTimeFrame = activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame;
@@ -51,7 +48,6 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		SwitchMaterial counterBadgesSwitch = activitySettingsAppearanceBinding.switchCounterBadge;
 
-		timeList = getResources().getStringArray(R.array.timeFormats);
 		customFontList = getResources().getStringArray(R.array.fonts);
 		themeList = getResources().getStringArray(R.array.themes);
 
@@ -76,13 +72,11 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			darkHour = "0" + darkHour;
 		}
 
-		timeSelectedChoice = tinyDB.getInt("timeId");
 		customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
 		themeSelectedChoice = tinyDB.getInt("themeId", 6); // use system theme as default
 
 		activitySettingsAppearanceBinding.lightThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, lightHour, lightMinute));
 		activitySettingsAppearanceBinding.darkThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, darkHour, darkMinute));
-		activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[timeSelectedChoice]);
 		activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[customFontSelectedChoice]);
 		activitySettingsAppearanceBinding.themeSelected.setText(themeList[themeSelectedChoice]);
 
@@ -167,33 +161,6 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 			materialAlertDialogBuilder.create().show();
 		});
-
-		// time and date dialog
-		timeFrame.setOnClickListener(view -> {
-
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.settingsTimeSelectorDialogTitle).setCancelable(timeSelectedChoice != -1)
-				.setSingleChoiceItems(timeList, timeSelectedChoice, (dialogInterfaceTime, i) -> {
-
-					timeSelectedChoice = i;
-					activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[i]);
-					tinyDB.putInt("timeId", i);
-
-					switch(i) {
-						case 0:
-							tinyDB.putString("dateFormat", "pretty");
-							break;
-						case 1:
-							tinyDB.putString("dateFormat", "normal");
-							break;
-					}
-
-					dialogInterfaceTime.dismiss();
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-				});
-
-			materialAlertDialogBuilder.create().show();
-		});
-
 	}
 
 	private void initCloseListener() {

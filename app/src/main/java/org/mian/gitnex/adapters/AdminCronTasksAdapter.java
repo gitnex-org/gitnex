@@ -16,7 +16,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +42,6 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			Context ctx = itemView.getContext();
 
 			final Locale locale = ctx.getResources().getConfiguration().locale;
-			final String timeFormat = TinyDB.getInstance(ctx).getString("dateFormat", "pretty");
 
 			ImageView runTask = itemView.findViewById(R.id.runTask);
 			taskName = itemView.findViewById(R.id.taskName);
@@ -56,10 +54,10 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 				String lastRun = "";
 
 				if(cronTasks.getNext() != null) {
-					nextRun = TimeHelper.formatTime(cronTasks.getNext(), locale, timeFormat, ctx);
+					nextRun = TimeHelper.formatTime(cronTasks.getNext(), locale);
 				}
 				if(cronTasks.getPrev() != null) {
-					lastRun = TimeHelper.formatTime(cronTasks.getPrev(), locale, timeFormat, ctx);
+					lastRun = TimeHelper.formatTime(cronTasks.getPrev(), locale);
 				}
 
 				View view = LayoutInflater.from(ctx).inflate(R.layout.layout_cron_task_info, null);
@@ -113,7 +111,7 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 
 		Call<Void> call = RetrofitClient.getApiInterface(ctx).adminCronRun(taskName);
 
-		call.enqueue(new Callback<Void>() {
+		call.enqueue(new Callback<>() {
 
 			@Override
 			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {

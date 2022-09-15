@@ -34,9 +34,6 @@ import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.ocpsoft.prettytime.PrettyTime;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -185,7 +182,6 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			PicassoService.getInstance(context).get().load(issue.getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
 				.into(issueAssigneeAvatar);
@@ -262,30 +258,8 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 				commentIcon.setColorFilter(context.getResources().getColor(R.color.releasePre, null));
 			}
 
-			switch(timeFormat) {
-				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(locale);
-					String createdTime = prettyTime.format(issue.getCreatedAt());
-					issueCreatedTime.setText(createdTime);
-					issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()), context));
-					break;
-				}
-				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreatedAt());
-					issueCreatedTime.setText(createdTime);
-					break;
-				}
-				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreatedAt());
-					issueCreatedTime.setText(createdTime);
-					break;
-				}
-			}
-
+			issueCreatedTime.setText(TimeHelper.formatTime(issue.getCreatedAt(), locale));
+			issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()), context));
 		}
-
 	}
-
 }

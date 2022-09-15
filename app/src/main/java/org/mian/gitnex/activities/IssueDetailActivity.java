@@ -59,7 +59,6 @@ import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -656,9 +655,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			}
 		}
 
-		TinyDB tinyDb = TinyDB.getInstance(appCtx);
 		final Locale locale = getResources().getConfiguration().locale;
-		final String timeFormat = tinyDb.getString("dateFormat", "pretty");
 		issueCreator = issue.getIssue().getUser().getLogin();
 
 		PicassoService.getInstance(ctx).get().load(issue.getIssue().getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop()
@@ -767,19 +764,10 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		if(issue.getIssue().getDueDate() != null) {
 
 			viewBinding.dueDateFrame.setVisibility(View.VISIBLE);
-			if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
-
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
-				String dueDate = formatter.format(issue.getIssue().getDueDate());
-				viewBinding.issueDueDate.setText(dueDate);
-				viewBinding.issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getDueDate()), ctx));
-			}
-			else if(timeFormat.equals("normal1")) {
-
-				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", locale);
-				String dueDate = formatter.format(issue.getIssue().getDueDate());
-				viewBinding.issueDueDate.setText(dueDate);
-			}
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
+			String dueDate = formatter.format(issue.getIssue().getDueDate());
+			viewBinding.issueDueDate.setText(dueDate);
+			viewBinding.issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getDueDate()), ctx));
 		}
 		else {
 
@@ -800,13 +788,9 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 			viewBinding.issueModified.setVisibility(View.INVISIBLE);
 		}
 
-		viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale, timeFormat, ctx));
 		viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
-
-		if(timeFormat.equals("pretty")) {
-
-			viewBinding.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getCreatedAt()), ctx));
-		}
+		viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale));
+		viewBinding.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getCreatedAt()), ctx));
 
 		Bundle bundle = new Bundle();
 		bundle.putString("repoOwner", repoOwner);

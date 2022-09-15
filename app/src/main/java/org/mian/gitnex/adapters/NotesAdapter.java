@@ -19,9 +19,10 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import org.ocpsoft.prettytime.PrettyTime;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -101,13 +102,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
 		Markdown.render(ctx, EmojiParser.parseToUnicode(Objects.requireNonNull(StringUtils.substring(currentItem.getContent(), 0, 140))), holder.content);
 
-		PrettyTime prettyTime = new PrettyTime(locale);
 		if(currentItem.getModified() != null) {
-			String modifiedTime = prettyTime.format(Instant.ofEpochSecond(currentItem.getModified()));
+			String modifiedTime = TimeHelper.formatTime(Date.from(Instant.ofEpochSecond(currentItem.getModified())), locale);
 			holder.datetime.setText(ctx.getResources().getString(R.string.noteTimeModified, modifiedTime));
 		}
 		else {
-			String createdTime = prettyTime.format(Instant.ofEpochSecond(currentItem.getDatetime()));
+			String createdTime = TimeHelper.formatTime(Date.from(Instant.ofEpochSecond(currentItem.getDatetime())), locale);
 			holder.datetime.setText(ctx.getResources().getString(R.string.noteDateTime, createdTime));
 		}
 	}

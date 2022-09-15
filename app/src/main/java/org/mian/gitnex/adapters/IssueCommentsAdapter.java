@@ -47,6 +47,7 @@ import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
@@ -383,7 +384,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		void bindData(TimelineComment timelineComment) {
 
 			int fontSize = 14;
-			String timeFormat = tinyDB.getString("dateFormat", "pretty");
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			userLoginId = timelineComment.getUser().getLogin();
@@ -397,18 +397,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			StringBuilder informationBuilder = null;
 			if(issueComment.getCreatedAt() != null) {
 
-				if(timeFormat.equals("pretty")) {
-					informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "pretty", context));
-					information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreatedAt()));
-				}
-				else if(timeFormat.equals("normal")) {
-					informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "normal", context));
-				}
+				informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale));
+
+				information.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreatedAt()), context));
 
 				if(!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
-					if(informationBuilder != null) {
-						informationBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
-					}
+					informationBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
 				}
 			}
 
