@@ -86,7 +86,6 @@ public class NotesFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		notesList.clear();
 		fetchDataAsync();
 	}
 
