@@ -394,23 +394,24 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				//timelineLine2.setVisibility(View.GONE);
 			}
 
-			StringBuilder informationBuilder = null;
+			StringBuilder infoBuilder = null;
 			if(issueComment.getCreatedAt() != null) {
 
 				if(timeFormat.equals("pretty")) {
-					informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "pretty", context));
+					infoBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "pretty", context));
 					information.setOnClickListener(v -> TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreatedAt()));
 				}
 				else if(timeFormat.equals("normal")) {
-					informationBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "normal", context));
+					infoBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale, "normal", context));
 				}
 
 				if(!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
-					if(informationBuilder != null) {
-						informationBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
+					if(infoBuilder != null) {
+						infoBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
 					}
 				}
 			}
+			String info = infoBuilder.toString();
 
 			// label view in timeline
 			if(issueComment.getType().equalsIgnoreCase("label")) {
@@ -424,27 +425,26 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					.buildRoundRect(issueComment.getLabel().getName(), color, AppUtil.getPixelsFromDensity(context, 18));
 
 				TextView textView = new TextView(context);
-				String startText;
-				String endText = context.getString(R.string.timelineLabelEnd, informationBuilder);
+				String text;
 
 				if(issueComment.getBody().equals("")) {
-					startText = context.getString(R.string.timelineRemovedLabelStart, issueComment.getUser().getLogin());
+					text = context.getString(R.string.timelineRemovedLabel, issueComment.getUser().getLogin(), info);
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				else {
-					startText = context.getString(R.string.timelineAddedLabelStart, issueComment.getUser().getLogin());
+					text = context.getString(R.string.timelineAddedLabel, issueComment.getUser().getLogin(), info);
 				}
 
 				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_tag));
 
-				SpannableString spannableString = new SpannableString(startText + " " + endText);
+				SpannableString spannableString = new SpannableString(text.replace('|', ' '));
 
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 				ImageSpan image = new ImageSpan(drawable);
 
 				new Handler().postDelayed(() -> {
 
-					spannableString.setSpan(image, startText.length(), startText.length() + 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+					spannableString.setSpan(image, text.indexOf('|'), text.indexOf('|') + 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 					textView.setText(spannableString);
 					timelineData.addView(textView);
 				}, 250);
@@ -471,7 +471,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					commitText = context.getResources().getString(R.string.commitText).toLowerCase();
 				}
 
-				String commitString = context.getString(R.string.timelineAddedCommit, issueComment.getUser().getLogin()) + commitText + " " + informationBuilder;
+				String commitString = context.getString(R.string.timelineAddedCommit, issueComment.getUser().getLogin(), commitText, info);
 				start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 				start.setTextSize(fontSize);
 
@@ -516,19 +516,19 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				if(issueComment.isRemovedAssignee()) {
 
 					if(issueComment.getUser().getLogin().equalsIgnoreCase(issueComment.getAssignee().getLogin())) {
-						start.setText(context.getString(R.string.timelineAssigneesRemoved, issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineAssigneesRemoved, issueComment.getUser().getLogin(), info));
 					}
 					else {
-						start.setText(context.getString(R.string.timelineAssigneesUnassigned, issueComment.getAssignee().getLogin(), issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineAssigneesUnassigned, issueComment.getAssignee().getLogin(), issueComment.getUser().getLogin(), info));
 					}
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				else {
 					if(issueComment.getUser().getLogin().equalsIgnoreCase(issueComment.getAssignee().getLogin())) {
-						start.setText(context.getString(R.string.timelineAssigneesSelfAssigned, issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineAssigneesSelfAssigned, issueComment.getUser().getLogin(), info));
 					}
 					else {
-						start.setText(context.getString(R.string.timelineAssigneesAssigned, issueComment.getAssignee().getLogin(), issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineAssigneesAssigned, issueComment.getAssignee().getLogin(), issueComment.getUser().getLogin(), info));
 					}
 				}
 				start.setTextSize(fontSize);
@@ -542,10 +542,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getMilestone() != null) {
-					start.setText(context.getString(R.string.timelineMilestoneAdded, issueComment.getUser().getLogin(), issueComment.getMilestone().getTitle(), informationBuilder));
+					start.setText(context.getString(R.string.timelineMilestoneAdded, issueComment.getUser().getLogin(), issueComment.getMilestone().getTitle(), info));
 				}
 				else {
-					start.setText(context.getString(R.string.timelineMilestoneRemoved, issueComment.getUser().getLogin(), issueComment.getOldMilestone().getTitle(), informationBuilder));
+					start.setText(context.getString(R.string.timelineMilestoneRemoved, issueComment.getUser().getLogin(), issueComment.getOldMilestone().getTitle(), info));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);
@@ -561,14 +561,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				if(issue.getIssueType().equalsIgnoreCase("Issue")) {
 					if(issueComment.getType().equals("close")) {
-						start.setText(context.getString(R.string.timelineStatusClosedIssue, issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineStatusClosedIssue, issueComment.getUser().getLogin(), info));
 						timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("reopen")) {
-						start.setText(context.getString(R.string.timelineStatusReopenedIssue, issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineStatusReopenedIssue, issueComment.getUser().getLogin(), info));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("commit_ref")) {
-						String commitString = context.getString(R.string.timelineStatusRefIssue, issueComment.getUser().getLogin()) + "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null) + "'>" + context.getResources().getString(R.string.commitText).toLowerCase() + "</font> " + informationBuilder;
+						String commitString = context.getString(R.string.timelineStatusRefIssue, issueComment.getUser().getLogin(), ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null), context.getResources().getString(R.string.commitText).toLowerCase(), info);
 						start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
 
@@ -582,17 +582,17 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				}
 				else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
 					if(issueComment.getType().equalsIgnoreCase("close")) {
-						start.setText(context.getString(R.string.timelineStatusClosedPr, issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineStatusClosedPr, issueComment.getUser().getLogin(), info));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
 						timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("merge_pull")) {
-						start.setText(context.getString(R.string.timelineStatusMergedPr, issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineStatusMergedPr, issueComment.getUser().getLogin(), info));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
 						timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconPrMergedColor, null));
 					}
 					else if(issueComment.getType().equalsIgnoreCase("commit_ref")) {
-						String commitString = context.getString(R.string.timelineStatusRefPr, issueComment.getUser().getLogin()) + "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null) + "'>" + context.getResources().getString(R.string.commitText).toLowerCase() + "</font> " + informationBuilder;
+						String commitString = context.getString(R.string.timelineStatusRefPr, issueComment.getUser().getLogin(), ResourcesCompat.getColor(context.getResources(), R.color.lightBlue, null), context.getResources().getString(R.string.commitText).toLowerCase(), info);
 						start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
 
@@ -603,7 +603,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						});
 					}
 					else {
-						start.setText(context.getString(R.string.timelineStatusReopenedPr, issueComment.getUser().getLogin(), informationBuilder));
+						start.setText(context.getString(R.string.timelineStatusReopenedPr, issueComment.getUser().getLogin(), info));
 						timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
 					}
 				}
@@ -625,7 +625,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					timelineDividerView.setVisibility(View.GONE);
 				}
 				else if(issueComment.getType().equalsIgnoreCase("review_request")) {
-					start.setText(context.getString(R.string.timelineReviewRequest, issueComment.getUser().getLogin(), issueComment.getAssignee().getLogin(), informationBuilder));
+					start.setText(context.getString(R.string.timelineReviewRequest, issueComment.getUser().getLogin(), issueComment.getAssignee().getLogin(), info));
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_unwatch));
 				}
 				start.setTextSize(fontSize);
@@ -636,7 +636,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			else if(issueComment.getType().equalsIgnoreCase("change_title")) {
 
 				TextView start = new TextView(context);
-				start.setText(context.getString(R.string.timelineChangeTitle, issueComment.getUser().getLogin(), issueComment.getOldTitle(), issueComment.getNewTitle(), informationBuilder));
+				start.setText(context.getString(R.string.timelineChangeTitle, issueComment.getUser().getLogin(), issueComment.getOldTitle(), issueComment.getNewTitle(), info));
 				start.setTextSize(fontSize);
 
 				timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_edit));
@@ -648,11 +648,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("lock")) {
-					start.setText(context.getString(R.string.timelineLocked, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
+					start.setText(context.getString(R.string.timelineLocked, issueComment.getUser().getLogin(), issueComment.getBody(), info));
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_lock));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("unlock")) {
-					start.setText(context.getString(R.string.timelineUnlocked, issueComment.getUser().getLogin(), informationBuilder));
+					start.setText(context.getString(R.string.timelineUnlocked, issueComment.getUser().getLogin(), info));
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_key));
 				}
 				start.setTextSize(fontSize);
@@ -665,10 +665,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("add_dependency")) {
-					start.setText(context.getString(R.string.timelineDependencyAdded, issueComment.getUser().getLogin(), issueComment.getDependentIssue().getNumber(), informationBuilder));
+					start.setText(context.getString(R.string.timelineDependencyAdded, issueComment.getUser().getLogin(), issueComment.getDependentIssue().getNumber(), info));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("remove_dependency")) {
-					start.setText(context.getString(R.string.timelineDependencyRemoved, issueComment.getUser().getLogin(), issueComment.getDependentIssue().getNumber(), informationBuilder));
+					start.setText(context.getString(R.string.timelineDependencyRemoved, issueComment.getUser().getLogin(), issueComment.getDependentIssue().getNumber(), info));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);
@@ -682,10 +682,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getProjectId() > 0) {
-					start.setText(context.getString(R.string.timelineProjectAdded, issueComment.getUser().getLogin(), informationBuilder));
+					start.setText(context.getString(R.string.timelineProjectAdded, issueComment.getUser().getLogin(), info));
 				}
 				else {
-					start.setText(context.getString(R.string.timelineProjectRemoved, issueComment.getUser().getLogin(), informationBuilder));
+					start.setText(context.getString(R.string.timelineProjectRemoved, issueComment.getUser().getLogin(), info));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);
@@ -698,15 +698,16 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				// TODO pretty-print
 				if(issueComment.getType().equalsIgnoreCase("added_deadline")) {
-					start.setText(context.getString(R.string.timelineDueDateAdded, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
+					start.setText(context.getString(R.string.timelineDueDateAdded, issueComment.getUser().getLogin(), issueComment.getBody(), info));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("modified_deadline")) {
 					start.setText(
-						context.getString(R.string.timelineDueDateModified, issueComment.getUser().getLogin(), issueComment.getBody().split("\\|")[0], issueComment.getBody().split("\\|")[1], informationBuilder));
+						context.getString(R.string.timelineDueDateModified, issueComment.getUser().getLogin(), issueComment.getBody().split("\\|")[0], issueComment.getBody().split("\\|")[1], info));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("removed_deadline")) {
-					start.setText(context.getString(R.string.timelineDueDateRemoved, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
+					start.setText(context.getString(R.string.timelineDueDateRemoved, issueComment.getUser().getLogin(), issueComment.getBody(), info));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);
@@ -720,10 +721,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("change_target_branch")) {
-					start.setText(context.getString(R.string.timelineBranchChanged, issueComment.getUser().getLogin(), issueComment.getOldRef(), issueComment.getNewRef(), informationBuilder));
+					start.setText(context.getString(R.string.timelineBranchChanged, issueComment.getUser().getLogin(), issueComment.getOldRef(), issueComment.getNewRef(), info));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("delete_branch")) {
-					start.setText(context.getString(R.string.timelineBranchDeleted, issueComment.getUser().getLogin(), issueComment.getOldRef(), informationBuilder));
+					start.setText(context.getString(R.string.timelineBranchDeleted, issueComment.getUser().getLogin(), issueComment.getOldRef(), info));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);
@@ -738,20 +739,20 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView start = new TextView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("start_tracking")) {
-					start.setText(context.getString(R.string.timelineTimeTrackingStart, issueComment.getUser().getLogin(), informationBuilder));
+					start.setText(context.getString(R.string.timelineTimeTrackingStart, issueComment.getUser().getLogin(), info));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("stop_tracking")) {
-					start.setText(context.getString(R.string.timelineTimeTrackingStop, issueComment.getUser().getLogin(), informationBuilder));
+					start.setText(context.getString(R.string.timelineTimeTrackingStop, issueComment.getUser().getLogin(), info));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("cancel_tracking")) {
-					start.setText(context.getString(R.string.timelineTimeTrackingCancel, issueComment.getUser().getLogin(), informationBuilder));
+					start.setText(context.getString(R.string.timelineTimeTrackingCancel, issueComment.getUser().getLogin(), info));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("add_time_manual")) {
-					start.setText(context.getString(R.string.timelineTimeTrackingAddManualTime, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
+					start.setText(context.getString(R.string.timelineTimeTrackingAddManualTime, issueComment.getUser().getLogin(), issueComment.getBody(), info));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("delete_time_manual")) {
-					start.setText(context.getString(R.string.timelineTimeTrackingDeleteManualTime, issueComment.getUser().getLogin(), issueComment.getBody(), informationBuilder));
+					start.setText(context.getString(R.string.timelineTimeTrackingDeleteManualTime, issueComment.getUser().getLogin(), issueComment.getBody(), info));
 					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);
@@ -766,18 +767,18 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				RecyclerView recyclerView = new RecyclerView(context);
 
 				if(issueComment.getType().equalsIgnoreCase("change_issue_ref")) {
-					String text = context.getString(R.string.timelineChangeIssueRef, issueComment.getUser().getLogin(), issueComment.getNewRef(), informationBuilder);
+					String text = context.getString(R.string.timelineChangeIssueRef, issueComment.getUser().getLogin(), issueComment.getNewRef(), info);
 					Markdown.render(context, EmojiParser.parseToUnicode(text), recyclerView, issue.getRepository());
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_branch));
 				}
 				else if(issueComment.getType().equalsIgnoreCase("comment_ref") || issueComment.getType().equalsIgnoreCase("issue_ref") || issueComment.getType().equalsIgnoreCase("pull_ref")) {
 
 					if(issue.getIssueType().equalsIgnoreCase("Issue")) {
-						String text = context.getString(R.string.timelineRefIssue, issueComment.getUser().getLogin(), issueComment.getRefIssue().getNumber(), informationBuilder);
+						String text = context.getString(R.string.timelineRefIssue, issueComment.getUser().getLogin(), issueComment.getRefIssue().getNumber(), info);
 						Markdown.render(context, EmojiParser.parseToUnicode(text), recyclerView, issue.getRepository());
 					}
 					else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
-						String text = context.getString(R.string.timelineRefPr, issueComment.getUser().getLogin(), issueComment.getRefIssue().getNumber(), informationBuilder);
+						String text = context.getString(R.string.timelineRefPr, issueComment.getUser().getLogin(), issueComment.getRefIssue().getNumber(), info);
 						Markdown.render(context, EmojiParser.parseToUnicode(text), recyclerView, issue.getRepository());
 					}
 					timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
@@ -809,7 +810,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				Markdown.render(context, EmojiParser.parseToUnicode(issueComment.getBody()), comment, issue.getRepository());
 
-				information.setText(informationBuilder);
+				information.setText(info);
 
 				Bundle bundle1 = new Bundle();
 				bundle1.putAll(bundle);

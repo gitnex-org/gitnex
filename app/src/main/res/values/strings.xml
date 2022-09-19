@@ -792,43 +792,45 @@
     <string name="openInCodeEditor">Open in Code Editor</string>
 
     <!-- timeline -->
-    <string name="timelineAddedLabelStart">%s added the\u0020</string>
-    <string name="timelineRemovedLabelStart">%s removed the\u0020</string>
-    <string name="timelineLabelEnd">\u0020label %s</string>
-    <string name="timelineAddedCommit">%s added\u0020</string>
-    <string name="timelineAssigneesRemoved">%s removed their assignment %s</string>
-    <string name="timelineAssigneesUnassigned">%s was unassigned by %s %s</string>
-    <string name="timelineAssigneesSelfAssigned">%s self-assigned this %s</string>
-    <string name="timelineAssigneesAssigned">%s was assigned by %s %s</string>
-    <string name="timelineMilestoneAdded">%s added this to the %s milestone %s</string>
-    <string name="timelineMilestoneRemoved">%s removed this from the %s milestone %s</string>
-    <string name="timelineStatusClosedIssue">%s closed this issue %s</string>
-    <string name="timelineStatusReopenedIssue">%s reopened this issue %s</string>
-    <string name="timelineStatusRefIssue">%s referenced this issue from a \u0020</string>
-    <string name="timelineStatusClosedPr">%s closed this pull request %s</string>
-    <string name="timelineStatusMergedPr">%s merged this pull request %s</string>
-    <string name="timelineStatusRefPr">%s referenced this pull request from a\u0020</string>
     <string name="commitText">commit</string>
-    <string name="timelineStatusReopenedPr">%s reopened this pull request %s</string>
-    <string name="timelineReviewRequest">%s requested review from %s %s</string>
-    <string name="timelineChangeTitle">%s changed title from %s to %s %s</string>
-    <string name="timelineLocked">%s locked as %s and limited conversation to collaborators %s</string>
-    <string name="timelineUnlocked">%s unlocked this conversation %s</string>
-    <string name="timelineDependencyAdded">%s added a new dependency #%d %s</string>
-    <string name="timelineDependencyRemoved">%s removed a dependency #%d %s</string>
-    <string name="timelineProjectAdded">%s added this to a project %s</string>
-    <string name="timelineProjectRemoved">%s removed this from a project %s</string>
-    <string name="timelineDueDateAdded">%s added the due date %s %s</string>
-    <string name="timelineDueDateModified">%s modified the due date to %s from %s %s</string>
-    <string name="timelineDueDateRemoved">%s removed the due date %s %s</string>
-    <string name="timelineBranchChanged">%s changed target branch from %s to %s %s</string>
-    <string name="timelineBranchDeleted">%s deleted branch %s %s</string>
-    <string name="timelineTimeTrackingStart">%s started working %s</string>
-    <string name="timelineTimeTrackingStop">%s stopped time tracking %s</string>
-    <string name="timelineTimeTrackingCancel">%s cancelled time tracking %s</string>
-    <string name="timelineTimeTrackingAddManualTime">%s added spent time %s %s</string>
-    <string name="timelineTimeTrackingDeleteManualTime">%s deleted spent time %s %s</string>
-    <string name="timelineChangeIssueRef">%s added reference %s %s</string>
-    <string name="timelineRefIssue">%s referenced this issue in #%d %s</string>
-    <string name="timelineRefPr">%s referenced this pull request in #%d %s</string>
+    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s removed the | label %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s removed their assignment %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s was unassigned by %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s self-assigned this %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s closed this pull request %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s merged this pull request %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s referenced this pull request from a <font color=\'%2$d\'>%3$s</font> %4$s]]>]</string>
+    <string name="timelineReviewRequest">%1$s requested review from %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s changed title from %2$s to %3$s %4$s</string>
+    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineUnlocked">%1$s unlocked this conversation %2$s</string>
+    <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s added this to a project %2$s</string>
+    <string name="timelineProjectRemoved">%1$s removed this from a project %2$s</string>
+    <string name="timelineDueDateAdded">%1$s added the due date %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s modified the due date to %2$s from %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s removed the due date %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s changed target branch from %2$s to %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]>]</string>
+
 </resources>
